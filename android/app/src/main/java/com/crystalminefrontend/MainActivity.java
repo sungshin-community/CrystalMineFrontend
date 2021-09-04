@@ -1,4 +1,4 @@
-package com.community.sungshin;
+package com.crystalminefrontend;
 
 import com.facebook.react.ReactActivity;
 
