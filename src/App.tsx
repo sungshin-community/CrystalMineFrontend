@@ -2,7 +2,15 @@ import React from "react";
 import { StatusBar } from "react-native";
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from "./theme";
-import { FocusInput, ErrorInput, InactiveInput } from "./components/Input";
+import { 
+    MiddleFocusInput, 
+    MiddleErrorInput, 
+    MiddleInactiveInput, 
+    BigFocusInput, 
+    BigErrorInput, 
+    BigInactiveInput, 
+} from "./components/Input";
+
 StatusBar.setBackgroundColor("white");
   // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
@@ -10,7 +18,6 @@ StatusBar.setBarStyle('dark-content');
 const Container = styled.SafeAreaView`
     flex: 1;
     background-color: ${({ theme }) => theme.background};
-    align-items: center;
 `;
 
 const Title = styled.Text`
@@ -25,9 +32,12 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <Container>
-                <FocusInput placeholder="플레이스홀더" />
-                <ErrorInput placeholder="플레이스홀더" />
-                <InactiveInput placeholder="플레이스홀더" />
+                <MiddleFocusInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+                <MiddleErrorInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+                <MiddleInactiveInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+                <BigFocusInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+                <BigErrorInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+                <BigInactiveInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
             </Container>
         </ThemeProvider>
     )
