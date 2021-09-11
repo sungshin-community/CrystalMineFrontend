@@ -14,6 +14,8 @@ const Container = styled.SafeAreaView`
     background-color: ${({ theme }) => theme.background};
 `;
 
+//! 임의로 StyleSheet 줘서 그냥 구현만 해봤음
+
 const styles = StyleSheet.create({
     text: {
         marginTop: 130,
