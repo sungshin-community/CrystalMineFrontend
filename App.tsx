@@ -1,9 +1,5 @@
-// import App from "./src/App";
-// export default App;
-// import SignUp9 from "./src/screens/sign-up9";
-// export default SignUp9;
-import SignUp10 from "./src/screens/sign-up10";
-export default SignUp10;
+import MajorSelect from "./screens/signUp/MajorSelect";
+export default MajorSelect;
 
 // import React from 'react';
 // import styled from 'styled-components/native';

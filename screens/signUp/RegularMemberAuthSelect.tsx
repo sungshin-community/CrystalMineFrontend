@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { ThemeProvider } from "styled-components/native";
-import { theme } from "../theme";
-import { BigOneLineText, Description } from "../components/top";
+import { theme } from "../../src/theme";
+import { BigOneLineText, Description } from "../../src/components/top";
 
 StatusBar.setBackgroundColor("white");
   // StatusBar.setTranslucent(true);
@@ -13,8 +13,6 @@ const Container = styled.SafeAreaView`
     flex: 1;
     background-color: ${({ theme }) => theme.background};
 `;
-
-//! 임의로 StyleSheet 줘서 그냥 구현만 해봤음
 
 const styles = StyleSheet.create({
     text: {
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function SignUp10() {
+export default function RegularMemberAuthSelect() {
     return (
         <ThemeProvider theme={theme}>
             <Container>
@@ -69,3 +67,6 @@ export default function SignUp10() {
         </ThemeProvider>
     )
 }
+
+// import RegularMemberAuthSelect from "./screens/RegularMemberAuthSelect";
+// export default RegularMemberAuthSelect;
