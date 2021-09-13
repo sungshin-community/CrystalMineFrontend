@@ -1,6 +1,8 @@
 # CrystalMineFrontend
 
 ## 컴포넌트별 사용법
+- [Input 컴포넌트 사용법](#input-component)
+- [Button 컴포넌트 사용법](#button-component)
 
 <table>
   <tr>
