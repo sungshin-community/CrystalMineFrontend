@@ -128,15 +128,9 @@ function TermAgree() {
       </View>
       </ScrollView>
       <View style={{ bottom: 21, justifyContent: 'center', alignItems: 'center' }}>
-        {/* {firstTermChecked && secondTermChecked ? 
+        {firstTermChecked && secondTermChecked ? 
         <PurpleRoundButton text="다음" />
-        : <DisabledPurpleRoundButton text="다음" />} */}
-        <WhiteRoundButton text='다음' />
-        <DisabledWhiteRoundButton text='다음' />
-        <PurpleRoundButton text='다음' />
-        <DisabledPurpleRoundButton text='다음' />
-        <PurpleFullButton text='다음' />
-        <DisabledPurpleFullButton text='다음' />
+        : <DisabledPurpleRoundButton text="다음" />}
       </View>
     </View>
   );
