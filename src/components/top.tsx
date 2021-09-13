@@ -26,3 +26,27 @@ export const Description = Styled.Text`
     line-height: 25.6px;
     color: #87919B;
 `;
+export const SmallText = Styled.Text`
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 15.6px;
+    color: #000000;
+`;
+export const NormalText = Styled.Text`
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+`;
+interface Props {
+    firstLineText: string;
+    secondLineText: string;
+}
+
+export function TwoLineTitle({firstLineText, secondLineText}: Props) {
+    return (
+        <BigTwoLineText>{firstLineText}{"\n"}{secondLineText}</BigTwoLineText>
+    )
+}
