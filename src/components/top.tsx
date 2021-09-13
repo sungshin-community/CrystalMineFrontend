@@ -8,7 +8,7 @@ export const BigOneLineText = Styled.Text`
     line-height: 32.4px;
 `;
 export const BigTwoLineText = Styled.Text`
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
     font-size: 27px;
     line-height: 32.4px;

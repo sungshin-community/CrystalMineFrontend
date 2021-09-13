@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {StatusBar} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from '../../src/theme';
-import {BigOneLineText} from '../../src/components/top';
+import {TwoLineTitle} from '../../src/components/Top';
 import * as Animatable from 'react-native-animatable';
 
 StatusBar.setBackgroundColor('white');
@@ -25,7 +25,7 @@ export default function SignupComplete() {
       <Container>
         <TextContainer>
           <Animatable.Text animation="fadeInUp" delay={1000}>
-            <BigOneLineText>회원가입이{'\n'}완료되었습니다</BigOneLineText>
+            <TwoLineTitle firstLineText="회원가입이" secondLineText="완료되었습니다" />
           </Animatable.Text>
         </TextContainer>
       </Container>
