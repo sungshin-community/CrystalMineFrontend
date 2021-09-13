@@ -12,7 +12,14 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
-import CustomButton from '../components/Button';
+import CustomButton, { 
+  WhiteRoundButton,
+  PurpleRoundButton,
+  DisabledPurpleRoundButton,
+  PurpleFullButton,
+  DisabledWhiteRoundButton,
+  DisabledPurpleFullButton
+} from '../components/Button';
 import { BigTwoLineText, TwoLineTitle, Description, SmallText, NormalText } from '../components/Top';
 import { Container } from '../components/Container';
 
@@ -43,6 +50,7 @@ function TermAgree() {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
   let styles = StyleSheet.create({
+    text: { color: '#FFFFFF', fontWeight: '400' },
     button: { backgroundColor: '#FF0000' },
     nextButton: { backgroundColor: firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc', color: '#FFFFFF', width: 343, height: 56, borderRadius: 10 }
   })
@@ -62,7 +70,7 @@ function TermAgree() {
         <View style={{ marginLeft: 40, marginTop: 24, marginBottom: 12, flexDirection: 'row' }}>
           <CheckBox value={firstTermChecked} onChange={e => onChange('firstTerm')} style={{borderRadius: 11, width: 22, height: 22}} />
           <SmallText>서비스 이용약관</SmallText>
-          <CustomButton style={styles.button} onClick={e => onClick(e, 'firstTerm')} text={firstTermSpread ? "접기" : "펴기"}></CustomButton>
+          <CustomButton style={styles.button} textStyle={styles.text} onClick={e => onClick(e, 'firstTerm')} text={firstTermSpread ? "접기" : "펴기"}></CustomButton>
         </View>
         {firstTermSpread && <ScrollView style={{ height: 150, marginLeft: 40, marginRight: 40, backgroundColor: '#F6F6F6', padding: 20 }} nestedScrollEnabled={true}>
 
@@ -89,7 +97,7 @@ function TermAgree() {
         <View style={{ marginLeft: 40, marginTop: 20, marginBottom: 12, flexDirection: 'row' }}>
           <CheckBox value={secondTermChecked} onChange={e => onChange('secondTerm')} style={{borderRadius: 11, width: 22, height: 22}} />
           <SmallText>서비스 이용약관</SmallText>
-          <CustomButton style={styles.button} onClick={e => onClick(e, 'secondTerm')} text={secondTermSpread ? "접기" : "펴기"}></CustomButton>
+          <CustomButton style={styles.button} textStyle={styles.text} onClick={e => onClick(e, 'secondTerm')} text={secondTermSpread ? "접기" : "펴기"}></CustomButton>
         </View>
         {secondTermSpread && <ScrollView style={{ height: 150, marginLeft: 40, marginRight: 40, backgroundColor: '#F6F6F6', padding: 20 }} nestedScrollEnabled={true}>
           <Text>
@@ -119,8 +127,16 @@ function TermAgree() {
       </View>
       </View>
       </ScrollView>
-      <View style={{ bottom: 21, left: 16 }}>
-        <CustomButton style={styles.nextButton} text="다음" textColor="#FFFFFF" />
+      <View style={{ bottom: 21, justifyContent: 'center', alignItems: 'center' }}>
+        {/* {firstTermChecked && secondTermChecked ? 
+        <PurpleRoundButton text="다음" />
+        : <DisabledPurpleRoundButton text="다음" />} */}
+        <WhiteRoundButton text='다음' />
+        <DisabledWhiteRoundButton text='다음' />
+        <PurpleRoundButton text='다음' />
+        <DisabledPurpleRoundButton text='다음' />
+        <PurpleFullButton text='다음' />
+        <DisabledPurpleFullButton text='다음' />
       </View>
     </View>
   );
