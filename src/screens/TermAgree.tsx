@@ -22,6 +22,9 @@ import CustomButton, {
 } from '../components/Button';
 import { BigTwoLineText, TwoLineTitle, Description, SmallText, NormalText } from '../components/Top';
 import { Container } from '../components/Container';
+import { NavigationContainer } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 function TermAgree() {
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
