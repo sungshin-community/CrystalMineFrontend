@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { StatusBar, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import { theme } from "../../src/theme";
 import { BigOneLineText } from "../../src/components/top";
@@ -46,10 +46,8 @@ export default function MajorSelect() {
     return (
         <ThemeProvider theme={theme}>
             <Container>
-            <SafeAreaView>
                 <BackButton />
                 <BigOneLineText style={styles.text}>소속 학과를 선택해주세요</BigOneLineText>
-            </SafeAreaView>
             </Container>
             <MajorContainer>
                 <TouchableOpacity style={styles.buttonNow}>
