@@ -117,7 +117,7 @@
 </table>
 
 ### 세부 사용법
-- Input Component
+#### Input Component
 ```javascript
 <MiddleFocusInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
 <MiddleErrorInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
@@ -128,7 +128,7 @@
 ```
 <img width="307" alt="스크린샷 2021-09-13 오후 5 21 55" src="https://user-images.githubusercontent.com/73841260/133049245-1c2c3ace-96cc-4b2d-90af-cc8524f86a85.png">
 
-- Button Component
+#### Button Component
 ```html
 <WhiteRoundButton text='다음' />
 <DisabledWhiteRoundButton text='다음' />
