@@ -1,13 +1,29 @@
 import React from "react";
-import { Dimensions } from "react-native";
 import styled from 'styled-components';
+
+// 이렇게 사용하시면 됩니다
+// import { 
+//     MiddleFocusInput, 
+//     MiddleErrorInput, 
+//     MiddleInactiveInput, 
+//     BigFocusInput, 
+//     BigErrorInput, 
+//     BigInactiveInput, 
+// } from "./components/Input";
+
+// <MiddleFocusInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+// <MiddleErrorInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+// <MiddleInactiveInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+// <BigFocusInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+// <BigErrorInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
+// <BigInactiveInput placeholder="플레이스홀더" title="도움말은 여기에 표시됩니다." />
 
 const MiddleFocusInputStyle = styled.TextInput.attrs(({ theme }) => ({
     placeholderTextColor: theme.placeholderText,
 }))`
-    width: ${({ width }) => width - 48}px;
+    width: 100%;
     height: 45px;
-    margin: 3px auto;
+    margin: 3px 0;
     border-bottom-color: ${({ theme }) => theme.main};
     border-bottom-width: 2px;
     font-size: 21px;
@@ -17,9 +33,9 @@ const MiddleFocusInputStyle = styled.TextInput.attrs(({ theme }) => ({
 const MiddleErrorInputStyle = styled.TextInput.attrs(({ theme }) => ({
     placeholderTextColor: theme.placeholderText,
 }))`
-    width: ${({ width }) => width - 48}px;
+    width: 100%;
     height: 45px;
-    margin: 3px auto;
+    margin: 3px 0;
     border-bottom-color: ${({ theme }) => theme.error};
     border-bottom-width: 2px;
     font-size: 21px;
@@ -29,9 +45,9 @@ const MiddleErrorInputStyle = styled.TextInput.attrs(({ theme }) => ({
 const MiddleInactiveInputStyle = styled.TextInput.attrs(({ theme }) => ({
     placeholderTextColor: theme.placeholderText,
 }))`
-    width: ${({ width }) => width - 48}px;
+    width: 100%;
     height: 45px;
-    margin: 3px auto;
+    margin: 3px 0;
     border-bottom-color: ${({ theme }) => theme.inactive};
     border-bottom-width: 2px;
     font-size: 21px;
@@ -41,9 +57,9 @@ const MiddleInactiveInputStyle = styled.TextInput.attrs(({ theme }) => ({
 const BigFocusInputStyle = styled.TextInput.attrs(({ theme }) => ({
     placeholderTextColor: theme.placeholderText,
 }))`
-    width: ${({ width }) => width - 48}px;
+    width: 100%;
     height: 52px;
-    margin: 3px auto;
+    margin: 3px 0;
     border-bottom-color: ${({ theme }) => theme.main};
     border-bottom-width: 2px;
     font-size: 27px;
@@ -53,9 +69,9 @@ const BigFocusInputStyle = styled.TextInput.attrs(({ theme }) => ({
 const BigErrorInputStyle = styled.TextInput.attrs(({ theme }) => ({
     placeholderTextColor: theme.placeholderText,
 }))`
-    width: ${({ width }) => width - 48}px;
+    width: 100%;
     height: 52px;
-    margin: 3px auto;
+    margin: 3px 0;
     border-bottom-color: ${({ theme }) => theme.error};
     border-bottom-width: 2px;
     font-size: 27px;
@@ -65,9 +81,9 @@ const BigErrorInputStyle = styled.TextInput.attrs(({ theme }) => ({
 const BigInactiveInputStyle = styled.TextInput.attrs(({ theme }) => ({
     placeholderTextColor: theme.placeholderText,
 }))`
-    width: ${({ width }) => width - 48}px;
+    width: 100%;
     height: 52px;
-    margin: 3px auto;
+    margin: 3px 0;
     border-bottom-color: ${({ theme }) => theme.inactive};
     border-bottom-width: 2px;
     font-size: 27px;
@@ -78,22 +94,20 @@ const HelpTextStyle = styled.Text`
     font-size: 11px;
     font-weight: 400;
     color: ${({ theme }) => theme.help};
-    margin: 10px 24px;
+    margin: 10px 0;
 `;
 
 const CautionTextStyle = styled.Text`
     font-size: 11px;
     font-weight: 400;
     color: ${({ theme }) => theme.error};
-    margin: 10px 24px;
+    margin: 10px 0;
 `;
-
-const width = Dimensions.get('window').width;
 
 export const MiddleFocusInput = ({ placeholder, title }) => {
     return (
     <>
-    <MiddleFocusInputStyle width={width} placeholder={placeholder} />
+    <MiddleFocusInputStyle placeholder={placeholder} />
     <HelpTextStyle>{title}</HelpTextStyle>
     </>
 
@@ -103,7 +117,7 @@ export const MiddleFocusInput = ({ placeholder, title }) => {
 export const MiddleErrorInput = ({ placeholder, title }) => {
     return (
         <>
-        <MiddleErrorInputStyle width={width} placeholder={placeholder} />
+        <MiddleErrorInputStyle placeholder={placeholder} />
         <CautionTextStyle>{title}</CautionTextStyle>
         </>
     );
@@ -112,7 +126,7 @@ export const MiddleErrorInput = ({ placeholder, title }) => {
 export const MiddleInactiveInput = ({ placeholder, title }) => {
     return (
     <>
-    <MiddleInactiveInputStyle width={width} placeholder={placeholder} />
+    <MiddleInactiveInputStyle placeholder={placeholder} />
     <HelpTextStyle>{title}</HelpTextStyle>
     </>
     );
@@ -121,7 +135,7 @@ export const MiddleInactiveInput = ({ placeholder, title }) => {
 export const BigFocusInput = ({ placeholder, title }) => {
     return (
     <>
-    <BigFocusInputStyle width={width} placeholder={placeholder} />
+    <BigFocusInputStyle placeholder={placeholder} />
     <HelpTextStyle>{title}</HelpTextStyle>
     </>
 
