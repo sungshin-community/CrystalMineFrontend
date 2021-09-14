@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import {StatusBar, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../src/theme';
-import {BigOneLineText} from '../../src/components/top';
-import BackButton from '../../src/components/BackButton';
+import {theme} from '../../theme';
+import {BigOneLineText} from '../../components/top';
+import BackButton from '../../components/BackButton';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
