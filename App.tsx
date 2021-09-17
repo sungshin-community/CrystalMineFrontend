@@ -4,7 +4,14 @@ import {
   BigTwoLineText,
   NormalOneLineText,
   Description,
-} from './src/components/top';
+} from './src/components/Top';
+import {PurpleRoundButton, WhiteRoundButton} from './src/components/Button';
+import {NavigationContainer} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import TermAgree from './src/screens/signUp/TermAgree';
+import Home from './src/screens/Home';
+import {theme} from './src/theme';
 
 import {
   SafeAreaView,
@@ -17,15 +24,24 @@ import {
   View,
 } from 'react-native';
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 
   return (
-    <SafeAreaView>
-      <Text>수정광산</Text>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
+        <Stack.Screen
+          name="Profile"
+          component={TermAgree}
+          options={{title: ''}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 export default App;
