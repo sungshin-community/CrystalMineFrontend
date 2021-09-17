@@ -4,7 +4,7 @@ import { PurpleRoundButton, WhiteRoundButton } from './src/components/Button';
 import { NavigationContainer } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TermAgree from './src/screens/TermAgree';
+import TermAgree from './src/screens/signUp/TermAgree';
 import Home from './src/screens/Home';
 
 import {

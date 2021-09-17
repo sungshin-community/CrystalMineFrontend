@@ -12,16 +12,16 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
-import CustomButton, { 
+import CustomButton, {
   WhiteRoundButton,
   PurpleRoundButton,
   DisabledPurpleRoundButton,
   PurpleFullButton,
   DisabledWhiteRoundButton,
   DisabledPurpleFullButton
-} from '../components/Button';
-import { BigTwoLineText, TwoLineTitle, Description, SmallText, NormalText } from '../components/Top';
-import { Container } from '../components/Container';
+} from '../../components/Button';
+import { BigTwoLineText, TwoLineTitle, Description, SmallText, NormalText } from '../../components/Top';
+import { Container } from '../../components/Container';
 import { NavigationContainer } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
