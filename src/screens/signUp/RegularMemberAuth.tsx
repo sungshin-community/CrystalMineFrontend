@@ -28,24 +28,16 @@ import { Container } from '../../components/Container';
 import { NavigationContainer } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Timer from '../../components/Timer';
+import CountDownTimer from '../../components/CountDownTimer';
+import AuthInput from '../../components/AuthInput'
 
 const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
-        paddingLeft: 42
+        paddingLeft: 10,
+        paddingRight: 10,
       },
-      input: {
-        width: 40,
-        height: 55,
-        marginRight: 10,
-        borderColor: "#A055FF",
-        borderWidth: 0,
-        borderBottomWidth: 2,
-        fontSize: 45,
-        paddingLeft: 5
-  
-      }
+
 });
 
 const RegularMemberAuth = () => {
@@ -57,37 +49,12 @@ const RegularMemberAuth = () => {
             <TwoLineTitle firstLineText="메일로 전송된" secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
             </Container>
             <View style={styles.container} >
-                <View style={{flexDirection: 'row'}}>
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                />
-                </View>
+                <AuthInput></AuthInput>
             </View>
-            <Timer></Timer>
+            <CountDownTimer minutes={3} seconds={0}/>
             
         </View>
-        <View style={{ marginTop: '73%'}}>
+        <View style={{ marginTop: '74%'}}>
             <DisabledPurpleFullButton text='인증 완료' />    
         </View>
     </SafeAreaView>

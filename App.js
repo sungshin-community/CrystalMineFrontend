@@ -6,6 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TermAgree from './src/screens/signUp/TermAgree';
 import Home from './src/screens/Home';
+import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 
 import {
   SafeAreaView,
@@ -27,16 +28,9 @@ const App = () => {
 
     
 return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ title: '' }}
-        />
-        <Stack.Screen name="Profile" component={TermAgree} options={{ title: '' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View>
+      <RegularMemberAuth></RegularMemberAuth>
+    </View>
     );
 };
 export default App;
