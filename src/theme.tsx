@@ -6,4 +6,5 @@ export const theme = {
   error: '#E64646',
   inactive: '#D7DCE6',
   help: '#87919B',
+  majorRadio: '#F6F6F6',
 };

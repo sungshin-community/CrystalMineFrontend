@@ -1,28 +1,9 @@
 import React from 'react';
-import {
-  BigOneLineText,
-  BigTwoLineText,
-  NormalOneLineText,
-  Description,
-} from './src/components/Top';
-import {PurpleRoundButton, WhiteRoundButton} from './src/components/Button';
 import {NavigationContainer} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TermAgree from './src/screens/signUp/TermAgree';
 import Home from './src/screens/Home';
-import {theme} from './src/theme';
-
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Button,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {StatusBar} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
