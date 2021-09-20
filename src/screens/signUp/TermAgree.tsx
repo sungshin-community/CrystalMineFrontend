@@ -8,6 +8,7 @@ import {
   Text,
   View,
   GestureResponderEvent,
+  TouchableOpacity,
   Button,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
@@ -25,6 +26,8 @@ import { Container } from '../../components/Container';
 import { NavigationContainer } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SpreadButton, FoldButton } from '../../../resources/icon/Button';
+import { RoundChecked, RoundUnchecked, Unchecked, Checked } from '../../../resources/icon/CheckBox';
 
 function TermAgree() {
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
@@ -37,6 +40,14 @@ function TermAgree() {
     }
     else if (clickedComponent === 'secondTerm') {
       setSecondTermSpread(!secondTermSpread);
+    }
+    else if (clickedComponent === 'wholeAgree') {
+      setFirstTermChecked(true);
+      setSecondTermChecked(true);
+    }
+    else if (clickedComponent === 'wholeDisagree') {
+      setFirstTermChecked(false);
+      setSecondTermChecked(false);
     }
   }
 
@@ -55,7 +66,8 @@ function TermAgree() {
   let styles = StyleSheet.create({
     text: { color: '#FFFFFF', fontWeight: '400' },
     button: { backgroundColor: '#FF0000' },
-    nextButton: { backgroundColor: firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc', color: '#FFFFFF', width: 343, height: 56, borderRadius: 10 }
+    nextButton: { backgroundColor: firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc', color: '#FFFFFF', width: 343, height: 56, borderRadius: 10 },
+    wholeAgreeCheckBox: { marginTop: 16, marginLeft: 16, marginBottom: 16, marginRight: 13 }
   })
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
@@ -67,13 +79,26 @@ function TermAgree() {
           <TwoLineTitle firstLineText="이용 약관에 먼저" secondLineText="동의해주세요"></TwoLineTitle>
         </Container>
         <View style={{ flexDirection: 'row', height: 56, backgroundColor: '#F6F6F6', marginLeft: 24, marginRight: 24, borderRadius: 10, marginTop: 31 }}>
-          <View style={{ width: 22, height: 22, borderRadius: 11, backgroundColor: '#D6D6D6', margin: 17, marginRight: 14 }}></View>
+          {/* <RoundUnchecked
+            style={styles.wholeAgreeCheckBox}
+            onPress={() => {setFirstTermChecked(true); setSecondTermChecked(true)}} /> */}
+          {(firstTermChecked && secondTermChecked) ? 
+            <RoundChecked style={styles.wholeAgreeCheckBox} onPress={(e: any) => onClick(e, 'wholeDisagree')} /> : 
+            <RoundUnchecked style={styles.wholeAgreeCheckBox} onPress={(e: any) => onClick(e, 'wholeAgree')} />
+          }
           <Text style={{ fontSize: 15, lineHeight: 56 }}>약관 전체 동의</Text>
         </View>
-        <View style={{ marginLeft: 40, marginTop: 24, marginBottom: 12, flexDirection: 'row' }}>
-          <CheckBox value={firstTermChecked} onChange={e => onChange('firstTerm')} style={{borderRadius: 11, width: 22, height: 22}} />
+        <View style={{ marginLeft: 40, marginTop: 24, marginBottom: 12, marginRight: 46, flexDirection: 'row', alignItems: 'center' }}>
+          {firstTermChecked ?
+            <Checked style={{marginRight: 16}} onPress={(e: any) => onChange('firstTerm')} /> :
+            <Unchecked style={{marginRight: 16}} onPress={(e: any) => onChange('firstTerm')} />
+          }
           <SmallText>서비스 이용약관</SmallText>
-          <CustomButton style={styles.button} textStyle={styles.text} onClick={e => onClick(e, 'firstTerm')} text={firstTermSpread ? "접기" : "펴기"}></CustomButton>
+          <TouchableOpacity style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center', height: 16 }} onPress={e => onClick(e, 'firstTerm')} >
+            {firstTermSpread ? <FoldButton /> : <SpreadButton />}
+          </TouchableOpacity>
+          
+          {/* <CustomButton style={styles.button} textStyle={styles.text} onClick={e => onClick(e, 'firstTerm')} text={firstTermSpread ? "접기" : "펴기"}></CustomButton> */}
         </View>
         {firstTermSpread && <ScrollView style={{ height: 150, marginLeft: 40, marginRight: 40, backgroundColor: '#F6F6F6', padding: 20 }} nestedScrollEnabled={true}>
 
@@ -97,10 +122,17 @@ function TermAgree() {
           </Text>
         </ScrollView>}
 
-        <View style={{ marginLeft: 40, marginTop: 20, marginBottom: 12, flexDirection: 'row' }}>
-          <CheckBox value={secondTermChecked} onChange={e => onChange('secondTerm')} style={{borderRadius: 11, width: 22, height: 22}} />
-          <SmallText>서비스 이용약관</SmallText>
-          <CustomButton style={styles.button} textStyle={styles.text} onClick={e => onClick(e, 'secondTerm')} text={secondTermSpread ? "접기" : "펴기"}></CustomButton>
+        <View style={{ marginLeft: 40, marginTop: 24, marginBottom: 12, marginRight: 46, flexDirection: 'row', alignItems: 'center' }}>
+          {secondTermChecked ?
+            <Checked style={{marginRight: 16}} onPress={(e: any) => onChange('secondTerm')} /> :
+            <Unchecked style={{marginRight: 16}} onPress={(e: any) => onChange('secondTerm')} />
+          }
+          <SmallText>개인 정보 처리 방침</SmallText>
+          <TouchableOpacity style={{ flex: 1, flexDirection: 'row-reverse', alignItems: 'center', height: 16 }} onPress={e => onClick(e, 'secondTerm')} >
+            {secondTermSpread ? <FoldButton /> : <SpreadButton />}
+          </TouchableOpacity>
+          
+          {/* <CustomButton style={styles.button} textStyle={styles.text} onClick={e => onClick(e, 'firstTerm')} text={firstTermSpread ? "접기" : "펴기"}></CustomButton> */}
         </View>
         {secondTermSpread && <ScrollView style={{ height: 150, marginLeft: 40, marginRight: 40, backgroundColor: '#F6F6F6', padding: 20 }} nestedScrollEnabled={true}>
           <Text>
