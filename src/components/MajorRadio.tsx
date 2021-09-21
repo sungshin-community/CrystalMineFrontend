@@ -6,7 +6,6 @@ import {
   View,
   TouchableWithoutFeedback,
 } from 'react-native';
-
 import {RadioButtons} from 'react-native-radio-buttons';
 
 var styles = StyleSheet.create({
@@ -16,7 +15,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class MajorRadio extends React.Component {
+export default class MajorRadio extends React.Component {
   state = {};
 
   render() {
@@ -25,7 +24,6 @@ class MajorRadio extends React.Component {
     );
   }
 
-  //!!!!!!!!!!!!!
   renderCheckList() {
     const options = [
       '해당 없음',
@@ -52,12 +50,47 @@ class MajorRadio extends React.Component {
       '생명과학·화학부',
       '수리통계데이터사이언스학부',
       '화학·에너지융합학부',
+      '청정융합에너지공학과',
+      '바이오생명공학과',
+      '바이오식품공학과',
+      '융합보안공학과',
+      '컴퓨터공학과',
+      '정보시스템공학과',
+      '서비스디자인공학과',
+      'AI융합학부',
+      '간호학과',
+      '스포츠레저학과',
+      '운동재활복지학과',
+      '글로벌의과학과',
+      '식품영양학과',
+      '바이오신약의과학부',
+      '바이오헬스융합학부',
+      '스포츠과학부',
+      '글로벌비즈니스학과',
+      '의류산업학과',
+      '뷰티산업학과',
+      '소비자생활문화산업학과',
+      '교육학과',
+      '사회교육과',
+      '윤리교육과',
+      '한문교육과',
+      '유아교육과',
+      '동양화과',
+      '서양화과',
+      '조소과',
+      '공예과',
+      '산업디자인과',
+      '성악과',
+      '기악과',
+      '작곡과',
+      '문화예술경영학과',
+      '미디어영상연기학과',
+      '현대실용음악학과',
+      '무용예술학과',
     ];
 
     function setSelectedOption(checkListOption) {
-      this.setState({
-        checkListOption,
-      });
+      this.setState({checkListOption});
     }
 
     function renderOption(option, selected, onSelect, index) {
@@ -116,12 +149,11 @@ class MajorRadio extends React.Component {
       return (
         <View
           style={{
-            backgroundColor: 'white',
-            paddingLeft: 20,
+            paddingLeft: 24,
             borderTopWidth: 1,
-            borderTopColor: '#cccccc',
+            borderTopColor: '#F6F6F6',
             borderBottomWidth: 1,
-            borderBottomColor: '#cccccc',
+            borderBottomColor: '#F6F6F6',
           }}>
           {options}
         </View>
@@ -130,44 +162,20 @@ class MajorRadio extends React.Component {
 
     return (
       <View style={{flex: 1}}>
-        <View style={{marginTop: 10, backgroundColor: 'white'}}>
-          <Text style={{padding: 20, fontWeight: 'bold'}}>학과 선택</Text>
-
-          <View
-            style={{
-              backgroundColor: '#F6F6F6',
-              paddingTop: 5,
-              paddingBottom: 5,
-            }}>
-            <Text
-              style={{
-                color: '#555555',
-                paddingLeft: 20,
-                marginBottom: 5,
-                marginTop: 5,
-                fontSize: 12,
-              }}>
-              {/* 학과 선택 */}
-              {this.state.checkListOption || ''}
-            </Text>
-            <RadioButtons
-              options={options}
-              onSelection={setSelectedOption.bind(this)}
-              selectedOption={this.state.checkListOption}
-              renderOption={renderOption}
-              renderContainer={renderContainer}
-            />
-          </View>
-          {/* <Text
-            style={{
-              margin: 20,
-            }}>
-            Selected accent: {this.state.checkListOption || 'none'}
-          </Text> */}
+        <View
+          style={{
+            paddingTop: 5,
+            paddingBottom: 5,
+          }}>
+          <RadioButtons
+            options={options}
+            onSelection={setSelectedOption.bind(this)}
+            selectedOption={this.state.checkListOption}
+            renderOption={renderOption}
+            renderContainer={renderContainer}
+          />
         </View>
       </View>
     );
   }
 }
-
-export default MajorRadio;

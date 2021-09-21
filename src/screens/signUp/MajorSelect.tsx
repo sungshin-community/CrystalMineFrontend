@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import {StatusBar} from 'react-native';
+import {StatusBar, View, StyleSheet} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from '../../theme';
 import {BigOneLineText} from '../../components/Top';
 import {PurpleRoundButton} from '../../components/Button';
-import {MajorRadio} from '../../components/MajorRadio';
+import MajorRadio from '../../components/MajorRadio';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
-  flex: 3;
+  flex: 5;
   background-color: ${({theme}) => theme.background};
 `;
 
@@ -22,14 +22,17 @@ const TextContainer = styled.View`
 `;
 
 const MajorContainer = styled.View`
-  flex: 8;
+  flex: 14;
   background-color: ${({theme}) => theme.majorRadio};
 `;
 
-const ButtonContainer = styled.View`
-  background-color: ${({theme}) => theme.background};
-  flex: 2;
-`;
+const styles = StyleSheet.create({
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+});
 
 export default function MajorSelect() {
   return (
@@ -41,7 +44,9 @@ export default function MajorSelect() {
       </Container>
       <MajorContainer>
         <MajorRadio />
-        <PurpleRoundButton text="회원가입" />
+        <View style={styles.buttonContainer}>
+          <PurpleRoundButton text="회원가입" />
+        </View>
       </MajorContainer>
     </ThemeProvider>
   );

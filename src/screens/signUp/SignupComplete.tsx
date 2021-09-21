@@ -55,6 +55,3 @@ export default function SignUpComplete() {
     </ThemeProvider>
   );
 }
-
-// import SignupComplete from "./src/screens/SignupComplete";
-// export default SignupComplete;
