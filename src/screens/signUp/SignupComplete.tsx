@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {StatusBar} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../src/theme';
-import {TwoLineTitle} from '../../src/components/Top';
+import { theme } from '../../theme';
+import { TwoLineTitle } from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 
 StatusBar.setBackgroundColor('white');

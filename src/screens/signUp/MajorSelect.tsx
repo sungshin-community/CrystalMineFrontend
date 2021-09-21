@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {StatusBar, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from '../../theme';
-import {BigOneLineText} from '../../components/top';
+import {BigOneLineText} from '../../components/Top';
 import BackButton from '../../components/BackButton';
 
 StatusBar.setBackgroundColor('white');

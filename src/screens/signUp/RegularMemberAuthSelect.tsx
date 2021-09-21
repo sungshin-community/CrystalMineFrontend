@@ -8,8 +8,8 @@ import {
   Text,
 } from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../src/theme';
-import {BigOneLineText, Description} from '../../src/components/top';
+import {theme} from '../../theme';
+import {BigOneLineText, Description} from '../../components/Top'
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
