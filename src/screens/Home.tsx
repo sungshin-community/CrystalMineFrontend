@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PurpleRoundButton, WhiteRoundButton } from '../components/Button';
+import Logo from '../../resources/icon/Logo';
 
 type RootStackParamList = {
     Home: undefined;
@@ -23,7 +24,7 @@ const Home = ({ navigation }: Props) => {
     return (
       <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 3}}>
-          <Text>수정구</Text>
+          <Logo />
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1 }}>
         <PurpleRoundButton
