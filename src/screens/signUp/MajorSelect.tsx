@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, StyleSheet} from 'react-native';
-import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../theme';
 import {BigOneLineText} from '../../components/Top';
 import {PurpleRoundButton} from '../../components/Button';
 import MajorRadio from '../../components/MajorRadio';
@@ -13,7 +11,7 @@ StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
   flex: 5;
-  background-color: ${({theme}) => theme.background};
+  background-color: #ffffff;
 `;
 
 const TextContainer = styled.View`
@@ -23,7 +21,7 @@ const TextContainer = styled.View`
 
 const MajorContainer = styled.View`
   flex: 14;
-  background-color: ${({theme}) => theme.majorRadio};
+  background-color: #ffffff;
 `;
 
 const styles = StyleSheet.create({
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
 
 export default function MajorSelect() {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container>
         <TextContainer>
           <BigOneLineText>소속 학과를 선택해주세요</BigOneLineText>
@@ -48,6 +46,6 @@ export default function MajorSelect() {
           <PurpleRoundButton text="회원가입" />
         </View>
       </MajorContainer>
-    </ThemeProvider>
+    </>
   );
 }

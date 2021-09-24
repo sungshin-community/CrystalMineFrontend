@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {View, StatusBar, StyleSheet} from 'react-native';
-import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../theme';
 import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 
@@ -12,7 +10,7 @@ StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
   flex: 7;
-  background-color: ${({theme}) => theme.background};
+  background-color: #ffffff;
 `;
 
 const TextContainer = styled.View`
@@ -20,7 +18,7 @@ const TextContainer = styled.View`
 `;
 
 const ButtonContainer = styled.View`
-  background-color: ${({theme}) => theme.background};
+  background-color: #ffffff;
   flex: 2;
 `;
 
@@ -40,7 +38,7 @@ const styles = StyleSheet.create({
 
 export default function RegularMemberAuthSelect() {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container>
         <TextContainer>
           <TwoLineTitle
@@ -61,7 +59,7 @@ export default function RegularMemberAuthSelect() {
           <WhiteRoundButton text="나중에 인증하기" />
         </View>
       </ButtonContainer>
-    </ThemeProvider>
+    </>
   );
 }
 

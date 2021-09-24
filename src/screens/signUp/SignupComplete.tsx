@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {StatusBar, StyleSheet, View} from 'react-native';
-import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../theme';
 import {TwoLineTitle} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
@@ -13,7 +11,7 @@ StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
   flex: 89;
-  background-color: ${({theme}) => theme.background};
+  background-color: #ffffff;
 `;
 
 const TextContainer = styled.View`
@@ -21,7 +19,7 @@ const TextContainer = styled.View`
 `;
 
 const ButtonContainer = styled.View`
-  background-color: ${({theme}) => theme.background};
+  background-color: #ffffff;
   flex: 11;
 `;
 
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
 
 export default function SignUpComplete() {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container>
         <TextContainer>
           <Animatable.Text animation="fadeInUp" delay={900}>
@@ -52,6 +50,6 @@ export default function SignUpComplete() {
           </Animatable.Text>
         </View>
       </ButtonContainer>
-    </ThemeProvider>
+    </>
   );
 }
