@@ -5,6 +5,7 @@ import TermAgree from './src/screens/signUp/TermAgree';
 import Home from './src/screens/Home';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar} from 'react-native';
+import SignIn from './src/screens/signIn/SignIn';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,16 +25,17 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
-        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
-        <Stack.Screen
-          name="Profile"
-          component={TermAgree}
-          options={{title: ''}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SignIn />
+    // <NavigationContainer>
+    //   <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
+    //     <Stack.Screen name="Home" component={Home} options={{title: ''}} />
+    //     <Stack.Screen
+    //       name="Profile"
+    //       component={TermAgree}
+    //       options={{title: ''}}
+    //     />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 };
 export default App;
