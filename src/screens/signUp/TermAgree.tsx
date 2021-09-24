@@ -10,13 +10,24 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
 import { PurpleRoundButton, DisabledPurpleRoundButton } from '../../components/Button';
 import { TwoLineTitle, SmallText } from '../../components/Top';
 import { Container } from '../../components/Container';
 import { SpreadButton, FoldButton } from '../../../resources/icon/Button';
 import { RoundChecked, RoundUnchecked, Unchecked, Checked } from '../../../resources/icon/CheckBox';
+import TestPage2 from '../TestPage2';
 
-function TermAgree() {
+type RootStackParamList = {
+  TermAgree: undefined;
+  TestPage2: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList>;
+function TermAgree({ navigation }: Props) {
+  const Stack = createNativeStackNavigator();
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
@@ -146,7 +157,7 @@ function TermAgree() {
       </ScrollView>
       <View style={{ bottom: 21, justifyContent: 'center', alignItems: 'center' }}>
         {firstTermChecked && secondTermChecked ?
-          <PurpleRoundButton text="다음" />
+          <PurpleRoundButton text="다음" onClick={() => {navigation.navigate('TestPage2')}} />
           : <DisabledPurpleRoundButton text="다음" />}
       </View>
     </View>

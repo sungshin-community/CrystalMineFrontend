@@ -4,7 +4,6 @@ import {StatusBar, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from '../../theme';
 import {BigOneLineText} from '../../components/Top';
-import BackButton from '../../components/BackButton';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -46,7 +45,6 @@ export default function MajorSelect() {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <BackButton />
         <BigOneLineText style={styles.text}>
           소속 학과를 선택해주세요
         </BigOneLineText>

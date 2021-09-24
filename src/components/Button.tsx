@@ -11,6 +11,7 @@ interface Props {
 interface ButtonProps {
   text?: string;
   onClick?: (e: GestureResponderEvent) => void;
+  ourStyle?: any;
 }
 
 const style = StyleSheet.create({
@@ -69,7 +70,7 @@ function CustomButton({style,text, textStyle, onClick = () => {}}: Props) {
   )
 }
 
-export const PurpleRoundButton = ({text, onClick = () => {}}: ButtonProps) => {
+export const PurpleRoundButton = ({text, onClick = () => {}, ourStyle}: ButtonProps) => {
   return (
     <CustomButton style={style.purpleRoundButton} onClick={onClick} text={text} textStyle={style.whiteText} />
   )
