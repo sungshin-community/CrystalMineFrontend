@@ -105,10 +105,10 @@ export const MiddleErrorInput = ({placeholder, title}) => {
   );
 };
 
-export const MiddleInactiveInput = ({placeholder, title}) => {
+export const MiddleInactiveInput = ({placeholder, title, style}) => {
   return (
     <>
-      <MiddleInactiveInputStyle placeholder={placeholder} />
+      <MiddleInactiveInputStyle style={style} placeholder={placeholder} />
       <HelpTextStyle>{title}</HelpTextStyle>
     </>
   );

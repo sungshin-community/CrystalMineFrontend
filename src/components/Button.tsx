@@ -40,7 +40,7 @@ const style = StyleSheet.create({
     backgroundColor: '#E5D2FC',
     width: 343,
     height: 56,
-    borderRadius: 10
+    borderRadius: 10,
   },
   disabledWhiteRoundButton: {
     backgroundColor: '#F5F5F5',

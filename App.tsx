@@ -1,39 +1,42 @@
-import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TermAgree from './src/screens/signUp/TermAgree';
-import Home from './src/screens/Home';
-import SplashScreen from 'react-native-splash-screen';
-import {StatusBar} from 'react-native';
+// import React, {useEffect} from 'react';
+// import {NavigationContainer} from '@react-navigation/native';
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import TermAgree from './src/screens/signUp/TermAgree';
+// import Home from './src/screens/Home';
+// import SplashScreen from 'react-native-splash-screen';
+// import {StatusBar} from 'react-native';
 
-const Stack = createNativeStackNavigator();
+import SignUpID from "./src/screens/signUp/SignUpID";
+export default SignUpID;
 
-const App = () => {
-  StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
-  StatusBar.setBarStyle('dark-content');
+// const Stack = createNativeStackNavigator();
 
-  // useEffect(() => {
-  //   SplashScreen.hide();
-  // }, []);
+// const App = () => {
+//   StatusBar.setBackgroundColor('white');
+//   // StatusBar.setTranslucent(true);
+//   StatusBar.setBarStyle('dark-content');
 
-  useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 1000);
-  }, []);
+//   // useEffect(() => {
+//   //   SplashScreen.hide();
+//   // }, []);
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
-        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
-        <Stack.Screen
-          name="Profile"
-          component={TermAgree}
-          options={{title: ''}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-export default App;
+//   useEffect(() => {
+//     setTimeout(() => {
+//       SplashScreen.hide();
+//     }, 1000);
+//   }, []);
+
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
+//         <Stack.Screen name="Home" component={Home} options={{title: ''}} />
+//         <Stack.Screen
+//           name="Profile"
+//           component={TermAgree}
+//           options={{title: ''}}
+//         />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+// export default App;
