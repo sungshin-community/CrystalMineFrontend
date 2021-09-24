@@ -7,7 +7,8 @@ import {
   Text,
   View,
   GestureResponderEvent,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 
 import { PurpleRoundButton, DisabledPurpleRoundButton } from '../../components/Button';
@@ -60,7 +61,7 @@ function TermAgree() {
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <ScrollView>
         <View>
-          <View style={{ width: 53.57, height: 4, backgroundColor: "#A055FF" }} />
+          <View style={{ width: Dimensions.get('window').width / 7, height: 4, backgroundColor: "#A055FF" }} />
           <View>
             <Container>
               <TwoLineTitle firstLineText="이용 약관에 먼저" secondLineText="동의해주세요"></TwoLineTitle>
