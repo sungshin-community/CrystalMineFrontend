@@ -10,6 +10,7 @@ import {
   View,
   GestureResponderEvent,
   Button,
+  KeyboardAvoidingView,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
 const RegularMemberAuth = () => {
   return (
     
-    <SafeAreaView>
-        <View style={{ marginTop: 130, marginBottom: 52 }}>
+    <View>
+        <View style={{ marginTop: 130}}>
             <Container>
             <TwoLineTitle firstLineText="메일로 전송된" secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
             </Container>
@@ -54,10 +55,14 @@ const RegularMemberAuth = () => {
             <CountDownTimer minutes={3} seconds={0}/>
             
         </View>
-        <View style={{ marginTop: '74%'}}>
-            <DisabledPurpleFullButton text='인증 완료' />    
-        </View>
-    </SafeAreaView>
+
+      <KeyboardAvoidingView behavior="padding" >   
+        <View style={{ position: 'absolute', flex: 1}}>
+          <DisabledPurpleFullButton text='인증 완료' />   
+        </View> 
+      </KeyboardAvoidingView>
+
+    </View>
     
   );
 };
