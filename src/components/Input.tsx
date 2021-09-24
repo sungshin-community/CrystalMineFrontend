@@ -1,102 +1,91 @@
-import {Props} from '@react-native-community/checkbox/dist/CheckBox.android';
 import React from 'react';
 import styled from 'styled-components';
 
-const MiddleFocusInputStyle = styled.TextInput.attrs(({theme}) => ({
-  placeholderTextColor: theme.placeholderText,
-}))`
+const MiddleFocusInputStyle = styled.TextInput`
   width: 100%;
   height: 45px;
   margin: 3px 0;
-  border-bottom-color: ${({theme}) => theme.main};
+  border-bottom-color: #a055ff;
   border-bottom-width: 2px;
   font-size: 21px;
-  color: ${({theme}) => theme.text};
+  color: #000000;
 `;
 
-const MiddleErrorInputStyle = styled.TextInput.attrs(({theme}) => ({
-  placeholderTextColor: theme.placeholderText,
-}))`
+const MiddleErrorInputStyle = styled.TextInput`
   width: 100%;
   height: 45px;
   margin: 3px 0;
-  border-bottom-color: ${({theme}) => theme.error};
+  border-bottom-color: #e64646;
   border-bottom-width: 2px;
   font-size: 21px;
-  color: ${({theme}) => theme.text};
+  color: #000000;
 `;
 
-const MiddleInactiveInputStyle = styled.TextInput.attrs(({theme}) => ({
-  placeholderTextColor: theme.placeholderText,
-}))`
+const MiddleInactiveInputStyle = styled.TextInput`
   width: 100%;
   height: 45px;
   margin: 3px 0;
-  border-bottom-color: ${({theme}) => theme.inactive};
+  border-bottom-color: #d7dce6;
   border-bottom-width: 2px;
   font-size: 21px;
-  color: ${({theme}) => theme.text};
+  color: #000000;
 `;
 
-const BigFocusInputStyle = styled.TextInput.attrs(({theme}) => ({
-  placeholderTextColor: theme.placeholderText,
-}))`
+const BigFocusInputStyle = styled.TextInput`
   width: 100%;
   height: 52px;
   margin: 3px 0;
-  border-bottom-color: ${({theme}) => theme.main};
+  border-bottom-color: #a055ff;
   border-bottom-width: 2px;
   font-size: 27px;
-  color: ${({theme}) => theme.text};
+  color: #000000;
 `;
 
-const BigErrorInputStyle = styled.TextInput.attrs(({theme}) => ({
-  placeholderTextColor: theme.placeholderText,
-}))`
+const BigErrorInputStyle = styled.TextInput`
   width: 100%;
   height: 52px;
   margin: 3px 0;
-  border-bottom-color: ${({theme}) => theme.error};
+  border-bottom-color: #e64646;
   border-bottom-width: 2px;
   font-size: 27px;
-  color: ${({theme}) => theme.text};
+  color: #000000;
 `;
 
-const BigInactiveInputStyle = styled.TextInput.attrs(({theme}) => ({
-  placeholderTextColor: theme.placeholderText,
-}))`
+const BigInactiveInputStyle = styled.TextInput`
   width: 100%;
   height: 52px;
   margin: 3px 0;
-  border-bottom-color: ${({theme}) => theme.inactive};
+  border-bottom-color: #d7dce6;
   border-bottom-width: 2px;
   font-size: 27px;
-  color: ${({theme}) => theme.text};
+  color: #000000;
 `;
 
 const HelpTextStyle = styled.Text`
   font-size: 11px;
   font-weight: 400;
-  color: ${({theme}) => theme.help};
+  color: #87919b;
   margin: 10px 0;
 `;
 
 const CautionTextStyle = styled.Text`
   font-size: 11px;
   font-weight: 400;
-  color: ${({theme}) => theme.error};
+  color: #e64646;
   margin: 10px 0;
 `;
 interface Props {
   placeholder: string;
   title: string;
-  // theme: object;
 }
 
 export const MiddleFocusInput = ({placeholder, title}: Props) => {
   return (
     <>
-      <MiddleFocusInputStyle placeholder={placeholder} />
+      <MiddleFocusInputStyle
+        placeholder={placeholder}
+        placeholderTextColor="#A0AAB4"
+      />
       <HelpTextStyle>{title}</HelpTextStyle>
     </>
   );
@@ -105,7 +94,10 @@ export const MiddleFocusInput = ({placeholder, title}: Props) => {
 export const MiddleErrorInput = ({placeholder, title}: Props) => {
   return (
     <>
-      <MiddleErrorInputStyle placeholder={placeholder} />
+      <MiddleErrorInputStyle
+        placeholder={placeholder}
+        placeholderTextColor="#A0AAB4"
+      />
       <CautionTextStyle>{title}</CautionTextStyle>
     </>
   );
@@ -114,7 +106,10 @@ export const MiddleErrorInput = ({placeholder, title}: Props) => {
 export const MiddleInactiveInput = ({placeholder, title}: Props) => {
   return (
     <>
-      <MiddleInactiveInputStyle placeholder={placeholder} />
+      <MiddleInactiveInputStyle
+        placeholder={placeholder}
+        placeholderTextColor="#A0AAB4"
+      />
       <HelpTextStyle>{title}</HelpTextStyle>
     </>
   );
@@ -123,7 +118,10 @@ export const MiddleInactiveInput = ({placeholder, title}: Props) => {
 export const BigFocusInput = ({placeholder, title}: Props) => {
   return (
     <>
-      <BigFocusInputStyle placeholder={placeholder} />
+      <BigFocusInputStyle
+        placeholder={placeholder}
+        placeholderTextColor="#A0AAB4"
+      />
       <HelpTextStyle>{title}</HelpTextStyle>
     </>
   );
@@ -132,7 +130,10 @@ export const BigFocusInput = ({placeholder, title}: Props) => {
 export const BigErrorInput = ({placeholder, title}: Props) => {
   return (
     <>
-      <BigErrorInputStyle placeholder={placeholder} />
+      <BigErrorInputStyle
+        placeholder={placeholder}
+        placeholderTextColor="#A0AAB4"
+      />
       <CautionTextStyle>{title}</CautionTextStyle>
     </>
   );
@@ -141,7 +142,10 @@ export const BigErrorInput = ({placeholder, title}: Props) => {
 export const BigInactiveInput = ({placeholder, title}: Props) => {
   return (
     <>
-      <BigInactiveInputStyle placeholder={placeholder} />
+      <BigInactiveInputStyle
+        placeholder={placeholder}
+        placeholderTextColor="#A0AAB4"
+      />
       <HelpTextStyle>{title}</HelpTextStyle>
     </>
   );
