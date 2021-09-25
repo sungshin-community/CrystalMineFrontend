@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Text, StatusBar, View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
-import { ThemeProvider } from 'styled-components/native';
-import { theme } from '../../theme';
 import { NormalOneLineText, Description } from '../../components/Top';
 import { MiddleInactiveInput } from '../../components/Input';
 import { DisabledPurpleRoundButton, PurpleFullButton, DisabledPurpleFullButton, PurpleRoundButton } from '../../components/Button';
@@ -10,15 +8,6 @@ import { DisabledPurpleRoundButton, PurpleFullButton, DisabledPurpleFullButton, 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${({ theme }) => theme.background};
-`;
-
-const TextContainer = styled.View`
-  margin: 130px 24px;
-`;
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -64,10 +53,10 @@ export default function SignIn() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled" style={{ backgroundColor: '#fff' }}>
         <NormalOneLineText style={{ marginLeft: 24, marginTop: 25 }}>로그인</NormalOneLineText>
-        <Container>
+        <View>
           <Text style={{ marginLeft: 24, marginTop: 47 }}>아이디</Text>
           <View style={{ paddingRight: 24, paddingLeft: 24, marginTop: 12 }}>
             <View style={styles.inputContainer}>
@@ -85,9 +74,9 @@ export default function SignIn() {
             </View>
 
           </View>
-        </Container>
+        </View>
 
-        <Container>
+        <View>
           <Text style={{ marginLeft: 24, marginTop: 36 }}>비밀번호</Text>
           <View style={{ paddingRight: 24, paddingLeft: 24, marginTop: 12 }}>
             <View style={styles.inputContainer}>
@@ -104,7 +93,7 @@ export default function SignIn() {
             </View>
 
           </View>
-        </Container>
+        </View>
 
 
       </ScrollView>
@@ -115,6 +104,6 @@ export default function SignIn() {
         }
         <Text style={{ marginBottom: 20, marginTop: 21, fontSize: 13, color: '#87929B' }}>비밀번호를 잊으셨나요?</Text>
       </View>
-    </ThemeProvider>
+    </>
   );
 }
