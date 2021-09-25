@@ -17,6 +17,7 @@ type RootStackParamList = {
     Home: undefined;
     TermAgree: undefined;
     TestPage: undefined;
+    SignIn: undefined;
   };
   
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -30,7 +31,7 @@ const Home = ({ navigation }: Props) => {
         <PurpleRoundButton
           text="로그인"
           onClick={() =>
-            navigation.navigate('TestPage')
+            navigation.navigate('SignIn')
           }
         />
         <WhiteRoundButton
