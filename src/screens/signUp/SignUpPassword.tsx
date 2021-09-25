@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {StatusBar} from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
-import {MiddleActiveInputID} from '../../components/Input';
+import {MiddleActiveInputPassword} from '../../components/Input';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -22,17 +22,15 @@ export default function SignUpID() {
     <>
       <Container>
         <TextContainer>
-          <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
+          <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
           <Description>
-            학교에서 제공하는 성신 G-mail 계정을 사용합니다
+            영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
           </Description>
         </TextContainer>
-        <MiddleActiveInputID
-          placeholder="아이디"
-          maxLength={8}
-          keyboardType="number-pad"
-          suffix="@sungshin.ac.kr"
-          title=''
+        <MiddleActiveInputPassword
+          placeholder="비밀번호"
+          maxLength={25}
+          keyboardType="default"
         />
       </Container>
     </>
