@@ -138,6 +138,8 @@ export const MiddleActiveInputID = ({
             placeholder={placeholder}
             placeholderTextColor="#A0AAB4"
             keyboardType={keyboardType}
+            returnKeyType="done"
+            selectionColor="#A055FF"
           />
           <Text
             style={{
@@ -183,6 +185,8 @@ export const MiddleActiveInputPassword = ({
 }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  // const [isValidate, setIsValidate] = useState<boolean>(false);
+
   const onInputFocus = () => {
     setIsFocused(true);
   };
@@ -191,6 +195,13 @@ export const MiddleActiveInputPassword = ({
     setIsFocused(false);
     Keyboard.dismiss();
   };
+
+  // const validatePassword = () => {
+  //   var validate = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&]){10, 25}$/;
+  //   setIsValidate(validate.test(password));
+  //   console.log(password, isValidate);
+  // };
+
   return (
     <>
       <ScrollView
@@ -210,13 +221,19 @@ export const MiddleActiveInputPassword = ({
               onInputFocusOut();
             }}
             onChangeText={(value: string) => {
-              setPassword(value);
+              setPassword(value.replace(/\s/g, ''));
             }}
+            // onEndEditing={(e: any) => {
+            //   validatePassword();
+            // }}
             maxLength={maxLength}
             placeholder={placeholder}
             placeholderTextColor="#A0AAB4"
             keyboardType={keyboardType}
             secureTextEntry={true}
+            autoCapitalize="none"
+            returnKeyType="done"
+            selectionColor="#A055FF"
           />
         </MiddleInputContainerStyle>
       </ScrollView>
@@ -226,18 +243,18 @@ export const MiddleActiveInputPassword = ({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {password.length >= 10 && password.length <= 25 && isFocused && (
-          <PurpleFullButton text="다음" />
-        )}
+        {/* {isValidate && isFocused && <PurpleFullButton text="다음" />}
+        {isValidate && !isFocused && <PurpleRoundButton text="다음" />}
+        {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
+        {!isValidate && !isFocused && <DisabledPurpleRoundButton text="다음" />} */}
 
-        {password.length >= 10 && password.length <= 25 && !isFocused && (
+        {password.length >= 10 && isFocused && <PurpleFullButton text="다음" />}
+        {password.length >= 10 && !isFocused && (
           <PurpleRoundButton text="다음" />
         )}
-
         {password.length < 10 && isFocused && (
           <DisabledPurpleFullButton text="다음" />
         )}
-
         {password.length < 10 && !isFocused && (
           <DisabledPurpleRoundButton text="다음" />
         )}
@@ -284,6 +301,10 @@ export const MiddleActiveInputNickname = ({
             placeholder={placeholder}
             placeholderTextColor="#A0AAB4"
             keyboardType={keyboardType}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="done"
+            selectionColor="#A055FF"
           />
         </MiddleInputContainerStyle>
       </ScrollView>
