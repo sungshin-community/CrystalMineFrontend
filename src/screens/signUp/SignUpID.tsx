@@ -36,6 +36,7 @@ export default function SignUpID() {
           maxLength={8}
           keyboardType="numeric"
           suffix="@sungshin.ac.kr"
+          title=''
         />
       </Container>
     </>
