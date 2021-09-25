@@ -41,12 +41,16 @@ export const NormalText = Styled.Text`
     color: #000000;
 `;
 interface Props {
-    firstLineText: string;
-    secondLineText: string;
+  firstLineText: string;
+  secondLineText: string;
 }
 
 export function TwoLineTitle({firstLineText, secondLineText}: Props) {
-    return (
-        <BigTwoLineText>{firstLineText}{"\n"}{secondLineText}</BigTwoLineText>
-    )
+  return (
+    <BigTwoLineText>
+      {firstLineText}
+      {'\n'}
+      {secondLineText}
+    </BigTwoLineText>
+  );
 }
