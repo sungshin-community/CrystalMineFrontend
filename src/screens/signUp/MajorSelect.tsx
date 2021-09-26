@@ -1,64 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
-import {StatusBar, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import {ThemeProvider} from 'styled-components/native';
-import {theme} from '../../theme';
+import {StatusBar, View, StyleSheet} from 'react-native';
 import {BigOneLineText} from '../../components/Top';
-import BackButton from '../../components/BackButton';
+
+import {PurpleRoundButton} from '../../components/Button';
+import MajorRadio from '../../components/MajorRadio';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
 
-const styles = StyleSheet.create({
-  text: {
-    marginTop: 130,
-    marginLeft: 24,
-  },
-  buttonNow: {
-    backgroundColor: '#A055FF',
-    borderRadius: 15,
-    // marginTop: '80%',
-    marginHorizontal: '7%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 343,
-    height: 56,
-  },
-  buttonNowText: {
-    color: '#ffffff',
-    fontSize: 17,
-    fontWeight: '400',
-  },
-});
-
 const Container = styled.SafeAreaView`
-  flex: 3;
-  background-color: ${({theme}) => theme.background};
+  flex: 5;
+  background-color: #ffffff;
+`;
+
+const TextContainer = styled.View`
+  margin-top: 130px;
+  margin-left: 24px;
 `;
 
 const MajorContainer = styled.View`
-  flex: 7;
-  background-color: ${({theme}) => theme.majorRadio};
+  flex: 14;
+  background-color: #ffffff;
 `;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+});
 
 export default function MajorSelect() {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container>
-        <BackButton />
-        <BigOneLineText style={styles.text}>
-          소속 학과를 선택해주세요
-        </BigOneLineText>
+
+        <TextContainer>
+          <BigOneLineText>소속 학과를 선택해주세요</BigOneLineText>
+        </TextContainer>
       </Container>
       <MajorContainer>
-        <TouchableOpacity style={styles.buttonNow}>
-          <Text style={styles.buttonNowText}>회원가입</Text>
-        </TouchableOpacity>
+        <MajorRadio />
+        <View style={styles.buttonContainer}>
+          <PurpleRoundButton text="회원가입" />
+        </View>
       </MajorContainer>
-    </ThemeProvider>
+    </>
   );
 }
-
-// import MajorSelect from "./screens/MajorSelect";
-// export default MajorSelect;
