@@ -15,11 +15,12 @@ import Logo from '../../resources/icon/Logo';
 
 type RootStackParamList = {
     Home: undefined;
-    Profile: { userId: string };
-    Feed: { sort: 'latest' | 'top' } | undefined;
+    TermAgree: undefined;
+    TestPage: undefined;
+    SignIn: undefined;
   };
   
-type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+type Props = NativeStackScreenProps<RootStackParamList>;
 const Home = ({ navigation }: Props) => {
     return (
       <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -30,13 +31,13 @@ const Home = ({ navigation }: Props) => {
         <PurpleRoundButton
           text="로그인"
           onClick={() =>
-            navigation.navigate('Profile', { userId: 'Jane' })
+            navigation.navigate('SignIn')
           }
         />
         <WhiteRoundButton
           text="회원가입"
           onClick={() =>
-            navigation.navigate('Profile', { userId: 'Jane' })
+            navigation.navigate('TermAgree')
           }
         />
         </View>

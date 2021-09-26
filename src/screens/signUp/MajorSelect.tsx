@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, StyleSheet} from 'react-native';
 import {BigOneLineText} from '../../components/Top';
+
 import {PurpleRoundButton} from '../../components/Button';
 import MajorRadio from '../../components/MajorRadio';
 
@@ -27,6 +28,7 @@ export default function MajorSelect() {
   return (
     <>
       <Container>
+
         <TextContainer>
           <BigOneLineText>소속 학과를 선택해주세요</BigOneLineText>
         </TextContainer>
