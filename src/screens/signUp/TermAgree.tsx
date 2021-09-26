@@ -26,12 +26,11 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import TestPage2 from '../TestPage2';
+
 
 
 type RootStackParamList = {
-  TermAgree: undefined;
-  TestPage2: undefined;
+  SignUpID: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -265,7 +264,7 @@ function TermAgree({ navigation }: Props) {
       </ScrollView>
       <View style={{ bottom: 21, justifyContent: 'center', alignItems: 'center' }}>
         {firstTermChecked && secondTermChecked ?
-          <PurpleRoundButton text="다음" onClick={() => {navigation.navigate('TestPage2')}} />
+          <PurpleRoundButton text="다음" onClick={() => {navigation.navigate('SignUpID')}} />
           : <DisabledPurpleRoundButton text="다음" />}
 
       </View>

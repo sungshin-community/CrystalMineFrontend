@@ -14,9 +14,7 @@ import { PurpleRoundButton, WhiteRoundButton } from '../components/Button';
 import Logo from '../../resources/icon/Logo';
 
 type RootStackParamList = {
-    Home: undefined;
     TermAgree: undefined;
-    TestPage: undefined;
     SignIn: undefined;
   };
   

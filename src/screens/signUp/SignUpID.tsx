@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {StatusBar} from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {MiddleActiveInputID} from '../../components/Input';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -17,7 +19,12 @@ const TextContainer = styled.View`
   margin: 130px 24px 52px 24px;
 `;
 
-export default function SignUpID() {
+type RootStackParamList = {
+  SignUpPassword: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function SignUpID({ navigation }: Props) {
   return (
     <>
       <Container>
