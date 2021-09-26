@@ -29,10 +29,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{title: ''}} />
+        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
         <Stack.Screen
           name="TermAgree"
           component={TermAgree}
@@ -48,11 +45,7 @@ const App = () => {
           component={TestPage2}
           options={{title: ''}}
         />
-        <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-          options={{title: ''}}
-        />
+        <Stack.Screen name="SignIn" component={SignIn} options={{title: ''}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
