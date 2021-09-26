@@ -21,16 +21,7 @@ const TextContainer = styled.View`
 
 const MajorContainer = styled.View`
   flex: 14;
-  background-color: #ffffff;
 `;
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 25,
-  },
-});
 
 export default function MajorSelect() {
   return (
@@ -42,9 +33,6 @@ export default function MajorSelect() {
       </Container>
       <MajorContainer>
         <MajorRadio />
-        <View style={styles.buttonContainer}>
-          <PurpleRoundButton text="회원가입" />
-        </View>
       </MajorContainer>
     </>
   );
