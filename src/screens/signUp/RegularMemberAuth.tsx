@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import {
   SafeAreaView,
@@ -20,50 +20,53 @@ import CustomButton, {
   DisabledPurpleRoundButton,
   PurpleFullButton,
   DisabledWhiteRoundButton,
-  DisabledPurpleFullButton
+  DisabledPurpleFullButton,
 } from '../../components/Button';
-import { BigTwoLineText, TwoLineTitle, Description, SmallText, NormalText } from '../../components/Top';
+import {
+  BigTwoLineText,
+  TwoLineTitle,
+  Description,
+  SmallText,
+  NormalText,
+} from '../../components/Top';
 
-
-import { Container } from '../../components/Container';
-import { NavigationContainer } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import styled from 'styled-components';
+import {NavigationContainer} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CountDownTimer from '../../components/CountDownTimer';
-import AuthInput from '../../components/AuthInput'
+import AuthInput from '../../components/AuthInput';
+
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: #ffffff;
+`;
 
 const styles = StyleSheet.create({
-    container: {
-        paddingTop: 50,
-        paddingLeft: 10,
-        paddingRight: 10,
-      },
-
+  containe: {
+    paddingTop: 50,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
 });
 
 const RegularMemberAuth = () => {
   return (
-    
-    <View>
-        <View style={{ marginTop: 130}}>
-            <Container>
-            <TwoLineTitle firstLineText="메일로 전송된" secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
-            </Container>
-            <View style={styles.container} >
-                <AuthInput></AuthInput>
-            </View>
-            <CountDownTimer minutes={3} seconds={0}/>
-            
-        </View>
+    <Container>
+      <View style={{marginTop: 130, marginLeft: 24}}>
+        <TwoLineTitle
+          firstLineText="메일로 전송된"
+          secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
+      </View>
+      <View style={styles.containe}>
+        <AuthInput></AuthInput>
+      </View>
+      <CountDownTimer minutes={3} seconds={0} />
 
-      <KeyboardAvoidingView behavior="padding" >   
-        <View style={{ position: 'absolute', flex: 1}}>
-          <DisabledPurpleFullButton text='인증 완료' />   
-        </View> 
-      </KeyboardAvoidingView>
-
-    </View>
-    
+      <View>
+        <DisabledPurpleFullButton text="인증 완료" />
+      </View>
+    </Container>
   );
 };
 export default RegularMemberAuth;
