@@ -8,6 +8,9 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
@@ -28,7 +31,12 @@ const MiddleInputContainerStyle = styled.View`
   align-items: center;
 `;
 
-export default function SignUpNickname() {
+type RootStackParamList = {
+  MajorSelect: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function SignUpNickname({navigation}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const onInputFocus = () => {
@@ -82,10 +90,18 @@ export default function SignUpNickname() {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {nickname.length !== 0 && isFocused && <PurpleFullButton text="다음" />}
+        {nickname.length !== 0 && isFocused && (
+          <PurpleFullButton
+            text="다음"
+            onClick={() => navigation.navigate('MajorSelect')}
+          />
+        )}
 
         {nickname.length !== 0 && !isFocused && (
-          <PurpleRoundButton text="다음" />
+          <PurpleRoundButton
+            text="다음"
+            onClick={() => navigation.navigate('MajorSelect')}
+          />
         )}
 
         {nickname.length === 0 && isFocused && (

@@ -1,10 +1,13 @@
-import React from 'react';
+
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, StyleSheet} from 'react-native';
 import {BigOneLineText} from '../../components/Top';
+import RadioGroup, {RadioButtonProps} from 'react-native-radio-buttons-group';
+import {DisabledPurpleRoundButton, PurpleRoundButton} from '../../components/Button';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import {PurpleRoundButton} from '../../components/Button';
-import MajorRadio from '../../components/MajorRadio';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -24,7 +27,112 @@ const MajorContainer = styled.View`
   flex: 14;
 `;
 
-export default function MajorSelect() {
+const radioButtonsData: RadioButtonProps[] = [
+  {
+    id: '1', // acts as primary key, should be unique and non-empty string
+    label: '해당 없음',
+    value: 'X',
+  },
+  {
+    id: '2',
+    label: '국어국문학과',
+    value: '국어국문학과',
+  },
+  {
+    id: '3',
+    label: '영어영문학과',
+    value: '영어영문학과',
+  },
+  {
+    id: '4',
+    label: '독일어문ㆍ문화학과',
+    value: '독일어문ㆍ문화학과',
+  },
+  {
+    id: '5',
+    label: '프랑스어문ㆍ문학과',
+    value: '프랑스어문ㆍ문학과',
+  },
+  {
+    id: '6',
+    label: '일본어문ㆍ문학과',
+    value: '일본어문ㆍ문학과',
+  },
+  {
+    id: '7',
+    label: '중국어문ㆍ문학과',
+    value: '중국어문ㆍ문학과',
+  },
+  {
+    id: '8',
+    label: '사학과',
+    value: '사학과',
+  },
+  {
+    id: '9',
+    label: '정치외교학과',
+    value: '정치외교학과',
+  },
+  {
+    id: '9',
+    label: '정치외교학과',
+    value: '정치외교학과',
+  },
+  {
+    id: '10',
+    label: '심리학과',
+    value: '심리학과',
+  },
+  {
+    id: '11',
+    label: '지리학과',
+    value: '지리학과',
+  },
+  {
+    id: '12',
+    label: '경제학과',
+    value: '경제학과',
+  },
+  {
+    id: '13',
+    label: '경영학과',
+    value: '경영학과',
+  },
+  {
+    id: '14',
+    label: '경영학부',
+    value: '경영학부',
+  },
+];
+
+type RootStackParamList = {
+  SignUpComplete: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function MajorSelect({ navigation }: Props) {
+  const [radioButtons, setRadioButtons] =
+    useState<RadioButtonProps[]>(radioButtonsData);
+
+  const [selected, isSelected] = useState<boolean>(false);
+
+  const Container = styled.ScrollView`
+    margin: 24px 12px;
+  `;
+
+  const styles = StyleSheet.create({
+    buttonContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 25,
+    },
+  });
+
+  function onPressRadioButton(radioButtonsArray: RadioButtonProps[]) {
+    setRadioButtons(radioButtonsArray);
+    isSelected(true);
+  }
+
   return (
     <>
       <Container>
@@ -34,7 +142,21 @@ export default function MajorSelect() {
         </TextContainer>
       </Container>
       <MajorContainer>
-        <MajorRadio />
+      <>
+      <Container>
+        <RadioGroup radioButtons={radioButtons} onPress={onPressRadioButton} />
+      </Container>
+      <View style={styles.buttonContainer}>
+        {selected ? (
+          <PurpleRoundButton text="회원가입" 
+          onClick={() =>
+            navigation.navigate('SignUpComplete')
+          }/>
+        ) : (
+          <DisabledPurpleRoundButton text="회원가입" />
+        )}
+      </View>
+    </>
       </MajorContainer>
     </>
   );

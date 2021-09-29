@@ -8,6 +8,8 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -29,7 +31,12 @@ const MiddleInputContainerStyle = styled.View`
   align-items: center;
 `;
 
-export default function SignUpPasswordConfirm() {
+type RootStackParamList = {
+  SignUpNickname: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function SignUpPasswordConfirm({ navigation }: Props) {
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
@@ -95,10 +102,16 @@ export default function SignUpPasswordConfirm() {
             alignItems: 'center',
           }}>
           {passwordConfirm.length >= 10 && isFocused && (
-            <PurpleFullButton text="다음" />
+            <PurpleFullButton text="다음"
+            onClick={() =>
+              navigation.navigate('SignUpNickname')
+            } />
           )}
           {passwordConfirm.length >= 10 && !isFocused && (
-            <PurpleRoundButton text="다음" />
+            <PurpleRoundButton text="다음" 
+            onClick={() =>
+              navigation.navigate('SignUpNickname')
+            } />
           )}
           {passwordConfirm.length < 10 && isFocused && (
             <DisabledPurpleFullButton text="다음" />

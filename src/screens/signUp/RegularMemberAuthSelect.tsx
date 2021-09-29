@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 });
 type RootStackParamList = {
   RegularMemberAuth: undefined;
+  Home: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -63,7 +64,7 @@ export default function RegularMemberAuthSelect({ navigation }: Props) {
           <View style={styles.button}>
             <PurpleRoundButton text="바로 인증하기" onClick={() => {navigation.navigate('RegularMemberAuth')}}/>
           </View>
-          <WhiteRoundButton text="나중에 인증하기" onClick={() => {navigation.navigate('RegularMemberAuth')}}/>
+          <WhiteRoundButton text="나중에 인증하기" onClick={() => {navigation.navigate('Home')}}/>
         </View>
       </ButtonContainer>
     </>
