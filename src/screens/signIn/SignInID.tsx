@@ -8,8 +8,11 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
+
 import {NormalOneLineText, Description} from '../../components/Top';
 import {MiddleInactiveInput} from '../../components/Input';
 import {
@@ -26,6 +29,9 @@ StatusBar.setBackgroundColor('white');
 StatusBar.setBarStyle('dark-content');
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 1,
+  },
   inputContainer: {
     fontSize: 21,
     borderBottomWidth: 2,
@@ -59,13 +65,17 @@ export default function SignInID({navigation}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
+  const keyboardAvoidingViewBehaviour =
+    Platform.OS === 'ios' ? 'padding' : null;
 
   return (
-    <>
+    <> 
+    <KeyboardAvoidingView  keyboardVerticalOffset={Platform.OS == "ios" ? 10 : 0}
+    behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1}} >
       <ScrollView
         scrollEnabled={false}
         keyboardShouldPersistTaps="handled"
-        style={{backgroundColor: '#fff'}}>
+        style={{backgroundColor: '#fff', flex: 1}}>
         <NormalOneLineText style={{marginLeft: 24, marginTop: 25}}>
           로그인
         </NormalOneLineText>
@@ -75,8 +85,8 @@ export default function SignInID({navigation}: Props) {
             <View style={styles.inputContainer}>
               <TextInput
                 style={{width: '60%', borderColor: '#ff0000', fontSize: 21}}
-                // onFocus={(e: any) => { onIdFocus(); }}
-                // onBlur={(e: any) => { onIdFocusOut(); }}
+                onFocus={(e: any) => { onIdFocus(); }}
+                onBlur={(e: any) => { onIdFocusOut(); }}
                 onChangeText={(value: string) => {
                   setStudentId(value);
                 }}
@@ -89,24 +99,29 @@ export default function SignInID({navigation}: Props) {
             </View>
           </View>
         </View>
-      </ScrollView>
-      <View
-        style={{
-          bottom: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#FFFFFF',
-        }}>
-        {studentId.length === 8 ? (
-          <PurpleRoundButton
-            text="다음"
-            onClick={() => navigation.navigate('SignInPassword')}
-          />
-        ) : (
-          <DisabledPurpleRoundButton text="다음" />
-        )}
+     
+    
+        </ScrollView>
        
-      </View>
+        <View
+          style={{
+            bottom: isIdFocused ? 100: 21,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#FFFFFF',
+          }}>
+          {studentId.length === 8 ? (
+            <PurpleRoundButton
+              text="다음"
+              onClick={() => navigation.navigate('SignInPassword')}
+            />
+          ) : (
+            <DisabledPurpleRoundButton text="다음" />
+          )}
+        </View>
+        
+      </KeyboardAvoidingView>
+  
     </>
   );
 }
