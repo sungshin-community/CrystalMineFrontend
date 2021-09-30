@@ -41,7 +41,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignUpPassword({navigation}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [isValidate, setIsValidate] = useState<boolean>(false);
+  // const [isValidate, setIsValidate] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const onInputFocus = () => {
@@ -53,12 +53,12 @@ export default function SignUpPassword({navigation}: Props) {
     Keyboard.dismiss();
   };
 
-  const validatePassword = () => {
-    var validate =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10, 25}$/;
-    validate.test(password) ? setIsValidate(true) : setIsValidate(false);
-    console.log(password, isValidate, validate.test(password));
-  };
+  // const validatePassword = () => {
+  //   var validate =
+  //     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10, 25}$/;
+  //   validate.test(password) ? setIsValidate(true) : setIsValidate(false);
+  //   console.log(password, isValidate, validate.test(password));
+  // };
 
   const letShowPassword = () => {
     setShowPassword(!showPassword);
@@ -81,28 +81,52 @@ export default function SignUpPassword({navigation}: Props) {
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
-            <TextInput
-              style={{width: '90%'}}
-              onFocus={(e: any) => {
-                onInputFocus();
-              }}
-              onBlur={(e: any) => {
-                onInputFocusOut();
-              }}
-              onChangeText={(value: string) => {
-                setPassword(value.replace(/\s/g, ''));
-                validatePassword();
-              }}
-              maxLength={25}
-              placeholder="비밀번호"
-              placeholderTextColor="#A0AAB4"
-              keyboardType="default"
-              secureTextEntry={true}
-              autoCapitalize="none"
-              returnKeyType="done"
-              selectionColor="#A055FF"
-            />
-            <PasswordShow onClick={letShowPassword} />
+            {showPassword ? (
+              <TextInput
+                style={{width: '90%'}}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  setPassword(value.replace(/\s/g, ''));
+                  // validatePassword();
+                }}
+                maxLength={25}
+                placeholder="비밀번호"
+                placeholderTextColor="#A0AAB4"
+                keyboardType="default"
+                secureTextEntry={false}
+                autoCapitalize="none"
+                returnKeyType="done"
+                selectionColor="#A055FF"
+              />
+            ) : (
+              <TextInput
+                style={{width: '90%'}}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  setPassword(value.replace(/\s/g, ''));
+                  // validatePassword();
+                }}
+                maxLength={25}
+                placeholder="비밀번호"
+                placeholderTextColor="#A0AAB4"
+                keyboardType="default"
+                secureTextEntry={true}
+                autoCapitalize="none"
+                returnKeyType="done"
+                selectionColor="#A055FF"
+              />
+            )}
+            <PasswordShow onPress={letShowPassword} />
           </MiddleInputContainerStyle>
           {/* {!isValidate && (
             <CautionText
@@ -115,7 +139,7 @@ export default function SignUpPassword({navigation}: Props) {
             />
           )} */}
           {password.length < 10 && password.length > 0 && (
-            <CautionText text="비밀번호 조건을 확인해주세요" />
+            <CautionText text="비밀번호 조건 확인 아직 못함" />
           )}
         </ScrollView>
         <View
@@ -124,7 +148,7 @@ export default function SignUpPassword({navigation}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {isValidate && isFocused && (
+          {/* {isValidate && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={() => navigation.navigate('SignUpPasswordConfirm')}
@@ -139,9 +163,9 @@ export default function SignUpPassword({navigation}: Props) {
           {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
           {!isValidate && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
-          )}
+          )} */}
 
-          {/* {password.length >= 10 && isFocused && (
+          {password.length >= 10 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={() => navigation.navigate('SignUpPasswordConfirm')}
@@ -158,7 +182,7 @@ export default function SignUpPassword({navigation}: Props) {
           )}
           {password.length < 10 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
-          )} */}
+          )}
         </View>
       </Container>
     </>
