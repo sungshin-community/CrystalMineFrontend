@@ -8,7 +8,9 @@ import {
   StyleSheet,
   StatusBar,
   Keyboard,
+  KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
@@ -73,8 +75,8 @@ export default function SignUpID({navigation}: Props) {
   };
 
   return (
+<>
 
-    <>
     <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
 
     <Container>
@@ -143,5 +145,7 @@ export default function SignUpID({navigation}: Props) {
         )}
       </View>
     </Container>
+ 
+    </>
   );
 }
