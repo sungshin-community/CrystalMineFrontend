@@ -41,18 +41,21 @@ const App = () => {
       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
         {/* [F-1] */}
         <Stack.Screen name="Home" component={Home} options={{title: ''}} />
-<<<<<<< HEAD
         <Stack.Screen
           name="TermAgree"
           component={TermAgree}
           options={{title: ''}}
         />
-        <Stack.Screen name="SignIn" component={SignIn} options={{title: ''}} />
-=======
-        <Stack.Screen name="TermAgree" component={TermAgree} options={{title: ''}}/>
-        <Stack.Screen name="SignInID" component={SignInID} options={{title: ''}} />
-        <Stack.Screen name="SignInPassword" component={SignInPassword} options={{title: ''}} />
->>>>>>> e5b7472ef1279d14b2af72860618318978db74f0
+        <Stack.Screen
+          name="SignInID"
+          component={SignInID}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignInPassword"
+          component={SignInPassword}
+          options={{title: ''}}
+        />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen
           name="SignUpID"
