@@ -41,19 +41,62 @@ const App = () => {
       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
         {/* [F-1] */}
         <Stack.Screen name="Home" component={Home} options={{title: ''}} />
-        <Stack.Screen name="TermAgree" component={TermAgree} options={{title: ''}}/>
-        <Stack.Screen name="SignInID" component={SignInID} options={{title: ''}} />
-        <Stack.Screen name="SignInPassword" component={SignInPassword} options={{title: ''}} />
+        <Stack.Screen
+          name="TermAgree"
+          component={TermAgree}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignInID"
+          component={SignInID}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignInPassword"
+          component={SignInPassword}
+          options={{title: ''}}
+        />
         {/* [F-2-1] 회원가입 */}
-        <Stack.Screen name="SignUpID" component={SignUpID} options={{title: ''}}/>
-        <Stack.Screen name="SignUpPassword" component={SignUpPassword} options={{title: ''}}/>
-        <Stack.Screen name="SignUpPasswordConfirm" component={SignUpPasswordConfirm} options={{title: ''}}/>
-        <Stack.Screen name="SignUpNickname" component={SignUpNickname} options={{title: ''}}/>
-        <Stack.Screen name="MajorSelect" component={MajorSelect} options={{title: ''}}/>
-        <Stack.Screen name="SignUpComplete" component={SignUpComplete} options={{title: ''}}/>
-        <Stack.Screen name="RegularMemberAuthSelect" component={RegularMemberAuthSelect} options={{title: ''}}/>
-        <Stack.Screen name="RegularMemberAuth" component={RegularMemberAuth} options={{title: ''}}/>
-
+        <Stack.Screen
+          name="SignUpID"
+          component={SignUpID}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignUpPassword"
+          component={SignUpPassword}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignUpPasswordConfirm"
+          component={SignUpPasswordConfirm}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignUpNickname"
+          component={SignUpNickname}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="MajorSelect"
+          component={MajorSelect}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="SignUpComplete"
+          component={SignUpComplete}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="RegularMemberAuthSelect"
+          component={RegularMemberAuthSelect}
+          options={{title: ''}}
+        />
+        <Stack.Screen
+          name="RegularMemberAuth"
+          component={RegularMemberAuth}
+          options={{title: ''}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
