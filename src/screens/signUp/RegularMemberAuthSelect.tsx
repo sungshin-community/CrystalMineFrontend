@@ -4,6 +4,9 @@ import {View, StatusBar, StyleSheet} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
@@ -35,8 +38,13 @@ const styles = StyleSheet.create({
     margin: 16,
   },
 });
+type RootStackParamList = {
+  RegularMemberAuth: undefined;
+  Home: undefined;
+};
 
-export default function RegularMemberAuthSelect() {
+type Props = NativeStackScreenProps<RootStackParamList>;
+export default function RegularMemberAuthSelect({ navigation }: Props) {
   return (
     <>
       <Container>
@@ -54,9 +62,9 @@ export default function RegularMemberAuthSelect() {
       <ButtonContainer>
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <PurpleRoundButton text="바로 인증하기" />
+            <PurpleRoundButton text="바로 인증하기" onClick={() => {navigation.navigate('RegularMemberAuth')}}/>
           </View>
-          <WhiteRoundButton text="나중에 인증하기" />
+          <WhiteRoundButton text="나중에 인증하기" onClick={() => {navigation.navigate('Home')}}/>
         </View>
       </ButtonContainer>
     </>

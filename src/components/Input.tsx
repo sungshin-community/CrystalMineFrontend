@@ -90,12 +90,17 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 interface Props {
-  placeholder: string;
-  title: string;
-  maxLength: number;
-  keyboardType: any;
-  suffix: string;
+  // placeholder: string;
+  // title: string;
+  // maxLength: number;
+  // keyboardType: any;
+  // suffix: string;
+  text: string;
 }
+
+export const CautionText = ({text}: Props) => {
+  return <CautionTextStyle>{text}</CautionTextStyle>;
+};
 
 export const MiddleActiveInputID = ({
   placeholder,
@@ -215,12 +220,17 @@ export const MiddleActiveInputPassword = ({
           <TextInput
             style={{width: '60%'}}
             onFocus={(e: any) => {
+              // onFocus
               onInputFocus();
             }}
             onBlur={(e: any) => {
               onInputFocusOut();
             }}
             onChangeText={(value: string) => {
+              // if (value.includes(" ")) {
+              //   value = value.replace(/\s/g, '')
+              // }
+              // setPassword(value.trim());
               setPassword(value.replace(/\s/g, ''));
             }}
             // onEndEditing={(e: any) => {
@@ -237,18 +247,18 @@ export const MiddleActiveInputPassword = ({
           />
         </MiddleInputContainerStyle>
       </ScrollView>
-      <View
+      {/* <View
         style={{
           bottom: isFocused ? 0 : 21,
           justifyContent: 'center',
           alignItems: 'center',
-        }}>
-        {/* {isValidate && isFocused && <PurpleFullButton text="다음" />}
+        }}> */}
+      {/* {isValidate && isFocused && <PurpleFullButton text="다음" />}
         {isValidate && !isFocused && <PurpleRoundButton text="다음" />}
         {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
         {!isValidate && !isFocused && <DisabledPurpleRoundButton text="다음" />} */}
 
-        {password.length >= 10 && isFocused && <PurpleFullButton text="다음" />}
+      {/* {password.length >= 10 && isFocused && <PurpleFullButton text="다음" />}
         {password.length >= 10 && !isFocused && (
           <PurpleRoundButton text="다음" />
         )}
@@ -258,7 +268,7 @@ export const MiddleActiveInputPassword = ({
         {password.length < 10 && !isFocused && (
           <DisabledPurpleRoundButton text="다음" />
         )}
-      </View>
+      </View> */}
     </>
   );
 };
