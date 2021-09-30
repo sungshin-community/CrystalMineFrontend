@@ -1,13 +1,14 @@
-
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, StyleSheet} from 'react-native';
 import {BigOneLineText} from '../../components/Top';
 import RadioGroup, {RadioButtonProps} from 'react-native-radio-buttons-group';
-import {DisabledPurpleRoundButton, PurpleRoundButton} from '../../components/Button';
+import {
+  DisabledPurpleRoundButton,
+  PurpleRoundButton,
+} from '../../components/Button';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -26,6 +27,18 @@ const TextContainer = styled.View`
 const MajorContainer = styled.View`
   flex: 14;
 `;
+
+const RadioContainer = styled.ScrollView`
+  margin: 24px 12px;
+`;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+});
 
 const radioButtonsData: RadioButtonProps[] = [
   {
@@ -110,23 +123,11 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function MajorSelect({ navigation }: Props) {
+export default function MajorSelect({navigation}: Props) {
   const [radioButtons, setRadioButtons] =
     useState<RadioButtonProps[]>(radioButtonsData);
 
   const [selected, isSelected] = useState<boolean>(false);
-
-  const Container = styled.ScrollView`
-    margin: 24px 12px;
-  `;
-
-  const styles = StyleSheet.create({
-    buttonContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 25,
-    },
-  });
 
   function onPressRadioButton(radioButtonsArray: RadioButtonProps[]) {
     setRadioButtons(radioButtonsArray);
@@ -136,27 +137,29 @@ export default function MajorSelect({ navigation }: Props) {
   return (
     <>
       <Container>
-
         <TextContainer>
           <BigOneLineText>소속 학과를 선택해주세요</BigOneLineText>
         </TextContainer>
       </Container>
       <MajorContainer>
-      <>
-      <Container>
-        <RadioGroup radioButtons={radioButtons} onPress={onPressRadioButton} />
-      </Container>
-      <View style={styles.buttonContainer}>
-        {selected ? (
-          <PurpleRoundButton text="회원가입" 
-          onClick={() =>
-            navigation.navigate('SignUpComplete')
-          }/>
-        ) : (
-          <DisabledPurpleRoundButton text="회원가입" />
-        )}
-      </View>
-    </>
+        <>
+          <RadioContainer>
+            <RadioGroup
+              radioButtons={radioButtons}
+              onPress={onPressRadioButton}
+            />
+          </RadioContainer>
+          <View style={styles.buttonContainer}>
+            {selected ? (
+              <PurpleRoundButton
+                text="회원가입"
+                onClick={() => navigation.navigate('SignUpComplete')}
+              />
+            ) : (
+              <DisabledPurpleRoundButton text="회원가입" />
+            )}
+          </View>
+        </>
       </MajorContainer>
     </>
   );
