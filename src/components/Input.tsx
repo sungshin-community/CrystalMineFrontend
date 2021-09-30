@@ -90,13 +90,17 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 interface Props {
-  placeholder: string;
-  title: string;
-  maxLength: number;
-  keyboardType: any;
-  suffix: string;
-  // onFocus: (e: any) => void;
+  // placeholder: string;
+  // title: string;
+  // maxLength: number;
+  // keyboardType: any;
+  // suffix: string;
+  text: string;
 }
+
+export const CautionText = ({text}: Props) => {
+  return <CautionTextStyle>{text}</CautionTextStyle>;
+};
 
 export const MiddleActiveInputID = ({
   placeholder,
@@ -183,7 +187,6 @@ export const MiddleActiveInputPassword = ({
   placeholder,
   maxLength,
   keyboardType,
-  onFocus,
 }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);

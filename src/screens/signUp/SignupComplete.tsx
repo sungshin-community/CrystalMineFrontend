@@ -5,7 +5,7 @@ import {TwoLineTitle} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -37,7 +37,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpComplete({ navigation }: Props) {
+export default function SignUpComplete({navigation}: Props) {
   return (
     <>
       <Container>
@@ -53,10 +53,10 @@ export default function SignUpComplete({ navigation }: Props) {
       <ButtonContainer>
         <View style={styles.buttonContainer}>
           <Animatable.Text animation="fadeIn" delay={1300}>
-            <PurpleRoundButton text="다음" 
-             onClick={() =>
-              navigation.navigate('RegularMemberAuthSelect')
-            } />
+            <PurpleRoundButton
+              text="다음"
+              onClick={() => navigation.navigate('RegularMemberAuthSelect')}
+            />
           </Animatable.Text>
         </View>
       </ButtonContainer>
