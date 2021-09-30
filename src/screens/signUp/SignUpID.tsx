@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+
 import {
   View,
   TextInput,
@@ -9,6 +10,7 @@ import {
   Keyboard,
   ScrollView,
 } from 'react-native';
+
 import {NormalOneLineText, Description} from '../../components/Top';
 import {MiddleActiveInputID} from '../../components/Input';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -71,11 +73,16 @@ export default function SignUpID({navigation}: Props) {
   };
 
   return (
+
+    <>
+    <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
+
     <Container>
       <ScrollView
         scrollEnabled={false}
         keyboardShouldPersistTaps="handled"
         style={{backgroundColor: '#fff'}}>
+
         <TextContainer>
           <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
           <Description>

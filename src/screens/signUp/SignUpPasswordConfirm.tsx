@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+
 import {StatusBar, View, Keyboard, TextInput, ScrollView} from 'react-native';
+
 import {TwoLineTitle} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -64,6 +66,7 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
 
   return (
     <>
+    <View style={{width: 214.28, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
         <TextContainer>
           <TwoLineTitle

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
+
 import {StatusBar, View, Keyboard, TextInput, ScrollView} from 'react-native';
+
 import {Description, NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -48,6 +50,8 @@ export default function SignUpNickname({navigation}: Props) {
     Keyboard.dismiss();
   };
   return (
+    <>
+    <View style={{width: 267.85, height: 4, backgroundColor: '#A055FF'}} />
     <Container>
       <TextContainer>
         <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
@@ -113,5 +117,6 @@ export default function SignUpNickname({navigation}: Props) {
         )}
       </View>
     </Container>
+    </>
   );
 }
