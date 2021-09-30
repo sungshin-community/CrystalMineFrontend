@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {StatusBar} from 'react-native';
+import {StatusBar, View } from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {MiddleActiveInputID} from '../../components/Input';
 
@@ -20,6 +20,7 @@ const TextContainer = styled.View`
 export default function SignUpID() {
   return (
     <>
+    <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
         <TextContainer>
           <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>

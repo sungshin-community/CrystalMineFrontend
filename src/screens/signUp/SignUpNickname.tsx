@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {StatusBar} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import {Description, NormalOneLineText} from '../../components/Top';
 import {MiddleActiveInputNickname} from '../../components/Input';
 
@@ -19,6 +19,8 @@ const TextContainer = styled.View`
 
 export default function SignUpNickname() {
   return (
+    <>
+    <View style={{width: 267.85, height: 4, backgroundColor: '#A055FF'}} />
     <Container>
       <TextContainer>
         <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
@@ -28,5 +30,6 @@ export default function SignUpNickname() {
       </TextContainer>
       <MiddleActiveInputNickname placeholder="닉네임" keyboardType="default" />
     </Container>
+    </>
   );
 }
