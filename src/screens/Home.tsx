@@ -15,7 +15,7 @@ import Logo from '../../resources/icon/Logo';
 
 type RootStackParamList = {
   TermAgree: undefined;
-  SignIn: undefined;
+  SignInID: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -28,7 +28,7 @@ const Home = ({navigation}: Props) => {
       <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
         <PurpleRoundButton
           text="로그인"
-          onClick={() => navigation.navigate('SignIn')}
+          onClick={() => navigation.navigate('SignInID')}
         />
         <View style={{marginTop: 16}}>
           <WhiteRoundButton

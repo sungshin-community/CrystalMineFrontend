@@ -7,7 +7,8 @@ import {StatusBar} from 'react-native';
 //screens
 import Home from './src/screens/Home';
 import TermAgree from './src/screens/signUp/TermAgree';
-import SignIn from './src/screens/signIn/SignIn';
+import SignInID from './src/screens/signIn/SignInID';
+import SignInPassword from './src/screens/signIn/SignInPassword';
 
 import SignUpID from './src/screens/signUp/SignUpID';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
@@ -41,7 +42,8 @@ const App = () => {
         {/* [F-1] */}
         <Stack.Screen name="Home" component={Home} options={{title: ''}} />
         <Stack.Screen name="TermAgree" component={TermAgree} options={{title: ''}}/>
-        <Stack.Screen name="SignIn" component={SignIn} options={{title: ''}} />
+        <Stack.Screen name="SignInID" component={SignInID} options={{title: ''}} />
+        <Stack.Screen name="SignInPassword" component={SignInPassword} options={{title: ''}} />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen name="SignUpID" component={SignUpID} options={{title: ''}}/>
         <Stack.Screen name="SignUpPassword" component={SignUpPassword} options={{title: ''}}/>
