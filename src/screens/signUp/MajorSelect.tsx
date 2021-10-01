@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const radioButtonsData: RadioButtonProps[] = [
+const majorOptionData: RadioButtonProps[] = [
   {
     id: '1', // acts as primary key, should be unique and non-empty string
     label: '해당 없음',
@@ -125,7 +125,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function MajorSelect({navigation}: Props) {
   const [radioButtons, setRadioButtons] =
-    useState<RadioButtonProps[]>(radioButtonsData);
+    useState<RadioButtonProps[]>(majorOptionData);
 
   const [selected, isSelected] = useState<boolean>(false);
 
