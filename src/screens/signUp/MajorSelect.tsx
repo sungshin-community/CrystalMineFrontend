@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {StatusBar, View, StyleSheet} from 'react-native';
+import {
+  StatusBar,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {BigOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -363,9 +369,8 @@ export default function MajorSelect({navigation}: Props) {
   const [selected, isSelected] = useState<boolean>(false);
 
   const selectMajor = (major: string) => {
-    isSelected(true);
+    isSelected(!selected);
     setYourMajor(major);
-    console.log(yourMajor);
   };
 
   return (
@@ -388,11 +393,13 @@ export default function MajorSelect({navigation}: Props) {
             ? majorOptionData
                 .filter(major => major.name === yourMajor)
                 .map(major => (
-                  <Major
-                    major={major}
-                    selectMajor={selectMajor}
-                    style={{color: '#a055ff'}}
-                  />
+                  <>
+                    <Major
+                      major={major}
+                      selectMajor={selectMajor}
+                      style={{color: '#a055ff'}}
+                    />
+                  </>
                 ))
             : majorOptionData.map(major => (
                 <Major
