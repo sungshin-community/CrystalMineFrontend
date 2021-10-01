@@ -49,8 +49,6 @@ const styles = StyleSheet.create({
   },
   suffix: {
     fontSize: 15,
-    paddingLeft: 10,
-    fontWeight: 'bold',
     color: '#87919B',
     textAlign: 'right',
     // justifyContent: 'flex-end'
@@ -78,7 +76,7 @@ export default function SignUpID({navigation}: Props) {
 <>
 
     <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
-
+  
     <Container>
       <ScrollView
         scrollEnabled={false}
@@ -118,7 +116,7 @@ export default function SignUpID({navigation}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: isFocused ? 0 : 21,
+          bottom: Platform.OS == 'ios' ? (isFocused ? 0 : 21): (isFocused ? 0 : 21)  ,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -145,6 +143,7 @@ export default function SignUpID({navigation}: Props) {
         )}
       </View>
     </Container>
+
  
     </>
   );

@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   suffix: {
     fontSize: 15,
     paddingLeft: 10,
-    fontWeight: 'bold',
     color: '#87919B',
     textAlign: 'right',
     // justifyContent: 'flex-end'
@@ -105,7 +104,7 @@ export default function SignInID({navigation}: Props) {
        
         <View
           style={{
-            bottom: isIdFocused ? 100: 21,
+            bottom: isIdFocused? 100 : 21,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
