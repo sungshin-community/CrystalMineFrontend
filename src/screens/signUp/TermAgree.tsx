@@ -280,6 +280,19 @@ function TermAgree({navigation}: Props) {
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
+      </ScrollView>
+      <View
+        style={{bottom: 21, justifyContent: 'center', alignItems: 'center'}}>
+        {firstTermChecked && secondTermChecked ? (
+          <PurpleRoundButton
+            text="다음"
+            onClick={() => {
+              navigation.navigate('SignUpID');
+            }}
+          />
+        ) : (
+          <DisabledPurpleRoundButton text="다음" />
+        )}
       </View>
     </>
   );

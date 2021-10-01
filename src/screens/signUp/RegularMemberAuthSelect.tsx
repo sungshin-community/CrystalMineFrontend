@@ -5,24 +5,19 @@ import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
-  flex: 7;
+  flex: 1;
   background-color: #ffffff;
 `;
 
 const TextContainer = styled.View`
   margin: 130px 24px;
-`;
-
-const ButtonContainer = styled.View`
-  background-color: #ffffff;
-  flex: 2;
 `;
 
 const styles = StyleSheet.create({
@@ -31,8 +26,10 @@ const styles = StyleSheet.create({
     lineHeight: 16.28,
   },
   buttonContainer: {
+    bottom: 21,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   button: {
     margin: 16,
@@ -44,7 +41,7 @@ type RootStackParamList = {
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function RegularMemberAuthSelect({ navigation }: Props) {
+export default function RegularMemberAuthSelect({navigation}: Props) {
   return (
     <>
       <Container>
@@ -59,14 +56,22 @@ export default function RegularMemberAuthSelect({ navigation }: Props) {
           </Description>
         </TextContainer>
       </Container>
-      <ButtonContainer>
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <PurpleRoundButton text="바로 인증하기" onClick={() => {navigation.navigate('RegularMemberAuth')}}/>
-          </View>
-          <WhiteRoundButton text="나중에 인증하기" onClick={() => {navigation.navigate('Home')}}/>
+      <View style={styles.buttonContainer}>
+        <View style={styles.button}>
+          <PurpleRoundButton
+            text="바로 인증하기"
+            onClick={() => {
+              navigation.navigate('RegularMemberAuth');
+            }}
+          />
         </View>
-      </ButtonContainer>
+        <WhiteRoundButton
+          text="나중에 인증하기"
+          onClick={() => {
+            navigation.navigate('Home');
+          }}
+        />
+      </View>
     </>
   );
 }

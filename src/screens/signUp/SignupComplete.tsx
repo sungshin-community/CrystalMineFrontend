@@ -12,7 +12,7 @@ StatusBar.setBackgroundColor('white');
 StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
-  flex: 89;
+  flex: 1;
   background-color: #ffffff;
 `;
 
@@ -20,15 +20,12 @@ const TextContainer = styled.View`
   margin: 130px 24px;
 `;
 
-const ButtonContainer = styled.View`
-  background-color: #ffffff;
-  flex: 11;
-`;
-
 const styles = StyleSheet.create({
   buttonContainer: {
+    bottom: 21,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
 });
 
@@ -50,16 +47,14 @@ export default function SignUpComplete({navigation}: Props) {
           </Animatable.Text>
         </TextContainer>
       </Container>
-      <ButtonContainer>
-        <View style={styles.buttonContainer}>
-          <Animatable.Text animation="fadeIn" delay={1300}>
-            <PurpleRoundButton
-              text="다음"
-              onClick={() => navigation.navigate('RegularMemberAuthSelect')}
-            />
-          </Animatable.Text>
-        </View>
-      </ButtonContainer>
+      <View style={styles.buttonContainer}>
+        <Animatable.Text animation="fadeIn" delay={1300}>
+          <PurpleRoundButton
+            text="다음"
+            onClick={() => navigation.navigate('RegularMemberAuthSelect')}
+          />
+        </Animatable.Text>
+      </View>
     </>
   );
 }
