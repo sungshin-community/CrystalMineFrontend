@@ -88,7 +88,6 @@ function CustomButton({style, text, textStyle, onClick = () => {}}: Props) {
   );
 }
 
-
 export const PurpleRoundButton = ({text, onClick = () => {}}: ButtonProps) => {
   return (
     <CustomButton
