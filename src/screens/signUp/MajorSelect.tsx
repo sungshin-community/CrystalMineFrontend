@@ -369,7 +369,7 @@ export default function MajorSelect({navigation}: Props) {
   const [selected, isSelected] = useState<boolean>(false);
 
   const selectMajor = (major: string) => {
-    isSelected(!selected);
+    isSelected(true);
     setYourMajor(major);
   };
 
@@ -391,16 +391,22 @@ export default function MajorSelect({navigation}: Props) {
         <RadioContainer>
           {selected
             ? majorOptionData
-                .filter(major => major.name === yourMajor)
-                .map(major => (
-                  <>
+                //.forEach(major => major.name === yourMajor)
+                .map(major =>
+                  major.name === yourMajor ? (
                     <Major
                       major={major}
                       selectMajor={selectMajor}
                       style={{color: '#a055ff'}}
                     />
-                  </>
-                ))
+                  ) : (
+                    <Major
+                      major={major}
+                      selectMajor={selectMajor}
+                      style={{color: '#000000'}}
+                    />
+                  ),
+                )
             : majorOptionData.map(major => (
                 <Major
                   major={major}
