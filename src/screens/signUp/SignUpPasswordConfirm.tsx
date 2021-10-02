@@ -25,11 +25,10 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 130px 24px 52px 24px;
+  margin: 130px 0px 52px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
-  font-size: 21px;
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
@@ -66,25 +65,25 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
 
   return (
     <>
-    <View style={{width: 214.28, height: 4, backgroundColor: '#A055FF'}} />
+      <View style={{width: 214.28, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
-        <TextContainer>
-          <TwoLineTitle
-            firstLineText="비밀번호를"
-            secondLineText="한번 더 입력해주세요"
-          />
-        </TextContainer>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+          <TextContainer>
+            <TwoLineTitle
+              firstLineText="비밀번호를"
+              secondLineText="한번 더 입력해주세요"
+            />
+          </TextContainer>
           <MiddleInputContainerStyle
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             {showPassword ? (
               <TextInput
-                style={{width: '90%'}}
+                style={{width: '90%', fontSize: 21}}
                 onFocus={(e: any) => {
                   onInputFocus();
                 }}
@@ -105,7 +104,7 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
               />
             ) : (
               <TextInput
-                style={{width: '90%'}}
+                style={{width: '90%', fontSize: 21}}
                 onFocus={(e: any) => {
                   onInputFocus();
                 }}

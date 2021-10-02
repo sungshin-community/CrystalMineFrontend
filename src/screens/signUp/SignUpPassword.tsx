@@ -24,11 +24,10 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 130px 24px 52px 24px;
+  margin: 130px 0px 52px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
-  font-size: 21px;
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
@@ -36,7 +35,6 @@ const MiddleInputContainerStyle = styled.View`
 
 type RootStackParamList = {
   SignUpPasswordConfirm: undefined;
-  // password: string;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -68,25 +66,25 @@ export default function SignUpPassword({navigation}: Props) {
 
   return (
     <>
-    <View style={{width: 160.71, height: 4, backgroundColor: '#A055FF'}} />
+      <View style={{width: 160.71, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
-        <TextContainer>
-          <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
-          <Description>
-            영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
-          </Description>
-        </TextContainer>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+          <TextContainer>
+            <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
+            <Description>
+              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
+            </Description>
+          </TextContainer>
           <MiddleInputContainerStyle
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             {showPassword ? (
               <TextInput
-                style={{width: '90%'}}
+                style={{width: '90%', fontSize: 21}}
                 onFocus={(e: any) => {
                   onInputFocus();
                 }}
@@ -108,7 +106,7 @@ export default function SignUpPassword({navigation}: Props) {
               />
             ) : (
               <TextInput
-                style={{width: '90%'}}
+                style={{width: '90%', fontSize: 21}}
                 onFocus={(e: any) => {
                   onInputFocus();
                 }}
