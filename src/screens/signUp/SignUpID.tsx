@@ -39,7 +39,6 @@ const TextContainer = styled.View`
 
 const styles = StyleSheet.create({
   inputContainer: {
-    fontSize: 21,
     borderBottomWidth: 2,
     borderColor: '#D7DCE6',
     flexDirection: 'row',
@@ -86,12 +85,20 @@ export default function SignUpID({navigation}: Props) {
               학교에서 제공하는 성신 G-mail 계정을 사용합니다
             </Description>
           </TextContainer>
-          <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
-            <View style={styles.inputContainer}>
+          <View
+            style={{
+              paddingRight: 24,
+              paddingLeft: 24,
+              marginTop: 12,
+            }}>
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: isFocused ? '#A055FF' : '#D7DCE6'},
+              ]}>
               <TextInput
                 style={{
                   width: '60%',
-                  borderColor: isFocused ? '#A055FF' : '#D7DCE6',
                   fontSize: 21,
                 }}
                 onFocus={(e: any) => {
@@ -106,6 +113,7 @@ export default function SignUpID({navigation}: Props) {
                 maxLength={8}
                 placeholder="아이디"
                 keyboardType="number-pad"
+                selectionColor="#A055FF"
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>

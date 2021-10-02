@@ -1,12 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {
-  StatusBar,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {StatusBar, View, StyleSheet} from 'react-native';
 import {BigOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -86,11 +80,6 @@ const majorOptionData = [
     id: '8',
     name: '사학과',
     value: '사학과',
-  },
-  {
-    id: '9',
-    name: '정치외교학과',
-    value: '정치외교학과',
   },
   {
     id: '9',

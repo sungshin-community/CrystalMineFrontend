@@ -23,11 +23,10 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 130px 24px 52px 24px;
+  margin: 130px 0px 52px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
-  font-size: 21px;
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
@@ -53,22 +52,22 @@ export default function SignUpNickname({navigation}: Props) {
     <>
       <View style={{width: 267.85, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
-        <TextContainer>
-          <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
-          <Description>
-            영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
-          </Description>
-        </TextContainer>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+          <TextContainer>
+            <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
+            <Description>
+              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
+            </Description>
+          </TextContainer>
           <MiddleInputContainerStyle
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             <TextInput
-              style={{width: '60%'}}
+              style={{width: '60%', fontSize: 21}}
               onFocus={(e: any) => {
                 onInputFocus();
               }}
