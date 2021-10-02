@@ -14,8 +14,6 @@
 		6172F2D35A4C3AA820D92908 /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-CrystalMineFrontend.a */; };
 		7EF68E3733C33B6898317E18 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		CDAF3FE126FCE84400C5F6D6 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = CDAF3FE026FCE84400C5F6D6 /* ios */; };
-		CDAF3FE326FCE85100C5F6D6 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = CDAF3FE226FCE85000C5F6D6 /* ios */; };
 		CDAF3FE526FCE86100C5F6D6 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDAF3FE426FCE86000C5F6D6 /* SplashScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -45,8 +43,6 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CrystalMineFrontend/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABFE59519B596E51CEFDCCC0 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrystalMineFrontend-CrystalMineFrontendTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A881CF5CF3F2B244570E2A /* Pods-CrystalMineFrontend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend.debug.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend.debug.xcconfig"; sourceTree = "<group>"; };
-		CDAF3FE026FCE84400C5F6D6 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; sourceTree = "<group>"; };
-		CDAF3FE226FCE85000C5F6D6 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; sourceTree = "<group>"; };
 		CDAF3FE426FCE86000C5F6D6 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-CrystalMineFrontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend.release.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -123,8 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				CDAF3FE426FCE86000C5F6D6 /* SplashScreen.storyboard */,
-				CDAF3FE026FCE84400C5F6D6 /* ios */,
-				CDAF3FE226FCE85000C5F6D6 /* ios */,
 				13B07FAE1A68108700A75B9A /* CrystalMineFrontend */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CrystalMineFrontendTests */,
@@ -209,7 +203,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -251,9 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDAF3FE126FCE84400C5F6D6 /* ios in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				CDAF3FE326FCE85100C5F6D6 /* ios in Resources */,
 				CDAF3FE526FCE86100C5F6D6 /* SplashScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -442,13 +434,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C97AB639B58BBB4B15BBE30 /* Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = CrystalMineFrontendTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -469,10 +462,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D0AE47A65C8663E3B452821 /* Pods-CrystalMineFrontend-CrystalMineFrontendTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = CrystalMineFrontendTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,6 +516,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QP72V4H57C;
 				INFOPLIST_FILE = CrystalMineFrontend/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

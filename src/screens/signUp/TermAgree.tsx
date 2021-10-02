@@ -10,13 +10,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-
 import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
 } from '../../components/Button';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TwoLineTitle, SmallText} from '../../components/Top';
 import {Container} from '../../components/Container';
 import {SpreadButton, FoldButton} from '../../../resources/icon/Button';
@@ -26,16 +25,13 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import TestPage2 from '../TestPage2';
-
 
 type RootStackParamList = {
-  TermAgree: undefined;
-  TestPage2: undefined;
+  SignUpID: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-function TermAgree({ navigation }: Props) {
+function TermAgree({navigation}: Props) {
   const Stack = createNativeStackNavigator();
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
@@ -85,191 +81,208 @@ function TermAgree({ navigation }: Props) {
     },
   });
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
-      <ScrollView>
-        <View>
-          <View style={{width: 53.57, height: 4, backgroundColor: '#A055FF'}} />
+    <>
+      <View style={{width: 53.57, height: 4, backgroundColor: '#A055FF'}} />
+      <View style={{backgroundColor: 'white', flex: 1}}>
+        <ScrollView>
           <View>
-            <Container>
-              <TwoLineTitle
-                firstLineText="이용 약관에 먼저"
-                secondLineText="동의해주세요"></TwoLineTitle>
-            </Container>
-            <View
-              style={{
-                flexDirection: 'row',
-                height: 56,
-                backgroundColor: '#F6F6F6',
-                marginLeft: 24,
-                marginRight: 24,
-                borderRadius: 10,
-                marginTop: 31,
-              }}>
-              {firstTermChecked && secondTermChecked ? (
-                <RoundChecked
-                  style={styles.wholeAgreeCheckBox}
-                  onPress={(e: any) => onClick(e, 'wholeDisagree')}
-                />
-              ) : (
-                <RoundUnchecked
-                  style={styles.wholeAgreeCheckBox}
-                  onPress={(e: any) => onClick(e, 'wholeAgree')}
-                />
-              )}
-              <Text style={{fontSize: 15, lineHeight: 56}}>약관 전체 동의</Text>
-            </View>
-            <View
-              style={{
-                marginLeft: 40,
-                marginTop: 24,
-                marginBottom: 12,
-                marginRight: 46,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              {firstTermChecked ? (
-                <Checked
-                  style={{marginRight: 16}}
-                  onPress={(e: any) => onChange('firstTerm')}
-                />
-              ) : (
-                <Unchecked
-                  style={{marginRight: 16}}
-                  onPress={(e: any) => onChange('firstTerm')}
-                />
-              )}
-              <SmallText>서비스 이용약관</SmallText>
-              <TouchableOpacity
+            <View>
+              <Container>
+                <TwoLineTitle
+                  firstLineText="이용 약관에 먼저"
+                  secondLineText="동의해주세요"></TwoLineTitle>
+              </Container>
+              <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row-reverse',
-                  alignItems: 'center',
-                  height: 16,
-                }}
-                onPress={e => onClick(e, 'firstTerm')}>
-                {firstTermSpread ? <FoldButton /> : <SpreadButton />}
-              </TouchableOpacity>
-            </View>
-            {firstTermSpread && (
-              <ScrollView
-                style={{
-                  height: 150,
-                  marginLeft: 40,
-                  marginRight: 40,
+                  flexDirection: 'row',
+                  height: 56,
                   backgroundColor: '#F6F6F6',
-                  padding: 20,
-                }}
-                nestedScrollEnabled={true}>
-                <Text>
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구
+                  marginLeft: 24,
+                  marginRight: 24,
+                  borderRadius: 10,
+                  marginTop: 31,
+                }}>
+                {firstTermChecked && secondTermChecked ? (
+                  <RoundChecked
+                    style={styles.wholeAgreeCheckBox}
+                    onPress={(e: any) => onClick(e, 'wholeDisagree')}
+                  />
+                ) : (
+                  <RoundUnchecked
+                    style={styles.wholeAgreeCheckBox}
+                    onPress={(e: any) => onClick(e, 'wholeAgree')}
+                  />
+                )}
+                <Text style={{fontSize: 15, lineHeight: 56}}>
+                  약관 전체 동의
                 </Text>
-              </ScrollView>
-            )}
+              </View>
+              <View
+                style={{
+                  marginLeft: 40,
+                  marginTop: 24,
+                  marginBottom: 12,
+                  marginRight: 46,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                {firstTermChecked ? (
+                  <Checked
+                    style={{marginRight: 16}}
+                    onPress={(e: any) => onChange('firstTerm')}
+                  />
+                ) : (
+                  <Unchecked
+                    style={{marginRight: 16}}
+                    onPress={(e: any) => onChange('firstTerm')}
+                  />
+                )}
+                <SmallText>서비스 이용약관</SmallText>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row-reverse',
+                    alignItems: 'center',
+                    height: 16,
+                  }}
+                  onPress={e => onClick(e, 'firstTerm')}>
+                  {firstTermSpread ? <FoldButton /> : <SpreadButton />}
+                </TouchableOpacity>
+              </View>
+              {firstTermSpread && (
+                <ScrollView
+                  style={{
+                    height: 150,
+                    marginLeft: 40,
+                    marginRight: 40,
+                    backgroundColor: '#F6F6F6',
+                    padding: 20,
+                  }}
+                  nestedScrollEnabled={true}>
+                  <Text>
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                  </Text>
+                </ScrollView>
+              )}
 
-            <View
-              style={{
-                marginLeft: 40,
-                marginTop: 24,
-                marginBottom: 12,
-                marginRight: 46,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              {secondTermChecked ? (
-                <Checked
-                  style={{marginRight: 16}}
-                  onPress={(e: any) => onChange('secondTerm')}
-                />
-              ) : (
-                <Unchecked
-                  style={{marginRight: 16}}
-                  onPress={(e: any) => onChange('secondTerm')}
-                />
-              )}
-              <SmallText>개인 정보 처리 방침</SmallText>
-              <TouchableOpacity
+              <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row-reverse',
-                  alignItems: 'center',
-                  height: 16,
-                }}
-                onPress={e => onClick(e, 'secondTerm')}>
-                {secondTermSpread ? <FoldButton /> : <SpreadButton />}
-              </TouchableOpacity>
-            </View>
-            {secondTermSpread && (
-              <ScrollView
-                style={{
-                  height: 150,
                   marginLeft: 40,
-                  marginRight: 40,
-                  backgroundColor: '#F6F6F6',
-                  padding: 20,
-                }}
-                nestedScrollEnabled={true}>
-                <Text>
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구
-                  저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                  어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                </Text>
-              </ScrollView>
-            )}
+                  marginTop: 24,
+                  marginBottom: 12,
+                  marginRight: 46,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                {secondTermChecked ? (
+                  <Checked
+                    style={{marginRight: 16}}
+                    onPress={(e: any) => onChange('secondTerm')}
+                  />
+                ) : (
+                  <Unchecked
+                    style={{marginRight: 16}}
+                    onPress={(e: any) => onChange('secondTerm')}
+                  />
+                )}
+                <SmallText>개인 정보 처리 방침</SmallText>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row-reverse',
+                    alignItems: 'center',
+                    height: 16,
+                  }}
+                  onPress={e => onClick(e, 'secondTerm')}>
+                  {secondTermSpread ? <FoldButton /> : <SpreadButton />}
+                </TouchableOpacity>
+              </View>
+              {secondTermSpread && (
+                <ScrollView
+                  style={{
+                    height: 150,
+                    marginLeft: 40,
+                    marginRight: 40,
+                    backgroundColor: '#F6F6F6',
+                    padding: 20,
+                  }}
+                  nestedScrollEnabled={true}>
+                  <Text>
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
+                  </Text>
+                </ScrollView>
+              )}
+            </View>
           </View>
-        </View>
-      </ScrollView>
-      <View style={{ bottom: 21, justifyContent: 'center', alignItems: 'center' }}>
-        {firstTermChecked && secondTermChecked ?
-          <PurpleRoundButton text="다음" onClick={() => {navigation.navigate('TestPage2')}} />
-          : <DisabledPurpleRoundButton text="다음" />}
+        </ScrollView>
 
+        <View
+          style={{bottom: 21, justifyContent: 'center', alignItems: 'center'}}>
+          {firstTermChecked && secondTermChecked ? (
+            <PurpleRoundButton
+              text="다음"
+              onClick={() => {
+                navigation.navigate('SignUpID');
+              }}
+            />
+          ) : (
+            <DisabledPurpleRoundButton text="다음" />
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
