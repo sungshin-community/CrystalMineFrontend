@@ -25,6 +25,7 @@ StatusBar.setBackgroundColor('white');
 StatusBar.setBarStyle('dark-content');
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import SignUpPasswordConfirm from './SignUpPasswordConfirm';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -42,7 +43,7 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpPasswordConfirm: undefined;
+  SignUpPasswordConfirm: {previousPassword: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -65,11 +66,9 @@ export default function SignUpPassword({ navigation }: Props) {
     let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,16}$/;
     if (regExp.test(password)) {
       setIsValidate(true);
-      console.log("충족");
     }
     else {
       setIsValidate(false);
-      console.log("충족하지 못함");
     }
   };
 
@@ -136,13 +135,13 @@ export default function SignUpPassword({ navigation }: Props) {
             {isValidate && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPasswordConfirm')}
+                onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
               />
             )}
             {isValidate && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPasswordConfirm')}
+                onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
               />
             )}
             {!isValidate && isFocused && (
@@ -210,13 +209,13 @@ export default function SignUpPassword({ navigation }: Props) {
           {isValidate && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPasswordConfirm')}
+              onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
             />
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPasswordConfirm')}
+              onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
             />
           )}
           {!isValidate && isFocused && (

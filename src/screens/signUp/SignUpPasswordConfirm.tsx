@@ -22,6 +22,7 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { validate } from '@babel/types';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -33,7 +34,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 130px 0px 52px 0px;
+  margin: 37px 0px 52px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
@@ -44,14 +45,14 @@ const MiddleInputContainerStyle = styled.View`
 
 type RootStackParamList = {
   SignUpNickname: undefined;
+  SignUpPasswordConfirm: {previousPassword: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpPasswordConfirm({navigation}: Props) {
-  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+export default function SignUpPasswordConfirm({navigation, route}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  // const [isEqual, setIsEqual] = useState<boolean>(false);
+  const [isEqual, setIsEqual] = useState<boolean>(false);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -62,14 +63,13 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
     Keyboard.dismiss();
   };
 
+  const validatePassword = (password: string) => {
+    setIsEqual (password === route.params.previousPassword);
+  };
+
   const letShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
-  // const passwordEqual = () => {
-  // 앞에 password 받아와서 참/거짓 반환
-  // if (password === passwordConfirm) { setIsEqual(true); }
-  // };
 
   return Platform.OS === 'ios' ? (
     <>
@@ -93,7 +93,7 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
               style={{
                 borderColor: isFocused ? '#A055FF' : '#D7DCE6',
               }}>
-              {showPassword ? (
+
                 <TextInput
                   style={{width: '90%', fontSize: 21}}
                   onFocus={(e: any) => {
@@ -103,44 +103,23 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
                     onInputFocusOut();
                   }}
                   onChangeText={(value: string) => {
-                    setPasswordConfirm(value.replace(/\s/g, ''));
+                    validatePassword(value);
                   }}
                   maxLength={25}
                   placeholder="비밀번호"
                   placeholderTextColor="#A0AAB4"
                   keyboardType="default"
-                  secureTextEntry={false}
+                  secureTextEntry={showPassword ? false : true}
                   autoCapitalize="none"
                   returnKeyType="done"
                   selectionColor="#A055FF"
                 />
-              ) : (
-                <TextInput
-                  style={{width: '90%', fontSize: 21}}
-                  onFocus={(e: any) => {
-                    onInputFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onInputFocusOut();
-                  }}
-                  onChangeText={(value: string) => {
-                    setPasswordConfirm(value.replace(/\s/g, ''));
-                  }}
-                  maxLength={25}
-                  placeholder="비밀번호"
-                  placeholderTextColor="#A0AAB4"
-                  keyboardType="default"
-                  secureTextEntry={true}
-                  autoCapitalize="none"
-                  returnKeyType="done"
-                  selectionColor="#A055FF"
-                />
-              )}
+             
               <PasswordShow onPress={letShowPassword} />
             </MiddleInputContainerStyle>
-            {passwordConfirm.length < 10 && passwordConfirm.length > 0 && (
-              <CautionText text="비밀번호 일치는 서버팀에서 . . ." />
-            )}
+            {!isEqual && (
+            <CautionText text="비밀번호가 일치하지 않습니다" />
+          )}
           </ScrollView>
           <View
             style={{
@@ -148,32 +127,24 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            {passwordConfirm.length >= 10 && isFocused && (
+            {isEqual && isFocused && (
               <PurpleFullButton
                 text="다음"
                 onClick={() => navigation.navigate('SignUpNickname')}
               />
             )}
-            {passwordConfirm.length >= 10 && !isFocused && (
+            {isEqual && !isFocused && (
               <PurpleRoundButton
                 text="다음"
                 onClick={() => navigation.navigate('SignUpNickname')}
               />
             )}
-            {passwordConfirm.length < 10 && isFocused && (
+            {!isEqual && isFocused && (
               <DisabledPurpleFullButton text="다음" />
             )}
-            {passwordConfirm.length < 10 && !isFocused && (
+            {!isEqual && !isFocused && (
               <DisabledPurpleRoundButton text="다음" />
             )}
-            {/* {isEqual === true && isFocused && <PurpleFullButton text="다음" />}
-          {isEqual === true && !isFocused && <PurpleRoundButton text="다음" />}
-          {isEqual === false && isFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
-          {isEqual === false && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
-          )} */}
           </View>
         </Container>
       </KeyboardAvoidingView>
@@ -196,7 +167,6 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
-            {showPassword ? (
               <TextInput
                 style={{width: '90%', fontSize: 21}}
                 onFocus={(e: any) => {
@@ -206,43 +176,22 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
                   onInputFocusOut();
                 }}
                 onChangeText={(value: string) => {
-                  setPasswordConfirm(value.replace(/\s/g, ''));
+                  validatePassword(value);
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
                 placeholderTextColor="#A0AAB4"
                 keyboardType="default"
-                secureTextEntry={false}
+                secureTextEntry={showPassword ? false : true}
                 autoCapitalize="none"
                 returnKeyType="done"
                 selectionColor="#A055FF"
               />
-            ) : (
-              <TextInput
-                style={{width: '90%', fontSize: 21}}
-                onFocus={(e: any) => {
-                  onInputFocus();
-                }}
-                onBlur={(e: any) => {
-                  onInputFocusOut();
-                }}
-                onChangeText={(value: string) => {
-                  setPasswordConfirm(value.replace(/\s/g, ''));
-                }}
-                maxLength={25}
-                placeholder="비밀번호"
-                placeholderTextColor="#A0AAB4"
-                keyboardType="default"
-                secureTextEntry={true}
-                autoCapitalize="none"
-                returnKeyType="done"
-                selectionColor="#A055FF"
-              />
-            )}
+
             <PasswordShow onPress={letShowPassword} />
           </MiddleInputContainerStyle>
-          {passwordConfirm.length < 10 && passwordConfirm.length > 0 && (
-            <CautionText text="비밀번호 일치 아직 확인 못함" />
+          {!isEqual && (
+            <CautionText text="비밀번호가 일치하지 않습니다" />
           )}
         </ScrollView>
         <View
@@ -251,32 +200,24 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {passwordConfirm.length >= 10 && isFocused && (
+          {isEqual && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={() => navigation.navigate('SignUpNickname')}
             />
           )}
-          {passwordConfirm.length >= 10 && !isFocused && (
+          {isEqual && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={() => navigation.navigate('SignUpNickname')}
             />
           )}
-          {passwordConfirm.length < 10 && isFocused && (
+          {!isEqual && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
-          {passwordConfirm.length < 10 && !isFocused && (
+          {!isEqual && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
-          {/* {isEqual === true && isFocused && <PurpleFullButton text="다음" />}
-          {isEqual === true && !isFocused && <PurpleRoundButton text="다음" />}
-          {isEqual === false && isFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
-          {isEqual === false && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
-          )} */}
         </View>
       </Container>
     </>
