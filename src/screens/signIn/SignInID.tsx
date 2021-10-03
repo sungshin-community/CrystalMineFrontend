@@ -66,8 +66,77 @@ export default function SignInID({navigation}: Props) {
     Keyboard.dismiss();
   };
 
-  return (
-    <PlatformOS>
+  return Platform.OS === 'ios' ? (
+    <>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <ScrollView
+          scrollEnabled={false}
+          keyboardShouldPersistTaps="handled"
+          style={{backgroundColor: '#fff', flex: 1}}>
+          <NormalOneLineText style={{marginLeft: 24, marginTop: 25}}>
+            로그인
+          </NormalOneLineText>
+          <View>
+            <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
+            <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={{width: '60%', borderColor: '#ff0000', fontSize: 21}}
+                  onFocus={(e: any) => {
+                    onIdFocus();
+                  }}
+                  onBlur={(e: any) => {
+                    onIdFocusOut();
+                  }}
+                  onChangeText={(value: string) => {
+                    setStudentId(value);
+                  }}
+                  maxLength={8}
+                  placeholder="아이디"
+                  keyboardType="number-pad"
+                />
+
+                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+
+        <View
+          style={{
+            bottom: isIdFocused ? 80 : 21,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {studentId.length === 8 && isIdFocused && (
+            <PurpleFullButton
+              text="다음"
+              onClick={() => navigation.navigate('SignInPassword')}
+            />
+          )}
+
+          {studentId.length === 8 && !isIdFocused && (
+            <PurpleRoundButton
+              text="다음"
+              onClick={() => navigation.navigate('SignInPassword')}
+            />
+          )}
+
+          {studentId.length < 8 && isIdFocused && (
+            <DisabledPurpleFullButton text="다음" />
+          )}
+
+          {studentId.length < 8 && !isIdFocused && (
+            <DisabledPurpleRoundButton text="다음" />
+          )}
+        </View>
+      </KeyboardAvoidingView>
+    </>
+  ) : (
+    <>
       <ScrollView
         scrollEnabled={false}
         keyboardShouldPersistTaps="handled"
@@ -100,10 +169,9 @@ export default function SignInID({navigation}: Props) {
           </View>
         </View>
       </ScrollView>
-
       <View
         style={{
-          bottom: isIdFocused ? 80 : 21,
+          bottom: isIdFocused ? 0 : 21,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -129,6 +197,6 @@ export default function SignInID({navigation}: Props) {
           <DisabledPurpleRoundButton text="다음" />
         )}
       </View>
-    </PlatformOS>
+    </>
   );
 }

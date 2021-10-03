@@ -11,6 +11,8 @@ import {
   GestureResponderEvent,
   Button,
   KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -51,22 +53,81 @@ const styles = StyleSheet.create({
 });
 
 const RegularMemberAuth = () => {
-  return (
-    <Container>
-      <View style={{marginTop: 130, marginLeft: 24}}>
-        <TwoLineTitle
-          firstLineText="메일로 전송된"
-          secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
-      </View>
-      <View style={styles.containe}>
-        <AuthInput></AuthInput>
-      </View>
-      <CountDownTimer minutes={3} seconds={0} />
+  const [password, setPassword] = useState<string>('');
+  const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
 
-      <View>
-        <DisabledPurpleFullButton text="인증 완료" />
-      </View>
-    </Container>
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+  return Platform.OS === 'ios' ? (
+    <>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <Container>
+          <View style={{marginTop: 130, marginLeft: 24}}>
+            <TwoLineTitle
+              firstLineText="메일로 전송된"
+              secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
+          </View>
+          <View style={styles.containe}>
+            <AuthInput></AuthInput>
+          </View>
+          <CountDownTimer minutes={3} seconds={0} />
+
+          <View
+            style={{
+              bottom: -300,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {isFocused && <PurpleFullButton text="다음" />}
+
+            {!isFocused && <PurpleRoundButton text="다음" />}
+
+            {/* {isFocused && <DisabledPurpleFullButton text="다음" />}
+
+        {!isFocused && <DisabledPurpleRoundButton text="다음" />} */}
+          </View>
+        </Container>
+      </KeyboardAvoidingView>
+    </>
+  ) : (
+    <>
+      <Container>
+        <View style={{marginTop: 130, marginLeft: 24}}>
+          <TwoLineTitle
+            firstLineText="메일로 전송된"
+            secondLineText="인증번호를 입력해주세요"></TwoLineTitle>
+        </View>
+        <View style={styles.containe}>
+          <AuthInput></AuthInput>
+        </View>
+        <CountDownTimer minutes={3} seconds={0} />
+
+        <View
+          style={{
+            bottom: -250,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {isFocused && <PurpleFullButton text="다음" />}
+
+          {!isFocused && <PurpleRoundButton text="다음" />}
+
+          {/* {isFocused && <DisabledPurpleFullButton text="다음" />}
+
+        {!isFocused && <DisabledPurpleRoundButton text="다음" />} */}
+        </View>
+      </Container>
+    </>
   );
 };
 export default RegularMemberAuth;

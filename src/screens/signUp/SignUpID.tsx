@@ -70,7 +70,91 @@ export default function SignUpID({navigation}: Props) {
     Keyboard.dismiss();
   };
 
-  return (
+  return Platform.OS === 'ios' ? (
+    <>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
+
+        <Container>
+          <ScrollView
+            scrollEnabled={false}
+            keyboardShouldPersistTaps="handled"
+            style={{backgroundColor: '#fff'}}>
+            <TextContainer>
+              <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
+              <Description>
+                학교에서 제공하는 성신 G-mail 계정을 사용합니다
+              </Description>
+            </TextContainer>
+            <View
+              style={{
+                paddingRight: 24,
+                paddingLeft: 24,
+                marginTop: 12,
+              }}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: isFocused ? '#A055FF' : '#D7DCE6'},
+                ]}>
+                <TextInput
+                  style={{
+                    width: '60%',
+                    fontSize: 21,
+                  }}
+                  onFocus={(e: any) => {
+                    onIdFocus();
+                  }}
+                  onBlur={(e: any) => {
+                    onIdFocusOut();
+                  }}
+                  onChangeText={(value: string) => {
+                    setStudentId(value);
+                  }}
+                  maxLength={8}
+                  placeholder="아이디"
+                  keyboardType="number-pad"
+                  selectionColor="#A055FF"
+                />
+                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
+              </View>
+            </View>
+          </ScrollView>
+          <View
+            style={{
+              bottom: isFocused ? 80 : -10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {studentId.length === 8 && isFocused && (
+              <PurpleFullButton
+                text="다음"
+                onClick={() => navigation.navigate('SignUpPassword')}
+              />
+            )}
+
+            {studentId.length === 8 && !isFocused && (
+              <PurpleRoundButton
+                text="다음"
+                onClick={() => navigation.navigate('SignUpPassword')}
+              />
+            )}
+
+            {studentId.length < 8 && isFocused && (
+              <DisabledPurpleFullButton text="다음" />
+            )}
+
+            {studentId.length < 8 && !isFocused && (
+              <DisabledPurpleRoundButton text="다음" />
+            )}
+          </View>
+        </Container>
+      </KeyboardAvoidingView>
+    </>
+  ) : (
     <>
       <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
 

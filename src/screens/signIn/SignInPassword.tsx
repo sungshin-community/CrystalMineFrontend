@@ -46,16 +46,7 @@ const styles = StyleSheet.create({
 
 export default function SignIn() {
   const [password, setPassword] = useState<string>('');
-  const [isIdFocused, setIsIdFocused] = useState<boolean>(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
-  const onIdFocus = () => {
-    setIsIdFocused(true);
-  };
-
-  const onIdFocusOut = () => {
-    setIsIdFocused(false);
-    Keyboard.dismiss();
-  };
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -86,8 +77,12 @@ export default function SignIn() {
               <View style={styles.inputContainer}>
                 <TextInput
                   style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
-                  // onFocus={(e: any) => { onPasswordFocus(); }}
-                  // onBlur={(e: any) => { onPasswordFocusOut(); }}
+                  onFocus={(e: any) => {
+                    onPasswordFocus();
+                  }}
+                  onBlur={(e: any) => {
+                    onPasswordFocusOut();
+                  }}
                   onChangeText={(value: string) => {
                     setPassword(value);
                   }}
@@ -106,24 +101,19 @@ export default function SignIn() {
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
           }}>
-          {password.length >= 10 ? (
-            <PurpleRoundButton text="다음" />
-          ) : (
-            <DisabledPurpleRoundButton text="다음" />
-          )}
-          {password.length >= 10 && isIdFocused && (
+          {password.length >= 10 && isPasswordFocused && (
             <PurpleFullButton text="다음" />
           )}
 
-          {password.length >= 10 && !isIdFocused && (
+          {password.length >= 10 && !isPasswordFocused && (
             <PurpleRoundButton text="다음" />
           )}
 
-          {password.length < 10 && isIdFocused && (
+          {password.length < 10 && isPasswordFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {password.length < 10 && !isIdFocused && (
+          {password.length < 10 && !isPasswordFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
           <Text
