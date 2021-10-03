@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import {
   Text,
   StatusBar,
@@ -7,13 +6,11 @@ import {
   StyleSheet,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback,
   Platform,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import {NormalOneLineText, Description} from '../../components/Top';
-import {MiddleInactiveInput} from '../../components/Input';
+import {NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -32,7 +29,6 @@ const styles = StyleSheet.create({
     borderColor: '#D7DCE6',
     flexDirection: 'row',
     alignItems: 'center',
-    // textAlign: 'right'
   },
   suffix: {
     fontSize: 15,
@@ -40,7 +36,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#87919B',
     textAlign: 'right',
-    // justifyContent: 'flex-end'
   },
 });
 
@@ -74,7 +69,11 @@ export default function SignIn() {
           <View>
             <Text style={{marginLeft: 24, marginTop: 36}}>비밀번호</Text>
             <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
-              <View style={styles.inputContainer}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
+                ]}>
                 <TextInput
                   style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
                   onFocus={(e: any) => {
@@ -86,9 +85,12 @@ export default function SignIn() {
                   onChangeText={(value: string) => {
                     setPassword(value);
                   }}
-                  // maxLength={8}
+                  maxLength={25}
                   placeholder="비밀번호"
                   secureTextEntry={true}
+                  autoCapitalize="none"
+                  returnKeyType="done"
+                  selectionColor="#A055FF"
                 />
               </View>
             </View>
@@ -141,7 +143,11 @@ export default function SignIn() {
         <View>
           <Text style={{marginLeft: 24, marginTop: 36}}>비밀번호</Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
-            <View style={styles.inputContainer}>
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
+              ]}>
               <TextInput
                 style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
                 // onFocus={(e: any) => { onPasswordFocus(); }}
@@ -149,9 +155,12 @@ export default function SignIn() {
                 onChangeText={(value: string) => {
                   setPassword(value);
                 }}
-                // maxLength={8}
+                maxLength={25}
                 placeholder="비밀번호"
                 secureTextEntry={true}
+                autoCapitalize="none"
+                returnKeyType="done"
+                selectionColor="#A055FF"
               />
             </View>
           </View>

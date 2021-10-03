@@ -139,7 +139,7 @@ export default function SignUpPasswordConfirm({navigation}: Props) {
               <PasswordShow onPress={letShowPassword} />
             </MiddleInputContainerStyle>
             {passwordConfirm.length < 10 && passwordConfirm.length > 0 && (
-              <CautionText text="비밀번호 일치 아직 확인 못함" />
+              <CautionText text="비밀번호 일치는 서버팀에서 . . ." />
             )}
           </ScrollView>
           <View

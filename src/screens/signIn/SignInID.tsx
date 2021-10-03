@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import {
   Text,
   StatusBar,
@@ -7,14 +6,12 @@ import {
   StyleSheet,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
 } from 'react-native';
 
-import {NormalOneLineText, Description} from '../../components/Top';
-import {MiddleInactiveInput} from '../../components/Input';
+import {NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -82,7 +79,11 @@ export default function SignInID({navigation}: Props) {
           <View>
             <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
             <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
-              <View style={styles.inputContainer}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
+                ]}>
                 <TextInput
                   style={{width: '60%', borderColor: '#ff0000', fontSize: 21}}
                   onFocus={(e: any) => {
@@ -147,7 +148,11 @@ export default function SignInID({navigation}: Props) {
         <View>
           <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
-            <View style={styles.inputContainer}>
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
+              ]}>
               <TextInput
                 style={{width: '60%', borderColor: '#ff0000', fontSize: 21}}
                 onFocus={(e: any) => {
