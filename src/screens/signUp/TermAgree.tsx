@@ -8,6 +8,7 @@ import {
   View,
   GestureResponderEvent,
   TouchableOpacity,
+  Dimensions
 } from 'react-native';
 
 import {
@@ -32,7 +33,6 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function TermAgree({navigation}: Props) {
-  const Stack = createNativeStackNavigator();
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
@@ -82,7 +82,7 @@ function TermAgree({navigation}: Props) {
   });
   return (
     <>
-      <View style={{width: 53.57, height: 4, backgroundColor: '#A055FF'}} />
+      <View style={{width: Dimensions.get('window').width / 7, height: 4, backgroundColor: '#A055FF'}} />
       <View style={{backgroundColor: 'white', flex: 1}}>
         <ScrollView>
           <View>
