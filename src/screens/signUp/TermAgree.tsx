@@ -92,7 +92,7 @@ function TermAgree({navigation}: Props) {
                   firstLineText="이용 약관에 먼저"
                   secondLineText="동의해주세요"></TwoLineTitle>
               </Container>
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   height: 56,
@@ -101,7 +101,9 @@ function TermAgree({navigation}: Props) {
                   marginRight: 24,
                   borderRadius: 10,
                   marginTop: 31,
-                }}>
+                }}
+                onPress={(e: any) => onClick(e, firstTermChecked && secondTermChecked ? 'wholeDisagree' : 'wholeAgree')}
+              >
                 {firstTermChecked && secondTermChecked ? (
                   <RoundChecked
                     style={styles.wholeAgreeCheckBox}
@@ -116,7 +118,7 @@ function TermAgree({navigation}: Props) {
                 <Text style={{fontSize: 15, lineHeight: 56}}>
                   약관 전체 동의
                 </Text>
-              </View>
+              </TouchableOpacity>
               <View
                 style={{
                   marginLeft: 40,
