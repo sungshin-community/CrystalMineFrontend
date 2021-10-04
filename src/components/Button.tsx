@@ -38,13 +38,13 @@ const style = StyleSheet.create({
   },
   purpleRoundButton: {
     backgroundColor: '#A055FF',
-    width: 343,
+    width: Dimensions.get('window').width - 32,
     height: 56,
     borderRadius: 10,
   },
   whiteRoundButton: {
     backgroundColor: '#FFFFFF',
-    width: 343,
+    width: Dimensions.get('window').width - 32,
     height: 56,
     borderRadius: 10,
     borderColor: '#A055FF',
@@ -53,13 +53,13 @@ const style = StyleSheet.create({
   },
   disabledPurpleRoundButton: {
     backgroundColor: '#E5D2FC',
-    width: 343,
+    width: Dimensions.get('window').width - 32,
     height: 56,
     borderRadius: 10,
   },
   disabledWhiteRoundButton: {
     backgroundColor: '#F5F5F5',
-    width: 343,
+    width: Dimensions.get('window').width - 32,
     height: 56,
     borderRadius: 10,
     borderColor: '#DDCBF5',
