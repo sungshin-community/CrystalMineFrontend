@@ -8,6 +8,7 @@ import {
   View,
   GestureResponderEvent,
   TouchableOpacity,
+  Dimensions
 } from 'react-native';
 
 import {
@@ -32,7 +33,6 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function TermAgree({navigation}: Props) {
-  const Stack = createNativeStackNavigator();
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
@@ -82,7 +82,7 @@ function TermAgree({navigation}: Props) {
   });
   return (
     <>
-      <View style={{width: 53.57, height: 4, backgroundColor: '#A055FF'}} />
+      <View style={{width: Dimensions.get('window').width / 7, height: 4, backgroundColor: '#A055FF'}} />
       <View style={{backgroundColor: 'white', flex: 1}}>
         <ScrollView>
           <View>
@@ -92,7 +92,7 @@ function TermAgree({navigation}: Props) {
                   firstLineText="이용 약관에 먼저"
                   secondLineText="동의해주세요"></TwoLineTitle>
               </Container>
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   height: 56,
@@ -101,7 +101,9 @@ function TermAgree({navigation}: Props) {
                   marginRight: 24,
                   borderRadius: 10,
                   marginTop: 31,
-                }}>
+                }}
+                onPress={(e: any) => onClick(e, firstTermChecked && secondTermChecked ? 'wholeDisagree' : 'wholeAgree')}
+              >
                 {firstTermChecked && secondTermChecked ? (
                   <RoundChecked
                     style={styles.wholeAgreeCheckBox}
@@ -116,7 +118,7 @@ function TermAgree({navigation}: Props) {
                 <Text style={{fontSize: 15, lineHeight: 56}}>
                   약관 전체 동의
                 </Text>
-              </View>
+              </TouchableOpacity>
               <View
                 style={{
                   marginLeft: 40,
