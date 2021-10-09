@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {StatusBar, View, StyleSheet} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import {BigOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -14,32 +14,22 @@ StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
 
-const Container = styled.SafeAreaView`
-  flex: 3;
+const Container = styled.View`
+  padding-bottom: 32px;
   background-color: #ffffff;
-`;
-
-const TextContainer = styled.View`
-  margin-top: 37;
-  margin-left: 24px;
-`;
-
-const MajorContainer = styled.View`
-  flex: 14;
+  padding: 37px 24px;
 `;
 
 const RadioContainer = styled.ScrollView`
   margin: 24px 12px;
 `;
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    bottom: 21,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 32,
-  },
-});
+const ButtonContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  bottom: 21px;
+  margin-top: 32px;
+`;
 
 const majorOptionData = [
   {
@@ -373,16 +363,14 @@ export default function MajorSelect({navigation}: Props) {
         }}
       />
       <Container>
-        <TextContainer>
-          <BigOneLineText style={{marginBottom: 7}}>
-            소속 학과를 선택해주세요
-          </BigOneLineText>
-          <Description style={{textDecorationLine: 'underline'}}>
-            소속 학과가 선택지에 없나요?
-          </Description>
-        </TextContainer>
+        <BigOneLineText style={{marginBottom: 7}}>
+          소속 학과를 선택해주세요
+        </BigOneLineText>
+        <Description style={{textDecorationLine: 'underline'}}>
+          소속 학과가 선택지에 없나요?
+        </Description>
       </Container>
-      <MajorContainer>
+      <View style={{flex: 1}}>
         <RadioContainer>
           {selected
             ? majorOptionData.map(major =>
@@ -408,7 +396,7 @@ export default function MajorSelect({navigation}: Props) {
                 />
               ))}
         </RadioContainer>
-        <View style={styles.buttonContainer}>
+        <ButtonContainer>
           {selected ? (
             <PurpleRoundButton
               text="회원가입"
@@ -417,8 +405,8 @@ export default function MajorSelect({navigation}: Props) {
           ) : (
             <DisabledPurpleRoundButton text="회원가입" />
           )}
-        </View>
-      </MajorContainer>
+        </ButtonContainer>
+      </View>
     </>
   );
 }

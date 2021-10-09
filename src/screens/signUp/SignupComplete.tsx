@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {StatusBar} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
@@ -11,23 +11,18 @@ StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
 
-const Container = styled.SafeAreaView`
+const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
+  padding: 37px 24px;
 `;
 
-const TextContainer = styled.View`
-  margin: 37px 0 0 24px;
+const ButtonContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding-bottom: 21;
 `;
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    bottom: 21,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-  },
-});
 
 type RootStackParamList = {
   RegularMemberAuthSelect: undefined;
@@ -38,7 +33,6 @@ export default function SignUpComplete({navigation}: Props) {
   // const fadeInUp = {
   //   0: {
   //     opacity: 0,
-
   //   },
   //   0.5: {
   //     opacity: 0,
@@ -49,10 +43,10 @@ export default function SignUpComplete({navigation}: Props) {
   // };
 
   return (
-    <Container>
-      <TextContainer>
+    <>
+      <Container>
         <Animatable.Text
-          animation="fadeInUp"
+          animation="fadeIn"
           delay={900}
           duration={1200}
           easing={'ease-in-out-quad'}>
@@ -75,15 +69,15 @@ export default function SignUpComplete({navigation}: Props) {
             밖으로의 유출을 삼가주세요.{'\n'}
           </Description>
         </Animatable.Text>
-      </TextContainer>
-      <View style={styles.buttonContainer}>
-        <Animatable.Text animation="fadeIn" delay={2100}>
+      </Container>
+      <ButtonContainer>
+        <Animatable.View animation="fadeIn" delay={2100}>
           <PurpleRoundButton
             text="다음"
             onClick={() => navigation.navigate('RegularMemberAuthSelect')}
           />
-        </Animatable.Text>
-      </View>
-    </Container>
+        </Animatable.View>
+      </ButtonContainer>
+    </>
   );
 }

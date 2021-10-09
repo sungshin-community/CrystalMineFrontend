@@ -11,13 +11,20 @@ StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
 
-const Container = styled.SafeAreaView`
+const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
+  padding: 37px 24px;
 `;
 
-const TextContainer = styled.View`
-  margin: 37px 0 0 24px;
+const ButtonContainer = styled.View`
+  background-color: #ffffff;
+  padding-bottom: 21;
+`;
+
+const ButtonCenter = styled.View`
+  justify-content: center;
+  align-items: center;
 `;
 
 const styles = StyleSheet.create({
@@ -25,15 +32,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     lineHeight: 16.28,
   },
-  buttonContainer: {
-    bottom: 21,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    margin: 16,
-  },
 });
+
 type RootStackParamList = {
   RegularMemberAuth: undefined;
   Home: undefined;
@@ -42,8 +42,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function RegularMemberAuthSelect({navigation}: Props) {
   return (
-    <Container>
-      <TextContainer>
+    <>
+      <Container>
         <Animatable.Text
           animation="fadeInUp"
           delay={900}
@@ -63,25 +63,27 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             보안을 위해 계정 정보가 삭제됩니다.
           </Description>
         </Animatable.Text>
-      </TextContainer>
-      <Animatable.Text animation="fadeIn" delay={2100}>
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <PurpleRoundButton
-              text="바로 인증하기"
+      </Container>
+      <ButtonContainer>
+        <Animatable.View animation="fadeIn" delay={2100}>
+          <ButtonCenter>
+            <View style={{margin: 16}}>
+              <PurpleRoundButton
+                text="바로 인증하기"
+                onClick={() => {
+                  navigation.navigate('RegularMemberAuth');
+                }}
+              />
+            </View>
+            <WhiteRoundButton
+              text="나중에 인증하기"
               onClick={() => {
-                navigation.navigate('RegularMemberAuth');
+                navigation.navigate('Home');
               }}
             />
-          </View>
-          <WhiteRoundButton
-            text="나중에 인증하기"
-            onClick={() => {
-              navigation.navigate('Home');
-            }}
-          />
-        </View>
-      </Animatable.Text>
-    </Container>
+          </ButtonCenter>
+        </Animatable.View>
+      </ButtonContainer>
+    </>
   );
 }
