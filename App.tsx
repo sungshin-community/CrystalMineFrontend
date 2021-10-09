@@ -26,15 +26,15 @@ const App = () => {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 
-  // useEffect(() => {
-  //   SplashScreen.hide();
-  // }, []);
-
   useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 1000);
+    SplashScreen.hide();
   }, []);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     SplashScreen.hide();
+  //   }, 1);
+  // }, []);
 
   return (
     <NavigationContainer>

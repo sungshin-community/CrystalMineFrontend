@@ -14,7 +14,7 @@
 		6172F2D35A4C3AA820D92908 /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-CrystalMineFrontend.a */; };
 		7EF68E3733C33B6898317E18 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		CDAF3FE526FCE86100C5F6D6 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDAF3FE426FCE86000C5F6D6 /* SplashScreen.storyboard */; };
+		CD87721A271186200070D1F4 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD877219271186200070D1F4 /* SplashScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +43,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CrystalMineFrontend/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABFE59519B596E51CEFDCCC0 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrystalMineFrontend-CrystalMineFrontendTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A881CF5CF3F2B244570E2A /* Pods-CrystalMineFrontend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend.debug.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend.debug.xcconfig"; sourceTree = "<group>"; };
-		CDAF3FE426FCE86000C5F6D6 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
+		CD877219271186200070D1F4 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-CrystalMineFrontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend.release.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -118,7 +118,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				CDAF3FE426FCE86000C5F6D6 /* SplashScreen.storyboard */,
+				CD877219271186200070D1F4 /* SplashScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* CrystalMineFrontend */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CrystalMineFrontendTests */,
@@ -246,7 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				CDAF3FE526FCE86100C5F6D6 /* SplashScreen.storyboard in Resources */,
+				CD87721A271186200070D1F4 /* SplashScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
