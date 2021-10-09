@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, StyleSheet} from 'react-native';
-import {BigOneLineText} from '../../components/Top';
+import {BigOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleRoundButton,
@@ -15,12 +15,12 @@ StatusBar.setBackgroundColor('white');
 StatusBar.setBarStyle('dark-content');
 
 const Container = styled.SafeAreaView`
-  flex: 5;
+  flex: 3;
   background-color: #ffffff;
 `;
 
 const TextContainer = styled.View`
-  margin-top: 130px;
+  margin-top: 37;
   margin-left: 24px;
 `;
 
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     bottom: 21,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 32,
   },
 });
 
@@ -373,29 +374,32 @@ export default function MajorSelect({navigation}: Props) {
       />
       <Container>
         <TextContainer>
-          <BigOneLineText>소속 학과를 선택해주세요</BigOneLineText>
+          <BigOneLineText style={{marginBottom: 7}}>
+            소속 학과를 선택해주세요
+          </BigOneLineText>
+          <Description style={{textDecorationLine: 'underline'}}>
+            소속 학과가 선택지에 없나요?
+          </Description>
         </TextContainer>
       </Container>
       <MajorContainer>
         <RadioContainer>
           {selected
-            ? majorOptionData
-                //.forEach(major => major.name === yourMajor)
-                .map(major =>
-                  major.name === yourMajor ? (
-                    <Major
-                      major={major}
-                      selectMajor={selectMajor}
-                      style={{color: '#a055ff'}}
-                    />
-                  ) : (
-                    <Major
-                      major={major}
-                      selectMajor={selectMajor}
-                      style={{color: '#000000'}}
-                    />
-                  ),
-                )
+            ? majorOptionData.map(major =>
+                major.name === yourMajor ? (
+                  <Major
+                    major={major}
+                    selectMajor={selectMajor}
+                    style={{color: '#a055ff'}}
+                  />
+                ) : (
+                  <Major
+                    major={major}
+                    selectMajor={selectMajor}
+                    style={{color: '#000000'}}
+                  />
+                ),
+              )
             : majorOptionData.map(major => (
                 <Major
                   major={major}
