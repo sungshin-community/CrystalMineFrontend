@@ -20,12 +20,16 @@ type RootStackParamList = {
   SignInID: undefined;
 };
 
-const Container = styled.SafeAreaView`
+const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
 `;
 
-const CenterContainer = styled.View`
+const ButtonContainer = styled.View`
+  background-color: #ffffff;
+  padding-bottom: 21;
   justify-content: center;
   align-items: center;
 `;
@@ -33,13 +37,13 @@ const CenterContainer = styled.View`
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Home = ({navigation}: Props) => {
   return (
-    <Container>
-      <CenterContainer style={{flex: 3}}>
+    <>
+      <Container>
         <Animatable.Text animation="fadeIn" duration={2000}>
           <Logo />
         </Animatable.Text>
-      </CenterContainer>
-      <CenterContainer style={{flex: 1}}>
+      </Container>
+      <ButtonContainer>
         <Animatable.View animation="fadeInUp" delay={2000} duration={1200}>
           <PurpleRoundButton
             text="로그인"
@@ -52,8 +56,8 @@ const Home = ({navigation}: Props) => {
             />
           </View>
         </Animatable.View>
-      </CenterContainer>
-    </Container>
+      </ButtonContainer>
+    </>
   );
 };
 
