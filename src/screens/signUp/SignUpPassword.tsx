@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 import {
@@ -11,20 +11,20 @@ import {
   Platform,
 } from 'react-native';
 
-import { NormalOneLineText, Description } from '../../components/Top';
+import {NormalOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { CautionText } from '../../components/Input';
+import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SignUpPasswordConfirm from './SignUpPasswordConfirm';
 
 const Container = styled.SafeAreaView`
@@ -47,7 +47,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpPassword({ navigation }: Props) {
+export default function SignUpPassword({navigation}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
@@ -63,11 +63,11 @@ export default function SignUpPassword({ navigation }: Props) {
   };
 
   const validatePassword = (password: string) => {
-    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,16}$/;
+    let regExp =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,16}$/;
     if (regExp.test(password)) {
       setIsValidate(true);
-    }
-    else {
+    } else {
       setIsValidate(false);
     }
   };
@@ -81,13 +81,13 @@ export default function SignUpPassword({ navigation }: Props) {
       <KeyboardAvoidingView
         keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}>
-        <View style={{ width: 160.71, height: 4, backgroundColor: '#A055FF' }} />
+        style={{flex: 1}}>
+        <View style={{width: 160.71, height: 4, backgroundColor: '#A055FF'}} />
         <Container>
           <ScrollView
             scrollEnabled={false}
             keyboardShouldPersistTaps="handled"
-            style={{ backgroundColor: '#fff', marginHorizontal: 24 }}>
+            style={{backgroundColor: '#fff', marginHorizontal: 24}}>
             <TextContainer>
               <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
               <Description>
@@ -99,31 +99,33 @@ export default function SignUpPassword({ navigation }: Props) {
                 borderColor: isFocused ? '#A055FF' : '#D7DCE6',
               }}>
               <TextInput
-              style={{ width: '90%', fontSize: 21 }}
-              onFocus={(e: any) => {
-                onInputFocus();
-              }}
-              onBlur={(e: any) => {
-                onInputFocusOut();
-              }}
-              onChangeText={(value: string) => {
-                console.log(value);
-                setPassword(value.replace(/\s/g, ''));
-                validatePassword(value);
-              }}
-              maxLength={25}
-              placeholder="비밀번호"
-              placeholderTextColor="#A0AAB4"
-              keyboardType="default"
-              secureTextEntry={showPassword ? false : true}
-              autoCapitalize="none"
-              returnKeyType="done"
-              selectionColor="#A055FF"
-            />
+                style={{width: '90%', fontSize: 21}}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  console.log(value);
+                  setPassword(value.replace(/\s/g, ''));
+                  validatePassword(value);
+                }}
+                maxLength={25}
+                placeholder="비밀번호"
+                placeholderTextColor="#A0AAB4"
+                keyboardType="default"
+                secureTextEntry={showPassword ? false : true}
+                autoCapitalize="none"
+                returnKeyType="done"
+                selectionColor="#A055FF"
+              />
               <PasswordShow onPress={letShowPassword} />
             </MiddleInputContainerStyle>
 
-            {!isValidate && <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />}
+            {!isValidate && (
+              <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />
+            )}
           </ScrollView>
           <View
             style={{
@@ -131,17 +133,24 @@ export default function SignUpPassword({ navigation }: Props) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-
             {isValidate && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
+                onClick={() =>
+                  navigation.navigate('SignUpPasswordConfirm', {
+                    previousPassword: password,
+                  })
+                }
               />
             )}
             {isValidate && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
+                onClick={() =>
+                  navigation.navigate('SignUpPasswordConfirm', {
+                    previousPassword: password,
+                  })
+                }
               />
             )}
             {!isValidate && isFocused && (
@@ -156,12 +165,12 @@ export default function SignUpPassword({ navigation }: Props) {
     </>
   ) : (
     <>
-      <View style={{ width: 160.71, height: 4, backgroundColor: '#A055FF' }} />
+      <View style={{width: 160.71, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
-          style={{ backgroundColor: '#fff', marginHorizontal: 24 }}>
+          style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
             <Description>
@@ -172,9 +181,8 @@ export default function SignUpPassword({ navigation }: Props) {
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
-
             <TextInput
-              style={{ width: '90%', fontSize: 21 }}
+              style={{width: '90%', fontSize: 21}}
               onFocus={(e: any) => {
                 onInputFocus();
               }}
@@ -182,7 +190,6 @@ export default function SignUpPassword({ navigation }: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
-                console.log(value);
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
               }}
@@ -197,7 +204,9 @@ export default function SignUpPassword({ navigation }: Props) {
             />
             <PasswordShow onPress={letShowPassword} />
           </MiddleInputContainerStyle>
-          {!isValidate && <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />}
+          {!isValidate && (
+            <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />
+          )}
         </ScrollView>
         <View
           style={{
@@ -205,22 +214,27 @@ export default function SignUpPassword({ navigation }: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-
           {isValidate && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
+              onClick={() =>
+                navigation.navigate('SignUpPasswordConfirm', {
+                  previousPassword: password,
+                })
+              }
             />
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPasswordConfirm', {previousPassword: password})}
+              onClick={() =>
+                navigation.navigate('SignUpPasswordConfirm', {
+                  previousPassword: password,
+                })
+              }
             />
           )}
-          {!isValidate && isFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
+          {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
           {!isValidate && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}

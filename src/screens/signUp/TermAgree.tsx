@@ -8,7 +8,7 @@ import {
   View,
   GestureResponderEvent,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -82,7 +82,13 @@ function TermAgree({navigation}: Props) {
   });
   return (
     <>
-      <View style={{width: Dimensions.get('window').width / 7, height: 4, backgroundColor: '#A055FF'}} />
+      <View
+        style={{
+          width: Dimensions.get('window').width / 7,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
       <View style={{backgroundColor: 'white', flex: 1}}>
         <ScrollView>
           <View>
@@ -102,8 +108,14 @@ function TermAgree({navigation}: Props) {
                   borderRadius: 10,
                   marginTop: 31,
                 }}
-                onPress={(e: any) => onClick(e, firstTermChecked && secondTermChecked ? 'wholeDisagree' : 'wholeAgree')}
-              >
+                onPress={(e: any) =>
+                  onClick(
+                    e,
+                    firstTermChecked && secondTermChecked
+                      ? 'wholeDisagree'
+                      : 'wholeAgree',
+                  )
+                }>
                 {firstTermChecked && secondTermChecked ? (
                   <RoundChecked
                     style={styles.wholeAgreeCheckBox}
