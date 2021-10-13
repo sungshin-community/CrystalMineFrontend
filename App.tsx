@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar} from 'react-native';
+import {StatusBar, Platform} from 'react-native';
 
 //screens
 import Home from './src/screens/Home';
@@ -44,58 +44,73 @@ const App = () => {
         <Stack.Screen
           name="TermAgree"
           component={TermAgree}
-          options={{title: ''}}
+          options={{
+            title: '',
+            headerTintColor: '#000000',
+          }}
         />
         <Stack.Screen
           name="SignInID"
           component={SignInID}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
           name="SignInPassword"
           component={SignInPassword}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen
           name="SignUpID"
           component={SignUpID}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
           name="SignUpPassword"
           component={SignUpPassword}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
           name="SignUpPasswordConfirm"
           component={SignUpPasswordConfirm}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
           name="SignUpNickname"
           component={SignUpNickname}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
           name="MajorSelect"
           component={MajorSelect}
-          options={{title: ''}}
+          options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
           name="SignUpComplete"
           component={SignUpComplete}
-          options={{title: ''}}
+          options={{
+            title: '',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
         />
         <Stack.Screen
           name="RegularMemberAuthSelect"
           component={RegularMemberAuthSelect}
-          options={{title: ''}}
+          options={{
+            title: '',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
         />
         <Stack.Screen
           name="RegularMemberAuth"
           component={RegularMemberAuth}
-          options={{title: ''}}
+          options={{
+            title: '',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

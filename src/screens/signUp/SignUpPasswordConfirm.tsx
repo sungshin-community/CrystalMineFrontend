@@ -22,7 +22,7 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { validate } from '@babel/types';
+import {validate} from '@babel/types';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -64,7 +64,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
   };
 
   const validatePassword = (password: string) => {
-    setIsEqual (password === route.params.previousPassword);
+    setIsEqual(password === route.params.previousPassword);
   };
 
   const letShowPassword = () => {
@@ -93,33 +93,30 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               style={{
                 borderColor: isFocused ? '#A055FF' : '#D7DCE6',
               }}>
+              <TextInput
+                style={{width: '90%', fontSize: 21}}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  validatePassword(value);
+                }}
+                maxLength={25}
+                placeholder="비밀번호"
+                placeholderTextColor="#A0AAB4"
+                keyboardType="default"
+                secureTextEntry={showPassword ? false : true}
+                autoCapitalize="none"
+                returnKeyType="done"
+                selectionColor="#A055FF"
+              />
 
-                <TextInput
-                  style={{width: '90%', fontSize: 21}}
-                  onFocus={(e: any) => {
-                    onInputFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onInputFocusOut();
-                  }}
-                  onChangeText={(value: string) => {
-                    validatePassword(value);
-                  }}
-                  maxLength={25}
-                  placeholder="비밀번호"
-                  placeholderTextColor="#A0AAB4"
-                  keyboardType="default"
-                  secureTextEntry={showPassword ? false : true}
-                  autoCapitalize="none"
-                  returnKeyType="done"
-                  selectionColor="#A055FF"
-                />
-             
               <PasswordShow onPress={letShowPassword} />
             </MiddleInputContainerStyle>
-            {!isEqual && (
-            <CautionText text="비밀번호가 일치하지 않습니다" />
-          )}
+            {!isEqual && <CautionText text="비밀번호가 일치하지 않습니다" />}
           </ScrollView>
           <View
             style={{
@@ -139,9 +136,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 onClick={() => navigation.navigate('SignUpNickname')}
               />
             )}
-            {!isEqual && isFocused && (
-              <DisabledPurpleFullButton text="다음" />
-            )}
+            {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
             {!isEqual && !isFocused && (
               <DisabledPurpleRoundButton text="다음" />
             )}
@@ -167,32 +162,30 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
             style={{
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
-              <TextInput
-                style={{width: '90%', fontSize: 21}}
-                onFocus={(e: any) => {
-                  onInputFocus();
-                }}
-                onBlur={(e: any) => {
-                  onInputFocusOut();
-                }}
-                onChangeText={(value: string) => {
-                  validatePassword(value);
-                }}
-                maxLength={25}
-                placeholder="비밀번호"
-                placeholderTextColor="#A0AAB4"
-                keyboardType="default"
-                secureTextEntry={showPassword ? false : true}
-                autoCapitalize="none"
-                returnKeyType="done"
-                selectionColor="#A055FF"
-              />
+            <TextInput
+              style={{width: '90%', fontSize: 21}}
+              onFocus={(e: any) => {
+                onInputFocus();
+              }}
+              onBlur={(e: any) => {
+                onInputFocusOut();
+              }}
+              onChangeText={(value: string) => {
+                validatePassword(value);
+              }}
+              maxLength={25}
+              placeholder="비밀번호"
+              placeholderTextColor="#A0AAB4"
+              keyboardType="default"
+              secureTextEntry={showPassword ? false : true}
+              autoCapitalize="none"
+              returnKeyType="done"
+              selectionColor="#A055FF"
+            />
 
             <PasswordShow onPress={letShowPassword} />
           </MiddleInputContainerStyle>
-          {!isEqual && (
-            <CautionText text="비밀번호가 일치하지 않습니다" />
-          )}
+          {!isEqual && <CautionText text="비밀번호가 일치하지 않습니다" />}
         </ScrollView>
         <View
           style={{
@@ -212,12 +205,8 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               onClick={() => navigation.navigate('SignUpNickname')}
             />
           )}
-          {!isEqual && isFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
-          {!isEqual && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
-          )}
+          {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
+          {!isEqual && !isFocused && <DisabledPurpleRoundButton text="다음" />}
         </View>
       </Container>
     </>
