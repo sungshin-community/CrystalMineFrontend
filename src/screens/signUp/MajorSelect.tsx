@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, View, Dimensions} from 'react-native';
 import {BigOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -355,13 +355,7 @@ export default function MajorSelect({navigation}: Props) {
 
   return (
     <>
-      <View
-        style={{
-          width: 321.42,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
+      <View style={{width: Dimensions.get('window').width / 7 * 6, height: 4, backgroundColor: '#A055FF'}} />
       <Container>
         <BigOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요

@@ -9,6 +9,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 import {TwoLineTitle} from '../../components/Top';
@@ -77,7 +78,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
         keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <View style={{width: 214.28, height: 4, backgroundColor: '#A055FF'}} />
+        <View style={{width: Dimensions.get('window').width / 7 * 4, height: 4, backgroundColor: '#A055FF'}} />
         <Container>
           <ScrollView
             scrollEnabled={false}

@@ -9,6 +9,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 import {Description, NormalOneLineText} from '../../components/Top';
@@ -62,7 +63,7 @@ export default function SignUpNickname({navigation}: Props) {
         keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <View style={{width: 267.85, height: 4, backgroundColor: '#A055FF'}} />
+        <View style={{width: Dimensions.get('window').width / 7 * 5, height: 4, backgroundColor: '#A055FF'}} />
         <Container>
           <ScrollView
             scrollEnabled={false}
@@ -137,9 +138,6 @@ export default function SignUpNickname({navigation}: Props) {
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
-            <Description>
-              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
-            </Description>
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
