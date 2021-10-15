@@ -15,7 +15,7 @@ import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
-import SignUpComplete from './src/screens/signUp/SignUpComplete';
+import SignupComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 
@@ -87,7 +87,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignUpComplete"
-          component={SignUpComplete}
+          component={SignupComplete}
           options={{
             title: '',
             headerTintColor: '#000000',
