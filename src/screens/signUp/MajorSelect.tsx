@@ -18,6 +18,7 @@ const Container = styled.View`
   padding-bottom: 32px;
   background-color: #ffffff;
   padding: 37px 24px;
+  font-family: 'SpoqaHanSansNeo-Bold';
 `;
 
 const RadioContainer = styled.ScrollView`
@@ -29,6 +30,7 @@ const ButtonContainer = styled.View`
   align-items: center;
   bottom: 21px;
   margin-top: 32px;
+  font-family: 'SpoqaHanSansNeo-Bold';
 `;
 
 const majorOptionData = [
@@ -355,7 +357,13 @@ export default function MajorSelect({navigation}: Props) {
 
   return (
     <>
-      <View style={{width: Dimensions.get('window').width / 7 * 6, height: 4, backgroundColor: '#A055FF'}} />
+      <View
+        style={{
+          width: (Dimensions.get('window').width / 7) * 6,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
       <Container>
         <BigOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
