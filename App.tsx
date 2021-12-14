@@ -87,7 +87,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignUpComplete"
-          component={SignupComplete}
+          component={SignUpComplete}
           options={{
             title: '',
             headerTintColor: '#000000',
