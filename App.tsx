@@ -18,7 +18,7 @@ import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
-import { signUp } from './src/common/auth';
+import { getMajorList, signUp } from './src/common/auth';
 import SignUpDto from './src/classes/SignUpDto';
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +35,8 @@ const App = () => {
   useEffect(() => {
 
   // signUp(signUpDto);
+    // getMajorList();
+
     SplashScreen.hide();
   }, []);
 
