@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  SignUpPassword: undefined;
+  SignUpPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -133,14 +133,18 @@ export default function SignUpID({navigation}: Props) {
             {studentId.length === 8 && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPassword')}
+                onClick={() => navigation.navigate('SignUpPassword', {
+                  userId: studentId
+                })}
               />
             )}
 
             {studentId.length === 8 && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPassword')}
+                onClick={() => navigation.navigate('SignUpPassword', {
+                  userId: studentId
+                })}
               />
             )}
 
@@ -213,14 +217,18 @@ export default function SignUpID({navigation}: Props) {
           {studentId.length === 8 && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPassword')}
+              onClick={() => navigation.navigate('SignUpPassword', {
+                userId: studentId
+              })}
             />
           )}
 
           {studentId.length === 8 && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPassword')}
+              onClick={() => navigation.navigate('SignUpPassword', {
+                userId: studentId
+              })}
             />
           )}
 

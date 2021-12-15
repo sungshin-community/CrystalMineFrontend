@@ -341,12 +341,17 @@ const majorOptionData = [
 
 type RootStackParamList = {
   SignUpComplete: undefined;
+  MajorSelect: {userId: string, password: string, nickname: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function MajorSelect({navigation}: Props) {
+export default function MajorSelect({navigation, route}: Props) {
   const [yourMajor, setYourMajor] = useState('');
   const [selected, isSelected] = useState<boolean>(false);
+
+  console.log("id는", route.params.userId);
+  console.log("비번은", route.params.password);
+  console.log("닉네임은", route.params.nickname);
 
   const selectMajor = (major: string) => {
     isSelected(true);

@@ -42,13 +42,16 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  MajorSelect: undefined;
+  MajorSelect: {userId: string, password: string, nickname: string};
+  SignUpNickname: {userId: string, password: string}
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpNickname({navigation}: Props) {
+export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  console.log("앞에서 받은 학번은", route.params.userId);
+  console.log("앞에서 받은 비밀번호는", route.params.password);
   const onInputFocus = () => {
     setIsFocused(true);
   };
@@ -106,14 +109,22 @@ export default function SignUpNickname({navigation}: Props) {
             {nickname.length !== 0 && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('MajorSelect')}
+                onClick={() => navigation.navigate('MajorSelect', {
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                })}
               />
             )}
 
             {nickname.length !== 0 && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('MajorSelect')}
+                onClick={() => navigation.navigate('MajorSelect', {
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                })}
               />
             )}
 
@@ -173,14 +184,22 @@ export default function SignUpNickname({navigation}: Props) {
           {nickname.length !== 0 && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('MajorSelect')}
+              onClick={() => navigation.navigate('MajorSelect', {
+                userId: route.params.userId,
+                password: route.params.password,
+                nickname: nickname,
+              })}
             />
           )}
 
           {nickname.length !== 0 && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('MajorSelect')}
+              onClick={() => navigation.navigate('MajorSelect', {
+                userId: route.params.userId,
+                password: route.params.password,
+                nickname: nickname,
+              })}
             />
           )}
 
