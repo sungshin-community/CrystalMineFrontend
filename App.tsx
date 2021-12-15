@@ -18,6 +18,8 @@ import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
+import { signUp } from './src/common/auth';
+import SignUpDto from './src/classes/SignUpDto';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +28,13 @@ const App = () => {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 
+  let signUpDto: SignUpDto = {userName: "98765420", password: "skfhsoc123!!!", nickname: "니러ㅣㅇㅂ", agreementIds: [3, 4], departmentId: 1};
+
+ 
+
   useEffect(() => {
+
+  // signUp(signUpDto);
     SplashScreen.hide();
   }, []);
 
@@ -87,7 +95,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignUpComplete"
-          component={SignupComplete}
+          component={SignUpComplete}
           options={{
             title: '',
             headerTintColor: '#000000',
