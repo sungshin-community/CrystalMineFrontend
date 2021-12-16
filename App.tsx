@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar} from 'react-native';
 
 //screens
 import Home from './src/screens/Home';
@@ -27,6 +27,7 @@ const App = () => {
   StatusBar.setBarStyle('dark-content');
 
   useEffect(() => {
+
     SplashScreen.hide();
   }, []);
 
@@ -87,7 +88,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignUpComplete"
-          component={SignupComplete}
+          component={SignUpComplete}
           options={{
             title: '',
             headerTintColor: '#000000',

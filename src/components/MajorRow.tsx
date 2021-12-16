@@ -10,7 +10,7 @@ const MajorOption = styled.Text`
   font-size: 17px;
 `;
 
-export const Major = ({major, selectMajor, style}: any) => {
+export const MajorRow = ({major, selectMajor, style}: any) => {
   // const [selected, isSelected] = useState<boolean>(false);
 
   // const makeCheck = () => {

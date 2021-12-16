@@ -45,8 +45,8 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpNickname: undefined;
-  SignUpPasswordConfirm: {previousPassword: string};
+  SignUpNickname: {userId: string, password: string};
+  SignUpPasswordConfirm: {userId: string, previousPassword: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -54,6 +54,9 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
+
+  console.log("여기는 비번확인. 앞에서 받은 학번은", route.params.userId);
+  console.log("여기는 비번확인. 앞에서 받은 비번은", route.params.previousPassword);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -128,13 +131,19 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
             {isEqual && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpNickname')}
+                onClick={() => navigation.navigate('SignUpNickname', {
+                  userId: route.params.userId,
+                  password: route.params.previousPassword
+                })}
               />
             )}
             {isEqual && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpNickname')}
+                onClick={() => navigation.navigate('SignUpNickname', {
+                  userId: route.params.userId,
+                  password: route.params.previousPassword
+                })}
               />
             )}
             {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
@@ -197,13 +206,19 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           {isEqual && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpNickname')}
+              onClick={() => navigation.navigate('SignUpNickname', {
+                userId: route.params.userId,
+                password: route.params.previousPassword
+              })}
             />
           )}
           {isEqual && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpNickname')}
+              onClick={() => navigation.navigate('SignUpNickname', {
+                userId: route.params.userId,
+                password: route.params.previousPassword
+              })}
             />
           )}
           {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
