@@ -5,10 +5,10 @@ import Major from "../classes/Major";
 import SignUpResponseDto from "../classes/SignUpResponseDto";
 
 export const getMajorList = async () => {
-    const response = await client.get<Major[]>("/auth/departments");
+    const response = await client.get<AxiosResponse<Major[]>>("/auth/departments");
     // console.log(response);
     // console.log(response.data);
-    return response.data;
+    return response.data.data;
 }
 export const signUp = async (signUpRequestDto: SignUpRequestDto) => {
     const response = await client.post<SignUpRequestDto, AxiosResponse<SignUpResponseDto>>("/auth/signup", signUpRequestDto);
