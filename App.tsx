@@ -27,7 +27,6 @@ const App = () => {
   StatusBar.setBarStyle('dark-content');
 
   useEffect(() => {
-
     SplashScreen.hide();
   }, []);
 

@@ -22,7 +22,7 @@ export const MajorRow = ({major, selectMajor, style}: any) => {
       hitSlop={12}
       key={major.id}
       value={major.value}
-      onPress={() => selectMajor(major.name)}
+      onPress={() => selectMajor(major)}
       // onPressOut={makeCheck}
     >
       <MajorOption style={style}>{major.name}</MajorOption>
