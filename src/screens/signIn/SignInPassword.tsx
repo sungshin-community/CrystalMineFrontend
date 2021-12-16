@@ -11,12 +11,14 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
+import { login } from '../../common/auth';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -39,7 +41,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function SignIn() {
+type RootStackParamList = {
+  SignInPassword: {userId: string};
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
 
@@ -174,9 +180,9 @@ export default function SignIn() {
           backgroundColor: '#FFFFFF',
         }}>
         {password.length >= 10 ? (
-          <PurpleRoundButton text="다음" />
+          <PurpleRoundButton text="로그인" onClick={() => login({username: route.params.userId, password: password})} />
         ) : (
-          <DisabledPurpleRoundButton text="다음" />
+          <DisabledPurpleRoundButton text="로그인" />
         )}
         <Text
           style={{
