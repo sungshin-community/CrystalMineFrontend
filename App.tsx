@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar} from 'react-native';
 
 //screens
 import Home from './src/screens/Home';
@@ -18,8 +18,6 @@ import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
-import { signUp } from './src/common/auth';
-import SignUpDto from './src/classes/SignUpDto';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,13 +26,8 @@ const App = () => {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 
-  let signUpDto: SignUpDto = {userName: "98765420", password: "skfhsoc123!!!", nickname: "니러ㅣㅇㅂ", agreementIds: [3, 4], departmentId: 1};
-
- 
-
   useEffect(() => {
 
-  // signUp(signUpDto);
     SplashScreen.hide();
   }, []);
 

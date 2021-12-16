@@ -56,6 +56,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
   const [isEqual, setIsEqual] = useState<boolean>(false);
 
   console.log("여기는 비번확인. 앞에서 받은 학번은", route.params.userId);
+  console.log("여기는 비번확인. 앞에서 받은 비번은", route.params.previousPassword);
 
   const onInputFocus = () => {
     setIsFocused(true);
