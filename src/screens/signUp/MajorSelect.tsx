@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, Dimensions} from 'react-native';
 import {BigOneLineText, Description} from '../../components/Top';
@@ -6,9 +6,11 @@ import {
   DisabledPurpleRoundButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {Major} from '../../components/Major';
+import {MajorRow} from '../../components/MajorRow';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { getMajorList } from '../../common/auth';
+import Major from '../../classes/Major';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -348,6 +350,19 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function MajorSelect({navigation, route}: Props) {
   const [yourMajor, setYourMajor] = useState('');
   const [selected, isSelected] = useState<boolean>(false);
+  const [majorList, setMajorList] = useState<Major[]>([]);
+
+  useEffect(() => {
+    async function getList() {
+      const list = await getMajorList();
+      console.log(list);
+      setMajorList(list);
+    }
+    getList();
+    // console.log(majorList);
+  //  signUp(signUpDto);
+    
+  }, []);
 
   console.log("id는", route.params.userId);
   console.log("비번은", route.params.password);
@@ -374,13 +389,13 @@ export default function MajorSelect({navigation, route}: Props) {
           {selected
             ? majorOptionData.map(major =>
                 major.name === yourMajor ? (
-                  <Major
+                  <MajorRow
                     major={major}
                     selectMajor={selectMajor}
                     style={{color: '#a055ff'}}
                   />
                 ) : (
-                  <Major
+                  <MajorRow
                     major={major}
                     selectMajor={selectMajor}
                     style={{color: '#000000'}}
@@ -388,7 +403,7 @@ export default function MajorSelect({navigation, route}: Props) {
                 ),
               )
             : majorOptionData.map(major => (
-                <Major
+                <MajorRow
                   major={major}
                   selectMajor={selectMajor}
                   style={{color: '#000000'}}

@@ -1,19 +1,18 @@
-import SignUpDto from "../classes/SignUpDto";
+import SignUpRequestDto from "../classes/SignUpRequestDto";
 import client from "./api";
+import {AxiosResponse} from 'axios';
+import Major from "../classes/Major";
+import SignUpResponseDto from "../classes/SignUpResponseDto";
 
-export const getMajorList = () => {
-    return client.get("/auth/departments")
-    .then(function (response) {
-        console.log(response.data);
-    }).catch(function (error) {
-        console.log(error);
-    });
+export const getMajorList = async () => {
+    const response = await client.get<Major[]>("/auth/departments");
+    // console.log(response);
+    // console.log(response.data);
+    return response.data;
 }
-export const signUp = ({userName, password, nickname, agreementIds, departmentId}: SignUpDto) => {
-    return client.post("/auth/signup", {username: userName, password: password, nickname: nickname, agreementIds: agreementIds, departmentId: departmentId})
-    .then(function (response) {
-        console.log(response.data);
-    }).catch(function (error) {
-        console.log(error);
-    });
+export const signUp = async (signUpRequestDto: SignUpRequestDto) => {
+    const response = await client.post<SignUpRequestDto, AxiosResponse<SignUpResponseDto>>("/auth/signup", signUpRequestDto);
+    
+    console.log("상태", response.status);
+    return response.data as SignUpResponseDto;
 }

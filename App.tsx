@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar, Platform, View, Text} from 'react-native';
 
 //screens
 import Home from './src/screens/Home';
@@ -19,7 +19,11 @@ import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import { getMajorList, signUp } from './src/common/auth';
-import SignUpDto from './src/classes/SignUpDto';
+import SignUpRequestDto from './src/classes/SignUpRequestDto';
+import axios, {AxiosResponse} from 'axios';
+import SignUpResponseDto from './src/classes/SignUpResponseDto';
+import Major from './src/classes/Major';
+import client from './src/common/api';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,15 +31,23 @@ const App = () => {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
+  const [majorList, setMajorList] = useState<Major[]>([]);
 
-  let signUpDto: SignUpDto = {userName: "98765420", password: "skfhsoc123!!!", nickname: "니러ㅣㅇㅂ", agreementIds: [3, 4], departmentId: 1};
+  let signUpDto: SignUpRequestDto = {userName: "69175320", password: "skfhsoc123!!!", nickname: "롱초춘식", agreementIds: [3, 4], departmentId: 1};
 
  
 
   useEffect(() => {
-
-  // signUp(signUpDto);
-    // getMajorList();
+    // async function getList() {
+    //   const list = await getMajorList();
+    //   setMajorList(list);
+    // }
+    // getList();
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&");
+    // console.log(majorList);
+    // console.log(majorList);
+  //  signUp(signUpDto);
+    
 
     SplashScreen.hide();
   }, []);
@@ -45,6 +57,7 @@ const App = () => {
   //     SplashScreen.hide();
   //   }, 1);
   // }, []);
+
 
   return (
     <NavigationContainer>
