@@ -9,7 +9,7 @@ import {
 import {MajorRow} from '../../components/MajorRow';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { getMajorList } from '../../common/auth';
+import { getMajorList, register } from '../../common/auth';
 import Major from '../../classes/Major';
 
 StatusBar.setBackgroundColor('white');
@@ -40,9 +40,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function MajorSelect({navigation, route}: Props) {
-  const [yourMajor, setYourMajor] = useState('');
-  const [selected, isSelected] = useState<boolean>(false);
   const [majorList, setMajorList] = useState<Major[]>([]);
+  const [selectedMajorId, setSelectedMajorId] = useState<number>(-1);
 
   useEffect(() => {
     async function getList() {
@@ -56,13 +55,8 @@ export default function MajorSelect({navigation, route}: Props) {
     
   }, []);
 
-  console.log("id는", route.params.userId);
-  console.log("비번은", route.params.password);
-  console.log("닉네임은", route.params.nickname);
-
-  const selectMajor = (major: string) => {
-    isSelected(true);
-    setYourMajor(major);
+  const selectMajor = (major: Major) => {
+    setSelectedMajorId(major.id);
   };
 
   return (
@@ -78,35 +72,26 @@ export default function MajorSelect({navigation, route}: Props) {
       </Container>
       <View style={{flex: 1}}>
         <RadioContainer>
-          {selected
-            ? majorList.map(major =>
-                major.name === yourMajor ? (
+          {majorList.map((major, index) =>
                   <MajorRow
+                    key={index}
                     major={major}
                     selectMajor={selectMajor}
-                    style={{color: '#a055ff'}}
+                    style={{color: major.id === selectedMajorId ? '#a055ff' : '#000000'}}
                   />
-                ) : (
-                  <MajorRow
-                    major={major}
-                    selectMajor={selectMajor}
-                    style={{color: '#000000'}}
-                  />
-                ),
+                ,
               )
-            : majorList.map(major => (
-                <MajorRow
-                  major={major}
-                  selectMajor={selectMajor}
-                  style={{color: '#000000'}}
-                />
-              ))}
+            }
         </RadioContainer>
         <ButtonContainer>
-          {selected ? (
+          {selectedMajorId !== -1 ? (
             <PurpleRoundButton
               text="회원가입"
-              onClick={() => navigation.navigate('SignUpComplete')}
+              onClick={() => {
+                  register({username: route.params.userId, password: route.params.password, nickname: route.params.nickname, departmentId: selectedMajorId, agreementIds: [3, 4]});
+                  navigation.navigate('SignUpComplete')
+                }
+              }
             />
           ) : (
             <DisabledPurpleRoundButton text="회원가입" />

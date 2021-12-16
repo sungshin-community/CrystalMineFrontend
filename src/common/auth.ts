@@ -6,13 +6,12 @@ import SignUpResponseDto from "../classes/SignUpResponseDto";
 
 export const getMajorList = async () => {
     const response = await client.get<AxiosResponse<Major[]>>("/auth/departments");
-    // console.log(response);
-    // console.log(response.data);
     return response.data.data;
 }
-export const signUp = async (signUpRequestDto: SignUpRequestDto) => {
-    const response = await client.post<SignUpRequestDto, AxiosResponse<SignUpResponseDto>>("/auth/signup", signUpRequestDto);
-    
+export const register = async (signUpRequestDto: SignUpRequestDto) => {
+    console.log(signUpRequestDto);
+    const response = await client.post("/auth/signup", signUpRequestDto);
+    console.log("데이터", response.data);
     console.log("상태", response.status);
-    return response.data as SignUpResponseDto;
+    return response.data;
 }
