@@ -16,7 +16,19 @@ export const checkEmailConflict = async (studentId: string) => {
         return false;
     }
     return false;
-    
+}
+
+export const checkNicknameConflict = async (nickname: string) => {
+    try {
+        const response = await client.get<AxiosResponse>("/auth/check-nickname/" + nickname);
+        if (response.status === 200) {
+            return true;
+        }
+    }
+    catch (error) {
+        return false;
+    }
+    return false;
 }
 
 export const getMajorList = async () => {
@@ -24,17 +36,13 @@ export const getMajorList = async () => {
     return response.data.data;
 }
 export const register = async (signUpRequestDto: SignUpRequestDto) => {
-    console.log(signUpRequestDto);
     const response = await client.post("/auth/signup", signUpRequestDto);
     console.log("데이터", response.data);
-    console.log("상태", response.status);
     return response.data;
 }
 
 export const login = async (signInRequestDto: SignInRequestDto) => {
-    console.log(signInRequestDto);
     const response = await client.post("/auth/signin", signInRequestDto);
     console.log("데이터", response.data);
-    console.log("상태", response.status);
     return response.data;
 }
