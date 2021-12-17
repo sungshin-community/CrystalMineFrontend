@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {
@@ -24,6 +23,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
+import { checkEmailConflict } from '../../common/auth';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -35,7 +35,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 130px 24px 52px 24px;
+  margin: 55px 24px 52px 24px;
 `;
 
 const styles = StyleSheet.create({
@@ -52,6 +52,10 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     // justifyContent: 'flex-end'
   },
+  errorMessage: {
+    marginTop: 10,
+    color: '#FF0000'
+  }
 });
 type RootStackParamList = {
   SignUpPassword: {userId: string};
@@ -61,6 +65,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignUpID({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
+  const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -123,6 +128,7 @@ export default function SignUpID({navigation}: Props) {
                 <Text style={styles.suffix}>@sungshin.ac.kr</Text>
               </View>
             </View>
+            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>}
           </ScrollView>
           <View
             style={{
@@ -133,18 +139,32 @@ export default function SignUpID({navigation}: Props) {
             {studentId.length === 8 && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPassword', {
+                onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  if (!result) {
+                    setIsDuplicate(true);
+                    return;
+                  }
+                  navigation.navigate('SignUpPassword', {
                   userId: studentId
                 })}
+              }
               />
             )}
 
             {studentId.length === 8 && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpPassword', {
-                  userId: studentId
-                })}
+                onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  if (!result) {
+                    setIsDuplicate(true);
+                    return;
+                  }
+                    navigation.navigate('SignUpPassword', {
+                    userId: studentId
+                  })}
+                }
               />
             )}
 
@@ -206,6 +226,7 @@ export default function SignUpID({navigation}: Props) {
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
+            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>}
           </View>
         </ScrollView>
         <View
@@ -217,18 +238,32 @@ export default function SignUpID({navigation}: Props) {
           {studentId.length === 8 && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPassword', {
-                userId: studentId
-              })}
+              onClick={async () => {
+                let result: boolean = await checkEmailConflict(studentId);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                  navigation.navigate('SignUpPassword', {
+                  userId: studentId
+                })}
+              }
             />
           )}
 
           {studentId.length === 8 && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpPassword', {
-                userId: studentId
-              })}
+              onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  if (!result) {
+                    setIsDuplicate(true);
+                    return;
+                  }
+                  navigation.navigate('SignUpPassword', {
+                  userId: studentId
+                })}
+              }
             />
           )}
 
