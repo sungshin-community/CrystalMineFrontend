@@ -2,10 +2,10 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar} from 'react-native';
 
 //screens
-import Home from './src/screens/Home';
+import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
 import SignInID from './src/screens/signIn/SignInID';
 import SignInPassword from './src/screens/signIn/SignInPassword';
@@ -18,8 +18,9 @@ import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
-import { signUp } from './src/common/auth';
-import SignUpDto from './src/classes/SignUpDto';
+
+// import Home from './src/screens/GNB/Home';
+import GlobalNavbar from './src/components/GlobalNavbar';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,13 +29,7 @@ const App = () => {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 
-  let signUpDto: SignUpDto = {userName: "98765420", password: "skfhsoc123!!!", nickname: "니러ㅣㅇㅂ", agreementIds: [3, 4], departmentId: 1};
-
- 
-
   useEffect(() => {
-
-  // signUp(signUpDto);
     SplashScreen.hide();
   }, []);
 
@@ -48,7 +43,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
         {/* [F-1] */}
-        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
+        <Stack.Screen
+          name="SplashHome"
+          component={SplashHome}
+          options={{title: ''}}
+        />
         <Stack.Screen
           name="TermAgree"
           component={TermAgree}
@@ -118,6 +117,14 @@ const App = () => {
             title: '',
             headerTintColor: '#000000',
             headerBackVisible: false,
+          }}
+        />
+        {/* GNB */}
+        <Stack.Screen
+          name="GlobalNavbar"
+          component={GlobalNavbar}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>

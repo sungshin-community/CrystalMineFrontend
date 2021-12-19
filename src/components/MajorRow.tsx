@@ -10,7 +10,7 @@ const MajorOption = styled.Text`
   font-size: 17px;
 `;
 
-export const Major = ({major, selectMajor, style}: any) => {
+export const MajorRow = ({major, selectMajor, style}: any) => {
   // const [selected, isSelected] = useState<boolean>(false);
 
   // const makeCheck = () => {
@@ -22,7 +22,7 @@ export const Major = ({major, selectMajor, style}: any) => {
       hitSlop={12}
       key={major.id}
       value={major.value}
-      onPress={() => selectMajor(major.name)}
+      onPress={() => selectMajor(major)}
       // onPressOut={makeCheck}
     >
       <MajorOption style={style}>{major.name}</MajorOption>

@@ -1,5 +1,5 @@
-export default interface SignUpDto {
-    userName: string;
+export default interface SignUpRequestDto {
+    username: string;
     password: string;
     nickname: string;
     agreementIds: number[];

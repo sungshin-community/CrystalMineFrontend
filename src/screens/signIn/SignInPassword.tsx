@@ -11,12 +11,14 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
+import {login} from '../../common/auth';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -39,7 +41,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function SignIn() {
+type RootStackParamList = {
+  SignInPassword: {userId: string};
+  Home: undefined;
+  GlobalNavbar: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
 
@@ -104,11 +112,17 @@ export default function SignIn() {
             backgroundColor: '#FFFFFF',
           }}>
           {password.length >= 10 && isPasswordFocused && (
-            <PurpleFullButton text="다음" />
+            <PurpleFullButton
+              text="다음"
+              onClick={() => navigation.navigate('GlobalNavbar')}
+            />
           )}
 
           {password.length >= 10 && !isPasswordFocused && (
-            <PurpleRoundButton text="다음" />
+            <PurpleRoundButton
+              text="다음"
+              onClick={() => navigation.navigate('GlobalNavbar')}
+            />
           )}
 
           {password.length < 10 && isPasswordFocused && (
@@ -173,9 +187,31 @@ export default function SignIn() {
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
         }}>
-        {password.length >= 10 ? (
-          <PurpleRoundButton text="다음" />
-        ) : (
+        {password.length >= 10 && isPasswordFocused && (
+          <PurpleFullButton
+            text="다음"
+            onClick={() => {
+              navigation.navigate('GlobalNavbar');
+              login({username: route.params.userId, password: password});
+            }}
+          />
+        )}
+
+        {password.length >= 10 && !isPasswordFocused && (
+          <PurpleRoundButton
+            text="다음"
+            onClick={() => {
+              navigation.navigate('GlobalNavbar');
+              login({username: route.params.userId, password: password});
+            }}
+          />
+        )}
+
+        {password.length < 10 && isPasswordFocused && (
+          <DisabledPurpleFullButton text="다음" />
+        )}
+
+        {password.length < 10 && !isPasswordFocused && (
           <DisabledPurpleRoundButton text="다음" />
         )}
         <Text
