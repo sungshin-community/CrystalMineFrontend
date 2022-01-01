@@ -9,7 +9,7 @@ import {
 import {MajorRow} from '../../components/MajorRow';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { getMajorList, register } from '../../common/auth';
+import { getMajorList, register } from '../../common/authApi';
 import Major from '../../classes/Major';
 
 StatusBar.setBackgroundColor('white');
