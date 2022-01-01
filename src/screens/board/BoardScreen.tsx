@@ -43,7 +43,7 @@ export default function BoardScreen() {
 
   return (
     <>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
           <BoardListContainer boardCategory="고정게시판" component={<BoardList items={pinnedBoardList}/>} />
           <BoardListContainer boardCategory="공식게시판" component={<BoardList items={officialBoardList}/>} />
           <BoardListContainer boardCategory="수정게시판" component={<BoardList items={customBoardList}/>} />
