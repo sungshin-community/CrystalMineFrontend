@@ -18,6 +18,7 @@ import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
+import BoardScreen from './src/screens/board/BoardScreen';
 
 // import Home from './src/screens/GNB/Home';
 import GlobalNavbar from './src/components/GlobalNavbar';
@@ -125,6 +126,15 @@ const App = () => {
           component={GlobalNavbar}
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="BoardScreen"
+          component={BoardScreen}
+          options={{
+            title: '게시판',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
           }}
         />
       </Stack.Navigator>

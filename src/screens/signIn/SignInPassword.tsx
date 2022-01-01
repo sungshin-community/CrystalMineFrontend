@@ -45,6 +45,7 @@ type RootStackParamList = {
   SignInPassword: {userId: string};
   Home: undefined;
   GlobalNavbar: undefined;
+  BoardScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInPassword({navigation, route}: Props) {
