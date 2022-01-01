@@ -7,7 +7,7 @@ import {
   Text
 } from 'react-native';
 
-import BoardList from '../../components/BoardList';
+import BoardList, { MenuList, CustomBoardList, OfficialBoardList } from '../../components/BoardList';
 import Board from '../../classes/Board';
 import { BoardListContainer } from '../../components/HideToggleContainer';
 import { getCustomBoardList, getOfficialBoardList, getPinnedBoardList } from '../../common/boardApi';
@@ -44,9 +44,10 @@ export default function BoardScreen() {
   return (
     <ScrollView>
         <View style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
+          <BoardListContainer boardCategory="모아보기" component={<MenuList />} />
           <BoardListContainer boardCategory="고정게시판" component={<BoardList items={pinnedBoardList}/>} />
-          <BoardListContainer boardCategory="공식게시판" component={<BoardList items={officialBoardList}/>} />
-          <BoardListContainer boardCategory="수정게시판" component={<BoardList items={customBoardList}/>} />
+          <BoardListContainer boardCategory="공식게시판" component={<OfficialBoardList items={officialBoardList}/>} />
+          <BoardListContainer boardCategory="수정게시판" component={<CustomBoardList items={customBoardList}/>} />
           <View style={{height: 36, backgroundColor: "#FFFFFF"}}></View>
         </View>
     </ScrollView>
