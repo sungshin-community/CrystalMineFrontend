@@ -27,9 +27,6 @@ StatusBar.setBackgroundColor('white');
 StatusBar.setBarStyle('dark-content');
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    flex: 1,
-  },
   inputContainer: {
     fontSize: 21,
     borderBottomWidth: 2,
@@ -108,7 +105,8 @@ export default function SignInID({navigation}: Props) {
 
         <View
           style={{
-            bottom: isIdFocused ? 80 : 21,
+            paddingBottom: isIdFocused ? 80 : 21,
+            backgroundColor: '#FFFFFF',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -180,9 +178,10 @@ export default function SignInID({navigation}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: isIdFocused ? 0 : 21,
+          paddingBottom: isIdFocused ? 0 : 21,
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#FFFFFF'
         }}>
         {studentId.length === 8 && isIdFocused && (
           <PurpleFullButton
