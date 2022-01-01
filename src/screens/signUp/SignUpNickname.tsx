@@ -61,8 +61,6 @@ export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
-  console.log("앞에서 받은 학번은", route.params.userId);
-  console.log("앞에서 받은 비밀번호는", route.params.password);
   const onInputFocus = () => {
     setIsFocused(true);
   };
