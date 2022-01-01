@@ -191,9 +191,14 @@ export default function SignInPassword({navigation, route}: Props) {
         {password.length >= 10 && isPasswordFocused && (
           <PurpleFullButton
             text="다음"
-            onClick={() => {
-              navigation.navigate('GlobalNavbar');
-              login({username: route.params.userId, password: password});
+            onClick={async () => {
+              let result: boolean = await login({username: route.params.userId, password: password});
+              if (result) {
+                navigation.navigate('GlobalNavbar');
+              }
+              else {
+                console.log("로그인 실패");
+              }
             }}
           />
         )}
@@ -201,9 +206,14 @@ export default function SignInPassword({navigation, route}: Props) {
         {password.length >= 10 && !isPasswordFocused && (
           <PurpleRoundButton
             text="다음"
-            onClick={() => {
-              navigation.navigate('GlobalNavbar');
-              login({username: route.params.userId, password: password});
+            onClick={async () => {
+              let result: boolean = await login({username: route.params.userId, password: password});
+              if (result) {
+                navigation.navigate('GlobalNavbar');
+              }
+              else {
+                console.log("로그인 실패");
+              }
             }}
           />
         )}
