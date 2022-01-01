@@ -29,6 +29,23 @@ export default function BoardList({items}: Props) {
   )
 }
 
+export function OfficialBoardList({items}: Props) {
+    return (
+      <View>
+        <FlatList
+          data={items}
+          renderItem={({item})=><View style={{flexDirection: 'row', paddingVertical: 11, alignItems: 'center', backgroundColor: '#F6F6F6'}}>
+            {!item.isPinned ? <GrayPin style={{marginLeft: 25}} /> : <OrangePin style={{marginLeft: 25}} />}
+            <View>
+              <Text style={{fontSize: 14, color: '#000000', marginLeft: 15}}>{item.name}</Text>
+              <Text style={{fontSize: 14, color: '#9F9F9F', marginLeft: 15}}>{item.introduction}</Text>
+            </View>
+          </View>}
+        />
+      </View>
+    )
+  }
+
 export function CustomBoardList({items}: Props) {
   return (
     <View>
