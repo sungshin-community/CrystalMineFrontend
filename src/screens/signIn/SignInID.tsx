@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  SignInPassword: undefined;
+  SignInPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInID({navigation}: Props) {
@@ -115,14 +115,18 @@ export default function SignInID({navigation}: Props) {
           {studentId.length === 8 && isIdFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignInPassword')}
+              onClick={() => navigation.navigate('SignInPassword', {
+                userId: studentId
+              })}
             />
           )}
 
           {studentId.length === 8 && !isIdFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignInPassword')}
+              onClick={() => navigation.navigate('SignInPassword', {
+                userId: studentId
+              })}
             />
           )}
 
@@ -183,14 +187,18 @@ export default function SignInID({navigation}: Props) {
         {studentId.length === 8 && isIdFocused && (
           <PurpleFullButton
             text="다음"
-            onClick={() => navigation.navigate('SignInPassword')}
+            onClick={() => navigation.navigate('SignInPassword', {
+              userId: studentId
+            })}
           />
         )}
 
         {studentId.length === 8 && !isIdFocused && (
           <PurpleRoundButton
             text="다음"
-            onClick={() => navigation.navigate('SignInPassword')}
+            onClick={() => navigation.navigate('SignInPassword', {
+              userId: studentId
+            })}
           />
         )}
 
