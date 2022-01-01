@@ -50,6 +50,23 @@ export const register = async (signUpRequestDto: SignUpRequestDto) => {
     }
 }
 
+export const sendEmail = async () => {
+    try {
+        const accessToken = await AsyncStorage.getItem("accessToken");
+        const response = await client.post<AxiosResponse>("/mail/regular-member", null, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+        console.log(response.data);
+        return true;
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
 export const login = async (signInRequestDto: SignInRequestDto) => {
     try {
         const response = await client.post<AxiosResponse<SignUpResponseDto>>("/auth/signin", signInRequestDto);
