@@ -23,7 +23,7 @@ interface Props {
 
 function GlobalNavbar() {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator initialRouteName="Home" screenOptions={{tabBarStyle: {height: 55}}}>
       <Tab.Screen
         name="Message"
         component={Message}
