@@ -107,7 +107,7 @@ export default function SignInPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: 20,
+            paddingBottom: 20,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
@@ -183,7 +183,7 @@ export default function SignInPassword({navigation, route}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: 20,
+          paddingBottom: 20,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
