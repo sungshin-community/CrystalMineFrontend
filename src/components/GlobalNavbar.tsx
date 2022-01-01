@@ -41,13 +41,18 @@ function GlobalNavbar() {
         name="Board"
         component={Board}
         options={{
-          headerShown: false,
+          title: "게시판",
+          headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <BoardGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
+          headerTitleStyle: {
+            fontSize: 17,
+            fontWeight: '400'
+          }
         }}
       />
       <Tab.Screen
