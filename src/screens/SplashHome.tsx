@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Button,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {View} from 'react-native';
 import styled from 'styled-components/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PurpleRoundButton, WhiteRoundButton} from '../components/Button';
@@ -35,7 +26,7 @@ const ButtonContainer = styled.View`
 `;
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-const Home = ({navigation}: Props) => {
+const SplashHome = ({navigation}: Props) => {
   return (
     <>
       <Container>
@@ -61,4 +52,4 @@ const Home = ({navigation}: Props) => {
   );
 };
 
-export default Home;
+export default SplashHome;

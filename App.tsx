@@ -5,7 +5,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {StatusBar} from 'react-native';
 
 //screens
-import Home from './src/screens/Home';
+import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
 import SignInID from './src/screens/signIn/SignInID';
 import SignInPassword from './src/screens/signIn/SignInPassword';
@@ -19,6 +19,9 @@ import SignUpComplete from './src/screens/signUp/SignupComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import BoardScreen from './src/screens/board/BoardScreen';
+
+// import Home from './src/screens/GNB/Home';
+import GlobalNavbar from './src/components/GlobalNavbar';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +44,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
         {/* [F-1] */}
-        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
+        <Stack.Screen
+          name="SplashHome"
+          component={SplashHome}
+          options={{title: ''}}
+        />
         <Stack.Screen
           name="TermAgree"
           component={TermAgree}
@@ -111,6 +118,14 @@ const App = () => {
             title: '',
             headerTintColor: '#000000',
             headerBackVisible: false,
+          }}
+        />
+        {/* GNB */}
+        <Stack.Screen
+          name="GlobalNavbar"
+          component={GlobalNavbar}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen

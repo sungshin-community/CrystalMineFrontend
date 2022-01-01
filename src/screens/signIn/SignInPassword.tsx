@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   SignInPassword: {userId: string};
+  Home: undefined;
+  GlobalNavbar: undefined;
   BoardScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -105,17 +107,23 @@ export default function SignInPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: 20,
+            paddingBottom: 20,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
           }}>
           {password.length >= 10 && isPasswordFocused && (
-            <PurpleFullButton text="다음" />
+            <PurpleFullButton
+              text="다음"
+              onClick={() => navigation.navigate('GlobalNavbar')}
+            />
           )}
 
           {password.length >= 10 && !isPasswordFocused && (
-            <PurpleRoundButton text="다음" />
+            <PurpleRoundButton
+              text="다음"
+              onClick={() => navigation.navigate('GlobalNavbar')}
+            />
           )}
 
           {password.length < 10 && isPasswordFocused && (
@@ -175,24 +183,47 @@ export default function SignInPassword({navigation, route}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: 20,
+          paddingBottom: 20,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
         }}>
-        {password.length >= 10 ? (
-          <PurpleRoundButton text="로그인" onClick={async () => {
+        {password.length >= 10 && isPasswordFocused && (
+          <PurpleFullButton
+            text="다음"
+            onClick={async () => {
               let result: boolean = await login({username: route.params.userId, password: password});
               if (result) {
-                navigation.navigate('BoardScreen');
+                navigation.navigate('GlobalNavbar');
               }
               else {
                 console.log("로그인 실패");
               }
-            }
-          } />
-        ) : (
-          <DisabledPurpleRoundButton text="로그인" />
+            }}
+          />
+        )}
+
+        {password.length >= 10 && !isPasswordFocused && (
+          <PurpleRoundButton
+            text="다음"
+            onClick={async () => {
+              let result: boolean = await login({username: route.params.userId, password: password});
+              if (result) {
+                navigation.navigate('GlobalNavbar');
+              }
+              else {
+                console.log("로그인 실패");
+              }
+            }}
+          />
+        )}
+
+        {password.length < 10 && isPasswordFocused && (
+          <DisabledPurpleFullButton text="다음" />
+        )}
+
+        {password.length < 10 && !isPasswordFocused && (
+          <DisabledPurpleRoundButton text="다음" />
         )}
         <Text
           style={{
