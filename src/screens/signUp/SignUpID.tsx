@@ -23,7 +23,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { checkEmailConflict } from '../../common/auth';
+import { checkEmailConflict } from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);

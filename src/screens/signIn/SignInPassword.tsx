@@ -18,7 +18,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { login } from '../../common/auth';
+import { login } from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   SignInPassword: {userId: string};
+  BoardScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInPassword({navigation, route}: Props) {
@@ -180,7 +181,16 @@ export default function SignInPassword({navigation, route}: Props) {
           backgroundColor: '#FFFFFF',
         }}>
         {password.length >= 10 ? (
-          <PurpleRoundButton text="로그인" onClick={() => login({username: route.params.userId, password: password})} />
+          <PurpleRoundButton text="로그인" onClick={async () => {
+              let result: boolean = await login({username: route.params.userId, password: password});
+              if (result) {
+                navigation.navigate('BoardScreen');
+              }
+              else {
+                console.log("로그인 실패");
+              }
+            }
+          } />
         ) : (
           <DisabledPurpleRoundButton text="로그인" />
         )}

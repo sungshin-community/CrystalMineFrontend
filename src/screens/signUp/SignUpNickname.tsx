@@ -23,7 +23,7 @@ import {
 } from '../../components/Button';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { checkNicknameConflict } from '../../common/auth';
+import { checkNicknameConflict } from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
