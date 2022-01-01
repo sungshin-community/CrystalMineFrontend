@@ -1,5 +1,5 @@
 import SignUpRequestDto from "../classes/SignUpRequestDto";
-import client from "./api";
+import client from "./client";
 import {AxiosResponse} from 'axios';
 import Major from "../classes/Major";
 import SignUpResponseDto from "../classes/SignUpResponseDto";

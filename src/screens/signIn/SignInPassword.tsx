@@ -18,7 +18,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { login } from '../../common/auth';
+import { login } from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
