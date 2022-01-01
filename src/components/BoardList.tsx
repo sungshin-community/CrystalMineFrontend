@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 
 import {
     ScrollView,
@@ -12,6 +12,7 @@ import MyPostingIcon, {MyCommentIcon, ScrapPostingIcon} from '../../resources/ic
 import { GrayPin, OrangePin, PurplePin } from '../../resources/icon/Pin';
 import PlusIcon from '../../resources/icon/PlusIcon';
 import Board from '../classes/Board'
+import { toggleBoardPin } from '../common/boardApi';
 
 interface Props {
     items: Board[];
@@ -22,7 +23,7 @@ export default function BoardList({items}: Props) {
     <FlatList
       data={items}
       renderItem={({item})=><View style={{flexDirection: 'row', paddingVertical: 11, alignItems: 'center', backgroundColor: '#F6F6F6'}}>
-          {!item.isPinned ? <GrayPin style={{marginLeft: 25}} /> : item.isOfficial ? <OrangePin style={{marginLeft: 25}} /> : <PurplePin style={{marginLeft: 25}} />}
+          {!item.isPinned ? <GrayPin style={{marginLeft: 20}} /> : item.isOfficial ? <OrangePin style={{marginLeft: 20}} /> : <PurplePin style={{marginLeft: 20}} />}
           <Text style={{fontSize: 14, color: '#000000', marginLeft: 15}}>{item.name}</Text>
         </View>}
     />
@@ -30,12 +31,31 @@ export default function BoardList({items}: Props) {
 }
 
 export function OfficialBoardList({items}: Props) {
+    const [value, setValue] = useState<boolean>(false);
     return (
       <View>
         <FlatList
           data={items}
           renderItem={({item})=><View style={{flexDirection: 'row', paddingVertical: 11, alignItems: 'center', backgroundColor: '#F6F6F6'}}>
-            {!item.isPinned ? <GrayPin style={{marginLeft: 25}} /> : <OrangePin style={{marginLeft: 25}} />}
+            {!item.isPinned ?
+                <GrayPin style={{marginLeft: 20}} 
+                  onPress={async () => {
+                    let result: boolean = await toggleBoardPin(item.id);
+                    if (result) {
+                      item.isPinned = true;
+                      setValue(!value);
+                    }
+                  }}
+                /> : 
+                <OrangePin style={{marginLeft: 20}} 
+                  onPress={async () => {
+                    let result: boolean = await toggleBoardPin(item.id);
+                    if (result) {
+                        item.isPinned = false;
+                        setValue(!value);
+                    }
+                  }}
+                />}
             <View>
               <Text style={{fontSize: 14, color: '#000000', marginLeft: 15}}>{item.name}</Text>
               <Text style={{fontSize: 14, color: '#9F9F9F', marginLeft: 15}}>{item.introduction}</Text>
@@ -47,6 +67,7 @@ export function OfficialBoardList({items}: Props) {
   }
 
 export function CustomBoardList({items}: Props) {
+  const [value, setValue] = useState<boolean>(false);
   return (
     <View>
       <TouchableWithoutFeedback onPress={() => console.log("눌림")}>
@@ -56,15 +77,33 @@ export function CustomBoardList({items}: Props) {
         </View>
       </TouchableWithoutFeedback>
       <FlatList
-        data={items}
-        renderItem={({item})=><View style={{flexDirection: 'row', paddingVertical: 11, alignItems: 'center', backgroundColor: '#F6F6F6'}}>
-          {!item.isPinned ? <GrayPin style={{marginLeft: 25}} /> : item.isOfficial ? <OrangePin style={{marginLeft: 25}} /> : <PurplePin style={{marginLeft: 25}} />}
-          <View>
-            <Text style={{fontSize: 14, color: '#000000', marginLeft: 15}}>{item.name}</Text>
-            <Text style={{fontSize: 14, color: '#9F9F9F', marginLeft: 15}}>{item.introduction}</Text>
-          </View>
-        </View>}
-      />
+          data={items}
+          renderItem={({item})=><View style={{flexDirection: 'row', paddingVertical: 11, alignItems: 'center', backgroundColor: '#F6F6F6'}}>
+            {!item.isPinned ?
+                <GrayPin style={{marginLeft: 20}} 
+                  onPress={async () => {
+                    let result: boolean = await toggleBoardPin(item.id);
+                    if (result) {
+                      item.isPinned = true;
+                      setValue(!value);
+                    }
+                  }}
+                /> : 
+                <PurplePin style={{marginLeft: 20}} 
+                  onPress={async () => {
+                    let result: boolean = await toggleBoardPin(item.id);
+                    if (result) {
+                        item.isPinned = false;
+                        setValue(!value);
+                    }
+                  }}
+                />}
+            <View>
+              <Text style={{fontSize: 14, color: '#000000', marginLeft: 15}}>{item.name}</Text>
+              <Text style={{fontSize: 14, color: '#9F9F9F', marginLeft: 15}}>{item.introduction}</Text>
+            </View>
+          </View>}
+        />
     </View>
   )
 }
