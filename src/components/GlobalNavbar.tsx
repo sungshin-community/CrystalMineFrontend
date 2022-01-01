@@ -33,6 +33,7 @@ function GlobalNavbar() {
             return <MessageGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
+          tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -41,10 +42,11 @@ function GlobalNavbar() {
         component={Board}
         options={{
           headerShown: false,
-          tabBarIcon: ({size}: Props) => {
-            return <BoardGNB size={size} />;
+          tabBarIcon: ({size, color, focused}: Props) => {
+            return <BoardGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
+          tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -53,10 +55,11 @@ function GlobalNavbar() {
         component={Home}
         options={{
           headerShown: false,
-          tabBarIcon: ({size}: Props) => {
-            return <HomeGNB size={size} />;
+          tabBarIcon: ({size, color, focused}: Props) => {
+            return <HomeGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
+          tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -65,10 +68,11 @@ function GlobalNavbar() {
         component={Alert}
         options={{
           headerShown: false,
-          tabBarIcon: ({size}: Props) => {
-            return <AlertGNB size={size} />;
+          tabBarIcon: ({size, color, focused}: Props) => {
+            return <AlertGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
+          tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -77,10 +81,11 @@ function GlobalNavbar() {
         component={MyPage}
         options={{
           headerShown: false,
-          tabBarIcon: ({size}: Props) => {
-            return <MyPageGNB size={size} />;
+          tabBarIcon: ({size, color, focused}: Props) => {
+            return <MyPageGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
+          tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
