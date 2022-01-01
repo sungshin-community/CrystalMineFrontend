@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   ScrollView,
@@ -8,26 +8,45 @@ import {
 } from 'react-native';
 
 import BoardList from '../../components/BoardList';
-import { Board } from '../../classes/Board';
+import Board from '../../classes/Board';
 import { BoardListContainer } from '../../components/HideToggleContainer';
+import { getCustomBoardList, getOfficialBoardList, getPinnedBoardList } from '../../common/boardApi';
 
 export default function BoardScreen() {
-  let menuList: Board[] = [
-    {id: 1, title: "HOT 게시판", isPinned: true, isOfficial: true},
-    {id: 2, title: "비밀게시판", isPinned: true, isOfficial: true},
-    {id: 3, title: "졸업생게시판", isPinned: true, isOfficial: false},
-    {id: 4, title: "새내기게시판", isPinned: false, isOfficial: true}
+  const [pinnedBoardList, setPinnedBoardList] = useState<Board[]>([]);
+  const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
+  const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
 
-
-
+  useEffect(() => {
+    async function getPinnedBoards() {
+      const list = await getPinnedBoardList();
+      console.log(list);
+      setPinnedBoardList(list);
+    }
+    async function getCustomBoards() {
+      const list = await getCustomBoardList();
+      console.log(list);
+      setCustomBoardList(list);
+    }
+    async function getOfficialBoards() {
+      const list = await getOfficialBoardList();
+      console.log(list);
+      setOfficialBoardList(list);
+    }
+    getOfficialBoards();
+    getCustomBoards();
+    getPinnedBoards();
+    // console.log(majorList);
+  //  signUp(signUpDto);
     
-  ];
+  }, []);
 
   return (
     <>
         <View style={{flex: 1}}>
-          <BoardListContainer boardCategory="고정게시판" component={<BoardList items={menuList}/>} />
-          <BoardListContainer boardCategory="공식게시판" component={<BoardList items={menuList}/>} />
+          <BoardListContainer boardCategory="고정게시판" component={<BoardList items={pinnedBoardList}/>} />
+          <BoardListContainer boardCategory="공식게시판" component={<BoardList items={officialBoardList}/>} />
+          <BoardListContainer boardCategory="수정게시판" component={<BoardList items={customBoardList}/>} />
         </View>
     </>
   )

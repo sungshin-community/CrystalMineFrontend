@@ -1,6 +1,8 @@
-export interface Board {
+export default interface Board {
     id: number;
-    title: string;
+    name: string;
+    introduction: string;
+    isOwner: boolean;
     isPinned: boolean;
     isOfficial: boolean;
 }
