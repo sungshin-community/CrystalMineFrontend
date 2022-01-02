@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 import BoardScreen from '../board/BoardScreen';
 
-const Board = () => {
+const BoardFragment = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       {/* <View style={{alignItems: 'center'}}>
@@ -14,4 +14,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default BoardFragment;

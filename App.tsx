@@ -22,6 +22,7 @@ import BoardScreen from './src/screens/board/BoardScreen';
 
 // import Home from './src/screens/GNB/Home';
 import GlobalNavbar from './src/components/GlobalNavbar';
+import CreateBoard from './src/screens/board/CreateBoard';
 
 const Stack = createNativeStackNavigator();
 
@@ -133,6 +134,16 @@ const App = () => {
           component={BoardScreen}
           options={{
             title: '게시판',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="CreateBoard"
+          component={CreateBoard}
+          options={{
+            title: '게시판 생성',
+            headerTitleAlign: 'center',
             headerTintColor: '#000000',
             headerBackVisible: false,
           }}

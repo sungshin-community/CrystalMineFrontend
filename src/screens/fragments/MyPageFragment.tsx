@@ -1,14 +1,14 @@
 import React from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 
-const Alert = () => {
+const MyPageFragment = () => {
   return (
     <SafeAreaView>
       <View style={{alignItems: 'center'}}>
-        <Text>Alert page</Text>
+        <Text>MyPage page</Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default Alert;
+export default MyPageFragment;

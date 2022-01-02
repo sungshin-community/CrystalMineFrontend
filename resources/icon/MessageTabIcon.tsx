@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-const MessageGNB = (props: any) => (
+const MessageTabIcon = (props: any) => (
   <Svg
     width={26}
     height={21}
@@ -15,4 +15,4 @@ const MessageGNB = (props: any) => (
   </Svg>
 );
 
-export default MessageGNB;
+export default MessageTabIcon;

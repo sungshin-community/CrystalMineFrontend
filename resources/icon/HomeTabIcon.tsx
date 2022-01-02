@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-const HomeGNB = (props: any) => (
+const HomeTabIcon = (props: any) => (
   <Svg
     width={26}
     height={24}
@@ -15,4 +15,4 @@ const HomeGNB = (props: any) => (
   </Svg>
 );
 
-export default HomeGNB;
+export default HomeTabIcon;

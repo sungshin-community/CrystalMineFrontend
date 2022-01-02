@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-const BoardGNB = (props: any) => (
+const BoardTabIcon = (props: any) => (
   <Svg
   width={22}
   height={25}
@@ -16,4 +16,4 @@ const BoardGNB = (props: any) => (
 </Svg>
 );
 
-export default BoardGNB;
+export default BoardTabIcon;
