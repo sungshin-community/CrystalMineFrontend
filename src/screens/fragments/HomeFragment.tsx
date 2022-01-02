@@ -3,7 +3,7 @@ import {SafeAreaView, Text, View} from 'react-native';
 import { sendEmail } from '../../common/authApi';
 import { PurpleRoundButton } from '../../components/Button';
 
-const Home = () => {
+const HomeFragment = () => {
   return (
     <SafeAreaView>
       <View style={{alignItems: 'center'}}>
@@ -16,4 +16,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeFragment;

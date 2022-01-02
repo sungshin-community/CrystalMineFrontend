@@ -1,14 +1,14 @@
 import React from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 
-const Message = () => {
+const AlertFragment = () => {
   return (
     <SafeAreaView>
       <View style={{alignItems: 'center'}}>
-        <Text>Message page</Text>
+        <Text>Alert page</Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default Message;
+export default AlertFragment;

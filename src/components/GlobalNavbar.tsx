@@ -1,17 +1,17 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import Home from '../screens/GNB/Home';
-import Board from '../screens/GNB/Board';
-import Alert from '../screens/GNB/Alert';
-import Message from '../screens/GNB/Message';
-import MyPage from '../screens/GNB/MyPage';
+import HomeFragment from '../screens/fragments/HomeFragment';
+import BoardFragment from '../screens/fragments/BoardFragment';
+import AlertFragment from '../screens/fragments/AlertFragment';
+import MessageFragment from '../screens/fragments/MessageFragment';
+import MyPageFragment from '../screens/fragments/MyPageFragment';
 
-import HomeGNB from '../../resources/icon/HomeGNB';
-import BoardGNB from '../../resources/icon/BoardGNB';
-import AlertGNB from '../../resources/icon/AlertGNB';
-import MessageGNB from '../../resources/icon/MessageGNB';
-import MyPageGNB from '../../resources/icon/MypageGNB';
+import HomeTabIcon from '../../resources/icon/HomeTabIcon';
+import BoardTabIcon from '../../resources/icon/BoardTabIcon';
+import AlertTabIcon from '../../resources/icon/AlertTabIcon';
+import MessageTabIcon from '../../resources/icon/MessageTabIcon';
+import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import { PurpleFullButton } from './Button';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
@@ -28,32 +28,32 @@ function GlobalNavbar() {
   return (
     <Tab.Navigator initialRouteName="Home" screenOptions={{tabBarStyle: {height: 55}}}>
       <Tab.Screen
-        name="Message"
-        component={Message}
+        name="Home"
+        component={HomeFragment}
         options={{
           headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <MessageGNB size={size} color={color} focused={focused} />;
+            return <HomeTabIcon size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
       <Tab.Screen
         name="Board"
-        component={Board}
+        component={BoardFragment}
         options={{
           title: "게시판",
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <BoardGNB size={size} color={color} focused={focused} />;
+            return <BoardTabIcon size={size} color={color} focused={focused} />;
           },
           headerRight: () => (
             <SearchIcon style={{marginRight: 19}} />
           ),
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
           headerTitleStyle: {
             fontSize: 17,
@@ -62,45 +62,45 @@ function GlobalNavbar() {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="Message"
+        component={MessageFragment}
         options={{
           headerTitle: () => <SmallLogo />,
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <HomeGNB size={size} color={color} focused={focused} />;
+            return <MessageTabIcon size={size} color={color} focused={focused} />;
           },
           headerRight: () => (
             <SearchIcon style={{marginRight: 19}} />
           ),
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
       <Tab.Screen
         name="Alert"
-        component={Alert}
+        component={AlertFragment}
         options={{
           headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <AlertGNB size={size} color={color} focused={focused} />;
+            return <AlertTabIcon size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
       <Tab.Screen
         name="MyPage"
-        component={MyPage}
+        component={MyPageFragment}
         options={{
           headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
