@@ -12,6 +12,8 @@ import BoardGNB from '../../resources/icon/BoardGNB';
 import AlertGNB from '../../resources/icon/AlertGNB';
 import MessageGNB from '../../resources/icon/MessageGNB';
 import MyPageGNB from '../../resources/icon/MypageGNB';
+import { PurpleFullButton } from './Button';
+import SearchIcon from '../../resources/icon/SearchIcon';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +48,9 @@ function GlobalNavbar() {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <BoardGNB size={size} color={color} focused={focused} />;
           },
+          headerRight: () => (
+            <SearchIcon style={{marginRight: 19}} />
+          ),
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
