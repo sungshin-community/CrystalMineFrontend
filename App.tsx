@@ -15,7 +15,7 @@ import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
-import SignUpComplete from './src/screens/signUp/SignupComplete';
+import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import BoardScreen from './src/screens/board/BoardScreen';
