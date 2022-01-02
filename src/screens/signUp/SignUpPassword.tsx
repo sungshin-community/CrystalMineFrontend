@@ -55,8 +55,6 @@ export default function SignUpPassword({navigation, route}: Props) {
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  console.log("앞에서 받은 학번은", route.params.userId);
-
   const onInputFocus = () => {
     setIsFocused(true);
   };
