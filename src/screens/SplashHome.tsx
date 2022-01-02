@@ -8,7 +8,7 @@ import * as Animatable from 'react-native-animatable';
 
 type RootStackParamList = {
   TermAgree: undefined;
-  SignInID: undefined;
+  SignInId: undefined;
 };
 
 const Container = styled.View`
@@ -38,7 +38,7 @@ const SplashHome = ({navigation}: Props) => {
         <Animatable.View animation="fadeInUp" delay={2000} duration={1200}>
           <PurpleRoundButton
             text="로그인"
-            onClick={() => navigation.navigate('SignInID')}
+            onClick={() => navigation.navigate('SignInId')}
           />
           <View style={{marginTop: 16}}>
             <WhiteRoundButton

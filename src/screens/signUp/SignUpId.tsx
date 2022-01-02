@@ -62,7 +62,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpID({navigation}: Props) {
+export default function SignUpId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);

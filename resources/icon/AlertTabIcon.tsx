@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-const AlertGNB = (props: any) => (
+const AlertTabIcon = (props: any) => (
   <Svg
     width={20}
     height={26}
@@ -15,4 +15,4 @@ const AlertGNB = (props: any) => (
   </Svg>
 );
 
-export default AlertGNB;
+export default AlertTabIcon;

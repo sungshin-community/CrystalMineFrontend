@@ -48,7 +48,7 @@ type RootStackParamList = {
   SignInPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function SignInID({navigation}: Props) {
+export default function SignInId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isIdFocused, setIsIdFocused] = useState<boolean>(false);
   const onIdFocus = () => {
