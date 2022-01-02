@@ -7,15 +7,15 @@ import {StatusBar} from 'react-native';
 //screens
 import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
-import SignInID from './src/screens/signIn/SignInID';
+import SignInId from './src/screens/signIn/SignInId';
 import SignInPassword from './src/screens/signIn/SignInPassword';
 
-import SignUpID from './src/screens/signUp/SignUpID';
+import SignUpId from './src/screens/signUp/SignUpId';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
-import SignUpComplete from './src/screens/signUp/SignupComplete';
+import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import BoardScreen from './src/screens/board/BoardScreen';
@@ -59,8 +59,8 @@ const App = () => {
           }}
         />
         <Stack.Screen
-          name="SignInID"
-          component={SignInID}
+          name="SignInId"
+          component={SignInId}
           options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
@@ -70,8 +70,8 @@ const App = () => {
         />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen
-          name="SignUpID"
-          component={SignUpID}
+          name="SignUpId"
+          component={SignUpId}
           options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
