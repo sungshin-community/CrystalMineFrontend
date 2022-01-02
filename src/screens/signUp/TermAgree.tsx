@@ -28,7 +28,7 @@ import {
 } from '../../../resources/icon/CheckBox';
 
 type RootStackParamList = {
-  SignUpID: undefined;
+  SignUpId: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -297,7 +297,7 @@ function TermAgree({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={() => {
-                navigation.navigate('SignUpID');
+                navigation.navigate('SignUpId');
               }}
             />
           ) : (
