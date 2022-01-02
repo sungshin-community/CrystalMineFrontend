@@ -25,15 +25,15 @@ function GlobalNavbar() {
   return (
     <Tab.Navigator initialRouteName="Home" screenOptions={{tabBarStyle: {height: 55}}}>
       <Tab.Screen
-        name="Message"
-        component={Message}
+        name="Home"
+        component={Home}
         options={{
           headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <MessageGNB size={size} color={color} focused={focused} />;
+            return <HomeGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -47,7 +47,7 @@ function GlobalNavbar() {
             return <BoardGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
           headerTitleStyle: {
             fontSize: 17,
@@ -56,15 +56,15 @@ function GlobalNavbar() {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="Message"
+        component={Message}
         options={{
           headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <HomeGNB size={size} color={color} focused={focused} />;
+            return <MessageGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -77,7 +77,7 @@ function GlobalNavbar() {
             return <AlertGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
@@ -90,7 +90,7 @@ function GlobalNavbar() {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
         }}
       />
