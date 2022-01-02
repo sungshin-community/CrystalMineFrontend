@@ -12,8 +12,8 @@ import BoardTabIcon from '../../resources/icon/BoardTabIcon';
 import AlertTabIcon from '../../resources/icon/AlertTabIcon';
 import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
-import { PurpleFullButton } from './Button';
 import SearchIcon from '../../resources/icon/SearchIcon';
+import { PurpleFullButton } from './Button';
 import {SmallLogo} from '../../resources/icon/Logo';
 
 const Tab = createBottomTabNavigator();
