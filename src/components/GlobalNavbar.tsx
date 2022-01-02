@@ -14,6 +14,7 @@ import MessageGNB from '../../resources/icon/MessageGNB';
 import MyPageGNB from '../../resources/icon/MypageGNB';
 import { PurpleFullButton } from './Button';
 import SearchIcon from '../../resources/icon/SearchIcon';
+import {SmallLogo} from '../../resources/icon/Logo';
 
 const Tab = createBottomTabNavigator();
 
@@ -64,10 +65,14 @@ function GlobalNavbar() {
         name="Home"
         component={Home}
         options={{
-          headerShown: false,
+          headerTitle: () => <SmallLogo />,
+          headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <HomeGNB size={size} color={color} focused={focused} />;
           },
+          headerRight: () => (
+            <SearchIcon style={{marginRight: 19}} />
+          ),
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#000000',
           tabBarActiveTintColor: '#A055FF',
