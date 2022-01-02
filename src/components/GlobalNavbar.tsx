@@ -31,10 +31,12 @@ function GlobalNavbar() {
         name="Home"
         component={HomeFragment}
         options={{
-          headerShown: false,
+          headerTitle: () => <SmallLogo />,
+          headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <HomeTabIcon size={size} color={color} focused={focused} />;
           },
+          headerRight: () => <SearchIcon style={{marginRight: 19}} />,
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
