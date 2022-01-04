@@ -67,14 +67,10 @@ function GlobalNavbar() {
         name="Message"
         component={MessageFragment}
         options={{
-          headerTitle: () => <SmallLogo />,
-          headerTitleAlign: 'center',
+          headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MessageTabIcon size={size} color={color} focused={focused} />;
           },
-          headerRight: () => (
-            <SearchIcon style={{marginRight: 19}} />
-          ),
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
