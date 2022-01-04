@@ -42,7 +42,7 @@ export default function BoardScreen() {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
           <BoardListContainer boardCategory="모아보기" component={<MenuList />} />
           <BoardListContainer boardCategory="고정게시판" component={<BoardList items={pinnedBoardList}/>} />
