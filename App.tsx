@@ -2,22 +2,27 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar} from 'react-native';
 
 //screens
-import Home from './src/screens/Home';
+import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
-import SignInID from './src/screens/signIn/SignInID';
+import SignInId from './src/screens/signIn/SignInId';
 import SignInPassword from './src/screens/signIn/SignInPassword';
 
-import SignUpID from './src/screens/signUp/SignUpID';
+import SignUpId from './src/screens/signUp/SignUpId';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
-import SignupComplete from './src/screens/signUp/SignupComplete';
+import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
+import BoardScreen from './src/screens/board/BoardScreen';
+
+// import Home from './src/screens/GNB/Home';
+import GlobalNavbar from './src/components/GlobalNavbar';
+import CreateBoard from './src/screens/board/CreateBoard';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +45,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
         {/* [F-1] */}
-        <Stack.Screen name="Home" component={Home} options={{title: ''}} />
+        <Stack.Screen
+          name="SplashHome"
+          component={SplashHome}
+          options={{title: ''}}
+        />
         <Stack.Screen
           name="TermAgree"
           component={TermAgree}
@@ -50,8 +59,8 @@ const App = () => {
           }}
         />
         <Stack.Screen
-          name="SignInID"
-          component={SignInID}
+          name="SignInId"
+          component={SignInId}
           options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
@@ -61,8 +70,8 @@ const App = () => {
         />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen
-          name="SignUpID"
-          component={SignUpID}
+          name="SignUpId"
+          component={SignUpId}
           options={{title: '', headerTintColor: '#000000'}}
         />
         <Stack.Screen
@@ -87,7 +96,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignUpComplete"
-          component={SignupComplete}
+          component={SignUpComplete}
           options={{
             title: '',
             headerTintColor: '#000000',
@@ -108,6 +117,33 @@ const App = () => {
           component={RegularMemberAuth}
           options={{
             title: '',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
+        />
+        {/* GNB */}
+        <Stack.Screen
+          name="GlobalNavbar"
+          component={GlobalNavbar}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="BoardScreen"
+          component={BoardScreen}
+          options={{
+            title: '게시판',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="CreateBoard"
+          component={CreateBoard}
+          options={{
+            title: '게시판 생성',
+            headerTitleAlign: 'center',
             headerTintColor: '#000000',
             headerBackVisible: false,
           }}

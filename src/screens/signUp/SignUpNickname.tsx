@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Text,
+  StyleSheet
 } from 'react-native';
 
 import {Description, NormalOneLineText} from '../../components/Top';
@@ -21,6 +23,7 @@ import {
 } from '../../components/Button';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { checkNicknameConflict } from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -32,7 +35,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 130px 0px 52px 0px;
+  margin: 55px 0px 52px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
@@ -41,14 +44,23 @@ const MiddleInputContainerStyle = styled.View`
   align-items: center;
 `;
 
+const styles = StyleSheet.create({
+  errorMessage: {
+    marginTop: 10,
+    color: '#FF0000'
+  }
+});
+
 type RootStackParamList = {
-  MajorSelect: undefined;
+  MajorSelect: {userId: string, password: string, nickname: string};
+  SignUpNickname: {userId: string, password: string}
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpNickname({navigation}: Props) {
+export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const onInputFocus = () => {
     setIsFocused(true);
   };
@@ -96,6 +108,7 @@ export default function SignUpNickname({navigation}: Props) {
                 selectionColor="#A055FF"
               />
             </MiddleInputContainerStyle>
+            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>}
           </ScrollView>
           <View
             style={{
@@ -106,14 +119,38 @@ export default function SignUpNickname({navigation}: Props) {
             {nickname.length !== 0 && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('MajorSelect')}
+                onClick={async () => {
+                      let result: boolean = await checkNicknameConflict(nickname);
+                      if (!result) {
+                        setIsDuplicate(true);
+                        return;
+                      }
+                      navigation.navigate('MajorSelect', {
+                      userId: route.params.userId,
+                      password: route.params.password,
+                      nickname: nickname,
+                    })
+                  }
+                }
               />
             )}
 
             {nickname.length !== 0 && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('MajorSelect')}
+                onClick={async () => {
+                  let result: boolean = await checkNicknameConflict(nickname);
+                  if (!result) {
+                    setIsDuplicate(true);
+                    return;
+                  }
+                  navigation.navigate('MajorSelect', {
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                })
+              }
+            }
               />
             )}
 
@@ -163,6 +200,7 @@ export default function SignUpNickname({navigation}: Props) {
               selectionColor="#A055FF"
             />
           </MiddleInputContainerStyle>
+            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>}
         </ScrollView>
         <View
           style={{
@@ -173,14 +211,38 @@ export default function SignUpNickname({navigation}: Props) {
           {nickname.length !== 0 && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('MajorSelect')}
+              onClick={async () => {
+                let result: boolean = await checkNicknameConflict(nickname);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('MajorSelect', {
+                userId: route.params.userId,
+                password: route.params.password,
+                nickname: nickname,
+              })
+            }
+          }
             />
           )}
 
           {nickname.length !== 0 && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('MajorSelect')}
+              onClick={async () => {
+                let result: boolean = await checkNicknameConflict(nickname);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('MajorSelect', {
+                userId: route.params.userId,
+                password: route.params.password,
+                nickname: nickname,
+              })
+            }
+          }
             />
           )}
 

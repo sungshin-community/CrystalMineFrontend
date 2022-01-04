@@ -27,9 +27,6 @@ StatusBar.setBackgroundColor('white');
 StatusBar.setBarStyle('dark-content');
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    flex: 1,
-  },
   inputContainer: {
     fontSize: 21,
     borderBottomWidth: 2,
@@ -48,10 +45,10 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  SignInPassword: undefined;
+  SignInPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function SignInID({navigation}: Props) {
+export default function SignInId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isIdFocused, setIsIdFocused] = useState<boolean>(false);
   const onIdFocus = () => {
@@ -108,21 +105,26 @@ export default function SignInID({navigation}: Props) {
 
         <View
           style={{
-            bottom: isIdFocused ? 80 : 21,
+            paddingBottom: isIdFocused ? 80 : 21,
+            backgroundColor: '#FFFFFF',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           {studentId.length === 8 && isIdFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignInPassword')}
+              onClick={() => navigation.navigate('SignInPassword', {
+                userId: studentId
+              })}
             />
           )}
 
           {studentId.length === 8 && !isIdFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignInPassword')}
+              onClick={() => navigation.navigate('SignInPassword', {
+                userId: studentId
+              })}
             />
           )}
 
@@ -176,21 +178,26 @@ export default function SignInID({navigation}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: isIdFocused ? 0 : 21,
+          paddingBottom: isIdFocused ? 0 : 21,
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#FFFFFF'
         }}>
         {studentId.length === 8 && isIdFocused && (
           <PurpleFullButton
             text="다음"
-            onClick={() => navigation.navigate('SignInPassword')}
+            onClick={() => navigation.navigate('SignInPassword', {
+              userId: studentId
+            })}
           />
         )}
 
         {studentId.length === 8 && !isIdFocused && (
           <PurpleRoundButton
             text="다음"
-            onClick={() => navigation.navigate('SignInPassword')}
+            onClick={() => navigation.navigate('SignInPassword', {
+              userId: studentId
+            })}
           />
         )}
 

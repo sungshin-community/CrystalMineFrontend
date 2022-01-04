@@ -45,10 +45,11 @@ const MiddleInputContainerStyle = styled.View`
 
 type RootStackParamList = {
   SignUpPasswordConfirm: {previousPassword: string};
+  SignUpPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpPassword({navigation}: Props) {
+export default function SignUpPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
@@ -140,6 +141,7 @@ export default function SignUpPassword({navigation}: Props) {
                 onClick={() =>
                   navigation.navigate('SignUpPasswordConfirm', {
                     previousPassword: password,
+                    userId: route.params.userId
                   })
                 }
               />
@@ -150,6 +152,7 @@ export default function SignUpPassword({navigation}: Props) {
                 onClick={() =>
                   navigation.navigate('SignUpPasswordConfirm', {
                     previousPassword: password,
+                    userId: route.params.userId
                   })
                 }
               />
@@ -221,6 +224,7 @@ export default function SignUpPassword({navigation}: Props) {
               onClick={() =>
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
+                  userId: route.params.userId
                 })
               }
             />
@@ -231,6 +235,7 @@ export default function SignUpPassword({navigation}: Props) {
               onClick={() =>
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
+                  userId: route.params.userId
                 })
               }
             />

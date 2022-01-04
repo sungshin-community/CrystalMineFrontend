@@ -1,11 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import {View, StatusBar, StyleSheet} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { sendEmail } from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -70,8 +71,14 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="바로 인증하기"
-                onClick={() => {
-                  navigation.navigate('RegularMemberAuth');
+                onClick={async () => {
+                  let result: boolean = await sendEmail();
+                  if (result) {
+                    navigation.navigate('RegularMemberAuth');
+                  }
+                  else {
+                    console.log("이메일 발송 실패");
+                  }
                 }}
               />
             </View>

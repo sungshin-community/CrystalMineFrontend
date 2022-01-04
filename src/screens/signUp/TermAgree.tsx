@@ -28,7 +28,7 @@ import {
 } from '../../../resources/icon/CheckBox';
 
 type RootStackParamList = {
-  SignUpID: undefined;
+  SignUpId: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -59,12 +59,19 @@ function TermAgree({navigation}: Props) {
     }
   };
 
+  const toggleTermArea = (changedComonent: string) => {
+    if (changedComonent === 'firstTerm') {
+      setFirstTermSpread(!firstTermSpread);
+    } else {
+      setSecondTermSpread(!secondTermSpread);
+    }
+  };
+
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontWeight: '400'},
-    button: {backgroundColor: '#FF0000'},
     nextButton: {
       backgroundColor:
         firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc',
@@ -90,7 +97,7 @@ function TermAgree({navigation}: Props) {
         }}
       />
       <View style={{backgroundColor: 'white', flex: 1}}>
-        <ScrollView>
+        <ScrollView style={{marginBottom: 45}}>
           <View>
             <View>
               <Container>
@@ -131,38 +138,42 @@ function TermAgree({navigation}: Props) {
                   약관 전체 동의
                 </Text>
               </TouchableOpacity>
-              <View
+              <TouchableOpacity
+                onPress={(e: any) => toggleTermArea('firstTerm')}
                 style={{
-                  marginLeft: 40,
+                  marginLeft: 35,
                   marginTop: 24,
-                  marginBottom: 12,
-                  marginRight: 46,
+                  // marginBottom: 12,
+                  marginRight: 41,
                   flexDirection: 'row',
                   alignItems: 'center',
+                  height: 40
                 }}>
-                {firstTermChecked ? (
-                  <Checked
+                
+                <TouchableOpacity style={{height: 40, alignItems: 'center', flexDirection: 'row', paddingLeft: 5}} onPress={(e: any) => onChange('firstTerm')}>
+                  {firstTermChecked ? <Checked
                     style={{marginRight: 16}}
-                    onPress={(e: any) => onChange('firstTerm')}
-                  />
-                ) : (
+                    // onPress={(e: any) => onChange('firstTerm')}
+                  /> :
                   <Unchecked
                     style={{marginRight: 16}}
-                    onPress={(e: any) => onChange('firstTerm')}
+                    // onPress={(e: any) => onChange('firstTerm')}
                   />
-                )}
-                <SmallText>서비스 이용약관</SmallText>
-                <TouchableOpacity
+                  }
+                </TouchableOpacity>
+                
+                <SmallText>서비스 이용약관</SmallText>
+                <View
                   style={{
                     flex: 1,
                     flexDirection: 'row-reverse',
                     alignItems: 'center',
                     height: 16,
-                  }}
-                  onPress={e => onClick(e, 'firstTerm')}>
+                    marginLeft: 5
+                  }}>
                   {firstTermSpread ? <FoldButton /> : <SpreadButton />}
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
               {firstTermSpread && (
                 <ScrollView
                   style={{
@@ -202,38 +213,42 @@ function TermAgree({navigation}: Props) {
                 </ScrollView>
               )}
 
-              <View
+              <TouchableOpacity
+                onPress={(e: any) => toggleTermArea('secondTerm')}
                 style={{
-                  marginLeft: 40,
-                  marginTop: 24,
-                  marginBottom: 12,
-                  marginRight: 46,
+                  marginLeft: 35,
+                  marginTop: 5,
+                  // marginBottom: 12,
+                  marginRight: 41,
                   flexDirection: 'row',
                   alignItems: 'center',
+                  height: 40
                 }}>
-                {secondTermChecked ? (
-                  <Checked
+                
+                <TouchableOpacity style={{height: 40, alignItems: 'center', flexDirection: 'row', paddingLeft: 5}} onPress={(e: any) => onChange('secondTerm')}>
+                  {secondTermChecked ? <Checked
                     style={{marginRight: 16}}
-                    onPress={(e: any) => onChange('secondTerm')}
-                  />
-                ) : (
+                    // onPress={(e: any) => onChange('secondTerm')}
+                  /> :
                   <Unchecked
                     style={{marginRight: 16}}
-                    onPress={(e: any) => onChange('secondTerm')}
+                    // onPress={(e: any) => onChange('secondTerm')}
                   />
-                )}
+                  }
+                </TouchableOpacity>
+                
                 <SmallText>개인 정보 처리 방침</SmallText>
-                <TouchableOpacity
+                <View
                   style={{
                     flex: 1,
                     flexDirection: 'row-reverse',
                     alignItems: 'center',
                     height: 16,
-                  }}
-                  onPress={e => onClick(e, 'secondTerm')}>
+                    marginLeft: 5
+                  }}>
                   {secondTermSpread ? <FoldButton /> : <SpreadButton />}
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
               {secondTermSpread && (
                 <ScrollView
                   style={{
@@ -245,12 +260,6 @@ function TermAgree({navigation}: Props) {
                   }}
                   nestedScrollEnabled={true}>
                   <Text>
-                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
-                    어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
                     어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
                     어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
                     어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구 어쩌구 저쩌구
@@ -288,7 +297,7 @@ function TermAgree({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={() => {
-                navigation.navigate('SignUpID');
+                navigation.navigate('SignUpId');
               }}
             />
           ) : (

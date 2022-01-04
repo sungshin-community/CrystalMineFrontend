@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Button,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {View} from 'react-native';
 import styled from 'styled-components/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PurpleRoundButton, WhiteRoundButton} from '../components/Button';
@@ -17,7 +8,7 @@ import * as Animatable from 'react-native-animatable';
 
 type RootStackParamList = {
   TermAgree: undefined;
-  SignInID: undefined;
+  SignInId: undefined;
 };
 
 const Container = styled.View`
@@ -35,7 +26,7 @@ const ButtonContainer = styled.View`
 `;
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-const Home = ({navigation}: Props) => {
+const SplashHome = ({navigation}: Props) => {
   return (
     <>
       <Container>
@@ -47,7 +38,7 @@ const Home = ({navigation}: Props) => {
         <Animatable.View animation="fadeInUp" delay={2000} duration={1200}>
           <PurpleRoundButton
             text="로그인"
-            onClick={() => navigation.navigate('SignInID')}
+            onClick={() => navigation.navigate('SignInId')}
           />
           <View style={{marginTop: 16}}>
             <WhiteRoundButton
@@ -61,4 +52,4 @@ const Home = ({navigation}: Props) => {
   );
 };
 
-export default Home;
+export default SplashHome;
