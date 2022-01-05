@@ -42,6 +42,7 @@ export const register = async (signUpRequestDto: SignUpRequestDto) => {
         console.log(response.data.data);
         await AsyncStorage.setItem("accessToken", response.data.data.tokenDto.accessToken);
         await AsyncStorage.setItem("refreshToken", response.data.data.tokenDto.refreshToken);
+        await AsyncStorage.setItem("nickname", response.data.data.nickname);
         return true;
     }
     catch (e) {
@@ -73,6 +74,7 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
         console.log(response.data.data);
         await AsyncStorage.setItem("accessToken", response.data.data.tokenDto.accessToken);
         await AsyncStorage.setItem("refreshToken", response.data.data.tokenDto.refreshToken);
+        await AsyncStorage.setItem("nickname", response.data.data.nickname);
         return true;
     }
     catch(e) {

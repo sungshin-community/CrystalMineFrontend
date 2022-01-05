@@ -12,6 +12,8 @@ import BoardTabIcon from '../../resources/icon/BoardTabIcon';
 import AlertTabIcon from '../../resources/icon/AlertTabIcon';
 import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
+import SearchIcon from '../../resources/icon/SearchIcon';
+import {SmallLogo} from '../../resources/icon/Logo';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,15 +27,17 @@ function GlobalNavbar() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{tabBarStyle: {height: 55}}}>
+      screenOptions={{tabBarStyle: {height: 60}}}>
       <Tab.Screen
         name="Home"
         component={HomeFragment}
         options={{
-          headerShown: false,
+          headerTitle: () => <SmallLogo />,
+          headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <HomeTabIcon size={size} color={color} focused={focused} />;
           },
+          headerRight: () => <SearchIcon style={{marginRight: 19}} />,
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
@@ -48,6 +52,7 @@ function GlobalNavbar() {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <BoardTabIcon size={size} color={color} focused={focused} />;
           },
+          headerRight: () => <SearchIcon style={{marginRight: 19}} />,
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
