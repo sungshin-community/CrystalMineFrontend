@@ -18,7 +18,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { login } from '../../common/authApi';
+import {login} from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -27,6 +27,7 @@ StatusBar.setBarStyle('dark-content');
 const styles = StyleSheet.create({
   inputContainer: {
     fontSize: 21,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     borderBottomWidth: 2,
     borderColor: '#D7DCE6',
     flexDirection: 'row',
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
   },
   suffix: {
     fontSize: 15,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     paddingLeft: 10,
     fontWeight: 'bold',
     color: '#87919B',
@@ -84,7 +86,12 @@ export default function SignInPassword({navigation, route}: Props) {
                   {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
                 ]}>
                 <TextInput
-                  style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
+                  style={{
+                    borderColor: '#ff0000',
+                    fontSize: 21,
+                    width: '100%',
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                  }}
                   onFocus={(e: any) => {
                     onPasswordFocus();
                   }}
@@ -138,6 +145,7 @@ export default function SignInPassword({navigation, route}: Props) {
               marginBottom: 20,
               marginTop: 21,
               fontSize: 13,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
               color: '#87929B',
             }}>
             비밀번호를 잊으셨나요?
@@ -164,7 +172,12 @@ export default function SignInPassword({navigation, route}: Props) {
                 {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
               ]}>
               <TextInput
-                style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
+                style={{
+                  borderColor: '#ff0000',
+                  fontSize: 21,
+                  width: '100%',
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                }}
                 // onFocus={(e: any) => { onPasswordFocus(); }}
                 // onBlur={(e: any) => { onPasswordFocusOut(); }}
                 onChangeText={(value: string) => {
@@ -192,12 +205,14 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleFullButton
             text="다음"
             onClick={async () => {
-              let result: boolean = await login({username: route.params.userId, password: password});
+              let result: boolean = await login({
+                username: route.params.userId,
+                password: password,
+              });
               if (result) {
                 navigation.navigate('GlobalNavbar');
-              }
-              else {
-                console.log("로그인 실패");
+              } else {
+                console.log('로그인 실패');
               }
             }}
           />
@@ -207,12 +222,14 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              let result: boolean = await login({username: route.params.userId, password: password});
+              let result: boolean = await login({
+                username: route.params.userId,
+                password: password,
+              });
               if (result) {
                 navigation.navigate('GlobalNavbar');
-              }
-              else {
-                console.log("로그인 실패");
+              } else {
+                console.log('로그인 실패');
               }
             }}
           />
@@ -229,6 +246,7 @@ export default function SignInPassword({navigation, route}: Props) {
           style={{
             marginTop: 21,
             fontSize: 13,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
             color: '#87929B',
           }}>
           비밀번호를 잊으셨나요?

@@ -9,7 +9,7 @@ import {
 import {MajorRow} from '../../components/MajorRow';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { getMajorList, register } from '../../common/authApi';
+import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
 
 StatusBar.setBackgroundColor('white');
@@ -20,6 +20,7 @@ const Container = styled.View`
   padding-bottom: 32px;
   background-color: #ffffff;
   padding: 37px 24px;
+  font-family: 'SpoqaHanSansNeo-Regular';
 `;
 
 const RadioContainer = styled.ScrollView`
@@ -31,11 +32,12 @@ const ButtonContainer = styled.View`
   align-items: center;
   bottom: 21px;
   margin-top: 32px;
+  font-family: 'SpoqaHanSansNeo-Regular';
 `;
 
 type RootStackParamList = {
   SignUpComplete: undefined;
-  MajorSelect: {userId: string, password: string, nickname: string};
+  MajorSelect: {userId: string; password: string; nickname: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -51,8 +53,7 @@ export default function MajorSelect({navigation, route}: Props) {
     }
     getList();
     // console.log(majorList);
-  //  signUp(signUpDto);
-    
+    //  signUp(signUpDto);
   }, []);
 
   const selectMajor = (major: Major) => {
@@ -61,7 +62,13 @@ export default function MajorSelect({navigation, route}: Props) {
 
   return (
     <>
-      <View style={{width: Dimensions.get('window').width / 7 * 6, height: 4, backgroundColor: '#A055FF'}} />
+      <View
+        style={{
+          width: (Dimensions.get('window').width / 7) * 6,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
       <Container>
         <BigOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
@@ -72,26 +79,31 @@ export default function MajorSelect({navigation, route}: Props) {
       </Container>
       <View style={{flex: 1}}>
         <RadioContainer>
-          {majorList.map((major, index) =>
-                  <MajorRow
-                    key={index}
-                    major={major}
-                    selectMajor={selectMajor}
-                    style={{color: major.id === selectedMajorId ? '#a055ff' : '#000000'}}
-                  />
-                ,
-              )
-            }
+          {majorList.map((major, index) => (
+            <MajorRow
+              key={index}
+              major={major}
+              selectMajor={selectMajor}
+              style={{
+                color: major.id === selectedMajorId ? '#a055ff' : '#000000',
+              }}
+            />
+          ))}
         </RadioContainer>
         <ButtonContainer>
           {selectedMajorId !== -1 ? (
             <PurpleRoundButton
               text="회원가입"
               onClick={() => {
-                  register({username: route.params.userId, password: route.params.password, nickname: route.params.nickname, departmentId: selectedMajorId, agreementIds: [3, 4]});
-                  navigation.navigate('SignUpComplete')
-                }
-              }
+                register({
+                  username: route.params.userId,
+                  password: route.params.password,
+                  nickname: route.params.nickname,
+                  departmentId: selectedMajorId,
+                  agreementIds: [3, 4],
+                });
+                navigation.navigate('SignUpComplete');
+              }}
             />
           ) : (
             <DisabledPurpleRoundButton text="회원가입" />

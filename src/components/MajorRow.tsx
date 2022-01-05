@@ -8,6 +8,7 @@ const TouchMajor = styled.Pressable`
 
 const MajorOption = styled.Text`
   font-size: 17px;
+  font-family: 'SpoqaHanSansNeo-Regular';
 `;
 
 export const MajorRow = ({major, selectMajor, style}: any) => {

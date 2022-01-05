@@ -45,8 +45,8 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpNickname: {userId: string, password: string};
-  SignUpPasswordConfirm: {userId: string, previousPassword: string};
+  SignUpNickname: {userId: string; password: string};
+  SignUpPasswordConfirm: {userId: string; previousPassword: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -78,7 +78,13 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
         keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <View style={{width: Dimensions.get('window').width / 7 * 4, height: 4, backgroundColor: '#A055FF'}} />
+        <View
+          style={{
+            width: (Dimensions.get('window').width / 7) * 4,
+            height: 4,
+            backgroundColor: '#A055FF',
+          }}
+        />
         <Container>
           <ScrollView
             scrollEnabled={false}
@@ -95,7 +101,11 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 borderColor: isFocused ? '#A055FF' : '#D7DCE6',
               }}>
               <TextInput
-                style={{width: '90%', fontSize: 21}}
+                style={{
+                  width: '90%',
+                  fontSize: 21,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                }}
                 onFocus={(e: any) => {
                   onInputFocus();
                 }}
@@ -128,19 +138,23 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
             {isEqual && isFocused && (
               <PurpleFullButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpNickname', {
-                  userId: route.params.userId,
-                  password: route.params.previousPassword
-                })}
+                onClick={() =>
+                  navigation.navigate('SignUpNickname', {
+                    userId: route.params.userId,
+                    password: route.params.previousPassword,
+                  })
+                }
               />
             )}
             {isEqual && !isFocused && (
               <PurpleRoundButton
                 text="다음"
-                onClick={() => navigation.navigate('SignUpNickname', {
-                  userId: route.params.userId,
-                  password: route.params.previousPassword
-                })}
+                onClick={() =>
+                  navigation.navigate('SignUpNickname', {
+                    userId: route.params.userId,
+                    password: route.params.previousPassword,
+                  })
+                }
               />
             )}
             {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
@@ -170,7 +184,11 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             <TextInput
-              style={{width: '90%', fontSize: 21}}
+              style={{
+                width: '90%',
+                fontSize: 21,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+              }}
               onFocus={(e: any) => {
                 onInputFocus();
               }}
@@ -203,19 +221,23 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           {isEqual && isFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpNickname', {
-                userId: route.params.userId,
-                password: route.params.previousPassword
-              })}
+              onClick={() =>
+                navigation.navigate('SignUpNickname', {
+                  userId: route.params.userId,
+                  password: route.params.previousPassword,
+                })
+              }
             />
           )}
           {isEqual && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignUpNickname', {
-                userId: route.params.userId,
-                password: route.params.previousPassword
-              })}
+              onClick={() =>
+                navigation.navigate('SignUpNickname', {
+                  userId: route.params.userId,
+                  password: route.params.previousPassword,
+                })
+              }
             />
           )}
           {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}

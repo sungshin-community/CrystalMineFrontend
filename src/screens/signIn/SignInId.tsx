@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
     borderColor: '#D7DCE6',
     flexDirection: 'row',
     alignItems: 'center',
-    // textAlign: 'right'
+    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   suffix: {
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 15,
     paddingLeft: 10,
     color: '#87919B',
@@ -82,7 +83,12 @@ export default function SignInId({navigation}: Props) {
                   {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
                 ]}>
                 <TextInput
-                  style={{width: '60%', borderColor: '#ff0000', fontSize: 21}}
+                  style={{
+                    width: '60%',
+                    borderColor: '#ff0000',
+                    fontSize: 21,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                  }}
                   onFocus={(e: any) => {
                     onIdFocus();
                   }}
@@ -113,18 +119,22 @@ export default function SignInId({navigation}: Props) {
           {studentId.length === 8 && isIdFocused && (
             <PurpleFullButton
               text="다음"
-              onClick={() => navigation.navigate('SignInPassword', {
-                userId: studentId
-              })}
+              onClick={() =>
+                navigation.navigate('SignInPassword', {
+                  userId: studentId,
+                })
+              }
             />
           )}
 
           {studentId.length === 8 && !isIdFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={() => navigation.navigate('SignInPassword', {
-                userId: studentId
-              })}
+              onClick={() =>
+                navigation.navigate('SignInPassword', {
+                  userId: studentId,
+                })
+              }
             />
           )}
 
@@ -156,7 +166,12 @@ export default function SignInId({navigation}: Props) {
                 {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
               ]}>
               <TextInput
-                style={{width: '60%', borderColor: '#ff0000', fontSize: 21}}
+                style={{
+                  width: '60%',
+                  borderColor: '#ff0000',
+                  fontSize: 21,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                }}
                 onFocus={(e: any) => {
                   onIdFocus();
                 }}
@@ -181,23 +196,27 @@ export default function SignInId({navigation}: Props) {
           paddingBottom: isIdFocused ? 0 : 21,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#FFFFFF'
+          backgroundColor: '#FFFFFF',
         }}>
         {studentId.length === 8 && isIdFocused && (
           <PurpleFullButton
             text="다음"
-            onClick={() => navigation.navigate('SignInPassword', {
-              userId: studentId
-            })}
+            onClick={() =>
+              navigation.navigate('SignInPassword', {
+                userId: studentId,
+              })
+            }
           />
         )}
 
         {studentId.length === 8 && !isIdFocused && (
           <PurpleRoundButton
             text="다음"
-            onClick={() => navigation.navigate('SignInPassword', {
-              userId: studentId
-            })}
+            onClick={() =>
+              navigation.navigate('SignInPassword', {
+                userId: studentId,
+              })
+            }
           />
         )}
 
