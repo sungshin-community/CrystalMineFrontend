@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   Text,
   GestureResponderEvent,
-  Button,
   StyleSheet,
   Dimensions,
 } from 'react-native';

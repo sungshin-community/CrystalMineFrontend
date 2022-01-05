@@ -15,7 +15,6 @@ import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
 } from '../../components/Button';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TwoLineTitle, SmallText} from '../../components/Top';
 import {Container} from '../../components/Container';

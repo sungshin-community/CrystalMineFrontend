@@ -1,13 +1,6 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 
-import {
-  ScrollView,
-  FlatList,
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {FlatList, View, Text, TouchableWithoutFeedback} from 'react-native';
 import MyPostingIcon, {
   MyCommentIcon,
   ScrapPostingIcon,

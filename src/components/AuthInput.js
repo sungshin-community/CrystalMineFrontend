@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, Alert, TextInput} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import OTPTextView from 'react-native-otp-textinput';
 

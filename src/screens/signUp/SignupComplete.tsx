@@ -4,7 +4,6 @@ import {StatusBar} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
@@ -30,18 +29,6 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function SignUpComplete({navigation}: Props) {
-  // const fadeInUp = {
-  //   0: {
-  //     opacity: 0,
-  //   },
-  //   0.5: {
-  //     opacity: 0,
-  //   },
-  //   1: {
-  //     opacity: 1,
-  //   },
-  // };
-
   return (
     <>
       <Container>

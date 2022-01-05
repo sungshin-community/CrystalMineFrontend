@@ -94,7 +94,7 @@ function GlobalNavbar() {
         name="MyPage"
         component={MyPageFragment}
         options={{
-          title: "마이페이지",
+          title: '마이페이지',
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
@@ -104,8 +104,8 @@ function GlobalNavbar() {
           tabBarActiveTintColor: '#A055FF',
           headerTitleStyle: {
             fontSize: 17,
-            fontWeight: '400'
-          }
+            fontWeight: '400',
+          },
         }}
       />
     </Tab.Navigator>
