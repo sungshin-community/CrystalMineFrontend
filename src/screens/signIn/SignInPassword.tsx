@@ -227,7 +227,6 @@ export default function SignInPassword({navigation, route}: Props) {
         )}
         <Text
           style={{
-            marginBottom: 20,
             marginTop: 21,
             fontSize: 13,
             color: '#87929B',

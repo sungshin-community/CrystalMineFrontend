@@ -61,12 +61,12 @@ const App = () => {
         <Stack.Screen
           name="SignInId"
           component={SignInId}
-          options={{title: '', headerTintColor: '#000000'}}
+          options={{title: '', headerTintColor: '#000000', animation: 'slide_from_right'}}
         />
         <Stack.Screen
           name="SignInPassword"
           component={SignInPassword}
-          options={{title: '', headerTintColor: '#000000'}}
+          options={{title: '', headerTintColor: '#000000', animation: 'slide_from_right'}}
         />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen
