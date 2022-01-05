@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, Text, View, Switch, TouchableHighlight, StyleSheet} from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
 });
 
 const MyPageFragment = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [allowAlert, setAllowAlert] = useState<boolean>(false);
+  const [allowMessage, setAllowMessage] = useState<boolean>(false);
   return (
     <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
       <ScrollView>
@@ -33,10 +36,10 @@ const MyPageFragment = () => {
             <DefaultProfile />
             <View style={{flex: 1}}>
               <View style={{flexDirection: 'row', paddingLeft: 24, alignItems: 'center'}}>
-                <Text style={{fontSize: 18, fontWeight: '800'}}>네모 좋아 제일 좋아</Text>
+                <Text style={{fontSize: 18, fontWeight: '800'}}>초롱춘식</Text>
                 <View style={{flexDirection: 'row', flex: 1, paddingRight: 32, justifyContent: 'flex-end'}}><RightArrow /></View>
               </View>
-              <Text style={{marginLeft: 24, marginTop: 6, color: '#767676'}}>산업디자인과</Text>
+              <Text style={{marginLeft: 24, marginTop: 6, color: '#767676'}}>컴퓨터공학과</Text>
               <View style={{flexDirection: 'row', paddingLeft: 24, paddingTop: 24,  alignItems: 'center'}}>
                 <View style={{backgroundColor: '#A055FF', width: 16, height: 16, borderRadius: 8}}></View>
                 <Text style={{color: '#A055FF', fontWeight: '700', fontSize: 15, marginLeft: 4}}>LV.2</Text>
@@ -55,7 +58,7 @@ const MyPageFragment = () => {
               <View style={styles.menu}>
                 <Text style={{fontSize: 15, fontWeight: '400'}}>정회원 인증하기</Text>
                 <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
-                  <Text style={{color: '#A3A3A3', fontSize: 12}}>20181943@sungshin.ac.kr</Text>
+                  <Text style={{color: '#A3A3A3', fontSize: 12}}>20161259@sungshin.ac.kr</Text>
                 </View>
               </View>
             </TouchableHighlight>
@@ -73,19 +76,19 @@ const MyPageFragment = () => {
             <View style={styles.menu}>
               <Text style={{fontSize: 15, fontWeight: '400'}}>다크 모드</Text>
               <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
-                <Switch />
+                <Switch trackColor={{false: '#C4C4C4', true: '#A055FF'}} thumbColor={'#FFFFFF'} onValueChange={() => setIsDarkMode(!isDarkMode)} value={isDarkMode} />
               </View>
             </View>
             <View style={styles.menu}>
               <Text style={styles.menuText}>알림 설정</Text>
               <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
-                <Switch />
+              <Switch trackColor={{false: '#C4C4C4', true: '#A055FF'}} thumbColor={'#FFFFFF'} onValueChange={() => setAllowAlert(!allowAlert)} value={allowAlert} />
               </View>
             </View>
             <View style={styles.menu}>
               <Text style={styles.menuText}>쪽지 설정</Text>
               <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
-                <Switch />
+              <Switch trackColor={{false: '#C4C4C4', true: '#A055FF'}} thumbColor={'#FFFFFF'} onValueChange={() => setAllowMessage(!allowMessage)} value={allowMessage} />
               </View>
             </View>
             
