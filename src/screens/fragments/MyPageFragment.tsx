@@ -1,12 +1,32 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {SafeAreaView, ScrollView, Text, View, Switch, TouchableHighlight, StyleSheet} from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
+import { PurpleRoundButton } from '../../components/Button';
+
+const styles = StyleSheet.create({
+  menu: {
+    height: 49,
+    flexDirection: 'row',
+    paddingHorizontal: 32,
+    alignItems: 'center'
+  },
+  menuTitle: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#878787'
+  },
+  menuText: {
+    fontSize: 15,
+    fontWeight: '400'
+  }
+
+});
 
 const MyPageFragment = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
       <ScrollView>
         <View>
           <View style={{height: 136, flexDirection: 'row', backgroundColor: '#FFFFFF', paddingLeft: 24, paddingTop: 16}}>
@@ -27,6 +47,66 @@ const MyPageFragment = () => {
               </View>
             </View>
           </View>
+          <View style={{marginTop: 16, backgroundColor: '#FFFFFF', height: 353}}>
+            <View style={styles.menu}>
+              <Text style={styles.menuTitle}>보안 및 인증</Text>
+            </View>
+            <TouchableHighlight>
+              <View style={styles.menu}>
+                <Text style={{fontSize: 15, fontWeight: '400'}}>정회원 인증하기</Text>
+                <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
+                  <Text style={{color: '#A3A3A3', fontSize: 12}}>20181943@sungshin.ac.kr</Text>
+                </View>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight>
+              <View style={styles.menu}>
+                <Text style={{fontSize: 15, fontWeight: '400'}}>비밀번호 재설정</Text>
+                <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+            <View style={[styles.menu, {marginTop: 6}]}>
+              <Text style={styles.menuTitle}>앱 설정</Text>
+            </View>
+            <View style={styles.menu}>
+              <Text style={{fontSize: 15, fontWeight: '400'}}>다크 모드</Text>
+              <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
+                <Switch />
+              </View>
+            </View>
+            <View style={styles.menu}>
+              <Text style={styles.menuText}>알림 설정</Text>
+              <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
+                <Switch />
+              </View>
+            </View>
+            <View style={styles.menu}>
+              <Text style={styles.menuText}>쪽지 설정</Text>
+              <View style={{flexDirection: 'row', flex: 1, justifyContent: 'flex-end'}}>
+                <Switch />
+              </View>
+            </View>
+            
+          </View>
+          <TouchableHighlight>
+            <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
+              <View style={[styles.menu, {height: 51}]}>
+                <Text style={styles.menuText}>이용 안내</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
+              <View style={[styles.menu, {height: 51}]}>
+                <Text style={styles.menuText}>문의하기</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        </View>
+        <View style={{paddingVertical: 24, alignItems: 'center'}}>
+          <PurpleRoundButton text='로그아웃' />
         </View>
       </ScrollView>
     </SafeAreaView>
