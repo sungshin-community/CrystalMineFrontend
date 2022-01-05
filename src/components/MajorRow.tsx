@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {Text} from 'react-native';
+import React from 'react';
 import styled from 'styled-components';
 
 const TouchMajor = styled.Pressable`
@@ -12,20 +11,12 @@ const MajorOption = styled.Text`
 `;
 
 export const MajorRow = ({major, selectMajor, style}: any) => {
-  // const [selected, isSelected] = useState<boolean>(false);
-
-  // const makeCheck = () => {
-  //   isSelected(true);
-  // };
-
   return (
     <TouchMajor
       hitSlop={12}
       key={major.id}
       value={major.value}
-      onPress={() => selectMajor(major)}
-      // onPressOut={makeCheck}
-    >
+      onPress={() => selectMajor(major)}>
       <MajorOption style={style}>{major.name}</MajorOption>
     </TouchMajor>
   );

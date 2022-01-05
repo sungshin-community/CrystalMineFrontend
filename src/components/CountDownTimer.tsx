@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  GestureResponderEvent,
-  Button,
-  StyleSheet,
-  Dimensions,
-  View,
-} from 'react-native';
+import {Text, StyleSheet, View} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {

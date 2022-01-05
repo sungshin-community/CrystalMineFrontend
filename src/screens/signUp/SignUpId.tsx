@@ -78,121 +78,123 @@ export default function SignUpId({navigation}: Props) {
   };
 
   return Platform.OS === 'ios' ? (
-    <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
-        <View
-          style={{
-            width: (Dimensions.get('window').width / 7) * 2,
-            height: 4,
-            backgroundColor: '#A055FF',
-          }}
-        />
-
-        <Container>
-          <ScrollView
-            scrollEnabled={false}
-            keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: '#fff'}}>
-            <TextContainer>
-              <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-              <Description>
-                학교에서 제공하는 성신 G-mail 계정을 사용합니다
-              </Description>
-            </TextContainer>
-            <View
-              style={{
-                paddingRight: 24,
-                paddingLeft: 24,
-                marginTop: 12,
-              }}>
-              <View
-                style={[
-                  styles.inputContainer,
-                  {borderColor: isFocused ? '#A055FF' : '#D7DCE6'},
-                ]}>
-                <TextInput
-                  style={{
-                    width: '60%',
-                    fontSize: 21,
-                    fontFamily: 'SpoqaHanSansNeo-Regular',
-                  }}
-                  onFocus={(e: any) => {
-                    onIdFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onIdFocusOut();
-                  }}
-                  onChangeText={(value: string) => {
-                    setStudentId(value);
-                  }}
-                  maxLength={8}
-                  placeholder="아이디"
-                  keyboardType="number-pad"
-                  selectionColor="#A055FF"
-                />
-                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
-              </View>
-            </View>
-            {isDuplicate && (
-              <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>
-            )}
-          </ScrollView>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={10}
+      behavior={'padding'}
+      style={{flex: 1}}>
+      <View
+        style={{
+          width: (Dimensions.get('window').width / 7) * 2,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
+      <Container>
+        <ScrollView
+          scrollEnabled={false}
+          keyboardShouldPersistTaps="handled"
+          style={{backgroundColor: '#fff'}}>
+          <TextContainer>
+            <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
+            <Description>
+              학교에서 제공하는 성신 G-mail 계정을 사용합니다
+            </Description>
+          </TextContainer>
           <View
             style={{
-              bottom: isFocused ? 80 : -10,
-              justifyContent: 'center',
-              alignItems: 'center',
+              paddingRight: 24,
+              paddingLeft: 24,
+              marginTop: 12,
             }}>
-            {studentId.length === 8 && isFocused && (
-              <PurpleFullButton
-                text="다음"
-                onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  if (!result) {
-                    setIsDuplicate(true);
-                    return;
-                  }
-                  navigation.navigate('SignUpPassword', {
-                    userId: studentId,
-                  });
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: isFocused ? '#A055FF' : '#D7DCE6'},
+              ]}>
+              <TextInput
+                style={{
+                  width: '60%',
+                  fontSize: 21,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}
-              />
-            )}
-
-            {studentId.length === 8 && !isFocused && (
-              <PurpleRoundButton
-                text="다음"
-                onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  if (!result) {
-                    setIsDuplicate(true);
-                    return;
-                  }
-                  navigation.navigate('SignUpPassword', {
-                    userId: studentId,
-                  });
+                onFocus={(e: any) => {
+                  onIdFocus();
                 }}
+                onBlur={(e: any) => {
+                  onIdFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  setStudentId(value);
+                }}
+                maxLength={8}
+                placeholder="아이디"
+                keyboardType="number-pad"
+                selectionColor="#A055FF"
               />
-            )}
-
-            {studentId.length < 8 && isFocused && (
-              <DisabledPurpleFullButton text="다음" />
-            )}
-
-            {studentId.length < 8 && !isFocused && (
-              <DisabledPurpleRoundButton text="다음" />
-            )}
+              <Text style={styles.suffix}>@sungshin.ac.kr</Text>
+            </View>
           </View>
-        </Container>
-      </KeyboardAvoidingView>
-    </>
+          {isDuplicate && (
+            <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>
+          )}
+        </ScrollView>
+        <View
+          style={{
+            bottom: isFocused ? 80 : -10,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {studentId.length === 8 && isFocused && (
+            <PurpleFullButton
+              text="다음"
+              onClick={async () => {
+                let result: boolean = await checkEmailConflict(studentId);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('SignUpPassword', {
+                  userId: studentId,
+                });
+              }}
+            />
+          )}
+
+          {studentId.length === 8 && !isFocused && (
+            <PurpleRoundButton
+              text="다음"
+              onClick={async () => {
+                let result: boolean = await checkEmailConflict(studentId);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('SignUpPassword', {
+                  userId: studentId,
+                });
+              }}
+            />
+          )}
+
+          {studentId.length < 8 && isFocused && (
+            <DisabledPurpleFullButton text="다음" />
+          )}
+
+          {studentId.length < 8 && !isFocused && (
+            <DisabledPurpleRoundButton text="다음" />
+          )}
+        </View>
+      </Container>
+    </KeyboardAvoidingView>
   ) : (
     <>
-      <View style={{width: 107.14, height: 4, backgroundColor: '#A055FF'}} />
-
+      <View
+        style={{
+          width: (Dimensions.get('window').width / 7) * 2,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
       <Container>
         <ScrollView
           scrollEnabled={false}

@@ -7,7 +7,6 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {MajorRow} from '../../components/MajorRow';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
@@ -48,12 +47,9 @@ export default function MajorSelect({navigation, route}: Props) {
   useEffect(() => {
     async function getList() {
       const list = await getMajorList();
-      console.log(list);
       setMajorList(list);
     }
     getList();
-    // console.log(majorList);
-    //  signUp(signUpDto);
   }, []);
 
   const selectMajor = (major: Major) => {

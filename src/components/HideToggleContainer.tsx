@@ -1,20 +1,6 @@
 import React, {useState} from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  GestureResponderEvent,
-  Button,
-  StyleSheet,
-  Dimensions,
-  View,
-  TouchableWithoutFeedbackBase,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import {
-  BigFoldButton,
-  BigSpreadButton,
-  FoldButton,
-} from '../../resources/icon/Button';
+import {TouchableOpacity, Text, View} from 'react-native';
+import {BigFoldButton, BigSpreadButton} from '../../resources/icon/Button';
 
 interface Props {
   boardCategory: string;

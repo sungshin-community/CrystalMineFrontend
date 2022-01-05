@@ -4,9 +4,8 @@ import {View, StatusBar, StyleSheet} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 import * as Animatable from 'react-native-animatable';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { sendEmail } from '../../common/authApi';
+import {sendEmail} from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -75,9 +74,8 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
                   let result: boolean = await sendEmail();
                   if (result) {
                     navigation.navigate('RegularMemberAuth');
-                  }
-                  else {
-                    console.log("이메일 발송 실패");
+                  } else {
+                    console.log('이메일 발송 실패');
                   }
                 }}
               />

@@ -18,8 +18,6 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {PlatformOS} from '../../components/PlatformOS';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 StatusBar.setBackgroundColor('white');
@@ -41,7 +39,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: '#87919B',
     textAlign: 'right',
-    // justifyContent: 'flex-end'
   },
 });
 
@@ -62,92 +59,90 @@ export default function SignInId({navigation}: Props) {
   };
 
   return Platform.OS === 'ios' ? (
-    <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff', flex: 1}}>
-          <NormalOneLineText style={{marginLeft: 24, marginTop: 25}}>
-            로그인
-          </NormalOneLineText>
-          <View>
-            <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
-            <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
-              <View
-                style={[
-                  styles.inputContainer,
-                  {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
-                ]}>
-                <TextInput
-                  style={{
-                    width: '60%',
-                    borderColor: '#ff0000',
-                    fontSize: 21,
-                    fontFamily: 'SpoqaHanSansNeo-Regular',
-                  }}
-                  onFocus={(e: any) => {
-                    onIdFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onIdFocusOut();
-                  }}
-                  onChangeText={(value: string) => {
-                    setStudentId(value);
-                  }}
-                  maxLength={8}
-                  placeholder="아이디"
-                  keyboardType="number-pad"
-                />
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={10}
+      behavior={'padding'}
+      style={{flex: 1}}>
+      <ScrollView
+        scrollEnabled={false}
+        keyboardShouldPersistTaps="handled"
+        style={{backgroundColor: '#fff', flex: 1}}>
+        <NormalOneLineText style={{marginLeft: 24, marginTop: 25}}>
+          로그인
+        </NormalOneLineText>
+        <View>
+          <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
+          <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
+              ]}>
+              <TextInput
+                style={{
+                  width: '60%',
+                  borderColor: '#ff0000',
+                  fontSize: 21,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                }}
+                onFocus={(e: any) => {
+                  onIdFocus();
+                }}
+                onBlur={(e: any) => {
+                  onIdFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  setStudentId(value);
+                }}
+                maxLength={8}
+                placeholder="아이디"
+                keyboardType="number-pad"
+              />
 
-                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
-              </View>
+              <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
           </View>
-        </ScrollView>
-
-        <View
-          style={{
-            paddingBottom: isIdFocused ? 80 : 21,
-            backgroundColor: '#FFFFFF',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {studentId.length === 8 && isIdFocused && (
-            <PurpleFullButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SignInPassword', {
-                  userId: studentId,
-                })
-              }
-            />
-          )}
-
-          {studentId.length === 8 && !isIdFocused && (
-            <PurpleRoundButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SignInPassword', {
-                  userId: studentId,
-                })
-              }
-            />
-          )}
-
-          {studentId.length < 8 && isIdFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
-
-          {studentId.length < 8 && !isIdFocused && (
-            <DisabledPurpleRoundButton text="다음" />
-          )}
         </View>
-      </KeyboardAvoidingView>
-    </>
+      </ScrollView>
+
+      <View
+        style={{
+          paddingBottom: isIdFocused ? 80 : 21,
+          backgroundColor: '#FFFFFF',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {studentId.length === 8 && isIdFocused && (
+          <PurpleFullButton
+            text="다음"
+            onClick={() =>
+              navigation.navigate('SignInPassword', {
+                userId: studentId,
+              })
+            }
+          />
+        )}
+
+        {studentId.length === 8 && !isIdFocused && (
+          <PurpleRoundButton
+            text="다음"
+            onClick={() =>
+              navigation.navigate('SignInPassword', {
+                userId: studentId,
+              })
+            }
+          />
+        )}
+
+        {studentId.length < 8 && isIdFocused && (
+          <DisabledPurpleFullButton text="다음" />
+        )}
+
+        {studentId.length < 8 && !isIdFocused && (
+          <DisabledPurpleRoundButton text="다음" />
+        )}
+      </View>
+    </KeyboardAvoidingView>
   ) : (
     <>
       <ScrollView
