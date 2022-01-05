@@ -23,7 +23,9 @@ interface Props {
 
 function GlobalNavbar() {
   return (
-    <Tab.Navigator initialRouteName="Home" screenOptions={{tabBarStyle: {height: 55}}}>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{tabBarStyle: {height: 55}}}>
       <Tab.Screen
         name="Home"
         component={HomeFragment}
@@ -41,7 +43,7 @@ function GlobalNavbar() {
         name="Board"
         component={BoardFragment}
         options={{
-          title: "게시판",
+          title: '게시판',
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <BoardTabIcon size={size} color={color} focused={focused} />;
@@ -51,8 +53,8 @@ function GlobalNavbar() {
           tabBarActiveTintColor: '#A055FF',
           headerTitleStyle: {
             fontSize: 17,
-            fontWeight: '400'
-          }
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+          },
         }}
       />
       <Tab.Screen
@@ -61,7 +63,9 @@ function GlobalNavbar() {
         options={{
           headerShown: false,
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <MessageTabIcon size={size} color={color} focused={focused} />;
+            return (
+              <MessageTabIcon size={size} color={color} focused={focused} />
+            );
           },
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',

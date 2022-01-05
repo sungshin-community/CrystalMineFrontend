@@ -23,17 +23,17 @@ interface ButtonProps {
 const style = StyleSheet.create({
   whiteText: {
     color: '#FFFFFF',
-    fontWeight: '400',
     fontSize: 17,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   purpleText: {
     color: '#A055FF',
-    fontWeight: '400',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 17,
   },
   disabledPurpleText: {
     color: '#DDCBF5',
-    fontWeight: '400',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 17,
   },
   purpleRoundButton: {

@@ -15,6 +15,7 @@ const MiddleFocusInputStyle = styled.TextInput`
   border-bottom-color: #a055ff;
   border-bottom-width: 2px;
   font-size: 21px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -25,6 +26,7 @@ const MiddleErrorInputStyle = styled.TextInput`
   border-bottom-color: #e64646;
   border-bottom-width: 2px;
   font-size: 21px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -35,6 +37,7 @@ const MiddleInactiveInputStyle = styled.TextInput`
   border-bottom-color: #d7dce6;
   border-bottom-width: 2px;
   font-size: 21px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -45,6 +48,7 @@ const BigFocusInputStyle = styled.TextInput`
   border-bottom-color: #a055ff;
   border-bottom-width: 2px;
   font-size: 27px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -55,6 +59,7 @@ const BigErrorInputStyle = styled.TextInput`
   border-bottom-color: #e64646;
   border-bottom-width: 2px;
   font-size: 27px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -65,19 +70,20 @@ const BigInactiveInputStyle = styled.TextInput`
   border-bottom-color: #d7dce6;
   border-bottom-width: 2px;
   font-size: 27px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
 const HelpTextStyle = styled.Text`
   font-size: 11px;
-  font-weight: 400;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #87919b;
   margin: 10px 0;
 `;
 
 const CautionTextStyle = styled.Text`
   font-size: 11px;
-  font-weight: 400;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #e64646;
   margin: 10px 0;
 `;
@@ -152,6 +158,7 @@ export const MiddleActiveInputID = ({
               paddingLeft: 10,
               color: '#87919B',
               textAlign: 'right',
+              fontFamily: 'SpoqaHanSansNeo-Regular',
             }}>
             {suffix}
           </Text>

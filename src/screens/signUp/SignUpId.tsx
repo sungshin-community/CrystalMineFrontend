@@ -23,7 +23,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { checkEmailConflict } from '../../common/authApi';
+import {checkEmailConflict} from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -48,14 +48,15 @@ const styles = StyleSheet.create({
   },
   suffix: {
     fontSize: 15,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#87919B',
     textAlign: 'right',
     // justifyContent: 'flex-end'
   },
   errorMessage: {
     marginTop: 10,
-    color: '#FF0000'
-  }
+    color: '#FF0000',
+  },
 });
 type RootStackParamList = {
   SignUpPassword: {userId: string};
@@ -82,7 +83,13 @@ export default function SignUpId({navigation}: Props) {
         keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <View style={{width: Dimensions.get('window').width / 7 * 2, height: 4, backgroundColor: '#A055FF'}} />
+        <View
+          style={{
+            width: (Dimensions.get('window').width / 7) * 2,
+            height: 4,
+            backgroundColor: '#A055FF',
+          }}
+        />
 
         <Container>
           <ScrollView
@@ -110,6 +117,7 @@ export default function SignUpId({navigation}: Props) {
                   style={{
                     width: '60%',
                     fontSize: 21,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
                   }}
                   onFocus={(e: any) => {
                     onIdFocus();
@@ -128,7 +136,9 @@ export default function SignUpId({navigation}: Props) {
                 <Text style={styles.suffix}>@sungshin.ac.kr</Text>
               </View>
             </View>
-            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>}
+            {isDuplicate && (
+              <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>
+            )}
           </ScrollView>
           <View
             style={{
@@ -146,9 +156,9 @@ export default function SignUpId({navigation}: Props) {
                     return;
                   }
                   navigation.navigate('SignUpPassword', {
-                  userId: studentId
-                })}
-              }
+                    userId: studentId,
+                  });
+                }}
               />
             )}
 
@@ -161,10 +171,10 @@ export default function SignUpId({navigation}: Props) {
                     setIsDuplicate(true);
                     return;
                   }
-                    navigation.navigate('SignUpPassword', {
-                    userId: studentId
-                  })}
-                }
+                  navigation.navigate('SignUpPassword', {
+                    userId: studentId,
+                  });
+                }}
               />
             )}
 
@@ -209,6 +219,7 @@ export default function SignUpId({navigation}: Props) {
                 style={{
                   width: '60%',
                   fontSize: 21,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -226,7 +237,9 @@ export default function SignUpId({navigation}: Props) {
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
-            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>}
+            {isDuplicate && (
+              <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>
+            )}
           </View>
         </ScrollView>
         <View
@@ -244,10 +257,10 @@ export default function SignUpId({navigation}: Props) {
                   setIsDuplicate(true);
                   return;
                 }
-                  navigation.navigate('SignUpPassword', {
-                  userId: studentId
-                })}
-              }
+                navigation.navigate('SignUpPassword', {
+                  userId: studentId,
+                });
+              }}
             />
           )}
 
@@ -255,15 +268,15 @@ export default function SignUpId({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  if (!result) {
-                    setIsDuplicate(true);
-                    return;
-                  }
-                  navigation.navigate('SignUpPassword', {
-                  userId: studentId
-                })}
-              }
+                let result: boolean = await checkEmailConflict(studentId);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('SignUpPassword', {
+                  userId: studentId,
+                });
+              }}
             />
           )}
 

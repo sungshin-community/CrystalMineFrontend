@@ -39,11 +39,11 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Fonts/SpoqaHanSansNeo-Bold.otf</string>
-		<string>Fonts/SpoqaHanSansNeo-Light.otf</string>
-		<string>Fonts/SpoqaHanSansNeo-Medium.otf</string>
-		<string>Fonts/SpoqaHanSansNeo-Regular.otf</string>
-		<string>Fonts/SpoqaHanSansNeo-Thin.otf</string>
+		<string>Fonts/SpoqaHanSansNeo-Bold.ttf</string>
+		<string>Fonts/SpoqaHanSansNeo-Thin.ttf</string>
+		<string>Fonts/SpoqaHanSansNeo-Light.ttf</string>
+		<string>Fonts/SpoqaHanSansNeo-Medium.ttf</string>
+		<string>Fonts/SpoqaHanSansNeo-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>

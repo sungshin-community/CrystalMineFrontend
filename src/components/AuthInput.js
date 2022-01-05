@@ -9,10 +9,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 45,
-    fontWeight: '400',
-
-  }
-
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+  },
 });
 
 class AuthInput extends Component {
@@ -28,18 +26,15 @@ class AuthInput extends Component {
   render() {
     return (
       <View style={styles.container}>
-       
         <OTPTextView
-          ref={(e) => (this.input1 = e)}
+          ref={e => (this.input1 = e)}
           containerStyle={styles.textInputContainer}
           textInputStyle={styles.textInput}
-          handleTextChange={(text) => this.setState({otpInput: text})}
+          handleTextChange={text => this.setState({otpInput: text})}
           inputCount={6}
-          tintColor='#A055FF'
+          tintColor="#A055FF"
           keyboardType="numeric"
-          
         />
-
       </View>
     );
   }
