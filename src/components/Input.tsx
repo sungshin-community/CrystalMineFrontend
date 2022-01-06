@@ -15,6 +15,7 @@ const MiddleFocusInputStyle = styled.TextInput`
   border-bottom-color: #a055ff;
   border-bottom-width: 2px;
   font-size: 21px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -25,6 +26,7 @@ const MiddleErrorInputStyle = styled.TextInput`
   border-bottom-color: #e64646;
   border-bottom-width: 2px;
   font-size: 21px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -35,6 +37,7 @@ const MiddleInactiveInputStyle = styled.TextInput`
   border-bottom-color: #d7dce6;
   border-bottom-width: 2px;
   font-size: 21px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -45,6 +48,7 @@ const BigFocusInputStyle = styled.TextInput`
   border-bottom-color: #a055ff;
   border-bottom-width: 2px;
   font-size: 27px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -55,6 +59,7 @@ const BigErrorInputStyle = styled.TextInput`
   border-bottom-color: #e64646;
   border-bottom-width: 2px;
   font-size: 27px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
@@ -65,19 +70,20 @@ const BigInactiveInputStyle = styled.TextInput`
   border-bottom-color: #d7dce6;
   border-bottom-width: 2px;
   font-size: 27px;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #000000;
 `;
 
 const HelpTextStyle = styled.Text`
   font-size: 11px;
-  font-weight: 400;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #87919b;
   margin: 10px 0;
 `;
 
 const CautionTextStyle = styled.Text`
   font-size: 11px;
-  font-weight: 400;
+  font-family: 'SpoqaHanSansNeo-Regular';
   color: #e64646;
   margin: 10px 0;
 `;
@@ -90,11 +96,11 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 interface Props {
-  // placeholder: string;
-  // title: string;
-  // maxLength: number;
-  // keyboardType: any;
-  // suffix: string;
+  placeholder?: string;
+  title?: string;
+  maxLength?: number;
+  keyboardType?: any;
+  suffix?: string;
   text: string;
 }
 
@@ -152,6 +158,7 @@ export const MiddleActiveInputID = ({
               paddingLeft: 10,
               color: '#87919B',
               textAlign: 'right',
+              fontFamily: 'SpoqaHanSansNeo-Regular',
             }}>
             {suffix}
           </Text>
@@ -190,7 +197,6 @@ export const MiddleActiveInputPassword = ({
 }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  // const [isValidate, setIsValidate] = useState<boolean>(false);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -201,75 +207,37 @@ export const MiddleActiveInputPassword = ({
     Keyboard.dismiss();
   };
 
-  // const validatePassword = () => {
-  //   var validate = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&]){10, 25}$/;
-  //   setIsValidate(validate.test(password));
-  //   console.log(password, isValidate);
-  // };
-
   return (
-    <>
-      <ScrollView
-        scrollEnabled={false}
-        keyboardShouldPersistTaps="handled"
-        style={{backgroundColor: '#fff', marginHorizontal: 24}}>
-        <MiddleInputContainerStyle
-          style={{
-            borderColor: isFocused ? '#A055FF' : '#D7DCE6',
-          }}>
-          <TextInput
-            style={{width: '60%'}}
-            onFocus={(e: any) => {
-              // onFocus
-              onInputFocus();
-            }}
-            onBlur={(e: any) => {
-              onInputFocusOut();
-            }}
-            onChangeText={(value: string) => {
-              // if (value.includes(" ")) {
-              //   value = value.replace(/\s/g, '')
-              // }
-              // setPassword(value.trim());
-              setPassword(value.replace(/\s/g, ''));
-            }}
-            // onEndEditing={(e: any) => {
-            //   validatePassword();
-            // }}
-            maxLength={maxLength}
-            placeholder={placeholder}
-            placeholderTextColor="#A0AAB4"
-            keyboardType={keyboardType}
-            secureTextEntry={true}
-            autoCapitalize="none"
-            returnKeyType="done"
-            selectionColor="#A055FF"
-          />
-        </MiddleInputContainerStyle>
-      </ScrollView>
-      {/* <View
+    <ScrollView
+      scrollEnabled={false}
+      keyboardShouldPersistTaps="handled"
+      style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+      <MiddleInputContainerStyle
         style={{
-          bottom: isFocused ? 0 : 21,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}> */}
-      {/* {isValidate && isFocused && <PurpleFullButton text="다음" />}
-        {isValidate && !isFocused && <PurpleRoundButton text="다음" />}
-        {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
-        {!isValidate && !isFocused && <DisabledPurpleRoundButton text="다음" />} */}
-
-      {/* {password.length >= 10 && isFocused && <PurpleFullButton text="다음" />}
-        {password.length >= 10 && !isFocused && (
-          <PurpleRoundButton text="다음" />
-        )}
-        {password.length < 10 && isFocused && (
-          <DisabledPurpleFullButton text="다음" />
-        )}
-        {password.length < 10 && !isFocused && (
-          <DisabledPurpleRoundButton text="다음" />
-        )}
-      </View> */}
-    </>
+          borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+        }}>
+        <TextInput
+          style={{width: '60%'}}
+          onFocus={(e: any) => {
+            onInputFocus();
+          }}
+          onBlur={(e: any) => {
+            onInputFocusOut();
+          }}
+          onChangeText={(value: string) => {
+            setPassword(value.replace(/\s/g, ''));
+          }}
+          maxLength={maxLength}
+          placeholder={placeholder}
+          placeholderTextColor="#A0AAB4"
+          keyboardType={keyboardType}
+          secureTextEntry={true}
+          autoCapitalize="none"
+          returnKeyType="done"
+          selectionColor="#A055FF"
+        />
+      </MiddleInputContainerStyle>
+    </ScrollView>
   );
 };
 

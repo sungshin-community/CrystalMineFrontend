@@ -11,19 +11,18 @@ import {
   Platform,
   Dimensions,
   Text,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 
-import {Description, NormalOneLineText} from '../../components/Top';
+import {NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { checkNicknameConflict } from '../../common/authApi';
+import {checkNicknameConflict} from '../../common/authApi';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -47,13 +46,13 @@ const MiddleInputContainerStyle = styled.View`
 const styles = StyleSheet.create({
   errorMessage: {
     marginTop: 10,
-    color: '#FF0000'
-  }
+    color: '#FF0000',
+  },
 });
 
 type RootStackParamList = {
-  MajorSelect: {userId: string, password: string, nickname: string};
-  SignUpNickname: {userId: string, password: string}
+  MajorSelect: {userId: string; password: string; nickname: string};
+  SignUpNickname: {userId: string; password: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -70,104 +69,17 @@ export default function SignUpNickname({navigation, route}: Props) {
     Keyboard.dismiss();
   };
   return Platform.OS === 'ios' ? (
-    <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
-        <View style={{width: Dimensions.get('window').width / 7 * 5, height: 4, backgroundColor: '#A055FF'}} />
-        <Container>
-          <ScrollView
-            scrollEnabled={false}
-            keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: '#fff', marginHorizontal: 24}}>
-            <TextContainer>
-              <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
-            </TextContainer>
-            <MiddleInputContainerStyle
-              style={{
-                borderColor: isFocused ? '#A055FF' : '#D7DCE6',
-              }}>
-              <TextInput
-                style={{width: '60%', fontSize: 21}}
-                onFocus={(e: any) => {
-                  onInputFocus();
-                }}
-                onBlur={(e: any) => {
-                  onInputFocusOut();
-                }}
-                onChangeText={(value: string) => {
-                  setNickname(value);
-                }}
-                placeholder="닉네임"
-                placeholderTextColor="#A0AAB4"
-                keyboardType="default"
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="done"
-                selectionColor="#A055FF"
-              />
-            </MiddleInputContainerStyle>
-            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>}
-          </ScrollView>
-          <View
-            style={{
-              bottom: isFocused ? 80 : -10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {nickname.length !== 0 && isFocused && (
-              <PurpleFullButton
-                text="다음"
-                onClick={async () => {
-                      let result: boolean = await checkNicknameConflict(nickname);
-                      if (!result) {
-                        setIsDuplicate(true);
-                        return;
-                      }
-                      navigation.navigate('MajorSelect', {
-                      userId: route.params.userId,
-                      password: route.params.password,
-                      nickname: nickname,
-                    })
-                  }
-                }
-              />
-            )}
-
-            {nickname.length !== 0 && !isFocused && (
-              <PurpleRoundButton
-                text="다음"
-                onClick={async () => {
-                  let result: boolean = await checkNicknameConflict(nickname);
-                  if (!result) {
-                    setIsDuplicate(true);
-                    return;
-                  }
-                  navigation.navigate('MajorSelect', {
-                  userId: route.params.userId,
-                  password: route.params.password,
-                  nickname: nickname,
-                })
-              }
-            }
-              />
-            )}
-
-            {nickname.length === 0 && isFocused && (
-              <DisabledPurpleFullButton text="다음" />
-            )}
-
-            {nickname.length === 0 && !isFocused && (
-              <DisabledPurpleRoundButton text="다음" />
-            )}
-          </View>
-        </Container>
-      </KeyboardAvoidingView>
-    </>
-  ) : (
-    <>
-      <View style={{width: 267.85, height: 4, backgroundColor: '#A055FF'}} />
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={10}
+      behavior={'padding'}
+      style={{flex: 1}}>
+      <View
+        style={{
+          width: (Dimensions.get('window').width / 7) * 5,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
       <Container>
         <ScrollView
           scrollEnabled={false}
@@ -181,7 +93,11 @@ export default function SignUpNickname({navigation, route}: Props) {
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             <TextInput
-              style={{width: '60%', fontSize: 21}}
+              style={{
+                width: '60%',
+                fontSize: 21,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+              }}
               onFocus={(e: any) => {
                 onInputFocus();
               }}
@@ -200,7 +116,110 @@ export default function SignUpNickname({navigation, route}: Props) {
               selectionColor="#A055FF"
             />
           </MiddleInputContainerStyle>
-            {isDuplicate && <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>}
+          {isDuplicate && (
+            <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>
+          )}
+        </ScrollView>
+        <View
+          style={{
+            bottom: isFocused ? 80 : -10,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {nickname.length !== 0 && isFocused && (
+            <PurpleFullButton
+              text="다음"
+              onClick={async () => {
+                let result: boolean = await checkNicknameConflict(nickname);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('MajorSelect', {
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                });
+              }}
+            />
+          )}
+
+          {nickname.length !== 0 && !isFocused && (
+            <PurpleRoundButton
+              text="다음"
+              onClick={async () => {
+                let result: boolean = await checkNicknameConflict(nickname);
+                if (!result) {
+                  setIsDuplicate(true);
+                  return;
+                }
+                navigation.navigate('MajorSelect', {
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                });
+              }}
+            />
+          )}
+
+          {nickname.length === 0 && isFocused && (
+            <DisabledPurpleFullButton text="다음" />
+          )}
+
+          {nickname.length === 0 && !isFocused && (
+            <DisabledPurpleRoundButton text="다음" />
+          )}
+        </View>
+      </Container>
+    </KeyboardAvoidingView>
+  ) : (
+    <>
+      <View
+        style={{
+          width: (Dimensions.get('window').width / 7) * 5,
+          height: 4,
+          backgroundColor: '#A055FF',
+        }}
+      />
+      <Container>
+        <ScrollView
+          scrollEnabled={false}
+          keyboardShouldPersistTaps="handled"
+          style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+          <TextContainer>
+            <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
+          </TextContainer>
+          <MiddleInputContainerStyle
+            style={{
+              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+            }}>
+            <TextInput
+              style={{
+                width: '60%',
+                fontSize: 21,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+              }}
+              onFocus={(e: any) => {
+                onInputFocus();
+              }}
+              onBlur={(e: any) => {
+                onInputFocusOut();
+              }}
+              onChangeText={(value: string) => {
+                setNickname(value);
+              }}
+              placeholder="닉네임"
+              placeholderTextColor="#A0AAB4"
+              keyboardType="default"
+              autoCapitalize="none"
+              autoCorrect={false}
+              returnKeyType="done"
+              selectionColor="#A055FF"
+            />
+          </MiddleInputContainerStyle>
+          {isDuplicate && (
+            <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>
+          )}
         </ScrollView>
         <View
           style={{
@@ -218,12 +237,11 @@ export default function SignUpNickname({navigation, route}: Props) {
                   return;
                 }
                 navigation.navigate('MajorSelect', {
-                userId: route.params.userId,
-                password: route.params.password,
-                nickname: nickname,
-              })
-            }
-          }
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                });
+              }}
             />
           )}
 
@@ -237,12 +255,11 @@ export default function SignUpNickname({navigation, route}: Props) {
                   return;
                 }
                 navigation.navigate('MajorSelect', {
-                userId: route.params.userId,
-                password: route.params.password,
-                nickname: nickname,
-              })
-            }
-          }
+                  userId: route.params.userId,
+                  password: route.params.password,
+                  nickname: nickname,
+                });
+              }}
             />
           )}
 

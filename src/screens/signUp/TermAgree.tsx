@@ -15,7 +15,6 @@ import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
 } from '../../components/Button';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TwoLineTitle, SmallText} from '../../components/Top';
 import {Container} from '../../components/Container';
@@ -71,7 +70,7 @@ function TermAgree({navigation}: Props) {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
   let styles = StyleSheet.create({
-    text: {color: '#FFFFFF', fontWeight: '400'},
+    text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
       backgroundColor:
         firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc',
@@ -134,7 +133,12 @@ function TermAgree({navigation}: Props) {
                     onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 )}
-                <Text style={{fontSize: 15, lineHeight: 56}}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    lineHeight: 56,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                  }}>
                   약관 전체 동의
                 </Text>
               </TouchableOpacity>
@@ -147,21 +151,29 @@ function TermAgree({navigation}: Props) {
                   marginRight: 41,
                   flexDirection: 'row',
                   alignItems: 'center',
-                  height: 40
+                  height: 40,
                 }}>
-                
-                <TouchableOpacity style={{height: 40, alignItems: 'center', flexDirection: 'row', paddingLeft: 5}} onPress={(e: any) => onChange('firstTerm')}>
-                  {firstTermChecked ? <Checked
-                    style={{marginRight: 16}}
-                    // onPress={(e: any) => onChange('firstTerm')}
-                  /> :
-                  <Unchecked
-                    style={{marginRight: 16}}
-                    // onPress={(e: any) => onChange('firstTerm')}
-                  />
-                  }
+                <TouchableOpacity
+                  style={{
+                    height: 40,
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    paddingLeft: 5,
+                  }}
+                  onPress={(e: any) => onChange('firstTerm')}>
+                  {firstTermChecked ? (
+                    <Checked
+                      style={{marginRight: 16}}
+                      // onPress={(e: any) => onChange('firstTerm')}
+                    />
+                  ) : (
+                    <Unchecked
+                      style={{marginRight: 16}}
+                      // onPress={(e: any) => onChange('firstTerm')}
+                    />
+                  )}
                 </TouchableOpacity>
-                
+
                 <SmallText>서비스 이용약관</SmallText>
                 <View
                   style={{
@@ -169,7 +181,7 @@ function TermAgree({navigation}: Props) {
                     flexDirection: 'row-reverse',
                     alignItems: 'center',
                     height: 16,
-                    marginLeft: 5
+                    marginLeft: 5,
                   }}>
                   {firstTermSpread ? <FoldButton /> : <SpreadButton />}
                 </View>
@@ -222,21 +234,29 @@ function TermAgree({navigation}: Props) {
                   marginRight: 41,
                   flexDirection: 'row',
                   alignItems: 'center',
-                  height: 40
+                  height: 40,
                 }}>
-                
-                <TouchableOpacity style={{height: 40, alignItems: 'center', flexDirection: 'row', paddingLeft: 5}} onPress={(e: any) => onChange('secondTerm')}>
-                  {secondTermChecked ? <Checked
-                    style={{marginRight: 16}}
-                    // onPress={(e: any) => onChange('secondTerm')}
-                  /> :
-                  <Unchecked
-                    style={{marginRight: 16}}
-                    // onPress={(e: any) => onChange('secondTerm')}
-                  />
-                  }
+                <TouchableOpacity
+                  style={{
+                    height: 40,
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    paddingLeft: 5,
+                  }}
+                  onPress={(e: any) => onChange('secondTerm')}>
+                  {secondTermChecked ? (
+                    <Checked
+                      style={{marginRight: 16}}
+                      // onPress={(e: any) => onChange('secondTerm')}
+                    />
+                  ) : (
+                    <Unchecked
+                      style={{marginRight: 16}}
+                      // onPress={(e: any) => onChange('secondTerm')}
+                    />
+                  )}
                 </TouchableOpacity>
-                
+
                 <SmallText>개인 정보 처리 방침</SmallText>
                 <View
                   style={{
@@ -244,7 +264,7 @@ function TermAgree({navigation}: Props) {
                     flexDirection: 'row-reverse',
                     alignItems: 'center',
                     height: 16,
-                    marginLeft: 5
+                    marginLeft: 5,
                   }}>
                   {secondTermSpread ? <FoldButton /> : <SpreadButton />}
                 </View>
