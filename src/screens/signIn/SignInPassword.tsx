@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+
 import {
   Text,
   StatusBar,
@@ -10,6 +11,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
+
 import {NormalOneLineText} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
@@ -19,6 +21,8 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import { login } from '../../common/authApi';
+
+import PasswordShow from '../../../resources/icon/PasswordShow';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -47,10 +51,12 @@ type RootStackParamList = {
   GlobalNavbar: undefined;
   BoardScreen: undefined;
 };
+
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -59,6 +65,10 @@ export default function SignInPassword({navigation, route}: Props) {
   const onPasswordFocusOut = () => {
     setIsPasswordFocused(false);
     Keyboard.dismiss();
+  };
+
+  const letShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return Platform.OS === 'ios' ? (
@@ -96,11 +106,12 @@ export default function SignInPassword({navigation, route}: Props) {
                   }}
                   maxLength={25}
                   placeholder="비밀번호"
-                  secureTextEntry={true}
+                  secureTextEntry={showPassword ? false : true}
                   autoCapitalize="none"
                   returnKeyType="done"
                   selectionColor="#A055FF"
                 />
+                <PasswordShow onPress={letShowPassword} />
               </View>
             </View>
           </View>
@@ -172,11 +183,12 @@ export default function SignInPassword({navigation, route}: Props) {
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
-                secureTextEntry={true}
+                secureTextEntry={showPassword ? false : true}
                 autoCapitalize="none"
                 returnKeyType="done"
                 selectionColor="#A055FF"
               />
+              <PasswordShow onPress={letShowPassword} />
             </View>
           </View>
         </View>
