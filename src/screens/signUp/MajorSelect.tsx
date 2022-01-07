@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {StatusBar, View, Dimensions} from 'react-native';
-import {BigOneLineText, Description} from '../../components/Top';
+import {NormalOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleRoundButton,
@@ -15,6 +15,10 @@ import Major from '../../classes/Major';
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
 StatusBar.setBarStyle('dark-content');
+
+const Background = styled.View`
+  background-color: ${(props: any) => props.background};
+`;
 
 const Container = styled.View`
   padding-bottom: 32px;
@@ -44,6 +48,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function MajorSelect({navigation, route}: Props) {
   const [majorList, setMajorList] = useState<Major[]>([]);
   const [selectedMajorId, setSelectedMajorId] = useState<number>(-1);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     async function getList() {
@@ -67,17 +72,26 @@ export default function MajorSelect({navigation, route}: Props) {
         }}
       />
       <Container>
-        <BigOneLineText style={{marginBottom: 7}}>
+        <NormalOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
-        </BigOneLineText>
+        </NormalOneLineText>
         <ModalBottom
-          modalText=""
-          modalButtonText=""
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          modalText={`소속 학과가 학과 리스트에 없을 경우,
+아래 내용을 따라 이용부탁드립니다.`}
+          modalBody={`
+1. 학과 리스트에서 임의 학과 선택 후 가입 
+2. 문의하기를 통해 학과 추가 요청 
+3. 학과 추가 안내를 받은 후, 마이페이지에서 
+     학과 변경 진행`}
+          modalButtonText="확인"
           modalButton={
             <Description style={{textDecorationLine: 'underline'}}>
               소속 학과가 선택지에 없나요?
             </Description>
-          }></ModalBottom>
+          }
+        />
       </Container>
       <View style={{flex: 1}}>
         <RadioContainer>
