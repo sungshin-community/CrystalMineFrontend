@@ -23,6 +23,7 @@ import {
 import { login } from '../../common/authApi';
 
 import PasswordShow from '../../../resources/icon/PasswordShow';
+import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 
 StatusBar.setBackgroundColor('white');
 // StatusBar.setTranslucent(true);
@@ -57,7 +58,7 @@ export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
   };
@@ -70,6 +71,8 @@ export default function SignInPassword({navigation, route}: Props) {
   const letShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  
 
   return Platform.OS === 'ios' ? (
     <>
@@ -112,6 +115,10 @@ export default function SignInPassword({navigation, route}: Props) {
                   selectionColor="#A055FF"
                 />
                 <PasswordShow onPress={letShowPassword} />
+              </View>
+              <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
+              <LoginCheckBoxOn/>
+              <Text style={{color: '#87919B', marginLeft: 6}}>자동로그인</Text>
               </View>
             </View>
           </View>
@@ -192,6 +199,10 @@ export default function SignInPassword({navigation, route}: Props) {
                 selectionColor="#A055FF"
               />
               <PasswordShow onPress={letShowPassword} />
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
+              <LoginCheckBoxOn/>
+              <Text style={{color: '#87919B', marginLeft: 6}}>자동로그인</Text>
             </View>
           </View>
         </View>
