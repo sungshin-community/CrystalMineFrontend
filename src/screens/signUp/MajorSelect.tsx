@@ -7,6 +7,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {MajorRow} from '../../components/MajorRow';
+import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
@@ -69,9 +70,14 @@ export default function MajorSelect({navigation, route}: Props) {
         <BigOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
         </BigOneLineText>
-        <Description style={{textDecorationLine: 'underline'}}>
-          소속 학과가 선택지에 없나요?
-        </Description>
+        <ModalBottom
+          modalText=""
+          modalButtonText=""
+          modalButton={
+            <Description style={{textDecorationLine: 'underline'}}>
+              소속 학과가 선택지에 없나요?
+            </Description>
+          }></ModalBottom>
       </Container>
       <View style={{flex: 1}}>
         <RadioContainer>

@@ -15,7 +15,7 @@ import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
-import SignupComplete from './src/screens/signUp/SignupComplete';
+import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import BoardScreen from './src/screens/board/BoardScreen';
@@ -61,12 +61,20 @@ const App = () => {
         <Stack.Screen
           name="SignInId"
           component={SignInId}
-          options={{title: '', headerTintColor: '#000000', animation: 'slide_from_right'}}
+          options={{
+            title: '',
+            headerTintColor: '#000000',
+            animation: 'slide_from_right',
+          }}
         />
         <Stack.Screen
           name="SignInPassword"
           component={SignInPassword}
-          options={{title: '', headerTintColor: '#000000', animation: 'slide_from_right'}}
+          options={{
+            title: '',
+            headerTintColor: '#000000',
+            animation: 'slide_from_right',
+          }}
         />
         {/* [F-2-1] 회원가입 */}
         <Stack.Screen
@@ -96,7 +104,7 @@ const App = () => {
         />
         <Stack.Screen
           name="SignUpComplete"
-          component={SignupComplete}
+          component={SignUpComplete}
           options={{
             title: '',
             headerTintColor: '#000000',
