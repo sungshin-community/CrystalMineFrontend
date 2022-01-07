@@ -138,7 +138,7 @@ export default function SignUpPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 80 : -10,
+            bottom: isFocused ? 80 : 0,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
