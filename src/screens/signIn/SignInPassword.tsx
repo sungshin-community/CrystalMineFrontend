@@ -30,8 +30,6 @@ StatusBar.setBarStyle('dark-content');
 
 const styles = StyleSheet.create({
   inputContainer: {
-    // fontFamily: 'Verdana',
-    // fontWeight: 'bold',
     fontSize: 21,
     borderBottomWidth: 2,
     borderColor: '#D7DCE6',
@@ -88,7 +86,7 @@ export default function SignInPassword({navigation, route}: Props) {
           </NormalOneLineText>
 
           <View>
-            <Text style={{marginLeft: 24, marginTop: 36}}>비밀번호</Text>
+            <Text style={{marginLeft: 24, marginTop: 36, color: '#A055FF'}}>비밀번호</Text>
             <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
               <View
                 style={[
@@ -169,19 +167,20 @@ export default function SignInPassword({navigation, route}: Props) {
         </NormalOneLineText>
 
         <View>
-          <Text style={{marginLeft: 24, marginTop: 36}}>비밀번호</Text>
+          <Text style={{marginLeft: 24, marginTop: 36, color: '#A055FF'}}>비밀번호</Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
                 styles.inputContainer,
-                // 안먹고 있음
                 {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
               ]}
               >
               <TextInput
-                style={{borderColor: '#ff0000', fontSize: 21, width: '90%'}}
-                // onFocus={(e: any) => { onPasswordFocus(); }}
-                // onBlur={(e: any) => { onPasswordFocusOut(); }}
+                style={{borderColor: '#ff0000', 
+                        fontFamily: 'verdana-bold',
+                        fontSize: 21, width: '90%'}}
+                onFocus={(e: any) => { onPasswordFocus(); }}
+                onBlur={(e: any) => { onPasswordFocusOut(); }}
                 onChangeText={(value: string) => {
                   setPassword(value);
                 }}

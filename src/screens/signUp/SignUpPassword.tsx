@@ -199,9 +199,7 @@ export default function SignUpPassword({navigation, route}: Props) {
               style={{
                 width: '90%',
                 fontSize: 21,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                // fontWeight: 'bold',
-                // fontFamily: 'Verdana',
+                fontFamily: 'verdana-bold',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
