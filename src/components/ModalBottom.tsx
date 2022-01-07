@@ -1,61 +1,79 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Dimensions,
+} from 'react-native';
 
 interface Props {
   modalText?: string;
   modalButtonText?: string;
   modalButton?: any;
+  modalBody?: string;
+  setModalVisible: any;
+  modalVisible: boolean;
 }
 export const ModalBottom = ({
   modalText,
   modalButtonText,
   modalButton,
+  modalBody,
+  setModalVisible,
+  modalVisible,
 }: Props) => {
-  const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View
-      style={[
-        styles.centeredView,
-        {backgroundColor: modalVisible ? 'rgba(0,0,0,0.5)' : 'transparent'},
-      ]}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{modalText}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>{modalButtonText}</Text>
-            </Pressable>
+    <>
+      <View style={[styles.centeredView]}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{modalText}</Text>
+              <View style={{marginHorizontal: 20}}>
+                <Text style={styles.modalBody}>{modalBody}</Text>
+              </View>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>{modalButtonText}</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </View>
       <Pressable onPress={() => setModalVisible(true)}>{modalButton}</Pressable>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: 45,
+    left: '50%',
+    transform: [{translateX: -Dimensions.get('window').width * 0.445}],
   },
   modalView: {
-    //Top 변경예정
-    marginTop: 600,
     margin: 2,
-    width: 327,
+    // width: 327,
+    width: Dimensions.get('window').width - 48,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 30,
+    paddingTop: 30,
+    paddingBottom: 24,
+    paddingHorizontal: 24,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -69,6 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     height: 42,
+    marginTop: 20,
   },
   buttonClose: {
     backgroundColor: '#A055FF',
@@ -77,9 +96,19 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 14,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   modalText: {
-    marginBottom: 40,
+    fontSize: 13,
     textAlign: 'center',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    lineHeight: 18,
+  },
+  modalBody: {
+    marginBottom: 20,
+    fontSize: 13,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    textAlign: 'left',
+    lineHeight: 25,
   },
 });

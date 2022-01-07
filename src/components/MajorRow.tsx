@@ -10,12 +10,25 @@ const MajorOption = styled.Text`
   font-family: 'SpoqaHanSansNeo-Regular';
 `;
 
-export const MajorRow = ({major, selectMajor, style}: any) => {
+interface Props {
+  major: Major;
+  selectMajor: any;
+  style: any;
+}
+
+interface Major {
+  id: number;
+  isActive: boolean;
+  name: string;
+}
+
+export const MajorRow = (props: Props) => {
+  const {major, selectMajor, style} = props;
   return (
     <TouchMajor
       hitSlop={12}
       key={major.id}
-      value={major.value}
+      value={major.name}
       onPress={() => selectMajor(major)}>
       <MajorOption style={style}>{major.name}</MajorOption>
     </TouchMajor>
