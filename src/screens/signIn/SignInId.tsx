@@ -71,7 +71,7 @@ export default function SignInId({navigation}: Props) {
           로그인
         </NormalOneLineText>
         <View>
-          <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
+          <Text style={{marginLeft: 24, marginTop: 47, color: '#A055FF'}}>아이디</Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
@@ -153,7 +153,7 @@ export default function SignInId({navigation}: Props) {
           로그인
         </NormalOneLineText>
         <View>
-          <Text style={{marginLeft: 24, marginTop: 47}}>아이디</Text>
+          <Text style={{marginLeft: 24, marginTop: 47, color: '#A055FF'}}>아이디</Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
