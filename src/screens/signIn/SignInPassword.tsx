@@ -30,6 +30,8 @@ StatusBar.setBarStyle('dark-content');
 
 const styles = StyleSheet.create({
   inputContainer: {
+    // fontFamily: 'Verdana',
+    // fontWeight: 'bold',
     fontSize: 21,
     borderBottomWidth: 2,
     borderColor: '#D7DCE6',
@@ -172,10 +174,12 @@ export default function SignInPassword({navigation, route}: Props) {
             <View
               style={[
                 styles.inputContainer,
+                // 안먹고 있음
                 {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
-              ]}>
+              ]}
+              >
               <TextInput
-                style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
+                style={{borderColor: '#ff0000', fontSize: 21, width: '90%'}}
                 // onFocus={(e: any) => { onPasswordFocus(); }}
                 // onBlur={(e: any) => { onPasswordFocusOut(); }}
                 onChangeText={(value: string) => {
