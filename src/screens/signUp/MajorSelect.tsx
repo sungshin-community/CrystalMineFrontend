@@ -103,6 +103,7 @@ export default function MajorSelect({navigation, route}: Props) {
               style={{
                 color: major.id === selectedMajorId ? '#a055ff' : '#000000',
               }}
+              selected={major.id === selectedMajorId}
             />
           ))}
         </RadioContainer>
