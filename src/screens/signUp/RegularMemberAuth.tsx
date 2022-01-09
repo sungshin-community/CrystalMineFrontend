@@ -26,24 +26,24 @@ import CustomButton, {
   DisabledPurpleFullButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
+import {checkAuthNumber, sendEmail} from '../../common/authApi';
 
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #ffffff;
 `;
 
-interface VerifyCodeProps {}
 const CELL_COUNT = 6;
 const RESEND_OTP_TIME_LIMIT = 9;
 
-const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
+export default function RegularMemberAuth() {
   let resendOtpTimerInterval: any;
 
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(true);
-
+  const [verificationCode, setVerificationCode] = useState<string>('');
   //시작
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -60,14 +60,19 @@ const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
 
   //다시 시도하기 버튼 눌렀을 경우
   const onResendOtpButtonPress = () => {
+    //인증번호 발송 API
     setValue('');
+    async () => {
+      let result: boolean = await sendEmail();
+      if (result) {
+        console.log('이메일 재발송 성공');
+      } else {
+        console.log('이메일 재발송 실패');
+      }
+    };
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
-    let result: boolean = await sendEmail();
-    //인증번호 API 다시 호출
-    console.log('todo: Resend OTP');
   };
-
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -132,14 +137,22 @@ const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
       </View>
 
       <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
+
       <View style={styles.button}>
-        <PurpleFullButton text={value} />
+        <PurpleFullButton
+          text="인증하기"
+          onClick={async () => {
+            let result: boolean = await checkAuthNumber(value);
+            if (result) {
+              console.log('인증 성공');
+            } else {
+              console.log('인증 실패');
+            }
+          }}></PurpleFullButton>
       </View>
     </SafeAreaView>
   );
-};
-export default RegularMemberAuth;
-
+}
 const styles = StyleSheet.create({
   root: {
     flex: 1,
