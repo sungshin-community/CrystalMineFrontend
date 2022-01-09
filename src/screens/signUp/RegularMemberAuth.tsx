@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Button,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {
   CodeField,
@@ -23,7 +25,123 @@ import CustomButton, {
   DisabledWhiteRoundButton,
   DisabledPurpleFullButton,
 } from '../../components/Button';
-import CountDownTimer from '../../components/CountDownTimer';
+import {ModalBottom} from '../../components/ModalBottom';
+
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: #ffffff;
+`;
+
+interface VerifyCodeProps {}
+const CELL_COUNT = 6;
+const RESEND_OTP_TIME_LIMIT = 9;
+
+const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
+  let resendOtpTimerInterval: any;
+
+  const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
+    RESEND_OTP_TIME_LIMIT,
+  );
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  //시작
+  const startResendOtpTimer = () => {
+    if (resendOtpTimerInterval) {
+      clearInterval(resendOtpTimerInterval);
+    }
+    resendOtpTimerInterval = setInterval(() => {
+      if (resendButtonDisabledTime <= 0) {
+        clearInterval(resendOtpTimerInterval);
+      } else {
+        setResendButtonDisabledTime(resendButtonDisabledTime - 1);
+      }
+    }, 1000);
+  };
+
+  //다시 시도하기 버튼 눌렀을 경우
+  const onResendOtpButtonPress = () => {
+    setValue('');
+    setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
+    startResendOtpTimer();
+
+    //인증번호 API 다시 호출
+    console.log('todo: Resend OTP');
+  };
+
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+  const [tryCnt, setTryCnt] = useState(5);
+
+  //타이머 시작
+  useEffect(() => {
+    startResendOtpTimer();
+    return () => {
+      if (resendOtpTimerInterval) {
+        clearInterval(resendOtpTimerInterval);
+      }
+    };
+  }, [resendButtonDisabledTime]);
+
+  return (
+    <SafeAreaView style={{backgroundColor: '#fff'}}>
+      <View style={{marginTop: 130, marginLeft: 24}}>
+        <TwoLineTitle
+          firstLineText="메일로 전송된"
+          secondLineText="인증번호를 입력해주세요"
+        />
+      </View>
+      <CodeField
+        ref={ref}
+        {...props}
+        value={value}
+        onChangeText={setValue}
+        cellCount={CELL_COUNT}
+        rootStyle={styles.codeFieldRoot}
+        keyboardType="number-pad"
+        textContentType="oneTimeCode"
+        renderCell={({index, symbol, isFocused}) => (
+          <View
+            onLayout={getCellOnLayoutHandler(index)}
+            key={index}
+            style={[styles.cellRoot, isFocused && styles.focusCell]}>
+            <Text style={styles.cellText}>
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          </View>
+        )}
+      />
+
+      {resendButtonDisabledTime > 0 ? (
+        <></>
+      ) : (
+        <>
+          <ModalBottom
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalText={`인증 시간이 초과되었습니다.`}
+            modalBody=""
+            modalButtonText="인증번호 다시 받기"
+            modalButton={<Text>원래 모달이 나왔던 부분</Text>}
+            modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
+        </>
+      )}
+      <View style={styles.timerContainer}>
+        <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
+      </View>
+
+      <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
+      <View style={styles.button}>
+        <PurpleFullButton text={value} />
+      </View>
+    </SafeAreaView>
+  );
+};
+export default RegularMemberAuth;
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -100,116 +218,18 @@ const styles = StyleSheet.create({
     height: 26,
     color: '#87919B',
     backgroundColor: '#E2E4E8',
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    padding: 4,
+    padding: 6,
     flexDirection: 'row',
     justifyContent: 'center',
     textAlign: 'center',
   },
+  tryCnt: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    color: '#87919B',
+    fontSize: 13,
+    marginTop: 10,
+  },
 });
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
-`;
-
-interface VerifyCodeProps {}
-const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 9;
-
-const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
-  let resendOtpTimerInterval: any;
-
-  const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
-    RESEND_OTP_TIME_LIMIT,
-  );
-
-  //시작
-  const startResendOtpTimer = () => {
-    if (resendOtpTimerInterval) {
-      clearInterval(resendOtpTimerInterval);
-    }
-    resendOtpTimerInterval = setInterval(() => {
-      if (resendButtonDisabledTime <= 0) {
-        clearInterval(resendOtpTimerInterval);
-      } else {
-        setResendButtonDisabledTime(resendButtonDisabledTime - 1);
-      }
-    }, 1000);
-  };
-
-  //다시 시도하기 버튼 눌렀을 경우
-  const onResendOtpButtonPress = () => {
-    setValue('');
-    setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
-    startResendOtpTimer();
-
-    //인증번호 API 다시 호출
-    console.log('todo: Resend OTP');
-  };
-
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
-
-  //타이머 시작
-  useEffect(() => {
-    startResendOtpTimer();
-    return () => {
-      if (resendOtpTimerInterval) {
-        clearInterval(resendOtpTimerInterval);
-      }
-    };
-  }, [resendButtonDisabledTime]);
-
-  return (
-    <SafeAreaView>
-      <View style={{marginTop: 130, marginLeft: 24}}>
-        <TwoLineTitle
-          firstLineText="메일로 전송된"
-          secondLineText="인증번호를 입력해주세요"
-        />
-      </View>
-      <CodeField
-        ref={ref}
-        {...props}
-        value={value}
-        onChangeText={setValue}
-        cellCount={CELL_COUNT}
-        rootStyle={styles.codeFieldRoot}
-        keyboardType="number-pad"
-        textContentType="oneTimeCode"
-        renderCell={({index, symbol, isFocused}) => (
-          <View
-            onLayout={getCellOnLayoutHandler(index)}
-            key={index}
-            style={[styles.cellRoot, isFocused && styles.focusCell]}>
-            <Text style={styles.cellText}>
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
-          </View>
-        )}
-      />
-
-      {resendButtonDisabledTime > 0 ? (
-        <Text style={styles.resendCodeText}>{resendButtonDisabledTime}</Text>
-      ) : (
-        <TouchableOpacity onPress={onResendOtpButtonPress}>
-          <View style={styles.resendCodeContainer}>
-            <Text style={styles.resendCode}>재시도 인증번호</Text>
-          </View>
-        </TouchableOpacity>
-      )}
-      <View style={styles.timerContainer}>
-        <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
-      </View>
-      <View style={styles.button}>
-        <PurpleFullButton text={value} />
-      </View>
-    </SafeAreaView>
-  );
-};
-export default RegularMemberAuth;

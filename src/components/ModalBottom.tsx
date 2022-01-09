@@ -53,7 +53,7 @@ export const ModalBottom = ({
           </View>
         </Modal>
       </View>
-      <Pressable onPress={() => setModalVisible(true)}>{modalButton}</Pressable>
+      <Pressable onPress={modalButtonFunc}>{modalButton}</Pressable>
     </>
   );
 };

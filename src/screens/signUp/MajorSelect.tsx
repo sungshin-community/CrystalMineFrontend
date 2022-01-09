@@ -91,7 +91,7 @@ export default function MajorSelect({navigation, route}: Props) {
               소속 학과가 선택지에 없나요?
             </Description>
           }
-          modalButtonFunc
+          modalButtonFunc={() => setModalVisible(!modalVisible)}
         />
       </Container>
       <View style={{flex: 1}}>
