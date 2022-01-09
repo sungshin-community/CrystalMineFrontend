@@ -1,6 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {StatusBar, View, Dimensions, Text, StyleSheet} from 'react-native';
+import {
+  StatusBar,
+  View,
+  Dimensions,
+  Text,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -12,9 +19,11 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Background = styled.View`
   background-color: ${(props: any) => props.background};
