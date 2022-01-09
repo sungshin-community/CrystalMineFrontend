@@ -76,14 +76,16 @@ export default function RegularMemberAuth({navigation}: Props) {
   const onResendOtpButtonPress = () => {
     //인증번호 발송 API
     setValue('');
-    // async () => {
-    //   let result: boolean = await sendEmail();
-    //   if (result) {
-    //     console.log('이메일 재발송 성공');
-    //   } else {
-    //     console.log('이메일 재발송 실패');
-    //   }
-    // };
+    async () => {
+      let result: boolean = await sendEmail();
+      if (result) {
+        console.log('이메일 재발송 성공');
+        console.log(result);
+      } else {
+        console.log('이메일 재발송 실패');
+        console.log(result);
+      }
+    };
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
   };

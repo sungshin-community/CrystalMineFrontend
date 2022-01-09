@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     marginTop: 10,
     color: '#FF0000',
+    marginLeft: 24,
   },
 });
 type RootStackParamList = {
