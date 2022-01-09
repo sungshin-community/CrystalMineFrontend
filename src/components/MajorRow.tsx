@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import styled from 'styled-components';
-import {Checked} from '../../resources/icon/CheckBox';
+import Checked from '../../resources/icon/Checked';
 
 const TouchMajor = styled.Pressable`
   margin: 12px;
@@ -10,6 +10,7 @@ const TouchMajor = styled.Pressable`
 const MajorOption = styled.Text`
   font-size: 17px;
   font-family: 'SpoqaHanSansNeo-Regular';
+  direction: ltr;
 `;
 
 interface Props {
@@ -33,10 +34,10 @@ export const MajorRow = (props: Props) => {
       key={major.id}
       value={major.name}
       onPress={() => selectMajor(major)}>
-      <MajorOption style={style}>
-        {major.name}
-        {selected ? <Checked /> : null}
-      </MajorOption>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <MajorOption style={style}>{major.name}</MajorOption>
+        <View>{selected ? <Checked /> : null}</View>
+      </View>
     </TouchMajor>
   );
 };
