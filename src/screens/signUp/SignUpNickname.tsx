@@ -96,7 +96,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             }}>
             <TextInput
               style={{
-                width: '60%',
+                width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
@@ -198,9 +198,10 @@ export default function SignUpNickname({navigation, route}: Props) {
             }}>
             <TextInput
               style={{
-                width: '60%',
+                width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -226,7 +227,7 @@ export default function SignUpNickname({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 21,
+            bottom: isFocused ? 0 : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

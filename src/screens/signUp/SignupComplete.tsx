@@ -22,7 +22,7 @@ const ButtonContainer = styled.View`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  padding-bottom: 34px;
+  padding-bottom: 34;
 `;
 
 type RootStackParamList = {

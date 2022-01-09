@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#87919B',
     textAlign: 'right',
-    paddingBottom: 7,
+    paddingBottom: Platform.OS === 'ios' ? 7 : 0,
   },
   errorMessage: {
     marginTop: 10,
@@ -115,7 +115,6 @@ export default function SignUpId({navigation}: Props) {
               ]}>
               <TextInput
                 style={{
-                  width: '60%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
@@ -211,8 +210,7 @@ export default function SignUpId({navigation}: Props) {
           </TextContainer>
           <View
             style={{
-              paddingRight: 24,
-              paddingLeft: 24,
+              paddingHorizontal: 24,
               marginTop: 12,
             }}>
             <View
@@ -225,6 +223,7 @@ export default function SignUpId({navigation}: Props) {
                   width: '60%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -249,7 +248,7 @@ export default function SignUpId({navigation}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 21,
+            bottom: isFocused ? 0 : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

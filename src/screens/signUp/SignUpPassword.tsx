@@ -43,6 +43,7 @@ const MiddleInputContainerStyle = styled.View`
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 `;
 
 type RootStackParamList = {
@@ -208,6 +209,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 width: '90%',
                 fontSize: 21,
                 fontFamily: 'verdana-bold',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -240,7 +242,7 @@ export default function SignUpPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 21,
+            bottom: isFocused ? 0 : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

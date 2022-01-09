@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#87919B',
     textAlign: 'right',
-    paddingBottom: 7,
+    paddingBottom: Platform.OS === 'ios' ? 7 : 0,
   },
 });
 
@@ -173,9 +173,9 @@ export default function SignInId({navigation}: Props) {
               <TextInput
                 style={{
                   width: '60%',
-                  borderColor: '#ff0000',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -197,7 +197,7 @@ export default function SignInId({navigation}: Props) {
       </ScrollView>
       <View
         style={{
-          paddingBottom: isIdFocused ? 0 : 21,
+          paddingBottom: isIdFocused ? 0 : 34,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#FFFFFF',

@@ -163,11 +163,12 @@ export default function SignInPassword({navigation, route}: Props) {
         {password.length < 10 && <DisabledPurpleRoundButton text="다음" />}
         <Text
           style={{
-            marginBottom: 20,
+            paddingBottom: 20,
             marginTop: 21,
             fontSize: 13,
             fontFamily: 'SpoqaHanSansNeo-Regular',
             color: '#87929B',
+            textDecorationLine: 'underline',
           }}>
           비밀번호를 잊으셨나요?
         </Text>
@@ -182,7 +183,6 @@ export default function SignInPassword({navigation, route}: Props) {
         <NormalOneLineText style={{marginLeft: 24, marginTop: 25}}>
           로그인
         </NormalOneLineText>
-
         <View>
           <Text style={{marginLeft: 24, marginTop: 36, color: '#A055FF'}}>
             비밀번호
@@ -195,7 +195,6 @@ export default function SignInPassword({navigation, route}: Props) {
               ]}>
               <TextInput
                 style={{
-                  borderColor: '#ff0000',
                   fontFamily: 'verdana-bold',
                   fontSize: 21,
                   width: '90%',
@@ -216,6 +215,11 @@ export default function SignInPassword({navigation, route}: Props) {
                 returnKeyType="done"
                 selectionColor="#A055FF"
               />
+              {showPassword ? (
+                <PasswordShow onPress={letShowPassword} />
+              ) : (
+                <PasswordNotShow onPress={letShowPassword} />
+              )}
             </View>
             <View
               style={{
@@ -260,6 +264,7 @@ export default function SignInPassword({navigation, route}: Props) {
             fontSize: 13,
             fontFamily: 'SpoqaHanSansNeo-Regular',
             color: '#87929B',
+            textDecorationLine: 'underline',
           }}>
           비밀번호를 잊으셨나요?
         </Text>
