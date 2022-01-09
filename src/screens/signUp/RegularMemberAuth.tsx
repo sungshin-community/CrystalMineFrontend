@@ -42,7 +42,7 @@ const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
     RESEND_OTP_TIME_LIMIT,
   );
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(true);
 
   //시작
   const startResendOtpTimer = () => {
@@ -63,7 +63,7 @@ const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
     setValue('');
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
-
+    let result: boolean = await sendEmail();
     //인증번호 API 다시 호출
     console.log('todo: Resend OTP');
   };
@@ -118,16 +118,14 @@ const RegularMemberAuth: React.FC<VerifyCodeProps> = () => {
       {resendButtonDisabledTime > 0 ? (
         <></>
       ) : (
-        <>
-          <ModalBottom
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            modalText={`인증 시간이 초과되었습니다.`}
-            modalBody=""
-            modalButtonText="인증번호 다시 받기"
-            modalButton={<Text>원래 모달이 나왔던 부분</Text>}
-            modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
-        </>
+        <ModalBottom
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          modalText={`인증 시간이 초과되었습니다.`}
+          modalBody=""
+          modalButtonText="인증번호 다시 받기"
+          modalButton
+          modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
       )}
       <View style={styles.timerContainer}>
         <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
