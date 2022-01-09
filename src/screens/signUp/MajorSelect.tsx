@@ -1,6 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {StatusBar, View, Dimensions} from 'react-native';
+import {
+  StatusBar,
+  View,
+  Dimensions,
+  Text,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -12,9 +19,11 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Background = styled.View`
   background-color: ${(props: any) => props.background};
@@ -39,6 +48,14 @@ const ButtonContainer = styled.View`
   font-family: 'SpoqaHanSansNeo-Regular';
 `;
 
+const styles = StyleSheet.create({
+  greyText: {
+    color: '#797979',
+    lineHeight: 25,
+  },
+  blackText: {},
+});
+
 type RootStackParamList = {
   SignUpComplete: undefined;
   MajorSelect: {userId: string; password: string; nickname: string};
@@ -62,8 +79,34 @@ export default function MajorSelect({navigation, route}: Props) {
     setSelectedMajorId(major.id);
   };
 
+  const modalBody = (
+    <>
+      <Text style={styles.greyText}>1. 학과 리스트에서 </Text>
+      <Text>임의 학과 선택 후 가입{'\n'}</Text>
+      <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
+      <Text>학과 추가 요청{'\n'}</Text>
+      <Text style={styles.greyText}>
+        3. 학과 추가 안내를 받은 후, 마이페이지에서{'\n'}
+      </Text>
+      <Text>{'     '}학과 변경 진행</Text>
+    </>
+  );
+
   return (
     <>
+      {modalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            zIndex: 999,
+          }}
+        />
+      ) : null}
       <View
         style={{
           width: (Dimensions.get('window').width / 7) * 6,
@@ -80,11 +123,7 @@ export default function MajorSelect({navigation, route}: Props) {
           setModalVisible={setModalVisible}
           modalText={`소속 학과가 학과 리스트에 없을 경우,
 아래 내용을 따라 이용부탁드립니다.`}
-          modalBody={`
-1. 학과 리스트에서 임의 학과 선택 후 가입 
-2. 문의하기를 통해 학과 추가 요청 
-3. 학과 추가 안내를 받은 후, 마이페이지에서 
-     학과 변경 진행`}
+          modalBody={modalBody}
           modalButtonText="확인"
           modalButton={
             <Description style={{textDecorationLine: 'underline'}}>
