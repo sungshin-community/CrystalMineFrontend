@@ -16,14 +16,16 @@ interface Props {
   modalBody?: string;
   setModalVisible: any;
   modalVisible: boolean;
+  modalButtonFunc: any;
 }
 export const ModalBottom = ({
   modalText,
   modalButtonText,
   modalButton,
-  modalBody,
+  modalBody = '',
   setModalVisible,
   modalVisible,
+  modalButtonFunc = () => setModalVisible(!modalVisible),
 }: Props) => {
   return (
     <>
@@ -44,14 +46,14 @@ export const ModalBottom = ({
               </View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
+                onPress={modalButtonFunc}>
                 <Text style={styles.textStyle}>{modalButtonText}</Text>
               </Pressable>
             </View>
           </View>
         </Modal>
       </View>
-      <Pressable onPress={() => setModalVisible(true)}>{modalButton}</Pressable>
+      <Pressable onPress={modalButtonFunc}>{modalButton}</Pressable>
     </>
   );
 };
