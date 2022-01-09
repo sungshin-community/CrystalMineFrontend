@@ -10,7 +10,7 @@ export const BigOneLineText = Styled.Text`
 export const BigTwoLineText = Styled.Text`
     font-family: 'SpoqaHanSansNeo-Medium';
     font-style: normal;
-    font-size: 27px;
+    font-size: 24px;
     line-height: 32.4px;
 `;
 export const NormalOneLineText = Styled.Text`

@@ -1,25 +1,22 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {View, StatusBar, StyleSheet} from 'react-native';
+import {View, StatusBar, StyleSheet, Platform} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {sendEmail} from '../../common/authApi';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
   padding: 37px 24px;
-`;
-
-const ButtonContainer = styled.View`
-  background-color: #ffffff;
-  padding-bottom: 21;
 `;
 
 const ButtonCenter = styled.View`
@@ -31,6 +28,10 @@ const styles = StyleSheet.create({
   textDescription: {
     marginTop: 15,
     lineHeight: 16.28,
+  },
+  buttonContainer: {
+    backgroundColor: '#ffffff',
+    paddingBottom: 34,
   },
 });
 
@@ -64,7 +65,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
           </Description>
         </Animatable.Text>
       </Container>
-      <ButtonContainer>
+      <View style={styles.buttonContainer}>
         <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
             <View style={{margin: 16}}>
@@ -88,7 +89,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             />
           </ButtonCenter>
         </Animatable.View>
-      </ButtonContainer>
+      </View>
     </>
   );
 }

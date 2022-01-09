@@ -21,10 +21,14 @@ import {
 } from '../../components/Button';
 import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -39,6 +43,7 @@ const MiddleInputContainerStyle = styled.View`
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 `;
 
 type RootStackParamList = {
@@ -108,6 +113,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 width: '90%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -116,7 +122,6 @@ export default function SignUpPassword({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
-                console.log(value);
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
               }}
@@ -124,13 +129,17 @@ export default function SignUpPassword({navigation, route}: Props) {
               placeholder="비밀번호"
               placeholderTextColor="#A0AAB4"
               keyboardType="default"
-              secureTextEntry={!showPassword} //! 얘가 문제
+              secureTextEntry={!showPassword} //! 인풋 초기화 얘가 문제
               clearTextOnFocus={false}
               autoCapitalize="none"
               returnKeyType="done"
               selectionColor="#A055FF"
             />
-            <PasswordShow onPress={letShowPassword} />
+            {showPassword ? (
+              <PasswordShow onPress={letShowPassword} />
+            ) : (
+              <PasswordNotShow onPress={letShowPassword} />
+            )}
           </MiddleInputContainerStyle>
           {!isValidate && (
             <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />
@@ -200,6 +209,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 width: '90%',
                 fontSize: 21,
                 fontFamily: 'verdana-bold',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -215,12 +225,16 @@ export default function SignUpPassword({navigation, route}: Props) {
               placeholder="비밀번호"
               placeholderTextColor="#A0AAB4"
               keyboardType="default"
-              secureTextEntry={showPassword ? false : true}
+              secureTextEntry={!showPassword}
               autoCapitalize="none"
               returnKeyType="done"
               selectionColor="#A055FF"
             />
-            <PasswordShow onPress={letShowPassword} />
+            {showPassword ? (
+              <PasswordShow onPress={letShowPassword} />
+            ) : (
+              <PasswordNotShow onPress={letShowPassword} />
+            )}
           </MiddleInputContainerStyle>
           {!isValidate && (
             <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />
@@ -228,7 +242,7 @@ export default function SignUpPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 21,
+            bottom: isFocused ? 0 : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

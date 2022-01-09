@@ -25,9 +25,11 @@ import {
 } from '../../components/Button';
 import {checkEmailConflict} from '../../common/authApi';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -44,14 +46,14 @@ const styles = StyleSheet.create({
     borderColor: '#D7DCE6',
     flexDirection: 'row',
     alignItems: 'center',
-    // textAlign: 'right'
+    justifyContent: 'space-between',
   },
   suffix: {
     fontSize: 15,
     fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#87919B',
     textAlign: 'right',
-    // justifyContent: 'flex-end'
+    paddingBottom: Platform.OS === 'ios' ? 7 : 0,
   },
   errorMessage: {
     marginTop: 10,
@@ -113,9 +115,9 @@ export default function SignUpId({navigation}: Props) {
               ]}>
               <TextInput
                 style={{
-                  width: '60%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -140,7 +142,7 @@ export default function SignUpId({navigation}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 80 : -10,
+            bottom: isFocused ? 80 : 0,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -208,8 +210,7 @@ export default function SignUpId({navigation}: Props) {
           </TextContainer>
           <View
             style={{
-              paddingRight: 24,
-              paddingLeft: 24,
+              paddingHorizontal: 24,
               marginTop: 12,
             }}>
             <View
@@ -222,6 +223,7 @@ export default function SignUpId({navigation}: Props) {
                   width: '60%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -246,7 +248,7 @@ export default function SignUpId({navigation}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 21,
+            bottom: isFocused ? 0 : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

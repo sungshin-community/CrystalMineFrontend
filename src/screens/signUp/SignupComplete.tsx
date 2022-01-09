@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import {StatusBar} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.View`
   flex: 1;
@@ -20,7 +22,7 @@ const ButtonContainer = styled.View`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  padding-bottom: 21;
+  padding-bottom: 34;
 `;
 
 type RootStackParamList = {

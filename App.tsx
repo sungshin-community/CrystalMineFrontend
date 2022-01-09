@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar} from 'react-native';
+import {StatusBar, Platform} from 'react-native';
 
 //screens
 import SplashHome from './src/screens/SplashHome';
@@ -27,9 +27,11 @@ import CreateBoard from './src/screens/board/CreateBoard';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
-  StatusBar.setBarStyle('dark-content');
+  {
+    Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+    // StatusBar.setTranslucent(true);
+    StatusBar.setBarStyle('dark-content');
+  }
 
   useEffect(() => {
     SplashScreen.hide();

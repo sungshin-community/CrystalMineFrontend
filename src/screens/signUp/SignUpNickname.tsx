@@ -24,9 +24,11 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict} from '../../common/authApi';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -94,9 +96,10 @@ export default function SignUpNickname({navigation, route}: Props) {
             }}>
             <TextInput
               style={{
-                width: '60%',
+                width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -122,7 +125,7 @@ export default function SignUpNickname({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 80 : -10,
+            bottom: isFocused ? 80 : 0,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -195,9 +198,10 @@ export default function SignUpNickname({navigation, route}: Props) {
             }}>
             <TextInput
               style={{
-                width: '60%',
+                width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -223,7 +227,7 @@ export default function SignUpNickname({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 21,
+            bottom: isFocused ? 0 : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

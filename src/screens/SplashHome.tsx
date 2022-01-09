@@ -20,7 +20,7 @@ const Container = styled.View`
 
 const ButtonContainer = styled.View`
   background-color: #ffffff;
-  padding-bottom: 21;
+  padding-bottom: 34px;
   justify-content: center;
   align-items: center;
 `;

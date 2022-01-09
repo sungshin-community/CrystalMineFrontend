@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 
-import {NormalOneLineText} from '../../components/Top';
+import {Description, NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -20,9 +20,11 @@ import {
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -32,13 +34,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     fontFamily: 'SpoqaHanSansNeo-Regular',
+    justifyContent: 'space-between',
   },
   suffix: {
     fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 15,
-    paddingLeft: 10,
     color: '#87919B',
     textAlign: 'right',
+    paddingBottom: Platform.OS === 'ios' ? 7 : 0,
   },
 });
 
@@ -71,7 +74,9 @@ export default function SignInId({navigation}: Props) {
           로그인
         </NormalOneLineText>
         <View>
-          <Text style={{marginLeft: 24, marginTop: 47, color: '#A055FF'}}>아이디</Text>
+          <Text style={{marginLeft: 24, marginTop: 47, color: '#A055FF'}}>
+            아이디
+          </Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
@@ -84,6 +89,7 @@ export default function SignInId({navigation}: Props) {
                   borderColor: '#ff0000',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -98,8 +104,10 @@ export default function SignInId({navigation}: Props) {
                 placeholder="아이디"
                 keyboardType="number-pad"
               />
-
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
+            </View>
+            <View style={{marginTop: 10}}>
+              {/* <Description>존재하지 않는 아이디입니다</Description> */}
             </View>
           </View>
         </View>
@@ -107,7 +115,7 @@ export default function SignInId({navigation}: Props) {
 
       <View
         style={{
-          paddingBottom: isIdFocused ? 80 : 21,
+          paddingBottom: isIdFocused ? 80 : 34,
           backgroundColor: '#FFFFFF',
           justifyContent: 'center',
           alignItems: 'center',
@@ -153,7 +161,9 @@ export default function SignInId({navigation}: Props) {
           로그인
         </NormalOneLineText>
         <View>
-          <Text style={{marginLeft: 24, marginTop: 47, color: '#A055FF'}}>아이디</Text>
+          <Text style={{marginLeft: 24, marginTop: 47, color: '#A055FF'}}>
+            아이디
+          </Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
@@ -163,9 +173,9 @@ export default function SignInId({navigation}: Props) {
               <TextInput
                 style={{
                   width: '60%',
-                  borderColor: '#ff0000',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -180,7 +190,6 @@ export default function SignInId({navigation}: Props) {
                 placeholder="아이디"
                 keyboardType="number-pad"
               />
-
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
           </View>
@@ -188,7 +197,7 @@ export default function SignInId({navigation}: Props) {
       </ScrollView>
       <View
         style={{
-          paddingBottom: isIdFocused ? 0 : 21,
+          paddingBottom: isIdFocused ? 0 : 34,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
