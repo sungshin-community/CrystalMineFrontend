@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   StatusBar,
+  Keyboard,
 } from 'react-native';
 import {
   CodeField,
@@ -28,6 +29,7 @@ import CustomButton, {
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
 import {checkAuthNumber, sendEmail} from '../../common/authApi';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 {
   Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
@@ -43,15 +45,20 @@ const Container = styled.SafeAreaView`
 const CELL_COUNT = 6;
 const RESEND_OTP_TIME_LIMIT = 9;
 
-export default function RegularMemberAuth() {
+type RootStackParamList = {
+  Home: undefined;
+  GlobalNavbar: undefined;
+  BoardScreen: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+export default function RegularMemberAuth({navigation}: Props) {
   let resendOtpTimerInterval: any;
 
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(true);
-  const [verificationCode, setVerificationCode] = useState<string>('');
-  //시작
+
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
       clearInterval(resendOtpTimerInterval);
@@ -69,14 +76,14 @@ export default function RegularMemberAuth() {
   const onResendOtpButtonPress = () => {
     //인증번호 발송 API
     setValue('');
-    async () => {
-      let result: boolean = await sendEmail();
-      if (result) {
-        console.log('이메일 재발송 성공');
-      } else {
-        console.log('이메일 재발송 실패');
-      }
-    };
+    // async () => {
+    //   let result: boolean = await sendEmail();
+    //   if (result) {
+    //     console.log('이메일 재발송 성공');
+    //   } else {
+    //     console.log('이메일 재발송 실패');
+    //   }
+    // };
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
   };
@@ -87,7 +94,15 @@ export default function RegularMemberAuth() {
     setValue,
   });
   const [tryCnt, setTryCnt] = useState(5);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const onFocus = () => {
+    setIsFocused(true);
+  };
 
+  const onFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
   //타이머 시작
   useEffect(() => {
     startResendOtpTimer();
@@ -99,87 +114,108 @@ export default function RegularMemberAuth() {
   }, [resendButtonDisabledTime]);
 
   return (
-    <SafeAreaView style={{backgroundColor: '#fff'}}>
-      <View style={{marginTop: 130, marginLeft: 24}}>
-        <TwoLineTitle
-          firstLineText="메일로 전송된"
-          secondLineText="인증번호를 입력해주세요"
+    <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
+      <View style={{flex: 1}}>
+        <View style={{marginTop: 130, marginLeft: 24}}>
+          <TwoLineTitle
+            firstLineText="메일로 전송된"
+            secondLineText="인증번호를 입력해주세요"
+          />
+        </View>
+        <CodeField
+          ref={ref}
+          {...props}
+          value={value}
+          onChangeText={setValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.codeFieldRoot}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          renderCell={({index, symbol, isFocused}) => (
+            <View
+              onLayout={getCellOnLayoutHandler(index)}
+              key={index}
+              style={[styles.cellRoot, isFocused && styles.focusCell]}>
+              <Text style={styles.cellText}>
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            </View>
+          )}
         />
-      </View>
-      <CodeField
-        ref={ref}
-        {...props}
-        value={value}
-        onChangeText={setValue}
-        cellCount={CELL_COUNT}
-        rootStyle={styles.codeFieldRoot}
-        keyboardType="number-pad"
-        textContentType="oneTimeCode"
-        renderCell={({index, symbol, isFocused}) => (
-          <View
-            onLayout={getCellOnLayoutHandler(index)}
-            key={index}
-            style={[styles.cellRoot, isFocused && styles.focusCell]}>
-            <Text style={styles.cellText}>
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
-          </View>
+
+        {resendButtonDisabledTime > 0 ? (
+          <></>
+        ) : (
+          <>
+            {/* <View
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                zIndex: 999,
+              }}
+            /> */}
+            <ModalBottom
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              modalText={`인증 시간이 초과되었습니다.`}
+              modalBody=""
+              modalButtonText="인증번호 다시 받기"
+              modalButton
+              modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
+          </>
         )}
-      />
+        <View style={styles.timerContainer}>
+          <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
+        </View>
 
-      {resendButtonDisabledTime > 0 ? (
-        <></>
-      ) : (
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          modalText={`인증 시간이 초과되었습니다.`}
-          modalBody=""
-          modalButtonText="인증번호 다시 받기"
-          modalButton
-          modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
-      )}
-      <View style={styles.timerContainer}>
-        <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
+        <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
-
-      <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-
-      <View style={styles.button}>
-        <PurpleFullButton
-          text="인증하기"
-          onClick={async () => {
-            let result: boolean = await checkAuthNumber(value);
-            if (result) {
-              console.log('인증 성공');
-            } else {
-              console.log('인증 실패');
-            }
-          }}></PurpleFullButton>
+      <View
+        style={{
+          paddingBottom: isFocused ? 0 : 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#FFFFFF',
+        }}>
+        {value.length === 6 && isFocused && (
+          <PurpleFullButton
+            text="인증하기"
+            onClick={async () => {
+              let result: boolean = await checkAuthNumber(value);
+              if (result) {
+                navigation.navigate('GlobalNavbar');
+              } else {
+                navigation.navigate('GlobalNavbar');
+              }
+            }}></PurpleFullButton>
+        )}
+        {value.length === 6 && !isFocused && (
+          <PurpleRoundButton
+            text="인증하기"
+            onClick={async () => {
+              let result: boolean = await checkAuthNumber(value);
+              if (result) {
+                navigation.navigate('GlobalNavbar');
+              } else {
+                navigation.navigate('GlobalNavbar');
+              }
+            }}></PurpleRoundButton>
+        )}
+        {value.length < 6 && isFocused && (
+          <DisabledPurpleFullButton text="인증하기"></DisabledPurpleFullButton>
+        )}
+        {value.length < 6 && !isFocused && (
+          <DisabledPurpleRoundButton text="인증하기"></DisabledPurpleRoundButton>
+        )}
       </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    textAlign: 'left',
-    fontSize: 20,
-    marginStart: 20,
-    fontWeight: 'bold',
-  },
-  subTitle: {
-    textAlign: 'left',
-    fontSize: 16,
-    marginStart: 20,
-    marginTop: 10,
-  },
   codeFieldRoot: {
     marginTop: 40,
     width: '90%',
@@ -202,28 +238,6 @@ const styles = StyleSheet.create({
   focusCell: {
     borderBottomColor: '#A055FF',
     borderBottomWidth: 2,
-  },
-
-  button: {
-    marginTop: 20,
-  },
-  resendCode: {
-    color: '#00FF00',
-    marginStart: 20,
-    marginTop: 40,
-  },
-  resendCodeText: {
-    marginStart: 20,
-    marginTop: 40,
-  },
-  resendCodeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  container: {
-    paddingTop: 50,
-    paddingLeft: 10,
-    paddingRight: 10,
   },
   timerContainer: {
     marginTop: 32,
