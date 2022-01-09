@@ -116,6 +116,7 @@ export default function SignUpId({navigation}: Props) {
               ]}>
               <TextInput
                 style={{
+                  width: '60%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,

@@ -86,7 +86,6 @@ export default function SignInId({navigation}: Props) {
               <TextInput
                 style={{
                   width: '60%',
-                  borderColor: '#ff0000',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
