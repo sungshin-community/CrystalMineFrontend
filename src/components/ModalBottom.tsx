@@ -13,7 +13,7 @@ interface Props {
   modalText?: string;
   modalButtonText?: string;
   modalButton?: any;
-  modalBody?: string;
+  modalBody?: React.ReactNode;
   setModalVisible: any;
   modalVisible: boolean;
 }
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'SpoqaHanSansNeo-Regular',
     lineHeight: 18,
+    marginBottom: 20,
   },
   modalBody: {
     marginBottom: 20,

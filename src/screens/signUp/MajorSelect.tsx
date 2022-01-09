@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {StatusBar, View, Dimensions} from 'react-native';
+import {StatusBar, View, Dimensions, Text, StyleSheet} from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -39,6 +39,14 @@ const ButtonContainer = styled.View`
   font-family: 'SpoqaHanSansNeo-Regular';
 `;
 
+const styles = StyleSheet.create({
+  greyText: {
+    color: '#797979',
+    lineHeight: 25,
+  },
+  blackText: {},
+});
+
 type RootStackParamList = {
   SignUpComplete: undefined;
   MajorSelect: {userId: string; password: string; nickname: string};
@@ -62,6 +70,19 @@ export default function MajorSelect({navigation, route}: Props) {
     setSelectedMajorId(major.id);
   };
 
+  const modalBody = (
+    <>
+      <Text style={styles.greyText}>1. 학과 리스트에서 </Text>
+      <Text>임의 학과 선택 후 가입{'\n'}</Text>
+      <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
+      <Text>학과 추가 요청{'\n'}</Text>
+      <Text style={styles.greyText}>
+        3. 학과 추가 안내를 받은 후, 마이페이지에서{'\n'}
+      </Text>
+      <Text>{'     '}학과 변경 진행</Text>
+    </>
+  );
+
   return (
     <>
       <View
@@ -80,11 +101,7 @@ export default function MajorSelect({navigation, route}: Props) {
           setModalVisible={setModalVisible}
           modalText={`소속 학과가 학과 리스트에 없을 경우,
 아래 내용을 따라 이용부탁드립니다.`}
-          modalBody={`
-1. 학과 리스트에서 임의 학과 선택 후 가입 
-2. 문의하기를 통해 학과 추가 요청 
-3. 학과 추가 안내를 받은 후, 마이페이지에서 
-     학과 변경 진행`}
+          modalBody={modalBody}
           modalButtonText="확인"
           modalButton={
             <Description style={{textDecorationLine: 'underline'}}>
