@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  StatusBar,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -21,6 +22,12 @@ import {TwoLineTitle} from '../../components/Top';
 import styled from 'styled-components';
 import CountDownTimer from '../../components/CountDownTimer';
 import AuthInput from '../../components/AuthInput';
+
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.SafeAreaView`
   flex: 1;

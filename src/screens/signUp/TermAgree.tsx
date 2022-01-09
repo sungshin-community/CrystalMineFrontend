@@ -9,6 +9,7 @@ import {
   GestureResponderEvent,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from 'react-native';
 
 import {
@@ -66,9 +67,11 @@ function TermAgree({navigation}: Props) {
     }
   };
 
-  StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
-  StatusBar.setBarStyle('dark-content');
+  {
+    Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+    // StatusBar.setTranslucent(true);
+    StatusBar.setBarStyle('dark-content');
+  }
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
@@ -102,7 +105,8 @@ function TermAgree({navigation}: Props) {
               <Container>
                 <TwoLineTitle
                   firstLineText="이용 약관에 먼저"
-                  secondLineText="동의해주세요"></TwoLineTitle>
+                  secondLineText="동의해주세요"
+                />
               </Container>
               <TouchableOpacity
                 style={{
@@ -147,7 +151,6 @@ function TermAgree({navigation}: Props) {
                 style={{
                   marginLeft: 35,
                   marginTop: 24,
-                  // marginBottom: 12,
                   marginRight: 41,
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -312,7 +315,7 @@ function TermAgree({navigation}: Props) {
         </ScrollView>
 
         <View
-          style={{bottom: 21, justifyContent: 'center', alignItems: 'center'}}>
+          style={{bottom: 34, justifyContent: 'center', alignItems: 'center'}}>
           {firstTermChecked && secondTermChecked ? (
             <PurpleRoundButton
               text="다음"

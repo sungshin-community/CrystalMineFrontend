@@ -20,27 +20,21 @@ import {login} from '../../common/authApi';
 
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
+import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const styles = StyleSheet.create({
   inputContainer: {
-    fontSize: 21,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
     borderBottomWidth: 2,
     borderColor: '#D7DCE6',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  suffix: {
-    fontSize: 15,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    paddingLeft: 10,
-    fontWeight: 'bold',
-    color: '#87919B',
-    textAlign: 'right',
+    justifyContent: 'space-between',
   },
 });
 
@@ -93,7 +87,12 @@ export default function SignInPassword({navigation, route}: Props) {
                 {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
               ]}>
               <TextInput
-                style={{borderColor: '#ff0000', fontSize: 21, width: '100%'}}
+                style={{
+                  fontSize: 21,
+                  width: '90%',
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
+                }}
                 onFocus={(e: any) => {
                   onPasswordFocus();
                 }}
@@ -105,12 +104,16 @@ export default function SignInPassword({navigation, route}: Props) {
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
-                secureTextEntry={showPassword ? false : true}
+                secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 returnKeyType="done"
                 selectionColor="#A055FF"
               />
-              <PasswordShow onPress={letShowPassword} />
+              {showPassword ? (
+                <PasswordShow onPress={letShowPassword} />
+              ) : (
+                <PasswordNotShow onPress={letShowPassword} />
+              )}
             </View>
             <View
               style={{

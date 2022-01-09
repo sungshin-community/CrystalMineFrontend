@@ -22,10 +22,13 @@ import {
 import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 
-StatusBar.setBackgroundColor('white');
-// StatusBar.setTranslucent(true);
-StatusBar.setBarStyle('dark-content');
+{
+  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  // StatusBar.setTranslucent(true);
+  StatusBar.setBarStyle('dark-content');
+}
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -33,7 +36,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 37px 0px 52px 0px;
+  margin: 37px 0px 40px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
@@ -72,7 +75,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
 
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={Platform.OS == 'ios' ? 10 : 0}
+      keyboardVerticalOffset={10}
       behavior={'padding'}
       style={{flex: 1}}>
       <View
@@ -102,6 +105,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 width: '90%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 7,
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -121,14 +125,17 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               returnKeyType="done"
               selectionColor="#A055FF"
             />
-
-            <PasswordShow onPress={letShowPassword} />
+            {showPassword ? (
+              <PasswordShow onPress={letShowPassword} />
+            ) : (
+              <PasswordNotShow onPress={letShowPassword} />
+            )}
           </MiddleInputContainerStyle>
           {!isEqual && <CautionText text="비밀번호가 일치하지 않습니다" />}
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 80 : -10,
+            bottom: isFocused ? 80 : 0,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -207,8 +214,11 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               returnKeyType="done"
               selectionColor="#A055FF"
             />
-
-            <PasswordShow onPress={letShowPassword} />
+            {showPassword ? (
+              <PasswordShow onPress={letShowPassword} />
+            ) : (
+              <PasswordNotShow onPress={letShowPassword} />
+            )}
           </MiddleInputContainerStyle>
           {!isEqual && <CautionText text="비밀번호가 일치하지 않습니다" />}
         </ScrollView>
