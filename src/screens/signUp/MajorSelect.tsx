@@ -94,6 +94,19 @@ export default function MajorSelect({navigation, route}: Props) {
 
   return (
     <>
+      {modalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            zIndex: 999,
+          }}
+        />
+      ) : null}
       <View
         style={{
           width: (Dimensions.get('window').width / 7) * 6,
