@@ -42,7 +42,10 @@ const HomeFragment = () => {
           </View>
           <View style={styles.NewsContainer}>
             <NewsCheckIcon></NewsCheckIcon>
-            <Text style={styles.NewsTitle}>인증 만료일이 3일 남았어요.</Text>
+            <View style={{paddingRight: 90}}>
+              <Text style={styles.NewsTitle}>인증 만료일이 3일 남았어요.</Text>
+              <Text style={styles.NewsMore}>인증하러 가기</Text>
+            </View>
             <RightArrow style={{color: '#000'}}></RightArrow>
           </View>
         </View>
@@ -148,9 +151,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 32,
+    paddingBottom: 30,
   },
   NewsTitle: {
     fontSize: 13,
     marginLeft: 10,
+  },
+  NewsMore: {
+    color: '#707A82',
+    fontSize: 9,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    marginTop: 4,
   },
 });
