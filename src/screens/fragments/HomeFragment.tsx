@@ -1,10 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text, View, ScrollView, StyleSheet} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {sendEmail} from '../../common/authApi';
 import {PurpleRoundButton} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RightArrow from '../../../resources/icon/Arrow';
 import NewsCheckIcon from '../../../resources/icon/NewsCheckIcon';
+import EmptyComment from '../../../resources/icon/EmptyComment';
+import EmptyHeart from '../../../resources/icon/EmptyHeart';
+import RightArrowBold from '../../../resources/icon/RightArrowBold';
 
 const HomeFragment = () => {
   const [nickname, setNickname] = useState<string>('익명');
@@ -41,22 +51,24 @@ const HomeFragment = () => {
             </Text>
           </View>
           <View style={styles.NewsContainer}>
-            <NewsCheckIcon></NewsCheckIcon>
+            <NewsCheckIcon />
             <View style={{paddingRight: 90}}>
               <Text style={styles.NewsTitle}>인증 만료일이 3일 남았어요.</Text>
               <Text style={styles.NewsMore}>인증하러 가기</Text>
             </View>
-            <RightArrow style={{color: '#000'}}></RightArrow>
+            <RightArrowBold />
           </View>
         </View>
         <View
           style={{
-            marginLeft: 24,
+            marginLeft: (Dimensions.get('window').width / 25) * 2,
             marginTop: 44,
-            marginRight: 24,
             marginBottom: 8,
           }}>
-          <Text style={styles.boardTitle}>고정 게시판</Text>
+          <View style={styles.rowContainer}>
+            <Text style={styles.boardTitle}>고정 게시판</Text>
+            <RightArrowBold />
+          </View>
           {/* 게시판 글 목록 */}
           <View style={styles.postSummaryContainer}>
             <Text style={styles.postSummary}>
@@ -96,14 +108,57 @@ const HomeFragment = () => {
             }}
           />
 
-          <Text style={styles.boardTitle}>HOT 게시판</Text>
+          <View style={styles.rowContainer}>
+            <Text style={styles.boardTitle}>HOT 게시판</Text>
+            <RightArrowBold />
+          </View>
+          {/* 게시판 글 목록 */}
           <View style={styles.postSummaryContainer}>
             <Text style={styles.postSummary}>
               게시판에 공백 포함 23자 본문을 노출합니다...
             </Text>
+            <EmptyHeart />
             <Text style={styles.HOTpostLike}>000</Text>
+            <EmptyComment />
             <Text style={styles.HOTpostComment}>000</Text>
           </View>
+          <View style={styles.postSummaryContainer}>
+            <Text style={styles.postSummary}>
+              게시판에 공백 포함 23자 본문을 노출합니다...
+            </Text>
+            <EmptyHeart />
+            <Text style={styles.HOTpostLike}>000</Text>
+            <EmptyComment />
+            <Text style={styles.HOTpostComment}>000</Text>
+          </View>
+          <View style={styles.postSummaryContainer}>
+            <Text style={styles.postSummary}>
+              게시판에 공백 포함 23자 본문을 노출합니다...
+            </Text>
+            <EmptyHeart />
+            <Text style={styles.HOTpostLike}>000</Text>
+            <EmptyComment />
+            <Text style={styles.HOTpostComment}>000</Text>
+          </View>
+          <View style={styles.postSummaryContainer}>
+            <Text style={styles.postSummary}>
+              게시판에 공백 포함 23자 본문을 노출합니다...
+            </Text>
+            <EmptyHeart />
+            <Text style={styles.HOTpostLike}>000</Text>
+            <EmptyComment />
+            <Text style={styles.HOTpostComment}>000</Text>
+          </View>
+          <View style={styles.postSummaryContainer}>
+            <Text style={styles.postSummary}>
+              게시판에 공백 포함 23자 본문을 노출합니다...
+            </Text>
+            <EmptyHeart />
+            <Text style={styles.HOTpostLike}>000</Text>
+            <EmptyComment />
+            <Text style={styles.HOTpostComment}>000</Text>
+          </View>
+          {/* 게시판 글 목록 */}
         </View>
       </View>
     </ScrollView>
@@ -113,10 +168,15 @@ const HomeFragment = () => {
 export default HomeFragment;
 
 const styles = StyleSheet.create({
+  rowContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   boardTitle: {
     fontWeight: 'bold',
     fontSize: 17,
     marginBottom: 24,
+    marginRight: 235,
   },
   postSummaryContainer: {
     marginBottom: 15,
@@ -126,11 +186,11 @@ const styles = StyleSheet.create({
   },
   postSummary: {
     fontSize: 13,
+    marginRight: 16,
   },
   postTitleSummary: {
     color: '#C4C4C4',
     fontSize: 13,
-    marginLeft: 16,
   },
   postNewLabel: {
     color: '#FF6060',
@@ -140,11 +200,12 @@ const styles = StyleSheet.create({
   },
   HOTpostLike: {
     fontSize: 9,
-    marginLeft: 10,
+    marginLeft: 5,
+    marginRight: 5,
   },
   HOTpostComment: {
     fontSize: 9,
-    marginLeft: 10,
+    marginLeft: 5,
   },
   NewsContainer: {
     flex: 1,
