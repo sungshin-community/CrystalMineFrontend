@@ -24,6 +24,7 @@ import BoardScreen from './src/screens/board/BoardScreen';
 import GlobalNavbar from './src/components/GlobalNavbar';
 import CreateBoard from './src/screens/board/CreateBoard';
 
+import PostListScreen from './src/screens/post/PostListScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -153,6 +154,16 @@ const App = () => {
           component={CreateBoard}
           options={{
             title: '게시판 생성',
+            headerTitleAlign: 'center',
+            headerTintColor: '#000000',
+            headerBackVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="PostListScreen"
+          component={PostListScreen}
+          options={{
+            title: '게시글 목록',
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
             headerBackVisible: false,
