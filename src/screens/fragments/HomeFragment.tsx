@@ -116,7 +116,6 @@ const HomeFragment = ({navigation}: Props) => {
               marginTop: 24,
             }}
           />
-
           <View style={styles.rowContainer}>
             <Text style={styles.boardTitle}>HOT 게시판</Text>
             <RightArrowBold />
