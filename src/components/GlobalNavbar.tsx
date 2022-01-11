@@ -14,7 +14,8 @@ import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Pressable} from 'react-native';
 const Tab = createBottomTabNavigator();
 
 interface Props {
@@ -22,8 +23,16 @@ interface Props {
   color: string;
   focused: boolean;
 }
+type RootStackParamList = {
+  BoardSearch: undefined;
+};
+type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
-function GlobalNavbar() {
+function GlobalNavbar({navigation}: ScreenProps) {
+  const onSearchPress = () => {
+    navigation.navigate('BoardSearch');
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -52,7 +61,11 @@ function GlobalNavbar() {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <BoardTabIcon size={size} color={color} focused={focused} />;
           },
-          headerRight: () => <SearchIcon style={{marginRight: 19}} />,
+          headerRight: () => (
+            <Pressable onPress={onSearchPress}>
+              <SearchIcon style={{marginRight: 19}} />
+            </Pressable>
+          ),
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',
