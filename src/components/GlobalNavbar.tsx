@@ -46,7 +46,11 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <HomeTabIcon size={size} color={color} focused={focused} />;
           },
-          headerRight: () => <SearchIcon style={{marginRight: 19}} />,
+          headerRight: () => (
+            <Pressable onPress={onSearchPress}>
+              <SearchIcon style={{marginRight: 19}} />
+            </Pressable>
+          ),
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#6E7882',
           tabBarActiveTintColor: '#A055FF',

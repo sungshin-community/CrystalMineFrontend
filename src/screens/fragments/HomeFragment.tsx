@@ -52,7 +52,7 @@ const HomeFragment = ({navigation}: Props) => {
               marginBottom: 32,
             }}>
             <Text style={{fontSize: 22}}>
-              <Text style={{fontWeight: 'bold'}}>${nickname}</Text>
+              <Text style={{fontWeight: 'bold'}}>{nickname}</Text>
               {` 님, 안녕하세요!`}
             </Text>
           </View>
