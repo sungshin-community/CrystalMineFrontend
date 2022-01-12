@@ -25,6 +25,7 @@ import GlobalNavbar from './src/components/GlobalNavbar';
 import CreateBoard from './src/screens/board/CreateBoard';
 
 import PostListScreen from './src/screens/post/PostListScreen';
+import BoardSearch from './src/screens/board/BoardSearch';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -136,10 +137,9 @@ const App = () => {
         <Stack.Screen
           name="GlobalNavbar"
           component={GlobalNavbar}
-          options={{
-            headerShown: false,
-          }}
+          options={{headerShown: false}}
         />
+        {/* [F-7] 게시판 */}
         <Stack.Screen
           name="BoardScreen"
           component={BoardScreen}
@@ -158,6 +158,11 @@ const App = () => {
             headerTintColor: '#000000',
             headerBackVisible: false,
           }}
+        />
+        <Stack.Screen
+          name="BoardSearch"
+          component={BoardSearch}
+          options={{title: '게시판 검색', headerShown: false}}
         />
         <Stack.Screen
           name="PostListScreen"
