@@ -168,10 +168,9 @@ const App = () => {
           name="PostListScreen"
           component={PostListScreen}
           options={{
-            title: '게시글 목록',
+            title: '고정 게시판',
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
-            headerBackVisible: false,
           }}
         />
       </Stack.Navigator>
