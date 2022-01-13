@@ -14,6 +14,7 @@ import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
+import HomeScreen from '../screens/home/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
