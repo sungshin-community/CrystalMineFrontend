@@ -22,7 +22,7 @@ type RootStackParamList = {
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-const HomeFragment = ({navigation}: Props) => {
+const Home = ({navigation}: Props) => {
   const [nickname, setNickname] = useState<string>('익명');
   useEffect(() => {
     async function getNickname() {
@@ -173,7 +173,7 @@ const HomeFragment = ({navigation}: Props) => {
   );
 };
 
-export default HomeFragment;
+export default Home;
 
 const styles = StyleSheet.create({
   rowContainer: {
