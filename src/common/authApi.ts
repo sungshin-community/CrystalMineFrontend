@@ -69,7 +69,7 @@ export const sendEmail = async () => {
 }
 
 export const checkAuthNumber = async (code: string) => {
-    let response: AxiosResponse<AxiosResponse<any, any>, any> | null = null;
+    let response: AxiosResponse<AxiosResponse<any, any>, any> | null = '';
     try {
         let requestDto: VerificationRequestDto = {code: code};
         response = await client.patch<AxiosResponse>("/mail/regular-member-verification", requestDto, {
@@ -78,11 +78,11 @@ export const checkAuthNumber = async (code: string) => {
             }
         });
         const accessToken = await AsyncStorage.getItem("accessToken");
-        console.log(response.data);
+        console.log('>>' + response.data);
         return true;
     }
     catch (e) {
-        console.log(response.data);
+        console.log('>>>' + response.data);
         console.log(e);
         return false;
     }

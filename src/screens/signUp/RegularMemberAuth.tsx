@@ -43,7 +43,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 9;
+const RESEND_OTP_TIME_LIMIT = 30;
 
 type RootStackParamList = {
   Home: undefined;
@@ -57,7 +57,9 @@ export default function RegularMemberAuth({navigation}: Props) {
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
     RESEND_OTP_TIME_LIMIT,
   );
-  const [modalVisible, setModalVisible] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalInCorrectVisble, setModalInCorrectVisible] =
+    useState<boolean>(false);
 
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -74,15 +76,16 @@ export default function RegularMemberAuth({navigation}: Props) {
 
   //다시 시도하기 버튼 눌렀을 경우
   const onResendOtpButtonPress = async () => {
+    //이 부분 수정 필요(인증번호 시간 초과 후 틀릴 경우 인증 하기 번호 두 번 눌려야 작동하게 됨)
+    setModalInCorrectVisible(!modalInCorrectVisble);
+
     //인증번호 발송 API
     setValue('');
     let result: boolean = await sendEmail();
     if (result) {
       console.log('이메일 재발송 성공');
-      console.log(result);
     } else {
       console.log('이메일 재발송 실패');
-      console.log(result);
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
@@ -159,7 +162,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               }}
             /> */}
             <ModalBottom
-              modalVisible={modalVisible}
+              modalVisible={!modalVisible}
               setModalVisible={setModalVisible}
               modalText={`인증 시간이 초과되었습니다.`}
               modalBody=""
@@ -174,6 +177,14 @@ export default function RegularMemberAuth({navigation}: Props) {
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
+      <ModalBottom
+        modalVisible={modalInCorrectVisble}
+        setModalVisible={setModalInCorrectVisible}
+        modalText={`인증 번호가 틀렸습니다.`}
+        modalBody=""
+        modalButtonText="인증번호 다시 받기"
+        modalButton
+        modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
       <View
         style={{
           paddingBottom: isFocused ? 0 : 15,
@@ -189,7 +200,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                console.log(result);
+                setModalInCorrectVisible(!modalInCorrectVisble);
               }
             }}></PurpleFullButton>
         )}
@@ -201,7 +212,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                console.log(result);
+                setModalInCorrectVisible(!modalInCorrectVisble);
               }
             }}></PurpleRoundButton>
         )}
