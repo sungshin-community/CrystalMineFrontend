@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   View,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import CancelButton from '../../../resources/icon/Cancel';
 import SearchIcon from '../../../resources/icon/SearchIcon';
@@ -53,6 +54,17 @@ function BoardSearch() {
     '수리통계데이터사이언스학부',
     '수정광산',
   ];
+  const [searchWord, setSearchWord] = useState<string>('');
+  const [wordList, setWordList] = useState<string[]>(recentSearch);
+
+  const searchWordDelete = (index: number) => {
+    const restWordList = wordList.filter((_, idx) => idx !== index);
+    setWordList(restWordList);
+  };
+
+  const startSearching = (e: any) => {
+    setSearchWord(e.nativeEvent.text);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -64,6 +76,10 @@ function BoardSearch() {
             style={styles.input}
             placeholder="전체 게시판에서 검색"
             placeholderTextColor="#898989"
+            returnKeyType="search"
+            onSubmitEditing={(e: any) => startSearching(e)}
+            autoCorrect={false}
+            autoCapitalize="none"
           />
           <View style={styles.icon}>
             <SearchIcon />
@@ -74,11 +90,15 @@ function BoardSearch() {
             <Text style={styles.title}>최근 검색어</Text>
             <Text style={styles.delete}>전체 삭제</Text>
           </View>
-          {recentSearch.map(word => {
+          {wordList.map((word, index) => {
             return (
-              <View style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
+              <View
+                key={index}
+                style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
                 <Text>{word}</Text>
-                <CancelButton />
+                <Pressable onPress={() => searchWordDelete(index)}>
+                  <CancelButton />
+                </Pressable>
               </View>
             );
           })}
