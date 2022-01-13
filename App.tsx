@@ -166,7 +166,6 @@ const App = () => {
             title: '게시글 목록',
             headerTitleAlign: 'center',
             headerTintColor: '#000000',
-            headerBackVisible: false,
           }}
         />
       </Stack.Navigator>
