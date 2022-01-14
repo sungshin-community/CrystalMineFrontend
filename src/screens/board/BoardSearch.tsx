@@ -4,35 +4,18 @@ import {
   Text,
   Platform,
   SafeAreaView,
-  TextInput,
   StyleSheet,
   View,
-  Dimensions,
   Pressable,
 } from 'react-native';
 import CancelButton from '../../../resources/icon/Cancel';
-import SearchIcon from '../../../resources/icon/SearchIcon';
+import SearchInput from '../../components/SearchInput';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
-  },
-  input: {
-    backgroundColor: 'rgb(239, 239, 239)',
-    width: Dimensions.get('window').width - 32,
-    height: 44,
-    borderRadius: 20,
-    paddingLeft: 48,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    fontSize: 15,
-    marginTop: 19,
-  },
-  icon: {
-    position: 'absolute',
-    top: 30,
-    left: 19,
   },
   rowSpaceBetween: {
     flexDirection: 'row',
@@ -56,14 +39,26 @@ function BoardSearch() {
   ];
   const [searchWord, setSearchWord] = useState<string>('');
   const [wordList, setWordList] = useState<string[]>(recentSearch);
+  const [showResult, setShowResult] = useState<boolean>(false);
 
   const searchWordDelete = (index: number) => {
     const restWordList = wordList.filter((_, idx) => idx !== index);
     setWordList(restWordList);
   };
 
-  const startSearching = (e: any) => {
-    setSearchWord(e.nativeEvent.text);
+  const totalDelete = () => {
+    setWordList([]);
+  };
+
+  const startSearching = () => {
+    const newWordList = [searchWord].concat(wordList);
+    const duplicateFilter = [...new Set(newWordList)];
+    if (duplicateFilter.length === 6) {
+      duplicateFilter.pop();
+    }
+    setWordList(duplicateFilter);
+    setShowResult(true);
+    //? 대충 검색 함수 있어야함
   };
 
   return (
@@ -71,37 +66,37 @@ function BoardSearch() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView>
-        <View style={{position: 'relative'}}>
-          <TextInput
-            style={styles.input}
-            placeholder="전체 게시판에서 검색"
-            placeholderTextColor="#898989"
-            returnKeyType="search"
-            onSubmitEditing={(e: any) => startSearching(e)}
-            autoCorrect={false}
-            autoCapitalize="none"
-          />
-          <View style={styles.icon}>
-            <SearchIcon />
-          </View>
-        </View>
+        <SearchInput
+          setSearchWord={setSearchWord}
+          startSearching={startSearching}
+        />
         <View style={{padding: 32}}>
-          <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
-            <Text style={styles.title}>최근 검색어</Text>
-            <Text style={styles.delete}>전체 삭제</Text>
-          </View>
-          {wordList.map((word, index) => {
-            return (
-              <View
-                key={index}
-                style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
-                <Text>{word}</Text>
-                <Pressable onPress={() => searchWordDelete(index)}>
-                  <CancelButton />
+          {showResult ? (
+            <Text>{searchWord}</Text>
+          ) : (
+            <>
+              <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
+                <Text style={styles.title}>최근 검색어</Text>
+                <Pressable onPress={totalDelete}>
+                  <Text style={styles.delete}>전체 삭제</Text>
                 </Pressable>
               </View>
-            );
-          })}
+              {wordList.length === 0 ? (
+                <Text style={{marginVertical: 12}}>최근 검색어가 없습니다</Text>
+              ) : (
+                wordList.map((word, index) => (
+                  <View
+                    key={index}
+                    style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
+                    <Text>{word}</Text>
+                    <Pressable onPress={() => searchWordDelete(index)}>
+                      <CancelButton />
+                    </Pressable>
+                  </View>
+                ))
+              )}
+            </>
+          )}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
