@@ -58,7 +58,7 @@ export default function RegularMemberAuth({navigation}: Props) {
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalInCorrectOverVisble, setModalInCorrectOverVisible] =
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
     useState<boolean>(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -71,7 +71,9 @@ export default function RegularMemberAuth({navigation}: Props) {
   const onFocus = () => {
     setIsFocused(true);
   };
-  const [IsInCorrect, setIsInCorrect] = useState<boolean>(false);
+  const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
+  const [errorMessageVisible, setErrorMessageVisible] =
+    useState<boolean>(false);
 
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -101,7 +103,7 @@ export default function RegularMemberAuth({navigation}: Props) {
     setTryCnt(tryCnt - 1);
   };
   const gotoHome = () => {
-    setModalInCorrectOverVisible(!modalInCorrectOverVisble);
+    setModalIncorrectOverVisible(!modalIncorrectOverVisble);
     navigation.navigate('GlobalNavbar');
   };
   const onFocusOut = () => {
@@ -131,7 +133,10 @@ export default function RegularMemberAuth({navigation}: Props) {
           ref={ref}
           {...props}
           value={value}
-          onChangeText={setValue}
+          onChangeText={value => {
+            setValue(value);
+            if (value.length !== 6) setIsIncorrect(false);
+          }}
           cellCount={CELL_COUNT}
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
@@ -143,7 +148,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               style={[
                 styles.cellRoot,
                 isFocused && styles.focusCell,
-                IsInCorrect && styles.focusCellInCorrect,
+                IsIncorrect && styles.focusCellIncorrect,
                 value.length !== 6 && styles.cellRoot,
                 value.length !== 6 && isFocused && styles.focusCell,
               ]}>
@@ -153,11 +158,15 @@ export default function RegularMemberAuth({navigation}: Props) {
             </View>
           )}
         />
-        {IsInCorrect && value.length == 6 && (
+        {IsIncorrect && value.length == 6 ? (
           <View style={styles.errorMessageContainer}>
             <Text style={styles.errorMessage}>
               인증번호를 정확하게 입력해 주세요
             </Text>
+          </View>
+        ) : (
+          <View style={styles.errorMessageContainer}>
+            <Text style={styles.errorMessage}></Text>
           </View>
         )}
 
@@ -221,8 +230,8 @@ export default function RegularMemberAuth({navigation}: Props) {
 
       {tryCnt === 0 && (
         <ModalBottom
-          modalVisible={!modalInCorrectOverVisble}
-          setModalVisible={setModalInCorrectOverVisible}
+          modalVisible={!modalIncorrectOverVisble}
+          setModalVisible={setModalIncorrectOverVisible}
           modalText={`인증번호 입력 최대 횟수를 초과하였습니다.
         5분 뒤 다시 인증을 시도해주세요.
         `}
@@ -247,7 +256,7 @@ export default function RegularMemberAuth({navigation}: Props) {
                 navigation.navigate('GlobalNavbar');
               } else {
                 setTryCnt(tryCnt - 1);
-                setIsInCorrect(true);
+                setIsIncorrect(true);
               }
             }}></PurpleFullButton>
         )}
@@ -260,7 +269,7 @@ export default function RegularMemberAuth({navigation}: Props) {
                 navigation.navigate('GlobalNavbar');
               } else {
                 setTryCnt(tryCnt - 1);
-                setIsInCorrect(true);
+                setIsIncorrect(true);
               }
             }}></PurpleRoundButton>
         )}
@@ -298,7 +307,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#A055FF',
     borderBottomWidth: 2,
   },
-  focusCellInCorrect: {
+  focusCellIncorrect: {
     borderBottomColor: '#E64646',
     borderBottomWidth: 2,
   },
