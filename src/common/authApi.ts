@@ -69,21 +69,20 @@ export const sendEmail = async () => {
 }
 
 export const checkAuthNumber = async (code: string) => {
-    let response: AxiosResponse<AxiosResponse<any, any>, any> | null = '';
     try {
         let requestDto: VerificationRequestDto = {code: code};
-        response = await client.patch<AxiosResponse>("/mail/regular-member-verification", requestDto, {
+        const accessToken = await AsyncStorage.getItem("accessToken");
+        const response = await client.patch<AxiosResponse>("/mail/regular-member-verification", requestDto, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }
         });
-        const accessToken = await AsyncStorage.getItem("accessToken");
-        console.log('>>>' + response.data);
+        console.log(response.data);
         return true;
     }
     catch (e) {
-        console.log('>>>' + response.data);
-        console.log(e);
+        console.log(e.response.data);
+        console.log(e.response.data.data.attemptCount);
         return false;
     }
 }
@@ -97,7 +96,7 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
         return true;
     }
     catch(e) {
-        console.log(e);
+        console.log(e.response.status);
         return false;
     }
 }
