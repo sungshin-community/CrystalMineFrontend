@@ -58,8 +58,20 @@ export default function RegularMemberAuth({navigation}: Props) {
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalInCorrectVisble, setModalInCorrectVisible] =
+  const [modalInCorrectOverVisble, setModalInCorrectOverVisible] =
     useState<boolean>(false);
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+  const [tryCnt, setTryCnt] = useState(5);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const onFocus = () => {
+    setIsFocused(true);
+  };
+  const [IsInCorrect, setIsInCorrect] = useState<boolean>(false);
 
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -76,9 +88,6 @@ export default function RegularMemberAuth({navigation}: Props) {
 
   //다시 시도하기 버튼 눌렀을 경우
   const onResendOtpButtonPress = async () => {
-    //이 부분 수정 필요(인증번호 시간 초과 후 틀릴 경우 인증 하기 번호 두 번 눌려야 작동하게 됨)
-    setModalInCorrectVisible(!modalInCorrectVisble);
-
     //인증번호 발송 API
     setValue('');
     let result: boolean = await sendEmail();
@@ -89,19 +98,12 @@ export default function RegularMemberAuth({navigation}: Props) {
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
+    setTryCnt(tryCnt - 1);
   };
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
-  const [tryCnt, setTryCnt] = useState(5);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  const onFocus = () => {
-    setIsFocused(true);
+  const gotoHome = () => {
+    setModalInCorrectOverVisible(!modalInCorrectOverVisble);
+    navigation.navigate('GlobalNavbar');
   };
-
   const onFocusOut = () => {
     setIsFocused(false);
     Keyboard.dismiss();
@@ -138,13 +140,26 @@ export default function RegularMemberAuth({navigation}: Props) {
             <View
               onLayout={getCellOnLayoutHandler(index)}
               key={index}
-              style={[styles.cellRoot, isFocused && styles.focusCell]}>
+              style={[
+                styles.cellRoot,
+                isFocused && styles.focusCell,
+                IsInCorrect && styles.focusCellInCorrect,
+                value.length !== 6 && styles.cellRoot,
+                value.length !== 6 && isFocused && styles.focusCell,
+              ]}>
               <Text style={styles.cellText}>
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
             </View>
           )}
         />
+        {IsInCorrect && value.length == 6 && (
+          <View style={styles.errorMessageContainer}>
+            <Text style={styles.errorMessage}>
+              인증번호를 정확하게 입력해 주세요
+            </Text>
+          </View>
+        )}
 
         {resendButtonDisabledTime > 0 ? (
           <></>
@@ -203,14 +218,19 @@ export default function RegularMemberAuth({navigation}: Props) {
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
-      <ModalBottom
-        modalVisible={modalInCorrectVisble}
-        setModalVisible={setModalInCorrectVisible}
-        modalText={`인증 번호가 틀렸습니다.`}
-        modalBody=""
-        modalButtonText="인증번호 다시 받기"
-        modalButton
-        modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
+
+      {tryCnt === 0 && (
+        <ModalBottom
+          modalVisible={!modalInCorrectOverVisble}
+          setModalVisible={setModalInCorrectOverVisible}
+          modalText={`인증번호 입력 최대 횟수를 초과하였습니다.
+        5분 뒤 다시 인증을 시도해주세요.
+        `}
+          modalBody=""
+          modalButtonText="확인"
+          modalButton
+          modalButtonFunc={gotoHome}></ModalBottom>
+      )}
       <View
         style={{
           paddingBottom: isFocused ? 0 : 15,
@@ -220,33 +240,35 @@ export default function RegularMemberAuth({navigation}: Props) {
         }}>
         {value.length === 6 && isFocused && (
           <PurpleFullButton
-            text="인증하기"
+            text="인증 완료"
             onClick={async () => {
               let result: boolean = await checkAuthNumber(value);
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                setModalInCorrectVisible(!modalInCorrectVisble);
+                setTryCnt(tryCnt - 1);
+                setIsInCorrect(true);
               }
             }}></PurpleFullButton>
         )}
         {value.length === 6 && !isFocused && (
           <PurpleRoundButton
-            text="인증하기"
+            text="인증 완료"
             onClick={async () => {
               let result: boolean = await checkAuthNumber(value);
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                setModalInCorrectVisible(!modalInCorrectVisble);
+                setTryCnt(tryCnt - 1);
+                setIsInCorrect(true);
               }
             }}></PurpleRoundButton>
         )}
         {value.length < 6 && isFocused && (
-          <DisabledPurpleFullButton text="인증하기"></DisabledPurpleFullButton>
+          <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
         )}
         {value.length < 6 && !isFocused && (
-          <DisabledPurpleRoundButton text="인증하기"></DisabledPurpleRoundButton>
+          <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
         )}
       </View>
     </SafeAreaView>
@@ -275,6 +297,19 @@ const styles = StyleSheet.create({
   focusCell: {
     borderBottomColor: '#A055FF',
     borderBottomWidth: 2,
+  },
+  focusCellInCorrect: {
+    borderBottomColor: '#E64646',
+    borderBottomWidth: 2,
+  },
+  errorMessageContainer: {
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorMessage: {
+    color: '#E64646',
+    fontSize: 11,
   },
   timerContainer: {
     marginTop: 32,

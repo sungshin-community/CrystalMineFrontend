@@ -78,7 +78,7 @@ export const checkAuthNumber = async (code: string) => {
             }
         });
         const accessToken = await AsyncStorage.getItem("accessToken");
-        console.log('>>' + response.data);
+        console.log('>>>' + response.data);
         return true;
     }
     catch (e) {
