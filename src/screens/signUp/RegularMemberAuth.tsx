@@ -188,7 +188,7 @@ export default function RegularMemberAuth({navigation}: Props) {
             <ModalBottom
               modalVisible={!modalVisible}
               setModalVisible={setModalVisible}
-              modalText={`인증 시간이 초과되었습니다.`}
+              modalText={`인증 번호 입력 시간이 지났습니다.\n 다시 시도해주세요.`}
               modalBody=""
               modalButtonText="인증번호 다시 받기"
               modalButton
