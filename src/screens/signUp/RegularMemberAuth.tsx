@@ -43,7 +43,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 9;
+const RESEND_OTP_TIME_LIMIT = 90;
 
 type RootStackParamList = {
   Home: undefined;
@@ -57,7 +57,23 @@ export default function RegularMemberAuth({navigation}: Props) {
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
     RESEND_OTP_TIME_LIMIT,
   );
-  const [modalVisible, setModalVisible] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
+    useState<boolean>(false);
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+  const [tryCnt, setTryCnt] = useState(5);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const onFocus = () => {
+    setIsFocused(true);
+  };
+  const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
+  const [errorMessageVisible, setErrorMessageVisible] =
+    useState<boolean>(false);
 
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -79,26 +95,17 @@ export default function RegularMemberAuth({navigation}: Props) {
     let result: boolean = await sendEmail();
     if (result) {
       console.log('이메일 재발송 성공');
-      console.log(result);
     } else {
       console.log('이메일 재발송 실패');
-      console.log(result);
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
+    setTryCnt(tryCnt - 1);
   };
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
-  const [tryCnt, setTryCnt] = useState(5);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  const onFocus = () => {
-    setIsFocused(true);
+  const gotoHome = () => {
+    setModalIncorrectOverVisible(!modalIncorrectOverVisble);
+    navigation.navigate('GlobalNavbar');
   };
-
   const onFocusOut = () => {
     setIsFocused(false);
     Keyboard.dismiss();
@@ -126,7 +133,10 @@ export default function RegularMemberAuth({navigation}: Props) {
           ref={ref}
           {...props}
           value={value}
-          onChangeText={setValue}
+          onChangeText={value => {
+            setValue(value);
+            if (value.length !== 6) setIsIncorrect(false);
+          }}
           cellCount={CELL_COUNT}
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
@@ -135,13 +145,30 @@ export default function RegularMemberAuth({navigation}: Props) {
             <View
               onLayout={getCellOnLayoutHandler(index)}
               key={index}
-              style={[styles.cellRoot, isFocused && styles.focusCell]}>
+              style={[
+                styles.cellRoot,
+                isFocused && styles.focusCell,
+                IsIncorrect && styles.focusCellIncorrect,
+                value.length !== 6 && styles.cellRoot,
+                value.length !== 6 && isFocused && styles.focusCell,
+              ]}>
               <Text style={styles.cellText}>
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
             </View>
           )}
         />
+        {IsIncorrect && value.length == 6 ? (
+          <View style={styles.errorMessageContainer}>
+            <Text style={styles.errorMessage}>
+              인증번호를 정확하게 입력해 주세요
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.errorMessageContainer}>
+            <Text style={styles.errorMessage}></Text>
+          </View>
+        )}
 
         {resendButtonDisabledTime > 0 ? (
           <></>
@@ -159,7 +186,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               }}
             /> */}
             <ModalBottom
-              modalVisible={modalVisible}
+              modalVisible={!modalVisible}
               setModalVisible={setModalVisible}
               modalText={`인증 시간이 초과되었습니다.`}
               modalBody=""
@@ -168,12 +195,51 @@ export default function RegularMemberAuth({navigation}: Props) {
               modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
           </>
         )}
-        <View style={styles.timerContainer}>
-          <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
-        </View>
+        {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
+          parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                0{parseInt(String(resendButtonDisabledTime / 60))}:
+                {parseInt(String(resendButtonDisabledTime % 60))}
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                {parseInt(String(resendButtonDisabledTime / 60))}:0
+                {parseInt(String(resendButtonDisabledTime % 60))}
+              </Text>
+            </View>
+          )
+        ) : parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>
+              00:{parseInt(String(resendButtonDisabledTime % 60))}
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>
+              00:0{parseInt(String(resendButtonDisabledTime % 60))}
+            </Text>
+          </View>
+        )}
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
+
+      {tryCnt === 0 && (
+        <ModalBottom
+          modalVisible={!modalIncorrectOverVisble}
+          setModalVisible={setModalIncorrectOverVisible}
+          modalText={`인증번호 입력 최대 횟수를 초과하였습니다.
+        5분 뒤 다시 인증을 시도해주세요.
+        `}
+          modalBody=""
+          modalButtonText="확인"
+          modalButton
+          modalButtonFunc={gotoHome}></ModalBottom>
+      )}
       <View
         style={{
           paddingBottom: isFocused ? 0 : 15,
@@ -183,33 +249,35 @@ export default function RegularMemberAuth({navigation}: Props) {
         }}>
         {value.length === 6 && isFocused && (
           <PurpleFullButton
-            text="인증하기"
+            text="인증 완료"
             onClick={async () => {
               let result: boolean = await checkAuthNumber(value);
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                console.log(result);
+                setTryCnt(tryCnt - 1);
+                setIsIncorrect(true);
               }
             }}></PurpleFullButton>
         )}
         {value.length === 6 && !isFocused && (
           <PurpleRoundButton
-            text="인증하기"
+            text="인증 완료"
             onClick={async () => {
               let result: boolean = await checkAuthNumber(value);
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                console.log(result);
+                setTryCnt(tryCnt - 1);
+                setIsIncorrect(true);
               }
             }}></PurpleRoundButton>
         )}
         {value.length < 6 && isFocused && (
-          <DisabledPurpleFullButton text="인증하기"></DisabledPurpleFullButton>
+          <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
         )}
         {value.length < 6 && !isFocused && (
-          <DisabledPurpleRoundButton text="인증하기"></DisabledPurpleRoundButton>
+          <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
         )}
       </View>
     </SafeAreaView>
@@ -238,6 +306,19 @@ const styles = StyleSheet.create({
   focusCell: {
     borderBottomColor: '#A055FF',
     borderBottomWidth: 2,
+  },
+  focusCellIncorrect: {
+    borderBottomColor: '#E64646',
+    borderBottomWidth: 2,
+  },
+  errorMessageContainer: {
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorMessage: {
+    color: '#E64646',
+    fontSize: 11,
   },
   timerContainer: {
     marginTop: 32,
