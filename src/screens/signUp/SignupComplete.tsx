@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import {Platform, StatusBar} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
