@@ -43,7 +43,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 30;
+const RESEND_OTP_TIME_LIMIT = 90;
 
 type RootStackParamList = {
   Home: undefined;
@@ -171,9 +171,35 @@ export default function RegularMemberAuth({navigation}: Props) {
               modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
           </>
         )}
-        <View style={styles.timerContainer}>
-          <Text style={styles.timerText}>00:0{resendButtonDisabledTime}</Text>
-        </View>
+        {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
+          parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                0{parseInt(String(resendButtonDisabledTime / 60))}:
+                {parseInt(String(resendButtonDisabledTime % 60))}
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                {parseInt(String(resendButtonDisabledTime / 60))}:0
+                {parseInt(String(resendButtonDisabledTime % 60))}
+              </Text>
+            </View>
+          )
+        ) : parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>
+              00:{parseInt(String(resendButtonDisabledTime % 60))}
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>
+              00:0{parseInt(String(resendButtonDisabledTime % 60))}
+            </Text>
+          </View>
+        )}
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
