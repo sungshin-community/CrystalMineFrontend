@@ -4,5 +4,7 @@ import {ScrollView, FlatList, View, Text} from 'react-native';
 import GlobalNavbar from '../../components/GlobalNavbar';
 import HomeFragment from '../fragments/HomeFragment';
 export default function PostListScreen() {
-  return <></>;
+  return (
+    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}></ScrollView>
+  );
 }
