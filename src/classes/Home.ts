@@ -1,12 +1,12 @@
-import Blinds from "./Blinds";
-import PinBoardDtos from "./PinBoardDtos";
-import HotBoardDtos from "./HotBoardDtos";
+import Blind from "./Blind";
+import PinBoardDto from "./PinBoardDto";
+import HotBoardDto from "./HotBoardDto";
 
 export default interface Home {
   expiredAt: Number;
   nickname: String,
   blacklistId: Number,
-  blinds: Blinds,
-  pinBoardDtos: PinBoardDtos,
-  hotBoardDtos: HotBoardDtos,
+  blind: Blind,
+  pinBoardDto: PinBoardDto,
+  hotBoardDto: HotBoardDto,
   }

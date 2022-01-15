@@ -1,4 +1,4 @@
-export default interface Blinds {
+export default interface Blind {
   type: String;
   content: String;
   reason: String;

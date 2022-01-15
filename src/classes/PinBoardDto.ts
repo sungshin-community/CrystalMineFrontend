@@ -1,4 +1,4 @@
-export default interface PinBoardDtos {
+export default interface PinBoardDto {
   boardId: Number;
   boardName: String;
   postContent: String;
