@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
+  FlatList,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -16,14 +17,17 @@ import NewsCheckIcon from '../../../resources/icon/NewsCheckIcon';
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
+import Home from '../../classes/Home';
+import getHomeContents from '../../common/homeApi';
 
 type RootStackParamList = {
   PostListScreen: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-const Home = ({navigation}: Props) => {
+const HomeFragment = ({navigation}: Props) => {
   const [nickname, setNickname] = useState<string>('익명');
+  const [homeContents, setHomeContents] = useState<Home[]>([]);
   useEffect(() => {
     async function getNickname() {
       const nickname = await AsyncStorage.getItem('nickname');
@@ -32,6 +36,14 @@ const Home = ({navigation}: Props) => {
       }
     }
     getNickname();
+  }, []);
+
+  useEffect(() => {
+    async function getContents() {
+      const result = await getHomeContents();
+      setHomeContents(result);
+    }
+    getContents();
   }, []);
 
   return (
@@ -56,11 +68,11 @@ const Home = ({navigation}: Props) => {
               {` 님, 안녕하세요!`}
             </Text>
           </View>
-          <View style={styles.NewsContainer}>
+          <View style={styles.newsContainer}>
             <NewsCheckIcon />
             <View style={{paddingRight: 90}}>
-              <Text style={styles.NewsTitle}>인증 만료일이 3일 남았어요.</Text>
-              <Text style={styles.NewsMore}>인증하러 가기</Text>
+              <Text style={styles.newsTitle}>인증 만료일이 3일 남았어요.</Text>
+              <Text style={styles.newsMore}>인증하러 가기</Text>
             </View>
             <RightArrowBold />
           </View>
@@ -79,34 +91,22 @@ const Home = ({navigation}: Props) => {
             </View>
           </TouchableWithoutFeedback>
           {/* 게시판 글 목록 */}
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판공백포함15자까지표기해...
-            </Text>
-            <Text style={styles.postTitleSummary}>제목 길이에 맞춰...</Text>
-            <Text style={styles.postNewLabel}>N</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판공백포함15자까지표기해...
-            </Text>
-            <Text style={styles.postTitleSummary}>제목 길이에 맞춰...</Text>
-            <Text style={styles.postNewLabel}>N</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판공백포함15자까지표기해...
-            </Text>
-            <Text style={styles.postTitleSummary}>제목 길이에 맞춰...</Text>
-            <Text style={styles.postNewLabel}>N</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판공백포함15자까지표기해...
-            </Text>
-            <Text style={styles.postTitleSummary}>제목 길이에 맞춰...</Text>
-            <Text style={styles.postNewLabel}>N</Text>
-          </View>
+
+          <FlatList
+            data={homeContents}
+            renderItem={({item}) => (
+              <View style={styles.postSummaryContainer}>
+                <Text style={styles.postSummary}>
+                  {item.pinBoardDtos.boardName}
+                </Text>
+                <Text style={styles.postTitleSummary}>
+                  {item.pinBoardDtos.postContent}
+                </Text>
+                <Text style={styles.postNewLabel}>N</Text>
+              </View>
+            )}
+          />
+
           {/* 게시판 글 목록 */}
           <View
             style={{
@@ -173,7 +173,7 @@ const Home = ({navigation}: Props) => {
   );
 };
 
-export default Home;
+export default HomeFragment;
 
 const styles = StyleSheet.create({
   rowContainer: {
@@ -215,18 +215,18 @@ const styles = StyleSheet.create({
     fontSize: 9,
     marginLeft: 5,
   },
-  NewsContainer: {
+  newsContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 32,
     paddingBottom: 30,
   },
-  NewsTitle: {
+  newsTitle: {
     fontSize: 13,
     marginLeft: 10,
   },
-  NewsMore: {
+  newsMore: {
     color: '#707A82',
     fontSize: 9,
     fontWeight: 'bold',
