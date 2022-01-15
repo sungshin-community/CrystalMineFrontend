@@ -6,7 +6,7 @@ export default interface Home {
   expiredAt: Number;
   nickname: String,
   blacklistId: Number,
-  blind: Blind,
-  pinBoardDto: PinBoardDto,
-  hotBoardDto: HotBoardDto,
+  blind: Blind[],
+  pinBoardDto: PinBoardDto[],
+  hotBoardDto: HotBoardDto[],
   }

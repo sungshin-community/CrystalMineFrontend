@@ -14,7 +14,7 @@ const getHomeContents = async () => {
                 }
           }
       );
-        console.log('>>>>>>>' + response.data.data)
+        console.log('>>>>>>>' + JSON.stringify(response.data));
         return response.data.data;
     }
     catch (e) {
