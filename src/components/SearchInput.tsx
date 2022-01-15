@@ -3,6 +3,11 @@ import {TextInput, StyleSheet, View, Dimensions, Pressable} from 'react-native';
 import SearchIcon from '../../resources/icon/SearchIcon';
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+    marginHorizontal: 16,
+    alignItems: 'center',
+  },
   input: {
     backgroundColor: 'rgb(239, 239, 239)',
     width: Dimensions.get('window').width - 32,
@@ -31,7 +36,7 @@ function SearchInput({setSearchWord, startSearching}: Props) {
   };
 
   return (
-    <View style={{position: 'relative'}}>
+    <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="전체 게시판에서 검색"

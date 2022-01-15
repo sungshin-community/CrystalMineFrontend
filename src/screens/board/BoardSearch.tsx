@@ -10,6 +10,7 @@ import {
   Pressable,
 } from 'react-native';
 import CancelButton from '../../../resources/icon/Cancel';
+import PostList from '../../components/PostList';
 import SearchInput from '../../components/SearchInput';
 
 const styles = StyleSheet.create({
@@ -69,7 +70,6 @@ function BoardSearch() {
   };
 
   const startSearching = () => {
-    console.log('찾는 단어 : ', searchWord);
     const newWordList = [searchWord].concat(wordList);
     const duplicateFilter = [...new Set(newWordList)];
     if (duplicateFilter.length === 6) {
@@ -88,37 +88,86 @@ function BoardSearch() {
           setSearchWord={setSearchWord}
           startSearching={startSearching}
         />
-        <View style={{padding: 32}}>
-          {showResult ? (
-            <Text>{searchWord} 결과 입니다.</Text>
-          ) : (
-            <>
-              <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
-                <Text style={styles.title}>최근 검색어</Text>
-                <Pressable onPress={totalDelete}>
-                  <Text style={styles.delete}>전체 삭제</Text>
-                </Pressable>
-              </View>
-              {wordList.length === 0 ? (
-                <Text style={{marginVertical: 12}}>최근 검색어가 없습니다</Text>
-              ) : (
-                wordList.map((word, index) => (
-                  <View
-                    key={index}
-                    style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
-                    <Text>{word}</Text>
-                    <Pressable onPress={() => deleteRecentWord(index)}>
-                      <CancelButton />
-                    </Pressable>
-                  </View>
-                ))
-              )}
-            </>
-          )}
-        </View>
+        {showResult ? (
+          <View>
+            {dummyData.map((post: Post) => (
+              <PostList post={post} />
+            ))}
+          </View>
+        ) : (
+          <View style={{padding: 32}}>
+            <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
+              <Text style={styles.title}>최근 검색어</Text>
+              <Pressable onPress={totalDelete}>
+                <Text style={styles.delete}>전체 삭제</Text>
+              </Pressable>
+            </View>
+            {wordList.length === 0 ? (
+              <Text style={{marginVertical: 12}}>최근 검색어가 없습니다</Text>
+            ) : (
+              wordList.map((word, index) => (
+                <View
+                  key={index}
+                  style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
+                  <Text>{word}</Text>
+                  <Pressable onPress={() => deleteRecentWord(index)}>
+                    <CancelButton />
+                  </Pressable>
+                </View>
+              ))
+            )}
+          </View>
+        )}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
 
 export default BoardSearch;
+
+export interface Post {
+  nickname: string;
+  content: string;
+  likeCount: number;
+  imageCount: number;
+  commentCount: number;
+}
+
+const dummyData: Post[] = [
+  {
+    nickname: '수정',
+    content: 'Hey~~~ 오늘 도깨비 방망이 똥 쌌어~ 네모',
+    likeCount: 13,
+    imageCount: 9,
+    commentCount: 7,
+  },
+  {
+    nickname: '나원',
+    content: `힘들어도 괜찮아 거친 정글 속에 뛰어든 건 나니깐 I'm ok...`,
+    likeCount: 134,
+    imageCount: 9,
+    commentCount: 7,
+  },
+  {
+    nickname: '효은',
+    content:
+      '에타 공감 누르면 공감하셨습니다 뜨는거 토스트였는데 스낵바로 바꿨네',
+    likeCount: 1779,
+    imageCount: 9,
+    commentCount: 74,
+  },
+  {
+    nickname: '유진',
+    content: '시험 합격 가보자고',
+    likeCount: 130,
+    imageCount: 0,
+    commentCount: 2,
+  },
+  {
+    nickname: '본크레페쿠바딸',
+    content: '본크레페 먹고 싶다',
+    likeCount: 52,
+    imageCount: 2,
+    commentCount: 12,
+  },
+];
