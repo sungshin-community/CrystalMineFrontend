@@ -12,6 +12,7 @@ import {
 import CancelButton from '../../../resources/icon/Cancel';
 import PostList from '../../components/PostList';
 import SearchInput from '../../components/SearchInput';
+import SearchTab from '../../components/SearchTab';
 
 const styles = StyleSheet.create({
   container: {
@@ -91,8 +92,9 @@ function BoardSearch() {
         />
         {showResult ? (
           <View>
-            {dummyData.map((post: Post) => (
-              <PostList post={post} />
+            <SearchTab />
+            {dummyData.map((post: Post, index: number) => (
+              <PostList key={index} post={post} />
             ))}
           </View>
         ) : (

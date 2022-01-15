@@ -210,7 +210,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 returnKeyType="done"
                 selectionColor="#A055FF"
