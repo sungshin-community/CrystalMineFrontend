@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -30,18 +31,35 @@ const styles = StyleSheet.create({
 });
 
 function BoardSearch() {
-  const recentSearch = [
-    '네모 좋아',
-    '영양제 추천',
-    '수학과',
-    '수리통계데이터사이언스학부',
-    '수정광산',
-  ];
   const [searchWord, setSearchWord] = useState<string>('');
-  const [wordList, setWordList] = useState<string[]>(recentSearch);
+  const [wordList, setWordList] = useState<string[]>([]);
   const [showResult, setShowResult] = useState<boolean>(false);
 
-  const searchWordDelete = (index: number) => {
+  useEffect(() => {
+    async function loadRecentSearch() {
+      try {
+        const getRecentSearch = await AsyncStorage.getItem('recentSearch');
+        const recentSearch = JSON.parse(getRecentSearch);
+        setWordList(recentSearch);
+      } catch (error) {
+        console.error('failed to load recent search', error);
+      }
+    }
+    loadRecentSearch();
+  }, []);
+
+  useEffect(() => {
+    async function saveRecentSearch() {
+      try {
+        await AsyncStorage.setItem('recentSearch', JSON.stringify(wordList));
+      } catch (error) {
+        console.error('failed to save recent search', error);
+      }
+    }
+    saveRecentSearch();
+  }, [wordList]);
+
+  const deleteRecentWord = (index: number) => {
     const restWordList = wordList.filter((_, idx) => idx !== index);
     setWordList(restWordList);
   };
@@ -51,6 +69,7 @@ function BoardSearch() {
   };
 
   const startSearching = () => {
+    console.log('찾는 단어 : ', searchWord);
     const newWordList = [searchWord].concat(wordList);
     const duplicateFilter = [...new Set(newWordList)];
     if (duplicateFilter.length === 6) {
@@ -58,7 +77,6 @@ function BoardSearch() {
     }
     setWordList(duplicateFilter);
     setShowResult(true);
-    //? 대충 검색 함수 있어야함
   };
 
   return (
@@ -72,7 +90,7 @@ function BoardSearch() {
         />
         <View style={{padding: 32}}>
           {showResult ? (
-            <Text>{searchWord}</Text>
+            <Text>{searchWord} 결과 입니다.</Text>
           ) : (
             <>
               <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
@@ -89,7 +107,7 @@ function BoardSearch() {
                     key={index}
                     style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
                     <Text>{word}</Text>
-                    <Pressable onPress={() => searchWordDelete(index)}>
+                    <Pressable onPress={() => deleteRecentWord(index)}>
                       <CancelButton />
                     </Pressable>
                   </View>

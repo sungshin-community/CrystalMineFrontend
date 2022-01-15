@@ -147,15 +147,15 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              // let result: boolean = await login({
-              //   username: route.params.userId,
-              //   password: password,
-              // });
-              // if (result) {
-              navigation.navigate('GlobalNavbar');
-              // } else {
-              //   console.log('로그인 실패');
-              // }
+              let result: boolean = await login({
+                username: route.params.userId,
+                password: password,
+              });
+              if (result) {
+                navigation.navigate('GlobalNavbar');
+              } else {
+                console.log('로그인 실패');
+              }
             }}
           />
         )}
