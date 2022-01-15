@@ -7,16 +7,17 @@ import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
 
 function PostList({post}: any) {
-  const [isLike, setIsLike] = useState<boolean>(false);
+  //? 게시글에 더블클릭하면 좋아요 수 바뀐다길래 클릭하면 좋아요 되는 것만 구현
+  // const [isLike, setIsLike] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(post.likeCount);
-  const likePost = () => {
-    setIsLike(!isLike);
-    if (isLike) {
-      setLikeCount(likeCount - 1);
-    } else {
-      setLikeCount(likeCount + 1);
-    }
-  };
+  // const likePost = () => {
+  //   setIsLike(!isLike);
+  //   if (isLike) {
+  //     setLikeCount(likeCount - 1);
+  //   } else {
+  //     setLikeCount(likeCount + 1);
+  //   }
+  // };
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
@@ -28,9 +29,9 @@ function PostList({post}: any) {
       </View>
       <Text style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
-        <Pressable onPress={likePost}>
-          {isLike ? <PostLike /> : <PostUnlike />}
-        </Pressable>
+        {/* <Pressable onPress={likePost}> */}
+        {post.isLike ? <PostLike /> : <PostUnlike />}
+        {/* </Pressable> */}
         <Text style={[styles.text, styles.iconCount]}>{likeCount}</Text>
         <PostImage />
         <Text style={[styles.text, styles.iconCount]}>{post.imageCount}</Text>
