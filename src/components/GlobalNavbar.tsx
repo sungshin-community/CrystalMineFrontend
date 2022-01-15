@@ -16,6 +16,8 @@ import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Pressable} from 'react-native';
+import Toast from 'react-native-simple-toast';
+
 const Tab = createBottomTabNavigator();
 
 interface Props {
@@ -59,6 +61,13 @@ function GlobalNavbar({navigation}: ScreenProps) {
       <Tab.Screen
         name="Board"
         component={BoardFragment}
+        listeners={({navigation}) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate('Board');
+            // Toast.show('접근 권한이 없습니다.', Toast.LONG);
+          }
+        })}
         options={{
           title: '게시판',
           headerTitleAlign: 'center',
