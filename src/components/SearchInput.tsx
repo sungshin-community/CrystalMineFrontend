@@ -28,16 +28,28 @@ const styles = StyleSheet.create({
 interface Props {
   setSearchWord: (value: any) => void;
   startSearching: () => void;
+  setShowResult: any;
 }
 
-function SearchInput({setSearchWord, startSearching}: Props) {
+function SearchInput({setSearchWord, startSearching, setShowResult}: Props) {
   const searchingWord = (value: any) => {
-    setSearchWord(value);
+    if (value) {
+      setSearchWord(value);
+    }
+  };
+
+  const onFocus = () => {
+    setShowResult(false);
+  };
+
+  const onSubmitEditing = () => {
+    setShowResult(true);
   };
 
   return (
     <View style={styles.container}>
       <TextInput
+        onFocus={onFocus}
         style={styles.input}
         placeholder="전체 게시판에서 검색"
         placeholderTextColor="#898989"
@@ -45,6 +57,7 @@ function SearchInput({setSearchWord, startSearching}: Props) {
         onChangeText={(value: any) => searchingWord(value)}
         autoCorrect={false}
         autoCapitalize="none"
+        onSubmitEditing={onSubmitEditing}
       />
       <Pressable style={styles.icon} onPress={startSearching}>
         <SearchIcon />
