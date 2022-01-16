@@ -27,7 +27,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [nickname, setNickname] = useState<string>('익명');
-  const [homeContents, setHomeContents] = useState<Home[]>([]);
+  const [homeContents, setHomeContents] = useState<Home>();
+  const [pinnedBoardList, setPinnedBoardList] = useState<object>({});
   useEffect(() => {
     async function getNickname() {
       const nickname = await AsyncStorage.getItem('nickname');
@@ -46,7 +47,7 @@ const HomeFragment = ({navigation}: Props) => {
       }
     }
     getContents();
-  }, []);
+  });
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -95,15 +96,11 @@ const HomeFragment = ({navigation}: Props) => {
           {/* 게시판 글 목록 */}
 
           <FlatList
-            data={homeContents}
-            renderItem={({item, index}) => (
+            data={homeContents?.pinBoardDtos}
+            renderItem={({item}) => (
               <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>
-                  {item.pinBoardDto[index].boardName}
-                </Text>
-                <Text style={styles.postTitleSummary}>
-                  {item.pinBoardDto[index].postContent}
-                </Text>
+                <Text style={styles.postSummary}>{item.boardName}</Text>
+                <Text style={styles.postTitleSummary}>{item.postContent}</Text>
                 <Text style={styles.postNewLabel}>N</Text>
               </View>
             )}
@@ -124,7 +121,7 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
           {/* 게시판 글 목록 */}
           <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>dddd</Text>
+            <Text style={styles.postSummary}>dd</Text>
             <EmptyHeart />
             <Text style={styles.HOTpostLike}>000</Text>
             <EmptyComment />

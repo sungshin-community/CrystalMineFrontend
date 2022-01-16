@@ -1,12 +1,12 @@
 import Blind from "./Blind";
-import PinBoardDto from "./PinBoardDto";
-import HotBoardDto from "./HotBoardDto";
+import PinBoardDtos from "./PinBoardDto";
+import HotBoardDtos from "./HotBoardDto";
 
 export default interface Home {
   expiredAt: number;
   nickname: string,
   blacklistId: number,
   blind: Blind[],
-  pinBoardDto: PinBoardDto[],
-  hotBoardDto: HotBoardDto[],
+  pinBoardDtos: PinBoardDtos[],
+  hotBoardDto: HotBoardDtos[],
   }

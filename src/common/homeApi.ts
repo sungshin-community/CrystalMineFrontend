@@ -6,7 +6,7 @@ import Home from '../classes/Home';
 const getHomeContents = async () => {
     try {
         const accessToken = await AsyncStorage.getItem('accessToken');
-         const response = await client.get<AxiosResponse<Home[]>>(
+         const response = await client.get<AxiosResponse<Home>>(
             "/home",
             {
                 headers: {
@@ -14,7 +14,6 @@ const getHomeContents = async () => {
                 }
           }
       );
-        console.log('>>>>>>>' + JSON.stringify(response.data.data));
         return response.data.data;
     }
     catch (e) {

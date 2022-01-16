@@ -1,4 +1,4 @@
-export default interface HotBoardDto {
+export default interface HotBoardDtos {
   postId: number;
   postContent: string;
   likeCount: number;
