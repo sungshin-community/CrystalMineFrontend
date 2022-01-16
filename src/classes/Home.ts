@@ -8,5 +8,5 @@ export default interface Home {
   blacklistId: number,
   blind: Blind[],
   pinBoardDtos: PinBoardDtos[],
-  hotBoardDto: HotBoardDtos[],
+  hotBoardDtos: HotBoardDtos[],
   }
