@@ -40,8 +40,10 @@ const HomeFragment = ({navigation}: Props) => {
 
   useEffect(() => {
     async function getContents() {
-      const result = await getHomeContents();
-      setHomeContents(result);
+      const list = await getHomeContents();
+      if (list != null) {
+        setHomeContents(list);
+      }
     }
     getContents();
   }, []);
@@ -94,13 +96,13 @@ const HomeFragment = ({navigation}: Props) => {
 
           <FlatList
             data={homeContents}
-            renderItem={({item}) => (
+            renderItem={({item, index}) => (
               <View style={styles.postSummaryContainer}>
                 <Text style={styles.postSummary}>
-                  {item.pinBoardDtos.boardName}
+                  {item.pinBoardDto[index].boardName}
                 </Text>
                 <Text style={styles.postTitleSummary}>
-                  {item.pinBoardDtos.postContent}
+                  {item.pinBoardDto[index].postContent}
                 </Text>
                 <Text style={styles.postNewLabel}>N</Text>
               </View>
@@ -122,9 +124,7 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
           {/* 게시판 글 목록 */}
           <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판에 공백 포함 23자 본문을 노출합니다...
-            </Text>
+            <Text style={styles.postSummary}>dddd</Text>
             <EmptyHeart />
             <Text style={styles.HOTpostLike}>000</Text>
             <EmptyComment />
