@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import PostComment from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
@@ -7,17 +7,6 @@ import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
 
 function PostList({post}: any) {
-  //? 게시글에 더블클릭하면 좋아요 수 바뀐다길래 클릭하면 좋아요 되는 것만 구현
-  // const [isLike, setIsLike] = useState<boolean>(false);
-  const [likeCount, setLikeCount] = useState<number>(post.likeCount);
-  // const likePost = () => {
-  //   setIsLike(!isLike);
-  //   if (isLike) {
-  //     setLikeCount(likeCount - 1);
-  //   } else {
-  //     setLikeCount(likeCount + 1);
-  //   }
-  // };
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
@@ -29,10 +18,8 @@ function PostList({post}: any) {
       </View>
       <Text style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
-        {/* <Pressable onPress={likePost}> */}
         {post.isLike ? <PostLike /> : <PostUnlike />}
-        {/* </Pressable> */}
-        <Text style={[styles.text, styles.iconCount]}>{likeCount}</Text>
+        <Text style={[styles.text, styles.iconCount]}>{post.likeCount}</Text>
         <PostImage />
         <Text style={[styles.text, styles.iconCount]}>{post.imageCount}</Text>
         <PostComment />
@@ -45,8 +32,10 @@ function PostList({post}: any) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
-    marginBottom: 22,
     paddingHorizontal: 24,
+    borderBottomColor: '#f4f4f4',
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
   },
   nameContainer: {
     flexDirection: 'row',
@@ -75,6 +64,7 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingBottom: 22,
   },
   iconCount: {
     marginLeft: 5,

@@ -10,32 +10,17 @@ import {
   Pressable,
 } from 'react-native';
 import CancelButton from '../../../resources/icon/Cancel';
-import PostList from '../../components/PostList';
 import SearchInput from '../../components/SearchInput';
-import SearchTab from '../../components/SearchTab';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-    alignItems: 'center',
-  },
-  rowSpaceBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {fontFamily: 'SpoqaHanSansNeo-Medium', fontSize: 15},
-  delete: {
-    fontSize: 12,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    color: '#BDBDBD',
-  },
-});
+type RootStackParamList = {
+  SearchResult: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
 
-function BoardSearch() {
+function BoardSearch({navigation}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
   const [wordList, setWordList] = useState<string[]>([]);
-  const [showResult, setShowResult] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadRecentSearch() {
@@ -71,13 +56,15 @@ function BoardSearch() {
   };
 
   const startSearching = () => {
-    const newWordList = [searchWord].concat(wordList);
-    const duplicateFilter = [...new Set(newWordList)];
-    if (duplicateFilter.length === 6) {
-      duplicateFilter.pop();
+    if (searchWord !== '') {
+      const newWordList = [searchWord].concat(wordList);
+      const duplicateFilter = [...new Set(newWordList)];
+      if (duplicateFilter.length === 6) {
+        duplicateFilter.pop();
+      }
+      setWordList(duplicateFilter);
+      navigation.navigate('SearchResult');
     }
-    setWordList(duplicateFilter);
-    setShowResult(true);
   };
 
   return (
@@ -88,95 +75,50 @@ function BoardSearch() {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
-          setShowResult={setShowResult}
         />
-        {showResult ? (
-          <View>
-            <SearchTab />
-            {dummyData.map((post: Post, index: number) => (
-              <PostList key={index} post={post} />
-            ))}
+        <View style={{padding: 32}}>
+          <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
+            <Text style={styles.title}>최근 검색어</Text>
+            <Pressable onPress={totalDelete}>
+              <Text style={styles.delete}>전체 삭제</Text>
+            </Pressable>
           </View>
-        ) : (
-          <View style={{padding: 32}}>
-            <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
-              <Text style={styles.title}>최근 검색어</Text>
-              <Pressable onPress={totalDelete}>
-                <Text style={styles.delete}>전체 삭제</Text>
-              </Pressable>
-            </View>
-            {wordList.length === 0 ? (
-              <Text style={{marginVertical: 12}}>최근 검색어가 없습니다</Text>
-            ) : (
-              wordList.map((word, index) => (
-                <View
-                  key={index}
-                  style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
-                  <Text>{word}</Text>
-                  <Pressable onPress={() => deleteRecentWord(index)}>
-                    <CancelButton />
-                  </Pressable>
-                </View>
-              ))
-            )}
-          </View>
-        )}
+          {wordList.length === 0 ? (
+            <Text style={{marginVertical: 12}}>최근 검색어가 없습니다</Text>
+          ) : (
+            wordList.map((word, index) => (
+              <View
+                key={index}
+                style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
+                <Text>{word}</Text>
+                <Pressable onPress={() => deleteRecentWord(index)}>
+                  <CancelButton />
+                </Pressable>
+              </View>
+            ))
+          )}
+        </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+    alignItems: 'center',
+  },
+  rowSpaceBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  title: {fontFamily: 'SpoqaHanSansNeo-Medium', fontSize: 15},
+  delete: {
+    fontSize: 12,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    color: '#BDBDBD',
+  },
+});
+
 export default BoardSearch;
-
-export interface Post {
-  nickname: string;
-  content: string;
-  isLike: boolean;
-  likeCount: number;
-  imageCount: number;
-  commentCount: number;
-}
-
-const dummyData: Post[] = [
-  {
-    nickname: '수정',
-    content: 'Hey~~~ 오늘 도깨비 방망이 똥 쌌어~ 네모',
-    isLike: true,
-    likeCount: 13,
-    imageCount: 9,
-    commentCount: 7,
-  },
-  {
-    nickname: '나원',
-    content: `힘들어도 괜찮아 거친 정글 속에 뛰어든 건 나니깐 I'm ok...`,
-    isLike: false,
-    likeCount: 134,
-    imageCount: 9,
-    commentCount: 7,
-  },
-  {
-    nickname: '효은',
-    content:
-      '에타 공감 누르면 공감하셨습니다 뜨는거 토스트였는데 스낵바로 바꿨네',
-    isLike: true,
-    likeCount: 1779,
-    imageCount: 9,
-    commentCount: 74,
-  },
-  {
-    nickname: '유진',
-    content: '시험 합격 가보자고',
-    isLike: false,
-    likeCount: 130,
-    imageCount: 0,
-    commentCount: 2,
-  },
-  {
-    nickname: '본크레페쿠바딸',
-    content: '본크레페 먹고 싶다',
-    isLike: false,
-    likeCount: 52,
-    imageCount: 2,
-    commentCount: 12,
-  },
-];
