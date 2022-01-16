@@ -1,6 +1,6 @@
 import Blind from "./Blind";
 import PinBoardDtos from "./PinBoardDto";
-import HotBoardDtos from "./HotBoardDto";
+import HotBoardDto from "./HotBoardDto";
 
 export default interface Home {
   expiredAt: number;
@@ -8,5 +8,5 @@ export default interface Home {
   blacklistId: number,
   blind: Blind[],
   pinBoardDtos: PinBoardDtos[],
-  hotBoardDtos: HotBoardDtos[],
+  hotBoardDtos: HotBoardDto[],
   }
