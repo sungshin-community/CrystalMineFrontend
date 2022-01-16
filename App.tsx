@@ -26,6 +26,7 @@ import CreateBoard from './src/screens/board/CreateBoard';
 
 import PostListScreen from './src/screens/post/PostListScreen';
 import BoardSearch from './src/screens/board/BoardSearch';
+import SearchResult from './src/screens/board/SearchResult';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -163,6 +164,11 @@ const App = () => {
           name="BoardSearch"
           component={BoardSearch}
           options={{title: '게시판 검색', headerShown: false}}
+        />
+        <Stack.Screen
+          name="SearchResult"
+          component={SearchResult}
+          options={{title: '전체 검색 결과'}}
         />
         <Stack.Screen
           name="PostListScreen"
