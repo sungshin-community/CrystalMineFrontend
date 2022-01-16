@@ -228,7 +228,7 @@ export default function RegularMemberAuth({navigation}: Props) {
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
 
-      {tryCnt === 0 && (
+      {tryCnt > -1 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
@@ -251,11 +251,11 @@ export default function RegularMemberAuth({navigation}: Props) {
           <PurpleFullButton
             text="인증 완료"
             onClick={async () => {
-              let result: boolean = await checkAuthNumber(value);
-              if (result) {
+              let result: number = await checkAuthNumber(value);
+              if (result === 0) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                setTryCnt(tryCnt - 1);
+                setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
               }
             }}></PurpleFullButton>
@@ -264,11 +264,11 @@ export default function RegularMemberAuth({navigation}: Props) {
           <PurpleRoundButton
             text="인증 완료"
             onClick={async () => {
-              let result: boolean = await checkAuthNumber(value);
-              if (result) {
+              let result: number = await checkAuthNumber(value);
+              if (result === 0) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                setTryCnt(tryCnt - 1);
+                setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
               }
             }}></PurpleRoundButton>
