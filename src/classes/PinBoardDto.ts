@@ -1,6 +1,6 @@
 export default interface PinBoardDto {
-  boardId: Number;
-  boardName: String;
-  postContent: String;
-  todayNewPost: Boolean;
+  boardId: number;
+  boardName: string;
+  postContent: string;
+  todayNewPost: boolean;
 }

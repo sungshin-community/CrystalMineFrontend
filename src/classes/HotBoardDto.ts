@@ -1,6 +1,6 @@
 export default interface HotBoardDto {
-  postId: Number;
-  postContent: String;
-  likeCount: Number;
-  commentCount: Number;
+  postId: number;
+  postContent: string;
+  likeCount: number;
+  commentCount: number;
 }

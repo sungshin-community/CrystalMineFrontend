@@ -1,6 +1,6 @@
 export default interface Blind {
-  type: String;
-  content: String;
-  reason: String;
-  createdAt: String;
+  type: string;
+  content: string;
+  reason: string;
+  createdAt: string;
   }

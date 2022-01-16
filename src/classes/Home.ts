@@ -3,9 +3,9 @@ import PinBoardDto from "./PinBoardDto";
 import HotBoardDto from "./HotBoardDto";
 
 export default interface Home {
-  expiredAt: Number;
-  nickname: String,
-  blacklistId: Number,
+  expiredAt: number;
+  nickname: string,
+  blacklistId: number,
   blind: Blind[],
   pinBoardDto: PinBoardDto[],
   hotBoardDto: HotBoardDto[],
