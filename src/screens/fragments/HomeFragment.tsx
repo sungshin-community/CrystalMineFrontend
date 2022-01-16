@@ -26,18 +26,7 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
-  const [nickname, setNickname] = useState<string>('익명');
   const [homeContents, setHomeContents] = useState<Home>();
-  const [pinnedBoardList, setPinnedBoardList] = useState<object>({});
-  useEffect(() => {
-    async function getNickname() {
-      const nickname = await AsyncStorage.getItem('nickname');
-      if (nickname != null) {
-        setNickname(nickname);
-      }
-    }
-    getNickname();
-  }, []);
 
   useEffect(() => {
     async function getContents() {
@@ -67,14 +56,16 @@ const HomeFragment = ({navigation}: Props) => {
               marginBottom: 32,
             }}>
             <Text style={{fontSize: 22}}>
-              <Text style={{fontWeight: 'bold'}}>{nickname}</Text>
+              <Text style={{fontWeight: 'bold'}}>{homeContents?.nickname}</Text>
               {` 님, 안녕하세요!`}
             </Text>
           </View>
           <View style={styles.newsContainer}>
             <NewsCheckIcon />
             <View style={{paddingRight: 90}}>
-              <Text style={styles.newsTitle}>인증 만료일이 3일 남았어요.</Text>
+              <Text style={styles.newsTitle}>
+                인증 만료일이 {homeContents?.expiredAt}일 남았어요.
+              </Text>
               <Text style={styles.newsMore}>인증하러 가기</Text>
             </View>
             <RightArrowBold />
@@ -119,51 +110,19 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={styles.boardTitle}>HOT 게시판</Text>
             <RightArrowBold />
           </View>
-          {/* 게시판 글 목록 */}
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>dd</Text>
-            <EmptyHeart />
-            <Text style={styles.HOTpostLike}>000</Text>
-            <EmptyComment />
-            <Text style={styles.HOTpostComment}>000</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판에 공백 포함 23자 본문을 노출합니다...
-            </Text>
-            <EmptyHeart />
-            <Text style={styles.HOTpostLike}>000</Text>
-            <EmptyComment />
-            <Text style={styles.HOTpostComment}>000</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판에 공백 포함 23자 본문을 노출합니다...
-            </Text>
-            <EmptyHeart />
-            <Text style={styles.HOTpostLike}>000</Text>
-            <EmptyComment />
-            <Text style={styles.HOTpostComment}>000</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판에 공백 포함 23자 본문을 노출합니다...
-            </Text>
-            <EmptyHeart />
-            <Text style={styles.HOTpostLike}>000</Text>
-            <EmptyComment />
-            <Text style={styles.HOTpostComment}>000</Text>
-          </View>
-          <View style={styles.postSummaryContainer}>
-            <Text style={styles.postSummary}>
-              게시판에 공백 포함 23자 본문을 노출합니다...
-            </Text>
-            <EmptyHeart />
-            <Text style={styles.HOTpostLike}>000</Text>
-            <EmptyComment />
-            <Text style={styles.HOTpostComment}>000</Text>
-          </View>
-          {/* 게시판 글 목록 */}
+
+          <FlatList
+            data={homeContents?.hotBoardDtos}
+            renderItem={({item}) => (
+              <View style={styles.postSummaryContainer}>
+                <Text style={styles.postSummary}>{item.postContent}</Text>
+                <EmptyHeart />
+                <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+                <EmptyComment />
+                <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
+              </View>
+            )}
+          />
         </View>
       </View>
     </ScrollView>
