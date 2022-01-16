@@ -77,13 +77,12 @@ export const checkAuthNumber = async (code: string) => {
                 "Authorization": `Bearer ${accessToken}`
             }
         });
-        console.log(response.data);
-        return true;
+        return 0;
     }
     catch (e) {
         console.log(e.response.data);
         console.log(e.response.data.data.attemptCount);
-        return false;
+        return e.response.data.data.attemptCount;
     }
 }
 

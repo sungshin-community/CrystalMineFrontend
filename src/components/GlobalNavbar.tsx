@@ -62,11 +62,11 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Board"
         component={BoardFragment}
         listeners={({navigation}) => ({
-          tabPress: (e) => {
+          tabPress: e => {
             e.preventDefault();
             navigation.navigate('Board');
             // Toast.show('접근 권한이 없습니다.', Toast.LONG);
-          }
+          },
         })}
         options={{
           title: '게시판',
