@@ -1,5 +1,5 @@
 import Blind from "./Blind";
-import PinBoardDtos from "./PinBoardDto";
+import PinBoardDto from "./PinBoardDto";
 import HotBoardDto from "./HotBoardDto";
 
 export default interface Home {
@@ -7,6 +7,6 @@ export default interface Home {
   nickname: string,
   blacklistId: number,
   blind: Blind[],
-  pinBoardDtos: PinBoardDtos[],
+  pinBoardDtos: PinBoardDto[],
   hotBoardDtos: HotBoardDto[],
   }
