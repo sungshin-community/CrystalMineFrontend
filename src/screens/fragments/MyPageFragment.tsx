@@ -7,6 +7,7 @@ import { getUser } from '../../common/myPageApi';
 import { PurpleRoundButton } from '../../components/Button';
 import User from '../../classes/User';
 import { ModalBottom } from '../../components/ModalBottom';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
   menu: {
@@ -27,7 +28,13 @@ const styles = StyleSheet.create({
 
 });
 
-const MyPageFragment = () => {
+type RootStackParamList = {
+  SplashHome: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+const MyPageFragment = ({navigation}: Props) => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [allowAlert, setAllowAlert] = useState<boolean>(false);
   const [allowMessage, setAllowMessage] = useState<boolean>(false);
@@ -137,7 +144,7 @@ const MyPageFragment = () => {
           modalBody=""
           modalButtonText="확인"
           modalButton
-          modalButtonFunc={() => {}}></ModalBottom>
+          modalButtonFunc={() => {navigation.navigate("SplashHome")}}></ModalBottom>
       </ScrollView>
     </SafeAreaView>
   );
