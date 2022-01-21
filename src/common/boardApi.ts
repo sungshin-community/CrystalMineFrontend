@@ -30,7 +30,7 @@ export const getPinnedBoardList = async () => {
     boardList = boardList.concat(customResponse.data.data);
     return boardList;
   } catch (e) {
-    console.log(e);
+    console.log("여기는 getPinnedBoardList 함수", e);
   }
 };
 
@@ -49,7 +49,7 @@ export const getOfficialBoardList = async () => {
     );
     return response.data.data;
   } catch (e) {
-    console.log(e);
+    console.log("여기는 getOfficialBoardList 함수", e);
   }
 };
 
@@ -68,7 +68,7 @@ export const getCustomBoardList = async () => {
     );
     return response.data.data;
   } catch (e) {
-    console.log(e);
+    console.log("여기는 getCustomBoardList 함수", e);
   }
 };
 
@@ -89,7 +89,7 @@ export const toggleBoardPin = async (boardId: number) => {
     console.log(response.data);
     return true;
   } catch (e) {
-    console.log(e);
+    console.log("여기는 toggleBoardPin 함수", e);
     return false;
   }
 };

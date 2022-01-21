@@ -47,7 +47,7 @@ export const register = async (signUpRequestDto: SignUpRequestDto) => {
         return true;
     }
     catch (e) {
-        console.log(e);
+        console.log("여기는 register 함수", e);
         return false;
     }
 }
@@ -64,7 +64,7 @@ export const sendEmail = async () => {
         return true;
     }
     catch (e) {
-        console.log(e);
+        console.log("여기는 sendEmail 함수", e);
         return false;
     }
 }
@@ -81,8 +81,8 @@ export const checkAuthNumber = async (code: string) => {
         return 0;
     }
     catch (e: any) {
-        console.log(e.response.data);
-        console.log(e.response.data.data.attemptCount);
+        console.log("여기는 checkAuthNumber 함수", e.response.data);
+        console.log("여기는 checkAuthNumber 함수", e.response.data.data.attemptCount);
         return e.response.data.data.attemptCount;
     }
 }
@@ -96,7 +96,7 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
         return true;
     }
     catch(e: any) {
-        console.log(e.response.status);
+        console.log("여기는 login 함수", e.response.status);
         return false;
     }
 }
@@ -107,7 +107,7 @@ export const logout = async () => {
         return true;
     }
     catch (e: any) {
-        console.log(e.response);
+        console.log("여기는 logout 함수", e.response);
         return false;
     }
 }

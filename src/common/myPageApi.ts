@@ -1,5 +1,4 @@
 import client from './client';
-import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import User from '../classes/User';
 import Response from '../classes/Response';
@@ -17,6 +16,6 @@ export const getUser = async () => {
     console.log(response.data.data);
     return response.data.data;
   } catch (e) {
-    console.log(e);
+    console.log("여기는 getUser 함수", e);
   }
 };

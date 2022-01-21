@@ -17,7 +17,7 @@ const getHomeContents = async () => {
         return response.data.data;
     }
     catch (e) {
-        console.log(e);
+        console.log("여기는 getHomeContents 함수", e);
     }
 };
 export default getHomeContents;

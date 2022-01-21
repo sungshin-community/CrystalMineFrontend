@@ -8,6 +8,7 @@ import { PurpleRoundButton } from '../../components/Button';
 import User from '../../classes/User';
 import { ModalBottom } from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { logout } from '../../common/authApi';
 
 const styles = StyleSheet.create({
   menu: {
@@ -144,7 +145,10 @@ const MyPageFragment = ({navigation}: Props) => {
           modalBody=""
           modalButtonText="확인"
           modalButton
-          modalButtonFunc={() => {navigation.navigate("SplashHome")}}></ModalBottom>
+          modalButtonFunc={async () => {
+            await logout();
+            navigation.reset({routes: [{name: 'SplashHome'}]});
+          }}></ModalBottom>
       </ScrollView>
     </SafeAreaView>
   );
