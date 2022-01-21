@@ -78,6 +78,7 @@ const App = () => {
             options={{
               title: '',
               headerTintColor: '#000000',
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
@@ -107,22 +108,38 @@ const App = () => {
           <Stack.Screen
             name="SignUpPassword"
             component={SignUpPassword}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="SignUpPasswordConfirm"
             component={SignUpPasswordConfirm}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="SignUpNickname"
             component={SignUpNickname}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="MajorSelect"
             component={MajorSelect}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="SignUpComplete"
@@ -131,6 +148,7 @@ const App = () => {
               title: '',
               headerTintColor: '#000000',
               headerBackVisible: false,
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
@@ -140,6 +158,7 @@ const App = () => {
               title: '',
               headerTintColor: '#000000',
               headerBackVisible: false,
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
@@ -149,6 +168,7 @@ const App = () => {
               title: '',
               headerTintColor: '#000000',
               headerBackVisible: false,
+              animation: 'slide_from_right',
             }}
           />
           {/* GNB */}
@@ -217,6 +237,7 @@ const App = () => {
             options={{
               title: '',
               headerTintColor: '#000000',
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
@@ -246,22 +267,38 @@ const App = () => {
           <Stack.Screen
             name="SignUpPassword"
             component={SignUpPassword}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="SignUpPasswordConfirm"
             component={SignUpPasswordConfirm}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="SignUpNickname"
             component={SignUpNickname}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="MajorSelect"
             component={MajorSelect}
-            options={{ title: '', headerTintColor: '#000000' }}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
           />
           <Stack.Screen
             name="SignUpComplete"
@@ -270,6 +307,7 @@ const App = () => {
               title: '',
               headerTintColor: '#000000',
               headerBackVisible: false,
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
@@ -279,6 +317,7 @@ const App = () => {
               title: '',
               headerTintColor: '#000000',
               headerBackVisible: false,
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
@@ -288,6 +327,7 @@ const App = () => {
               title: '',
               headerTintColor: '#000000',
               headerBackVisible: false,
+              animation: 'slide_from_right',
             }}
           />
           {/* [F-7] 게시판 */}
