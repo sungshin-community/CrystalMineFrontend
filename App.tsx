@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
@@ -27,9 +27,13 @@ import CreateBoard from './src/screens/board/CreateBoard';
 import PostListScreen from './src/screens/post/PostListScreen';
 import BoardSearch from './src/screens/board/BoardSearch';
 import SearchResult from './src/screens/board/SearchResult';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NativeScreenNavigationContainer } from 'react-native-screens';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   {
     Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
     // StatusBar.setTranslucent(true);
@@ -37,6 +41,18 @@ const App = () => {
   }
 
   useEffect(() => {
+    async function getToken() {
+      const accessToken: string | null = await AsyncStorage.getItem("accessToken");
+      console.log("엑세스토큰은", accessToken);
+      if (accessToken === null || accessToken === "") {
+        setIsLoggedIn(false);
+      }
+      else {
+        console.log("로그인 되어 있음");
+        setIsLoggedIn(true);
+      }
+    }
+    getToken();
     SplashScreen.hide();
   }, []);
 
@@ -48,7 +64,148 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
+      {/* <Stack.Navigator screenOptions={{headerShadowVisible: false}} initialRouteName={AsyncStorage.getItem("accessToken") !== null ? "GlobalNavbar" : "SplashHome"}> */}
+      {isLoggedIn ?
+        <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
+          {/* [F-1] */}
+          <Stack.Screen
+            name="SplashHome"
+            component={SplashHome}
+            options={{title: ''}}
+          />
+          <Stack.Screen
+            name="TermAgree"
+            component={TermAgree}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+            }}
+          />
+          <Stack.Screen
+            name="SignInId"
+            component={SignInId}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="SignInPassword"
+            component={SignInPassword}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              animation: 'slide_from_right',
+            }}
+          />
+          {/* [F-2-1] 회원가입 */}
+          <Stack.Screen
+            name="SignUpId"
+            component={SignUpId}
+            options={{title: '', headerTintColor: '#000000'}}
+          />
+          <Stack.Screen
+            name="SignUpPassword"
+            component={SignUpPassword}
+            options={{title: '', headerTintColor: '#000000'}}
+          />
+          <Stack.Screen
+            name="SignUpPasswordConfirm"
+            component={SignUpPasswordConfirm}
+            options={{title: '', headerTintColor: '#000000'}}
+          />
+          <Stack.Screen
+            name="SignUpNickname"
+            component={SignUpNickname}
+            options={{title: '', headerTintColor: '#000000'}}
+          />
+          <Stack.Screen
+            name="MajorSelect"
+            component={MajorSelect}
+            options={{title: '', headerTintColor: '#000000'}}
+          />
+          <Stack.Screen
+            name="SignUpComplete"
+            component={SignUpComplete}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="RegularMemberAuthSelect"
+            component={RegularMemberAuthSelect}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="RegularMemberAuth"
+            component={RegularMemberAuth}
+            options={{
+              title: '',
+              headerTintColor: '#000000',
+              headerBackVisible: false,
+            }}
+          />
+          {/* GNB */}
+          <Stack.Screen
+            name="GlobalNavbar"
+            component={GlobalNavbar}
+            options={{headerShown: false}}
+          />
+          {/* [F-7] 게시판 */}
+          <Stack.Screen
+            name="BoardScreen"
+            component={BoardScreen}
+            options={{
+              title: '게시판',
+              headerTintColor: '#000000',
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="CreateBoard"
+            component={CreateBoard}
+            options={{
+              title: '게시판 생성',
+              headerTitleAlign: 'center',
+              headerTintColor: '#000000',
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="BoardSearch"
+            component={BoardSearch}
+            options={{title: '게시판 검색', headerShown: false}}
+          />
+          <Stack.Screen
+            name="SearchResult"
+            component={SearchResult}
+            options={{title: '전체 검색 결과'}}
+          />
+          <Stack.Screen
+            name="PostListScreen"
+            component={PostListScreen}
+            options={{
+              title: '고정 게시판',
+              headerTitleAlign: 'center',
+              headerTintColor: '#000000',
+            }}
+          />
+        </Stack.Navigator>
+        :
+        <Stack.Navigator screenOptions={{headerShadowVisible: false}}>
+        {/* GNB */}
+        <Stack.Screen
+          name="GlobalNavbar"
+          component={GlobalNavbar}
+          options={{headerShown: false}}
+        />
         {/* [F-1] */}
         <Stack.Screen
           name="SplashHome"
@@ -134,12 +291,6 @@ const App = () => {
             headerBackVisible: false,
           }}
         />
-        {/* GNB */}
-        <Stack.Screen
-          name="GlobalNavbar"
-          component={GlobalNavbar}
-          options={{headerShown: false}}
-        />
         {/* [F-7] 게시판 */}
         <Stack.Screen
           name="BoardScreen"
@@ -180,6 +331,7 @@ const App = () => {
           }}
         />
       </Stack.Navigator>
+    }
     </NavigationContainer>
   );
 };
