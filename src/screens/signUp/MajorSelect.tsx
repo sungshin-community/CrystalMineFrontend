@@ -151,15 +151,15 @@ export default function MajorSelect({navigation, route}: Props) {
           {selectedMajorId !== -1 ? (
             <PurpleRoundButton
               text="회원가입"
-              onClick={() => {
-                register({
+              onClick={async () => {
+                await register({
                   username: route.params.userId,
                   password: route.params.password,
                   nickname: route.params.nickname,
                   departmentId: selectedMajorId,
                   agreementIds: [3, 4],
                 });
-                navigation.navigate('SignUpComplete');
+                navigation.reset({routes: [{name: 'SignUpComplete'}]});
               }}
             />
           ) : (

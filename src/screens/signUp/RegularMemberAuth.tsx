@@ -228,7 +228,7 @@ export default function RegularMemberAuth({navigation}: Props) {
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
       </View>
 
-      {tryCnt > -1 && (
+      {tryCnt <= 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
@@ -266,7 +266,7 @@ export default function RegularMemberAuth({navigation}: Props) {
             onClick={async () => {
               let result: number = await checkAuthNumber(value);
               if (result === 0) {
-                navigation.navigate('GlobalNavbar');
+                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
