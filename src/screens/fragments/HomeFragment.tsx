@@ -44,26 +44,26 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-      <View>
+      <View
+        style={{
+          backgroundColor: '#F6F6F6',
+          paddingVertical: 32,
+        }}>
+        <Text
+          style={{
+            fontSize: 22,
+            marginLeft: 40,
+            marginBottom: 26,
+          }}>
+          <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+            {homeContents?.nickname}
+          </Text>
+          {` 님, 안녕하세요!`}
+        </Text>
         <View
           style={{
-            backgroundColor: '#F7F7F7',
-            marginHorizontal: 12,
             borderRadius: 20,
-            marginTop: 12,
           }}>
-          <View
-            style={{
-              borderRadius: 20,
-              marginLeft: 32,
-              marginTop: 32,
-              marginBottom: 32,
-            }}>
-            <Text style={{fontSize: 22}}>
-              <Text style={{fontWeight: 'bold'}}>{homeContents?.nickname}</Text>
-              {` 님, 안녕하세요!`}
-            </Text>
-          </View>
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('MyPageFragment')}>
             <View style={styles.newsContainer}>
@@ -78,60 +78,74 @@ const HomeFragment = ({navigation}: Props) => {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <View
-          style={{
-            marginHorizontal: (Dimensions.get('window').width / 25) * 2,
-            marginTop: 44,
-            marginBottom: 8,
-          }}>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('PostListScreen')}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.boardTitle}>고정 게시판</Text>
-              <RightArrowBold />
+        <View style={{borderColor: '#F6F6F6', borderWidth: 1}}></View>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('MyPageFragment')}>
+          <View style={styles.newsContainer}>
+            <NewsCheckIcon />
+            <View style={{paddingRight: 90}}>
+              <Text style={styles.newsTitle}>
+                인증 만료일이 {homeContents?.expiredAt}일 남았어요.
+              </Text>
+              <Text style={styles.newsMore}>인증하러 가기</Text>
             </View>
-          </TouchableWithoutFeedback>
-          {/* 게시판 글 목록 */}
-
-          <FlatList
-            data={homeContents?.pinBoardDtos}
-            renderItem={({item}) => (
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('PostScreen')}>
-                <View style={styles.postSummaryContainer}>
-                  <Text style={styles.postSummary}>
-                    {item.boardName.slice(0, numOfBoardTitle)}
-                  </Text>
-                  <Text style={styles.postTitleSummary}>
-                    {item.postContent.slice(0, 43 - numOfBoardTitle)}
-                  </Text>
-                  {item.todayNewPost ? (
-                    <Text style={styles.postNewLabel}>N</Text>
-                  ) : (
-                    <></>
-                  )}
-                </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
-
-          {/* 게시판 글 목록 */}
-          <View
-            style={{
-              borderBottomColor: '#F0F0F0',
-              borderBottomWidth: 1,
-              marginBottom: 24,
-              marginTop: 24,
-            }}
-          />
-          <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>HOT 게시판</Text>
             <RightArrowBold />
           </View>
+        </TouchableWithoutFeedback>
+      </View>
+      <View
+        style={{
+          padding: 24,
+        }}>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('PostListScreen')}>
+          <View style={styles.rowContainer}>
+            <Text style={styles.boardTitle}>고정 게시판</Text>
+            <Text style={styles.more}>더보기</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        {/* 게시판 글 목록 */}
 
-          <FlatList
-            data={homeContents?.hotBoardDtos}
-            renderItem={({item}) => (
+        <FlatList
+          data={homeContents?.pinBoardDtos}
+          renderItem={({item}) => (
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('PostScreen')}>
+              <View style={styles.postSummaryContainer}>
+                <Text style={styles.postSummary}>
+                  {item.boardName.slice(0, numOfBoardTitle)}
+                </Text>
+                <Text style={styles.postTitleSummary}>
+                  {item.postContent.slice(0, 43 - numOfBoardTitle)}
+                </Text>
+                {item.todayNewPost ? (
+                  <Text style={styles.postNewLabel}>N</Text>
+                ) : (
+                  <></>
+                )}
+              </View>
+            </TouchableWithoutFeedback>
+          )}
+        />
+
+        {/* 게시판 글 목록 */}
+        <View
+          style={{
+            borderBottomColor: '#F0F0F0',
+            borderBottomWidth: 1,
+            marginBottom: 24,
+            marginTop: 24,
+          }}
+        />
+        <View style={styles.rowContainer}>
+          <Text style={styles.boardTitle}>HOT 게시판</Text>
+          <Text style={styles.more}>더보기</Text>
+        </View>
+
+        <FlatList
+          data={homeContents?.hotBoardDtos}
+          renderItem={({item}) => (
+            <View style={{justifyContent: 'flex-end'}}>
               <View style={styles.postSummaryContainer}>
                 <Text style={styles.postSummary}>
                   {item.postContent.slice(0, 27)}
@@ -141,9 +155,9 @@ const HomeFragment = ({navigation}: Props) => {
                 <EmptyComment />
                 <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
               </View>
-            )}
-          />
-        </View>
+            </View>
+          )}
+        />
       </View>
     </ScrollView>
   );
@@ -155,18 +169,23 @@ const styles = StyleSheet.create({
   rowContainer: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   boardTitle: {
     fontWeight: 'bold',
     fontSize: 17,
-    marginBottom: 24,
-    marginRight: 235,
+    marginBottom: 16,
+  },
+  more: {
+    fontSize: 13,
+    color: '#A055FF',
+    textDecorationLine: 'underline',
   },
   postSummaryContainer: {
-    marginBottom: 15,
+    marginVertical: 8,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   postSummary: {
     fontSize: 13,
@@ -175,10 +194,10 @@ const styles = StyleSheet.create({
   postTitleSummary: {
     color: '#C4C4C4',
     fontSize: 13,
+    marginRight: 12,
   },
   postNewLabel: {
     color: '#FF6060',
-    marginLeft: 8,
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -195,8 +214,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 32,
-    paddingBottom: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#FFF',
+    marginHorizontal: 24,
   },
   newsTitle: {
     fontSize: 15,
@@ -205,7 +226,6 @@ const styles = StyleSheet.create({
   newsMore: {
     color: '#707A82',
     fontSize: 13,
-    fontWeight: 'bold',
     marginLeft: 10,
     marginTop: 4,
   },
