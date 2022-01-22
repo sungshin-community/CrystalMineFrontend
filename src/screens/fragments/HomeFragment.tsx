@@ -23,6 +23,7 @@ import getHomeContents from '../../common/homeApi';
 type RootStackParamList = {
   PostListScreen: undefined;
   MyPageFragment: undefined;
+  PostScreen: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -96,7 +97,7 @@ const HomeFragment = ({navigation}: Props) => {
             data={homeContents?.pinBoardDtos}
             renderItem={({item}) => (
               <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('PostListScreen')}>
+                onPress={() => navigation.navigate('PostScreen')}>
                 <View style={styles.postSummaryContainer}>
                   <Text style={styles.postSummary}>
                     {item.boardName.slice(0, numOfBoardTitle)}
