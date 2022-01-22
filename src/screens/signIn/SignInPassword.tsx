@@ -195,7 +195,7 @@ export default function SignInPassword({navigation, route}: Props) {
               ]}>
               <TextInput
                 style={{
-                  fontFamily: 'verdana-bold',
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
                   fontSize: 21,
                   width: '90%',
                 }}
