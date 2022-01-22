@@ -28,6 +28,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [homeContents, setHomeContents] = useState<Home>();
 
+  const numOfBoardTitle = 19; // 고정 게시판 내용
+
   useEffect(() => {
     async function getContents() {
       const list = await getHomeContents();
@@ -73,7 +75,7 @@ const HomeFragment = ({navigation}: Props) => {
         </View>
         <View
           style={{
-            marginLeft: (Dimensions.get('window').width / 25) * 2,
+            marginHorizontal: (Dimensions.get('window').width / 25) * 2,
             marginTop: 44,
             marginBottom: 8,
           }}>
@@ -90,8 +92,12 @@ const HomeFragment = ({navigation}: Props) => {
             data={homeContents?.pinBoardDtos}
             renderItem={({item}) => (
               <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>{item.boardName}</Text>
-                <Text style={styles.postTitleSummary}>{item.postContent}</Text>
+                <Text style={styles.postSummary}>
+                  {item.boardName.slice(0, numOfBoardTitle)}
+                </Text>
+                <Text style={styles.postTitleSummary}>
+                  {item.postContent.slice(0, 43 - numOfBoardTitle)}
+                </Text>
                 <Text style={styles.postNewLabel}>N</Text>
               </View>
             )}
@@ -115,7 +121,9 @@ const HomeFragment = ({navigation}: Props) => {
             data={homeContents?.hotBoardDtos}
             renderItem={({item}) => (
               <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>{item.postContent}</Text>
+                <Text style={styles.postSummary}>
+                  {item.postContent.slice(0, 27)}
+                </Text>
                 <EmptyHeart />
                 <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
                 <EmptyComment />
@@ -179,12 +187,12 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   newsTitle: {
-    fontSize: 13,
+    fontSize: 15,
     marginLeft: 10,
   },
   newsMore: {
     color: '#707A82',
-    fontSize: 9,
+    fontSize: 13,
     fontWeight: 'bold',
     marginLeft: 10,
     marginTop: 4,
