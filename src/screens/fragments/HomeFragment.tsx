@@ -22,6 +22,7 @@ import getHomeContents from '../../common/homeApi';
 
 type RootStackParamList = {
   PostListScreen: undefined;
+  MyPageFragment: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -62,16 +63,19 @@ const HomeFragment = ({navigation}: Props) => {
               {` 님, 안녕하세요!`}
             </Text>
           </View>
-          <View style={styles.newsContainer}>
-            <NewsCheckIcon />
-            <View style={{paddingRight: 90}}>
-              <Text style={styles.newsTitle}>
-                인증 만료일이 {homeContents?.expiredAt}일 남았어요.
-              </Text>
-              <Text style={styles.newsMore}>인증하러 가기</Text>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('MyPageFragment')}>
+            <View style={styles.newsContainer}>
+              <NewsCheckIcon />
+              <View style={{paddingRight: 90}}>
+                <Text style={styles.newsTitle}>
+                  인증 만료일이 {homeContents?.expiredAt}일 남았어요.
+                </Text>
+                <Text style={styles.newsMore}>인증하러 가기</Text>
+              </View>
+              <RightArrowBold />
             </View>
-            <RightArrowBold />
-          </View>
+          </TouchableWithoutFeedback>
         </View>
         <View
           style={{

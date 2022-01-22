@@ -27,6 +27,8 @@ import CreateBoard from './src/screens/board/CreateBoard';
 import PostListScreen from './src/screens/post/PostListScreen';
 import BoardSearch from './src/screens/board/BoardSearch';
 import SearchResult from './src/screens/board/SearchResult';
+
+import MyPageFragment from './src/screens/fragments/MyPageFragment';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -179,6 +181,8 @@ const App = () => {
             headerTintColor: '#000000',
           }}
         />
+        {/* 마이페이지 */}
+        <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
       </Stack.Navigator>
     </NavigationContainer>
   );
