@@ -95,19 +95,22 @@ const HomeFragment = ({navigation}: Props) => {
           <FlatList
             data={homeContents?.pinBoardDtos}
             renderItem={({item}) => (
-              <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>
-                  {item.boardName.slice(0, numOfBoardTitle)}
-                </Text>
-                <Text style={styles.postTitleSummary}>
-                  {item.postContent.slice(0, 43 - numOfBoardTitle)}
-                </Text>
-                {item.todayNewPost ? (
-                  <Text style={styles.postNewLabel}>N</Text>
-                ) : (
-                  <></>
-                )}
-              </View>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('PostListScreen')}>
+                <View style={styles.postSummaryContainer}>
+                  <Text style={styles.postSummary}>
+                    {item.boardName.slice(0, numOfBoardTitle)}
+                  </Text>
+                  <Text style={styles.postTitleSummary}>
+                    {item.postContent.slice(0, 43 - numOfBoardTitle)}
+                  </Text>
+                  {item.todayNewPost ? (
+                    <Text style={styles.postNewLabel}>N</Text>
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableWithoutFeedback>
             )}
           />
 
