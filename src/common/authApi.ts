@@ -6,6 +6,7 @@ import Major from "../classes/Major";
 import SignUpResponseDto from "../classes/SignUpResponseDto";
 import SignInRequestDto from "../classes/SignInRequestDto";
 import VerificationRequestDto from "../classes/VerificationRequestDto";
+import Response from "../classes/Response";
 
 export const checkEmailConflict = async (studentId: string) => {
     try {
@@ -34,19 +35,19 @@ export const checkNicknameConflict = async (nickname: string) => {
 }
 
 export const getMajorList = async () => {
-    const response = await client.get<AxiosResponse<Major[]>>("/auth/departments");
+    const response = await client.get<Response<Major[]>>("/auth/departments");
     return response.data.data;
 }
 export const register = async (signUpRequestDto: SignUpRequestDto) => {
     try {
-        const response = await client.post<AxiosResponse<SignUpResponseDto>>("/auth/signup", signUpRequestDto);
+        const response = await client.post<Response<SignUpResponseDto>>("/auth/signup", signUpRequestDto);
         console.log(response.data.data);
         await AsyncStorage.setItem("accessToken", response.data.data.tokenDto.accessToken);
         await AsyncStorage.setItem("refreshToken", response.data.data.tokenDto.refreshToken);
         return true;
     }
     catch (e) {
-        console.log(e);
+        console.log("여기는 register 함수", e);
         return false;
     }
 }
@@ -63,7 +64,7 @@ export const sendEmail = async () => {
         return true;
     }
     catch (e) {
-        console.log(e);
+        console.log("여기는 sendEmail 함수", e);
         return false;
     }
 }
@@ -79,23 +80,34 @@ export const checkAuthNumber = async (code: string) => {
         });
         return 0;
     }
-    catch (e) {
-        console.log(e.response.data);
-        console.log(e.response.data.data.attemptCount);
+    catch (e: any) {
+        console.log("여기는 checkAuthNumber 함수", e.response.data);
+        console.log("여기는 checkAuthNumber 함수", e.response.data.data.attemptCount);
         return e.response.data.data.attemptCount;
     }
 }
 
 export const login = async (signInRequestDto: SignInRequestDto) => {
     try {
-        const response = await client.post<AxiosResponse<SignUpResponseDto>>("/auth/signin", signInRequestDto);
+        const response = await client.post<Response<SignUpResponseDto>>("/auth/signin", signInRequestDto);
         console.log(response.data.data);
         await AsyncStorage.setItem("accessToken", response.data.data.tokenDto.accessToken);
         await AsyncStorage.setItem("refreshToken", response.data.data.tokenDto.refreshToken);
         return true;
     }
-    catch(e) {
-        console.log(e.response.status);
+    catch(e: any) {
+        console.log("여기는 login 함수", e.response.status);
+        return false;
+    }
+}
+
+export const logout = async () => {
+    try {
+        await AsyncStorage.setItem("accessToken", "");
+        return true;
+    }
+    catch (e: any) {
+        console.log("여기는 logout 함수", e.response);
         return false;
     }
 }

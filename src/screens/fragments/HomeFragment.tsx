@@ -22,11 +22,14 @@ import getHomeContents from '../../common/homeApi';
 
 type RootStackParamList = {
   PostListScreen: undefined;
+  MyPageFragment: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [homeContents, setHomeContents] = useState<Home>();
+
+  const numOfBoardTitle = 19; // 고정 게시판 내용
 
   useEffect(() => {
     async function getContents() {
@@ -60,20 +63,23 @@ const HomeFragment = ({navigation}: Props) => {
               {` 님, 안녕하세요!`}
             </Text>
           </View>
-          <View style={styles.newsContainer}>
-            <NewsCheckIcon />
-            <View style={{paddingRight: 90}}>
-              <Text style={styles.newsTitle}>
-                인증 만료일이 {homeContents?.expiredAt}일 남았어요.
-              </Text>
-              <Text style={styles.newsMore}>인증하러 가기</Text>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('MyPageFragment')}>
+            <View style={styles.newsContainer}>
+              <NewsCheckIcon />
+              <View style={{paddingRight: 90}}>
+                <Text style={styles.newsTitle}>
+                  인증 만료일이 {homeContents?.expiredAt}일 남았어요.
+                </Text>
+                <Text style={styles.newsMore}>인증하러 가기</Text>
+              </View>
+              <RightArrowBold />
             </View>
-            <RightArrowBold />
-          </View>
+          </TouchableWithoutFeedback>
         </View>
         <View
           style={{
-            marginLeft: (Dimensions.get('window').width / 25) * 2,
+            marginHorizontal: (Dimensions.get('window').width / 25) * 2,
             marginTop: 44,
             marginBottom: 8,
           }}>
@@ -90,9 +96,17 @@ const HomeFragment = ({navigation}: Props) => {
             data={homeContents?.pinBoardDtos}
             renderItem={({item}) => (
               <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>{item.boardName}</Text>
-                <Text style={styles.postTitleSummary}>{item.postContent}</Text>
-                <Text style={styles.postNewLabel}>N</Text>
+                <Text style={styles.postSummary}>
+                  {item.boardName.slice(0, numOfBoardTitle)}
+                </Text>
+                <Text style={styles.postTitleSummary}>
+                  {item.postContent.slice(0, 43 - numOfBoardTitle)}
+                </Text>
+                {item.todayNewPost ? (
+                  <Text style={styles.postNewLabel}>N</Text>
+                ) : (
+                  <></>
+                )}
               </View>
             )}
           />
@@ -115,7 +129,9 @@ const HomeFragment = ({navigation}: Props) => {
             data={homeContents?.hotBoardDtos}
             renderItem={({item}) => (
               <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>{item.postContent}</Text>
+                <Text style={styles.postSummary}>
+                  {item.postContent.slice(0, 27)}
+                </Text>
                 <EmptyHeart />
                 <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
                 <EmptyComment />
@@ -179,12 +195,12 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   newsTitle: {
-    fontSize: 13,
+    fontSize: 15,
     marginLeft: 10,
   },
   newsMore: {
     color: '#707A82',
-    fontSize: 9,
+    fontSize: 13,
     fontWeight: 'bold',
     marginLeft: 10,
     marginTop: 4,
