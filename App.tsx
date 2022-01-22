@@ -30,6 +30,8 @@ import SearchResult from './src/screens/board/SearchResult';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeScreenNavigationContainer } from 'react-native-screens';
 
+
+import MyPageFragment from './src/screens/fragments/MyPageFragment';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -369,6 +371,8 @@ const App = () => {
               headerTintColor: '#000000',
             }}
           />
+        {/* 마이페이지 */}
+        <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
         </Stack.Navigator>)
       }
     </NavigationContainer>}
