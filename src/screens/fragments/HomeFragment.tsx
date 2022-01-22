@@ -98,7 +98,11 @@ const HomeFragment = ({navigation}: Props) => {
                 <Text style={styles.postTitleSummary}>
                   {item.postContent.slice(0, 43 - numOfBoardTitle)}
                 </Text>
-                <Text style={styles.postNewLabel}>N</Text>
+                {item.todayNewPost ? (
+                  <Text style={styles.postNewLabel}>N</Text>
+                ) : (
+                  <></>
+                )}
               </View>
             )}
           />
