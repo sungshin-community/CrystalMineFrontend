@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
-
+import WaterMark from './src/components/WaterMark';
 //screens
 import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
@@ -392,6 +392,7 @@ const App = () => {
           )}
         </NavigationContainer>
       )}
+      <WaterMark></WaterMark>
     </>
   );
 };
