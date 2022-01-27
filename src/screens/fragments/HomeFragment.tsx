@@ -145,16 +145,18 @@ const HomeFragment = ({navigation}: Props) => {
         <FlatList
           data={homeContents?.hotBoardDtos}
           renderItem={({item}) => (
-            <View style={{justifyContent: 'flex-end'}}>
-              <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>
-                  {item.postContent.slice(0, 27)}
-                </Text>
-                <EmptyHeart />
-                <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-                <EmptyComment />
-                <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
-              </View>
+            <View
+              style={[
+                styles.postSummaryContainer,
+                {justifyContent: 'flex-end'},
+              ]}>
+              <Text style={styles.postSummary}>
+                {item.postContent.slice(0, 33)}
+              </Text>
+              <EmptyHeart />
+              <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+              <EmptyComment />
+              <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
             </View>
           )}
         />
@@ -185,14 +187,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   postSummary: {
     fontSize: 13,
     marginRight: 16,
   },
   postTitleSummary: {
-    color: '#C4C4C4',
+    color: '#6E7882',
     fontSize: 13,
     marginRight: 12,
   },
@@ -200,15 +201,18 @@ const styles = StyleSheet.create({
     color: '#FF6060',
     fontSize: 12,
     fontWeight: 'bold',
+    width: 10,
   },
   HOTpostLike: {
     fontSize: 9,
     marginLeft: 5,
     marginRight: 5,
+    width: 22,
   },
   HOTpostComment: {
     fontSize: 9,
     marginLeft: 5,
+    width: 22,
   },
   newsContainer: {
     flex: 1,
