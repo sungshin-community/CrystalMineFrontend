@@ -1,48 +1,11 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Animated,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {Text, View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyComment from '../../resources/icon/EmptyComment';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
-import Dots from '../../resources/icon/Dots';
+import ThreeDots from './ThreeDots';
 
-interface ImageComponentProps {
-  height: Animated.Value;
-  width: Animated.Value;
-  opacity: Animated.Value;
-  uri: string;
-}
 function Comment() {
-  const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
-
-  const handleAnimation = () => {
-    Animated.timing(rotateAnimation, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(() => {
-      rotateAnimation.setValue(0);
-    });
-    setRotateAnimation(rotateAnimation);
-  };
-
-  const interpolateRotating = rotateAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '90deg'],
-  });
-
-  const animatedStyle = {
-    transform: [
-      {
-        rotate: interpolateRotating,
-      },
-    ],
-  };
   return (
     <>
       <View style={{paddingHorizontal: 24}}>
@@ -63,11 +26,7 @@ function Comment() {
               수정
             </Text>
           </View>
-          <TouchableWithoutFeedback onPress={async () => handleAnimation()}>
-            <Animated.View style={animatedStyle}>
-              <Dots />
-            </Animated.View>
-          </TouchableWithoutFeedback>
+          <ThreeDots />
         </View>
         <Text>힘내자 아프지말고</Text>
         <View
