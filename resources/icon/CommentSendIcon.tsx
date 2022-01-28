@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Circle, Path} from 'react-native-svg';
 
-const RightArrow = (props: any) => (
+const CommentSendIcon = (props: any) => (
   <Svg
     width={34}
     height={34}
@@ -17,4 +17,4 @@ const RightArrow = (props: any) => (
   </Svg>
 );
 
-export default RightArrow;
+export default CommentSendIcon;
