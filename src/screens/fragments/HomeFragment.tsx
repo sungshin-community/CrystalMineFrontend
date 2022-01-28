@@ -13,7 +13,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {PurpleRoundButton} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NewsCheckIcon from '../../../resources/icon/NewsCheckIcon';
+import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
@@ -64,34 +64,86 @@ const HomeFragment = ({navigation}: Props) => {
           style={{
             borderRadius: 20,
           }}>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('MyPageFragment')}>
-            <View style={styles.newsContainer}>
-              <NewsCheckIcon />
-              <View style={{paddingRight: 90}}>
-                <Text style={styles.newsTitle}>
-                  인증 만료일이 {homeContents?.expiredAt}일 남았어요.
-                </Text>
-                <Text style={styles.newsMore}>인증하러 가기</Text>
+          <View
+            style={{
+              borderRadius: 20,
+              marginHorizontal: 24,
+              paddingHorizontal: 18,
+              backgroundColor: '#fff',
+            }}>
+            {/* 인증 만료기간 알림 */}
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('MyPageFragment')}>
+              <View style={styles.newsContainer}>
+                <View style={{flexDirection: 'row'}}>
+                  <NewsExclamationMarkIcon />
+                  <View>
+                    <Text style={styles.newsTitle}>
+                      인증 만료일이 {homeContents?.expiredAt}일 남았어요.
+                    </Text>
+                    <Text style={styles.newsMore}>인증하러 가기</Text>
+                  </View>
+                </View>
+                <View>
+                  <RightArrowBold />
+                </View>
               </View>
-              <RightArrowBold />
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={{borderColor: '#F6F6F6', borderWidth: 1}}></View>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('MyPageFragment')}>
-          <View style={styles.newsContainer}>
-            <NewsCheckIcon />
-            <View style={{paddingRight: 90}}>
-              <Text style={styles.newsTitle}>
-                인증 만료일이 {homeContents?.expiredAt}일 남았어요.
-              </Text>
-              <Text style={styles.newsMore}>인증하러 가기</Text>
-            </View>
-            <RightArrowBold />
+            </TouchableWithoutFeedback>
+            {/* 인증 만료 알림 */}
+            <View
+              style={{
+                borderBottomColor: '#F0F0F0',
+                borderBottomWidth: 1,
+              }}
+            />
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('MyPageFragment')}>
+              <View style={styles.newsContainer}>
+                <View style={{flexDirection: 'row'}}>
+                  <NewsExclamationMarkIcon />
+                  <View>
+                    <Text style={styles.newsTitle}>
+                      정회원 인증이 필요해요.
+                    </Text>
+                    <Text style={styles.newsMore}>인증하러 가기</Text>
+                  </View>
+                </View>
+                <View>
+                  <RightArrowBold />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+            {/* 블라인드 알림 */}
+            <View
+              style={{
+                borderBottomColor: '#F0F0F0',
+                borderBottomWidth: 1,
+              }}
+            />
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('MyPageFragment')}>
+              <View style={styles.newsContainer}>
+                <View style={{flexDirection: 'row'}}>
+                  <NewsExclamationMarkIcon />
+                  <View>
+                    <Text style={styles.newsTitle}>
+                      작성한 글이 블라인드 되었어요.
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={styles.newsMore}>
+                      글미리보기글미리보기글미리보기글미리보기글미리보기글미리보기글미리보기
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <RightArrowBold />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </View>
       <View
         style={{
@@ -115,8 +167,11 @@ const HomeFragment = ({navigation}: Props) => {
                 <Text style={styles.postSummary}>
                   {item.boardName.slice(0, numOfBoardTitle)}
                 </Text>
-                <Text style={styles.postTitleSummary}>
-                  {item.postContent.slice(0, 43 - numOfBoardTitle)}
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={styles.postTitleSummary}>
+                  {item.postContent.slice(0, 60 - numOfBoardTitle)}
                 </Text>
                 {item.todayNewPost ? (
                   <Text style={styles.postNewLabel}>N</Text>
@@ -137,27 +192,37 @@ const HomeFragment = ({navigation}: Props) => {
             marginTop: 24,
           }}
         />
-        <View style={styles.rowContainer}>
-          <Text style={styles.boardTitle}>HOT 게시판</Text>
-          <Text style={styles.more}>더보기</Text>
-        </View>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('PostListScreen')}>
+          <View style={styles.rowContainer}>
+            <Text style={styles.boardTitle}>HOT 게시판</Text>
+            <Text style={styles.more}>더보기</Text>
+          </View>
+        </TouchableWithoutFeedback>
 
         <FlatList
           data={homeContents?.hotBoardDtos}
           renderItem={({item}) => (
-            <View
-              style={[
-                styles.postSummaryContainer,
-                {justifyContent: 'flex-end'},
-              ]}>
-              <Text style={styles.postSummary}>
-                {item.postContent.slice(0, 33)}
-              </Text>
-              <EmptyHeart />
-              <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-              <EmptyComment />
-              <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
-            </View>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('PostScreen')}>
+              <View style={styles.postSummaryContainer}>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={[
+                    styles.postSummary,
+                    {width: Dimensions.get('window').width - 150},
+                  ]}>
+                  {item.postContent.slice(0, 30)}
+                </Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <EmptyHeart />
+                  <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+                  <EmptyComment />
+                  <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
           )}
         />
       </View>
@@ -185,8 +250,8 @@ const styles = StyleSheet.create({
   },
   postSummaryContainer: {
     marginVertical: 8,
-    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   postSummary: {
     fontSize: 13,
@@ -215,13 +280,13 @@ const styles = StyleSheet.create({
     width: 22,
   },
   newsContainer: {
-    flex: 1,
+    flexWrap: 'wrap',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    justifyContent: 'space-between',
     paddingVertical: 16,
     backgroundColor: '#FFF',
-    marginHorizontal: 24,
   },
   newsTitle: {
     fontSize: 15,
@@ -232,5 +297,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 10,
     marginTop: 4,
+    width: Dimensions.get('window').width - 160,
   },
 });
