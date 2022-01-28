@@ -14,16 +14,22 @@ function PostList({post}: any) {
           <ProfileImage />
           <Text style={styles.name}>{post.nickname}</Text>
         </View>
-        <Text style={[styles.text, styles.timeStamp]}>1분 전</Text>
+        <Text style={[styles.textSmall, styles.timeStamp]}>1분 전</Text>
       </View>
       <Text style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
         {post.isLike ? <PostLike /> : <PostUnlike />}
-        <Text style={[styles.text, styles.iconCount]}>{post.likeCount}</Text>
+        <Text style={[styles.textSmall, styles.iconCount]}>
+          {post.likeCount}
+        </Text>
         <PostImage />
-        <Text style={[styles.text, styles.iconCount]}>{post.imageCount}</Text>
+        <Text style={[styles.textSmall, styles.iconCount]}>
+          {post.imageCount}
+        </Text>
         <PostComment />
-        <Text style={[styles.text, styles.iconCount]}>{post.commentCount}</Text>
+        <Text style={[styles.textSmall, styles.iconCount]}>
+          {post.commentCount}
+        </Text>
       </View>
     </View>
   );
@@ -47,10 +53,14 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingLeft: 8,
     fontFamily: 'SpoqaHanSansNeo-Medium',
-    fontSize: 16,
+    fontSize: 15,
   },
   text: {
-    fontSize: 12,
+    fontSize: 15,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+  },
+  textSmall: {
+    fontSize: 13,
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   timeStamp: {
@@ -59,7 +69,7 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 14,
-    lineHeight: 18,
+    lineHeight: 22.5,
   },
   icon: {
     flexDirection: 'row',

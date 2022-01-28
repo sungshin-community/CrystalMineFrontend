@@ -12,6 +12,7 @@ import {
 import CancelButton from '../../../resources/icon/Cancel';
 import SearchInput from '../../components/SearchInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {fontBold, fontRegular} from '../../common/font';
 
 type RootStackParamList = {
   SearchResult: undefined;
@@ -77,8 +78,8 @@ function BoardSearch({navigation}: Props) {
           startSearching={startSearching}
         />
         <View style={{padding: 32}}>
-          <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
-            <Text style={styles.title}>최근 검색어</Text>
+          <View style={[styles.rowSpaceBetween, {marginBottom: 14}]}>
+            <Text style={[fontBold, styles.title]}>최근 검색어</Text>
             <Pressable onPress={totalDelete}>
               <Text style={styles.delete}>전체 삭제</Text>
             </Pressable>
@@ -89,8 +90,8 @@ function BoardSearch({navigation}: Props) {
             wordList.map((word, index) => (
               <View
                 key={index}
-                style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
-                <Text>{word}</Text>
+                style={[styles.rowSpaceBetween, {marginVertical: 9}]}>
+                <Text style={[fontRegular, styles.text]}>{word}</Text>
                 <Pressable onPress={() => deleteRecentWord(index)}>
                   <CancelButton />
                 </Pressable>
@@ -113,11 +114,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  title: {fontFamily: 'SpoqaHanSansNeo-Medium', fontSize: 15},
+  title: {fontSize: 17},
+  text: {fontSize: 15},
   delete: {
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    color: '#BDBDBD',
+    color: '#A055FF',
+    textDecorationLine: 'underline',
   },
 });
 
