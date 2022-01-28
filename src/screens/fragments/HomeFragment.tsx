@@ -72,47 +72,60 @@ const HomeFragment = ({navigation}: Props) => {
               backgroundColor: '#fff',
             }}>
             {/* 인증 만료기간 알림 */}
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('MyPageFragment')}>
-              <View style={styles.newsContainer}>
-                <View style={{flexDirection: 'row'}}>
-                  <NewsExclamationMarkIcon />
-                  <View>
-                    <Text style={styles.newsTitle}>
-                      인증 만료일이 {homeContents?.expiredAt}일 남았어요.
-                    </Text>
-                    <Text style={styles.newsMore}>인증하러 가기</Text>
+            {homeContents?.expiredAt !== 0 ? (
+              <>
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('MyPageFragment')}>
+                  <View style={styles.newsContainer}>
+                    <View style={{flexDirection: 'row'}}>
+                      <NewsExclamationMarkIcon />
+                      <View>
+                        <Text style={styles.newsTitle}>
+                          인증 만료일이 {homeContents?.expiredAt}일 남았어요.
+                        </Text>
+                        <Text style={styles.newsMore}>인증하러 가기</Text>
+                      </View>
+                    </View>
+                    <View>
+                      <RightArrowBold />
+                    </View>
                   </View>
-                </View>
-                <View>
-                  <RightArrowBold />
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+              </>
+            ) : (
+              <></>
+            )}
             {/* 인증 만료 알림 */}
-            <View
-              style={{
-                borderBottomColor: '#F0F0F0',
-                borderBottomWidth: 1,
-              }}
-            />
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('MyPageFragment')}>
-              <View style={styles.newsContainer}>
-                <View style={{flexDirection: 'row'}}>
-                  <NewsExclamationMarkIcon />
-                  <View>
-                    <Text style={styles.newsTitle}>
-                      정회원 인증이 필요해요.
-                    </Text>
-                    <Text style={styles.newsMore}>인증하러 가기</Text>
+            {homeContents?.expiredAt === 0 ? (
+              <>
+                <View
+                  style={{
+                    borderBottomColor: '#F0F0F0',
+                    borderBottomWidth: 1,
+                  }}
+                />
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('MyPageFragment')}>
+                  <View style={styles.newsContainer}>
+                    <View style={{flexDirection: 'row'}}>
+                      <NewsExclamationMarkIcon />
+                      <View>
+                        <Text style={styles.newsTitle}>
+                          정회원 인증이 필요해요.
+                        </Text>
+                        <Text style={styles.newsMore}>인증하러 가기</Text>
+                      </View>
+                    </View>
+                    <View>
+                      <RightArrowBold />
+                    </View>
                   </View>
-                </View>
-                <View>
-                  <RightArrowBold />
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+              </>
+            ) : (
+              <></>
+            )}
+
             {/* 블라인드 알림 */}
             <View
               style={{
