@@ -157,31 +157,43 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
         </TouchableWithoutFeedback>
         {/* 게시판 글 목록 */}
-
-        <FlatList
-          data={homeContents?.pinBoardDtos}
-          renderItem={({item}) => (
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('PostScreen')}>
-              <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>
-                  {item.boardName.slice(0, numOfBoardTitle)}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={styles.postTitleSummary}>
-                  {item.postContent.slice(0, 60 - numOfBoardTitle)}
-                </Text>
-                {item.todayNewPost ? (
-                  <Text style={styles.postNewLabel}>N</Text>
-                ) : (
-                  <></>
-                )}
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-        />
+        {homeContents?.pinBoardDtos.length !== 0 ? (
+          <FlatList
+            data={homeContents?.pinBoardDtos}
+            renderItem={({item}) => (
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('PostScreen')}>
+                <View style={styles.postSummaryContainer}>
+                  <Text style={styles.postSummary}>
+                    {item.boardName.slice(0, numOfBoardTitle)}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={styles.postTitleSummary}>
+                    {item.postContent.slice(0, 60 - numOfBoardTitle)}
+                  </Text>
+                  {item.todayNewPost ? (
+                    <Text style={styles.postNewLabel}>N</Text>
+                  ) : (
+                    <></>
+                  )}
+                </View>
+              </TouchableWithoutFeedback>
+            )}
+          />
+        ) : (
+          <View
+            style={{
+              backgroundColor: '#F7F7F7',
+              paddingVertical: 27,
+              borderRadius: 20,
+            }}>
+            <Text style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
+              정회원 인증 후 확인하실 수 있습니다.
+            </Text>
+          </View>
+        )}
 
         {/* 게시판 글 목록 */}
         <View
@@ -199,32 +211,46 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={styles.more}>더보기</Text>
           </View>
         </TouchableWithoutFeedback>
-
-        <FlatList
-          data={homeContents?.hotBoardDtos}
-          renderItem={({item}) => (
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('PostScreen')}>
-              <View style={styles.postSummaryContainer}>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={[
-                    styles.postSummary,
-                    {width: Dimensions.get('window').width - 150},
-                  ]}>
-                  {item.postContent.slice(0, 30)}
-                </Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <EmptyHeart />
-                  <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-                  <EmptyComment />
-                  <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
+        {homeContents?.hotBoardDtos.length !== 0 ? (
+          <FlatList
+            data={homeContents?.hotBoardDtos}
+            renderItem={({item}) => (
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('PostScreen')}>
+                <View style={styles.postSummaryContainer}>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={[
+                      styles.postSummary,
+                      {width: Dimensions.get('window').width - 150},
+                    ]}>
+                    {item.postContent.slice(0, 30)}
+                  </Text>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <EmptyHeart />
+                    <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+                    <EmptyComment />
+                    <Text style={styles.HOTpostComment}>
+                      {item.commentCount}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-        />
+              </TouchableWithoutFeedback>
+            )}
+          />
+        ) : (
+          <View
+            style={{
+              backgroundColor: '#F7F7F7',
+              paddingVertical: 27,
+              borderRadius: 20,
+            }}>
+            <Text style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
+              정회원 인증 후 확인하실 수 있습니다.
+            </Text>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
