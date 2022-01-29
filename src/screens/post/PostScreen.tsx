@@ -18,6 +18,7 @@ const PostScreen = () => {
   return (
     <>
       <KeyboardAvoidingView
+        keyboardVerticalOffset={50}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>

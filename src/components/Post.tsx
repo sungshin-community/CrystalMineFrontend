@@ -4,15 +4,19 @@ import styled from 'styled-components';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
+import ThreeDots from './ThreeDots';
 function Post() {
   return (
     <>
       <View style={styles.postContainer}>
         <View style={styles.postHeader}>
+          <View style={{flexDirection:'row'}}>
           <ProfileImage></ProfileImage>
           <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
             수정
-          </Text>
+            </Text>
+            </View>
+          <ThreeDots/>
         </View>
         <View style={styles.postBody}>
           <Text>
@@ -50,6 +54,7 @@ const styles = StyleSheet.create({
   },
   postHeader: {
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   postBody: {
     marginTop: 8,

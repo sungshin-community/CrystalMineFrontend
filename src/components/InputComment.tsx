@@ -14,7 +14,7 @@ import {
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
 function InputComment() {
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{flexDirection: 'row', paddingVertical: 5}}>
       <View
         style={{
           paddingHorizontal: 12,
