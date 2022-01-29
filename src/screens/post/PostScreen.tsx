@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import Post from '../../components/Post';
-import Comment from '../../components/Comment';
+import Comment, { CommentReply } from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 
 const PostScreen = () => {
@@ -25,8 +25,7 @@ const PostScreen = () => {
           <View style={{flex: 1}}>
             <Comment></Comment>
             <Comment></Comment>
-            <Comment></Comment>
-            <Comment></Comment>
+           <CommentReply></CommentReply>
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
