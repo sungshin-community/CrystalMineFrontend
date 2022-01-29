@@ -11,7 +11,7 @@ import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyComment from '../../resources/icon/EmptyComment';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import ThreeDots from './ThreeDots';
-
+import Dots from '../../resources/icon/Dots';
 const Comment = ()=> {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
 
