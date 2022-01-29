@@ -37,7 +37,7 @@ function PostList({post}: any) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
+    marginTop: 20,
     paddingHorizontal: 24,
     borderBottomColor: '#f4f4f4',
     borderStyle: 'solid',
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 22,
+    paddingBottom: 26,
   },
   iconCount: {
     marginLeft: 5,

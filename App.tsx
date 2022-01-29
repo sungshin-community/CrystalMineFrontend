@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar, Platform, Pressable, Text} from 'react-native';
 import WaterMark from './src/components/WaterMark';
 //screens
 import SplashHome from './src/screens/SplashHome';
@@ -31,6 +31,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeScreenNavigationContainer} from 'react-native-screens';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
+import SearchInput from './src/components/SearchInput';
+import SearchCancelButton from './src/components/SearchCancelButton';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -206,12 +208,12 @@ const App = () => {
               <Stack.Screen
                 name="BoardSearch"
                 component={BoardSearch}
-                options={{title: '게시판 검색', headerShown: false}}
+                options={{}}
               />
               <Stack.Screen
                 name="SearchResult"
                 component={SearchResult}
-                options={{title: '전체 검색 결과'}}
+                options={{}}
               />
               <Stack.Screen
                 name="PostListScreen"
@@ -361,12 +363,12 @@ const App = () => {
               <Stack.Screen
                 name="BoardSearch"
                 component={BoardSearch}
-                options={{title: '게시판 검색', headerShown: false}}
+                options={{}}
               />
               <Stack.Screen
                 name="SearchResult"
                 component={SearchResult}
-                options={{title: '전체 검색 결과'}}
+                options={{}}
               />
               <Stack.Screen
                 name="PostListScreen"
