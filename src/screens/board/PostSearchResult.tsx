@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  FlatList,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
@@ -17,6 +18,10 @@ function PostSearchResult() {
       <SafeAreaView>
         <ScrollView>
           <View>
+            {/* <FlatList
+              data={dummyData}
+              renderItem={({post}: Post) => <PostList post={post} />}
+            /> */}
             {dummyData.map((post: Post, index: number) => (
               <PostList key={index} post={post} />
             ))}

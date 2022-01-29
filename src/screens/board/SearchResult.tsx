@@ -1,18 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import PostSearchResult from './PostSearchResult';
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Dimensions} from 'react-native';
 import BoardSearchResult from './BoardSearchResult';
 import TagSearchResult from './TagSearchResult';
-import SearchIcon from '../../../resources/icon/SearchIcon';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import SearchInput from '../../components/SearchInput';
+import SearchCancelButton from '../../components/SearchCancelButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RootStackParamList = {
   BoardSearch: undefined;
@@ -20,7 +15,52 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
 
-function SearchResult({navigation}: Props) {
+function SearchResult({navigation, route}: Props) {
+  const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
+  const [wordList, setWordList] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function loadRecentSearch() {
+      try {
+        const getRecentSearch = await AsyncStorage.getItem('recentSearch');
+        const recentSearch = JSON.parse(getRecentSearch);
+        setWordList(recentSearch);
+      } catch (error) {
+        console.error('failed to load recent search', error);
+      }
+    }
+    loadRecentSearch();
+  }, []);
+
+  useEffect(() => {
+    const startSearching = () => {
+      if (searchWord !== '') {
+        const newWordList = [searchWord].concat(wordList);
+        const duplicateFilter = [...new Set(newWordList)];
+        if (duplicateFilter.length === 6) {
+          duplicateFilter.pop();
+        }
+        setWordList(duplicateFilter);
+      }
+    };
+
+    navigation.setOptions({
+      headerTitle: (): React.ReactNode => (
+        <SearchInput
+          setSearchWord={setSearchWord}
+          startSearching={startSearching}
+          value={searchWord}
+        />
+      ),
+      headerRight: (): React.ReactNode => (
+        <SearchCancelButton
+          onPress={() => navigation.navigate('BoardSearch')}
+        />
+      ),
+      headerBackVisible: false,
+    });
+  }, [navigation, route, searchWord, wordList]);
+
   return (
     <Tab.Navigator
       initialRouteName="BoardSearch"
@@ -34,66 +74,27 @@ function SearchResult({navigation}: Props) {
           backgroundColor: '#A055FF',
           height: 8,
           width: 24,
+          bottom: -4,
           borderRadius: 10,
-          marginHorizontal: 60,
+          marginHorizontal: 53,
         },
-        tabBarShowLabel: false,
-        tabBarIcon: ({focused, color}) => (
-          <View style={styles.container}>
-            <TextInput
-              style={styles.input}
-              placeholder="전체 게시판에서 검색"
-              placeholderTextColor="#898989"
-              onFocus={() => navigation.navigate('BoardSearch')}
-            />
-            <Pressable style={styles.icon}>
-              <SearchIcon />
-            </Pressable>
-          </View>
-        ),
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontFamily: 'SpoqaHanSansNeo-Regular',
+          fontSize: 14,
+          marginTop: 14,
+          marginBottom: 6,
+        },
         tabBarActiveTintColor: '#000',
         tabBarInactiveTintColor: '#717171',
-      }}>
-      <Tab.Screen
-        name="PostSearchResult"
-        component={PostSearchResult}
-        options={{tabBarIcon: () => <Text>게시글</Text>}}
-      />
-      <Tab.Screen
-        name="BoardSearchResult"
-        component={BoardSearchResult}
-        options={{tabBarIcon: () => <Text>게시판</Text>}}
-      />
-      <Tab.Screen
-        name="TagSearchResult"
-        component={TagSearchResult}
-        options={{tabBarIcon: () => <Text>태그</Text>}}
-      />
+      }}
+      keyboardDismissMode="on-drag"
+      initialLayout={{width: Dimensions.get('window').width}}>
+      <Tab.Screen name="게시글" component={PostSearchResult} />
+      <Tab.Screen name="게시판 이름" component={BoardSearchResult} />
+      <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    marginHorizontal: 16,
-    alignItems: 'center',
-  },
-  input: {
-    backgroundColor: 'rgb(239, 239, 239)',
-    width: Dimensions.get('window').width - 32,
-    height: 44,
-    borderRadius: 20,
-    paddingLeft: 48,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    fontSize: 15,
-    marginTop: 19,
-  },
-  icon: {
-    position: 'absolute',
-    top: 30,
-    left: 19,
-  },
-});
 
 export default SearchResult;

@@ -12,15 +12,49 @@ import {
 import CancelButton from '../../../resources/icon/Cancel';
 import SearchInput from '../../components/SearchInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {fontBold, fontRegular} from '../../common/font';
+import SearchCancelButton from '../../components/SearchCancelButton';
 
 type RootStackParamList = {
-  SearchResult: undefined;
+  SearchResult: {searchWord: any};
+  BoardScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 function BoardSearch({navigation}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
   const [wordList, setWordList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const startSearching = () => {
+      if (searchWord !== '') {
+        const newWordList = [searchWord].concat(wordList);
+        const duplicateFilter = [...new Set(newWordList)];
+        if (duplicateFilter.length === 6) {
+          duplicateFilter.pop();
+        }
+        setWordList(duplicateFilter);
+        navigation.navigate('SearchResult', {
+          searchWord: searchWord,
+        });
+      }
+    };
+    navigation.setOptions({
+      headerTitle: (): React.ReactNode => (
+        <SearchInput
+          setSearchWord={setSearchWord}
+          startSearching={startSearching}
+          value={searchWord}
+        />
+      ),
+      headerRight: (): React.ReactNode => (
+        <SearchCancelButton
+          onPress={() => navigation.navigate('BoardScreen')}
+        />
+      ),
+      headerBackVisible: false,
+    });
+  }, [navigation, searchWord, wordList]);
 
   useEffect(() => {
     async function loadRecentSearch() {
@@ -55,30 +89,14 @@ function BoardSearch({navigation}: Props) {
     setWordList([]);
   };
 
-  const startSearching = () => {
-    if (searchWord !== '') {
-      const newWordList = [searchWord].concat(wordList);
-      const duplicateFilter = [...new Set(newWordList)];
-      if (duplicateFilter.length === 6) {
-        duplicateFilter.pop();
-      }
-      setWordList(duplicateFilter);
-      navigation.navigate('SearchResult');
-    }
-  };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView>
-        <SearchInput
-          setSearchWord={setSearchWord}
-          startSearching={startSearching}
-        />
         <View style={{padding: 32}}>
-          <View style={[styles.rowSpaceBetween, {marginBottom: 12}]}>
-            <Text style={styles.title}>최근 검색어</Text>
+          <View style={[styles.rowSpaceBetween, {marginBottom: 14}]}>
+            <Text style={[fontBold, styles.title]}>최근 검색어</Text>
             <Pressable onPress={totalDelete}>
               <Text style={styles.delete}>전체 삭제</Text>
             </Pressable>
@@ -89,9 +107,11 @@ function BoardSearch({navigation}: Props) {
             wordList.map((word, index) => (
               <View
                 key={index}
-                style={[styles.rowSpaceBetween, {marginVertical: 12}]}>
-                <Text>{word}</Text>
-                <Pressable onPress={() => deleteRecentWord(index)}>
+                style={[styles.rowSpaceBetween, {marginVertical: 9}]}>
+                <Text style={[fontRegular, styles.text]}>{word}</Text>
+                <Pressable
+                  style={{marginRight: 5}}
+                  onPress={() => deleteRecentWord(index)}>
                   <CancelButton />
                 </Pressable>
               </View>
@@ -107,17 +127,19 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   rowSpaceBetween: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  title: {fontFamily: 'SpoqaHanSansNeo-Medium', fontSize: 15},
+  title: {fontSize: 17},
+  text: {fontSize: 15},
   delete: {
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    color: '#BDBDBD',
+    color: '#A055FF',
+    textDecorationLine: 'underline',
   },
 });
 

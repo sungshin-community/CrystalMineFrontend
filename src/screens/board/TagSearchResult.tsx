@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
+import {fontRegular} from '../../common/font';
 
 function TagSearchResult() {
   return (
@@ -13,7 +14,10 @@ function TagSearchResult() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView>
-        <Text>TagSearchResult</Text>
+        <Text style={[fontRegular, styles.text]}>
+          현재 개발 중인 기능입니다.{'\n'}
+          추후 기능 개발 후 사용하실 수 있습니다.
+        </Text>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -21,9 +25,17 @@ function TagSearchResult() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#f6f6f6',
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 15,
+    lineHeight: 22.5,
+    color: '#6E7882',
+    textAlign: 'center',
+    paddingBottom: 150,
   },
 });
 
