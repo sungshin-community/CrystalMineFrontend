@@ -31,7 +31,8 @@ function InputComment() {
         ]}>
         <TextInput
           style={{fontSize: 13}}
-          placeholder="댓글을 입력해주세요"></TextInput>
+          placeholder="댓글을 입력해 주세요."
+          placeholderTextColor='#87919B'></TextInput>
         <CommentSendIcon />
       </View>
     </View>
