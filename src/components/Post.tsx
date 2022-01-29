@@ -5,6 +5,7 @@ import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
 import ThreeDots from './ThreeDots';
+import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 function Post() {
   return (
     <>
@@ -15,8 +16,11 @@ function Post() {
           <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
             수정
             </Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <NoScrap/>
+            <ThreeDots icons={<NoScrap/>}/>
             </View>
-          <ThreeDots/>
         </View>
         <View style={styles.postBody}>
           <Text>

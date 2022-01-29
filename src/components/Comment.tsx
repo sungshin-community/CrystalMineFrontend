@@ -138,7 +138,7 @@ export const CommentReply = () => {
           </View>
           <TouchableWithoutFeedback onPress={async () => handleAnimation()}>
             <Animated.View style={animatedStyle}>
-              <Dots />
+              <ThreeDots/>
             </Animated.View>
           </TouchableWithoutFeedback>
         </View>

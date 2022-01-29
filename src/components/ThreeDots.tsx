@@ -7,11 +7,10 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
+import { NoScrap } from '../../resources/icon/Scrap';
 
-function ThreeDots() {
+function ThreeDots(icons: any) {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
-  const [animatedValue, setAnimatedValue] = useState(new Animated.Value(0));
-  const [op, setOp] = useState(new Animated.Value(1));
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 0,
@@ -21,42 +20,27 @@ function ThreeDots() {
       rotateAnimation.setValue(1);
     });
   };
-  const handleAnimation2 = () => {
-    animatedValue.setValue(10);
-    Animated.decay(animatedValue, {
-      velocity: 0.05,
-      deceleration: 0.998,
-      useNativeDriver: true,
-    }).start();
-  };
+  
   const animatedStyle = {
     transform: [
       {
         rotate: rotateAnimation.interpolate({
           inputRange: [0, 1],
-          outputRange: ['90deg', '270deg'],
+          outputRange: ['0deg', '180deg'],
         }),
       },
     ],
   };
-  const moveStyle = {
-    transform: [
-      {
-        translateY: animatedValue,
-      },
-    ],
-  };
+
 
   return (
     <>
       <View style={{flexDirection: 'row'}}>
-        <Animated.View style={moveStyle}>
-          <Text>A</Text>
-        </Animated.View>
+        {icons[0]}
         <TouchableWithoutFeedback
           onPress={async () => {
             handleAnimation();
-            handleAnimation2();
+           
           }}>
           <Animated.View style={animatedStyle}>
             <Dots />
