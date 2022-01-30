@@ -23,7 +23,7 @@ function WaterMark() {
       <Text
         style={{
           fontSize: 30,
-          opacity: 0.7,
+          opacity: 0.007,
           width: '100%',
         }}>
         {uuid.repeat(100)}
