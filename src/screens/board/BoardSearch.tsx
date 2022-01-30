@@ -17,7 +17,7 @@ import SearchCancelButton from '../../components/SearchCancelButton';
 
 type RootStackParamList = {
   SearchResult: {searchWord: any};
-  BoardScreen: undefined;
+  GlobalNavbar: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -49,7 +49,7 @@ function BoardSearch({navigation}: Props) {
       ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
-          onPress={() => navigation.navigate('BoardScreen')}
+          onPress={() => navigation.navigate('GlobalNavbar')}
         />
       ),
       headerBackVisible: false,
