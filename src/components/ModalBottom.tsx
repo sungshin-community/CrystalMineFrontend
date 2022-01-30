@@ -7,6 +7,7 @@ import {
   Pressable,
   View,
   Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 interface Props {
@@ -37,6 +38,7 @@ export const ModalBottom = ({
           onRequestClose={() => {
             setModalVisible(!modalVisible);
           }}>
+          <Pressable style={{flex:1,backgroundColor:'transparent',}} onPress={()=>setModalVisible(!modalVisible)}/>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>{modalText}</Text>
