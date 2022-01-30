@@ -38,7 +38,7 @@ export const ModalBottom = ({
           onRequestClose={() => {
             setModalVisible(!modalVisible);
           }}>
-          <Pressable style={{flex:1,backgroundColor:'transparent',}} onPress={()=>setModalVisible(!modalVisible)}/>
+          <Pressable style={{flex:1,backgroundColor:'rgba(0, 0, 0, 0.5)',}} onPress={()=>setModalVisible(!modalVisible)}/>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>{modalText}</Text>
