@@ -18,13 +18,13 @@ function WaterMark() {
 
   return (
     <View
-      style={{flex: 1, position: 'absolute', zIndex: 1, elevation: 1}}
+      style={{flex: 1, position: 'absolute',left:0, right:0, top:0, zIndex: 1, elevation: 1}}
       pointerEvents={'none'}>
       <Text
         style={{
-          fontSize: 19,
-          opacity: 0.005,
-          width: '2%',
+          fontSize: 30,
+          opacity: 0.7,
+          width: '100%',
         }}>
         {uuid.repeat(100)}
       </Text>
