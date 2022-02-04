@@ -57,7 +57,6 @@ function SearchResult({navigation, route}: Props) {
           onPress={() => navigation.navigate('BoardSearch')}
         />
       ),
-      headerBackVisible: false,
     });
   }, [navigation, route, searchWord, wordList]);
 

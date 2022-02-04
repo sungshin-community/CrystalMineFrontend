@@ -31,8 +31,8 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {checkAuthNumber, sendEmail} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }

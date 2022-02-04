@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-function BackButton(props: any) {
+function BackButtonIcon(props: any) {
   return (
     <Svg
       width={11}
@@ -20,4 +20,4 @@ function BackButton(props: any) {
   );
 }
 
-export default BackButton;
+export default BackButtonIcon;

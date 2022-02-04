@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StatusBar,
@@ -21,9 +21,11 @@ import {login} from '../../common/authApi';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+import {CommonActions} from '@react-navigation/native';
+import BackButton from '../../components/BackButton';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
@@ -49,6 +51,16 @@ export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -108,6 +120,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 autoCapitalize="none"
                 returnKeyType="done"
                 selectionColor="#A055FF"
+                value={password}
               />
               {showPassword ? (
                 <PasswordShow onPress={letShowPassword} />
@@ -214,6 +227,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 autoCapitalize="none"
                 returnKeyType="done"
                 selectionColor="#A055FF"
+                value={password}
               />
               {showPassword ? (
                 <PasswordShow onPress={letShowPassword} />

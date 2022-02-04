@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -24,9 +24,11 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {checkEmailConflict} from '../../common/authApi';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
+  TermAgree: undefined;
   SignUpPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -70,6 +73,16 @@ export default function SignUpId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, []);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -134,6 +147,7 @@ export default function SignUpId({navigation}: Props) {
                 placeholder="아이디"
                 keyboardType="number-pad"
                 selectionColor="#A055FF"
+                value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
@@ -240,6 +254,7 @@ export default function SignUpId({navigation}: Props) {
                 placeholder="아이디"
                 keyboardType="number-pad"
                 selectionColor="#A055FF"
+                value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>

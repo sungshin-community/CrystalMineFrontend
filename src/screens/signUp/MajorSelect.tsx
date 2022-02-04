@@ -18,16 +18,14 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Background = styled.View`
-  background-color: ${(props: any) => props.background};
-`;
 
 const Container = styled.View`
   padding-bottom: 32px;
@@ -53,7 +51,6 @@ const styles = StyleSheet.create({
     color: '#797979',
     lineHeight: 25,
   },
-  blackText: {},
 });
 
 type RootStackParamList = {
@@ -66,6 +63,16 @@ export default function MajorSelect({navigation, route}: Props) {
   const [majorList, setMajorList] = useState<Major[]>([]);
   const [selectedMajorId, setSelectedMajorId] = useState<number>(-1);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     async function getList() {
