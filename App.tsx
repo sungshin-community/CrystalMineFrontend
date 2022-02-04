@@ -20,7 +20,7 @@ import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelec
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import BoardScreen from './src/screens/board/BoardScreen';
 import PostScreen from './src/screens/post/PostScreen';
-// import Home from './src/screens/GNB/Home';
+
 import GlobalNavbar from './src/components/GlobalNavbar';
 import CreateBoard from './src/screens/board/CreateBoard';
 
@@ -31,15 +31,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeScreenNavigationContainer} from 'react-native-screens';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
-import SearchInput from './src/components/SearchInput';
-import SearchCancelButton from './src/components/SearchCancelButton';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  {
-    Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+
+  if (Platform.OS === 'android') {
+    StatusBar.setBackgroundColor('white');
     // StatusBar.setTranslucent(true);
     StatusBar.setBarStyle('dark-content');
   }
@@ -72,14 +71,17 @@ const App = () => {
         <NavigationContainer>
           {!isLoggedIn ? (
             <Stack.Navigator
-              screenOptions={{headerShadowVisible: false}}
+              screenOptions={{
+                headerShadowVisible: false,
+                headerBackVisible: false,
+              }}
               initialRouteName="SplashHome">
-              {/* [F-1] */}
               <Stack.Screen
                 name="SplashHome"
                 component={SplashHome}
                 options={{title: ''}}
               />
+              {/* [F-1 회원가입] */}
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
@@ -89,25 +91,6 @@ const App = () => {
                   animation: 'slide_from_right',
                 }}
               />
-              <Stack.Screen
-                name="SignInId"
-                component={SignInId}
-                options={{
-                  title: '',
-                  headerTintColor: '#000000',
-                  animation: 'slide_from_right',
-                }}
-              />
-              <Stack.Screen
-                name="SignInPassword"
-                component={SignInPassword}
-                options={{
-                  title: '',
-                  headerTintColor: '#000000',
-                  animation: 'slide_from_right',
-                }}
-              />
-              {/* [F-2-1] 회원가입 */}
               <Stack.Screen
                 name="SignUpId"
                 component={SignUpId}
@@ -155,7 +138,6 @@ const App = () => {
                 options={{
                   title: '',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                   animation: 'slide_from_right',
                 }}
               />
@@ -165,7 +147,6 @@ const App = () => {
                 options={{
                   title: '',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                   animation: 'slide_from_right',
                 }}
               />
@@ -175,7 +156,25 @@ const App = () => {
                 options={{
                   title: '',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
+                  animation: 'slide_from_right',
+                }}
+              />
+              {/* [F-2 로그인] */}
+              <Stack.Screen
+                name="SignInId"
+                component={SignInId}
+                options={{
+                  title: '',
+                  headerTintColor: '#000000',
+                  animation: 'slide_from_right',
+                }}
+              />
+              <Stack.Screen
+                name="SignInPassword"
+                component={SignInPassword}
+                options={{
+                  title: '',
+                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -192,7 +191,6 @@ const App = () => {
                 options={{
                   title: '게시판',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                 }}
               />
               <Stack.Screen
@@ -202,7 +200,6 @@ const App = () => {
                   title: '게시판 생성',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                 }}
               />
               <Stack.Screen
@@ -227,20 +224,17 @@ const App = () => {
             </Stack.Navigator>
           ) : (
             <Stack.Navigator
-              screenOptions={{headerShadowVisible: false}}
+              screenOptions={{
+                headerShadowVisible: false,
+                headerBackVisible: false,
+              }}
               initialRouteName="GlobalNavBar">
-              {/* GNB */}
-              <Stack.Screen
-                name="GlobalNavbar"
-                component={GlobalNavbar}
-                options={{headerShown: false}}
-              />
-              {/* [F-1] */}
               <Stack.Screen
                 name="SplashHome"
                 component={SplashHome}
                 options={{title: ''}}
               />
+              {/* [F-1 회원가입] */}
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
@@ -250,25 +244,6 @@ const App = () => {
                   animation: 'slide_from_right',
                 }}
               />
-              <Stack.Screen
-                name="SignInId"
-                component={SignInId}
-                options={{
-                  title: '',
-                  headerTintColor: '#000000',
-                  animation: 'slide_from_right',
-                }}
-              />
-              <Stack.Screen
-                name="SignInPassword"
-                component={SignInPassword}
-                options={{
-                  title: '',
-                  headerTintColor: '#000000',
-                  animation: 'slide_from_right',
-                }}
-              />
-              {/* [F-2-1] 회원가입 */}
               <Stack.Screen
                 name="SignUpId"
                 component={SignUpId}
@@ -316,7 +291,6 @@ const App = () => {
                 options={{
                   title: '',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                   animation: 'slide_from_right',
                 }}
               />
@@ -326,7 +300,6 @@ const App = () => {
                 options={{
                   title: '',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                   animation: 'slide_from_right',
                 }}
               />
@@ -336,9 +309,33 @@ const App = () => {
                 options={{
                   title: '',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                   animation: 'slide_from_right',
                 }}
+              />
+              {/* [F-2 로그인] */}
+              <Stack.Screen
+                name="SignInId"
+                component={SignInId}
+                options={{
+                  title: '',
+                  headerTintColor: '#000000',
+                  animation: 'slide_from_right',
+                }}
+              />
+              <Stack.Screen
+                name="SignInPassword"
+                component={SignInPassword}
+                options={{
+                  title: '',
+                  headerTintColor: '#000000',
+                  animation: 'slide_from_right',
+                }}
+              />
+              {/* GNB */}
+              <Stack.Screen
+                name="GlobalNavbar"
+                component={GlobalNavbar}
+                options={{headerShown: false}}
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen
@@ -347,7 +344,6 @@ const App = () => {
                 options={{
                   title: '게시판',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                 }}
               />
               <Stack.Screen
@@ -357,7 +353,6 @@ const App = () => {
                   title: '게시판 생성',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
-                  headerBackVisible: false,
                 }}
               />
               <Stack.Screen
