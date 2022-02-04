@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -23,9 +23,11 @@ import {
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict} from '../../common/authApi';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
@@ -62,6 +64,17 @@ export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
+
   const onInputFocus = () => {
     setIsFocused(true);
   };
@@ -117,6 +130,7 @@ export default function SignUpNickname({navigation, route}: Props) {
               autoCorrect={false}
               returnKeyType="done"
               selectionColor="#A055FF"
+              value={nickname}
             />
           </MiddleInputContainerStyle>
           {isDuplicate && (
@@ -219,6 +233,7 @@ export default function SignUpNickname({navigation, route}: Props) {
               autoCorrect={false}
               returnKeyType="done"
               selectionColor="#A055FF"
+              value={nickname}
             />
           </MiddleInputContainerStyle>
           {isDuplicate && (

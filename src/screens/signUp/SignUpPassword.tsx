@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 import {
@@ -23,9 +23,11 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
@@ -57,6 +59,16 @@ export default function SignUpPassword({navigation, route}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -134,6 +146,7 @@ export default function SignUpPassword({navigation, route}: Props) {
               autoCapitalize="none"
               returnKeyType="done"
               selectionColor="#A055FF"
+              value={password}
             />
             {showPassword ? (
               <PasswordShow onPress={letShowPassword} />
@@ -229,6 +242,7 @@ export default function SignUpPassword({navigation, route}: Props) {
               autoCapitalize="none"
               returnKeyType="done"
               selectionColor="#A055FF"
+              value={password}
             />
             {showPassword ? (
               <PasswordShow onPress={letShowPassword} />

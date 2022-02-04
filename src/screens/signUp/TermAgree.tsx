@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   ScrollView,
@@ -26,8 +26,11 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
 type RootStackParamList = {
+  SplashHome: undefined;
   SignUpId: undefined;
 };
 
@@ -37,6 +40,17 @@ function TermAgree({navigation}: Props) {
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
   const [secondTermSpread, setSecondTermSpread] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
+
   const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
     if (clickedComponent === 'firstTerm') {
       setFirstTermSpread(!firstTermSpread);
@@ -67,11 +81,12 @@ function TermAgree({navigation}: Props) {
     }
   };
 
-  {
-    Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+  if (Platform.OS === 'android') {
+    StatusBar.setBackgroundColor('white');
     // StatusBar.setTranslucent(true);
     StatusBar.setBarStyle('dark-content');
   }
+
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
@@ -89,6 +104,7 @@ function TermAgree({navigation}: Props) {
       marginRight: 13,
     },
   });
+
   return (
     <>
       <View

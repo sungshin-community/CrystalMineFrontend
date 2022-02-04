@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StatusBar,
@@ -19,9 +19,11 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
@@ -46,12 +48,24 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
+  SplashHome: undefined;
   SignInPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isIdFocused, setIsIdFocused] = useState<boolean>(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
+
   const onIdFocus = () => {
     setIsIdFocused(true);
   };
@@ -102,6 +116,7 @@ export default function SignInId({navigation}: Props) {
                 maxLength={8}
                 placeholder="아이디"
                 keyboardType="number-pad"
+                value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
@@ -188,6 +203,7 @@ export default function SignInId({navigation}: Props) {
                 maxLength={8}
                 placeholder="아이디"
                 keyboardType="number-pad"
+                value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
