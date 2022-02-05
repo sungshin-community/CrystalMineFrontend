@@ -14,20 +14,15 @@ interface Props {
   items: Board[];
 }
 
-interface SubListProps {
-  items: Board[];
-  isFolded: boolean;
-}
-
 export default function BoardList({items}: Props) {
   return (
-    <FlatList
+    items ? <FlatList
       data={items}
       renderItem={({item}) => (
-        <View
+        <TouchableOpacity
           style={{
             flexDirection: 'row',
-            paddingVertical: 11,
+            paddingVertical: 9,
             alignItems: 'center',
             backgroundColor: '#F6F6F6',
           }}>
@@ -40,16 +35,17 @@ export default function BoardList({items}: Props) {
           )}
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 15,
               color: '#000000',
               marginLeft: 15,
               fontFamily: 'SpoqaHanSansNeo-Regular',
             }}>
             {item.name}
           </Text>
-        </View>
+        </TouchableOpacity>
       )}
-    />
+    /> :
+    <View>고정된 게시판이 없습니다</View>
   );
 }
 
@@ -60,10 +56,10 @@ export function OfficialBoardList({items}: Props) {
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <View
+          <TouchableOpacity
             style={{
               flexDirection: 'row',
-              paddingVertical: 11,
+              paddingVertical: 9,
               alignItems: 'center',
               backgroundColor: '#F6F6F6',
             }}>
@@ -93,7 +89,7 @@ export function OfficialBoardList({items}: Props) {
             <View>
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: 15,
                   color: '#000000',
                   marginLeft: 15,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
@@ -110,7 +106,7 @@ export function OfficialBoardList({items}: Props) {
                 {item.introduction}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -124,7 +120,7 @@ export function OfficialBoardListTest({items}: Props) {
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <View
+          <TouchableOpacity
             style={{
               flexDirection: 'row',
               paddingVertical: 11,
@@ -174,44 +170,10 @@ export function OfficialBoardListTest({items}: Props) {
                 {item.introduction}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
-  );
-}
-
-export function BoardSubList({items}: SubListProps) {
-  return (
-    <FlatList
-      data={items}
-      renderItem={({item}) => (
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingVertical: 11,
-            alignItems: 'center',
-            backgroundColor: '#F6F6F6',
-          }}>
-          {!item.isPinned ? (
-            <GrayPin style={{marginLeft: 20}} />
-          ) : item.isOfficial ? (
-            <OrangePin style={{marginLeft: 20}} />
-          ) : (
-            <PurplePin style={{marginLeft: 20}} />
-          )}
-          <Text
-            style={{
-              fontSize: 14,
-              color: '#000000',
-              marginLeft: 15,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-            }}>
-            {item.name}
-          </Text>
-        </View>
-      )}
-    />
   );
 }
 
@@ -240,7 +202,7 @@ export function CustomBoardList({items}: Props) {
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <View
+          <TouchableOpacity
             style={{
               flexDirection: 'row',
               paddingVertical: 11,
@@ -290,7 +252,7 @@ export function CustomBoardList({items}: Props) {
                 {item.introduction}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
