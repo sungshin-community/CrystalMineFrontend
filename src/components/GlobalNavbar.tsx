@@ -17,6 +17,7 @@ import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Pressable} from 'react-native';
 import Toast from 'react-native-simple-toast';
+import { checkRegularMember } from '../common/authApi';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,10 +63,12 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Board"
         component={BoardFragment}
         listeners={({navigation}) => ({
-          tabPress: e => {
+          tabPress: async (e) => {
             e.preventDefault();
-            navigation.navigate('Board');
-            // Toast.show('접근 권한이 없습니다.', Toast.LONG);
+            let isRegularMember: boolean = await checkRegularMember();
+            console.log("정회원 인증여부:", isRegularMember);
+            if (isRegularMember) navigation.navigate('Board');
+            else Toast.show('접근 권한이 없습니다.', Toast.LONG);
           },
         })}
         options={{

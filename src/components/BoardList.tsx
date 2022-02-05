@@ -17,7 +17,7 @@ interface Props {
 
 export default function BoardList({items}: Props) {
   return (
-    items.length > 0 ? <FlatList
+    items != null && items.length > 0 ? <FlatList
       data={items}
       renderItem={({item}) => (
         <TouchableOpacity
