@@ -64,3 +64,27 @@ export const BigSpreadButton = (props: any) => (
     />
   </Svg>
 );
+
+export const GreyBigFoldButton = (props: any) => (
+  <Svg
+    width={16}
+    height={10}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path d="m1 9 7-7 7 7" stroke="#6E7882" strokeWidth={2} />
+  </Svg>
+);
+
+export const GreyBigSpreadButton = (props: any) => (
+  <Svg
+    width={16}
+    height={10}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path d="M15 1 8 8 1 1" stroke="#6E7882" strokeWidth={2} />
+  </Svg>
+);

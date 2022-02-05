@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {FlatList, View, Text, TouchableWithoutFeedback} from 'react-native';
+import {FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import MyPostingIcon, {
   MyCommentIcon,
   ScrapPostingIcon,
@@ -12,17 +12,18 @@ import {toggleBoardPin} from '../common/boardApi';
 
 interface Props {
   items: Board[];
+  onUpdate?: () => void;
 }
 
 export default function BoardList({items}: Props) {
   return (
-    <FlatList
+    items.length > 0 ? <FlatList
       data={items}
       renderItem={({item}) => (
-        <View
+        <TouchableOpacity
           style={{
             flexDirection: 'row',
-            paddingVertical: 11,
+            paddingVertical: 9,
             alignItems: 'center',
             backgroundColor: '#F6F6F6',
           }}>
@@ -35,27 +36,43 @@ export default function BoardList({items}: Props) {
           )}
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 15,
               color: '#000000',
               marginLeft: 15,
               fontFamily: 'SpoqaHanSansNeo-Regular',
             }}>
             {item.name}
           </Text>
-        </View>
+        </TouchableOpacity>
       )}
-    />
+    /> :
+    <View 
+      style={{
+        alignItems: 'center',
+        backgroundColor: '#F6F6F6',
+        paddingVertical: 10
+      }}
+    >
+      <Text 
+        style={{
+          fontSize: 15,
+          color: '#6E7882',
+          fontFamily: 'SpoqaHanSansNeo-Regular',
+        }}>
+        고정된 게시판이 없습니다
+      </Text>
+    </View>
   );
 }
 
-export function OfficialBoardList({items}: Props) {
+export function OfficialBoardList({items, onUpdate}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <View
+          <TouchableOpacity
             style={{
               flexDirection: 'row',
               paddingVertical: 11,
@@ -70,6 +87,7 @@ export function OfficialBoardList({items}: Props) {
                   if (result) {
                     item.isPinned = true;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -81,6 +99,7 @@ export function OfficialBoardList({items}: Props) {
                   if (result) {
                     item.isPinned = false;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -105,14 +124,14 @@ export function OfficialBoardList({items}: Props) {
                 {item.introduction}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
   );
 }
 
-export function CustomBoardList({items}: Props) {
+export function CustomBoardList({items, onUpdate}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
@@ -137,7 +156,7 @@ export function CustomBoardList({items}: Props) {
       <FlatList
         data={items}
         renderItem={({item}) => (
-          <View
+          <TouchableOpacity
             style={{
               flexDirection: 'row',
               paddingVertical: 11,
@@ -152,6 +171,7 @@ export function CustomBoardList({items}: Props) {
                   if (result) {
                     item.isPinned = true;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -163,6 +183,7 @@ export function CustomBoardList({items}: Props) {
                   if (result) {
                     item.isPinned = false;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -187,7 +208,7 @@ export function CustomBoardList({items}: Props) {
                 {item.introduction}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -197,10 +218,10 @@ export function CustomBoardList({items}: Props) {
 export function MenuList() {
   return (
     <>
-      <View
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingVertical: 11,
+          height: 36,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -214,11 +235,11 @@ export function MenuList() {
           }}>
           내가 작성한 글
         </Text>
-      </View>
-      <View
+      </TouchableOpacity>
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingVertical: 11,
+          height: 36,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -232,11 +253,11 @@ export function MenuList() {
           }}>
           내가 작성한 댓글
         </Text>
-      </View>
-      <View
+      </TouchableOpacity>
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingVertical: 11,
+          height: 36,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -250,7 +271,7 @@ export function MenuList() {
           }}>
           스크랩
         </Text>
-      </View>
+      </TouchableOpacity>
     </>
   );
 }
