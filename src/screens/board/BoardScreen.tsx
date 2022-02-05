@@ -5,8 +5,7 @@ import {ScrollView, View, Text} from 'react-native';
 import BoardList, {
   MenuList,
   CustomBoardList,
-  OfficialBoardList,
-  OfficialBoardListTest
+  OfficialBoardList
 } from '../../components/BoardList';
 import Board from '../../classes/Board';
 import {OfficialBoardListContainer, BoardListContainer} from '../../components/HideToggleContainer';
@@ -23,22 +22,28 @@ export default function BoardScreen() {
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
   const [departmentBoardList, setDepartmentBoardList] = useState<Board[]>([]);
 
+  const updateOfficialBoardList = async () => {
+    const officialBoardList = await getOfficialBoardList();
+    const pinnedBoardList = await getPinnedBoardList();
+    setOfficialBoardList(officialBoardList);
+    setPinnedBoardList(pinnedBoardList);
+  }
+
+  const updateCustomBoardList = async () => {
+    const customBoardList = await getCustomBoardList();
+    const pinnedBoardList = await getPinnedBoardList();
+    setCustomBoardList(customBoardList);
+    setPinnedBoardList(pinnedBoardList);
+  }
+
+  const updateDepartmentBoardList = async () => {
+    const departmentBoards = await getDepartmentBoardList();
+    const pinnedBoardList = await getPinnedBoardList();
+    setDepartmentBoardList(departmentBoards);
+    setPinnedBoardList(pinnedBoardList);
+  }
+
   useEffect(() => {
-    // async function getPinnedBoards() {
-    //   const list = await getPinnedBoardList();
-    //   console.log(list);
-    //   setPinnedBoardList(list);
-    // }
-    // async function getCustomBoards() {
-    //   const list = await getCustomBoardList();
-    //   console.log(list);
-    //   setCustomBoardList(list);
-    // }
-    // async function getOfficialBoards() {
-    //   const list = await getOfficialBoardList();
-    //   console.log(list);
-    //   setOfficialBoardList(list);
-    // }
     async function getBoardList() {
       const pinnedBoardList = await getPinnedBoardList();
       const customBoardList = await getCustomBoardList();
@@ -83,16 +88,16 @@ export default function BoardScreen() {
         </View>
         <OfficialBoardListContainer
           boardCategory="수정광장"
-          component={<OfficialBoardListTest items={officialBoardList} />}
+          component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} />}
         />
         <OfficialBoardListContainer
           defaultFolded={true}
           boardCategory="학과게시판"
-          component={<OfficialBoardListTest items={departmentBoardList} />}
+          component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} />}
         />
         <BoardListContainer
           boardCategory="수정게시판"
-          component={<CustomBoardList items={customBoardList} />}
+          component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} />}
         />
         <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
       </View>

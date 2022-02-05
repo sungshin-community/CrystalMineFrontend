@@ -12,6 +12,7 @@ import {toggleBoardPin} from '../common/boardApi';
 
 interface Props {
   items: Board[];
+  onUpdate?: () => void;
 }
 
 export default function BoardList({items}: Props) {
@@ -64,71 +65,7 @@ export default function BoardList({items}: Props) {
   );
 }
 
-export function OfficialBoardList({items}: Props) {
-  const [value, setValue] = useState<boolean>(false);
-  return (
-    <View>
-      <FlatList
-        data={items}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              paddingVertical: 9,
-              alignItems: 'center',
-              backgroundColor: '#F6F6F6',
-            }}>
-            {!item.isPinned ? (
-              <GrayPin
-                style={{marginLeft: 20}}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = true;
-                    setValue(!value);
-                  }
-                }}
-              />
-            ) : (
-              <OrangePin
-                style={{marginLeft: 20}}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = false;
-                    setValue(!value);
-                  }
-                }}
-              />
-            )}
-            <View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  color: '#000000',
-                  marginLeft: 15,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                }}>
-                {item.name}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: '#9F9F9F',
-                  marginLeft: 15,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                }}>
-                {item.introduction}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
-  );
-}
-
-export function OfficialBoardListTest({items}: Props) {
+export function OfficialBoardList({items, onUpdate}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
@@ -150,6 +87,7 @@ export function OfficialBoardListTest({items}: Props) {
                   if (result) {
                     item.isPinned = true;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -161,6 +99,7 @@ export function OfficialBoardListTest({items}: Props) {
                   if (result) {
                     item.isPinned = false;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -192,7 +131,7 @@ export function OfficialBoardListTest({items}: Props) {
   );
 }
 
-export function CustomBoardList({items}: Props) {
+export function CustomBoardList({items, onUpdate}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
@@ -232,6 +171,7 @@ export function CustomBoardList({items}: Props) {
                   if (result) {
                     item.isPinned = true;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
@@ -243,6 +183,7 @@ export function CustomBoardList({items}: Props) {
                   if (result) {
                     item.isPinned = false;
                     setValue(!value);
+                    onUpdate();
                   }
                 }}
               />
