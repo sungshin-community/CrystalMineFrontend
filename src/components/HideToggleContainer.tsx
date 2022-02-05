@@ -44,7 +44,7 @@ export function BoardListContainer({boardCategory, component}: Props) {
       </TouchableOpacity>
       {isSpread && (
         <>
-          <TouchableOpacity
+          <View
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
@@ -54,7 +54,7 @@ export function BoardListContainer({boardCategory, component}: Props) {
             }}
           />
           <View style={{flexBasis: 'auto'}}>{component}</View>
-          <TouchableOpacity
+          <View
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
@@ -107,7 +107,7 @@ export function OfficialBoardListContainer({boardCategory, component, defaultFol
       </TouchableOpacity>
       {isSpread && (
         <>
-          <TouchableOpacity
+          <View
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
@@ -117,7 +117,7 @@ export function OfficialBoardListContainer({boardCategory, component, defaultFol
             }}
           />
           <View style={{flexBasis: 'auto'}}>{component}</View>
-          <TouchableOpacity
+          <View
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
