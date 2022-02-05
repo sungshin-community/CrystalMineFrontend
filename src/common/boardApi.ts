@@ -2,6 +2,7 @@ import client from './client';
 import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Board from '../classes/Board';
+import Response from '../classes/Response';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -50,6 +51,25 @@ export const getOfficialBoardList = async () => {
     return response.data.data;
   } catch (e) {
     console.log("여기는 getOfficialBoardList 함수", e);
+  }
+};
+
+export const getDepartmentBoardList = async () => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    params.append('type', '2');
+    const response = await client.get<Response<Board[]>>(
+      `/boards?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getDepartmentBoardList 함수", e);
   }
 };
 
