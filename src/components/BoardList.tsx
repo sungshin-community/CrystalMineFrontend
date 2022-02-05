@@ -16,7 +16,7 @@ interface Props {
 
 export default function BoardList({items}: Props) {
   return (
-    items ? <FlatList
+    items.length > 0 ? <FlatList
       data={items}
       renderItem={({item}) => (
         <TouchableOpacity
@@ -45,7 +45,22 @@ export default function BoardList({items}: Props) {
         </TouchableOpacity>
       )}
     /> :
-    <View>고정된 게시판이 없습니다</View>
+    <View 
+      style={{
+        alignItems: 'center',
+        backgroundColor: '#F6F6F6',
+        paddingVertical: 10
+      }}
+    >
+      <Text 
+        style={{
+          fontSize: 15,
+          color: '#6E7882',
+          fontFamily: 'SpoqaHanSansNeo-Regular',
+        }}>
+        고정된 게시판이 없습니다
+      </Text>
+    </View>
   );
 }
 
