@@ -135,24 +135,6 @@ export function CustomBoardList({items, onUpdate}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
-      <TouchableWithoutFeedback onPress={() => console.log('눌림')}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: '#F6F6F6',
-          }}>
-          <PlusIcon style={{marginLeft: 20}} />
-          <Text
-            style={{
-              color: '#ADADAD',
-              fontSize: 15,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-            }}>
-            새 게시판 만들기
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
       <FlatList
         data={items}
         renderItem={({item}) => (

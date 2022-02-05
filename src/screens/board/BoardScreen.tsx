@@ -8,7 +8,7 @@ import BoardList, {
   OfficialBoardList
 } from '../../components/BoardList';
 import Board from '../../classes/Board';
-import {OfficialBoardListContainer, BoardListContainer} from '../../components/HideToggleContainer';
+import {OfficialBoardListContainer, BoardListContainer, CustomBoardListContainer} from '../../components/HideToggleContainer';
 import {
   getCustomBoardList,
   getDepartmentBoardList,
@@ -95,7 +95,7 @@ export default function BoardScreen() {
           boardCategory="학과게시판"
           component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} />}
         />
-        <BoardListContainer
+        <CustomBoardListContainer
           boardCategory="수정게시판"
           component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} />}
         />
