@@ -6,6 +6,7 @@ import Major from "../classes/Major";
 import SignUpResponseDto from "../classes/SignUpResponseDto";
 import SignInRequestDto from "../classes/SignInRequestDto";
 import VerificationRequestDto from "../classes/VerificationRequestDto";
+import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
 import Response from "../classes/Response";
 
 export const checkEmailConflict = async (studentId: string) => {
@@ -111,4 +112,20 @@ export const logout = async () => {
         console.log("여기는 logout 함수", e.response);
         return false;
     }
+}
+
+export const checkRegularMember = async () => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response =  await client.get<Response<RegularMemberCheckDto>>("/user", {
+        headers: {Authorization: `Bearer ${accessToken}`},
+      },
+    );
+    console.log(response.data.data);
+    return response.data.data.isAuthenticated;
+  }
+  catch (e: any) {
+      console.log("여기는 checkRegularMember 함수", e.response);
+      return false;
+  }
 }
