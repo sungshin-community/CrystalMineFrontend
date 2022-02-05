@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
-import {BigFoldButton, BigSpreadButton} from '../../resources/icon/Button';
+import {BigFoldButton, BigSpreadButton, GreyBigFoldButton, GreyBigSpreadButton} from '../../resources/icon/Button';
 
 interface Props {
   boardCategory: string;
   component: JSX.Element;
+  defaultFolded?: boolean;
 }
 
 export function BoardListContainer({boardCategory, component}: Props) {
@@ -15,23 +16,23 @@ export function BoardListContainer({boardCategory, component}: Props) {
         style={{
           flexDirection: 'row',
           paddingLeft: 25,
-          paddingVertical: 24,
-          height: 68,
+          // paddingVertical: 24,
+          height: 60,
           alignItems: 'center',
-          backgroundColor: '#F6F6F6',
+          backgroundColor: '#FFFFFF',
           marginTop: 10,
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
           borderBottomLeftRadius: !isSpread ? 16 : 0,
           borderBottomRightRadius: !isSpread ? 16 : 0,
         }}
         onPress={() => setIsSpread(!isSpread)}>
         <Text
           style={{
-            fontSize: 16,
-            fontFamily: 'SpoqaHanSansNeo-Medium',
+            fontSize: 17,
+            fontFamily: 'SpoqaHanSansNeo',
             lineHeight: 20,
             flex: 1,
+            fontWeight: 'bold',
+            color: '#222222'
           }}>
           {boardCategory}
         </Text>
@@ -43,11 +44,84 @@ export function BoardListContainer({boardCategory, component}: Props) {
       </TouchableOpacity>
       {isSpread && (
         <>
+          <TouchableOpacity
+            style={{
+              height: 17,
+              backgroundColor: '#F6F6F6',
+              // backgroundColor: '#FF0000',
+              borderTopRightRadius: 16,
+              borderTopLeftRadius: 16,
+            }}
+          />
           <View style={{flexBasis: 'auto'}}>{component}</View>
           <TouchableOpacity
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
+              // backgroundColor: '#FF0000',
+              borderBottomRightRadius: 16,
+              borderBottomLeftRadius: 16,
+            }}
+          />
+        </>
+      )}
+    </>
+  );
+}
+
+
+export function OfficialBoardListContainer({boardCategory, component, defaultFolded}: Props) {
+  console.log(boardCategory, "defaultFolded는", defaultFolded);
+  const [isSpread, setIsSpread] = useState<boolean>(defaultFolded ? false : true);
+  return (
+    <>
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          paddingLeft: 25,
+          // paddingVertical: 24,
+          height: 32,
+          alignItems: 'center',
+          backgroundColor: '#FFFFFF',
+          marginTop: 10,
+          borderBottomLeftRadius: !isSpread ? 16 : 0,
+          borderBottomRightRadius: !isSpread ? 16 : 0,
+        }}
+        onPress={() => setIsSpread(!isSpread)}>
+        <Text
+          style={{
+            fontSize: 15,
+            fontFamily: 'SpoqaHanSansNeo-Medium',
+            lineHeight: 20,
+            flex: 1,
+            fontWeight: '500',
+            color: '#6E7882'
+          }}>
+          {boardCategory}
+        </Text>
+        {isSpread ? (
+          <GreyBigFoldButton style={{marginRight: 30}} />
+        ) : (
+          <GreyBigSpreadButton style={{marginRight: 30}} />
+        )}
+      </TouchableOpacity>
+      {isSpread && (
+        <>
+          <TouchableOpacity
+            style={{
+              height: 17,
+              backgroundColor: '#F6F6F6',
+              // backgroundColor: '#FF0000',
+              borderTopRightRadius: 16,
+              borderTopLeftRadius: 16,
+            }}
+          />
+          <View style={{flexBasis: 'auto'}}>{component}</View>
+          <TouchableOpacity
+            style={{
+              height: 17,
+              backgroundColor: '#F6F6F6',
+              // backgroundColor: '#FF0000',
               borderBottomRightRadius: 16,
               borderBottomLeftRadius: 16,
             }}
