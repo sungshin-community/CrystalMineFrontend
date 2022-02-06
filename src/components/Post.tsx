@@ -1,12 +1,17 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {Pressable, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import styled from 'styled-components';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
+import PostLike from '../../resources/icon/PostLike';
+import PostUnlike from '../../resources/icon/PostUnlike';
+import PostComment from '../../resources/icon/PostComment';
 import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
+import PostList from './PostList';
 function Post() {
+  const [isLiked, setIsLiked] = useState<boolean>();
   return (
     <>
       <View style={styles.postContainer}>
@@ -38,10 +43,12 @@ function Post() {
           1분 전
         </Text>
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 22}}>
-          <EmptyHeart />
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 22 }}>
+          <Pressable hitSlop={{top: 10, left: 10, bottom: 10, right: 10}} onPress={() => setIsLiked(!isLiked)}>
+            {isLiked ? <PostLike /> : <PostUnlike />}
+            </Pressable>
           <Text style={styles.postLike}>0000</Text>
-          <EmptyComment />
+          <PostComment/>
           <Text style={styles.postComment}>0000</Text>
         </View>
       </View>
