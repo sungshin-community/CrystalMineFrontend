@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   StyleSheet,
@@ -10,7 +10,20 @@ import {
 } from 'react-native';
 import FloatingWriteButton from '../../../resources/icon/FloatingWriteButton';
 import PostList from '../../components/PostList';
-const PostListScreen = () => {
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
+const PostListScreen = ({navigation}: any) => {
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
+
   const SampleFunction = () => {
     Alert.alert('플로팅 버튼 눌림!');
   };

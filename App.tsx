@@ -240,7 +240,7 @@ const App = () => {
                 headerShadowVisible: false,
                 headerBackVisible: false,
               }}
-              initialRouteName="GlobalNavBar">
+              initialRouteName="GlobalNavbar">
               <Stack.Screen
                 name="SplashHome"
                 component={SplashHome}

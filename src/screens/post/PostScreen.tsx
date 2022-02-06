@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   StyleSheet,
@@ -13,8 +13,19 @@ import {
 import Post from '../../components/Post';
 import Comment, { CommentReply } from '../../components/Comment';
 import InputComment from '../../components/InputComment';
+import BackButton from '../../components/BackButton';
+import {CommonActions} from '@react-navigation/native';
 
-const PostScreen = () => {
+const PostScreen = ({navigation}: any) => {
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: (): React.ReactNode => (
+        <BackButton
+          onPress={() => navigation.dispatch(CommonActions.goBack())}
+        />
+      ),
+    });
+  }, [navigation]);
   return (
     <>
       <KeyboardAvoidingView
@@ -39,4 +50,3 @@ const PostScreen = () => {
 export default PostScreen;
 
 const styles = StyleSheet.create({});
-export interface Post {}
