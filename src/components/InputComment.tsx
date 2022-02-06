@@ -2,7 +2,7 @@ import {
   RectangleUnchecked,
   RectangleChecked,
 } from '../../resources/icon/CheckBox';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -10,9 +10,12 @@ import {
   Text,
   Dimensions,
   Platform,
+  Pressable
 } from 'react-native';
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
 function InputComment() {
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+
   return (
     <View style={{flexDirection: 'row', paddingVertical: 5}}>
       <View
@@ -22,7 +25,9 @@ function InputComment() {
           paddingVertical: 17,
         }}>
         <Text style={{marginRight: 5, marginLeft: 12}}>익명</Text>
-        <RectangleUnchecked />
+        <Pressable hitSlop={{top: 10, left: 10, bottom: 10, right: 10}} onPress={() => setIsAnonymous(!isAnonymous)}>
+            {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+            </Pressable>
       </View>
       <View
         style={[
