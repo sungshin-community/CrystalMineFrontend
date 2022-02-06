@@ -31,6 +31,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeScreenNavigationContainer} from 'react-native-screens';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
+import RequestScreen from './src/screens/mypage/RequestScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -221,6 +222,17 @@ const App = () => {
                   headerTintColor: '#000000',
                 }}
               />
+              {/* [F-5] 마이페이지 */}
+              <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
+              <Stack.Screen
+                name="RequestScreen"
+                component={RequestScreen}
+                options={{
+                  title: '문의하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                }}
+              />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator
@@ -247,7 +259,11 @@ const App = () => {
               <Stack.Screen
                 name="SignUpId"
                 component={SignUpId}
-                options={{title: '', headerTintColor: '#000000'}}
+                options={{
+                  title: '',
+                  headerTintColor: '#000000',
+                  animation: 'slide_from_right',
+                }}
               />
               <Stack.Screen
                 name="SignUpPassword"
@@ -383,13 +399,22 @@ const App = () => {
                   headerTintColor: '#000000',
                 }}
               />
-              {/* 마이페이지 */}
+              {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
+              <Stack.Screen
+                name="RequestScreen"
+                component={RequestScreen}
+                options={{
+                  title: '문의하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                }}
+              />
             </Stack.Navigator>
           )}
         </NavigationContainer>
       )}
-      <WaterMark></WaterMark>
+      <WaterMark />
     </>
   );
 };

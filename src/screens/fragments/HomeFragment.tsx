@@ -184,7 +184,7 @@ const HomeFragment = ({navigation}: Props) => {
                     numberOfLines={1}
                     ellipsizeMode="tail"
                     style={styles.postTitleSummary}>
-                    {item.postContent.slice(0, 60 - numOfBoardTitle)}
+                    {/* {item.postContent.slice(0, 60 - numOfBoardTitle)} */}
                   </Text>
                   {item.todayNewPost ? (
                     <Text style={styles.postNewLabel}>N</Text>
@@ -238,7 +238,7 @@ const HomeFragment = ({navigation}: Props) => {
                       styles.postSummary,
                       {width: Dimensions.get('window').width - 150},
                     ]}>
-                    {item.postContent.slice(0, 30)}
+                    {/* {item.postContent.slice(0, 30)} */}
                   </Text>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <EmptyHeart />
