@@ -42,7 +42,7 @@ const HomeFragment = ({navigation}: Props) => {
     }
     getContents();
     console.log(homeContents)
-  });
+  }, []);
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
