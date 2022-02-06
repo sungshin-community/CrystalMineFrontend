@@ -3,4 +3,4 @@ branches:
  - label: '*'
    prefix: feature#
 autoCloseIssue: true
-commentMessage: 'Branch ${branchName}가 생성되었습니다! 우리팀 천재 ${assignees.login} 이번 이슈도 파이팅 🔥'
+commentMessage: 'Branch ${branchName} 가 생성되었습니다! 우리팀 천재 ${assignee.login} ! 이번 이슈도 파이팅 🔥'
