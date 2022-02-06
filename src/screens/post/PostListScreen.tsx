@@ -12,9 +12,17 @@ import FloatingWriteButton from '../../../resources/icon/FloatingWriteButton';
 import PostList from '../../components/PostList';
 import BackButton from '../../components/BackButton';
 import {CommonActions} from '@react-navigation/native';
-const PostListScreen = ({navigation}: any) => {
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+  PostListScreen: {boardId: number};
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+const PostListScreen = ({navigation, route}: Props) => {
 
   useEffect(() => {
+    console.log("props로 받은 게시판 ID는", route.params.boardId);
     navigation.setOptions({
       headerLeft: (): React.ReactNode => (
         <BackButton
