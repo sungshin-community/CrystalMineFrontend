@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -21,7 +22,7 @@ import Home from '../../classes/Home';
 import getHomeContents from '../../common/homeApi';
 
 type RootStackParamList = {
-  PostListScreen: undefined;
+  PostListScreen: {boardId: number};
   MyPageFragment: undefined;
   PostScreen: undefined;
 };
@@ -40,7 +41,8 @@ const HomeFragment = ({navigation}: Props) => {
       }
     }
     getContents();
-  });
+    console.log(homeContents)
+  }, []);
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -163,7 +165,7 @@ const HomeFragment = ({navigation}: Props) => {
           padding: 24,
         }}>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('PostListScreen')}>
+          onPress={() => {}}>
           <View style={styles.rowContainer}>
             <Text style={styles.boardTitle}>고정 게시판</Text>
             <Text style={styles.more}>더보기</Text>
@@ -174,8 +176,8 @@ const HomeFragment = ({navigation}: Props) => {
           <FlatList
             data={homeContents?.pinBoardDtos}
             renderItem={({item}) => (
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('PostScreen')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PostListScreen', {boardId: item.boardId})}>
                 <View style={styles.postSummaryContainer}>
                   <Text style={styles.postSummary}>
                     {item.boardName.slice(0, numOfBoardTitle)}
@@ -192,7 +194,7 @@ const HomeFragment = ({navigation}: Props) => {
                     <></>
                   )}
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             )}
           />
         ) : (
@@ -218,7 +220,7 @@ const HomeFragment = ({navigation}: Props) => {
           }}
         />
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('PostListScreen')}>
+          onPress={() => {}}>
           <View style={styles.rowContainer}>
             <Text style={styles.boardTitle}>HOT 게시판</Text>
             <Text style={styles.more}>더보기</Text>

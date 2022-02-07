@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Animated,
   TouchableWithoutFeedback,
+  Pressable
 } from 'react-native';
 import Svg, {Path } from "react-native-svg"
 import ProfileImage from '../../resources/icon/ProfileImage';
@@ -12,9 +13,12 @@ import EmptyComment from '../../resources/icon/EmptyComment';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import ThreeDots from './ThreeDots';
 import Dots from '../../resources/icon/Dots';
+import PostLike from '../../resources/icon/PostLike';
+import PostUnlike from '../../resources/icon/PostUnlike';
+import PostComment from '../../resources/icon/PostComment';
 const Comment = ()=> {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
-
+  const [isLiked, setIsLiked] = useState<boolean>();
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 1,
@@ -63,9 +67,11 @@ const Comment = ()=> {
         <Text>힘내자 아프지말고</Text>
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 18}}>
-          <EmptyHeart />
+            <Pressable hitSlop={{top: 10, left: 10, bottom: 10, right: 10}} onPress={() => setIsLiked(!isLiked)}>
+            {isLiked ? <PostLike /> : <PostUnlike />}
+            </Pressable>
           <Text style={styles.postLike}>00</Text>
-          <EmptyComment />
+          <PostComment/>
         </View>
       </View>
       <View
@@ -90,6 +96,7 @@ const styles = StyleSheet.create({
 
 export const CommentReply = () => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
+  const [isLiked, setIsLiked] = useState<boolean>();
 
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
@@ -145,7 +152,9 @@ export const CommentReply = () => {
         <Text>힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고</Text>
         <View
           style={{ flexDirection: 'row', alignItems: 'center', marginTop: 18 }}>
-          <EmptyHeart />
+           <Pressable hitSlop={{top: 10, left: 10, bottom: 10, right: 10}} onPress={() => setIsLiked(!isLiked)}>
+            {isLiked ? <PostLike /> : <PostUnlike />}
+            </Pressable>
           <Text style={styles.postLike}>00</Text>
           
         </View>
