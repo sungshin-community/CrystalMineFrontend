@@ -233,21 +233,22 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>
-          <TouchableHighlight>
-            <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
+          <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
+            <TouchableHighlight>
               <View style={[styles.menu, {height: 51}]}>
                 <Text style={styles.menuText}>이용 안내</Text>
               </View>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            onPress={() => navigation.navigate('RequestScreen')}>
-            <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
+            </TouchableHighlight>
+          </View>
+          <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
+            <TouchableHighlight
+              underlayColor="#ffffff"
+              onPress={() => navigation.navigate('RequestScreen')}>
               <View style={[styles.menu, {height: 51}]}>
                 <Text style={styles.menuText}>문의하기</Text>
               </View>
-            </View>
-          </TouchableHighlight>
+            </TouchableHighlight>
+          </View>
         </View>
         <View style={{paddingVertical: 24, alignItems: 'center'}}>
           <PurpleRoundButton
