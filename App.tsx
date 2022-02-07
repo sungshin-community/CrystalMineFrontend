@@ -32,6 +32,7 @@ import {NativeScreenNavigationContainer} from 'react-native-screens';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import RequestScreen from './src/screens/mypage/RequestScreen';
+import {fontMedium} from './src/common/font';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -88,21 +89,19 @@ const App = () => {
                 component={TermAgree}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
               <Stack.Screen
                 name="SignUpId"
                 component={SignUpId}
-                options={{title: '', headerTintColor: '#000000'}}
+                options={{title: '', animation: 'slide_from_right'}}
               />
               <Stack.Screen
                 name="SignUpPassword"
                 component={SignUpPassword}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -111,7 +110,6 @@ const App = () => {
                 component={SignUpPasswordConfirm}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -120,7 +118,6 @@ const App = () => {
                 component={SignUpNickname}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -129,7 +126,6 @@ const App = () => {
                 component={MajorSelect}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -138,7 +134,6 @@ const App = () => {
                 component={SignUpComplete}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -147,7 +142,6 @@ const App = () => {
                 component={RegularMemberAuthSelect}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -156,7 +150,6 @@ const App = () => {
                 component={RegularMemberAuth}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -166,7 +159,6 @@ const App = () => {
                 component={SignInId}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -175,7 +167,6 @@ const App = () => {
                 component={SignInPassword}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -192,6 +183,10 @@ const App = () => {
                 options={{
                   title: '게시판',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
               <Stack.Screen
@@ -201,18 +196,14 @@ const App = () => {
                   title: '게시판 생성',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
-              <Stack.Screen
-                name="BoardSearch"
-                component={BoardSearch}
-                options={{}}
-              />
-              <Stack.Screen
-                name="SearchResult"
-                component={SearchResult}
-                options={{}}
-              />
+              <Stack.Screen name="BoardSearch" component={BoardSearch} />
+              <Stack.Screen name="SearchResult" component={SearchResult} />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
@@ -220,6 +211,10 @@ const App = () => {
                   title: '고정 게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
               {/* [F-5] 마이페이지 */}
@@ -228,9 +223,13 @@ const App = () => {
                 name="RequestScreen"
                 component={RequestScreen}
                 options={{
-                  title: '문의하기',
+                  title: '문의 하기',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
             </Stack.Navigator>
@@ -252,7 +251,6 @@ const App = () => {
                 component={TermAgree}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -261,7 +259,6 @@ const App = () => {
                 component={SignUpId}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -270,7 +267,6 @@ const App = () => {
                 component={SignUpPassword}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -279,7 +275,6 @@ const App = () => {
                 component={SignUpPasswordConfirm}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -288,7 +283,6 @@ const App = () => {
                 component={SignUpNickname}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -297,7 +291,6 @@ const App = () => {
                 component={MajorSelect}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -306,7 +299,6 @@ const App = () => {
                 component={SignUpComplete}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -315,7 +307,6 @@ const App = () => {
                 component={RegularMemberAuthSelect}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -324,7 +315,6 @@ const App = () => {
                 component={RegularMemberAuth}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -334,7 +324,6 @@ const App = () => {
                 component={SignInId}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -343,7 +332,6 @@ const App = () => {
                 component={SignInPassword}
                 options={{
                   title: '',
-                  headerTintColor: '#000000',
                   animation: 'slide_from_right',
                 }}
               />
@@ -360,6 +348,10 @@ const App = () => {
                 options={{
                   title: '게시판',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
               <Stack.Screen
@@ -369,18 +361,14 @@ const App = () => {
                   title: '게시판 생성',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
-              <Stack.Screen
-                name="BoardSearch"
-                component={BoardSearch}
-                options={{}}
-              />
-              <Stack.Screen
-                name="SearchResult"
-                component={SearchResult}
-                options={{}}
-              />
+              <Stack.Screen name="BoardSearch" component={BoardSearch} />
+              <Stack.Screen name="SearchResult" component={SearchResult} />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
@@ -388,6 +376,10 @@ const App = () => {
                   title: '고정 게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
               <Stack.Screen
@@ -397,6 +389,10 @@ const App = () => {
                   title: '네모 게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
               {/* [F-5] 마이페이지 */}
@@ -405,9 +401,13 @@ const App = () => {
                 name="RequestScreen"
                 component={RequestScreen}
                 options={{
-                  title: '문의하기',
+                  title: '문의 하기',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                 }}
               />
             </Stack.Navigator>

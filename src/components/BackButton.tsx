@@ -16,7 +16,7 @@ function BackButton({onPress}: Props) {
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
   },
 });
 
