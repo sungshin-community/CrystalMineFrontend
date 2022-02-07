@@ -15,9 +15,9 @@ import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Pressable} from 'react-native';
+import {Dimensions, Pressable} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import { checkRegularMember } from '../common/authApi';
+import {checkRegularMember} from '../common/authApi';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +39,23 @@ function GlobalNavbar({navigation}: ScreenProps) {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{tabBarStyle: {height: 60}}}>
+      screenOptions={{
+        tabBarStyle: {
+          width: Dimensions.get('window').width,
+          height: 94,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          shadowColor: '#000000',
+          shadowOffset: {width: 0, height: -2},
+          shadowOpacity: 0.1,
+          shadowRadius: 3,
+          elevation: 3,
+          paddingHorizontal: 21,
+        },
+        tabBarIconStyle: {
+          justifyContent: 'space-between',
+        },
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeFragment}
@@ -63,10 +79,10 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Board"
         component={BoardFragment}
         listeners={({navigation}) => ({
-          tabPress: async (e) => {
+          tabPress: async e => {
             e.preventDefault();
             let isRegularMember: boolean = await checkRegularMember();
-            console.log("정회원 인증여부:", isRegularMember);
+            console.log('정회원 인증여부:', isRegularMember);
             if (isRegularMember) navigation.navigate('Board');
             else Toast.show('접근 권한이 없습니다.', Toast.LONG);
           },
