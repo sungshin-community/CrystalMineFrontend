@@ -30,9 +30,9 @@ export default function BoardList({items}: Props) {
           {!item.isPinned ? (
             <GrayPin style={{marginLeft: 20}} />
           ) : item.isOfficial ? (
-            <OrangePin style={{marginLeft: 20}} />
-          ) : (
             <PurplePin style={{marginLeft: 20}} />
+          ) : (
+            <OrangePin style={{marginLeft: 20}} />
           )}
           <Text
             style={{
@@ -92,7 +92,7 @@ export function OfficialBoardList({items, onUpdate}: Props) {
                 }}
               />
             ) : (
-              <OrangePin
+              <PurplePin
                 style={{marginLeft: 20}}
                 onPress={async () => {
                   let result: boolean = await toggleBoardPin(item.id);
@@ -158,7 +158,7 @@ export function CustomBoardList({items, onUpdate}: Props) {
                 }}
               />
             ) : (
-              <PurplePin
+              <OrangePin
                 style={{marginLeft: 20}}
                 onPress={async () => {
                   let result: boolean = await toggleBoardPin(item.id);
