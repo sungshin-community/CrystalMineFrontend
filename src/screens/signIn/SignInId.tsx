@@ -113,9 +113,8 @@ export default function SignInId({navigation}: Props) {
                 onChangeText={(value: string) => {
                   setStudentId(value);
                 }}
-                maxLength={8}
                 placeholder="아이디"
-                keyboardType="number-pad"
+                keyboardType="ascii-capable"
                 value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
@@ -134,7 +133,7 @@ export default function SignInId({navigation}: Props) {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {studentId.length === 8 && isIdFocused && (
+        {studentId.length > 0 && isIdFocused && (
           <PurpleFullButton
             text="다음"
             onClick={() =>
@@ -145,7 +144,7 @@ export default function SignInId({navigation}: Props) {
           />
         )}
 
-        {studentId.length === 8 && !isIdFocused && (
+        {studentId.length > 0 && !isIdFocused && (
           <PurpleRoundButton
             text="다음"
             onClick={() =>
@@ -156,11 +155,11 @@ export default function SignInId({navigation}: Props) {
           />
         )}
 
-        {studentId.length < 8 && isIdFocused && (
+        {studentId.length === 0 && isIdFocused && (
           <DisabledPurpleFullButton text="다음" />
         )}
 
-        {studentId.length < 8 && !isIdFocused && (
+        {studentId.length === 0 && !isIdFocused && (
           <DisabledPurpleRoundButton text="다음" />
         )}
       </View>
@@ -200,9 +199,8 @@ export default function SignInId({navigation}: Props) {
                 onChangeText={(value: string) => {
                   setStudentId(value);
                 }}
-                maxLength={8}
                 placeholder="아이디"
-                keyboardType="number-pad"
+                keyboardType="ascii-capable"
                 value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
@@ -217,7 +215,7 @@ export default function SignInId({navigation}: Props) {
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
         }}>
-        {studentId.length === 8 && isIdFocused && (
+        {studentId.length > 0 && isIdFocused && (
           <PurpleFullButton
             text="다음"
             onClick={() =>
@@ -228,7 +226,7 @@ export default function SignInId({navigation}: Props) {
           />
         )}
 
-        {studentId.length === 8 && !isIdFocused && (
+        {studentId.length > 0 && !isIdFocused && (
           <PurpleRoundButton
             text="다음"
             onClick={() =>
@@ -239,11 +237,11 @@ export default function SignInId({navigation}: Props) {
           />
         )}
 
-        {studentId.length < 8 && isIdFocused && (
+        {studentId.length === 0 && isIdFocused && (
           <DisabledPurpleFullButton text="다음" />
         )}
 
-        {studentId.length < 8 && !isIdFocused && (
+        {studentId.length === 0 && !isIdFocused && (
           <DisabledPurpleRoundButton text="다음" />
         )}
       </View>
