@@ -1,12 +1,13 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text} from 'react-native';
 
 const styles = StyleSheet.create({
   cancel: {
     fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 17,
-    marginLeft: 15,
-    marginRight: 5,
+    paddingLeft: 15,
+    paddingRight: 5,
+    marginTop: Platform.OS === 'android' ? 10 : 0,
   },
 });
 

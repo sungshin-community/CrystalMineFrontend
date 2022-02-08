@@ -15,7 +15,7 @@ import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Dimensions, Pressable} from 'react-native';
+import {Dimensions, Platform, Pressable} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRegularMember} from '../common/authApi';
 
@@ -41,15 +41,14 @@ function GlobalNavbar({navigation}: ScreenProps) {
       initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
-          width: Dimensions.get('window').width,
-          height: 94,
+          height: Platform.OS === 'android' ? 60 : 94,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           shadowColor: '#000000',
           shadowOffset: {width: 0, height: -2},
           shadowOpacity: 0.1,
           shadowRadius: 3,
-          elevation: 3,
+          elevation: 5,
           paddingHorizontal: 21,
         },
         tabBarIconStyle: {

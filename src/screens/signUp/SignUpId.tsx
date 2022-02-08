@@ -147,6 +147,7 @@ export default function SignUpId({navigation}: Props) {
                 keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
+                maxLength={8}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
@@ -253,6 +254,7 @@ export default function SignUpId({navigation}: Props) {
                 keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
+                maxLength={8}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>

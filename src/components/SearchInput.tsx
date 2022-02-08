@@ -5,29 +5,30 @@ import {
   View,
   Dimensions,
   Pressable,
-  Text,
+  Platform,
 } from 'react-native';
 import SearchIcon from '../../resources/icon/SearchIcon';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
     alignItems: 'center',
+    paddingLeft: 5,
+    marginTop: Platform.OS === 'android' ? 10 : 0,
   },
   input: {
     backgroundColor: 'rgb(239, 239, 239)',
     width: Dimensions.get('window').width - 100,
     height: 44,
     borderRadius: 20,
-    paddingLeft: 48,
+    paddingLeft: 57,
     fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 15,
   },
   icon: {
     position: 'absolute',
     top: 10,
-    left: 19,
+    left: 24,
   },
 });
 
@@ -54,6 +55,8 @@ function SearchInput({setSearchWord, startSearching, value}: Props) {
         autoCapitalize="none"
         onSubmitEditing={startSearching}
         value={value}
+        keyboardType="default"
+        enablesReturnKeyAutomatically
       />
       <Pressable style={styles.icon} onPress={startSearching}>
         <SearchIcon />
