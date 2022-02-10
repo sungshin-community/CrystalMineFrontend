@@ -13,6 +13,8 @@ import PostList from '../../components/PostList';
 import BackButton from '../../components/BackButton';
 import {CommonActions} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { getBoardDetail } from '../../common/boardApi';
+import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -20,17 +22,23 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostListScreen = ({navigation, route}: Props) => {
+  navigation.setOptions({
+    headerLeft: (): React.ReactNode => (
+      <BackButton
+        onPress={() => navigation.dispatch(CommonActions.goBack())}
+      />
+    ),
+  });
+  const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
 
   useEffect(() => {
-    console.log("props로 받은 게시판 ID는", route.params.boardId);
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
+    async function init() {
+      const boardDetail = await getBoardDetail(route.params.boardId, 0);
+      console.log(boardDetail.postResponseDto);
+      setBoardDetail(boardDetail);
+    }
+    init();
+  }, []);
 
   const SampleFunction = () => {
     Alert.alert('플로팅 버튼 눌림!');
@@ -40,7 +48,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     <>
       <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View>
-          {dummyData.map((post: Post, index: number) => (
+          {boardDetail?.postResponseDto.content.map((post: ContentPreviewDto, index: number) => (
             <PostList key={index} post={post} />
           ))}
         </View>

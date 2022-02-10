@@ -5,8 +5,13 @@ import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
+import { ContentPreviewDto } from '../classes/BoardDetailDto';
 
-function PostList({post}: any) {
+interface Props {
+  post: ContentPreviewDto
+}
+
+function PostList({post}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
@@ -14,11 +19,11 @@ function PostList({post}: any) {
           <ProfileImage />
           <Text style={styles.name}>{post.nickname}</Text>
         </View>
-        <Text style={[styles.textSmall, styles.timeStamp]}>1분 전</Text>
+        <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
       <Text style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
-        {post.isLike ? <PostLike /> : <PostUnlike />}
+        {post.isLiked ? <PostLike /> : <PostUnlike />}
         <Text style={[styles.textSmall, styles.iconCount]}>
           {post.likeCount}
         </Text>

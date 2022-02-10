@@ -9,7 +9,7 @@ export const getPinnedBoardList = async () => {
   try {
     const accessToken = await AsyncStorage.getItem('accessToken');
 
-    const officialResponse = await client.get<AxiosResponse<Board[]>>(
+    const officialResponse = await client.get<Response<Board[]>>(
       `/boards/pin?type=1`,
       {
         headers: {
@@ -19,7 +19,7 @@ export const getPinnedBoardList = async () => {
     );
     officialResponse.data.data.forEach(b => (b.isOfficial = true));
     boardList = boardList.concat(officialResponse.data.data);
-    const customResponse = await client.get<AxiosResponse<Board[]>>(
+    const customResponse = await client.get<Response<Board[]>>(
       `/boards/pin?type=0`,
       {
         headers: {
@@ -40,7 +40,7 @@ export const getOfficialBoardList = async () => {
     const accessToken = await AsyncStorage.getItem('accessToken');
     const params = new URLSearchParams();
     params.append('type', '1');
-    const response = await client.get<AxiosResponse<Board[]>>(
+    const response = await client.get<Response<Board[]>>(
       `/boards?${params}`,
       {
         headers: {
@@ -78,7 +78,7 @@ export const getCustomBoardList = async () => {
     const accessToken = await AsyncStorage.getItem('accessToken');
     const params = new URLSearchParams();
     params.append('type', '0');
-    const response = await client.get<AxiosResponse<Board[]>>(
+    const response = await client.get<Response<Board[]>>(
       `/boards?${params}`,
       {
         headers: {
@@ -113,3 +113,23 @@ export const toggleBoardPin = async (boardId: number) => {
     return false;
   }
 };
+
+export const getBoardDetail = async (boardId: number, page: number, sort: string = "createdAt") => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('sort', sort);
+    const response = await client.get<Response<Board[]>>(
+      `/boards/${boardId}?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getCustomBoardList 함수", e);
+  }
+}
