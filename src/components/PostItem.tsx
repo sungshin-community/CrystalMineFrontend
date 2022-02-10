@@ -11,7 +11,7 @@ interface Props {
   post: ContentPreviewDto
 }
 
-function PostList({post}: Props) {
+function PostItem({post}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostList;
+export default PostItem;
