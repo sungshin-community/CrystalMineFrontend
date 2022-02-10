@@ -94,15 +94,23 @@ function BoardSearch({navigation}: Props) {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView>
-        <View style={{padding: 32}}>
-          <View style={[styles.rowSpaceBetween, {marginBottom: 14}]}>
+        <View
+          style={{
+            paddingHorizontal: 20,
+            marginTop: 28,
+          }}>
+          <View style={styles.rowSpaceBetween}>
             <Text style={[fontBold, styles.title]}>최근 검색어</Text>
             <Pressable onPress={totalDelete}>
               <Text style={styles.delete}>전체 삭제</Text>
             </Pressable>
           </View>
           {wordList.length === 0 ? (
-            <Text style={{marginVertical: 12}}>최근 검색어가 없습니다</Text>
+            <View style={{alignItems: 'center'}}>
+              <Text style={[fontRegular, styles.noResult]}>
+                최근 검색어가 없습니다
+              </Text>
+            </View>
           ) : (
             wordList.map((word, index) => (
               <View
@@ -111,7 +119,8 @@ function BoardSearch({navigation}: Props) {
                 <Text style={[fontRegular, styles.text]}>{word}</Text>
                 <Pressable
                   style={{marginRight: 5}}
-                  onPress={() => deleteRecentWord(index)}>
+                  onPress={() => deleteRecentWord(index)}
+                  hitSlop={5}>
                   <CancelButton />
                 </Pressable>
               </View>
@@ -140,6 +149,13 @@ const styles = StyleSheet.create({
     fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#A055FF',
     textDecorationLine: 'underline',
+  },
+  noResult: {
+    fontSize: 15,
+    color: '#87919B',
+    marginTop: 66,
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
 });
 

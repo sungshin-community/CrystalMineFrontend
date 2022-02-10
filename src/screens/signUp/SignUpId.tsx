@@ -143,11 +143,11 @@ export default function SignUpId({navigation}: Props) {
                 onChangeText={(value: string) => {
                   setStudentId(value);
                 }}
-                maxLength={8}
                 placeholder="아이디"
-                keyboardType="number-pad"
+                keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
+                maxLength={8}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
@@ -162,7 +162,7 @@ export default function SignUpId({navigation}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {studentId.length === 8 && isFocused && (
+          {studentId.length > 0 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
@@ -178,7 +178,7 @@ export default function SignUpId({navigation}: Props) {
             />
           )}
 
-          {studentId.length === 8 && !isFocused && (
+          {studentId.length > 0 && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
@@ -194,11 +194,11 @@ export default function SignUpId({navigation}: Props) {
             />
           )}
 
-          {studentId.length < 8 && isFocused && (
+          {studentId.length === 0 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {studentId.length < 8 && !isFocused && (
+          {studentId.length === 0 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
@@ -250,11 +250,11 @@ export default function SignUpId({navigation}: Props) {
                 onChangeText={(value: string) => {
                   setStudentId(value);
                 }}
-                maxLength={8}
                 placeholder="아이디"
-                keyboardType="number-pad"
+                keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
+                maxLength={8}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
@@ -269,7 +269,7 @@ export default function SignUpId({navigation}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {studentId.length === 8 && isFocused && (
+          {studentId.length > 0 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
@@ -285,7 +285,7 @@ export default function SignUpId({navigation}: Props) {
             />
           )}
 
-          {studentId.length === 8 && !isFocused && (
+          {studentId.length > 0 && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
@@ -301,11 +301,11 @@ export default function SignUpId({navigation}: Props) {
             />
           )}
 
-          {studentId.length < 8 && isFocused && (
+          {studentId.length === 0 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {studentId.length < 8 && !isFocused && (
+          {studentId.length === 0 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
