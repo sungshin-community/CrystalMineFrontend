@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import FloatingWriteButton from '../../../resources/icon/FloatingWriteButton';
-import PostList from '../../components/PostList';
+import PostItem from '../../components/PostItem';
 import BackButton from '../../components/BackButton';
 import {CommonActions} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -49,7 +49,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View>
           {boardDetail?.postResponseDto.content.map((post: ContentPreviewDto, index: number) => (
-            <PostList key={index} post={post} />
+            <PostItem key={index} post={post} />
           ))}
         </View>
       </ScrollView>

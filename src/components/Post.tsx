@@ -9,7 +9,7 @@ import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
 import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
-import PostList from './PostList';
+import PostItem from './PostItem';
 function Post() {
   const [isLiked, setIsLiked] = useState<boolean>();
   return (
