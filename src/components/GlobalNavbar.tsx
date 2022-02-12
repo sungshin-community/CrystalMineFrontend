@@ -15,7 +15,7 @@ import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Dimensions, Platform, Pressable} from 'react-native';
+import {Platform, Pressable} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRegularMember} from '../common/authApi';
 
@@ -54,6 +54,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
         tabBarIconStyle: {
           justifyContent: 'space-between',
         },
+        tabBarShowLabel: false,
+        tabBarInactiveTintColor: '#6E7882',
+        tabBarActiveTintColor: '#A055FF',
       }}>
       <Tab.Screen
         name="Home"
@@ -69,9 +72,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
               <SearchIcon style={{marginRight: 19}} />
             </Pressable>
           ),
-          tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#6E7882',
-          tabBarActiveTintColor: '#A055FF',
         }}
       />
       <Tab.Screen
@@ -97,9 +97,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
               <SearchIcon style={{marginRight: 19}} />
             </Pressable>
           ),
-          tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#6E7882',
-          tabBarActiveTintColor: '#A055FF',
           headerTitleStyle: {
             fontSize: 17,
             fontFamily: 'SpoqaHanSansNeo-Regular',
@@ -116,9 +113,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
               <MessageTabIcon size={size} color={color} focused={focused} />
             );
           },
-          tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#6E7882',
-          tabBarActiveTintColor: '#A055FF',
         }}
       />
       <Tab.Screen
@@ -129,9 +123,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <AlertTabIcon size={size} color={color} focused={focused} />;
           },
-          tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#6E7882',
-          tabBarActiveTintColor: '#A055FF',
         }}
       />
       <Tab.Screen
@@ -143,9 +134,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
-          tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#6E7882',
-          tabBarActiveTintColor: '#A055FF',
           headerTitleStyle: {
             fontSize: 17,
             fontWeight: '400',
