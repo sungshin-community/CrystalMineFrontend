@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform, Pressable, Text} from 'react-native';
+import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
 //screens
 import SplashHome from './src/screens/SplashHome';
@@ -28,11 +28,12 @@ import PostListScreen from './src/screens/post/PostListScreen';
 import BoardSearch from './src/screens/board/BoardSearch';
 import SearchResult from './src/screens/board/SearchResult';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NativeScreenNavigationContainer} from 'react-native-screens';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import RequestScreen from './src/screens/mypage/RequestScreen';
-import {fontMedium} from './src/common/font';
+import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
+import RequestAnswer from './src/screens/mypage/RequestAnswer';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -182,6 +183,7 @@ const App = () => {
                 component={BoardScreen}
                 options={{
                   title: '게시판',
+                  headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
@@ -224,6 +226,32 @@ const App = () => {
                 component={RequestScreen}
                 options={{
                   title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="RequestWriteScreen"
+                component={RequestWriteScreen}
+                options={{
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="RequestAnswer"
+                component={RequestAnswer}
+                options={{
+                  title: '문의 내역',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -347,6 +375,7 @@ const App = () => {
                 component={BoardScreen}
                 options={{
                   title: '게시판',
+                  headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
@@ -400,6 +429,32 @@ const App = () => {
               <Stack.Screen
                 name="RequestScreen"
                 component={RequestScreen}
+                options={{
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="RequestWriteScreen"
+                component={RequestWriteScreen}
+                options={{
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="RequestAnswer"
+                component={RequestAnswer}
                 options={{
                   title: '문의 하기',
                   headerTitleAlign: 'center',

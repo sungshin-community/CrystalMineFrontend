@@ -6,8 +6,8 @@ import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-{
-  Platform.OS === 'android' && StatusBar.setBackgroundColor('white');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
