@@ -60,16 +60,6 @@ export default function SignUpPassword({navigation, route}: Props) {
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
-
   const onInputFocus = () => {
     setIsFocused(true);
   };

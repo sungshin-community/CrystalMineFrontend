@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 import {
   StatusBar,
@@ -23,8 +23,6 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -58,16 +56,6 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
 
   const onInputFocus = () => {
     setIsFocused(true);

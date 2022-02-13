@@ -23,8 +23,6 @@ import {
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict} from '../../common/authApi';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -64,16 +62,6 @@ export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
 
   const onInputFocus = () => {
     setIsFocused(true);
