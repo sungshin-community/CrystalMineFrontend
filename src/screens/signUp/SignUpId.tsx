@@ -74,16 +74,6 @@ export default function SignUpId({navigation}: Props) {
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, []);
-
   const onIdFocus = () => {
     setIsIdFocused(true);
   };

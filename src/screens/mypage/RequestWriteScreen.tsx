@@ -46,11 +46,6 @@ function RequestWriteScreen({navigation}: Props) {
       navigation.navigate('RequestAnswer', {content: body});
     };
     navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
       headerRight: (): React.ReactNode => (
         <Pressable onPress={onSubmitPress}>
           <Text style={[styles.submit, fontRegular]}>제출</Text>

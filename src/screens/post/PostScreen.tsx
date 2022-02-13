@@ -13,19 +13,9 @@ import {
 import Post from '../../components/Post';
 import Comment, { CommentReply } from '../../components/Comment';
 import InputComment from '../../components/InputComment';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 const PostScreen = ({navigation}: any) => {
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
+
   return (
     <>
       <KeyboardAvoidingView

@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text, Pressable, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CommonActions} from '@react-navigation/native';
-import BackButton from '../../components/BackButton';
 import {fontMedium} from '../../common/font';
 import RightArrow from '../../../resources/icon/Arrow';
 
@@ -12,15 +10,6 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 function RequestScreen({navigation}: Props) {
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
 
   return (
     <SafeAreaView style={{backgroundColor: '#F6F6F6'}}>
