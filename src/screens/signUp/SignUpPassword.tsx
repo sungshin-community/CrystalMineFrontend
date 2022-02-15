@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 import {
@@ -23,8 +24,6 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -38,7 +37,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 37px 0px 52px 0px;
+  margin: 55px 0px 52px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
@@ -59,6 +58,7 @@ export default function SignUpPassword({navigation, route}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isWrong, setIsWrong] = useState<boolean>(false);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -71,9 +71,10 @@ export default function SignUpPassword({navigation, route}: Props) {
 
   const validatePassword = (password: string) => {
     let regExp =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,16}$/;
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
     if (regExp.test(password)) {
       setIsValidate(true);
+      setIsWrong(false);
     } else {
       setIsValidate(false);
     }
@@ -108,7 +109,11 @@ export default function SignUpPassword({navigation, route}: Props) {
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+              borderColor: isWrong
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
             }}>
             <TextInput
               style={{
@@ -124,6 +129,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
+                value.length > 0 ? setIsWrong(true) : setIsWrong(false);
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
               }}
@@ -144,8 +150,8 @@ export default function SignUpPassword({navigation, route}: Props) {
               <PasswordNotShow onPress={letShowPassword} />
             )}
           </MiddleInputContainerStyle>
-          {!isValidate && (
-            <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />
+          {isWrong && !isValidate && (
+            <CautionText text="사용할 수 없는 비밀번호 입니다." />
           )}
         </ScrollView>
         <View
@@ -205,7 +211,11 @@ export default function SignUpPassword({navigation, route}: Props) {
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+              borderColor: isWrong
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
             }}>
             <TextInput
               style={{
@@ -221,6 +231,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
+                value.length > 0 ? setIsWrong(true) : setIsWrong(false);
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
               }}
@@ -240,8 +251,8 @@ export default function SignUpPassword({navigation, route}: Props) {
               <PasswordNotShow onPress={letShowPassword} />
             )}
           </MiddleInputContainerStyle>
-          {!isValidate && (
-            <CautionText text="비밀번호는 영문, 숫자, 특수문자 조합 10자 이상이어야 합니다" />
+          {isWrong && !isValidate && (
+            <CautionText text="사용할 수 없는 비밀번호 입니다." />
           )}
         </ScrollView>
         <View

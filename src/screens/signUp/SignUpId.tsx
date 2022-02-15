@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -23,9 +24,7 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {checkEmailConflict} from '../../common/authApi';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
+import {checkEmailConflict, checkBlackList} from '../../common/authApi';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -60,7 +59,6 @@ const styles = StyleSheet.create({
   errorMessage: {
     marginTop: 10,
     color: '#FF0000',
-    marginLeft: 24,
   },
 });
 type RootStackParamList = {
@@ -73,6 +71,7 @@ export default function SignUpId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+  const [isBlackList, setIsBlackList] = useState<boolean>(false);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -110,16 +109,22 @@ export default function SignUpId({navigation}: Props) {
             style={{
               paddingRight: 24,
               paddingLeft: 24,
-              marginTop: 12,
             }}>
             <View
               style={[
                 styles.inputContainer,
-                {borderColor: isFocused ? '#A055FF' : '#D7DCE6'},
+                {
+                  borderColor:
+                    isDuplicate || isBlackList
+                      ? '#ff0000'
+                      : isFocused
+                      ? '#A055FF'
+                      : '#D7DCE6',
+                },
               ]}>
               <TextInput
                 style={{
-                  width: '60%',
+                  width: '65%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
@@ -132,19 +137,26 @@ export default function SignUpId({navigation}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setStudentId(value);
+                  setIsDuplicate(false);
                 }}
                 placeholder="아이디"
                 keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
-                maxLength={8}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
+            {isDuplicate && (
+              <Text style={styles.errorMessage}>
+                이미 가입되어 있는 계정입니다.
+              </Text>
+            )}
+            {isBlackList && (
+              <Text style={styles.errorMessage}>
+                가입이 불가능한 계정입니다.
+              </Text>
+            )}
           </View>
-          {isDuplicate && (
-            <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>
-          )}
         </ScrollView>
         <View
           style={{
@@ -157,9 +169,12 @@ export default function SignUpId({navigation}: Props) {
               text="다음"
               onClick={async () => {
                 let result: boolean = await checkEmailConflict(studentId);
+                let resultBlackList: boolean = await checkBlackList(studentId);
                 if (!result) {
                   setIsDuplicate(true);
                   return;
+                } else if (!resultBlackList) {
+                  setIsBlackList(true);
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
@@ -173,9 +188,12 @@ export default function SignUpId({navigation}: Props) {
               text="다음"
               onClick={async () => {
                 let result: boolean = await checkEmailConflict(studentId);
+                let resultBlackList: boolean = await checkBlackList(studentId);
                 if (!result) {
                   setIsDuplicate(true);
                   return;
+                } else if (!resultBlackList) {
+                  setIsBlackList(true);
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
@@ -217,16 +235,22 @@ export default function SignUpId({navigation}: Props) {
           <View
             style={{
               paddingHorizontal: 24,
-              marginTop: 12,
             }}>
             <View
               style={[
                 styles.inputContainer,
-                {borderColor: isFocused ? '#A055FF' : '#D7DCE6'},
+                {
+                  borderColor:
+                    isDuplicate || isBlackList
+                      ? '#ff0000'
+                      : isFocused
+                      ? '#A055FF'
+                      : '#D7DCE6',
+                },
               ]}>
               <TextInput
                 style={{
-                  width: '60%',
+                  width: '65%',
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
@@ -239,17 +263,24 @@ export default function SignUpId({navigation}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setStudentId(value);
+                  setIsDuplicate(false);
                 }}
                 placeholder="아이디"
                 keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
-                maxLength={8}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
             {isDuplicate && (
-              <Text style={styles.errorMessage}>이미 존재하는 계정입니다.</Text>
+              <Text style={styles.errorMessage}>
+                이미 가입되어 있는 계정입니다.
+              </Text>
+            )}
+            {isBlackList && (
+              <Text style={styles.errorMessage}>
+                가입이 불가능한 계정입니다.
+              </Text>
             )}
           </View>
         </ScrollView>
@@ -264,9 +295,12 @@ export default function SignUpId({navigation}: Props) {
               text="다음"
               onClick={async () => {
                 let result: boolean = await checkEmailConflict(studentId);
+                let resultBlackList: boolean = await checkBlackList(studentId);
                 if (!result) {
                   setIsDuplicate(true);
                   return;
+                } else if (!resultBlackList) {
+                  setIsBlackList(true);
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
@@ -280,9 +314,12 @@ export default function SignUpId({navigation}: Props) {
               text="다음"
               onClick={async () => {
                 let result: boolean = await checkEmailConflict(studentId);
+                let resultBlackList: boolean = await checkBlackList(studentId);
                 if (!result) {
                   setIsDuplicate(true);
                   return;
+                } else if (!resultBlackList) {
+                  setIsBlackList(true);
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
