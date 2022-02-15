@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -117,7 +118,7 @@ export default function MajorSelect({navigation, route}: Props) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           modalText={`소속 학과가 학과 리스트에 없을 경우,
-아래 내용을 따라 이용부탁드립니다.`}
+아래 내용을 따라 이용 부탁드립니다.`}
           modalBody={modalBody}
           modalButtonText="확인"
           modalButton={

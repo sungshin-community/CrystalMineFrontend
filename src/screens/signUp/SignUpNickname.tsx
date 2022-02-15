@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -14,7 +15,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {NormalOneLineText} from '../../components/Top';
+import {Description, NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -90,6 +91,7 @@ export default function SignUpNickname({navigation, route}: Props) {
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
+            <Description>공백 없이 10자 이하로 구성해주세요.</Description>
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
@@ -109,7 +111,8 @@ export default function SignUpNickname({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
-                setNickname(value);
+                setNickname(value.replace(/\s/g, ''));
+                setIsDuplicate(false);
               }}
               placeholder="닉네임"
               placeholderTextColor="#A0AAB4"
@@ -119,10 +122,13 @@ export default function SignUpNickname({navigation, route}: Props) {
               returnKeyType="done"
               selectionColor="#A055FF"
               value={nickname}
+              maxLength={10}
             />
           </MiddleInputContainerStyle>
           {isDuplicate && (
-            <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>
+            <Text style={styles.errorMessage}>
+              사용할 수 없는 닉네임입니다.
+            </Text>
           )}
         </ScrollView>
         <View
@@ -193,10 +199,15 @@ export default function SignUpNickname({navigation, route}: Props) {
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
+            <Description>공백 없이 10자 이하로 구성해주세요.</Description>
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+              borderColor: isDuplicate
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
             }}>
             <TextInput
               style={{
@@ -212,7 +223,8 @@ export default function SignUpNickname({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
-                setNickname(value);
+                setNickname(value.replace(/\s/g, ''));
+                setIsDuplicate(false);
               }}
               placeholder="닉네임"
               placeholderTextColor="#A0AAB4"
@@ -222,10 +234,13 @@ export default function SignUpNickname({navigation, route}: Props) {
               returnKeyType="done"
               selectionColor="#A055FF"
               value={nickname}
+              maxLength={10}
             />
           </MiddleInputContainerStyle>
           {isDuplicate && (
-            <Text style={styles.errorMessage}>이미 존재하는 닉네임입니다.</Text>
+            <Text style={styles.errorMessage}>
+              사용할 수 없는 닉네임입니다.
+            </Text>
           )}
         </ScrollView>
         <View

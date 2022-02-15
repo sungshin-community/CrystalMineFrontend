@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import styled from 'styled-components/native';
 import {Platform, StatusBar} from 'react-native';
@@ -40,7 +41,7 @@ export default function SignUpComplete({navigation}: Props) {
           duration={1200}
           easing={'ease-in-out-quad'}>
           <TwoLineTitle
-            firstLineText="회원가입이"
+            firstLineText="회원 가입이"
             secondLineText="완료되었습니다"
           />
         </Animatable.Text>
@@ -48,14 +49,9 @@ export default function SignUpComplete({navigation}: Props) {
           animation="fadeIn"
           delay={2100}
           style={{marginTop: 15}}>
-          <Description>
-            수정광산에 오신 것을 환영합니다!{'\n\n'}
-            즐거운 수정광산 생활을 위해{'\n'}
-            서로 배려하는 따뜻한 활동 부탁드려요.{'\n\n'}
-            또한 모든 수정이들의{'\n'}
-            자유로운 활동을 위해{'\n'}
-            수정광산 안의 모든 내용은{'\n'}
-            밖으로의 유출을 삼가주세요.{'\n'}
+          <Description style={{lineHeight: 16.28}}>
+            안녕하세요, 수정님.{'\n'}
+            수정광산에 오신 것을 환영합니다!
           </Description>
         </Animatable.Text>
       </Container>
