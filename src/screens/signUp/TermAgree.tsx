@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 
 import {
   ScrollView,
@@ -26,8 +27,6 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 type RootStackParamList = {
   SplashHome: undefined;
@@ -40,16 +39,6 @@ function TermAgree({navigation}: Props) {
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
   const [secondTermSpread, setSecondTermSpread] = useState<boolean>(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
 
   const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
     if (clickedComponent === 'firstTerm') {

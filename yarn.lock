@@ -3467,11 +3467,6 @@
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
 
-"fsevents@^2.1.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
-
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
   "resolved" "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
@@ -6071,6 +6066,11 @@
   "integrity" "sha512-jnNLvU7XPdPAcPpJAeYAlLpNsXmz7eTN3j9gOEeBJujrLj4n81wCKPFvwZ0crycawxh8UhqE/0df6274yMiIeg=="
   "resolved" "https://registry.npmjs.org/react-native-confirmation-code-field/-/react-native-confirmation-code-field-7.2.0.tgz"
   "version" "7.2.0"
+
+"react-native-image-picker@^4.7.3":
+  "integrity" "sha512-eRKm4wlsmZHmsWFyv77kYc2F+ZyEVqe0m7mqhsMzWk6TQT4FBDtEDxmRDDFq+ivCu/1QD+EPhmYcAIpeGr7Ekg=="
+  "resolved" "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.7.3.tgz"
+  "version" "4.7.3"
 
 "react-native-otp-textinput@0.0.8":
   "integrity" "sha512-jBYawUTa6qo7tUaHNZTYdNPGztSYjaPMX5iSOSiSQPy3+VQ+LqtLy5QschldFPJuh0pNDKqIB0d3K0kAEuC5Kg=="

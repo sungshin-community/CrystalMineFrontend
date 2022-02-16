@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
+import styled from 'styled-components/native';
 
 import {
   StatusBar,
@@ -23,8 +24,6 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -38,7 +37,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const TextContainer = styled.View`
-  margin: 37px 0px 40px 0px;
+  margin: 55px 0px 47px 0px;
 `;
 
 const MiddleInputContainerStyle = styled.View`
@@ -58,16 +57,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
+  const [isWrong, setIsWrong] = useState<boolean>(false);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -80,6 +70,9 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
 
   const validatePassword = (password: string) => {
     setIsEqual(password === route.params.previousPassword);
+    password === route.params.previousPassword
+      ? setIsWrong(false)
+      : setIsWrong(true);
   };
 
   const letShowPassword = () => {
@@ -111,11 +104,15 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+              borderColor: isWrong
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
             }}>
             <TextInput
               style={{
-                width: '90%',
+                width: '93%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
@@ -127,6 +124,9 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
+                if (value.length > 0) {
+                  setIsWrong(true);
+                }
                 validatePassword(value);
               }}
               maxLength={25}
@@ -144,7 +144,9 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               <PasswordNotShow onPress={letShowPassword} />
             )}
           </MiddleInputContainerStyle>
-          {!isEqual && <CautionText text="비밀번호가 일치하지 않습니다" />}
+          {isWrong && !isEqual && (
+            <CautionText text="비밀번호를 정확하게 입력해 주세요." />
+          )}
         </ScrollView>
         <View
           style={{
@@ -201,11 +203,15 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+              borderColor: isWrong
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
             }}>
             <TextInput
               style={{
-                width: '90%',
+                width: '93%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
@@ -217,6 +223,9 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
+                if (value.length > 0) {
+                  setIsWrong(true);
+                }
                 validatePassword(value);
               }}
               maxLength={25}
@@ -234,7 +243,9 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
               <PasswordNotShow onPress={letShowPassword} />
             )}
           </MiddleInputContainerStyle>
-          {!isEqual && <CautionText text="비밀번호가 일치하지 않습니다" />}
+          {isWrong && !isEqual && (
+            <CautionText text="비밀번호를 정확하게 입력해 주세요." />
+          )}
         </ScrollView>
         <View
           style={{

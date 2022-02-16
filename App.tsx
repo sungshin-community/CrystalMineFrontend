@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform, Pressable, Text} from 'react-native';
+import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
 //screens
 import SplashHome from './src/screens/SplashHome';
@@ -28,11 +28,15 @@ import PostListScreen from './src/screens/post/PostListScreen';
 import BoardSearch from './src/screens/board/BoardSearch';
 import SearchResult from './src/screens/board/SearchResult';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NativeScreenNavigationContainer} from 'react-native-screens';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import RequestScreen from './src/screens/mypage/RequestScreen';
-import {fontMedium} from './src/common/font';
+import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
+import RequestAnswer from './src/screens/mypage/RequestAnswer';
+
+import BackButtonIcon from './resources/icon/BackButtonIcon';
+import { CommonActions } from '@react-navigation/native';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -87,47 +91,80 @@ const App = () => {
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpId"
                 component={SignUpId}
-                options={{title: '', animation: 'slide_from_right'}}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpPassword"
                 component={SignUpPassword}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpPasswordConfirm"
                 component={SignUpPasswordConfirm}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpNickname"
                 component={SignUpNickname}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="MajorSelect"
                 component={MajorSelect}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpComplete"
@@ -157,18 +194,28 @@ const App = () => {
               <Stack.Screen
                 name="SignInId"
                 component={SignInId}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignInPassword"
                 component={SignInPassword}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               {/* GNB */}
               <Stack.Screen
@@ -182,6 +229,7 @@ const App = () => {
                 component={BoardScreen}
                 options={{
                   title: '게시판',
+                  headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
@@ -207,7 +255,7 @@ const App = () => {
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
-                options={{
+                options={({navigation}) => ({
                   title: '고정 게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
@@ -215,15 +263,56 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
               <Stack.Screen
                 name="RequestScreen"
                 component={RequestScreen}
-                options={{
+                options={({navigation}) => ({
                   title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestWriteScreen"
+                component={RequestWriteScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestAnswer"
+                component={RequestAnswer}
+                options={{
+                  title: '문의 내역',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -249,50 +338,80 @@ const App = () => {
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpId"
                 component={SignUpId}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpPassword"
                 component={SignUpPassword}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpPasswordConfirm"
                 component={SignUpPasswordConfirm}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpNickname"
                 component={SignUpNickname}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="MajorSelect"
                 component={MajorSelect}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignUpComplete"
@@ -322,18 +441,28 @@ const App = () => {
               <Stack.Screen
                 name="SignInId"
                 component={SignInId}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="SignInPassword"
                 component={SignInPassword}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               {/* GNB */}
               <Stack.Screen
@@ -347,6 +476,7 @@ const App = () => {
                 component={BoardScreen}
                 options={{
                   title: '게시판',
+                  headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
@@ -372,7 +502,7 @@ const App = () => {
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
-                options={{
+                options={({navigation}) => ({
                   title: '고정 게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
@@ -380,12 +510,17 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="PostScreen"
                 component={PostScreen}
-                options={{
+                options={({navigation}) => ({
                   title: '네모 게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
@@ -393,13 +528,54 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
               />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
               <Stack.Screen
                 name="RequestScreen"
                 component={RequestScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestWriteScreen"
+                component={RequestWriteScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestAnswer"
+                component={RequestAnswer}
                 options={{
                   title: '문의 하기',
                   headerTitleAlign: 'center',

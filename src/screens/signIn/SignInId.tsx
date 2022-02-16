@@ -19,8 +19,6 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -55,16 +53,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isIdFocused, setIsIdFocused] = useState<boolean>(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
 
   const onIdFocus = () => {
     setIsIdFocused(true);

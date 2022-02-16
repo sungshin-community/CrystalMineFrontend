@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import {
   StatusBar,
   View,
@@ -18,8 +19,6 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
-import BackButton from '../../components/BackButton';
-import {CommonActions} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -63,16 +62,6 @@ export default function MajorSelect({navigation, route}: Props) {
   const [majorList, setMajorList] = useState<Major[]>([]);
   const [selectedMajorId, setSelectedMajorId] = useState<number>(-1);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: (): React.ReactNode => (
-        <BackButton
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        />
-      ),
-    });
-  }, [navigation]);
 
   useEffect(() => {
     async function getList() {
@@ -129,7 +118,7 @@ export default function MajorSelect({navigation, route}: Props) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           modalText={`소속 학과가 학과 리스트에 없을 경우,
-아래 내용을 따라 이용부탁드립니다.`}
+아래 내용을 따라 이용 부탁드립니다.`}
           modalBody={modalBody}
           modalButtonText="확인"
           modalButton={
