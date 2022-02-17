@@ -48,8 +48,8 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpNickname: {userId: string; password: string};
-  SignUpPasswordConfirm: {userId: string; previousPassword: string};
+  SignUpNickname: {userId: string; password: string; agreementIds: number[];};
+  SignUpPasswordConfirm: {userId: string; previousPassword: string; agreementIds: number[];};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -161,6 +161,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 navigation.navigate('SignUpNickname', {
                   userId: route.params.userId,
                   password: route.params.previousPassword,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />
@@ -172,6 +173,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 navigation.navigate('SignUpNickname', {
                   userId: route.params.userId,
                   password: route.params.previousPassword,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />
@@ -260,6 +262,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 navigation.navigate('SignUpNickname', {
                   userId: route.params.userId,
                   password: route.params.previousPassword,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />
@@ -271,6 +274,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 navigation.navigate('SignUpNickname', {
                   userId: route.params.userId,
                   password: route.params.previousPassword,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />

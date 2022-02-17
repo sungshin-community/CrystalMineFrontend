@@ -42,15 +42,16 @@ export function RoundChecked(props: any) {
 export function Unchecked(props: any) {
   return (
     <Svg
-      width={18}
-      height={14}
+      width={24}
+      height={24}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}>
+      {...props}
+    >
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M6 11.2L1.8 7 .4 8.4 6 14 18 2 16.6.6 6 11.2z"
+        d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
         fill="#D6D6D6"
         fillOpacity={0.87}
       />
@@ -61,15 +62,16 @@ export function Unchecked(props: any) {
 export function Checked(props: any) {
   return (
     <Svg
-      width={18}
-      height={14}
+      width={24}
+      height={24}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}>
+      {...props}
+    >
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M6 11.2L1.8 7 .4 8.4 6 14 18 2 16.6.6 6 11.2z"
+        d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
         fill="#6E7882"
       />
     </Svg>

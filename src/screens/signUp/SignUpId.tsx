@@ -62,12 +62,11 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  TermAgree: undefined;
-  SignUpPassword: {userId: string};
+  SignUpPassword: {userId: string; agreementIds: number[];};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpId({navigation}: Props) {
+export default function SignUpId({navigation, route}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
@@ -178,6 +177,7 @@ export default function SignUpId({navigation}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
@@ -197,6 +197,7 @@ export default function SignUpId({navigation}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />
@@ -304,6 +305,7 @@ export default function SignUpId({navigation}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />
@@ -323,6 +325,7 @@ export default function SignUpId({navigation}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />

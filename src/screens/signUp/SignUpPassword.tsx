@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 import {
   StatusBar,
@@ -48,8 +48,8 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpPasswordConfirm: {previousPassword: string};
-  SignUpPassword: {userId: string};
+  SignUpPasswordConfirm: {previousPassword: string; agreementIds: number[];};
+  SignUpPassword: {userId: string; agreementIds: number[];};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -167,6 +167,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />
@@ -178,6 +179,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />
@@ -268,6 +270,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />
@@ -279,6 +282,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
+                  agreementIds: route.params.agreementIds
                 })
               }
             />

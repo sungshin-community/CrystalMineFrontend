@@ -8,6 +8,16 @@ import SignInRequestDto from '../classes/SignInRequestDto';
 import VerificationRequestDto from '../classes/VerificationRequestDto';
 import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
 import Response from '../classes/Response';
+import Agreement from '../classes/Agreement';
+
+export const getAgreements = async () => {
+  try {
+    const response = await client.get<Response<Agreement[]>>('/auth/agreements');
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}
 
 export const checkEmailConflict = async (studentId: string) => {
   try {
@@ -56,6 +66,7 @@ export const getMajorList = async () => {
   return response.data.data;
 };
 export const register = async (signUpRequestDto: SignUpRequestDto) => {
+  console.log(signUpRequestDto);
   try {
     const response = await client.post<Response<SignUpResponseDto>>(
       '/auth/signup',
