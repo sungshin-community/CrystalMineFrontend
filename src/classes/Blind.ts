@@ -3,4 +3,4 @@ export default interface Blind {
   content: string;
   reason: string;
   createdAt: string;
-  }
+}
