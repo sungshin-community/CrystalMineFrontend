@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  MajorSelect: {userId: string; password: string; nickname: string};
-  SignUpNickname: {userId: string; password: string};
+  MajorSelect: {userId: string; password: string; nickname: string; agreementIds: number[];};
+  SignUpNickname: {userId: string; password: string; agreementIds: number[];};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -150,6 +150,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />
@@ -168,6 +169,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />
@@ -262,6 +264,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />
@@ -280,6 +283,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
+                  agreementIds: route.params.agreementIds
                 });
               }}
             />

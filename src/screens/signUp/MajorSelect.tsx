@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   SignUpComplete: undefined;
-  MajorSelect: {userId: string; password: string; nickname: string};
+  MajorSelect: {userId: string; password: string; nickname: string; agreementIds: number[];};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -153,7 +153,7 @@ export default function MajorSelect({navigation, route}: Props) {
                   password: route.params.password,
                   nickname: route.params.nickname,
                   departmentId: selectedMajorId,
-                  agreementIds: [3, 4],
+                  agreementIds: route.params.agreementIds
                 });
                 navigation.reset({routes: [{name: 'SignUpComplete'}]});
               }}

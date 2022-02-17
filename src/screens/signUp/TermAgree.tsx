@@ -33,7 +33,7 @@ import { getAgreements } from '../../common/authApi';
 
 type RootStackParamList = {
   SplashHome: undefined;
-  SignUpId: undefined;
+  SignUpId: {agreementIds: number[];};
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -167,7 +167,7 @@ function TermAgree({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={() => {
-                navigation.navigate('SignUpId');
+                navigation.navigate('SignUpId', {agreementIds: agreements.map(a => a.id)});
               }}
             />
           ) : (

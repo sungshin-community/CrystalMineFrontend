@@ -66,6 +66,7 @@ export const getMajorList = async () => {
   return response.data.data;
 };
 export const register = async (signUpRequestDto: SignUpRequestDto) => {
+  console.log(signUpRequestDto);
   try {
     const response = await client.post<Response<SignUpResponseDto>>(
       '/auth/signup',
