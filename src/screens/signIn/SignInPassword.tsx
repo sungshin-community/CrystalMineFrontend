@@ -122,8 +122,6 @@ export default function SignInPassword({navigation, route}: Props) {
                 marginTop: 10,
                 alignItems: 'center',
               }}>
-              <LoginCheckBoxOn />
-              <Text style={{color: '#87919B', marginLeft: 6}}>자동로그인</Text>
             </View>
           </View>
         </View>
@@ -229,8 +227,6 @@ export default function SignInPassword({navigation, route}: Props) {
                 marginTop: 10,
                 alignItems: 'center',
               }}>
-              <LoginCheckBoxOn />
-              <Text style={{color: '#87919B', marginLeft: 6}}>자동로그인</Text>
             </View>
           </View>
         </View>
