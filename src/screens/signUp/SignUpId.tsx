@@ -13,6 +13,7 @@ import {
   ScrollView,
   Platform,
   Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
@@ -24,8 +25,9 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
+import {ModalBottom} from '../../components/ModalBottom';
 import {checkEmailConflict, checkBlackList} from '../../common/authApi';
-
+import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -59,10 +61,15 @@ const styles = StyleSheet.create({
   errorMessage: {
     marginTop: 10,
     color: '#E64646',
+    fontSize: 11,
+  },
+  greyText: {
+    color: '#797979',
+    lineHeight: 25,
   },
 });
 type RootStackParamList = {
-  SignUpPassword: {userId: string; agreementIds: number[];};
+  SignUpPassword: {userId: string; agreementIds: number[]};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -71,6 +78,7 @@ export default function SignUpId({navigation, route}: Props) {
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -80,7 +88,18 @@ export default function SignUpId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
-
+  const modalBody = (
+    <>
+      <Text style={styles.greyText}>1. 학과 리스트에서 </Text>
+      <Text>임의 학과 선택 후 가입{'\n'}</Text>
+      <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
+      <Text>학과 추가 요청{'\n'}</Text>
+      <Text style={styles.greyText}>
+        3. 학과 추가 안내를 받은 후, 마이페이지에서{'\n'}
+      </Text>
+      <Text>{'     '}학과 변경 진행</Text>
+    </>
+  );
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={10}
@@ -100,10 +119,26 @@ export default function SignUpId({navigation, route}: Props) {
           style={{backgroundColor: '#fff'}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-            <Description>
-              학교에서 제공하는 성신 G-mail 계정을 사용합니다
-            </Description>
+            <View style={{flexDirection: 'row'}}>
+              <Description>
+                학교에서 제공하는 성신 G-mail 계정을 사용합니다
+              </Description>
+              <ModalBottom
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                modalText={`학교 G-mail 계정 생성 방법`}
+                modalBody={modalBody}
+                modalButtonText="확인"
+                modalButton={
+                  <View style={{paddingTop: 3, marginLeft: 5}}>
+                    <SignUpQuestionMark />
+                  </View>
+                }
+                modalButtonFunc={() => setModalVisible(!modalVisible)}
+              />
+            </View>
           </TextContainer>
+
           <View
             style={{
               paddingRight: 24,
@@ -197,7 +232,7 @@ export default function SignUpId({navigation, route}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
@@ -229,10 +264,26 @@ export default function SignUpId({navigation, route}: Props) {
           style={{backgroundColor: '#fff'}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-            <Description>
-              학교에서 제공하는 성신 G-mail 계정을 사용합니다
-            </Description>
+            <View style={{flexDirection: 'row'}}>
+              <Description>
+                학교에서 제공하는 성신 G-mail 계정을 사용합니다
+              </Description>
+              <ModalBottom
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                modalText={`학교 G-mail 계정 생성 방법`}
+                modalBody={modalBody}
+                modalButtonText="확인"
+                modalButton={
+                  <View style={{paddingTop: 3, marginLeft: 5}}>
+                    <SignUpQuestionMark />
+                  </View>
+                }
+                modalButtonFunc={() => setModalVisible(!modalVisible)}
+              />
+            </View>
           </TextContainer>
+
           <View
             style={{
               paddingHorizontal: 24,
@@ -305,7 +356,7 @@ export default function SignUpId({navigation, route}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
@@ -325,7 +376,7 @@ export default function SignUpId({navigation, route}: Props) {
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
