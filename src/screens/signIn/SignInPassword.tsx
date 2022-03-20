@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  errorMessage: {
+    marginTop: 10,
+    color: '#E64646',
+    fontSize: 11,
+  },
 });
 
 type RootStackParamList = {
@@ -49,6 +54,7 @@ export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -77,14 +83,14 @@ export default function SignInPassword({navigation, route}: Props) {
         </NormalOneLineText>
 
         <View>
-          <Text style={{marginLeft: 24, marginTop: 36, color: '#A055FF'}}>
+        <Text style={{marginLeft: 24, marginTop: 36, color: isPasswordCorrect ? '#A055FF' : '#E64646'}}>
             비밀번호
           </Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
                 styles.inputContainer,
-                {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
+                {borderColor: isPasswordFocused ? (isPasswordCorrect ? '#A055FF' : '#E64646') : '#D7DCE6'},
               ]}>
               <TextInput
                 style={{
@@ -101,6 +107,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setPassword(value);
+                  setIsPasswordCorrect(true);
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
@@ -116,13 +123,9 @@ export default function SignInPassword({navigation, route}: Props) {
                 <PasswordNotShow onPress={letShowPassword} />
               )}
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                alignItems: 'center',
-              }}>
-            </View>
+            {!isPasswordCorrect && <Text style={styles.errorMessage}>
+                아이디 및 비밀번호를 정확하게 입력해주세요.
+              </Text>}
           </View>
         </View>
       </ScrollView>
@@ -153,7 +156,7 @@ export default function SignInPassword({navigation, route}: Props) {
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                console.log('로그인 실패');
+                setIsPasswordCorrect(false)
               }
             }}
           />
@@ -183,14 +186,14 @@ export default function SignInPassword({navigation, route}: Props) {
           로그인
         </NormalOneLineText>
         <View>
-          <Text style={{marginLeft: 24, marginTop: 36, color: '#A055FF'}}>
+          <Text style={{marginLeft: 24, marginTop: 36, color: isPasswordCorrect ? '#A055FF' : '#E64646'}}>
             비밀번호
           </Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
                 styles.inputContainer,
-                {borderColor: isPasswordFocused ? '#A055FF' : '#D7DCE6'},
+                {borderColor: isPasswordFocused ? (isPasswordCorrect ? '#A055FF' : '#E64646') : '#D7DCE6'},
               ]}>
               <TextInput
                 style={{
@@ -206,6 +209,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setPassword(value);
+                  setIsPasswordCorrect(true);
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
@@ -221,13 +225,9 @@ export default function SignInPassword({navigation, route}: Props) {
                 <PasswordNotShow onPress={letShowPassword} />
               )}
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                alignItems: 'center',
-              }}>
-            </View>
+            {!isPasswordCorrect && <Text style={styles.errorMessage}>
+                아이디 및 비밀번호를 정확하게 입력해주세요.
+              </Text>}
           </View>
         </View>
       </ScrollView>
@@ -249,7 +249,7 @@ export default function SignInPassword({navigation, route}: Props) {
               if (result) {
                 navigation.navigate('GlobalNavbar');
               } else {
-                console.log('로그인 실패');
+                setIsPasswordCorrect(false)
               }
             }}
           />
