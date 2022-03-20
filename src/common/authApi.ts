@@ -12,7 +12,15 @@ import Agreement from '../classes/Agreement';
 
 export const getAgreements = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/agreement');
+    const response = await client.get<Response<Agreement[]>>('/contract/agreement');
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}
+export const getDirectionAgreements = async () => {
+  try {
+    const response = await client.get<Response<Agreement[]>>('/contract/direction');
     return response.data.data;
   } catch {
     return [];

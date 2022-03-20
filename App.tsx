@@ -17,6 +17,7 @@ import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
+import DirectionAgree from './src/screens/signUp/DirectionAgree';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import BoardScreen from './src/screens/board/BoardScreen';
 import PostScreen from './src/screens/post/PostScreen';
@@ -35,7 +36,7 @@ import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
 import RequestAnswer from './src/screens/mypage/RequestAnswer';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
-import { CommonActions } from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -96,7 +97,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -109,7 +112,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -122,7 +127,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -135,7 +142,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -148,7 +157,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -161,7 +172,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -177,6 +190,14 @@ const App = () => {
               <Stack.Screen
                 name="RegularMemberAuthSelect"
                 component={RegularMemberAuthSelect}
+                options={{
+                  title: '',
+                  animation: 'slide_from_right',
+                }}
+              />
+              <Stack.Screen
+                name="DirectionAgree"
+                component={DirectionAgree}
                 options={{
                   title: '',
                   animation: 'slide_from_right',
@@ -199,7 +220,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -212,7 +235,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -265,7 +290,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -285,7 +312,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -303,7 +332,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -343,7 +374,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -356,7 +389,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -369,7 +404,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -382,7 +419,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -395,7 +434,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -408,7 +449,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -446,7 +489,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -459,7 +504,9 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -512,7 +559,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -530,7 +579,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -550,7 +601,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}
@@ -568,7 +621,9 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <BackButtonIcon
-                      onPress={() => navigation.dispatch(CommonActions.goBack())}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
                     />
                   ),
                 })}

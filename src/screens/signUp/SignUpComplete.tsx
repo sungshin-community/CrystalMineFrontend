@@ -54,13 +54,15 @@ export default function SignUpComplete({navigation}: Props) {
             수정광산에 오신 것을 환영합니다!
           </Description>
         </Animatable.Text>
-        <View
-          style={{
-            paddingHorizontal: Dimensions.get('window').width / 4,
-            paddingVertical: Dimensions.get('window').height / 8,
-          }}>
-          <SignUpCompleteIcon />
-        </View>
+        <Animatable.View animation="fadeIn" delay={2100}>
+          <View
+            style={{
+              paddingHorizontal: Dimensions.get('window').width / 4,
+              paddingVertical: Dimensions.get('window').height / 8,
+            }}>
+            <SignUpCompleteIcon />
+          </View>
+        </Animatable.View>
       </Container>
       <ButtonContainer>
         <Animatable.View animation="fadeIn" delay={2100}>
