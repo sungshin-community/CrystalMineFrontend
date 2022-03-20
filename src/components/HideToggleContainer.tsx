@@ -291,6 +291,10 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
           }}
           nestedScrollEnabled={true}>
           <Text>
+            <Text style={{fontWeight:'bold'}}>{title}</Text>
+            {"\n"}
+            {"\n"}
+            {"\n"}
             {content}
           </Text>
         </ScrollView>
