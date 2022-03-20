@@ -65,14 +65,15 @@ export function Checked(props: any) {
       width={24}
       height={24}
       fill="none"
+      viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <Path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
-        fill="#6E7882"
+       fill-rule="evenodd" 
+       clip-rule="evenodd" 
+       d="M8.9999 16.2001L4.7999 12.0001L3.3999 13.4001L8.9999 19.0001L20.9999 7.0001L19.5999 5.6001L8.9999 16.2001Z" 
+       fill="#A055FF"
       />
     </Svg>
   );
