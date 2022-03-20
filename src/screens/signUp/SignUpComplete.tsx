@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform, StatusBar} from 'react-native';
+import {Platform, StatusBar, View, Dimensions} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
+import SignUpCompleteIcon from '../../../resources/icon/custom/SignUpCompleteIcon';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -54,6 +54,13 @@ export default function SignUpComplete({navigation}: Props) {
             수정광산에 오신 것을 환영합니다!
           </Description>
         </Animatable.Text>
+        <View
+          style={{
+            paddingHorizontal: Dimensions.get('window').width / 4,
+            paddingVertical: Dimensions.get('window').height / 8,
+          }}>
+          <SignUpCompleteIcon />
+        </View>
       </Container>
       <ButtonContainer>
         <Animatable.View animation="fadeIn" delay={2100}>

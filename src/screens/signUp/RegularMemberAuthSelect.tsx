@@ -1,12 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import styled from 'styled-components/native';
-import {View, StatusBar, StyleSheet, Platform} from 'react-native';
+import {View, StatusBar, StyleSheet, Platform, Dimensions} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {sendEmail} from '../../common/authApi';
+import RegularMemberAuthSelectIcon from '../../../resources/icon/custom/RegularMemberAuthSelectIcon';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -65,6 +66,13 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             보안을 위해 계정 정보가 삭제됩니다.
           </Description>
         </Animatable.Text>
+        <View
+          style={{
+            paddingHorizontal: Dimensions.get('window').width / 4,
+            paddingVertical: Dimensions.get('window').height / 8,
+          }}>
+          <RegularMemberAuthSelectIcon />
+        </View>
       </Container>
       <View style={styles.buttonContainer}>
         <Animatable.View animation="fadeIn" delay={2100}>
