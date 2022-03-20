@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, Text, View, TouchableWithoutFeedback, ScrollView} from 'react-native';
+import {TouchableOpacity, Text, View, TouchableWithoutFeedback, ScrollView, Dimensions} from 'react-native';
 import {FoldButton, SpreadButton, BigFoldButton, BigSpreadButton, GreyBigFoldButton, GreyBigSpreadButton} from '../../resources/icon/Button';
 import { Checked, Unchecked } from '../../resources/icon/CheckBox';
 import PlusIcon from '../../resources/icon/PlusIcon';
@@ -282,7 +282,7 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
       {isSpread && (
         <ScrollView
           style={{
-            height: 150,
+            height:(Dimensions.get('window').height / 5),
             marginLeft: 40,
             marginRight: 40,
             backgroundColor: '#F6F6F6',
