@@ -12,7 +12,7 @@ import Agreement from '../classes/Agreement';
 
 export const getAgreements = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/auth/agreement');
+    const response = await client.get<Response<Agreement[]>>('/agreement');
     return response.data.data;
   } catch {
     return [];
