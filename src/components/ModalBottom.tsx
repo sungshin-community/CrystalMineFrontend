@@ -1,13 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  Alert,
   Modal,
   StyleSheet,
   Text,
   Pressable,
   View,
   Dimensions,
-  TouchableWithoutFeedback,
 } from 'react-native';
 
 interface Props {
@@ -18,6 +16,7 @@ interface Props {
   setModalVisible: any;
   modalVisible: boolean;
   modalButtonFunc: any;
+  fontSize: number;
 }
 export const ModalBottom = ({
   modalText,
@@ -27,7 +26,10 @@ export const ModalBottom = ({
   setModalVisible,
   modalVisible,
   modalButtonFunc = () => setModalVisible(!modalVisible),
+  fontSize,
 }: Props) => {
+  console.log('fontSize ::::: ', fontSize);
+
   return (
     <>
       <View style={[styles.centeredView]}>
@@ -38,10 +40,16 @@ export const ModalBottom = ({
           onRequestClose={() => {
             setModalVisible(!modalVisible);
           }}>
-          <Pressable style={{flex:1}} onPress={()=>setModalVisible(!modalVisible)}/>
+          <Pressable
+            style={{flex: 1}}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>{modalText}</Text>
+              <Text style={[styles.modalText, {fontSize: fontSize}]}>
+                {console.log('fontSize : ', fontSize)}
+                {modalText}
+              </Text>
               <View style={{marginHorizontal: 20}}>
                 <Text style={styles.modalBody}>{modalBody}</Text>
               </View>
@@ -54,7 +62,9 @@ export const ModalBottom = ({
           </View>
         </Modal>
       </View>
-      <Pressable onPress={modalButtonFunc}>{modalButton}</Pressable>
+      <Pressable hitSlop={10} onPress={modalButtonFunc}>
+        {modalButton}
+      </Pressable>
     </>
   );
 };
@@ -70,7 +80,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 2,
-    // width: 327,
     width: Dimensions.get('window').width - 48,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -102,10 +111,10 @@ const styles = StyleSheet.create({
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   modalText: {
-    fontSize: 13,
+    // fontSize: 17,
     textAlign: 'center',
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    lineHeight: 18,
+    fontFamily: 'SpoqaHanSansNeo-Bold',
+    // lineHeight: 18,
     marginBottom: 20,
   },
   modalBody: {

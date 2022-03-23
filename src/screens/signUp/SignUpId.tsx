@@ -119,7 +119,7 @@ export default function SignUpId({navigation, route}: Props) {
           style={{backgroundColor: '#fff'}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Description>
                 학교에서 제공하는 성신 G-mail 계정을 사용합니다
               </Description>
@@ -127,6 +127,7 @@ export default function SignUpId({navigation, route}: Props) {
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
                 modalText={`학교 G-mail 계정 생성 방법`}
+                fontSize={17}
                 modalBody={modalBody}
                 modalButtonText="확인"
                 modalButton={
