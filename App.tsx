@@ -37,6 +37,7 @@ import RequestAnswer from './src/screens/mypage/RequestAnswer';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
+import CloseButtonIcon from './resources/icon/CloseButtonIcon';
 
 const Stack = createNativeStackNavigator();
 
@@ -102,6 +103,9 @@ const App = () => {
                       }
                     />
                   ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
                 })}
               />
               <Stack.Screen
@@ -116,6 +120,9 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
@@ -132,6 +139,9 @@ const App = () => {
                       }
                     />
                   ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
                 })}
               />
               <Stack.Screen
@@ -146,6 +156,9 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
@@ -162,6 +175,9 @@ const App = () => {
                       }
                     />
                   ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
                 })}
               />
               <Stack.Screen
@@ -176,6 +192,9 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
@@ -379,6 +398,9 @@ const App = () => {
                       }
                     />
                   ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
                 })}
               />
               <Stack.Screen
@@ -393,6 +415,9 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
@@ -409,6 +434,9 @@ const App = () => {
                       }
                     />
                   ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
                 })}
               />
               <Stack.Screen
@@ -423,6 +451,9 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
@@ -439,6 +470,9 @@ const App = () => {
                       }
                     />
                   ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
                 })}
               />
               <Stack.Screen
@@ -453,6 +487,9 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
