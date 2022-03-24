@@ -28,6 +28,7 @@ import {
 import {ModalBottom} from '../../components/ModalBottom';
 import {checkEmailConflict, checkBlackList} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
+import {fontRegular} from '../../common/font';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -64,8 +65,23 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   greyText: {
-    color: '#797979',
-    lineHeight: 25,
+    color: '#87919B',
+    fontSize: 13,
+    lineHeight: 18.2,
+  },
+  blackText: {
+    color: '#222222',
+    fontSize: 13,
+    lineHeight: 18.2,
+  },
+  number: {
+    marginRight: 9,
+    fontSize: 13,
+  },
+  paragraph: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
   },
 });
 type RootStackParamList = {
@@ -90,21 +106,245 @@ export default function SignUpId({navigation, route}: Props) {
   };
   const modalBody = (
     <>
-      <Text style={styles.greyText}>1. 학과 리스트에서 </Text>
-      <Text>임의 학과 선택 후 가입{'\n'}</Text>
-      <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
-      <Text>학과 추가 요청{'\n'}</Text>
-      <Text style={styles.greyText}>
-        3. 학과 추가 안내를 받은 후, 마이페이지에서{'\n'}
-      </Text>
-      <Text>{'     '}학과 변경 진행</Text>
+      <View style={styles.paragraph}>
+        <View style={styles.number}>
+          <Text style={[fontRegular, styles.blackText]}>01</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            학교 포탈에 접속합니다.
+          </Text>
+          <Text style={[styles.greyText, fontRegular]}>
+            http://portal.sungshin.ac.kr
+          </Text>
+        </View>
+      </View>
+      <View style={styles.paragraph}>
+        <View style={styles.number}>
+          <Text style={[fontRegular, styles.blackText]}>02</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            포탈페이지 최하단에 [G메일신청] 버튼을{'\n'}클릭합니다.
+          </Text>
+        </View>
+      </View>
+      <View style={styles.paragraph}>
+        <View style={styles.number}>
+          <Text style={[fontRegular, styles.blackText]}>03</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            신청 내용을 확인하신 후 신청을 진행합니다.
+          </Text>
+        </View>
+      </View>
+      <View style={styles.paragraph}>
+        <View style={styles.number}>
+          <Text style={[fontRegular, styles.blackText]}>04</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            신청 후 평균 7일 이내로 생성되며, 신청 결과는
+            {'\n'}포탈의 해당 페이지에서 확인하실 수 있습니다.
+          </Text>
+        </View>
+      </View>
+      <View style={[styles.paragraph, {marginTop: 8, marginBottom: 0}]}>
+        <View style={{marginLeft: 5, marginRight: 13, paddingTop: 3}}>
+          <Text style={[fontRegular, styles.greyText]}>*</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.greyText]}>
+            학교 계정 생성 및 관리에 대한 문의는{'\n'}
+            수정광산에서 처리하는 부분이 아니기 때문에{'\n'}
+            도와드릴 수 없음을 알려드리며, 관련 문의는{'\n'}
+            학교 시스템실로 문의 부탁드립니다.{'\n'}
+            (02-920-7520, 7514)
+          </Text>
+        </View>
+      </View>
     </>
   );
   return Platform.OS === 'ios' ? (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={10}
-      behavior={'padding'}
-      style={{flex: 1}}>
+    <>
+      {modalVisible && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 999,
+          }}
+        />
+      )}
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={10}
+        behavior={'padding'}
+        style={{flex: 1}}>
+        <View
+          style={{
+            width: (Dimensions.get('window').width / 7) * 2,
+            height: 4,
+            backgroundColor: '#A055FF',
+          }}
+        />
+        <Container>
+          <ScrollView
+            scrollEnabled={false}
+            keyboardShouldPersistTaps="handled"
+            style={{backgroundColor: '#fff'}}>
+            <TextContainer>
+              <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Description style={{marginRight: 5.5}}>
+                  학교에서 제공하는 성신 G-mail 계정을 사용합니다
+                </Description>
+                <ModalBottom
+                  modalVisible={modalVisible}
+                  setModalVisible={setModalVisible}
+                  modalText={`학교 G-mail 계정 생성 방법`}
+                  fontSize={17}
+                  modalBody={modalBody}
+                  modalButtonText="확인"
+                  modalButton={<SignUpQuestionMark />}
+                  modalButtonFunc={() => setModalVisible(!modalVisible)}
+                />
+              </View>
+            </TextContainer>
+
+            <View
+              style={{
+                paddingRight: 24,
+                paddingLeft: 24,
+              }}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  {
+                    borderColor:
+                      isDuplicate || isBlackList
+                        ? '#ff0000'
+                        : isFocused
+                        ? '#A055FF'
+                        : '#D7DCE6',
+                  },
+                ]}>
+                <TextInput
+                  style={{
+                    width: '65%',
+                    fontSize: 21,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                    paddingBottom: 7,
+                  }}
+                  onFocus={(e: any) => {
+                    onIdFocus();
+                  }}
+                  onBlur={(e: any) => {
+                    onIdFocusOut();
+                  }}
+                  onChangeText={(value: string) => {
+                    setStudentId(value);
+                    setIsDuplicate(false);
+                  }}
+                  placeholder="아이디"
+                  keyboardType="ascii-capable"
+                  selectionColor="#A055FF"
+                  value={studentId}
+                />
+                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
+              </View>
+              {isDuplicate && (
+                <Text style={styles.errorMessage}>
+                  이미 가입되어 있는 계정입니다.
+                </Text>
+              )}
+              {isBlackList && (
+                <Text style={styles.errorMessage}>
+                  가입이 불가능한 계정입니다.
+                </Text>
+              )}
+            </View>
+          </ScrollView>
+          <View
+            style={{
+              bottom: isFocused ? 80 : 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {studentId.length > 0 && isFocused && (
+              <PurpleFullButton
+                text="다음"
+                onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  let resultBlackList: boolean = await checkBlackList(
+                    studentId,
+                  );
+                  if (!result) {
+                    setIsDuplicate(true);
+                    return;
+                  } else if (!resultBlackList) {
+                    setIsBlackList(true);
+                  }
+                  navigation.navigate('SignUpPassword', {
+                    userId: studentId,
+                    agreementIds: route.params.agreementIds,
+                  });
+                }}
+              />
+            )}
+
+            {studentId.length > 0 && !isFocused && (
+              <PurpleRoundButton
+                text="다음"
+                onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  let resultBlackList: boolean = await checkBlackList(
+                    studentId,
+                  );
+                  if (!result) {
+                    setIsDuplicate(true);
+                    return;
+                  } else if (!resultBlackList) {
+                    setIsBlackList(true);
+                  }
+                  navigation.navigate('SignUpPassword', {
+                    userId: studentId,
+                    agreementIds: route.params.agreementIds,
+                  });
+                }}
+              />
+            )}
+
+            {studentId.length === 0 && isFocused && (
+              <DisabledPurpleFullButton text="다음" />
+            )}
+
+            {studentId.length === 0 && !isFocused && (
+              <DisabledPurpleRoundButton text="다음" />
+            )}
+          </View>
+        </Container>
+      </KeyboardAvoidingView>
+    </>
+  ) : (
+    <>
+      {modalVisible && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 999,
+          }}
+        />
+      )}
       <View
         style={{
           width: (Dimensions.get('window').width / 7) * 2,
@@ -120,7 +360,7 @@ export default function SignUpId({navigation, route}: Props) {
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Description>
+              <Description style={{marginRight: 5.5}}>
                 학교에서 제공하는 성신 G-mail 계정을 사용합니다
               </Description>
               <ModalBottom
@@ -130,156 +370,7 @@ export default function SignUpId({navigation, route}: Props) {
                 fontSize={17}
                 modalBody={modalBody}
                 modalButtonText="확인"
-                modalButton={
-                  <View style={{paddingTop: 3, marginLeft: 5}}>
-                    <SignUpQuestionMark />
-                  </View>
-                }
-                modalButtonFunc={() => setModalVisible(!modalVisible)}
-              />
-            </View>
-          </TextContainer>
-
-          <View
-            style={{
-              paddingRight: 24,
-              paddingLeft: 24,
-            }}>
-            <View
-              style={[
-                styles.inputContainer,
-                {
-                  borderColor:
-                    isDuplicate || isBlackList
-                      ? '#ff0000'
-                      : isFocused
-                      ? '#A055FF'
-                      : '#D7DCE6',
-                },
-              ]}>
-              <TextInput
-                style={{
-                  width: '65%',
-                  fontSize: 21,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                  paddingBottom: 7,
-                }}
-                onFocus={(e: any) => {
-                  onIdFocus();
-                }}
-                onBlur={(e: any) => {
-                  onIdFocusOut();
-                }}
-                onChangeText={(value: string) => {
-                  setStudentId(value);
-                  setIsDuplicate(false);
-                }}
-                placeholder="아이디"
-                keyboardType="ascii-capable"
-                selectionColor="#A055FF"
-                value={studentId}
-              />
-              <Text style={styles.suffix}>@sungshin.ac.kr</Text>
-            </View>
-            {isDuplicate && (
-              <Text style={styles.errorMessage}>
-                이미 가입되어 있는 계정입니다.
-              </Text>
-            )}
-            {isBlackList && (
-              <Text style={styles.errorMessage}>
-                가입이 불가능한 계정입니다.
-              </Text>
-            )}
-          </View>
-        </ScrollView>
-        <View
-          style={{
-            bottom: isFocused ? 80 : 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {studentId.length > 0 && isFocused && (
-            <PurpleFullButton
-              text="다음"
-              onClick={async () => {
-                let result: boolean = await checkEmailConflict(studentId);
-                let resultBlackList: boolean = await checkBlackList(studentId);
-                if (!result) {
-                  setIsDuplicate(true);
-                  return;
-                } else if (!resultBlackList) {
-                  setIsBlackList(true);
-                }
-                navigation.navigate('SignUpPassword', {
-                  userId: studentId,
-                  agreementIds: route.params.agreementIds,
-                });
-              }}
-            />
-          )}
-
-          {studentId.length > 0 && !isFocused && (
-            <PurpleRoundButton
-              text="다음"
-              onClick={async () => {
-                let result: boolean = await checkEmailConflict(studentId);
-                let resultBlackList: boolean = await checkBlackList(studentId);
-                if (!result) {
-                  setIsDuplicate(true);
-                  return;
-                } else if (!resultBlackList) {
-                  setIsBlackList(true);
-                }
-                navigation.navigate('SignUpPassword', {
-                  userId: studentId,
-                  agreementIds: route.params.agreementIds,
-                });
-              }}
-            />
-          )}
-
-          {studentId.length === 0 && isFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
-
-          {studentId.length === 0 && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
-          )}
-        </View>
-      </Container>
-    </KeyboardAvoidingView>
-  ) : (
-    <>
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 2,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
-      <Container>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff'}}>
-          <TextContainer>
-            <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-            <View style={{flexDirection: 'row'}}>
-              <Description>
-                학교에서 제공하는 성신 G-mail 계정을 사용합니다
-              </Description>
-              <ModalBottom
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                modalText={`학교 G-mail 계정 생성 방법`}
-                modalBody={modalBody}
-                modalButtonText="확인"
-                modalButton={
-                  <View style={{paddingTop: 3, marginLeft: 5}}>
-                    <SignUpQuestionMark />
-                  </View>
-                }
+                modalButton={<SignUpQuestionMark />}
                 modalButtonFunc={() => setModalVisible(!modalVisible)}
               />
             </View>
