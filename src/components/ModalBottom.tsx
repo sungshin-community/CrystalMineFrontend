@@ -28,8 +28,6 @@ export const ModalBottom = ({
   modalButtonFunc = () => setModalVisible(!modalVisible),
   fontSize,
 }: Props) => {
-  console.log('fontSize ::::: ', fontSize);
-
   return (
     <>
       <View style={[styles.centeredView]}>
@@ -47,12 +45,9 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={[styles.modalText, {fontSize: fontSize}]}>
-                {console.log('fontSize : ', fontSize)}
                 {modalText}
               </Text>
-              <View style={{marginHorizontal: 20}}>
-                <Text style={styles.modalBody}>{modalBody}</Text>
-              </View>
+              <View>{modalBody}</View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={modalButtonFunc}>
@@ -83,8 +78,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 48,
     backgroundColor: 'white',
     borderRadius: 20,
-    paddingTop: 30,
-    paddingBottom: 24,
+    paddingVertical: 24,
     paddingHorizontal: 24,
     shadowColor: '#000',
     shadowOffset: {
@@ -111,17 +105,8 @@ const styles = StyleSheet.create({
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   modalText: {
-    // fontSize: 17,
     textAlign: 'center',
     fontFamily: 'SpoqaHanSansNeo-Bold',
-    // lineHeight: 18,
     marginBottom: 20,
-  },
-  modalBody: {
-    marginBottom: 20,
-    fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    textAlign: 'left',
-    lineHeight: 25,
   },
 });
