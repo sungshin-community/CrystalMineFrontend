@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
 type RootStackParamList = {
   RegularMemberAuth: undefined;
   DirectionAgree: undefined;
+  GlobalNavbar: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -54,10 +55,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const modalBody = (
     <Text>
-      인증을 하지 않은 채 가입을 하면 서비스 이용에 제약이 있는 점을
-      알려드립니다. 나중에 정회원 인증하기를 선택하실 경우 (경로 안내)를 통해
-      인증을 진행할 수 있습니다. 익일 자정 전까지 인증하지 않으실 경우 회원
-      가입이 취소된다는 점 알려드립니다.
+      나중에 정회원 인증하기를 선택하실 경우 [마이페이지-정회원인증]에서 인증을 다시 진행할 수 있습니다.
     </Text>
   );
   return (
@@ -124,7 +122,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
               modalButton
               modalButtonFunc={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('DirectionAgree');
+                navigation.navigate('GlobalNavbar');
               }}
             />
           </ButtonCenter>
