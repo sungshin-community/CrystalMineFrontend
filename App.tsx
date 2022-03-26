@@ -206,9 +206,41 @@ const App = () => {
                   animation: 'slide_from_right',
                 }}
               />
+                <Stack.Screen
+                name="DirectionAgree"
+                component={DirectionAgree}
+                options={{
+                  title: '',
+                  animation: 'slide_from_right',
+                }}
+              />
               <Stack.Screen
                 name="RegularMemberAuthSelect"
                 component={RegularMemberAuthSelect}
+                options={{
+                  title: '',
+                  animation: 'slide_from_right',
+                }}
+              />
+              <Stack.Screen
+                name="DirectionAgree"
+                component={DirectionAgree}
+                options={{
+                  title: '',
+                  animation: 'slide_from_right',
+                }}
+              />
+              <Stack.Screen
+                name="DirectionAgree"
+                component={DirectionAgree}
+                options={{
+                  title: '',
+                  animation: 'slide_from_right',
+                }}
+              />
+              <Stack.Screen
+                name="DirectionAgree"
+                component={DirectionAgree}
                 options={{
                   title: '',
                   animation: 'slide_from_right',

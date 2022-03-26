@@ -8,7 +8,7 @@ import SignInRequestDto from '../classes/SignInRequestDto';
 import VerificationRequestDto from '../classes/VerificationRequestDto';
 import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
 import Response from '../classes/Response';
-import Agreement from '../classes/Agreement';
+import Agreement, {DirectionAgreement} from '../classes/Agreement';
 
 export const getAgreements = async () => {
   try {
@@ -20,7 +20,7 @@ export const getAgreements = async () => {
 }
 export const getDirectionAgreements = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/contract/direction');
+    const response = await client.get<Response<DirectionAgreement[]>>('/contract/direction');
     return response.data.data;
   } catch {
     return [];
@@ -134,9 +134,9 @@ export const checkAuthNumber = async (code: string) => {
     console.log('여기는 checkAuthNumber 함수', e.response.data);
     console.log(
       '여기는 checkAuthNumber 함수',
-      e.response.data.data.attemptCount,
+      e.response.data
     );
-    return e.response.data.data.attemptCount;
+    return e.response.data.attemptCount;
   }
 };
 
