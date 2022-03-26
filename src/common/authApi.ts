@@ -8,7 +8,7 @@ import SignInRequestDto from '../classes/SignInRequestDto';
 import VerificationRequestDto from '../classes/VerificationRequestDto';
 import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
 import Response from '../classes/Response';
-import Agreement from '../classes/Agreement';
+import Agreement, {DirectionAgreement} from '../classes/Agreement';
 
 export const getAgreements = async () => {
   try {
@@ -20,7 +20,7 @@ export const getAgreements = async () => {
 }
 export const getDirectionAgreements = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/contract/direction');
+    const response = await client.get<Response<DirectionAgreement[]>>('/contract/direction');
     return response.data.data;
   } catch {
     return [];

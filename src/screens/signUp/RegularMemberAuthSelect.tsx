@@ -13,7 +13,6 @@ import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {sendEmail} from '../../common/authApi';
 import RegularMemberAuthSelectIcon from '../../../resources/icon/custom/RegularMemberAuthSelectIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 if (Platform.OS === 'android') {
@@ -96,14 +95,9 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="바로 인증하기"
-                onClick={async () => {
-                  let result: boolean = await sendEmail();
-                  if (result) {
-                    navigation.navigate('RegularMemberAuth');
-                  } else {
-                    console.log('이메일 발송 실패');
-                  }
-                }}
+                onClick={() => 
+                    navigation.navigate('DirectionAgree')          
+                }
               />
             </View>
             <WhiteRoundButton

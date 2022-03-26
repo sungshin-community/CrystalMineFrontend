@@ -29,8 +29,7 @@ import {
 } from '../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../components/HideToggleContainer';
 import Agreement from '../../classes/Agreement';
-import {getAgreements} from '../../common/authApi';
-
+import {getAgreements, sendEmail} from '../../common/authApi';
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: {agreementIds: number[]};
@@ -115,7 +114,7 @@ function DirectionAgree({navigation}: Props) {
               <Container>
                 <TwoLineTitle
                   firstLineText="먼저 수정광산의"
-                  secondLineText="이용방향을 확인해주세요."
+                  secondLineText="이용방향을 확인해주세요.(수정필요)"
                 />
               </Container>
               <TouchableOpacity
@@ -176,11 +175,14 @@ function DirectionAgree({navigation}: Props) {
           agreements.filter(a => a.checked).length == agreements.length ? (
             <PurpleRoundButton
               text="다음"
-              onClick={() => {
-                navigation.navigate('SignUpId', {
-                  agreementIds: agreements.map(a => a.id),
-                });
-              }}
+              onClick={async () => {
+                  let result: boolean = await sendEmail();
+                  if (result) {
+                    navigation.navigate('RegularMemberAuth');
+                  } else {
+                    console.log('이메일 발송 실패');
+                  }
+                }}
             />
           ) : (
             <DisabledPurpleRoundButton text="다음" />
