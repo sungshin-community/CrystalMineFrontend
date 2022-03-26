@@ -32,7 +32,8 @@ import Agreement from '../../classes/Agreement';
 import {getAgreements, sendEmail} from '../../common/authApi';
 type RootStackParamList = {
   SplashHome: undefined;
-  SignUpId: {agreementIds: number[]};
+  SignUpId: { agreementIds: number[] };
+  RegularMemberAuth: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;

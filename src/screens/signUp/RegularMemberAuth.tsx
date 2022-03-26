@@ -11,6 +11,7 @@ import {
   Platform,
   StatusBar,
   Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   CodeField,
@@ -31,6 +32,7 @@ import CustomButton, {
 import {ModalBottom} from '../../components/ModalBottom';
 import {checkAuthNumber, sendEmail} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { Dimensions } from 'react-native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -50,6 +52,7 @@ type RootStackParamList = {
   Home: undefined;
   GlobalNavbar: undefined;
   BoardScreen: undefined;
+  RegularMemberAuthSelect: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function RegularMemberAuth({navigation}: Props) {
@@ -126,7 +129,7 @@ export default function RegularMemberAuth({navigation}: Props) {
       <View style={{flex: 1}}>
         <View style={{marginTop: 130, marginLeft: 24}}>
           <TwoLineTitle
-            firstLineText="메일로 전송된"
+            firstLineText="성신 G-mail 로 전송된"
             secondLineText="인증번호를 입력해주세요"
           />
         </View>
@@ -186,14 +189,18 @@ export default function RegularMemberAuth({navigation}: Props) {
                 zIndex: 999,
               }}
             /> */}
-            <ModalBottom
-              modalVisible={!modalVisible}
-              setModalVisible={setModalVisible}
-              modalText={`인증 번호 입력 시간이 지났습니다.\n 다시 시도해주세요.`}
-              modalBody=""
-              modalButtonText="인증번호 다시 받기"
-              modalButton
-              modalButtonFunc={onResendOtpButtonPress}></ModalBottom>
+              <ModalBottom
+                modalVisible={!modalVisible}
+                setModalVisible={setModalVisible}
+                modalText={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
+                modalBody=""
+                modalButtonText="인증번호 재전송"
+                modalButton
+                modalButtonFunc={onResendOtpButtonPress}
+                isSecondButton={true}
+                modalSecondButtonText="인증 취소"
+                modalSecondButtonFunc={() => navigation.navigate('RegularMemberAuthSelect')}
+              />
           </>
         )}
         {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
@@ -227,6 +234,17 @@ export default function RegularMemberAuth({navigation}: Props) {
         )}
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
+        <TouchableWithoutFeedback onPress={async () => {
+                  setValue('');
+    let result: boolean = await sendEmail();
+    if (result) {
+      console.log('이메일 재발송 성공');
+    } else {
+      console.log('이메일 재발송 실패');
+    }
+          }}>
+          <Text style={styles.resent}>인증번호 재전송</Text>
+        </TouchableWithoutFeedback>
       </View>
 
       {tryCnt <= 0 && (
@@ -287,9 +305,8 @@ export default function RegularMemberAuth({navigation}: Props) {
 const styles = StyleSheet.create({
   codeFieldRoot: {
     marginTop: 40,
-    width: '90%',
-    marginLeft: 20,
-    marginRight: 20,
+    width: '80%',
+    marginHorizontal: Dimensions.get('window').width/11
   },
   cellRoot: {
     width: 40,
@@ -322,7 +339,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   timerContainer: {
-    marginTop: 32,
+    marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'center',
     textAlign: 'center',
@@ -345,5 +362,13 @@ const styles = StyleSheet.create({
     color: '#87919B',
     fontSize: 13,
     marginTop: 10,
+  },
+  resent: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    color: '#6E7882',
+    fontSize: 15,
+    marginTop: 26,
+    textDecorationLine: 'underline'
   },
 });

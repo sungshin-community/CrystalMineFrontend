@@ -18,6 +18,9 @@ interface Props {
   setModalVisible: any;
   modalVisible: boolean;
   modalButtonFunc: any;
+  isSecondButton?: boolean;
+  modalSecondButtonText?: string;
+  modalSecondButtonFunc?: any
 }
 export const ModalBottom = ({
   modalText,
@@ -27,6 +30,9 @@ export const ModalBottom = ({
   setModalVisible,
   modalVisible,
   modalButtonFunc = () => setModalVisible(!modalVisible),
+  isSecondButton = false,
+  modalSecondButtonText,
+  modalSecondButtonFunc
 }: Props) => {
   return (
     <>
@@ -50,6 +56,12 @@ export const ModalBottom = ({
                 onPress={modalButtonFunc}>
                 <Text style={styles.textStyle}>{modalButtonText}</Text>
               </Pressable>
+              {isSecondButton && 
+              <Pressable
+                style={[styles.secondButton, styles.secondButtonClose]}
+                onPress={modalSecondButtonFunc}>
+                <Text style={styles.secondButtonTextStyle}>{modalSecondButtonText}</Text>
+              </Pressable>}
             </View>
           </View>
         </Modal>
@@ -92,11 +104,26 @@ const styles = StyleSheet.create({
     height: 42,
     marginTop: 20,
   },
+  secondButton: {
+    borderRadius: 10,
+    padding: 12,
+    height: 42,
+    marginTop: 8,
+  },
   buttonClose: {
     backgroundColor: '#A055FF',
   },
+  secondButtonClose: {
+    backgroundColor: '#fff',
+  },
   textStyle: {
     color: 'white',
+    textAlign: 'center',
+    fontSize: 14,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+  },
+  secondButtonTextStyle: {
+    color: '#222222',
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'SpoqaHanSansNeo-Regular',

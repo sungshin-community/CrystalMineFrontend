@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  RegularMemberAuth: undefined;
   DirectionAgree: undefined;
+  RegularMemberAuth: undefined;
   GlobalNavbar: undefined;
 };
 
@@ -96,7 +96,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
               <PurpleRoundButton
                 text="바로 인증하기"
                 onClick={() => 
-                    navigation.navigate('DirectionAgree')          
+                  navigation.navigate('RegularMemberAuth')          
                 }
               />
             </View>
