@@ -19,7 +19,7 @@ interface Props {
   isSecondButton?: boolean;
   modalSecondButtonText?: string;
   modalSecondButtonFunc?: any
-  fontSize: number;
+  fontSize?: number;
 }
 export const ModalBottom = ({
   modalText,
@@ -31,7 +31,7 @@ export const ModalBottom = ({
   modalButtonFunc = () => setModalVisible(!modalVisible),
   isSecondButton = false,
   modalSecondButtonText,
-  modalSecondButtonFunc
+  modalSecondButtonFunc,
   fontSize,
 }: Props) => {
   return (
