@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -44,10 +45,9 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
+  ResetPasswordInputId: undefined;
   SignInPassword: {userId: string};
-  Home: undefined;
   GlobalNavbar: undefined;
-  BoardScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInPassword({navigation, route}: Props) {
@@ -163,6 +163,7 @@ export default function SignInPassword({navigation, route}: Props) {
         )}
 
         {password.length < 10 && <DisabledPurpleRoundButton text="다음" />}
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('ResetPasswordInputId')}>
         <Text
           style={{
             paddingBottom: 20,
@@ -173,7 +174,8 @@ export default function SignInPassword({navigation, route}: Props) {
             textDecorationLine: 'underline',
           }}>
           비밀번호를 잊으셨나요?
-        </Text>
+          </Text>
+          </TouchableWithoutFeedback>
       </View>
     </KeyboardAvoidingView>
   ) : (
@@ -255,17 +257,19 @@ export default function SignInPassword({navigation, route}: Props) {
           />
         )}
 
-        {password.length < 10 && <DisabledPurpleRoundButton text="다음" />}
-        <Text
-          style={{
-            marginTop: 21,
-            fontSize: 13,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            color: '#87929B',
-            textDecorationLine: 'underline',
-          }}>
-          비밀번호를 잊으셨나요?
-        </Text>
+          {password.length < 10 && <DisabledPurpleRoundButton text="다음" />}
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('ResetPasswordInputId')}>
+          <Text
+            style={{
+              marginTop: 21,
+              fontSize: 13,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              color: '#87929B',
+              textDecorationLine: 'underline',
+            }}>
+            비밀번호를 잊으셨나요?
+          </Text>
+          </TouchableWithoutFeedback>
       </View>
     </>
   );

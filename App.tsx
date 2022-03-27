@@ -9,6 +9,7 @@ import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
 import SignInId from './src/screens/signIn/SignInId';
 import SignInPassword from './src/screens/signIn/SignInPassword';
+import ResetPasswordInputId from './src/screens/signIn/ResetPasswordInputId';
 
 import SignUpId from './src/screens/signUp/SignUpId';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
@@ -536,6 +537,21 @@ const App = () => {
               <Stack.Screen
                 name="SignInPassword"
                 component={SignInPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputId"
+                component={ResetPasswordInputId}
                 options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
