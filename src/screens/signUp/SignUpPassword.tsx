@@ -48,8 +48,8 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpPasswordConfirm: {previousPassword: string; agreementIds: number[];};
-  SignUpPassword: {userId: string; agreementIds: number[];};
+  SignUpPasswordConfirm: {previousPassword: string; agreementIds: number[]};
+  SignUpPassword: {userId: string; agreementIds: number[]};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -167,7 +167,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 })
               }
             />
@@ -179,7 +179,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 })
               }
             />
@@ -270,7 +270,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 })
               }
             />
@@ -282,7 +282,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 navigation.navigate('SignUpPasswordConfirm', {
                   previousPassword: password,
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 })
               }
             />
