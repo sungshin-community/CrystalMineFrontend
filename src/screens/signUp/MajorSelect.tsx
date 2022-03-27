@@ -48,13 +48,26 @@ const ButtonContainer = styled.View`
 const styles = StyleSheet.create({
   greyText: {
     color: '#797979',
-    lineHeight: 25,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 13,
+    lineHeight: 19.5,
+  },
+  blackText: {
+    color: 'black',
+  },
+  paragraph: {
+    flexDirection: 'row',
   },
 });
 
 type RootStackParamList = {
   SignUpComplete: undefined;
-  MajorSelect: {userId: string; password: string; nickname: string; agreementIds: number[];};
+  MajorSelect: {
+    userId: string;
+    password: string;
+    nickname: string;
+    agreementIds: number[];
+  };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -77,14 +90,22 @@ export default function MajorSelect({navigation, route}: Props) {
 
   const modalBody = (
     <>
-      <Text style={styles.greyText}>1. 학과 리스트에서 </Text>
-      <Text>임의 학과 선택 후 가입{'\n'}</Text>
-      <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
-      <Text>학과 추가 요청{'\n'}</Text>
+      <View style={styles.paragraph}>
+        <Text style={styles.greyText}>1. 학과 리스트에서 </Text>
+        <Text style={[styles.greyText, styles.blackText]}>
+          임의 학과 선택 후 가입
+        </Text>
+      </View>
+      <View style={styles.paragraph}>
+        <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
+        <Text style={[styles.greyText, styles.blackText]}>학과 추가 요청</Text>
+      </View>
       <Text style={styles.greyText}>
-        3. 학과 추가 안내를 받은 후, 마이페이지에서{'\n'}
+        3. 학과 추가 안내를 받은 후, 마이페이지에서
       </Text>
-      <Text>{'     '}학과 변경 진행</Text>
+      <Text style={[styles.greyText, styles.blackText]}>
+        {'     '}학과 변경 진행
+      </Text>
     </>
   );
 
@@ -98,7 +119,7 @@ export default function MajorSelect({navigation, route}: Props) {
             height: '100%',
             top: 0,
             left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: 999,
           }}
         />
@@ -119,6 +140,7 @@ export default function MajorSelect({navigation, route}: Props) {
           setModalVisible={setModalVisible}
           modalText={`소속 학과가 학과 리스트에 없을 경우,
 아래 내용을 따라 이용 부탁드립니다.`}
+          fontSize={15}
           modalBody={modalBody}
           modalButtonText="확인"
           modalButton={
@@ -153,7 +175,7 @@ export default function MajorSelect({navigation, route}: Props) {
                   password: route.params.password,
                   nickname: route.params.nickname,
                   departmentId: selectedMajorId,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
                 navigation.reset({routes: [{name: 'SignUpComplete'}]});
               }}

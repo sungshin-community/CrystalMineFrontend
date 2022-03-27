@@ -44,10 +44,12 @@ export const ModalBottom = ({
           />
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={[styles.modalText, {fontSize: fontSize}]}>
-                {modalText}
-              </Text>
-              <View>{modalBody}</View>
+              <View style={{alignItems: 'center'}}>
+                <Text style={[styles.modalText, {fontSize: fontSize}]}>
+                  {modalText}
+                </Text>
+                <View>{modalBody}</View>
+              </View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={modalButtonFunc}>
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 24,
     paddingHorizontal: 24,
+    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: 'center',
-    fontFamily: 'SpoqaHanSansNeo-Bold',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
     marginBottom: 20,
   },
 });
