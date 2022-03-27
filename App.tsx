@@ -204,38 +204,6 @@ const App = () => {
                 }}
               />
               <Stack.Screen
-                name="DirectionAgree"
-                component={DirectionAgree}
-                options={{
-                  title: '',
-                  animation: 'slide_from_right',
-                }}
-              />
-              <Stack.Screen
-                name="DirectionAgree"
-                component={DirectionAgree}
-                options={{
-                  title: '',
-                  animation: 'slide_from_right',
-                }}
-              />
-              <Stack.Screen
-                name="DirectionAgree"
-                component={DirectionAgree}
-                options={{
-                  title: '',
-                  animation: 'slide_from_right',
-                }}
-              />
-              <Stack.Screen
-                name="DirectionAgree"
-                component={DirectionAgree}
-                options={{
-                  title: '',
-                  animation: 'slide_from_right',
-                }}
-              />
-              <Stack.Screen
                 name="RegularMemberAuth"
                 component={RegularMemberAuth}
                 options={{

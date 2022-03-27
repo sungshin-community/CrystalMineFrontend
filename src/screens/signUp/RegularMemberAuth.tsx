@@ -235,13 +235,12 @@ export default function RegularMemberAuth({navigation}: Props) {
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
         <TouchableWithoutFeedback onPress={async () => {
-                  setValue('');
-    let result: boolean = await sendEmail();
-    if (result) {
-      console.log('이메일 재발송 성공');
-    } else {
-      console.log('이메일 재발송 실패');
-    }
+            let result: boolean = await sendEmail();
+            if (result) {
+              console.log('이메일 재발송 성공');
+            } else {
+              console.log('이메일 재발송 실패');
+            }
           }}>
           <Text style={styles.resent}>인증번호 재전송</Text>
         </TouchableWithoutFeedback>
@@ -283,6 +282,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           <PurpleRoundButton
             text="인증 완료"
             onClick={async () => {
+              console.log(value)
               let result: number = await checkAuthNumber(value);
               if (result === 0) {
                 navigation.reset({routes: [{name: 'GlobalNavbar'}]});

@@ -134,7 +134,7 @@ export const checkAuthNumber = async (code: string) => {
     console.log('여기는 checkAuthNumber 함수', e.response.data);
     console.log(
       '여기는 checkAuthNumber 함수',
-      e.response.data
+      e.response.data.data
     );
     return e.response.data.attemptCount;
   }

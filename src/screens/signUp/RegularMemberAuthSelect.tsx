@@ -96,7 +96,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
               <PurpleRoundButton
                 text="바로 인증하기"
                 onClick={() => 
-                  navigation.navigate('RegularMemberAuth')          
+                  navigation.navigate('DirectionAgree')          
                 }
               />
             </View>
