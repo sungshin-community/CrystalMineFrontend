@@ -183,7 +183,6 @@ export const checkRegularMember = async () => {
         headers: {Authorization: `Bearer ${accessToken}`},
       },
     );
-    console.log(response.data.data);
     return response.data.data.isAuthenticated;
   } catch (e: any) {
     console.log('여기는 checkRegularMember 함수', e.response);

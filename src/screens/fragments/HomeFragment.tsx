@@ -20,6 +20,7 @@ import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
 import Home from '../../classes/Home';
 import getHomeContents from '../../common/homeApi';
+import { checkRegularMember } from '../../common/authApi';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -30,7 +31,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [homeContents, setHomeContents] = useState<Home>();
-
+  const [isRegularMember, setIsRegularMember] = useState<boolean>(false);
   const numOfBoardTitle = 19; // 고정 게시판 내용
 
   useEffect(() => {
@@ -41,8 +42,15 @@ const HomeFragment = ({navigation}: Props) => {
       }
     }
     getContents();
+    checkRegularMemberFunc()
     console.log(homeContents)
   }, []);
+
+  const checkRegularMemberFunc = async () => {
+    const result: boolean = await checkRegularMember();
+    setIsRegularMember(result);
+    console.log('정회원 인증 여부', result)
+  }
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -98,7 +106,7 @@ const HomeFragment = ({navigation}: Props) => {
               <></>
             )}
             {/* 인증 만료 알림 */}
-            {homeContents?.expiredAt === 0 ? (
+            {!isRegularMember ? (
               <>
                 <View
                   style={{
@@ -172,7 +180,7 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
         </TouchableWithoutFeedback>
         {/* 게시판 글 목록 */}
-        {homeContents?.pinBoardDtos.length !== 0 ? (
+        {isRegularMember ? (
           <FlatList
             data={homeContents?.pinBoardDtos}
             renderItem={({item}) => (
@@ -226,7 +234,7 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={styles.more}>더보기</Text>
           </View>
         </TouchableWithoutFeedback>
-        {/* {homeContents?.hotBoardDtos.length !== 0 ? ( */}
+        {isRegularMember ? (
         <FlatList
           data={homeContents?.hotBoardDtos}
           renderItem={({item}) => (
@@ -252,7 +260,7 @@ const HomeFragment = ({navigation}: Props) => {
             </TouchableWithoutFeedback>
           )}
         />
-        {/* ) : ( */}
+         ) : (
         <View
           style={{
             backgroundColor: '#F7F7F7',
@@ -263,7 +271,7 @@ const HomeFragment = ({navigation}: Props) => {
             정회원 인증 후 확인하실 수 있습니다.
           </Text>
         </View>
-        {/* )} */}
+        )} 
       </View>
     </ScrollView>
   );
