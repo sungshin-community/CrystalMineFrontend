@@ -115,12 +115,14 @@ export default function MajorSelect({navigation, route}: Props) {
         <View
           style={{
             position: 'absolute',
+            flex: 1,
             width: '100%',
             height: '100%',
             top: 0,
             left: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
+            zIndex: 1,
+            elevation: 1
           }}
         />
       ) : null}

@@ -54,7 +54,7 @@ export const ModalBottom = ({
                 <Text style={[styles.modalText, {fontSize: fontSize}]}>
                   {modalText}
                 </Text>
-                <View>{modalBody}</View>
+                <Text>{modalBody}</Text>
               </View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
