@@ -54,8 +54,13 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  MajorSelect: {userId: string; password: string; nickname: string; agreementIds: number[];};
-  SignUpNickname: {userId: string; password: string; agreementIds: number[];};
+  MajorSelect: {
+    userId: string;
+    password: string;
+    nickname: string;
+    agreementIds: number[];
+  };
+  SignUpNickname: {userId: string; password: string; agreementIds: number[]};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -137,7 +142,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {nickname.length !== 0 && isFocused && (
+          {nickname.length > 1 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
@@ -150,13 +155,13 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
           )}
 
-          {nickname.length !== 0 && !isFocused && (
+          {nickname.length > 1 && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
@@ -169,17 +174,17 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
           )}
 
-          {nickname.length === 0 && isFocused && (
+          {nickname.length < 2 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {nickname.length === 0 && !isFocused && (
+          {nickname.length < 2 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
@@ -251,7 +256,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {nickname.length !== 0 && isFocused && (
+          {nickname.length > 1 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
@@ -264,13 +269,13 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
           )}
 
-          {nickname.length !== 0 && !isFocused && (
+          {nickname.length > 1 && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
@@ -283,17 +288,17 @@ export default function SignUpNickname({navigation, route}: Props) {
                   userId: route.params.userId,
                   password: route.params.password,
                   nickname: nickname,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
           )}
 
-          {nickname.length === 0 && isFocused && (
+          {nickname.length < 2 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {nickname.length === 0 && !isFocused && (
+          {nickname.length < 2 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
