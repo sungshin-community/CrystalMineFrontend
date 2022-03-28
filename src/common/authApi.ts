@@ -222,4 +222,15 @@ export const checkResetPasswordAuthNumber = async (resetPasswordVerificationRequ
     return e.response.data.data.attemptCount;
   }
 };
-
+export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      '/auth/reset-password',
+      resetPasswordRequestDto,
+    );
+    return 0;
+  } catch (e: any) {
+    console.log('여긴 비번재설정 함수', e.response.data.status);
+    return e.response.data.status;
+  }
+};

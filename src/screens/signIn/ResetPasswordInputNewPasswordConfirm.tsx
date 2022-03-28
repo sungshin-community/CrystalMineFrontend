@@ -24,6 +24,8 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+import {resetPassword} from '../../common/authApi';
+import {ModalBottom} from '../../components/ModalBottom';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -49,15 +51,23 @@ const MiddleInputContainerStyle = styled.View`
 
 type RootStackParamList = {
   SplashHome: undefined;
-  ResetPasswordInputNewPasswordConfirm: {userId: string; previousPassword: string; };
+  ResetPasswordInputNewPasswordConfirm: {
+    userId: string;
+    previousPassword: string;
+  };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function ResetPasswordInputNewPasswordConfirm({navigation, route}: Props) {
+export default function ResetPasswordInputNewPasswordConfirm({
+  navigation,
+  route,
+}: Props) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
+  const [isChangeable, setIsChangeable] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -79,18 +89,23 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
     setShowPassword(!showPassword);
   };
 
+  const resetPasswordConfirm = async () => {
+    let result: number = await resetPassword({
+      username: route.params.userId,
+      password: route.params.previousPassword,
+    });
+    if (result === 0) {
+      setModalVisible(true);
+    } else {
+      setIsChangeable(false);
+    }
+  };
+
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={10}
       behavior={'padding'}
       style={{flex: 1}}>
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 4,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
       <Container>
         <ScrollView
           scrollEnabled={false}
@@ -98,13 +113,13 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
             <TwoLineTitle
-              firstLineText="비밀번호를"
+              firstLineText="새 비밀번호를"
               secondLineText="한번 더 입력해주세요"
             />
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isWrong
+              borderColor: isWrong || !isChangeable
                 ? '#ff0000'
                 : isFocused
                 ? '#A055FF'
@@ -126,6 +141,7 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
               onChangeText={(value: string) => {
                 if (value.length > 0) {
                   setIsWrong(true);
+                  setIsChangeable(true);
                 }
                 validatePassword(value);
               }}
@@ -146,6 +162,9 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
           </MiddleInputContainerStyle>
           {isWrong && !isEqual && (
             <CautionText text="비밀번호를 정확하게 입력해 주세요." />
+          )}
+          {!isChangeable && (
+            <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
           )}
         </ScrollView>
         <View
@@ -156,34 +175,37 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
           }}>
           {isEqual && isFocused && (
             <PurpleFullButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SplashHome')
-              }
+              text="비밀번호 재설정"
+              onClick={resetPasswordConfirm}
             />
           )}
           {isEqual && !isFocused && (
             <PurpleRoundButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SplashHome')
-              }
+              text="비밀번호 재설정"
+              onClick={resetPasswordConfirm}
             />
           )}
-          {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
-          {!isEqual && !isFocused && <DisabledPurpleRoundButton text="다음" />}
+          {!isEqual && isFocused && (
+            <DisabledPurpleFullButton text="비밀번호 재설정" />
+          )}
+          {!isEqual && !isFocused && (
+            <DisabledPurpleRoundButton text="비밀번호 재설정" />
+          )}
+          <ModalBottom
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalText={`비밀번호가 성공적으로 변경 되었습니다.
+            이전 화면으로 이동합니다.`}
+            modalBody=""
+            modalButtonText="확인"
+            modalButton
+            modalButtonFunc={() => navigation.navigate('SplashHome')}
+          />
         </View>
       </Container>
     </KeyboardAvoidingView>
   ) : (
     <>
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 4,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
       <Container>
         <ScrollView
           scrollEnabled={false}
@@ -191,13 +213,13 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
             <TwoLineTitle
-              firstLineText="비밀번호를"
+              firstLineText="새 비밀번호를"
               secondLineText="한번 더 입력해주세요"
             />
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isWrong
+              borderColor: isWrong || !isChangeable
                 ? '#ff0000'
                 : isFocused
                 ? '#A055FF'
@@ -219,6 +241,7 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
               onChangeText={(value: string) => {
                 if (value.length > 0) {
                   setIsWrong(true);
+                  setIsChangeable(true);
                 }
                 validatePassword(value);
               }}
@@ -239,6 +262,9 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
           </MiddleInputContainerStyle>
           {isWrong && !isEqual && (
             <CautionText text="비밀번호를 정확하게 입력해 주세요." />
+            )}
+             {!isChangeable && (
+            <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
           )}
         </ScrollView>
         <View
@@ -247,24 +273,34 @@ export default function ResetPasswordInputNewPasswordConfirm({navigation, route}
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {isEqual && isFocused && (
+           {isEqual && isFocused && (
             <PurpleFullButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SplashHome')
-              }
+              text="비밀번호 재설정"
+              onClick={resetPasswordConfirm}
             />
           )}
           {isEqual && !isFocused && (
             <PurpleRoundButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SplashHome')
-              }
+              text="비밀번호 재설정"
+              onClick={resetPasswordConfirm}
             />
           )}
-          {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
-          {!isEqual && !isFocused && <DisabledPurpleRoundButton text="다음" />}
+          {!isEqual && isFocused && (
+            <DisabledPurpleFullButton text="비밀번호 재설정" />
+          )}
+          {!isEqual && !isFocused && (
+            <DisabledPurpleRoundButton text="비밀번호 재설정" />
+          )}
+          <ModalBottom
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalText={`비밀번호가 성공적으로 변경 되었습니다. 
+            이전 화면으로 이동합니다.`}
+            modalBody=""
+            modalButtonText="확인"
+            modalButton
+            modalButtonFunc={() => navigation.navigate('SplashHome')}
+          />
         </View>
       </Container>
     </>
