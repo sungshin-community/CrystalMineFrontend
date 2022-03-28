@@ -54,7 +54,7 @@ export const ModalBottom = ({
                 <Text style={[styles.modalText, {fontSize: fontSize}]}>
                   {modalText}
                 </Text>
-                <View>{modalBody}</View>
+                <Text>{modalBody}</Text>
               </View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}

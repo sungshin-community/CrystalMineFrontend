@@ -196,7 +196,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  let check: boolean = await sendResetPasswordEmail({username: studentId});
                   if (check) {
                     navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
@@ -222,7 +222,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  let check: boolean = await sendResetPasswordEmail({username: studentId});
                   if (check) {
                     navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
@@ -334,7 +334,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  let check: boolean = await sendResetPasswordEmail({username: studentId});
                   if (check) {
                     navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
@@ -360,7 +360,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  let check: boolean = await sendResetPasswordEmail({username: studentId});
                   if (check) {
                     navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
