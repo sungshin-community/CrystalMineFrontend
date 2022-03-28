@@ -48,7 +48,7 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  ResetPasswordInputNewPasswordConfirm: {previousPassword: string;};
+  ResetPasswordInputNewPasswordConfirm: {userId: string; previousPassword: string;};
   ResetPasswordInputNewPassword: {userId: string;};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -89,20 +89,13 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
       keyboardVerticalOffset={10}
       behavior={'padding'}
       style={{flex: 1}}>
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 3,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
       <Container>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
-            <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
+            <NormalOneLineText>새 비밀번호를 입력해주세요.</NormalOneLineText>
             <Description>
               영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
             </Description>
@@ -162,51 +155,42 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           }}>
           {isValidate && isFocused && (
             <PurpleFullButton
-              text="다음"
+              text="비밀번호 재설정"
               onClick={() =>
-                navigation.navigate('SignUpPasswordConfirm', {
-                  previousPassword: password,
+                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds,
+                  previousPassword: password,
                 })
               }
             />
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
-              text="다음"
+              text="비밀번호 재설정"
               onClick={() =>
-                navigation.navigate('SignUpPasswordConfirm', {
-                  previousPassword: password,
+                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds,
+                  previousPassword: password,
                 })
               }
             />
           )}
-          {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
+          {!isValidate && isFocused && <DisabledPurpleFullButton text="비밀번호 재설정" />}
           {!isValidate && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
+            <DisabledPurpleRoundButton text="비밀번호 재설정" />
           )}
         </View>
       </Container>
     </KeyboardAvoidingView>
   ) : (
     <>
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 3,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
       <Container>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
           style={{backgroundColor: '#fff', marginHorizontal: 24}}>
           <TextContainer>
-            <NormalOneLineText>비밀번호를 입력해주세요</NormalOneLineText>
+            <NormalOneLineText>새 비밀번호를 입력해주세요.</NormalOneLineText>
             <Description>
               영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
             </Description>
@@ -265,31 +249,29 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           }}>
           {isValidate && isFocused && (
             <PurpleFullButton
-              text="다음"
+              text="비밀번호 재설정"
               onClick={() =>
-                navigation.navigate('SignUpPasswordConfirm', {
-                  previousPassword: password,
+                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds,
+                  previousPassword: password,
                 })
               }
             />
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
-              text="다음"
+              text="비밀번호 재설정"
               onClick={() =>
-                navigation.navigate('SignUpPasswordConfirm', {
-                  previousPassword: password,
+                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                   userId: route.params.userId,
-                  agreementIds: route.params.agreementIds,
+                  previousPassword: password,
                 })
               }
             />
           )}
-          {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
+          {!isValidate && isFocused && <DisabledPurpleFullButton text="비밀번호 재설정" />}
           {!isValidate && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
+            <DisabledPurpleRoundButton text="비밀번호 재설정" />
           )}
         </View>
       </Container>

@@ -95,7 +95,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
   const onResendOtpButtonPress = async () => {
     //인증번호 발송 API
     setValue('');
-    let result: boolean = await sendResetPasswordEmail(route.params.userId);
+    let result: boolean = await sendResetPasswordEmail({ username: route.params.userId });
     if (result) {
       console.log('비밀번호 재설정 이메일 재발송 성공');
     } else {
@@ -234,7 +234,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
         <TouchableWithoutFeedback onPress={async () => {
-            let result: boolean = await sendResetPasswordEmail(route.params.userId);
+          let result: boolean = await sendResetPasswordEmail({ username: route.params.userId});
             if (result) {
               console.log('이메일 재발송 성공');
             } else {
@@ -268,7 +268,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
           <PurpleFullButton
             text="인증 완료"
             onClick={async () => {
-              let result: number = await checkResetPasswordAuthNumber(value);
+              let result: number = await checkResetPasswordAuthNumber({username: route.params.userId, code: value});
               if (result === 0) {
                   navigation.navigate('ResetPasswordInputNewPassword', {
                     userId: route.params.userId,
@@ -284,7 +284,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
             text="인증 완료"
             onClick={async () => {
               console.log(value)
-              let result: number = await checkResetPasswordAuthNumber(value);
+              let result: number = await checkResetPasswordAuthNumber({username: route.params.userId, code: value});
               if (result === 0) {
                   navigation.navigate('ResetPasswordInputNewPassword', {
                     userId: route.params.userId,

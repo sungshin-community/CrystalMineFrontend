@@ -8,6 +8,7 @@ import SignInRequestDto from '../classes/SignInRequestDto';
 import VerificationRequestDto from '../classes/VerificationRequestDto';
 import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
 import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
+import ResetPasswordVerificationRequestDto from '../classes/ResetPasswordVerificationRequestDto';
 import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
 
@@ -204,27 +205,31 @@ export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPassw
   }
 };
 
-export const checkResetPasswordAuthNumber = async (code: string) => {
+export const checkResetPasswordAuthNumber = async (resetPasswordVerificationRequestDto: ResetPasswordVerificationRequestDto) => {
   try {
-    let requestDto: VerificationRequestDto = {code: code};
-    const accessToken = await AsyncStorage.getItem('accessToken');
     const response = await client.post<AxiosResponse>(
-      '/mail/regular-member-verification',
-      requestDto,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
+      '/mail/reset-password-verification',
+      resetPasswordVerificationRequestDto,
     );
     return 0;
   } catch (e: any) {
-    console.log('여기는 checkAuthNumber 함수', e.response.data);
+    console.log('여긴 비번재설정 인증번호 확인 함수', e.response.data);
     console.log(
-      '여기는 checkAuthNumber 함수',
+      '여기는 비번재설정 인증번호 확인 함수',
       e.response.data.data
     );
-    return e.response.data.attemptCount;
+    return e.response.data.data.attemptCount;
   }
 };
-
+export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      '/auth/reset-password',
+      resetPasswordRequestDto,
+    );
+    return 0;
+  } catch (e: any) {
+    console.log('여긴 비번재설정 함수', e.response.data.status);
+    return e.response.data.status;
+  }
+};
