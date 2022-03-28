@@ -85,16 +85,15 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  SignUpPassword: {userId: string; agreementIds: number[]};
+  ResetPasswordInputRegularMemberAuthNumber: {userId: string;};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function ResetPasswordInputId({navigation, route}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
-  const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+  const [isNotExisted, setIsNotExisted] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -106,30 +105,10 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
   };
   return Platform.OS === 'ios' ? (
     <>
-      {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
-          }}
-        />
-      )}
       <KeyboardAvoidingView
         keyboardVerticalOffset={10}
         behavior={'padding'}
         style={{flex: 1}}>
-        <View
-          style={{
-            width: (Dimensions.get('window').width / 7) * 2,
-            height: 4,
-            backgroundColor: '#A055FF',
-          }}
-        />
         <Container>
           <ScrollView
             scrollEnabled={false}
@@ -154,8 +133,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   styles.inputContainer,
                   {
                     borderColor:
-                      isDuplicate || isBlackList
-                        ? '#ff0000'
+                      isNotExisted || isBlackList
+                        ? '#E64646'
                         : isFocused
                         ? '#A055FF'
                         : '#D7DCE6',
@@ -176,7 +155,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   }}
                   onChangeText={(value: string) => {
                     setStudentId(value);
-                    setIsDuplicate(false);
+                    setIsNotExisted(false);
                   }}
                   placeholder="아이디"
                   keyboardType="ascii-capable"
@@ -185,9 +164,9 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 />
                 <Text style={styles.suffix}>@sungshin.ac.kr</Text>
               </View>
-              {isDuplicate && (
+              {isNotExisted && (
                 <Text style={styles.errorMessage}>
-                  이미 가입되어 있는 계정입니다.
+                  아이디를 정확하게 입력해 주세요.
                 </Text>
               )}
               {isBlackList && (
@@ -211,15 +190,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   let resultBlackList: boolean = await checkBlackList(
                     studentId,
                   );
-                  if (!result) {
-                    setIsDuplicate(true);
+                  if (result) {
+                    setIsNotExisted(true);
                     return;
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  navigation.navigate('SignUpPassword', {
+                  navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
-                    agreementIds: route.params.agreementIds,
                   });
                 }}
               />
@@ -233,15 +211,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   let resultBlackList: boolean = await checkBlackList(
                     studentId,
                   );
-                  if (!result) {
-                    setIsDuplicate(true);
+                  if (result) {
+                    setIsNotExisted(true);
                     return;
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  navigation.navigate('SignUpPassword', {
+                  navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
-                    agreementIds: route.params.agreementIds,
                   });
                 }}
               />
@@ -260,47 +237,18 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
     </>
   ) : (
     <>
-      {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
-          }}
-        />
-      )}
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 2,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
       <Container>
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
           style={{backgroundColor: '#fff'}}>
           <TextContainer>
-            <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
+            <NormalOneLineText>비밀번호 재설정</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Description style={{marginRight: 5.5}}>
-                학교에서 제공하는 성신 G-mail 계정을 사용합니다
+                수정광산에 가입하신 성신 G-mail 계정을 입력해 주세요.
               </Description>
-              <ModalBottom
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                modalText={`학교 G-mail 계정 생성 방법`}
-                fontSize={17}
-                modalBody={modalBody}
-                modalButtonText="확인"
-                modalButton={<SignUpQuestionMark />}
-                modalButtonFunc={() => setModalVisible(!modalVisible)}
-              />
+            
             </View>
           </TextContainer>
 
@@ -313,8 +261,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 styles.inputContainer,
                 {
                   borderColor:
-                    isDuplicate || isBlackList
-                      ? '#ff0000'
+                    isNotExisted || isBlackList
+                      ? '#E64646'
                       : isFocused
                       ? '#A055FF'
                       : '#D7DCE6',
@@ -335,7 +283,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setStudentId(value);
-                  setIsDuplicate(false);
+                  setIsNotExisted(false);
                 }}
                 placeholder="아이디"
                 keyboardType="ascii-capable"
@@ -344,9 +292,9 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
-            {isDuplicate && (
+            {isNotExisted && (
               <Text style={styles.errorMessage}>
-                이미 가입되어 있는 계정입니다.
+                아이디를 정확하게 입력해 주세요.
               </Text>
             )}
             {isBlackList && (
@@ -368,15 +316,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               onClick={async () => {
                 let result: boolean = await checkEmailConflict(studentId);
                 let resultBlackList: boolean = await checkBlackList(studentId);
-                if (!result) {
-                  setIsDuplicate(true);
+                if (result) {
+                  setIsNotExisted(true);
                   return;
                 } else if (!resultBlackList) {
                   setIsBlackList(true);
                 }
-                navigation.navigate('SignUpPassword', {
+                navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                   userId: studentId,
-                  agreementIds: route.params.agreementIds,
                 });
               }}
             />
@@ -388,15 +335,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               onClick={async () => {
                 let result: boolean = await checkEmailConflict(studentId);
                 let resultBlackList: boolean = await checkBlackList(studentId);
-                if (!result) {
-                  setIsDuplicate(true);
+                if (result) {
+                  setIsNotExisted(true);
                   return;
                 } else if (!resultBlackList) {
                   setIsBlackList(true);
                 }
-                navigation.navigate('SignUpPassword', {
+                navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                   userId: studentId,
-                  agreementIds: route.params.agreementIds,
                 });
               }}
             />

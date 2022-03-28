@@ -7,6 +7,7 @@ import SignUpResponseDto from '../classes/SignUpResponseDto';
 import SignInRequestDto from '../classes/SignInRequestDto';
 import VerificationRequestDto from '../classes/VerificationRequestDto';
 import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
+import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
 import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
 
@@ -189,3 +190,43 @@ export const checkRegularMember = async () => {
     return false;
   }
 };
+
+export const sendResetPasswordEmail = async (userId: string) => {
+  try {
+    let requestDto: ResetPasswordRequestDto = {username: userId}
+    const response = await client.post<AxiosResponse>(
+      '/mail/reset-password',
+      userId,
+    );
+    console.log(response.data);
+    return true;
+  } catch (e) {
+    console.log('여기는 비밀번호 재설정 이메일 전송 함수', e);
+    return false;
+  }
+};
+
+export const checkResetPasswordAuthNumber = async (code: string) => {
+  try {
+    let requestDto: VerificationRequestDto = {code: code};
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<AxiosResponse>(
+      '/mail/regular-member-verification',
+      requestDto,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return 0;
+  } catch (e: any) {
+    console.log('여기는 checkAuthNumber 함수', e.response.data);
+    console.log(
+      '여기는 checkAuthNumber 함수',
+      e.response.data.data
+    );
+    return e.response.data.attemptCount;
+  }
+};
+

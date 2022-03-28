@@ -10,6 +10,9 @@ import TermAgree from './src/screens/signUp/TermAgree';
 import SignInId from './src/screens/signIn/SignInId';
 import SignInPassword from './src/screens/signIn/SignInPassword';
 import ResetPasswordInputId from './src/screens/signIn/ResetPasswordInputId';
+import ResetPasswordInputRegularMemberAuthNumber from './src/screens/signIn/ResetPasswordInputRegularMemberAuthNumber';
+import ResetPasswordInputNewPassword from './src/screens/signIn/ResetPasswordInputNewPassword';
+import ResetPasswordInputNewPasswordConfirm from './src/screens/signIn/ResetPasswordInputNewPasswordConfirm';
 
 import SignUpId from './src/screens/signUp/SignUpId';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
@@ -207,7 +210,7 @@ const App = () => {
                   animation: 'slide_from_right',
                 }}
               />
-                <Stack.Screen
+              <Stack.Screen
                 name="DirectionAgree"
                 component={DirectionAgree}
                 options={{
@@ -259,6 +262,78 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputId"
+                component={ResetPasswordInputId}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputRegularMemberAuthNumber"
+                component={ResetPasswordInputRegularMemberAuthNumber}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputNewPassword"
+                component={ResetPasswordInputNewPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputNewPasswordConfirm"
+                component={ResetPasswordInputNewPasswordConfirm}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
@@ -373,6 +448,7 @@ const App = () => {
                 }}
               />
             </Stack.Navigator>
+            
           ) : (
             <Stack.Navigator
               screenOptions={{
@@ -501,6 +577,14 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                 }}
+                />
+              <Stack.Screen
+                name="DirectionAgree"
+                component={DirectionAgree}
+                options={{
+                  title: '',
+                  animation: 'slide_from_right',
+                }}
               />
               <Stack.Screen
                 name="RegularMemberAuthSelect"
@@ -561,6 +645,63 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputRegularMemberAuthNumber"
+                component={ResetPasswordInputRegularMemberAuthNumber}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+                />
+                      <Stack.Screen
+                name="ResetPasswordInputNewPassword"
+                component={ResetPasswordInputNewPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ResetPasswordInputNewPasswordConfirm"
+                component={ResetPasswordInputNewPasswordConfirm}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />
