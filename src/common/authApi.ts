@@ -191,11 +191,11 @@ export const checkRegularMember = async () => {
   }
 };
 
-export const sendResetPasswordEmail = async (username: ResetPasswordRequestDto) => {
+export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPasswordRequestDto) => {
   try {
     const response = await client.post<AxiosResponse>(
       '/mail/reset-password',
-      username,
+      resetPasswordRequestDto,
     );
     console.log(response.data);
     return true;
