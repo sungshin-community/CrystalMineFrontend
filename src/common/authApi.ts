@@ -120,7 +120,7 @@ export const checkAuthNumber = async (code: string) => {
   try {
     let requestDto: VerificationRequestDto = {code: code};
     const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.patch<AxiosResponse>(
+    const response = await client.post<AxiosResponse>(
       '/mail/regular-member-verification',
       requestDto,
       {
