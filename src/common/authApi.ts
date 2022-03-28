@@ -191,12 +191,11 @@ export const checkRegularMember = async () => {
   }
 };
 
-export const sendResetPasswordEmail = async (userId: string) => {
+export const sendResetPasswordEmail = async (username: ResetPasswordRequestDto) => {
   try {
-    let requestDto: ResetPasswordRequestDto = {username: userId}
     const response = await client.post<AxiosResponse>(
       '/mail/reset-password',
-      userId,
+      username,
     );
     console.log(response.data);
     return true;
@@ -210,7 +209,7 @@ export const checkResetPasswordAuthNumber = async (code: string) => {
   try {
     let requestDto: VerificationRequestDto = {code: code};
     const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.patch<AxiosResponse>(
+    const response = await client.post<AxiosResponse>(
       '/mail/regular-member-verification',
       requestDto,
       {

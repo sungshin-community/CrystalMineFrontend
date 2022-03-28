@@ -26,7 +26,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {checkEmailConflict, checkBlackList} from '../../common/authApi';
+import {checkEmailConflict, checkBlackList, sendResetPasswordEmail} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 if (Platform.OS === 'android') {
@@ -171,7 +171,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               )}
               {isBlackList && (
                 <Text style={styles.errorMessage}>
-                  가입이 불가능한 계정입니다.
+                  접근이 불가능한 계정입니다.
                 </Text>
               )}
             </View>
@@ -196,16 +196,21 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
+                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  if (check) {
+                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
                   });
+                  } else {
+                    console.log('비밀번호 재설정 이메일 발송 실패');
+                  }
                 }}
               />
             )}
 
             {studentId.length > 0 && !isFocused && (
               <PurpleRoundButton
-                text="다음"
+               text="다음"
                 onClick={async () => {
                   let result: boolean = await checkEmailConflict(studentId);
                   let resultBlackList: boolean = await checkBlackList(
@@ -217,9 +222,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   } else if (!resultBlackList) {
                     setIsBlackList(true);
                   }
-                  navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
+                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  if (check) {
+                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
                     userId: studentId,
                   });
+                  } else {
+                    console.log('비밀번호 재설정 이메일 발송 실패');
+                  }
                 }}
               />
             )}
@@ -299,7 +309,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
             )}
             {isBlackList && (
               <Text style={styles.errorMessage}>
-                가입이 불가능한 계정입니다.
+                접근이 불가능한 계정입니다.
               </Text>
             )}
           </View>
@@ -312,39 +322,53 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
           }}>
           {studentId.length > 0 && isFocused && (
             <PurpleFullButton
-              text="다음"
-              onClick={async () => {
-                let result: boolean = await checkEmailConflict(studentId);
-                let resultBlackList: boolean = await checkBlackList(studentId);
-                if (result) {
-                  setIsNotExisted(true);
-                  return;
-                } else if (!resultBlackList) {
-                  setIsBlackList(true);
-                }
-                navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
-                  userId: studentId,
-                });
-              }}
-            />
+                text="다음"
+                onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  let resultBlackList: boolean = await checkBlackList(
+                    studentId,
+                  );
+                  if (result) {
+                    setIsNotExisted(true);
+                    return;
+                  } else if (!resultBlackList) {
+                    setIsBlackList(true);
+                  }
+                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  if (check) {
+                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
+                    userId: studentId,
+                  });
+                  } else {
+                    console.log('비밀번호 재설정 이메일 발송 실패');
+                  }
+                }}
+              />
           )}
 
           {studentId.length > 0 && !isFocused && (
             <PurpleRoundButton
               text="다음"
-              onClick={async () => {
-                let result: boolean = await checkEmailConflict(studentId);
-                let resultBlackList: boolean = await checkBlackList(studentId);
-                if (result) {
-                  setIsNotExisted(true);
-                  return;
-                } else if (!resultBlackList) {
-                  setIsBlackList(true);
-                }
-                navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
-                  userId: studentId,
-                });
-              }}
+                onClick={async () => {
+                  let result: boolean = await checkEmailConflict(studentId);
+                  let resultBlackList: boolean = await checkBlackList(
+                    studentId,
+                  );
+                  if (result) {
+                    setIsNotExisted(true);
+                    return;
+                  } else if (!resultBlackList) {
+                    setIsBlackList(true);
+                  }
+                  let check: boolean = await sendResetPasswordEmail(studentId);
+                  if (check) {
+                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
+                    userId: studentId,
+                  });
+                  } else {
+                    console.log('비밀번호 재설정 이메일 발송 실패');
+                  }
+                }}
             />
           )}
 
