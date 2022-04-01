@@ -258,7 +258,6 @@ const MyPageFragment = ({navigation}: Props) => {
             }}
           />
         </View>
-        <Text>
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -270,7 +269,7 @@ const MyPageFragment = ({navigation}: Props) => {
             await logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           }}
-        /></Text>
+        />
       </ScrollView>
     </SafeAreaView>
   );

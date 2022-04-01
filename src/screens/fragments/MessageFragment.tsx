@@ -1,11 +1,29 @@
 import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {SafeAreaView, Text, View, Dimensions} from 'react-native';
+import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
 
 const MessageFragment = () => {
   return (
-    <SafeAreaView>
-      <View style={{alignItems: 'center'}}>
-        <Text>Message page</Text>
+    <SafeAreaView style={{flex: 1}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <NoCommentSuryong />
+        <Text
+          style={{
+            color: '#6E7882',
+            fontSize: 15,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+            textAlign: 'center',
+            lineHeight: 22.5,
+            marginTop: 20
+          }}>
+          현재 개발 중인 기능입니다.{"\n"}
+          추후 기능 개발 후 사용하실 수 있습니다.
+        </Text>
       </View>
     </SafeAreaView>
   );

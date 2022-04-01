@@ -107,7 +107,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Message"
         component={MessageFragment}
         options={{
-          headerShown: false,
+          title: '쪽지',
+          headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <MessageTabIcon size={size} color={color} focused={focused} />
@@ -119,7 +120,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Alert"
         component={AlertFragment}
         options={{
-          headerShown: false,
+          title: '알림',
+          headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <AlertTabIcon size={size} color={color} focused={focused} />;
           },
