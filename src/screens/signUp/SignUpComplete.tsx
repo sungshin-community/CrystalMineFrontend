@@ -6,7 +6,7 @@ import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import SignUpCompleteIcon from '../../../resources/icon/custom/SignUpCompleteIcon';
+import HappySuryong from '../../../resources/icon/custom/HappySuryong';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -60,7 +60,7 @@ export default function SignUpComplete({navigation}: Props) {
               paddingHorizontal: Dimensions.get('window').width / 4,
               paddingVertical: Dimensions.get('window').height / 8,
             }}>
-            <SignUpCompleteIcon />
+            <HappySuryong />
           </View>
         </Animatable.View>
       </Container>

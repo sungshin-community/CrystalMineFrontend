@@ -1,7 +1,6 @@
 import React from 'react';
 import {SafeAreaView, Text, View, Dimensions} from 'react-native';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
-
 const MessageFragment = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -11,7 +10,7 @@ const MessageFragment = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <NoCommentSuryong />
+        <NoCommentSuryong/>
         <Text
           style={{
             color: '#6E7882',
