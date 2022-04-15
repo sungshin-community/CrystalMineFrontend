@@ -27,9 +27,9 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import {AgreementContainer} from '../../components/HideToggleContainer';
-import Agreement from '../../classes/Agreement';
-import {getAgreements, sendEmail} from '../../common/authApi';
+import {DirectionContainer} from '../../components/HideToggleContainer';
+import Agreement, { DirectionAgreement } from '../../classes/Agreement';
+import {getAgreements, getDirectionAgreements, sendEmail} from '../../common/authApi';
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: { agreementIds: number[] };
@@ -40,16 +40,10 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function DirectionAgree({navigation}: Props) {
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
-  const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
-  const [secondTermSpread, setSecondTermSpread] = useState<boolean>(false);
-  const [agreements, setAgreements] = useState<Agreement[]>([]);
+  const [agreements, setAgreements] = useState<DirectionAgreement[]>([]);
 
   const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
-    if (clickedComponent === 'firstTerm') {
-      setFirstTermSpread(!firstTermSpread);
-    } else if (clickedComponent === 'secondTerm') {
-      setSecondTermSpread(!secondTermSpread);
-    } else if (clickedComponent === 'wholeAgree') {
+    if (clickedComponent === 'wholeAgree') {
       setFirstTermChecked(true);
       setSecondTermChecked(true);
     } else if (clickedComponent === 'wholeDisagree') {
@@ -68,16 +62,8 @@ function DirectionAgree({navigation}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getAgreements();
-      agreementList.map(a => (a.checked = false));
+      const agreementList = await getDirectionAgreements();
       setAgreements(agreementList);
-      for (let i = 0; i < 2; i++) {
-        console.log(
-          agreements[i].title,
-          agreements[i].checked,
-          agreements[i].id,
-        );
-      }
     }
     init();
   }, []);
@@ -158,7 +144,7 @@ function DirectionAgree({navigation}: Props) {
                 </Text>
               </TouchableOpacity>
               {agreements.map(a => (
-                <AgreementContainer
+                <DirectionContainer
                   id={a.id}
                   title={a.title}
                   content={a.content}
