@@ -172,14 +172,20 @@ export default function MajorSelect({navigation, route}: Props) {
             <PurpleRoundButton
               text="회원가입"
               onClick={async () => {
-                await register({
+                let result = await register({
                   username: route.params.userId,
                   password: route.params.password,
                   nickname: route.params.nickname,
                   departmentId: selectedMajorId,
                   agreementIds: route.params.agreementIds,
                 });
-                navigation.reset({routes: [{name: 'SignUpComplete'}]});
+                console.log(result);
+                if (result) {
+                  navigation.reset({routes: [{name: 'SignUpComplete'}]});
+                }
+                else {
+                  console.log("회원가입 실패");
+                }
               }}
             />
           ) : (
