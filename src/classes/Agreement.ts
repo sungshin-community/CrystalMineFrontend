@@ -6,7 +6,7 @@ export default class Agreement {
 }
 export class DirectionAgreement {
   id: number = 0;
-  num: string = '';
-  detail: string = '';
+  title: string = '제목입니다';
+  content: string[] = [];
   checked: boolean = false;
 }

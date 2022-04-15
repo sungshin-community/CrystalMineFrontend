@@ -18,6 +18,14 @@ interface AgreementProps {
   onChange: (key: number, isChecked: boolean) => void;
 }
 
+interface DirectionProps {
+  id: number;
+  checked: boolean;
+  title: string;
+  content: string[];
+  onChange: (key: number, isChecked: boolean) => void;
+}
+
 export function BoardListContainer({boardCategory, component}: Props) {
   const [isSpread, setIsSpread] = useState<boolean>(true);
   return (
@@ -294,8 +302,84 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
             <Text style={{fontWeight:'bold'}}>{title}</Text>
             {"\n"}
             {"\n"}
-            {"\n"}
             {content}
+          </Text>
+        </ScrollView>
+      )}
+    </>
+  )
+}
+
+export function DirectionContainer({id, checked, title, content, onChange}: DirectionProps) {
+  const [isSpread, setIsSpread] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(checked);
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked])
+  return (
+    <>
+      <TouchableOpacity
+        onPress={(e: any) => setIsSpread(!isSpread)}
+        style={{
+          marginLeft: 35,
+          marginTop: 16,
+          marginRight: 41,
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: 24,
+        }}>
+        <TouchableOpacity
+          style={{
+            height: 24,
+            alignItems: 'center',
+            flexDirection: 'row',
+            paddingLeft: 13,
+          }}
+          onPress={(e: any) => {
+            onChange(id, !isChecked);
+            setIsChecked(!isChecked);
+            }}>
+          {isChecked ? (
+            <Checked
+              style={{marginRight: 16}}
+              // onPress={(e: any) => onChange('firstTerm')}
+            />
+          ) : (
+            <Unchecked
+              style={{marginRight: 16}}
+              // onPress={(e: any) => onChange('firstTerm')}
+            />
+          )}
+        </TouchableOpacity>
+
+        <SmallText>{title}</SmallText>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row-reverse',
+            alignItems: 'center',
+            height: 16,
+            marginLeft: 5,
+          }}>
+          {isSpread ? <FoldButton /> : <SpreadButton />}
+        </View>
+      </TouchableOpacity>
+      {isSpread && (
+        <ScrollView
+          style={{
+            height:(Dimensions.get('window').height / 5),
+            marginLeft: 40,
+            marginRight: 40,
+            backgroundColor: '#F6F6F6',
+            padding: 20,
+            marginTop: 8,
+          }}
+          nestedScrollEnabled={true}>
+          <Text>
+            <Text style={{fontWeight:'bold'}}>{title}</Text>
+            {"\n"}
+            {"\n"}
+            {content.map(c => <Text>{`⦁ ${c === null ? '' : c}\n`}</Text>)}
           </Text>
         </ScrollView>
       )}

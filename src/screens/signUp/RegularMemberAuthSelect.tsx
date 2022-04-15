@@ -67,7 +67,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
           easing={'ease-in-out-quad'}>
           <TwoLineTitle
             firstLineText="정회원 인증을"
-            secondLineText="이어서 진행하시겠어요?"
+            secondLineText="진행하시겠어요?"
           />
         </Animatable.Text>
         <Animatable.Text
@@ -94,14 +94,14 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
           <ButtonCenter>
             <View style={{margin: 16}}>
               <PurpleRoundButton
-                text="바로 인증하기"
+                text="지금 인증하기"
                 onClick={() => 
-                  navigation.navigate('DirectionAgree')          
+                  navigation.navigate('DirectionAgree')
                 }
               />
             </View>
             <WhiteRoundButton
-              text="나중에 인증하기"
+              text="다음에 인증하기"
               onClick={() => {
                 console.log('click');
                 setModalVisible(!modalVisible);
