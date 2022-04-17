@@ -26,7 +26,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {checkEmailConflict, checkBlackList, sendResetPasswordEmail} from '../../common/authApi';
+import {sendResetPasswordEmail} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 if (Platform.OS === 'android') {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  ResetPasswordInputRegularMemberAuthNumber: {userId: string;};
+  ResetPasswordInputRegularMemberAuthNumber: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -186,21 +186,20 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               <PurpleFullButton
                 text="다음"
                 onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  let resultBlackList: boolean = await checkBlackList(
-                    studentId,
-                  );
-                  if (result) {
-                    setIsNotExisted(true);
-                    return;
-                  } else if (!resultBlackList) {
-                    setIsBlackList(true);
-                  }
-                  let check: boolean = await sendResetPasswordEmail({username: studentId});
-                  if (check) {
-                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
-                    userId: studentId,
+                  let check: string = await sendResetPasswordEmail({
+                    username: studentId,
                   });
+                  if (check === "SEND_RESET_PASSWORD_MAIL_SUCCESS") {
+                    navigation.navigate(
+                      'ResetPasswordInputRegularMemberAuthNumber',
+                      {
+                        userId: studentId,
+                      },
+                    );
+                  } else if (check === "ACCOUNT_NOT_FOUND") {
+                    setIsNotExisted(true);
+                  } else if (check === "BLACKLIST_MEMBER") {
+                    setIsBlackList(true);
                   } else {
                     console.log('비밀번호 재설정 이메일 발송 실패');
                   }
@@ -210,23 +209,22 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
 
             {studentId.length > 0 && !isFocused && (
               <PurpleRoundButton
-               text="다음"
+                text="다음"
                 onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  let resultBlackList: boolean = await checkBlackList(
-                    studentId,
-                  );
-                  if (result) {
-                    setIsNotExisted(true);
-                    return;
-                  } else if (!resultBlackList) {
-                    setIsBlackList(true);
-                  }
-                  let check: boolean = await sendResetPasswordEmail({username: studentId});
-                  if (check) {
-                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
-                    userId: studentId,
+                  let check: string = await sendResetPasswordEmail({
+                    username: studentId,
                   });
+                  if (check === "SEND_RESET_PASSWORD_MAIL_SUCCESS") {
+                    navigation.navigate(
+                      'ResetPasswordInputRegularMemberAuthNumber',
+                      {
+                        userId: studentId,
+                      },
+                    );
+                  } else if (check === "ACCOUNT_NOT_FOUND") {
+                    setIsNotExisted(true);
+                  } else if (check === "BLACKLIST_MEMBER") {
+                    setIsBlackList(true);
                   } else {
                     console.log('비밀번호 재설정 이메일 발송 실패');
                   }
@@ -258,7 +256,6 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               <Description style={{marginRight: 5.5}}>
                 수정광산에 가입하신 성신 G-mail 계정을 입력해 주세요.
               </Description>
-            
             </View>
           </TextContainer>
 
@@ -322,53 +319,51 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
           }}>
           {studentId.length > 0 && isFocused && (
             <PurpleFullButton
-                text="다음"
-                onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  let resultBlackList: boolean = await checkBlackList(
-                    studentId,
+              text="다음"
+              onClick={async () => {
+                let check: string = await sendResetPasswordEmail({
+                  username: studentId,
+                });
+                if (check === "SEND_RESET_PASSWORD_MAIL_SUCCESS") {
+                  navigation.navigate(
+                    'ResetPasswordInputRegularMemberAuthNumber',
+                    {
+                      userId: studentId,
+                    },
                   );
-                  if (result) {
-                    setIsNotExisted(true);
-                    return;
-                  } else if (!resultBlackList) {
-                    setIsBlackList(true);
-                  }
-                  let check: boolean = await sendResetPasswordEmail({username: studentId});
-                  if (check) {
-                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
-                    userId: studentId,
-                  });
-                  } else {
-                    console.log('비밀번호 재설정 이메일 발송 실패');
-                  }
-                }}
-              />
+                } else if (check === "ACCOUNT_NOT_FOUND") {
+                  setIsNotExisted(true);
+                } else if (check === "BLACKLIST_MEMBER") {
+                  setIsBlackList(true);
+                } else {
+                  console.log('비밀번호 재설정 이메일 발송 실패');
+                }
+              }}
+            />
           )}
 
           {studentId.length > 0 && !isFocused && (
             <PurpleRoundButton
               text="다음"
-                onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  let resultBlackList: boolean = await checkBlackList(
-                    studentId,
+              onClick={async () => {
+                let check: string = await sendResetPasswordEmail({
+                  username: studentId,
+                });
+                if (check === "SEND_RESET_PASSWORD_MAIL_SUCCESS") {
+                  navigation.navigate(
+                    'ResetPasswordInputRegularMemberAuthNumber',
+                    {
+                      userId: studentId,
+                    },
                   );
-                  if (result) {
-                    setIsNotExisted(true);
-                    return;
-                  } else if (!resultBlackList) {
-                    setIsBlackList(true);
-                  }
-                  let check: boolean = await sendResetPasswordEmail({username: studentId});
-                  if (check) {
-                    navigation.navigate('ResetPasswordInputRegularMemberAuthNumber', {
-                    userId: studentId,
-                  });
-                  } else {
-                    console.log('비밀번호 재설정 이메일 발송 실패');
-                  }
-                }}
+                } else if (check === "ACCOUNT_NOT_FOUND") {
+                  setIsNotExisted(true);
+                } else if (check === "BLACKLIST_MEMBER") {
+                  setIsBlackList(true);
+                } else {
+                  console.log('비밀번호 재설정 이메일 발송 실패');
+                }
+              }}
             />
           )}
 

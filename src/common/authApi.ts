@@ -192,16 +192,17 @@ export const checkRegularMember = async () => {
 };
 
 export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPasswordRequestDto) => {
+  let response;
   try {
-    const response = await client.post<AxiosResponse>(
+    response = await client.post<Response<AxiosResponse>>(
       '/mail/reset-password',
       resetPasswordRequestDto,
     );
-    console.log(response.data);
-    return true;
+    console.log(response.data.code);
+    return 'SEND_RESET_PASSWORD_MAIL_SUCCESS';
   } catch (e) {
-    console.log('여기는 비밀번호 재설정 이메일 전송 함수', e);
-    return false;
+    console.log('여기는 비밀번호 재설정 이메일 전송 함수', e.response.data.code);
+    return e.response.data.code;
   }
 };
 
