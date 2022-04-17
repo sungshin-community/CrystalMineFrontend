@@ -274,7 +274,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
                     userId: route.params.userId,
                   });
               } else {
-                setTryCnt(tryCnt - result);
+                setTryCnt(tryCnt - 1);
                 setIsIncorrect(true);
               }
             }}></PurpleFullButton>
@@ -290,7 +290,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
                     userId: route.params.userId,
                   });
               } else {
-                setTryCnt(tryCnt - result);
+                setTryCnt(tryCnt - 1);
                 setIsIncorrect(true);
               }
             }}></PurpleRoundButton>

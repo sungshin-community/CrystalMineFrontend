@@ -214,10 +214,9 @@ export const checkResetPasswordAuthNumber = async (resetPasswordVerificationRequ
     );
     return 0;
   } catch (e: any) {
-    console.log('여긴 비번재설정 인증번호 확인 함수', e.response.data);
     console.log(
       '여기는 비번재설정 인증번호 확인 함수',
-      e.response.data.data
+      e.response.data
     );
     return e.response.data.data.attemptCount;
   }
