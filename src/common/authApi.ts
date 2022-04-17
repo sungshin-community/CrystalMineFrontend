@@ -227,6 +227,7 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
       '/auth/reset-password',
       resetPasswordRequestDto,
     );
+    console.log('여긴 비번재설정 함수', response.data.status)
     return 0;
   } catch (e: any) {
     console.log('여긴 비번재설정 함수', e.response.data.status);

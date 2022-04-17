@@ -24,6 +24,7 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+import {resetPassword} from '../../common/authApi';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -48,18 +49,24 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  ResetPasswordInputNewPasswordConfirm: {userId: string; previousPassword: string;};
-  ResetPasswordInputNewPassword: {userId: string;};
+  ResetPasswordInputNewPasswordConfirm: {
+    userId: string;
+    previousPassword: string;
+  };
+  ResetPasswordInputNewPassword: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function ResetPasswordInputNewPassword({navigation, route}: Props) {
+export default function ResetPasswordInputNewPassword({
+  navigation,
+  route,
+}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
-
+  const [isChangeable, setIsChangeable] = useState<boolean>(true);
   const onInputFocus = () => {
     setIsFocused(true);
   };
@@ -70,8 +77,7 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
   };
 
   const validatePassword = (password: string) => {
-    let regExp =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
     if (regExp.test(password)) {
       setIsValidate(true);
       setIsWrong(false);
@@ -84,6 +90,13 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
     setShowPassword(!showPassword);
   };
 
+  const resetPasswordConfirm = async () => {
+    let result: number = await resetPassword({
+      username: route.params.userId,
+      password: password,
+    });
+    return result;
+  };
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={10}
@@ -102,11 +115,12 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isWrong
-                ? '#ff0000'
-                : isFocused
-                ? '#A055FF'
-                : '#D7DCE6',
+              borderColor:
+                isWrong || !isChangeable
+                  ? '#ff0000'
+                  : isFocused
+                  ? '#A055FF'
+                  : '#D7DCE6',
             }}>
             <TextInput
               style={{
@@ -122,7 +136,12 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
-                value.length > 0 ? setIsWrong(true) : setIsWrong(false);
+                if (value.length > 0) {
+                  setIsWrong(true);
+                  setIsChangeable(true);
+                } else {
+                  setIsWrong(false);
+                }
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
               }}
@@ -146,6 +165,9 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           {isWrong && !isValidate && (
             <CautionText text="사용할 수 없는 비밀번호 입니다." />
           )}
+          {!isChangeable && (
+            <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
+          )}
         </ScrollView>
         <View
           style={{
@@ -156,26 +178,44 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           {isValidate && isFocused && (
             <PurpleFullButton
               text="비밀번호 재설정"
-              onClick={() =>
-                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
-                  userId: route.params.userId,
-                  previousPassword: password,
-                })
-              }
+              onClick={async () => {
+                let result: number = await resetPassword({
+                  username: route.params.userId,
+                  password: password,
+                });
+                if (result === 0) {
+                  navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
+                    userId: route.params.userId,
+                    previousPassword: password,
+                  });
+                } else {
+                  setIsChangeable(false);
+                }
+              }}
             />
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
               text="비밀번호 재설정"
-              onClick={() =>
-                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
-                  userId: route.params.userId,
-                  previousPassword: password,
-                })
-              }
+              onClick={async () => {
+                let result: number = await resetPassword({
+                  username: route.params.userId,
+                  password: password,
+                });
+                if (result === 0) {
+                  navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
+                    userId: route.params.userId,
+                    previousPassword: password,
+                  });
+                } else {
+                  setIsChangeable(false);
+                }
+              }}
             />
           )}
-          {!isValidate && isFocused && <DisabledPurpleFullButton text="비밀번호 재설정" />}
+          {!isValidate && isFocused && (
+            <DisabledPurpleFullButton text="비밀번호 재설정" />
+          )}
           {!isValidate && !isFocused && (
             <DisabledPurpleRoundButton text="비밀번호 재설정" />
           )}
@@ -197,11 +237,12 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isWrong
-                ? '#ff0000'
-                : isFocused
-                ? '#A055FF'
-                : '#D7DCE6',
+              borderColor:
+                isWrong || !isChangeable
+                  ? '#ff0000'
+                  : isFocused
+                  ? '#A055FF'
+                  : '#D7DCE6',
             }}>
             <TextInput
               style={{
@@ -217,7 +258,12 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
-                value.length > 0 ? setIsWrong(true) : setIsWrong(false);
+                if (value.length > 0) {
+                  setIsWrong(true);
+                  setIsChangeable(true);
+                } else {
+                  setIsWrong(false);
+                }
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
               }}
@@ -240,6 +286,9 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           {isWrong && !isValidate && (
             <CautionText text="사용할 수 없는 비밀번호 입니다." />
           )}
+          {!isChangeable && (
+            <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
+          )}
         </ScrollView>
         <View
           style={{
@@ -250,26 +299,44 @@ export default function ResetPasswordInputNewPassword({navigation, route}: Props
           {isValidate && isFocused && (
             <PurpleFullButton
               text="비밀번호 재설정"
-              onClick={() =>
-                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
-                  userId: route.params.userId,
-                  previousPassword: password,
-                })
-              }
+              onClick={async () => {
+                let result: number = await resetPassword({
+                  username: route.params.userId,
+                  password: password,
+                });
+                if (result === 0) {
+                  navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
+                    userId: route.params.userId,
+                    previousPassword: password,
+                  });
+                } else {
+                  setIsChangeable(false);
+                }
+              }}
             />
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
               text="비밀번호 재설정"
-              onClick={() =>
-                navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
-                  userId: route.params.userId,
-                  previousPassword: password,
-                })
-              }
+              onClick={async () => {
+                let result: number = await resetPassword({
+                  username: route.params.userId,
+                  password: password,
+                });
+                if (result === 0) {
+                  navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
+                    userId: route.params.userId,
+                    previousPassword: password,
+                  });
+                } else {
+                  setIsChangeable(false);
+                }
+              }}
             />
           )}
-          {!isValidate && isFocused && <DisabledPurpleFullButton text="비밀번호 재설정" />}
+          {!isValidate && isFocused && (
+            <DisabledPurpleFullButton text="비밀번호 재설정" />
+          )}
           {!isValidate && !isFocused && (
             <DisabledPurpleRoundButton text="비밀번호 재설정" />
           )}

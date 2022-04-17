@@ -66,7 +66,6 @@ export default function ResetPasswordInputNewPasswordConfirm({
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
-  const [isChangeable, setIsChangeable] = useState<boolean>(true);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onInputFocus = () => {
@@ -96,9 +95,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
     });
     if (result === 0) {
       setModalVisible(true);
-    } else {
-      setIsChangeable(false);
-    }
+    } 
   };
 
   return Platform.OS === 'ios' ? (
@@ -119,7 +116,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isWrong || !isChangeable
+              borderColor: isWrong
                 ? '#ff0000'
                 : isFocused
                 ? '#A055FF'
@@ -141,7 +138,6 @@ export default function ResetPasswordInputNewPasswordConfirm({
               onChangeText={(value: string) => {
                 if (value.length > 0) {
                   setIsWrong(true);
-                  setIsChangeable(true);
                 }
                 validatePassword(value);
               }}
@@ -163,9 +159,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
           {isWrong && !isEqual && (
             <CautionText text="비밀번호를 정확하게 입력해 주세요." />
           )}
-          {!isChangeable && (
-            <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
-          )}
+         
         </ScrollView>
         <View
           style={{
@@ -219,7 +213,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isWrong || !isChangeable
+              borderColor: isWrong 
                 ? '#ff0000'
                 : isFocused
                 ? '#A055FF'
@@ -241,7 +235,6 @@ export default function ResetPasswordInputNewPasswordConfirm({
               onChangeText={(value: string) => {
                 if (value.length > 0) {
                   setIsWrong(true);
-                  setIsChangeable(true);
                 }
                 validatePassword(value);
               }}
@@ -263,9 +256,6 @@ export default function ResetPasswordInputNewPasswordConfirm({
           {isWrong && !isEqual && (
             <CautionText text="비밀번호를 정확하게 입력해 주세요." />
             )}
-             {!isChangeable && (
-            <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
-          )}
         </ScrollView>
         <View
           style={{
