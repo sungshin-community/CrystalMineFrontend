@@ -24,7 +24,7 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
-import {resetPassword} from '../../common/authApi';
+import {checkNewPassword} from '../../common/authApi';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -91,7 +91,7 @@ export default function ResetPasswordInputNewPassword({
   };
 
   const resetPasswordConfirm = async () => {
-    let result: number = await resetPassword({
+    let result: number = await checkNewPassword({
       username: route.params.userId,
       password: password,
     });
@@ -179,7 +179,7 @@ export default function ResetPasswordInputNewPassword({
             <PurpleFullButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await resetPassword({
+                let result: number = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
@@ -198,7 +198,7 @@ export default function ResetPasswordInputNewPassword({
             <PurpleRoundButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await resetPassword({
+                let result: number = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
@@ -300,7 +300,7 @@ export default function ResetPasswordInputNewPassword({
             <PurpleFullButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await resetPassword({
+                let result: number = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
@@ -319,7 +319,7 @@ export default function ResetPasswordInputNewPassword({
             <PurpleRoundButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await resetPassword({
+                let result: number = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });

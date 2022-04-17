@@ -221,6 +221,19 @@ export const checkResetPasswordAuthNumber = async (resetPasswordVerificationRequ
     return e.response.data.data.attemptCount;
   }
 };
+export const checkNewPassword = async (resetPasswordRequestDto: SignInRequestDto) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      '/auth/check-password',
+      resetPasswordRequestDto,
+    );
+    console.log('여긴 비번 중복 확인 함수', response.data.status)
+    return 0;
+  } catch (e: any) {
+    console.log('여긴 비번 중복 확인 함수', e.response.data.status);
+    return e.response.data.status;
+  }
+};
 export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) => {
   try {
     const response = await client.post<AxiosResponse>(
