@@ -60,12 +60,11 @@ function AnnouncementList({navigation}: Props) {
 }
 
 const styles = StyleSheet.create({
-  menuContainer: {paddingVertical: 16, backgroundColor: 'white',  paddingLeft: 24,},
+  menuContainer: {paddingVertical: 16, backgroundColor: 'white',  paddingHorizontal: 24,},
   menuIcon: {
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'flex-end',
-    paddingRight: 31,
   },
   menu: {
     alignItems: 'center',

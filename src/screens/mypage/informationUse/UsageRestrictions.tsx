@@ -12,23 +12,35 @@ function UsageRestrictions({navigation}: Props) {
   return (
     <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
       <View style={styles.menuContainer}>
-        <Pressable hitSlop={{top: 16}} onPress={() => navigation.navigate('Announcement')}>
-          <View style={styles.menu}>
-            <Text style={[fontRegular, styles.menuText]}>
-              공지사항 게시글 제목 01
+          <View style={[styles.menu]}>
+            <Text style={[fontRegular, styles.boardName]}>
+               ㅇㅇ게시판
             </Text>
             <View style={styles.menuIcon}>
-              <Text style={[fontBold, {color:'#FF6060', fontSize: 13}]}>N</Text>
+              <Text  style={[
+              fontRegular,
+              styles.blindDate,
+            ]}>2021.12.27</Text>
+            </View>
+          </View>
+          <View style={[styles.menu, {marginTop: 5}]}>
+            <Text style={[fontBold, styles.blindTitle]}>
+               댓글 블라인드
+            </Text>
+            <View style={styles.menuIcon}>
+              <Text  style={[
+              fontRegular,
+              styles.points,
+            ]}>-300 points</Text>
             </View>
           </View>
           <Text
             style={[
               fontRegular,
-              {color: '#ADB3BC', fontSize: 12, marginTop: 8},
+              styles.blindReason
             ]}>
-            2001.01.01
+            블라인드 사유 : 애교어 사용
           </Text>
-        </Pressable>
       </View>
       <View
         style={{
@@ -36,45 +48,69 @@ function UsageRestrictions({navigation}: Props) {
           borderBottomWidth: 1,
         }}
       />
-      <View style={styles.menuContainer}>
-        <Pressable hitSlop={{top: 16}} onPress={() => navigation.navigate('Announcement')}>
-          <View style={styles.menu}>
-            <Text style={[fontRegular, styles.menuText]}>
-              공지사항 게시글 제목 01
+            <View style={styles.menuContainer}>
+          <View style={[styles.menu]}>
+            <Text style={[fontRegular, styles.boardName]}>
+               ㅇㅇ게시판
             </Text>
             <View style={styles.menuIcon}>
-              <Text style={[fontBold, {color:'#FF6060', fontSize: 13}]}>N</Text>
+              <Text  style={[
+              fontRegular,
+              styles.blindDate,
+            ]}>2021.12.27</Text>
+            </View>
+          </View>
+          <View style={[styles.menu, {marginTop: 5}]}>
+            <Text style={[fontBold, styles.blindTitle]}>
+               댓글 블라인드
+            </Text>
+            <View style={styles.menuIcon}>
+              <Text  style={[
+              fontRegular,
+              styles.points,
+            ]}>-300 points</Text>
             </View>
           </View>
           <Text
             style={[
               fontRegular,
-              {color: '#ADB3BC', fontSize: 12, marginTop: 8},
+              styles.blindReason
             ]}>
-            2001.01.01
+            블라인드 사유 : 애교어 사용
           </Text>
-        </Pressable>
       </View>
+     
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  menuContainer: {paddingVertical: 16, backgroundColor: 'white',  paddingLeft: 24,},
+  menuContainer: {paddingVertical: 24, backgroundColor: 'white', paddingHorizontal: 32},
   menuIcon: {
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'flex-end',
-    paddingRight: 31,
   },
   menu: {
     alignItems: 'center',
     flexDirection: 'row',
   },
-  menuText: {
-    fontSize: 15,
+  boardName: {
+    fontSize: 13,
     color: '#222222'
   },
+  blindDate: {
+    color: '#6E7882', fontSize: 12
+  },
+  blindTitle: {
+    color: '#222222', fontSize: 15
+  }, 
+  points: {
+    color: '#A055FF', fontSize: 13
+  },
+  blindReason: {
+color: '#6E7882', fontSize: 13, marginTop: 12,
+  }
 });
 
 export default UsageRestrictions;
