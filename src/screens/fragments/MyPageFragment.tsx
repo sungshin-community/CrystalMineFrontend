@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 type RootStackParamList = {
   SplashHome: undefined;
   RequestScreen: undefined;
+  ListScreen: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -234,7 +235,9 @@ const MyPageFragment = ({navigation}: Props) => {
             </View>
           </View>
           <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
-            <TouchableHighlight>
+            <TouchableHighlight
+              underlayColor="#ffffff"
+              onPress={() => navigation.navigate('ListScreen')}>
               <View style={[styles.menu, {height: 51}]}>
                 <Text style={styles.menuText}>이용 안내</Text>
               </View>

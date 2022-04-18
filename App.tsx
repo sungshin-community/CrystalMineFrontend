@@ -38,6 +38,7 @@ import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import RequestScreen from './src/screens/mypage/RequestScreen';
 import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
 import RequestAnswer from './src/screens/mypage/RequestAnswer';
+import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -447,8 +448,27 @@ const App = () => {
                   },
                 }}
               />
+              <Stack.Screen
+                name="ListScreen"
+                component={ListScreen}
+                options={({navigation}) => ({
+                  title: '이용안내',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
             </Stack.Navigator>
-            
           ) : (
             <Stack.Navigator
               screenOptions={{
@@ -577,7 +597,7 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                 }}
-                />
+              />
               <Stack.Screen
                 name="DirectionAgree"
                 component={DirectionAgree}
@@ -668,8 +688,8 @@ const App = () => {
                     <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
-                />
-                      <Stack.Screen
+              />
+              <Stack.Screen
                 name="ResetPasswordInputNewPassword"
                 component={ResetPasswordInputNewPassword}
                 options={({navigation}) => ({
@@ -834,6 +854,26 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                 }}
+              />
+              <Stack.Screen
+                name="ListScreen"
+                component={ListScreen}
+                options={({navigation}) => ({
+                  title: '이용안내',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
               />
             </Stack.Navigator>
           )}
