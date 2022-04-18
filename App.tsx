@@ -39,6 +39,8 @@ import RequestScreen from './src/screens/mypage/RequestScreen';
 import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
 import RequestAnswer from './src/screens/mypage/RequestAnswer';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
+import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
+import Announcement from './src/screens/mypage/informationUse/Announcement';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -468,6 +470,46 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="AnnouncementList"
+                component={AnnouncementList}
+                options={({navigation}) => ({
+                  title: '공지사항',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="Announcement"
+                component={Announcement}
+                options={({navigation}) => ({
+                  title: '공지사항',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator
@@ -860,6 +902,46 @@ const App = () => {
                 component={ListScreen}
                 options={({navigation}) => ({
                   title: '이용안내',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="AnnouncementList"
+                component={AnnouncementList}
+                options={({navigation}) => ({
+                  title: '공지사항',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="Announcement"
+                component={Announcement}
+                options={({navigation}) => ({
+                  title: '공지사항',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
