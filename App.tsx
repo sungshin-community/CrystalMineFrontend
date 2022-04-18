@@ -35,14 +35,17 @@ import SearchResult from './src/screens/board/SearchResult';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
-import RequestScreen from './src/screens/mypage/RequestScreen';
-import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
-import RequestAnswer from './src/screens/mypage/RequestAnswer';
+import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMember';
+import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
+import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
 import Announcement from './src/screens/mypage/informationUse/Announcement';
 import TermsOfService from './src/screens/mypage/informationUse/TermsOfService';
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
+import RequestScreen from './src/screens/mypage/RequestScreen';
+import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
+import RequestAnswer from './src/screens/mypage/RequestAnswer';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -399,11 +402,12 @@ const App = () => {
               />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
+              {/* 마이페이지 - 정회원 인증 */}
               <Stack.Screen
-                name="RequestScreen"
-                component={RequestScreen}
+                name="CertifiedMember"
+                component={CertifiedMember}
                 options={({navigation}) => ({
-                  title: '문의 하기',
+                  title: '정회원 인증',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -420,10 +424,10 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="RequestWriteScreen"
-                component={RequestWriteScreen}
+                name="ExpiredMember"
+                component={ExpiredMember}
                 options={({navigation}) => ({
-                  title: '문의 하기',
+                  title: '정회원 인증',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -440,18 +444,31 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="RequestAnswer"
-                component={RequestAnswer}
-                options={{
-                  title: '문의 내역',
+                name="UncertifiedMember"
+                component={UncertifiedMember}
+                options={({navigation}) => ({
+                  title: '정회원 인증',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
               />
+              {/* 마이페이지 - 비밀번호 재설정 */}
+
+              {/* 마이페이지 - 프로필 이미지 변경
+              마이페이지 - 닉네임 변경
+              마이페이지 - 소속 학과 변경 */}
+              {/* 마이페이지 - 이용안내 */}
               <Stack.Screen
                 name="ListScreen"
                 component={ListScreen}
@@ -551,6 +568,60 @@ const App = () => {
                     />
                   ),
                 })}
+              />
+              {/* 마이페이지 - 문의하기 */}
+              <Stack.Screen
+                name="RequestScreen"
+                component={RequestScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestWriteScreen"
+                component={RequestWriteScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestAnswer"
+                component={RequestAnswer}
+                options={{
+                  title: '문의 내역',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                }}
               />
             </Stack.Navigator>
           ) : (
@@ -886,11 +957,12 @@ const App = () => {
               />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
+              {/* 마이페이지 - 정회원 인증 */}
               <Stack.Screen
-                name="RequestScreen"
-                component={RequestScreen}
+                name="CertifiedMember"
+                component={CertifiedMember}
                 options={({navigation}) => ({
-                  title: '문의 하기',
+                  title: '정회원 인증',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -907,10 +979,10 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="RequestWriteScreen"
-                component={RequestWriteScreen}
+                name="ExpiredMember"
+                component={ExpiredMember}
                 options={({navigation}) => ({
-                  title: '문의 하기',
+                  title: '정회원 인증',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -927,18 +999,31 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="RequestAnswer"
-                component={RequestAnswer}
-                options={{
-                  title: '문의 하기',
+                name="UncertifiedMember"
+                component={UncertifiedMember}
+                options={({navigation}) => ({
+                  title: '정회원 인증',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
               />
+              {/* 마이페이지 - 비밀번호 재설정 */}
+
+              {/* 마이페이지 - 프로필 이미지 변경
+              마이페이지 - 닉네임 변경
+              마이페이지 - 소속 학과 변경 */}
+              {/* 마이페이지 - 이용안내 */}
               <Stack.Screen
                 name="ListScreen"
                 component={ListScreen}
@@ -1038,6 +1123,60 @@ const App = () => {
                     />
                   ),
                 })}
+              />
+              {/* 마이페이지 - 문의하기 */}
+              <Stack.Screen
+                name="RequestScreen"
+                component={RequestScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestWriteScreen"
+                component={RequestWriteScreen}
+                options={({navigation}) => ({
+                  title: '문의 하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RequestAnswer"
+                component={RequestAnswer}
+                options={{
+                  title: '문의 내역',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                }}
               />
             </Stack.Navigator>
           )}
