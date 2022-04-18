@@ -7,6 +7,8 @@ import RightArrow from '../../../../resources/icon/Arrow';
 type RootStackParamList = {
   RequestWriteScreen: undefined;
   AnnouncementList: undefined;
+  TermsOfService: undefined;
+  UsageRestrictions: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -36,7 +38,7 @@ function ListScreen({navigation}: Props) {
         </Pressable>
         <Pressable
           hitSlop={{bottom: 16}}
-          onPress={() => navigation.navigate('RequestWriteScreen')}>
+          onPress={() => navigation.navigate('TermsOfService')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>서비스 이용약관</Text>
             <View style={styles.menuIcon}>
@@ -57,7 +59,8 @@ function ListScreen({navigation}: Props) {
       </View>
       <View style={{ padding: 8 }}/>
       <View style={styles.menuContainer}>
-        <Pressable hitSlop={{top: 16}}>
+        <Pressable hitSlop={{ top: 16 }}
+          onPress={() => navigation.navigate('UsageRestrictions')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>이용 제한 내역</Text>
             <View style={styles.menuIcon}>

@@ -8,7 +8,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function AnnouncementList({navigation}: Props) {
+function UsageRestrictions({navigation}: Props) {
   return (
     <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
       <View style={styles.menuContainer}>
@@ -24,7 +24,7 @@ function AnnouncementList({navigation}: Props) {
           <Text
             style={[
               fontRegular,
-              {color: '#ADB3BC', fontSize: 13, marginTop: 8},
+              {color: '#ADB3BC', fontSize: 12, marginTop: 8},
             ]}>
             2001.01.01
           </Text>
@@ -49,7 +49,7 @@ function AnnouncementList({navigation}: Props) {
           <Text
             style={[
               fontRegular,
-              {color: '#ADB3BC', fontSize: 13, marginTop: 8},
+              {color: '#ADB3BC', fontSize: 12, marginTop: 8},
             ]}>
             2001.01.01
           </Text>
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AnnouncementList;
+export default UsageRestrictions;

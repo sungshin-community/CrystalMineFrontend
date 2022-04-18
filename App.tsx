@@ -41,6 +41,8 @@ import RequestAnswer from './src/screens/mypage/RequestAnswer';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
 import Announcement from './src/screens/mypage/informationUse/Announcement';
+import TermsOfService from './src/screens/mypage/informationUse/TermsOfService';
+import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -510,6 +512,46 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="TermsOfService"
+                component={TermsOfService}
+                options={({navigation}) => ({
+                  title: '서비스 이용약관',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="UsageRestrictions"
+                component={UsageRestrictions}
+                options={({navigation}) => ({
+                  title: '이용 제한 내역',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator
@@ -942,6 +984,46 @@ const App = () => {
                 component={Announcement}
                 options={({navigation}) => ({
                   title: '공지사항',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="TermsOfService"
+                component={TermsOfService}
+                options={({navigation}) => ({
+                  title: '서비스 이용약관',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="UsageRestrictions"
+                component={UsageRestrictions}
+                options={({navigation}) => ({
+                  title: '이용 제한 내역',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
