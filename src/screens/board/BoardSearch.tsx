@@ -14,6 +14,7 @@ import SearchInput from '../../components/SearchInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontRegular} from '../../common/font';
 import SearchCancelButton from '../../components/SearchCancelButton';
+import {getBoardSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
   SearchResult: {searchWord: any};
@@ -28,6 +29,9 @@ function BoardSearch({navigation}: Props) {
   useEffect(() => {
     const startSearching = () => {
       if (searchWord !== '') {
+        async () => {
+          let result = await getBoardSearch(searchWord);
+        };
         const newWordList = [searchWord].concat(wordList);
         const duplicateFilter = [...new Set(newWordList)];
         if (duplicateFilter.length === 6) {
