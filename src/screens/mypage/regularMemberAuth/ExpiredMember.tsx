@@ -14,6 +14,7 @@ import {PurpleRoundButton, WhiteRoundButton} from '../../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../../components/ModalBottom';
+import { fontBold } from '../../../common/font';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -33,8 +34,8 @@ const ButtonCenter = styled.View`
 
 const styles = StyleSheet.create({
   textDescription: {
-    marginTop: 15,
-    lineHeight: 16.28,
+    fontSize: 15,
+    color: '#87919B'
   },
   buttonContainer: {
     backgroundColor: '#ffffff',
@@ -43,19 +44,11 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  DirectionAgree: undefined;
   RegularMemberAuth: undefined;
-  GlobalNavbar: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function ExpiredMember({navigation}: Props) {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const modalBody = (
-    <Text>
-      나중에 정회원 인증하기를 선택하실 경우 [마이페이지-정회원인증]에서 인증을 다시 진행할 수 있습니다.
-    </Text>
-  );
   return (
     <>
       <Container>
@@ -65,58 +58,33 @@ export default function ExpiredMember({navigation}: Props) {
           duration={1200}
           easing={'ease-in-out-quad'}>
           <TwoLineTitle
-            firstLineText="정회원 인증을"
-            secondLineText="진행하시겠어요?"
+            firstLineText="수정광산을 이용하기"
+            secondLineText="위해서는 인증이 필요해요."
           />
         </Animatable.Text>
         <Animatable.Text
           animation="fadeIn"
           delay={2100}
-          style={{marginTop: 15}}>
+          style={{marginTop: 90}}>
+          <Description style={[styles.textDescription, fontBold, {marginBottom: 11}]}>
+            정회원 인증 필요(21/02/01){'\n'}
+          </Description>
           <Description style={styles.textDescription}>
-            가입 후 24시간 이내에 인증하지 않을 시{'\n'}
-            보안을 위해 계정 정보가 삭제됩니다.
+            00000@sungshin.ac.kr
           </Description>
         </Animatable.Text>
-        <Animatable.View animation="fadeIn" delay={2100}>
-          <View
-            style={{
-              paddingHorizontal: Dimensions.get('window').width / 4,
-              paddingVertical: Dimensions.get('window').height / 8,
-            }}>
-          </View>
-        </Animatable.View>
       </Container>
       <View style={styles.buttonContainer}>
         <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
             <View style={{margin: 16}}>
               <PurpleRoundButton
-                text="지금 인증하기"
+                text="인증하기"
                 onClick={() => 
                   navigation.navigate('DirectionAgree')
                 }
               />
             </View>
-            <WhiteRoundButton
-              text="다음에 인증하기"
-              onClick={() => {
-                console.log('click');
-                setModalVisible(!modalVisible);
-              }}
-            />
-            <ModalBottom
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              modalText={``}
-              modalBody={modalBody}
-              modalButtonText="확인"
-              modalButton
-              modalButtonFunc={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate('GlobalNavbar');
-              }}
-            />
           </ButtonCenter>
         </Animatable.View>
       </View>
