@@ -33,27 +33,42 @@ export default function CertifiedMember({navigation}: Props) {
   return (
     <>
       <Container>
-        <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
-        <View style={{flexDirection: 'row'}}>
-          {dDay.map((day, index) => (
-            <View style={styles.expirationDate}>
-              <TextInput key={index}
-                style={{fontSize: 45, textAlign: 'center'}}
-                editable={false}>
-                {day}
-              </TextInput>
-            </View>
-          ))}
-
-          <Text style={[styles.title, fontMedium]}>일 남았습니다.</Text>
-        </View>
-
+        <Animatable.Text
+          animation="fadeInUp"
+          delay={500}
+          duration={1200}
+          easing={'ease-in-out-quad'}>
+          <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
+        </Animatable.Text>
+        <Animatable.Text
+          animation="fadeInUp"
+          delay={900}
+          duration={1200}
+          easing={'ease-in-out-quad'}>
+          <View style={{flexDirection: 'row'}}>
+            {dDay.map((day, index) => (
+              <View style={styles.expirationDate}>
+                <TextInput
+                  key={index}
+                  style={{fontSize: 45, textAlign: 'center'}}
+                  editable={false}>
+                  {day}
+                </TextInput>
+              </View>
+            ))}
+            <Text style={[styles.title, fontMedium]}>일 남았습니다.</Text>
+          </View>
+        </Animatable.Text>
         <Animatable.Text
           animation="fadeIn"
           delay={2100}
           style={{marginTop: 90}}>
           <Description
-            style={[styles.textDescription, fontBold, {marginBottom: 11, color: '#A055FF'}]}>
+            style={[
+              styles.textDescription,
+              fontBold,
+              {marginBottom: 11, color: '#A055FF'},
+            ]}>
             정회원 인증 완료 (22/05/31){'\n'}
           </Description>
           <Description style={styles.textDescription}>
