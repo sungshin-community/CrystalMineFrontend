@@ -8,16 +8,73 @@ import {
   Platform,
   Dimensions,
   Text,
+  TextInput,
 } from 'react-native';
 import {TwoLineTitle, Description} from '../../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../../components/ModalBottom';
+import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
+}
+type RootStackParamList = {
+  RegularMemberAuth: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList>;
+export default function CertifiedMember({navigation}: Props) {
+  let certificationExpirationDate = 103;
+  let dDay = [...certificationExpirationDate.toString()];
+
+  return (
+    <>
+      <Container>
+        <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
+        <View style={{flexDirection: 'row'}}>
+          {dDay.map((day, index) => (
+            <View style={styles.expirationDate}>
+              <TextInput key={index}
+                style={{fontSize: 45, textAlign: 'center'}}
+                editable={false}>
+                {day}
+              </TextInput>
+            </View>
+          ))}
+
+          <Text style={[styles.title, fontMedium]}>일 남았습니다.</Text>
+        </View>
+
+        <Animatable.Text
+          animation="fadeIn"
+          delay={2100}
+          style={{marginTop: 90}}>
+          <Description
+            style={[styles.textDescription, fontBold, {marginBottom: 11, color: '#A055FF'}]}>
+            정회원 인증 완료 (22/05/31){'\n'}
+          </Description>
+          <Description style={styles.textDescription}>
+            00000@sungshin.ac.kr
+          </Description>
+        </Animatable.Text>
+      </Container>
+      <View style={styles.buttonContainer}>
+        <Animatable.View animation="fadeIn" delay={2100}>
+          <ButtonCenter>
+            <View style={{margin: 16}}>
+              <PurpleRoundButton
+                text="인증하기"
+                onClick={() => navigation.navigate('DirectionAgree')}
+              />
+            </View>
+          </ButtonCenter>
+        </Animatable.View>
+      </View>
+    </>
+  );
 }
 
 const Container = styled.View`
@@ -32,94 +89,22 @@ const ButtonCenter = styled.View`
 `;
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+  },
+  expirationDate: {
+    borderBottomWidth: 2,
+    borderColor: '#A055FF',
+    width: 40,
+    marginRight: 10,
+    marginTop: -20,
+  },
   textDescription: {
-    marginTop: 15,
-    lineHeight: 16.28,
+    fontSize: 15,
+    color: '#87919B',
   },
   buttonContainer: {
     backgroundColor: '#ffffff',
     paddingBottom: 34,
   },
 });
-
-type RootStackParamList = {
-  DirectionAgree: undefined;
-  RegularMemberAuth: undefined;
-  GlobalNavbar: undefined;
-};
-
-type Props = NativeStackScreenProps<RootStackParamList>;
-export default function CertifiedMember({navigation}: Props) {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const modalBody = (
-    <Text>
-      나중에 정회원 인증하기를 선택하실 경우 [마이페이지-정회원인증]에서 인증을 다시 진행할 수 있습니다.
-    </Text>
-  );
-  return (
-    <>
-      <Container>
-        <Animatable.Text
-          animation="fadeInUp"
-          delay={900}
-          duration={1200}
-          easing={'ease-in-out-quad'}>
-          <TwoLineTitle
-            firstLineText="정회원 인증을"
-            secondLineText="진행하시겠어요?"
-          />
-        </Animatable.Text>
-        <Animatable.Text
-          animation="fadeIn"
-          delay={2100}
-          style={{marginTop: 15}}>
-          <Description style={styles.textDescription}>
-            가입 후 24시간 이내에 인증하지 않을 시{'\n'}
-            보안을 위해 계정 정보가 삭제됩니다.
-          </Description>
-        </Animatable.Text>
-        <Animatable.View animation="fadeIn" delay={2100}>
-          <View
-            style={{
-              paddingHorizontal: Dimensions.get('window').width / 4,
-              paddingVertical: Dimensions.get('window').height / 8,
-            }}>
-          </View>
-        </Animatable.View>
-      </Container>
-      <View style={styles.buttonContainer}>
-        <Animatable.View animation="fadeIn" delay={2100}>
-          <ButtonCenter>
-            <View style={{margin: 16}}>
-              <PurpleRoundButton
-                text="지금 인증하기"
-                onClick={() => 
-                  navigation.navigate('DirectionAgree')
-                }
-              />
-            </View>
-            <WhiteRoundButton
-              text="다음에 인증하기"
-              onClick={() => {
-                console.log('click');
-                setModalVisible(!modalVisible);
-              }}
-            />
-            <ModalBottom
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              modalText={``}
-              modalBody={modalBody}
-              modalButtonText="확인"
-              modalButton
-              modalButtonFunc={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate('GlobalNavbar');
-              }}
-            />
-          </ButtonCenter>
-        </Animatable.View>
-      </View>
-    </>
-  );
-}
