@@ -100,12 +100,14 @@ export default function MajorSelect({navigation, route}: Props) {
         <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
         <Text style={[styles.greyText, styles.blackText]}>학과 추가 요청</Text>
       </View>
-      <Text style={styles.greyText}>
-        3. 학과 추가 안내를 받은 후, 마이페이지에서
-      </Text>
-      <Text style={[styles.greyText, styles.blackText]}>
-        {'     '}학과 변경 진행
-      </Text>
+      <View>
+        <Text style={styles.greyText}>
+          3. 학과 추가 안내를 받은 후, 마이페이지에서
+        </Text>
+        <Text style={[styles.greyText, styles.blackText]}>
+          {'     '}학과 변경 진행
+        </Text>
+      </View>
     </>
   );
 
@@ -122,7 +124,7 @@ export default function MajorSelect({navigation, route}: Props) {
             left: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: 1,
-            elevation: 1
+            elevation: 1,
           }}
         />
       ) : null}
@@ -182,9 +184,8 @@ export default function MajorSelect({navigation, route}: Props) {
                 console.log(result);
                 if (result) {
                   navigation.reset({routes: [{name: 'SignUpComplete'}]});
-                }
-                else {
-                  console.log("회원가입 실패");
+                } else {
+                  console.log('회원가입 실패');
                 }
               }}
             />
