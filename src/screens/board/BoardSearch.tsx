@@ -29,9 +29,10 @@ function BoardSearch({navigation}: Props) {
   useEffect(() => {
     const startSearching = () => {
       if (searchWord !== '') {
-        async () => {
-          let result = await getBoardSearch(searchWord);
-        };
+        let result = getBoardSearch(searchWord);
+        console.log('검색 결과 result', result);
+
+        //? 최근 검색어
         const newWordList = [searchWord].concat(wordList);
         const duplicateFilter = [...new Set(newWordList)];
         if (duplicateFilter.length === 6) {
@@ -158,8 +159,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#87919B',
     marginTop: 66,
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
 });
 
