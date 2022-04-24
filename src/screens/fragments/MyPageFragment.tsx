@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   SplashHome: undefined;
+  UncertifiedMember: undefined;
+  CertifiedMember: undefined;
+  ExpiredMember: undefined;
   RequestScreen: undefined;
   ListScreen: undefined;
 };
@@ -150,7 +153,7 @@ const MyPageFragment = ({navigation}: Props) => {
             <View style={styles.menu}>
               <Text style={styles.menuTitle}>보안 및 인증</Text>
             </View>
-            <TouchableHighlight>
+            <TouchableHighlight underlayColor="#ffffff" onPress={() => navigation.navigate('CertifiedMember')}>
               <View style={styles.menu}>
                 <Text style={{fontSize: 15, fontWeight: '400'}}>
                   정회원 인증하기
