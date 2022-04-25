@@ -8,7 +8,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { ContentPreviewDto } from '../../classes/BoardDetailDto';
+import {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import PostItem from '../../components/PostItem';
 
 function PostSearchResult() {
@@ -46,10 +46,10 @@ export default PostSearchResult;
 const dummyData: ContentPreviewDto[] = [
   {
     postId: 1,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '수정',
@@ -61,10 +61,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 2,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '나원',
@@ -76,10 +76,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 3,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '효은',
@@ -92,10 +92,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 4,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '유진',
@@ -107,10 +107,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 5,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '나원',
@@ -122,10 +122,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 6,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '효은',
@@ -138,10 +138,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 7,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '유진',
@@ -153,10 +153,10 @@ const dummyData: ContentPreviewDto[] = [
   },
   {
     postId: 8,
-    profileImage: "",
+    profileImage: '',
     isAuthor: true,
-    title: "",
-    createdAt: "방금",
+    title: '',
+    createdAt: '방금',
     isScraped: false,
     scrapCount: 0,
     nickname: '본크레페쿠바딸',

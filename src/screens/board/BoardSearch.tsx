@@ -14,7 +14,7 @@ import SearchInput from '../../components/SearchInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontRegular} from '../../common/font';
 import SearchCancelButton from '../../components/SearchCancelButton';
-import {getBoardSearch} from '../../common/SearchApi';
+import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
   SearchResult: {searchWord: any};
@@ -26,24 +26,28 @@ function BoardSearch({navigation}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
   const [wordList, setWordList] = useState<string[]>([]);
 
-  useEffect(() => {
-    const startSearching = () => {
-      if (searchWord !== '') {
-        let result = getBoardSearch(searchWord);
-        console.log('검색 결과 result', result);
+  const startSearching = () => {
+    if (searchWord.length > 1) {
+      let boardResult = getBoardSearch(searchWord);
+      console.log('게시판 검색 결과 board result', boardResult);
 
-        //? 최근 검색어
-        const newWordList = [searchWord].concat(wordList);
-        const duplicateFilter = [...new Set(newWordList)];
-        if (duplicateFilter.length === 6) {
-          duplicateFilter.pop();
-        }
-        setWordList(duplicateFilter);
-        navigation.navigate('SearchResult', {
-          searchWord: searchWord,
-        });
+      let postResult = getPostSearch(searchWord);
+      console.log('게시글 검색 결과 post result', postResult);
+
+      //? 최근 검색어
+      const newWordList = [searchWord].concat(wordList);
+      const duplicateFilter = [...new Set(newWordList)];
+      if (duplicateFilter.length === 6) {
+        duplicateFilter.pop();
       }
-    };
+      setWordList(duplicateFilter);
+      navigation.navigate('SearchResult', {
+        searchWord: searchWord,
+      });
+    }
+  };
+
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: (): React.ReactNode => (
         <SearchInput
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  title: {fontSize: 17},
+  title: {fontSize: 17, marginBottom: 14},
   text: {fontSize: 15},
   delete: {
     fontSize: 13,

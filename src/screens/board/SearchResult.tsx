@@ -8,6 +8,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SearchInput from '../../components/SearchInput';
 import SearchCancelButton from '../../components/SearchCancelButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getBoardSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
   BoardSearch: undefined;
@@ -32,18 +33,21 @@ function SearchResult({navigation, route}: Props) {
     loadRecentSearch();
   }, []);
 
-  useEffect(() => {
-    const startSearching = () => {
-      if (searchWord !== '') {
-        const newWordList = [searchWord].concat(wordList);
-        const duplicateFilter = [...new Set(newWordList)];
-        if (duplicateFilter.length === 6) {
-          duplicateFilter.pop();
-        }
-        setWordList(duplicateFilter);
-      }
-    };
+  const startSearching = () => {
+    if (searchWord.length > 1) {
+      let result = getBoardSearch(searchWord);
+      console.log('검색 결과 result', result);
 
+      const newWordList = [searchWord].concat(wordList);
+      const duplicateFilter = [...new Set(newWordList)];
+      if (duplicateFilter.length === 6) {
+        duplicateFilter.pop();
+      }
+      setWordList(duplicateFilter);
+    }
+  };
+
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: (): React.ReactNode => (
         <SearchInput
