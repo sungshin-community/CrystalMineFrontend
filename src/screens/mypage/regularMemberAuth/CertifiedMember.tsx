@@ -28,7 +28,7 @@ if (Platform.OS === 'android') {
   StatusBar.setBarStyle('dark-content');
 }
 type RootStackParamList = {
-  RegularMemberAuth: undefined;
+  RegularMemberAuthMyPage: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -107,7 +107,10 @@ export default function CertifiedMember({navigation}: Props) {
               {expireIn > 7 ? (
                 <DisabledPurpleRoundButton text="미리 인증하기" />
               ) : (
-                <PurpleRoundButton text="미리 인증하기" />
+                <PurpleRoundButton
+                  text="미리 인증하기"
+                  onClick={() => navigation.navigate('RegularMemberAuthMyPage')}
+                />
               )}
             </View>
           </ButtonCenter>

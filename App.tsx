@@ -38,6 +38,7 @@ import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMember';
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
+import RegularMemberAuthMyPage from './src/screens/mypage/regularMemberAuth/RegularMemberAuthMyPage';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
 import Announcement from './src/screens/mypage/informationUse/Announcement';
@@ -463,6 +464,18 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="RegularMemberAuthMyPage"
+                component={RegularMemberAuthMyPage}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+
               {/* 마이페이지 - 비밀번호 재설정 */}
 
               {/* 마이페이지 - 프로필 이미지 변경
@@ -1015,6 +1028,17 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="RegularMemberAuthMyPage"
+                component={RegularMemberAuthMyPage}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
                   ),
                 })}
               />

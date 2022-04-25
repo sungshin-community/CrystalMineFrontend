@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  RegularMemberAuth: undefined;
+  RegularMemberAuthMyPage: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -93,7 +93,7 @@ export default function UncertifiedMember({ navigation }: Props) {
               <PurpleRoundButton
                 text="인증하기"
                 onClick={() => 
-                  navigation.navigate('DirectionAgree')
+                  navigation.navigate('RegularMemberAuthMyPage')
                 }
               />
             </View>
