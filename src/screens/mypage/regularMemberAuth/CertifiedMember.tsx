@@ -11,12 +11,15 @@ import {
   TextInput,
 } from 'react-native';
 import {TwoLineTitle, Description} from '../../../components/Top';
-import {DisabledPurpleFullButton, DisabledPurpleRoundButton} from '../../../components/Button';
+import {
+  DisabledPurpleRoundButton,
+  PurpleRoundButton,
+} from '../../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../../components/ModalBottom';
-import { fontBold, fontMedium, fontRegular } from '../../../common/font';
-import { getUser } from '../../../common/myPageApi';
+import {fontBold, fontMedium, fontRegular} from '../../../common/font';
+import {getUser} from '../../../common/myPageApi';
 import User from '../../../classes/User';
 
 if (Platform.OS === 'android') {
@@ -39,18 +42,17 @@ export default function CertifiedMember({navigation}: Props) {
     }
     getUserInfo();
   }, []);
-  let expireIn = user ? user.expireIn : 0
+  let expireIn = user ? user.expireIn : 0;
   let dDay = [...expireIn.toString()];
 
   const letThreeLetter = (letter: any) => {
     if (letter.length === 1) {
       letter.unshift('0');
       letter.unshift('0');
-    }
-    else if (letThreeLetter.length === 2) {
+    } else if (letter.length === 2) {
       letter.unshift('0');
     }
-  }
+  };
   letThreeLetter(dDay);
   return (
     <>
@@ -102,9 +104,11 @@ export default function CertifiedMember({navigation}: Props) {
         <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
             <View style={{margin: 16}}>
-              <DisabledPurpleRoundButton
-                text="미리 인증하기"
-              />
+              {expireIn > 7 ? (
+                <DisabledPurpleRoundButton text="미리 인증하기" />
+              ) : (
+                <PurpleRoundButton text="미리 인증하기" />
+              )}
             </View>
           </ButtonCenter>
         </Animatable.View>
