@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   View,
@@ -11,11 +11,14 @@ import {
   TextInput,
 } from 'react-native';
 import {TwoLineTitle, Description} from '../../../components/Top';
-import {PurpleRoundButton, WhiteRoundButton} from '../../../components/Button';
+import {DisabledPurpleFullButton, DisabledPurpleRoundButton} from '../../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../../components/ModalBottom';
-import {fontBold, fontMedium, fontRegular} from '../../../common/font';
+import { fontBold, fontMedium, fontRegular } from '../../../common/font';
+import { getUser } from '../../../common/myPageApi';
+import User from '../../../classes/User';
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -27,9 +30,18 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function CertifiedMember({navigation}: Props) {
-  let certificationExpirationDate = 103;
-  let dDay = [...certificationExpirationDate.toString()];
+  const [user, setUser] = useState<User>();
+  const [expireIn, setExpireIn] = useState<number>(180);
 
+  useEffect(() => {
+    async function getUserInfo() {
+      const userDto = await getUser();
+      setUser(userDto);
+    }
+    getUserInfo();
+  }, []);
+  //setExpireIn(user.expireIn);
+  let dDay = [...expireIn.toString()];
   return (
     <>
       <Container>
@@ -69,10 +81,10 @@ export default function CertifiedMember({navigation}: Props) {
               fontBold,
               {marginBottom: 11, color: '#A055FF'},
             ]}>
-            정회원 인증 완료 (22/05/31){'\n'}
+            정회원 인증 완료 ({user?.expiredDate}) {'\n'}
           </Description>
           <Description style={styles.textDescription}>
-            00000@sungshin.ac.kr
+            {user?.username}@sungshin.ac.kr
           </Description>
         </Animatable.Text>
       </Container>
@@ -80,9 +92,8 @@ export default function CertifiedMember({navigation}: Props) {
         <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
             <View style={{margin: 16}}>
-              <PurpleRoundButton
-                text="인증하기"
-                onClick={() => navigation.navigate('DirectionAgree')}
+              <DisabledPurpleRoundButton
+                text="미리 인증하기"
               />
             </View>
           </ButtonCenter>

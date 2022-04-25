@@ -13,7 +13,8 @@ const getHomeContents = async () => {
                     "Authorization": `Bearer ${accessToken}`
                 }
           }
-      );
+         );
+        console.log('accessToken: ', accessToken)
         return response.data.data;
     }
     catch (e) {
