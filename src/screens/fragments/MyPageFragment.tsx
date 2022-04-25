@@ -17,27 +17,37 @@ import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {logout} from '../../common/authApi';
+import PointIcon from '../../../resources/icon/PointIcon';
 
 const styles = StyleSheet.create({
   menu: {
-    height: 49,
+    height: 45,
     flexDirection: 'row',
-    paddingHorizontal: 32,
+    paddingLeft: 33,
+    paddingRight: 25,
     alignItems: 'center',
   },
   menuTitle: {
     fontSize: 13,
-    fontWeight: '400',
-    color: '#878787',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    color: '#6E7882',
+    marginLeft: 32,
+    marginBottom: 11
   },
   menuText: {
     fontSize: 15,
-    fontWeight: '400',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    color: '#222222'
   },
 });
 
 type RootStackParamList = {
   SplashHome: undefined;
+  UncertifiedMember: undefined;
+  CertifiedMember: undefined;
+  ChangeNickname: undefined,
+  ChangeMajor: undefined,
+  ExpiredMember: undefined;
   RequestScreen: undefined;
   ListScreen: undefined;
 };
@@ -65,94 +75,52 @@ const MyPageFragment = ({navigation}: Props) => {
         <View>
           <View
             style={{
-              height: 136,
+              height: 160,
               flexDirection: 'row',
               backgroundColor: '#FFFFFF',
-              paddingLeft: 24,
-              paddingTop: 16,
-            }}>
+              paddingLeft: 35,
+              paddingTop: 20,
+            }}
+          >
             <DefaultProfile />
-            <View style={{flex: 1}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  paddingLeft: 24,
-                  alignItems: 'center',
-                }}>
-                <Text style={{fontSize: 18, fontWeight: '800'}}>
+            <View style={{height: 80}}>
+              <View style={{marginLeft: 18, marginRight: 24, borderBottomColor: '#EEEEEE', borderBottomWidth: 1, height: 80 }}>
+                <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
+                  {user?.department}
+                </Text>
+                <Text style={{marginTop: 3, fontSize: 17, fontFamily: 'SpoqaHanSansNeo-Bold'}}>
                   {user?.nickname}
                 </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    paddingRight: 32,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <RightArrow />
-                </View>
-              </View>
-              <Text style={{marginLeft: 24, marginTop: 6, color: '#767676'}}>
-                {user?.department}
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  paddingLeft: 24,
-                  paddingTop: 24,
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    backgroundColor: '#A055FF',
-                    width: 16,
-                    height: 16,
-                    borderRadius: 8,
-                  }}></View>
-                <Text
-                  style={{
-                    color: '#A055FF',
-                    fontWeight: '700',
-                    fontSize: 15,
-                    marginLeft: 4,
-                  }}>
-                  {user?.role}
+                <Text style={{marginBottom: 11, color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
+                  {`${user?.username}@sungshin.ac.kr`}
                 </Text>
-                <View
-                  style={{
-                    width: 44,
-                    height: 16,
-                    marginLeft: 8,
-                    backgroundColor: '#F4F4F4',
-                    borderRadius: 16,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 12, fontWeight: '700', color: '#A055FF'}}>
-                    {user?.point}p
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    paddingRight: 32,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <QuestionMark />
-                </View>
+              </View>
+              <View style={{marginLeft: 19, marginTop: 12, flexDirection: 'row', alignItems: 'center'}}>
+                <PointIcon />
+                <Text style={{marginLeft: 8, fontSize: 17, color: '#A055FF', fontFamily: 'SpoqaHanSansNeo-Bold'}}>161</Text>
               </View>
             </View>
           </View>
           <View
-            style={{marginTop: 16, backgroundColor: '#FFFFFF', height: 353}}>
-            <View style={styles.menu}>
-              <Text style={styles.menuTitle}>보안 및 인증</Text>
-            </View>
-            <TouchableHighlight>
+            style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
+            <Text style={styles.menuTitle}>보안 및 인증</Text>
+            <TouchableHighlight
+              underlayColor="#ffffff"
+              onPress={() => {
+                if (user) {
+                  if (user.isAuthenticated === true) {
+                    if (user?.expireIn === 0) {
+                      navigation.navigate('ExpiredMember');
+                    } else if (user?.expireIn > 0) {
+                      navigation.navigate('CertifiedMember');
+                    } else {
+                      navigation.navigate('UncertifiedMember');
+                    }
+                  }
+                }
+              }}>
               <View style={styles.menu}>
-                <Text style={{fontSize: 15, fontWeight: '400'}}>
+                <Text style={styles.menuText}>
                   정회원 인증하기
                 </Text>
                 <View
@@ -160,16 +128,18 @@ const MyPageFragment = ({navigation}: Props) => {
                     flexDirection: 'row',
                     flex: 1,
                     justifyContent: 'flex-end',
+                    alignItems: 'center'
                   }}>
-                  <Text style={{color: '#A3A3A3', fontSize: 12}}>
-                    20161259@sungshin.ac.kr
+                  <Text style={{color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular', marginRight: 9}}>
+                    2022.01.26
                   </Text>
+                  <RightArrow />
                 </View>
               </View>
             </TouchableHighlight>
             <TouchableHighlight>
               <View style={styles.menu}>
-                <Text style={{fontSize: 15, fontWeight: '400'}}>
+                <Text style={styles.menuText}>
                   비밀번호 재설정
                 </Text>
                 <View
@@ -182,11 +152,11 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <View style={[styles.menu, {marginTop: 6}]}>
+            {/* <View style={[styles.menu, {marginTop: 6}]}>
               <Text style={styles.menuTitle}>앱 설정</Text>
             </View>
             <View style={styles.menu}>
-              <Text style={{fontSize: 15, fontWeight: '400'}}>다크 모드</Text>
+              <Text style={styles.menuText}>다크 모드</Text>
               <View
                 style={{
                   flexDirection: 'row',
@@ -232,35 +202,119 @@ const MyPageFragment = ({navigation}: Props) => {
                   value={allowMessage}
                 />
               </View>
-            </View>
+            </View> */}
           </View>
-          <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
-            <TouchableHighlight
-              underlayColor="#ffffff"
-              onPress={() => navigation.navigate('ListScreen')}>
-              <View style={[styles.menu, {height: 51}]}>
-                <Text style={styles.menuText}>이용 안내</Text>
+          <View
+            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
+            <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
+            <TouchableHighlight onPress={() => {}}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  프로필 이미지 변경
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={() => {navigation.navigate('ChangeNickname')}}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  닉네임 변경
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={() => {navigation.navigate('ChangeMajor')}}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  소속 학과 변경
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                  }}>
+                  <RightArrow />
+                </View>
               </View>
             </TouchableHighlight>
           </View>
-          <View style={{marginTop: 16, backgroundColor: '#FFFFFF'}}>
-            <TouchableHighlight
-              underlayColor="#ffffff"
-              onPress={() => navigation.navigate('RequestScreen')}>
-              <View style={[styles.menu, {height: 51}]}>
-                <Text style={styles.menuText}>문의하기</Text>
+          <View
+            style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
+            <TouchableHighlight onPress={() => {}}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  이용안내
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  문의하기
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 10, marginBottom: 16}}>
+            <TouchableHighlight onPress={() => setModalVisible(true)}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  로그아웃
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
+                  }}>
+                </View>
               </View>
             </TouchableHighlight>
           </View>
         </View>
-        <View style={{paddingVertical: 24, alignItems: 'center'}}>
+        {/* <View style={{paddingVertical: 24, alignItems: 'center'}}>
           <PurpleRoundButton
             text="로그아웃"
             onClick={() => {
               setModalVisible(true);
             }}
           />
-        </View>
+        </View> */}
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}

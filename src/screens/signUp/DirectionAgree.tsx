@@ -101,7 +101,7 @@ function DirectionAgree({navigation}: Props) {
               <Container>
                 <TwoLineTitle
                   firstLineText="먼저 수정광산의"
-                  secondLineText="이용방향을 확인해주세요.(수정필요)"
+                  secondLineText="이용방향을 확인해주세요."
                 />
               </Container>
               <TouchableOpacity
