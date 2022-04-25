@@ -326,6 +326,9 @@ const MyPageFragment = ({navigation}: Props) => {
             await logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setModalVisible(false)}
         />
       </ScrollView>
     </SafeAreaView>
