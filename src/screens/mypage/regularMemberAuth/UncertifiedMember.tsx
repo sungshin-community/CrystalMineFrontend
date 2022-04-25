@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   View,
@@ -15,6 +15,9 @@ import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../../components/ModalBottom';
 import { fontBold } from '../../../common/font';
+import {getUser} from '../../../common/myPageApi';
+import User from '../../../classes/User';
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -48,7 +51,16 @@ type RootStackParamList = {
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function UncertifiedMember({navigation}: Props) {
+export default function UncertifiedMember({ navigation }: Props) {
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    async function getUserInfo() {
+      const userDto = await getUser();
+      setUser(userDto);
+    }
+    getUserInfo();
+  }, []);
   return (
     <>
       <Container>
@@ -70,7 +82,7 @@ export default function UncertifiedMember({navigation}: Props) {
             정회원 인증 필요{'\n'}
           </Description>
           <Description style={styles.textDescription}>
-            00000@sungshin.ac.kr
+            {user?.username}@sungshin.ac.kr
           </Description>
         </Animatable.Text>
       </Container>
