@@ -427,34 +427,6 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="ChangeNickname"
-                component={ChangeNickname}
-                options={({navigation}) => ({
-                  title: '',
-                  headerLeft: () => (
-                    <BackButtonIcon
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }
-                    />
-                  ),
-                })}
-              />
-              <Stack.Screen
-                name="ChangeMajor"
-                component={ChangeMajor}
-                options={({navigation}) => ({
-                  title: '',
-                  headerLeft: () => (
-                    <BackButtonIcon
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }
-                    />
-                  ),
-                })}
-              />
-              <Stack.Screen
                 name="ExpiredMember"
                 component={ExpiredMember}
                 options={({navigation}) => ({
@@ -511,6 +483,34 @@ const App = () => {
               {/* 마이페이지 - 프로필 이미지 변경
               마이페이지 - 닉네임 변경
               마이페이지 - 소속 학과 변경 */}
+              <Stack.Screen
+                name="ChangeNickname"
+                component={ChangeNickname}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ChangeMajor"
+                component={ChangeMajor}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
               {/* 마이페이지 - 이용안내 */}
               <Stack.Screen
                 name="ListScreen"
@@ -1021,35 +1021,6 @@ const App = () => {
                   ),
                 })}
               />
-              
-              <Stack.Screen
-                name="ChangeNickname"
-                component={ChangeNickname}
-                options={({navigation}) => ({
-                  title: '',
-                  headerLeft: () => (
-                    <BackButtonIcon
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }
-                    />
-                  ),
-                })}
-              />
-              <Stack.Screen
-                name="ChangeMajor"
-                component={ChangeMajor}
-                options={({navigation}) => ({
-                  title: '',
-                  headerLeft: () => (
-                    <BackButtonIcon
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }
-                    />
-                  ),
-                })}
-              />
               <Stack.Screen
                 name="ExpiredMember"
                 component={ExpiredMember}
@@ -1106,6 +1077,34 @@ const App = () => {
               {/* 마이페이지 - 프로필 이미지 변경
               마이페이지 - 닉네임 변경
               마이페이지 - 소속 학과 변경 */}
+              <Stack.Screen
+                name="ChangeNickname"
+                component={ChangeNickname}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ChangeMajor"
+                component={ChangeMajor}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
               {/* 마이페이지 - 이용안내 */}
               <Stack.Screen
                 name="ListScreen"
