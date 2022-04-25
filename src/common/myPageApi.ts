@@ -53,3 +53,20 @@ export const changeNickname = async (nickname: string) => {
     return errorCode;
   }
 };
+
+export const changeMajor = async (departmentId: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<Response<User>>(
+      '/user/department',
+      {departmentId: departmentId},
+      {
+        headers: {Authorization: `Bearer ${accessToken}`},
+      }
+    );
+    return response.data.code;
+  } catch (error: any) {
+    const errorCode = error.response.data.code;
+    return errorCode;
+  }
+};

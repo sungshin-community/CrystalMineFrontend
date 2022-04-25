@@ -46,6 +46,7 @@ type RootStackParamList = {
   UncertifiedMember: undefined;
   CertifiedMember: undefined;
   ChangeNickname: undefined,
+  ChangeMajor: undefined,
   ExpiredMember: undefined;
   RequestScreen: undefined;
   ListScreen: undefined;
@@ -223,7 +224,7 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight>
+            <TouchableHighlight onPress={() => {navigation.navigate('ChangeMajor')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   소속 학과 변경
