@@ -38,6 +38,7 @@ import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMember';
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
+import ChangeNickname from './src/screens/mypage/ChangeNickname';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
 import Announcement from './src/screens/mypage/informationUse/Announcement';
@@ -414,6 +415,20 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ChangeNickname"
+                component={ChangeNickname}
+                options={({navigation}) => ({
+                  title: '',
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>
@@ -969,6 +984,21 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              
+              <Stack.Screen
+                name="ChangeNickname"
+                component={ChangeNickname}
+                options={({navigation}) => ({
+                  title: '',
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>

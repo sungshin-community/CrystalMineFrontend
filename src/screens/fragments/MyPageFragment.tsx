@@ -45,6 +45,7 @@ type RootStackParamList = {
   SplashHome: undefined;
   UncertifiedMember: undefined;
   CertifiedMember: undefined;
+  ChangeNickname: undefined,
   ExpiredMember: undefined;
   RequestScreen: undefined;
   ListScreen: undefined;
@@ -207,7 +208,7 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight>
+            <TouchableHighlight onPress={() => {navigation.navigate('ChangeNickname')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   닉네임 변경
