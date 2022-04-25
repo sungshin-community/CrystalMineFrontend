@@ -31,7 +31,6 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function CertifiedMember({navigation}: Props) {
   const [user, setUser] = useState<User>();
-  const [expireIn, setExpireIn] = useState<number>(180);
 
   useEffect(() => {
     async function getUserInfo() {
@@ -40,8 +39,19 @@ export default function CertifiedMember({navigation}: Props) {
     }
     getUserInfo();
   }, []);
-  //setExpireIn(user.expireIn);
+  let expireIn = user ? user.expireIn : 0
   let dDay = [...expireIn.toString()];
+
+  const letThreeLetter = (letter: any) => {
+    if (letter.length === 1) {
+      letter.unshift('0');
+      letter.unshift('0');
+    }
+    else if (letThreeLetter.length === 2) {
+      letter.unshift('0');
+    }
+  }
+  letThreeLetter(dDay);
   return (
     <>
       <Container>
