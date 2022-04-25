@@ -39,6 +39,8 @@ import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMem
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
 import RegularMemberAuthMyPage from './src/screens/mypage/regularMemberAuth/RegularMemberAuthMyPage';
+import ChangeNickname from './src/screens/mypage/ChangeNickname';
+import ChangeMajor from './src/screens/mypage/ChangeMajor';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
 import Announcement from './src/screens/mypage/informationUse/Announcement';
@@ -415,6 +417,34 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ChangeNickname"
+                component={ChangeNickname}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ChangeMajor"
+                component={ChangeMajor}
+                options={({navigation}) => ({
+                  title: '',
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>
@@ -982,6 +1012,35 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              
+              <Stack.Screen
+                name="ChangeNickname"
+                component={ChangeNickname}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ChangeMajor"
+                component={ChangeMajor}
+                options={({navigation}) => ({
+                  title: '',
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>

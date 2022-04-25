@@ -36,3 +36,37 @@ export const writeRequest = async (writeRequestDto: WriteRequest) => {
     console.log('여기는 writeRequest 함수', error);
   }
 };
+
+export const changeNickname = async (nickname: string) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<Response<User>>(
+      '/user/nickname',
+      {nickname: nickname},
+      {
+        headers: {Authorization: `Bearer ${accessToken}`},
+      }
+    );
+    return response.data.code;
+  } catch (error: any) {
+    const errorCode = error.response.data.code;
+    return errorCode;
+  }
+};
+
+export const changeMajor = async (departmentId: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<Response<User>>(
+      '/user/department',
+      {departmentId: departmentId},
+      {
+        headers: {Authorization: `Bearer ${accessToken}`},
+      }
+    );
+    return response.data.code;
+  } catch (error: any) {
+    const errorCode = error.response.data.code;
+    return errorCode;
+  }
+};
