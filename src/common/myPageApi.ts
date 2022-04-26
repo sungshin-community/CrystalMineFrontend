@@ -91,12 +91,11 @@ export const getNoticeList = async (page: number) => {
   }
 }
 
-export const getNotice = async (noticeId: number) => {
+export const getAgreementsWithDate = async () => {
   try {
     const accessToken = await AsyncStorage.getItem('accessToken');
-    const params = new URLSearchParams();
     const response = await client.get<AxiosResponse>(
-      `/notices/${noticeId}`,
+      `/user/agreement`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
