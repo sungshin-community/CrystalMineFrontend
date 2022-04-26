@@ -91,14 +91,12 @@ export const getNoticeList = async (page: number) => {
   }
 }
 
-export const getNotice = async (boardId: number, page: number, sort: string = "createdAt") => {
+export const getNotice = async (noticeId: number) => {
   try {
     const accessToken = await AsyncStorage.getItem('accessToken');
     const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('sort', sort);
     const response = await client.get<AxiosResponse>(
-      `/boards/${boardId}?${params}`,
+      `/notices/${noticeId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -107,6 +105,6 @@ export const getNotice = async (boardId: number, page: number, sort: string = "c
     );
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getCustomBoardList 함수", e);
+    console.log("여기는 getNotice 함수", e);
   }
 }

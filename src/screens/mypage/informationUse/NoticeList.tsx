@@ -12,7 +12,7 @@ import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import NoticeListDto from '../../../classes/mypage/NoticeDto';
 import {getNoticeList} from '../../../common/myPageApi';
 type RootStackParamList = {
-  Notice: undefined;
+  Notice: { noticeId: number };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -33,8 +33,8 @@ function NoticeList({navigation}: Props) {
         <>
           <View style={styles.menuContainer} key={item.id}>
             <Pressable
-              hitSlop={{top: 16}}
-              onPress={() => navigation.navigate('Notice')}>
+              hitSlop={{ top: 16 }}
+              onPress={() => navigation.navigate('Notice', {noticeId: item.id})}>
               <View style={styles.menu}>
                 <Text style={[fontRegular, styles.menuText]}>
                   {item?.title}
