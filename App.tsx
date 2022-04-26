@@ -42,8 +42,8 @@ import RegularMemberAuthMyPage from './src/screens/mypage/regularMemberAuth/Regu
 import ChangeNickname from './src/screens/mypage/ChangeNickname';
 import ChangeMajor from './src/screens/mypage/ChangeMajor';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
-import AnnouncementList from './src/screens/mypage/informationUse/AnnouncementList';
-import Announcement from './src/screens/mypage/informationUse/Announcement';
+import NoticeList from './src/screens/mypage/informationUse/NoticeList';
+import Notice from './src/screens/mypage/informationUse/Notice';
 import TermsOfService from './src/screens/mypage/informationUse/TermsOfService';
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
 import RequestScreen from './src/screens/mypage/RequestScreen';
@@ -533,8 +533,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="AnnouncementList"
-                component={AnnouncementList}
+                name="NoticeList"
+                component={NoticeList}
                 options={({navigation}) => ({
                   title: '공지사항',
                   headerTitleAlign: 'center',
@@ -553,8 +553,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="Announcement"
-                component={Announcement}
+                name="Notice"
+                component={Notice}
                 options={({navigation}) => ({
                   title: '공지사항',
                   headerTitleAlign: 'center',
@@ -1127,8 +1127,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="AnnouncementList"
-                component={AnnouncementList}
+                name="NoticeList"
+                component={NoticeList}
                 options={({navigation}) => ({
                   title: '공지사항',
                   headerTitleAlign: 'center',
@@ -1147,8 +1147,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="Announcement"
-                component={Announcement}
+                name="Notice"
+                component={Notice}
                 options={({navigation}) => ({
                   title: '공지사항',
                   headerTitleAlign: 'center',

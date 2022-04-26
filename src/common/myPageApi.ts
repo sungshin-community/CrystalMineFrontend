@@ -1,5 +1,6 @@
 import client from './client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AxiosResponse} from 'axios';
 import User from '../classes/User';
 import Response from '../classes/Response';
 import WriteRequest from '../classes/WriteRequest';
@@ -70,3 +71,42 @@ export const changeMajor = async (departmentId: number) => {
     return errorCode;
   }
 };
+
+export const getNoticeList = async (page: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<AxiosResponse>(
+      `/notices?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getNoticeList 함수", e);
+  }
+}
+
+export const getNotice = async (boardId: number, page: number, sort: string = "createdAt") => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('sort', sort);
+    const response = await client.get<AxiosResponse>(
+      `/boards/${boardId}?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getCustomBoardList 함수", e);
+  }
+}
