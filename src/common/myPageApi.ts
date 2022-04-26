@@ -91,6 +91,23 @@ export const getNoticeList = async (page: number) => {
   }
 }
 
+export const getNotice = async (noticeId: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    const response = await client.get<AxiosResponse>(
+      `/notices/${noticeId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getNotice 함수", e);
+  }
+}
 export const getAgreementsWithDate = async () => {
   try {
     const accessToken = await AsyncStorage.getItem('accessToken');
@@ -104,6 +121,6 @@ export const getAgreementsWithDate = async () => {
     );
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getNotice 함수", e);
+    console.log("여기는 getAgreementsWithDate함수", e);
   }
 }
