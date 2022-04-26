@@ -59,6 +59,7 @@ const MyPageFragment = ({navigation}: Props) => {
   const [allowAlert, setAllowAlert] = useState<boolean>(false);
   const [allowMessage, setAllowMessage] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
@@ -207,7 +208,7 @@ const MyPageFragment = ({navigation}: Props) => {
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
             <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => setProfileModalVisible(true)}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   프로필 이미지 변경
@@ -329,6 +330,20 @@ const MyPageFragment = ({navigation}: Props) => {
           isSecondButton={true}
           modalSecondButtonText="취소"
           modalSecondButtonFunc={() => setModalVisible(false)}
+        />
+        <ModalBottom
+          modalVisible={profileModalVisible}
+          setModalVisible={setProfileModalVisible}
+          modalText="프로필 사진 변경"
+          modalBody=""
+          modalButtonText="앨범에서 이미지 선택"
+          modalButton
+          modalButtonFunc={async () => {
+            
+          }}
+          isSecondButton={true}
+          modalSecondButtonText="기본 이미지로 변경"
+          modalSecondButtonFunc={() => setProfileModalVisible(false)}
         />
       </ScrollView>
     </SafeAreaView>
