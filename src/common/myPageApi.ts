@@ -4,6 +4,7 @@ import User from '../classes/User';
 import Response from '../classes/Response';
 import WriteRequest from '../classes/WriteRequest';
 import WriteResponse from '../classes/WriteResponse';
+import ProfileImageResponseDto from '../classes/ProfileImageResponseDto';
 
 export const getUser = async () => {
   try {
@@ -34,6 +35,33 @@ export const writeRequest = async (writeRequestDto: WriteRequest) => {
     return response.data.data;
   } catch (error) {
     console.log('여기는 writeRequest 함수', error);
+  }
+};
+
+export const uploadProfileImage = async (image: any) => {
+  console.log("인자로 받은 image는", image);
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const formData = new FormData();
+    const data = {uri: image.uri, name: image.name, type: image.type};
+    formData.append("profileImage", data);
+
+    const response = await client.post<Response<ProfileImageResponseDto>>(
+      '/upload/profileImage',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+    console.log("사진 업로드 response는", response.data);
+    return response.data.data.url;
+  } catch (error: any) {
+    const errorCode = error.response.data.code;
+    console.log("사진 업로드 실패", error.response);
+    return errorCode;
   }
 };
 
