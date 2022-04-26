@@ -1,5 +1,6 @@
 import client from './client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AxiosResponse} from 'axios';
 import User from '../classes/User';
 import Response from '../classes/Response';
 import WriteRequest from '../classes/WriteRequest';
@@ -98,3 +99,56 @@ export const changeMajor = async (departmentId: number) => {
     return errorCode;
   }
 };
+
+export const getNoticeList = async (page: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<AxiosResponse>(
+      `/notices?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getNoticeList 함수", e);
+  }
+}
+
+export const getNotice = async (noticeId: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    const response = await client.get<AxiosResponse>(
+      `/notices/${noticeId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getNotice 함수", e);
+  }
+}
+export const getAgreementsWithDate = async () => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.get<AxiosResponse>(
+      `/user/agreement`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getAgreementsWithDate함수", e);
+  }
+}

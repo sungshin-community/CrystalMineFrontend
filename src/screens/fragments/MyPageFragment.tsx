@@ -258,7 +258,7 @@ const MyPageFragment = ({navigation}: Props) => {
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => {navigation.navigate('ListScreen')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   이용안내

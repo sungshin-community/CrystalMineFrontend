@@ -10,3 +10,9 @@ export class DirectionAgreement {
   content: string[] = [];
   checked: boolean = false;
 }
+export class AgreementWithDate {
+  id: number = 0;
+  title: string = '';
+  agreementDate: string = '';
+  content: string = '';
+}

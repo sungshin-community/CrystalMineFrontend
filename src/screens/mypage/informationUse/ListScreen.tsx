@@ -6,7 +6,7 @@ import RightArrow from '../../../../resources/icon/Arrow';
 
 type RootStackParamList = {
   RequestWriteScreen: undefined;
-  AnnouncementList: undefined;
+  NoticeList: undefined;
   TermsOfService: undefined;
   UsageRestrictions: undefined;
 };
@@ -28,7 +28,7 @@ function ListScreen({navigation}: Props) {
         />
       <View style={styles.menuContainer}>
         <Pressable hitSlop={{top: 16}}
-         onPress={() => navigation.navigate('AnnouncementList')}>
+         onPress={() => navigation.navigate('NoticeList')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>공지사항</Text>
             <View style={styles.menuIcon}>
