@@ -55,6 +55,7 @@ export default function SignInPassword({navigation, route}: Props) {
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
+  const [isValidate, setIsValidate] = useState<boolean>(false);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -108,6 +109,12 @@ export default function SignInPassword({navigation, route}: Props) {
                 onChangeText={(value: string) => {
                   setPassword(value);
                   setIsPasswordCorrect(true);
+                  let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+                  if (regExp.test(value)) {
+                    setIsValidate(true);
+                  } else {
+                    setIsValidate(false);
+                  }
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
@@ -145,7 +152,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 backgroundColor: '#FFFFFF',
               }
         }>
-        {password.length >= 10 && (
+        {isValidate && (
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
@@ -162,7 +169,7 @@ export default function SignInPassword({navigation, route}: Props) {
           />
         )}
 
-        {password.length < 10 && <DisabledPurpleRoundButton text="다음" />}
+        {!isValidate && <DisabledPurpleRoundButton text="다음" />}
         <TouchableWithoutFeedback onPress={() => navigation.navigate('ResetPasswordInputId')}>
         <Text
           style={{
@@ -212,6 +219,12 @@ export default function SignInPassword({navigation, route}: Props) {
                 onChangeText={(value: string) => {
                   setPassword(value);
                   setIsPasswordCorrect(true);
+                  let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+                  if (regExp.test(value)) {
+                    setIsValidate(true);
+                  } else {
+                    setIsValidate(false);
+                  }
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
@@ -240,7 +253,7 @@ export default function SignInPassword({navigation, route}: Props) {
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
         }}>
-        {password.length >= 10 && (
+        {isValidate && (
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
@@ -257,7 +270,7 @@ export default function SignInPassword({navigation, route}: Props) {
           />
         )}
 
-          {password.length < 10 && <DisabledPurpleRoundButton text="다음" />}
+          {!isValidate && <DisabledPurpleRoundButton text="다음" />}
           <TouchableWithoutFeedback onPress={() => navigation.navigate('ResetPasswordInputId')}>
           <Text
             style={{
