@@ -67,6 +67,23 @@ export const uploadProfileImage = async (image: any) => {
   }
 };
 
+export const changePassword = async (password: string) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<Response<User>>(
+      '/user/password',
+      {password: password},
+      { 
+        headers: {Authorization: `Bearer ${accessToken}`},
+      }
+    );
+    return response.data.code;
+  } catch (error: any) {
+    const errorCode = error.response.data.code;
+    return errorCode;
+  }
+};
+
 export const changeNickname = async (nickname: string) => {
   try {
     const accessToken = await AsyncStorage.getItem('accessToken');
