@@ -29,6 +29,7 @@ function NoticeList({navigation}: Props) {
   }, []);
   return (
     <ScrollView>
+      <View style={styles.container}>
       {list?.map(item => (
         <>
           <View style={styles.menuContainer} key={item.id}>
@@ -64,11 +65,16 @@ function NoticeList({navigation}: Props) {
           />
         </>
       ))}
+        </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 10,
+    backgroundColor: '#fff'
+  },
   menuContainer: {
     paddingVertical: 16,
     backgroundColor: 'white',
