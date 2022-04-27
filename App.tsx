@@ -39,13 +39,16 @@ import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMem
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
 import RegularMemberAuthMyPage from './src/screens/mypage/regularMemberAuth/RegularMemberAuthMyPage';
+import InpuPassword from './src/screens/mypage/changePassword/InpuPassword';
+import InputNewPassword from './src/screens/mypage/changePassword/InputNewPassword'
+import InputNewPasswordConfirm from './src/screens/mypage/changePassword/InputNewPasswordConfirm'
 import ChangeNickname from './src/screens/mypage/ChangeNickname';
 import ChangeMajor from './src/screens/mypage/ChangeMajor';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import NoticeList from './src/screens/mypage/informationUse/NoticeList';
 import Notice from './src/screens/mypage/informationUse/Notice';
 import TermsOfService from './src/screens/mypage/informationUse/TermsOfService';
-import OpenSourceLicense from './src/screens/mypage/informationUse/OpenSourceLicense'
+import OpenSourceLicense from './src/screens/mypage/informationUse/OpenSourceLicense';
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
 import RequestScreen from './src/screens/mypage/RequestScreen';
 import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
@@ -480,10 +483,62 @@ const App = () => {
               />
 
               {/* 마이페이지 - 비밀번호 재설정 */}
-
-              {/* 마이페이지 - 프로필 이미지 변경
-              마이페이지 - 닉네임 변경
-              마이페이지 - 소속 학과 변경 */}
+              <Stack.Screen
+                name="InpuPassword"
+                component={InpuPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="InputNewPassword"
+                component={InputNewPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="InputNewPasswordConfirm"
+                component={InputNewPasswordConfirm}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              {/* 마이페이지 - 프로필 이미지 변경 */}
+              {/* 마이페이지 - 닉네임 변경 */}
               <Stack.Screen
                 name="ChangeNickname"
                 component={ChangeNickname}
@@ -498,6 +553,7 @@ const App = () => {
                   ),
                 })}
               />
+              {/* 마이페이지 - 소속 학과 변경 */}
               <Stack.Screen
                 name="ChangeMajor"
                 component={ChangeMajor}
@@ -1094,10 +1150,62 @@ const App = () => {
                 })}
               />
               {/* 마이페이지 - 비밀번호 재설정 */}
-
-              {/* 마이페이지 - 프로필 이미지 변경
-              마이페이지 - 닉네임 변경
-              마이페이지 - 소속 학과 변경 */}
+              <Stack.Screen
+                name="InpuPassword"
+                component={InpuPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="InputNewPassword"
+                component={InputNewPassword}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="InputNewPasswordConfirm"
+                component={InputNewPasswordConfirm}
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
+              />
+              {/* 마이페이지 - 프로필 이미지 변경 */}
+              {/* 마이페이지 - 닉네임 변경 */}
               <Stack.Screen
                 name="ChangeNickname"
                 component={ChangeNickname}
@@ -1112,6 +1220,7 @@ const App = () => {
                   ),
                 })}
               />
+              {/* 마이페이지 - 소속 학과 변경 */}
               <Stack.Screen
                 name="ChangeMajor"
                 component={ChangeMajor}
