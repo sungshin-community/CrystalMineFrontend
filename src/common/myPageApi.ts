@@ -15,6 +15,7 @@ export const getUser = async () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    console.log('accessToken:', accessToken)
     console.log(response.data.data);
     return response.data.data;
   } catch (e) {
@@ -122,5 +123,24 @@ export const getAgreementsWithDate = async () => {
     return response.data.data;
   } catch (e) {
     console.log("여기는 getAgreementsWithDate함수", e);
+  }
+}
+
+export const getUsageRestrictions = async (page: number) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<AxiosResponse>(
+      `/user/blinds?${params}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getUsageRestrictions 함수", e);
   }
 }
