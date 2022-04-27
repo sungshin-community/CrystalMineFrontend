@@ -241,3 +241,27 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
     return e.response.data.status;
   }
 };
+
+// export const getQuitAgreements = async () => {
+//   try {
+//     const response = await client.get<Response<>>('/')
+//     return response.data.data;
+//   } catch (error) {                                                                                     c
+//   }
+// }
+
+export const successQuitMembership = async (password: string) => {
+  try {
+    const response = await client.delete<{
+      timestamp : string;
+      code : string;
+      status : string;
+      detail : string;
+    }>('/user')
+    console.log('회원탈퇴 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.log('회원탈퇴 실패', error);
+    
+  }
+}
