@@ -1,5 +1,5 @@
 export default interface Blind {
-  type: string;
+  type: number;
   content: string;
   reason: string;
   createdAt: string;

@@ -3,10 +3,10 @@ import PinBoardDto from "./PinBoardDto";
 import HotBoardDto from "./HotBoardDto";
 
 export default interface Home {
-  expiredAt: number;
+  expireIn: number;
   nickname: string,
   blacklistId: number,
-  blind: Blind[],
+  blinds: Blind[],
   pinBoardDtos: PinBoardDto[],
-  hotBoardDtos: HotBoardDto[],
+  hotBoardDto: HotBoardDto,
   }
