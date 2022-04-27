@@ -161,7 +161,7 @@ export default function SignInPassword({navigation, route}: Props) {
                 password: password,
               });
               if (result) {
-                navigation.navigate('GlobalNavbar');
+                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else {
                 setIsPasswordCorrect(false)
               }
@@ -262,9 +262,9 @@ export default function SignInPassword({navigation, route}: Props) {
                 password: password,
               });
               if (result) {
-                navigation.navigate('GlobalNavbar');
+                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else {
-                setIsPasswordCorrect(false)
+                setIsPasswordCorrect(false);
               }
             }}
           />

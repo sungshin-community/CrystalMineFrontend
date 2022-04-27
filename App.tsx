@@ -1252,7 +1252,7 @@ const App = () => {
                 name="RequestScreen"
                 component={RequestScreen}
                 options={({navigation}) => ({
-                  title: '문의 하기',
+                  title: '문의하기',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1272,7 +1272,7 @@ const App = () => {
                 name="RequestWriteScreen"
                 component={RequestWriteScreen}
                 options={({navigation}) => ({
-                  title: '문의 하기',
+                  title: '문의하기',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
