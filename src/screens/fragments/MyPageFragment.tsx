@@ -11,13 +11,14 @@ import {
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {getUser} from '../../common/myPageApi';
+import {getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {logout} from '../../common/authApi';
 import PointIcon from '../../../resources/icon/PointIcon';
+import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
 
 const styles = StyleSheet.create({
   menu: {
@@ -339,7 +340,16 @@ const MyPageFragment = ({navigation}: Props) => {
           modalButtonText="앨범에서 이미지 선택"
           modalButton
           modalButtonFunc={async () => {
-            
+            launchImageLibrary(
+              {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
+              res => {
+                if (res.didCancel) {
+                  return;
+                }
+                console.log('image', res);
+                let result = uploadProfileImage(res.assets[0]);
+              },
+            );
           }}
           isSecondButton={true}
           modalSecondButtonText="기본 이미지로 변경"
