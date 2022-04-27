@@ -33,6 +33,7 @@ import {ModalBottom} from '../../../components/ModalBottom';
 import {checkAuthNumber, sendEmail} from '../../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { Dimensions } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -49,10 +50,8 @@ const CELL_COUNT = 6;
 const RESEND_OTP_TIME_LIMIT = 90;
 
 type RootStackParamList = {
-  Home: undefined;
-  GlobalNavbar: undefined;
-  BoardScreen: undefined;
-  RegularMemberAuthSelect: undefined;
+  CertifiedMember: undefined;
+  MyPageFragment: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function RegularMemberAuthMyPage({navigation}: Props) {
@@ -108,7 +107,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    navigation.navigate('GlobalNavbar');
+    navigation.navigate('MyPageFragment');
   };
   const onFocusOut = () => {
     setIsFocused(false);
@@ -199,7 +198,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                 modalButtonFunc={onResendOtpButtonPress}
                 isSecondButton={true}
                 modalSecondButtonText="인증 취소"
-                modalSecondButtonFunc={() => navigation.navigate('RegularMemberAuthSelect')}
+                modalSecondButtonFunc={() => navigation.navigate('MyPageFragment')}
               />
           </>
         )}
@@ -271,7 +270,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             onClick={async () => {
               let result: number = await checkAuthNumber(value);
               if (result === 0) {
-                navigation.navigate('GlobalNavbar');
+                Toast.show('정회원 인증을 성공적으로 완료하였습니다.', Toast.LONG)
+                navigation.reset({routes: [{name: 'CertifiedMember'}]});
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
@@ -285,7 +285,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               console.log(value)
               let result: number = await checkAuthNumber(value);
               if (result === 0) {
-                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                Toast.show('정회원 인증을 성공적으로 완료하였습니다.', Toast.LONG)
+                navigation.reset({routes: [{name: 'CertifiedMember'}]});
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
