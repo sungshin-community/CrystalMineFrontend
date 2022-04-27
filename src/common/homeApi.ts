@@ -5,16 +5,7 @@ import Home from '../classes/Home';
 
 const getHomeContents = async () => {
     try {
-        const accessToken = await AsyncStorage.getItem('accessToken');
-         const response = await client.get<AxiosResponse<Home>>(
-            "/home",
-            {
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`
-                }
-          }
-         );
-        console.log('accessToken: ', accessToken)
+         const response = await client.get<AxiosResponse<Home>>("/home");
         return response.data.data;
     }
     catch (e) {

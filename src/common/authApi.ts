@@ -177,13 +177,7 @@ export const logout = async () => {
 
 export const checkRegularMember = async () => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.get<Response<RegularMemberCheckDto>>(
-      '/user',
-      {
-        headers: {Authorization: `Bearer ${accessToken}`},
-      },
-    );
+    const response = await client.get<Response<RegularMemberCheckDto>>('/user');
     return response.data.data.isAuthenticated;
   } catch (e: any) {
     console.log('여기는 checkRegularMember 함수', e.response);
