@@ -23,7 +23,6 @@ function UsageRestrictions({ navigation }: Props) {
     async function getList() {
       const list = await getUsageRestrictions(0);
       setList(list);
-      console.log(list);
     }
     getList();
   }, []);

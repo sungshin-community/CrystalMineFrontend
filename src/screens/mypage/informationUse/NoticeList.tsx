@@ -36,7 +36,7 @@ function NoticeList({navigation}: Props) {
               hitSlop={{ top: 16 }}
               onPress={() => navigation.navigate('Notice', {noticeId: item.id})}>
               <View style={styles.menu}>
-                <Text style={[fontRegular, styles.menuText]}>
+                <Text style={[fontMedium, styles.menuText]}>
                   {item?.title}
                 </Text>
                 {item.isNew && (

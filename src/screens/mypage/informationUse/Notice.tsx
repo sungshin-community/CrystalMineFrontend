@@ -28,7 +28,7 @@ function Announcement({navigation, route}: Props) {
           hitSlop={{top: 16}}
           onPress={() => navigation.navigate('Announcement')}>
           <View style={styles.titleContainer}>
-            <Text style={[fontRegular, styles.title]}>{data?.title}</Text>
+            <Text style={[fontMedium, styles.title]}>{data?.title}</Text>
             {data?.isNew && (
               <View style={styles.newIcon}>
                 <Text style={[fontBold, {color: '#FF6060', fontSize: 13}]}>

@@ -43,7 +43,7 @@ function TermsOfService({navigation}: Props) {
         onPress={() => setIsSpreadFirst(!isSpreadFirst)}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
-            <Text style={[fontRegular, styles.menuText]}>
+            <Text style={[fontMedium, styles.menuText]}>
               {data ? data[0].title : ''}
             </Text>
             <View style={styles.menuIcon}>
@@ -76,7 +76,7 @@ function TermsOfService({navigation}: Props) {
         onPress={() => setIsSpreadSecond(!isSpreadSecond)}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
-            <Text style={[fontRegular, styles.menuText]}>
+            <Text style={[fontMedium, styles.menuText]}>
               {data ? data[1].title : ''}
             </Text>
             <View style={styles.menuIcon}>
