@@ -10,7 +10,10 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import NoticeListDto from '../../../classes/mypage/NoticeDto';
-import {getNoticeList} from '../../../common/myPageApi';
+import { getNoticeList } from '../../../common/myPageApi';
+
+import NoCommentSuryong from '../../../../resources/icon/custom/NoCommentSuryong';
+
 type RootStackParamList = {
   Notice: { noticeId: number };
 };
@@ -28,31 +31,29 @@ function OpenSourceLicense({navigation}: Props) {
     getList();
   }, []);
   return (
-    <ScrollView>
-      
-    </ScrollView>
+    <SafeAreaView style={{flex: 1}}>
+       <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <NoCommentSuryong />
+        <Text
+          style={{
+            color: '#6E7882',
+            fontSize: 15,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+            textAlign: 'center',
+            lineHeight: 22.5,
+            marginTop: 20
+          }}>
+          아직 미완입니다.{"\n"}
+          추후 출시 전에 채워 넣을 예정!
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  menuContainer: {
-    paddingVertical: 16,
-    backgroundColor: 'white',
-    paddingHorizontal: 24,
-  },
-  menuIcon: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  menu: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  menuText: {
-    fontSize: 15,
-    color: '#222222',
-  },
-});
 
 export default OpenSourceLicense;
