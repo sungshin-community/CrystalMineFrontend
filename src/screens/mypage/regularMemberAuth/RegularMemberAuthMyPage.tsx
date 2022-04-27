@@ -127,7 +127,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   return (
     <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View style={{flex: 1}}>
-        <View style={{marginTop: 130, marginLeft: 24}}>
+        <View style={{marginTop: 37, marginLeft: 24}}>
           <TwoLineTitle
             firstLineText="성신 G-mail 로 전송된"
             secondLineText="인증번호를 입력해주세요"

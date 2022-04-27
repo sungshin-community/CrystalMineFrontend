@@ -5,15 +5,7 @@ import Response from "../classes/Response";
 
 const getCommments = async () => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.get<Response<CommentDto[]>>(
-      "/posts/1/comments?page=0",
-      {
-        headers: {
-          "Authorization": `Bearer ${accessToken}`
-        }
-      }
-    );
+    const response = await client.get<Response<CommentDto[]>>("/posts/1/comments?page=0");
     return response.data.data;
   }
   catch (e) {

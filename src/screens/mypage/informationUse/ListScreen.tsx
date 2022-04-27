@@ -6,8 +6,9 @@ import RightArrow from '../../../../resources/icon/Arrow';
 
 type RootStackParamList = {
   RequestWriteScreen: undefined;
-  AnnouncementList: undefined;
+  NoticeList: undefined;
   TermsOfService: undefined;
+  OpenSourceLicense: undefined;
   UsageRestrictions: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -28,7 +29,7 @@ function ListScreen({navigation}: Props) {
         />
       <View style={styles.menuContainer}>
         <Pressable hitSlop={{top: 16}}
-         onPress={() => navigation.navigate('AnnouncementList')}>
+         onPress={() => navigation.navigate('NoticeList')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>공지사항</Text>
             <View style={styles.menuIcon}>
@@ -48,7 +49,7 @@ function ListScreen({navigation}: Props) {
         </Pressable>
         <Pressable
           hitSlop={{bottom: 16}}
-          onPress={() => navigation.navigate('RequestWriteScreen')}>
+          onPress={() => navigation.navigate('OpenSourceLicense')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>오픈소스 라이센스</Text>
             <View style={styles.menuIcon}>
