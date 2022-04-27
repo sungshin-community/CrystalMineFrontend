@@ -45,6 +45,7 @@ import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import NoticeList from './src/screens/mypage/informationUse/NoticeList';
 import Notice from './src/screens/mypage/informationUse/Notice';
 import TermsOfService from './src/screens/mypage/informationUse/TermsOfService';
+import OpenSourceLicense from './src/screens/mypage/informationUse/OpenSourceLicense'
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
 import RequestScreen from './src/screens/mypage/RequestScreen';
 import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
@@ -577,6 +578,26 @@ const App = () => {
                 component={TermsOfService}
                 options={({navigation}) => ({
                   title: '서비스 이용약관',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="OpenSourceLicense"
+                component={OpenSourceLicense}
+                options={({navigation}) => ({
+                  title: '오픈소스 라이센스',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1171,6 +1192,26 @@ const App = () => {
                 component={TermsOfService}
                 options={({navigation}) => ({
                   title: '서비스 이용약관',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="OpenSourceLicense"
+                component={OpenSourceLicense}
+                options={({navigation}) => ({
+                  title: '오픈소스 라이센스',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {

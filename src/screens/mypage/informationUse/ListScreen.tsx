@@ -8,6 +8,7 @@ type RootStackParamList = {
   RequestWriteScreen: undefined;
   NoticeList: undefined;
   TermsOfService: undefined;
+  OpenSourceLicense: undefined;
   UsageRestrictions: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -48,7 +49,7 @@ function ListScreen({navigation}: Props) {
         </Pressable>
         <Pressable
           hitSlop={{bottom: 16}}
-          onPress={() => navigation.navigate('RequestWriteScreen')}>
+          onPress={() => navigation.navigate('OpenSourceLicense')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>오픈소스 라이센스</Text>
             <View style={styles.menuIcon}>
