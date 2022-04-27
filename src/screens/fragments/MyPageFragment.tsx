@@ -19,6 +19,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {logout} from '../../common/authApi';
 import PointIcon from '../../../resources/icon/PointIcon';
 import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
+import { useIsFocused } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   menu: {
@@ -63,13 +64,17 @@ const MyPageFragment = ({navigation}: Props) => {
   const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     async function getUserInfo() {
       const userDto = await getUser();
       setUser(userDto);
     }
-    getUserInfo();
-  }, []);
+    if (isFocused) {
+      getUserInfo();
+    }
+  }, [navigation, isFocused]);
 
   return (
     <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
