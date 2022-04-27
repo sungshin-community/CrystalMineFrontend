@@ -1,4 +1,4 @@
-interface BoardContent {
+export interface BoardContent {
   id: number;
   name: string;
   introduction: string;

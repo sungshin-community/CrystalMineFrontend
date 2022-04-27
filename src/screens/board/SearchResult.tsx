@@ -8,7 +8,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SearchInput from '../../components/SearchInput';
 import SearchCancelButton from '../../components/SearchCancelButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getBoardSearch} from '../../common/SearchApi';
+import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
   BoardSearch: undefined;
@@ -19,10 +19,16 @@ const Tab = createMaterialTopTabNavigator();
 function SearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
   const [wordList, setWordList] = useState<string[]>([]);
+  console.log('Search Result route.params 결과 조회하기', route.params);
 
   useEffect(() => {
     async function loadRecentSearch() {
       try {
+        const boardResult = await getBoardSearch(searchWord);
+        const postResult = await getPostSearch(searchWord);
+        console.log('Search Result 페이지 getBoardSearch 결과 : ', boardResult);
+        console.log('Search Result 페이지 getPostSearch 결과 : ', postResult);
+
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
@@ -35,9 +41,6 @@ function SearchResult({navigation, route}: Props) {
 
   const startSearching = () => {
     if (searchWord.length > 1) {
-      let result = getBoardSearch(searchWord);
-      console.log('검색 결과 result', result);
-
       const newWordList = [searchWord].concat(wordList);
       const duplicateFilter = [...new Set(newWordList)];
       if (duplicateFilter.length === 6) {

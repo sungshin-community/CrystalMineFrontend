@@ -15,8 +15,6 @@ interface Props {
 }
 
 function BoardSearchResult({data}: Props) {
-  // totalElements가 0이면 검색 결과가 없는 것
-  // data 받아와야 하는데 ... ... ...
   return (
     <KeyboardAvoidingView
       style={styles.container}

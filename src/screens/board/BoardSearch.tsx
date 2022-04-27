@@ -17,7 +17,11 @@ import SearchCancelButton from '../../components/SearchCancelButton';
 import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
-  SearchResult: {searchWord: any};
+  SearchResult: {
+    searchWord: any;
+    // boardResult: any;
+    // postResult: any;
+  };
   GlobalNavbar: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -28,21 +32,20 @@ function BoardSearch({navigation}: Props) {
 
   const startSearching = () => {
     if (searchWord.length > 1) {
-      let boardResult = getBoardSearch(searchWord);
-      console.log('게시판 검색 결과 board result', boardResult);
+      // let boardResult = getBoardSearch(searchWord);
+      // let postResult = getPostSearch(searchWord);
 
-      let postResult = getPostSearch(searchWord);
-      console.log('게시글 검색 결과 post result', postResult);
-
-      //? 최근 검색어
       const newWordList = [searchWord].concat(wordList);
       const duplicateFilter = [...new Set(newWordList)];
       if (duplicateFilter.length === 6) {
         duplicateFilter.pop();
       }
       setWordList(duplicateFilter);
+
       navigation.navigate('SearchResult', {
         searchWord: searchWord,
+        // boardResult: boardResult,
+        // postResult: postResult,
       });
     }
   };
