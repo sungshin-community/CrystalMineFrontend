@@ -20,6 +20,7 @@ import {logout} from '../../common/authApi';
 import PointIcon from '../../../resources/icon/PointIcon';
 import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
 import { useIsFocused } from "@react-navigation/native";
+import ExclamationMark from '../../../resources/icon/ExclamationMark';
 
 const styles = StyleSheet.create({
   menu: {
@@ -104,10 +105,39 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
               <View style={{marginLeft: 19, marginTop: 12, flexDirection: 'row', alignItems: 'center'}}>
                 <PointIcon />
-                <Text style={{marginLeft: 8, fontSize: 17, color: '#A055FF', fontFamily: 'SpoqaHanSansNeo-Bold'}}>161</Text>
+                <Text style={{marginLeft: 8, fontSize: 17, color: '#A055FF', fontFamily: 'SpoqaHanSansNeo-Bold'}}>{user?.point}</Text>
               </View>
             </View>
           </View>
+          {user?.expireIn <= 0 && <View 
+            style={{
+              flexDirection: 'row',
+              marginTop: 20,
+              marginHorizontal: 24,
+              paddingLeft: 18,
+              height: 70,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 20,
+              alignItems: 'center'
+            }}
+          >
+            <ExclamationMark style={{marginRight: 10}} />
+            <View>
+              <Text style={{color: '#222222', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>정회원 인증이 필요해요!</Text>
+              <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>정회원 인증하기</Text>
+            </View>
+            <View 
+              style={{
+                flexDirection: 'row',
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingRight: 16
+              }}
+            >
+              <RightArrow />
+            </View>
+          </View>}
           <View
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
