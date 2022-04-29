@@ -255,7 +255,7 @@ export const applyQuitMembership = async (password: string) => {
     console.log(password)
     const response = await client.delete<AxiosResponse>('/user', { data: password });
     console.log('회원탈퇴 성공', response.data); 
-    return response.data.data;
+    return response.data.data.code;
    } catch (error: any) {
     console.log('회원탈퇴 실패', error.response.data);
     const errorCode = error.response.data.code;
