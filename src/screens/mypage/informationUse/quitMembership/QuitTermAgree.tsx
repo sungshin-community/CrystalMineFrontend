@@ -28,7 +28,7 @@ import {getAgreements} from '../../../../common/authApi';
 
 type RootStackParamList = {
   SplashHome: undefined;
-  SignUpId: {agreementIds: number[]};
+  QuitPassword: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -54,7 +54,7 @@ function QuitTermAgree({navigation}: Props) {
   };
 
   const handleChange = (id: number, checked: boolean) => {
-    console.log('hangleChange 호출됨. key는', id);
+    console.log('handleChange 호출됨. key는', id);
     const agreementList = agreements.map(a =>
       a.id === id ? {...a, checked: checked} : a,
     );
@@ -116,8 +116,8 @@ function QuitTermAgree({navigation}: Props) {
             <View>
               <Container>
                 <TwoLineTitle
-                  firstLineText="이용 약관에 먼저"
-                  secondLineText="동의해주세요"
+                  firstLineText="회원 탈퇴 전"
+                  secondLineText="꼭 확인해 주세요"
                 />
               </Container>
               <TouchableOpacity
@@ -132,7 +132,7 @@ function QuitTermAgree({navigation}: Props) {
                 }}
                 onPress={(e: any) => {
                   let agreementList = agreements.slice();
-                  agreements.filter(a => a.checked).length == agreements.length
+                  agreements.filter(a => a.checked).length === agreements.length
                     ? agreementList.forEach(a => (a.checked = false))
                     : agreementList.forEach(a => (a.checked = true));
                   setAgreements(agreementList);
@@ -156,7 +156,7 @@ function QuitTermAgree({navigation}: Props) {
                     lineHeight: 56,
                     fontFamily: 'SpoqaHanSansNeo-Regular',
                   }}>
-                  약관 전체 동의
+                  주의사항 확인 및 동의
                 </Text>
               </TouchableOpacity>
               {agreements.map(a => (
@@ -171,7 +171,6 @@ function QuitTermAgree({navigation}: Props) {
             </View>
           </View>
         </ScrollView>
-
         <View
           style={{bottom: 34, justifyContent: 'center', alignItems: 'center'}}>
           {agreements.length > 0 &&
@@ -179,9 +178,7 @@ function QuitTermAgree({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={() => {
-                navigation.navigate('SignUpId', {
-                  agreementIds: agreements.map(a => a.id),
-                });
+                navigation.navigate('QuitPassword');
               }}
             />
           ) : (

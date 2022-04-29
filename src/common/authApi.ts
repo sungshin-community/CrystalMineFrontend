@@ -242,6 +242,7 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
   }
 };
 
+// TODO: 탈퇴 이용약관
 // export const getQuitAgreements = async () => {
 //   try {
 //     const response = await client.get<Response<>>('/')
@@ -250,18 +251,19 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
 //   }
 // }
 
-export const successQuitMembership = async (password: string) => {
+export const applyQuitMembership = async (password: any) => {
+  console.log('받은 비밀번호', password);
   try {
     const response = await client.delete<{
-      timestamp : string;
-      code : string;
-      status : string;
-      detail : string;
-    }>('/user')
+      timestamp: string;
+      code: string;
+      status: string;
+      detail: string;
+    }>('/user', password);
     console.log('회원탈퇴 성공', response.data);
-    return response.data;
+    return true;
   } catch (error) {
     console.log('회원탈퇴 실패', error);
-    
+    return false;
   }
-}
+};

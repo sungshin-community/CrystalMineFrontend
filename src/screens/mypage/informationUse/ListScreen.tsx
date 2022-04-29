@@ -10,6 +10,7 @@ type RootStackParamList = {
   TermsOfService: undefined;
   OpenSourceLicense: undefined;
   UsageRestrictions: undefined;
+  QuitTermAgree: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -71,7 +72,7 @@ function ListScreen({navigation}: Props) {
         </Pressable>
         <Pressable
           hitSlop={{bottom: 16}}
-          onPress={() => navigation.navigate('RequestWriteScreen')}>
+          onPress={() => navigation.navigate('QuitTermAgree')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>회원 탈퇴</Text>
             <View style={styles.menuIcon}>

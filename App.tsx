@@ -54,6 +54,9 @@ import RequestAnswer from './src/screens/mypage/RequestAnswer';
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
 import CloseButtonIcon from './resources/icon/CloseButtonIcon';
+import QuitTermAgree from './src/screens/mypage/informationUse/quitMembership/QuitTermAgree';
+import QuitPassword from './src/screens/mypage/informationUse/quitMembership/QuitPassword';
+import QuitComplete from './src/screens/mypage/informationUse/quitMembership/QuitComplete';
 
 const Stack = createNativeStackNavigator();
 
@@ -631,6 +634,53 @@ const App = () => {
                       }
                     />
                   ),
+                })}
+              />
+              <Stack.Screen
+                name="QuitMembership"
+                component={QuitTermAgree}
+                options={({navigation}) => ({
+                  title: '회원 탈퇴',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="QuitPassword"
+                component={QuitPassword}
+                options={({navigation}) => ({
+                  title: '회원 탈퇴',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="QuitComplete"
+                component={QuitComplete}
+                options={() => ({
+                  title: '',
                 })}
               />
               {/* 마이페이지 - 문의하기 */}
@@ -1245,6 +1295,53 @@ const App = () => {
                       }
                     />
                   ),
+                })}
+              />
+              <Stack.Screen
+                name="QuitTermAgree"
+                component={QuitTermAgree}
+                options={({navigation}) => ({
+                  title: '회원 탈퇴',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="QuitPassword"
+                component={QuitPassword}
+                options={({navigation}) => ({
+                  title: '회원 탈퇴',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="QuitComplete"
+                component={QuitComplete}
+                options={() => ({
+                  title: '',
                 })}
               />
               {/* 마이페이지 - 문의하기 */}
