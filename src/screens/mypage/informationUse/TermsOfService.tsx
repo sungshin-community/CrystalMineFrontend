@@ -8,7 +8,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
@@ -18,7 +18,8 @@ import {
 } from '../../../../resources/icon/Button';
 import {useState} from 'react';
 import {getAgreementsWithDate} from '../../../common/myPageApi';
-import {AgreementWithDate} from '../../../classes/Agreement';
+import { AgreementWithDate } from '../../../classes/Agreement';
+import Markdown from 'react-native-markdown-display';
 type RootStackParamList = {
   Announcement: undefined;
 };
@@ -37,6 +38,7 @@ function TermsOfService({navigation}: Props) {
     }
     getList();
   }, []);
+
   return (
     <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
       <TouchableWithoutFeedback
@@ -64,11 +66,11 @@ function TermsOfService({navigation}: Props) {
           <ScrollView
             style={{
               height: Dimensions.get('window').height / 2,
-              backgroundColor: '#FBFBFB',
+              backgroundColor: '#FBFBFB',paddingHorizontal: 24, paddingVertical: 16
             }}>
-            <Text style={{paddingHorizontal: 24, paddingVertical: 16}}>
+              <Markdown>
               {data ? data[0]?.content : ''}
-            </Text>
+              </Markdown>
           </ScrollView>
         </>
       )}
@@ -97,11 +99,11 @@ function TermsOfService({navigation}: Props) {
           <ScrollView
             style={{
               height: Dimensions.get('window').height / 2,
-              backgroundColor: '#FBFBFB',
+              backgroundColor: '#FBFBFB',paddingHorizontal: 24, paddingVertical: 16
             }}>
-            <Text style={{paddingHorizontal: 24, paddingVertical: 16}}>
+              <Markdown>
               {data ? data[1]?.content : ''}
-            </Text>
+              </Markdown>
           </ScrollView>
         </>
       )}
