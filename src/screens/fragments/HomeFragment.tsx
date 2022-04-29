@@ -164,7 +164,7 @@ const HomeFragment = ({navigation}: Props) => {
                       onPress={() => {
                         blindVisibleList[index] = false;
                         console.log(blindVisibleList);
-                        setBlindVisible(blindVisibleList)
+                        setBlindVisible(blindVisibleList);
                         setModalVisible(!modalVisible);
                       }}>
                       <View style={styles.newsContainer}>
@@ -245,21 +245,30 @@ const HomeFragment = ({navigation}: Props) => {
               onPress={() =>
                 navigation.navigate('PostListScreen', {boardId: item.boardId})
               }>
-              <View style={styles.postSummaryContainer}>
-                <Text style={styles.postSummary}>
-                  {item.boardName.slice(0, numOfBoardTitle)}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={styles.postTitleSummary}>
-                  {item.recentPostContent}
-                </Text>
-                {item.todayNewPost ? (
-                  <Text style={styles.postNewLabel}>N</Text>
-                ) : (
-                  <Text style={styles.postNewLabel}>N</Text>
-                )}
+              <View style={styles.pinBoardContainer}>
+                <View style={styles.postTitleSummaryContainer}>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={styles.postTitleSummary}>
+                    {item.boardName.slice(0, numOfBoardTitle)}
+                  </Text>
+                </View>
+                <View style={styles.postSummaryContainer}>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={styles.postSummary}>
+                    {item.recentPostContent}
+                  </Text>
+                </View>
+                <View style={styles.postNewLabelContainer}>
+                  {item.todayNewPost ? (
+                    <Text style={styles.postNewLabel}>N</Text>
+                  ) : (
+                    <Text style={styles.postNewLabel}>N</Text>
+                  )}
+                </View>
               </View>
             </TouchableOpacity>
           ))
@@ -296,7 +305,7 @@ const HomeFragment = ({navigation}: Props) => {
             <TouchableWithoutFeedback
               key={index}
               onPress={() => navigation.navigate('PostScreen')}>
-              <View style={styles.postSummaryContainer}>
+              <View style={styles.hotPostContainer}>
                 <Text
                   numberOfLines={1}
                   ellipsizeMode="tail"
@@ -350,25 +359,40 @@ const styles = StyleSheet.create({
     color: '#A055FF',
     textDecorationLine: 'underline',
   },
-  postSummaryContainer: {
+  pinBoardContainer: {
     marginVertical: 8,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
-  postSummary: {
-    fontSize: 13,
-    marginRight: 16,
+  hotPostContainer: {
+    marginVertical: 8,
+    flexDirection: 'row',
+    backgroundColor: 'red',
+    flex: 1,
   },
   postTitleSummary: {
+    fontSize: 13,
+    marginRight: 16,
+    maxWidth: 180,
+  },
+  postSummary: {
     color: '#6E7882',
     fontSize: 13,
-    marginRight: 12,
   },
   postNewLabel: {
     color: '#FF6060',
     fontSize: 12,
     fontWeight: 'bold',
     width: 10,
+    marginLeft: 12,
+  },
+  postTitleSummaryContainer: {
+  },
+  postSummaryContainer: {
+    alignItems: 'stretch',
+    flex: 1
+  },
+  postNewLabelContainer: {
   },
   HOTpostLike: {
     fontSize: 9,
