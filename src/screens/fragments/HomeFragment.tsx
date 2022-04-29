@@ -266,7 +266,7 @@ const HomeFragment = ({navigation}: Props) => {
                   {item.todayNewPost ? (
                     <Text style={styles.postNewLabel}>N</Text>
                   ) : (
-                    <Text style={styles.postNewLabel}>N</Text>
+                    <></>
                   )}
                 </View>
               </View>
