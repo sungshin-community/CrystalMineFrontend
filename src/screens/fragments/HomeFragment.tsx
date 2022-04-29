@@ -33,7 +33,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [homeContents, setHomeContents] = useState<Home>();
   const [isRegularMember, setIsRegularMember] = useState<boolean>(false);
-  const [blindType, setBlindType] = useState<number>();
+  const [blindVisible, setBlindVisible] = useState<boolean>(true);
   const numOfBoardTitle = 19; // 고정 게시판 내용
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const HomeFragment = ({navigation}: Props) => {
     setIsRegularMember(result);
     console.log('정회원 인증 여부', result);
   };
-  
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
@@ -88,7 +88,9 @@ const HomeFragment = ({navigation}: Props) => {
             homeContents?.expireIn <= 7 ? (
               <>
                 <TouchableWithoutFeedback
-                  onPress={() => navigation.navigate('RegularMemberAuthMyPage')}>
+                  onPress={() =>
+                    navigation.navigate('RegularMemberAuthMyPage')
+                  }>
                   <View style={styles.newsContainer}>
                     <View style={{flexDirection: 'row'}}>
                       <NewsExclamationMarkIcon />
@@ -109,7 +111,7 @@ const HomeFragment = ({navigation}: Props) => {
               <></>
             )}
             {/* 인증 만료 알림 */}
-            {!isRegularMember && homeContents?.expireIn === 0? (
+            {!isRegularMember && homeContents?.expireIn === 0 ? (
               <>
                 <View
                   style={{
@@ -118,7 +120,9 @@ const HomeFragment = ({navigation}: Props) => {
                   }}
                 />
                 <TouchableWithoutFeedback
-                  onPress={() => navigation.navigate('RegularMemberAuthMyPage')}>
+                  onPress={() =>
+                    navigation.navigate('RegularMemberAuthMyPage')
+                  }>
                   <View style={styles.newsContainer}>
                     <View style={{flexDirection: 'row'}}>
                       <NewsExclamationMarkIcon />
@@ -149,15 +153,31 @@ const HomeFragment = ({navigation}: Props) => {
               homeContents.blinds.map((item, index) => (
                 <TouchableWithoutFeedback
                   key={index}
-                  onPress={() => navigation.navigate('MyPageFragment')}>
+                  onPress={() => setBlindVisible(false)}>
                   <View style={styles.newsContainer}>
                     <View style={{flexDirection: 'row'}}>
                       <NewsExclamationMarkIcon />
                       <View>
-                        { item.type  === 1 && <Text style={styles.newsTitle}>작성한 게시글이 블라인드 되었어요.</Text>}
-                        { item.type  === 2 && <Text style={styles.newsTitle}>작성한 댓글이 블라인드 되었어요.</Text>}
-                        { item.type  === 3 && <Text style={styles.newsTitle}>작성한 게시판이 블라인드 되었어요.</Text>}
-                        { item.type  === 4 && <Text style={styles.newsTitle}>고정한 게시판이 블라인드 되었어요.</Text>}
+                        {item.type === 1 && (
+                          <Text style={styles.newsTitle}>
+                            작성한 게시글이 블라인드 되었어요.
+                          </Text>
+                        )}
+                        {item.type === 2 && (
+                          <Text style={styles.newsTitle}>
+                            작성한 댓글이 블라인드 되었어요.
+                          </Text>
+                        )}
+                        {item.type === 3 && (
+                          <Text style={styles.newsTitle}>
+                            작성한 게시판이 블라인드 되었어요.
+                          </Text>
+                        )}
+                        {item.type === 4 && (
+                          <Text style={styles.newsTitle}>
+                            고정한 게시판이 블라인드 되었어요.
+                          </Text>
+                        )}
                         <Text
                           numberOfLines={1}
                           ellipsizeMode="tail"
@@ -187,32 +207,30 @@ const HomeFragment = ({navigation}: Props) => {
         </TouchableWithoutFeedback>
         {/* 게시판 글 목록 */}
         {isRegularMember ? (
-          <FlatList
-            data={homeContents?.pinBoardDtos}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('PostListScreen', {boardId: item.boardId})
-                }>
-                <View style={styles.postSummaryContainer}>
-                  <Text style={styles.postSummary}>
-                    {item.boardName.slice(0, numOfBoardTitle)}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.postTitleSummary}>
-                    {item.recentPostContent}
-                  </Text>
-                  {item.todayNewPost ? (
-                    <Text style={styles.postNewLabel}>N</Text>
-                  ) : (
-                    <></>
-                  )}
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+          homeContents?.pinBoardDtos.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() =>
+                navigation.navigate('PostListScreen', {boardId: item.boardId})
+              }>
+              <View style={styles.postSummaryContainer}>
+                <Text style={styles.postSummary}>
+                  {item.boardName.slice(0, numOfBoardTitle)}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={styles.postTitleSummary}>
+                  {item.recentPostContent}
+                </Text>
+                {item.todayNewPost ? (
+                  <Text style={styles.postNewLabel}>N</Text>
+                ) : (
+                  <Text style={styles.postNewLabel}>N</Text>
+                )}
+              </View>
+            </TouchableOpacity>
+          ))
         ) : (
           <View
             style={{
@@ -242,33 +260,29 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
         </TouchableWithoutFeedback>
         {isRegularMember ? (
-          <FlatList
-            data={homeContents?.hotBoardDtos}
-            renderItem={({item}) => (
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('PostScreen')}>
-                <View style={styles.postSummaryContainer}>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={[
-                      styles.postSummary,
-                      {width: Dimensions.get('window').width - 150},
-                    ]}>
-                    {/* {item.postContent.slice(0, 30)} */}
-                  </Text>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <EmptyHeart />
-                    <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-                    <EmptyComment />
-                    <Text style={styles.HOTpostComment}>
-                      {item.commentCount}
-                    </Text>
-                  </View>
+          homeContents?.hotBoardDto.hotPostDtos.map((item, index) => (
+            <TouchableWithoutFeedback
+              key={index}
+              onPress={() => navigation.navigate('PostScreen')}>
+              <View style={styles.postSummaryContainer}>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={[
+                    styles.postSummary,
+                    {width: Dimensions.get('window').width - 150},
+                  ]}>
+                  {/* {item.postContent.slice(0, 30)} */}
+                </Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <EmptyHeart />
+                  <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+                  <EmptyComment />
+                  <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
                 </View>
-              </TouchableWithoutFeedback>
-            )}
-          />
+              </View>
+            </TouchableWithoutFeedback>
+          ))
         ) : (
           <View
             style={{
