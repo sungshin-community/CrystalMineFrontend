@@ -11,7 +11,6 @@ import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
 import ResetPasswordVerificationRequestDto from '../classes/ResetPasswordVerificationRequestDto';
 import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
-
 export const getAgreements = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/agreement');
@@ -251,19 +250,15 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
 //   }
 // }
 
-export const applyQuitMembership = async (password: any) => {
-  console.log('받은 비밀번호', password);
+export const applyQuitMembership = async (password: string) => {
   try {
-    const response = await client.delete<{
-      timestamp: string;
-      code: string;
-      status: string;
-      detail: string;
-    }>('/user', password);
-    console.log('회원탈퇴 성공', response.data);
-    return true;
-  } catch (error) {
-    console.log('회원탈퇴 실패', error);
-    return false;
+    console.log(password)
+    const response = await client.delete<AxiosResponse>('/user', { data: password });
+    console.log('회원탈퇴 성공', response.data); 
+    return response.data.data;
+   } catch (error: any) {
+    console.log('회원탈퇴 실패', error.response.data);
+    const errorCode = error.response.data.code;
+    return errorCode;
   }
 };

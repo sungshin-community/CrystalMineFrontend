@@ -162,10 +162,8 @@ export default function QuitPassword({navigation}: Props) {
             setModalVisible={setModalVisible}
             modalButtonText="네"
             modalButtonFunc={async () => {
-              let result: boolean = await applyQuitMembership({
-                password: password,
-              });
-              if (result) {
+              let result: string = await applyQuitMembership(password);
+              if (result === 'DELETE_AUTH_SUCCESS') {
                 navigation.navigate('QuitComplete');
               } else {
                 setModalVisible(false);
@@ -281,10 +279,8 @@ export default function QuitPassword({navigation}: Props) {
             setModalVisible={setModalVisible}
             modalButtonText="네"
             modalButtonFunc={async () => {
-              let result: boolean = await applyQuitMembership({
-                password: password,
-              });
-              if (result) {
+               let result: string = await applyQuitMembership(password);
+              if (result === 'DELETE_AUTH_SUCCESS') {
                 navigation.navigate('QuitComplete');
               } else {
                 setModalVisible(false);
