@@ -33,7 +33,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [homeContents, setHomeContents] = useState<Home>();
   const [isRegularMember, setIsRegularMember] = useState<boolean>(false);
-  const [blindVisible, setBlindVisible] = useState<boolean>(true);
+  const [blindVisible, setBlindVisible] = useState<[]>([]);
   const numOfBoardTitle = 19; // 고정 게시판 내용
 
   useEffect(() => {
@@ -52,6 +52,8 @@ const HomeFragment = ({navigation}: Props) => {
     setIsRegularMember(result);
     console.log('정회원 인증 여부', result);
   };
+
+  const blindVisibleList = homeContents?.blinds.map((index) => true);
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -149,11 +151,12 @@ const HomeFragment = ({navigation}: Props) => {
                 borderBottomWidth: 1,
               }}
             />
+            {/* 블라인드 알림 */}
             {homeContents &&
               homeContents.blinds.map((item, index) => (
                 <TouchableWithoutFeedback
                   key={index}
-                  onPress={() => setBlindVisible(false)}>
+                  onPress={() => { blindVisibleList && (blindVisibleList[index] = false); console.log(blindVisibleList) }}>
                   <View style={styles.newsContainer}>
                     <View style={{flexDirection: 'row'}}>
                       <NewsExclamationMarkIcon />
