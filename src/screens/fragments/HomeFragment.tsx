@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import {fontBold} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {PurpleRoundButton} from '../../components/Button';
@@ -21,19 +22,22 @@ import RightArrowBold from '../../../resources/icon/RightArrowBold';
 import Home from '../../classes/Home';
 import getHomeContents from '../../common/homeApi';
 import {checkRegularMember} from '../../common/authApi';
+import {ModalBottom} from '../../components/ModalBottom';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPageFragment: undefined;
   PostScreen: undefined;
   RegularMemberAuthMyPage: undefined;
+  TermsOfService: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [homeContents, setHomeContents] = useState<Home>();
   const [isRegularMember, setIsRegularMember] = useState<boolean>(false);
-  const [blindVisible, setBlindVisible] = useState<[]>([]);
+  const [blindVisible, setBlindVisible] = useState<boolean[]>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const numOfBoardTitle = 19; // 고정 게시판 내용
 
   useEffect(() => {
@@ -53,8 +57,7 @@ const HomeFragment = ({navigation}: Props) => {
     console.log('정회원 인증 여부', result);
   };
 
-  const blindVisibleList = homeContents?.blinds.map((index) => true);
-
+  const blindVisibleList = homeContents?.blinds.map(index => true);
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
@@ -154,48 +157,74 @@ const HomeFragment = ({navigation}: Props) => {
             {/* 블라인드 알림 */}
             {homeContents &&
               homeContents.blinds.map((item, index) => (
-                <TouchableWithoutFeedback
-                  key={index}
-                  onPress={() => { blindVisibleList && (blindVisibleList[index] = false); console.log(blindVisibleList) }}>
-                  <View style={styles.newsContainer}>
-                    <View style={{flexDirection: 'row'}}>
-                      <NewsExclamationMarkIcon />
-                      <View>
-                        {item.type === 1 && (
-                          <Text style={styles.newsTitle}>
-                            작성한 게시글이 블라인드 되었어요.
-                          </Text>
-                        )}
-                        {item.type === 2 && (
-                          <Text style={styles.newsTitle}>
-                            작성한 댓글이 블라인드 되었어요.
-                          </Text>
-                        )}
-                        {item.type === 3 && (
-                          <Text style={styles.newsTitle}>
-                            작성한 게시판이 블라인드 되었어요.
-                          </Text>
-                        )}
-                        {item.type === 4 && (
-                          <Text style={styles.newsTitle}>
-                            고정한 게시판이 블라인드 되었어요.
-                          </Text>
-                        )}
-                        <Text
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={styles.newsMore}>
-                          {item.content}
-                        </Text>
+                <>
+                  {blindVisibleList && blindVisibleList[index] && (
+                    <TouchableWithoutFeedback
+                      key={index}
+                      onPress={() => {
+                        blindVisibleList[index] = false;
+                        console.log(blindVisibleList);
+                        setBlindVisible(blindVisibleList)
+                        setModalVisible(!modalVisible);
+                      }}>
+                      <View style={styles.newsContainer}>
+                        <View style={{flexDirection: 'row'}}>
+                          <NewsExclamationMarkIcon />
+                          <View>
+                            {item.type === 1 && (
+                              <Text style={styles.newsTitle}>
+                                작성한 게시글이 블라인드 되었어요.
+                              </Text>
+                            )}
+                            {item.type === 2 && (
+                              <Text style={styles.newsTitle}>
+                                작성한 댓글이 블라인드 되었어요.
+                              </Text>
+                            )}
+                            {item.type === 3 && (
+                              <Text style={styles.newsTitle}>
+                                작성한 게시판이 블라인드 되었어요.
+                              </Text>
+                            )}
+                            {item.type === 4 && (
+                              <Text style={styles.newsTitle}>
+                                고정한 게시판이 블라인드 되었어요.
+                              </Text>
+                            )}
+                            <Text
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={styles.newsMore}>
+                              {item.content}
+                            </Text>
+                          </View>
+                        </View>
+                        <View>
+                          <RightArrowBold />
+                        </View>
                       </View>
-                    </View>
-                    <View>
-                      <RightArrowBold />
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback>
+                  )}
+                </>
               ))}
           </View>
+          {modalVisible && (
+            <ModalBottom
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              modalText={`블라인드 안내`}
+              modalBody={modalBody}
+              modalButtonText="서비스 이용 방향 보기"
+              modalButton
+              modalButtonFunc={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate('TermsOfService');
+              }}
+              isSecondButton={true}
+              modalSecondButtonText="확인"
+              modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
+            />
+          )}
         </View>
       </View>
       <View
@@ -373,3 +402,22 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 160,
   },
 });
+
+const modalBody = (
+  <>
+    <View style={{marginBottom: 15}}>
+      <Text>
+        안녕하세요. (사용자 닉네임)님. {`\n`}
+        해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
+        제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을 참고
+        부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
+        불가능합니다. {`\n`}
+        근데 이거 아직 내용 안나와서 내용 수정해야합니다.
+      </Text>
+    </View>
+    <View style={{flexDirection: 'row'}}>
+      <Text style={[fontBold, {width: 88}]}>블라인드 계정</Text>
+      <Text>00000000@sungshin.ac.kr</Text>
+    </View>
+  </>
+);
