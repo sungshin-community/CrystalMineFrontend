@@ -10,4 +10,3 @@ export default interface User {
     role: string;
     point: number;
 }
-  

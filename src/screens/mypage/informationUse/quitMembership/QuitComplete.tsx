@@ -6,7 +6,7 @@ import {TwoLineTitle, Description} from '../../../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import HappySuryong from '../../../../../resources/icon/custom/HappySuryong';
+import RemoveDataSuryong from '../../../../../resources/icon/custom/HappySuryong';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -41,7 +41,7 @@ export default function QuitComplete({navigation}: Props) {
           duration={1200}
           easing={'ease-in-out-quad'}>
           <TwoLineTitle
-            firstLineText="회원 가입이"
+            firstLineText="회원탈퇴가"
             secondLineText="완료되었습니다"
           />
         </Animatable.Text>
@@ -50,8 +50,7 @@ export default function QuitComplete({navigation}: Props) {
           delay={2100}
           style={{marginTop: 15}}>
           <Description style={{lineHeight: 16.28}}>
-            안녕하세요, 수정님.{'\n'}
-            수정광산에 오신 것을 환영합니다!
+            n초 후 메인 화면으로 돌아갑니다.
           </Description>
         </Animatable.Text>
         <Animatable.View animation="fadeIn" delay={2100}>
@@ -60,7 +59,7 @@ export default function QuitComplete({navigation}: Props) {
               paddingHorizontal: Dimensions.get('window').width / 4,
               paddingVertical: Dimensions.get('window').height / 8,
             }}>
-            <HappySuryong />
+            <RemoveDataSuryong />
           </View>
         </Animatable.View>
       </Container>
