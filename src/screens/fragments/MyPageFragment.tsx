@@ -169,7 +169,7 @@ const MyPageFragment = ({navigation}: Props) => {
                     alignItems: 'center'
                   }}>
                   <Text style={{color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular', marginRight: 9}}>
-                    2022.01.26
+                    {user?.authenticatedDate}
                   </Text>
                   <RightArrow />
                 </View>
