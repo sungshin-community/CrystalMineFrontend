@@ -35,7 +35,7 @@ export const uploadProfileImage = async (image: any) => {
     const data = {uri: image.uri, name: 'photo.png', type: 'multipart/form-data'};
     formData.append("profileImage", data);
 
-    const response = await client.post<Response<ProfileImageResponseDto>>(
+    let response = await client.post<Response<ProfileImageResponseDto>>(
       '/upload/profileImage',
       formData,
       {
@@ -44,11 +44,27 @@ export const uploadProfileImage = async (image: any) => {
         }
       }
     );
-    return response.data.code;
+    console.log("사진 업로드 response는", response.data);
+    let url = response.data.data.url;
+    response = await changeProfileImage(url);
+    return response.data;
   } catch (error: any) {
     const errorCode = error.response.data.code;
     console.log("사진 업로드 실패", error.response);
     return errorCode;
+  }
+};
+
+export const changeProfileImage = async (profileImageUrl: string) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<Response<User>>(
+      '/user/profile-image',
+      {profileImage: profileImageUrl}
+    );
+    return response;
+  } catch (error: any) {
+    return error.response;
   }
 };
 
@@ -57,10 +73,7 @@ export const changePassword = async (password: string) => {
     const accessToken = await AsyncStorage.getItem('accessToken');
     const response = await client.patch<Response<User>>(
       '/user/password',
-      {password: password},
-      { 
-        headers: {Authorization: `Bearer ${accessToken}`},
-      }
+      {password: password}
     );
     return response.data.code;
   } catch (error: any) {

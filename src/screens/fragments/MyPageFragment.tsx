@@ -387,8 +387,9 @@ const MyPageFragment = ({navigation}: Props) => {
                   return;
                 }
                 console.log('image', res);
-                let result = await uploadProfileImage(res.assets[0]);
-                if (result === 'UPLOAD_PROFILE_IMAGE_SUCCESS') {
+                let response = await uploadProfileImage(res.assets[0]);
+                if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
+                  setUser(response.data);
                   Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
                 }
                 else {
