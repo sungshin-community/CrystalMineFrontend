@@ -22,7 +22,8 @@ import RightArrowBold from '../../../resources/icon/RightArrowBold';
 import Home from '../../classes/Home';
 import getHomeContents from '../../common/homeApi';
 import {checkRegularMember} from '../../common/authApi';
-import {ModalBottom} from '../../components/ModalBottom';
+import { ModalBottom } from '../../components/ModalBottom';
+import { useIsFocused } from "@react-navigation/native";
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -39,6 +40,7 @@ const HomeFragment = ({navigation}: Props) => {
   const [blindVisible, setBlindVisible] = useState<boolean[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const numOfBoardTitle = 19; // 고정 게시판 내용
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     async function getContents() {
@@ -47,9 +49,11 @@ const HomeFragment = ({navigation}: Props) => {
         setHomeContents(list);
       }
     }
-    getContents();
+     if (isFocused) {
+      getContents();
+    }
     checkRegularMemberFunc();
-  }, []);
+  }, [isFocused]);
 
   const checkRegularMemberFunc = async () => {
     const result: boolean = await checkRegularMember();
@@ -64,7 +68,7 @@ const HomeFragment = ({navigation}: Props) => {
         style={{
           backgroundColor: '#F6F6F6',
           paddingTop: 32,
-          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) && 32
+          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) || !isRegularMember && 32
         }}>
         <Text
           style={{
