@@ -68,7 +68,7 @@ const HomeFragment = ({navigation}: Props) => {
         style={{
           backgroundColor: '#F6F6F6',
           paddingTop: 32,
-          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) || !isRegularMember && 32
+          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) || !isRegularMember ? 32 : 0
         }}>
         <Text
           style={{
