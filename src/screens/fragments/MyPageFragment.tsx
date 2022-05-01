@@ -7,6 +7,7 @@ import {
   Switch,
   TouchableHighlight,
   StyleSheet,
+  Image,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
@@ -91,7 +92,8 @@ const MyPageFragment = ({navigation}: Props) => {
               paddingTop: 20,
             }}
           >
-            <DefaultProfile />
+            {user?.profileImage ?
+            <Image style={{width: 80, height: 80, borderRadius: 10}} source={{uri: user?.profileImage}} /> : <DefaultProfile />}
             <View style={{height: 80}}>
               <View style={{marginLeft: 18, marginRight: 24, borderBottomColor: '#EEEEEE', borderBottomWidth: 1, height: 80 }}>
                 <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
