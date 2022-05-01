@@ -146,7 +146,7 @@ const MyPageFragment = ({navigation}: Props) => {
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
             <TouchableHighlight
-              underlayColor="#ffffff"
+              underlayColor='#EEEEEE'
               onPress={() => {
                 if (user) {
                   if (user.isAuthenticated === true) {
@@ -178,7 +178,8 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight onPress={()=> navigation.navigate('InpuPassword')}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={()=> navigation.navigate('InpuPassword')}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   비밀번호 재설정
@@ -248,7 +249,8 @@ const MyPageFragment = ({navigation}: Props) => {
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
             <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
-            <TouchableHighlight onPress={() => setProfileModalVisible(true)}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => setProfileModalVisible(true)}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   프로필 이미지 변경
@@ -264,7 +266,8 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight onPress={() => {navigation.navigate('ChangeNickname')}}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ChangeNickname')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   닉네임 변경
@@ -279,7 +282,8 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight onPress={() => {navigation.navigate('ChangeMajor')}}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ChangeMajor')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   소속 학과 변경
@@ -297,7 +301,9 @@ const MyPageFragment = ({navigation}: Props) => {
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
-            <TouchableHighlight onPress={() => {navigation.navigate('ListScreen')}}>
+
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   이용안내
@@ -313,7 +319,8 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   문의하기
@@ -331,7 +338,8 @@ const MyPageFragment = ({navigation}: Props) => {
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 10, marginBottom: 16}}>
-            <TouchableHighlight onPress={() => setModalVisible(true)}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => setModalVisible(true)}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   로그아웃
