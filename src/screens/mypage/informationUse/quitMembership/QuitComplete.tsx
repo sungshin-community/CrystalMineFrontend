@@ -6,7 +6,7 @@ import {TwoLineTitle, Description} from '../../../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import RemoveDataSuryong from '../../../../../resources/icon/custom/HappySuryong';
+import RemoveDataSuryong from '../../../../../resources/icon/custom/RemoveDataSuryong';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);

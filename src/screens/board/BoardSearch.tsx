@@ -19,8 +19,6 @@ import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
 type RootStackParamList = {
   SearchResult: {
     searchWord: any;
-    // boardResult: any;
-    // postResult: any;
   };
   GlobalNavbar: undefined;
 };
@@ -32,9 +30,6 @@ function BoardSearch({navigation}: Props) {
 
   const startSearching = () => {
     if (searchWord.length > 1) {
-      // let boardResult = getBoardSearch(searchWord);
-      // let postResult = getPostSearch(searchWord);
-
       const newWordList = [searchWord].concat(wordList);
       const duplicateFilter = [...new Set(newWordList)];
       if (duplicateFilter.length === 6) {
@@ -44,8 +39,6 @@ function BoardSearch({navigation}: Props) {
 
       navigation.navigate('SearchResult', {
         searchWord: searchWord,
-        // boardResult: boardResult,
-        // postResult: postResult,
       });
     }
   };
