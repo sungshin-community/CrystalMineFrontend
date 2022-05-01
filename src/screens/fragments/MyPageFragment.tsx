@@ -12,7 +12,7 @@ import {
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {getUser, uploadProfileImage} from '../../common/myPageApi';
+import {changeProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -400,7 +400,12 @@ const MyPageFragment = ({navigation}: Props) => {
           }}
           isSecondButton={true}
           modalSecondButtonText="기본 이미지로 변경"
-          modalSecondButtonFunc={() => setProfileModalVisible(false)}
+          modalSecondButtonFunc={async () => {
+            let response = await changeProfileImage('');
+            setUser(response.data.data);
+            setProfileModalVisible(false);
+            Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+          }}
         />
       </ScrollView>
     </SafeAreaView>
