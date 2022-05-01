@@ -12,7 +12,7 @@ import {
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {getUser, uploadProfileImage} from '../../common/myPageApi';
+import {changeProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -22,6 +22,7 @@ import PointIcon from '../../../resources/icon/PointIcon';
 import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
 import { useIsFocused } from "@react-navigation/native";
 import ExclamationMark from '../../../resources/icon/ExclamationMark';
+import Toast from 'react-native-simple-toast';
 
 const styles = StyleSheet.create({
   menu: {
@@ -377,20 +378,33 @@ const MyPageFragment = ({navigation}: Props) => {
           modalButtonText="앨범에서 이미지 선택"
           modalButton
           modalButtonFunc={async () => {
+            setProfileModalVisible(false);
             launchImageLibrary(
               {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
-              res => {
+              async (res) => {
                 if (res.didCancel) {
                   return;
                 }
                 console.log('image', res);
-                let result = uploadProfileImage(res.assets[0]);
+                let response = await uploadProfileImage(res.assets[0]);
+                if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
+                  setUser(response.data);
+                  Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+                }
+                else {
+                  Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.LONG);
+                }
               },
             );
           }}
           isSecondButton={true}
           modalSecondButtonText="기본 이미지로 변경"
-          modalSecondButtonFunc={() => setProfileModalVisible(false)}
+          modalSecondButtonFunc={async () => {
+            let response = await changeProfileImage('');
+            setUser(response.data.data);
+            setProfileModalVisible(false);
+            Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+          }}
         />
       </ScrollView>
     </SafeAreaView>
