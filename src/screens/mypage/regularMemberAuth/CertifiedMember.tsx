@@ -74,7 +74,7 @@ export default function CertifiedMember({navigation}: Props) {
               <View style={styles.expirationDate}>
                 <TextInput
                   key={index}
-                  style={{fontSize: 45, textAlign: 'center'}}
+                  style={{fontSize: 45, textAlign: 'center', color: '#222222'}}
                   editable={false}>
                   {day}
                 </TextInput>
@@ -93,7 +93,7 @@ export default function CertifiedMember({navigation}: Props) {
               fontBold,
               {marginBottom: 11, color: '#A055FF'},
             ]}>
-            정회원 인증 완료 ({user?.expiredDate}) {'\n'}
+            정회원 인증 완료 ({user?.authenticatedDate}) {'\n'}
           </Description>
           <Description style={styles.textDescription}>
             {user?.username}@sungshin.ac.kr
