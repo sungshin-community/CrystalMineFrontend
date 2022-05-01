@@ -44,8 +44,7 @@ export const uploadProfileImage = async (image: any) => {
         }
       }
     );
-    console.log("사진 업로드 response는", response.data);
-    return response.data.data.url;
+    return response.data.code;
   } catch (error: any) {
     const errorCode = error.response.data.code;
     console.log("사진 업로드 실패", error.response);
