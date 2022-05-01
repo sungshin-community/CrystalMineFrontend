@@ -63,7 +63,8 @@ const HomeFragment = ({navigation}: Props) => {
       <View
         style={{
           backgroundColor: '#F6F6F6',
-          paddingVertical: 32,
+          paddingTop: 32,
+          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) && 32
         }}>
         <Text
           style={{
