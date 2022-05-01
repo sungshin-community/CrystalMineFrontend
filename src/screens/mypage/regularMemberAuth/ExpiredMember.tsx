@@ -79,7 +79,7 @@ export default function ExpiredMember({ navigation }: Props) {
           delay={2100}
           style={{marginTop: 90}}>
           <Description style={[styles.textDescription, fontBold, {marginBottom: 11}]}>
-            정회원 인증 필요({user?.expiredDate}){'\n'}
+            정회원 인증 필요({user?.authenticatedDate}){'\n'}
           </Description>
           <Description style={styles.textDescription}>
             {user?.username}@sungshin.ac.kr
