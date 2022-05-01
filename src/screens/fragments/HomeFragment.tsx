@@ -301,7 +301,7 @@ const HomeFragment = ({navigation}: Props) => {
         />
         <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>HOT 게시판</Text>
+            <Text style={styles.boardTitle}>HOT 게시글</Text>
             <Text style={styles.more}>더보기</Text>
           </View>
         </TouchableWithoutFeedback>
