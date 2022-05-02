@@ -136,3 +136,23 @@ export const getUsageRestrictions = async (page: number) => {
     console.log("여기는 getUsageRestrictions 함수", e);
   }
 }
+
+export const checkPassword = async (password: string) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.post<Response<User>>(
+      '/user/check-password',
+      {password: password},
+      { 
+        headers: {Authorization: `Bearer ${accessToken}`},
+      }
+    );
+    console.log('~', response.data)
+    return response.data.code;
+  } catch (error: any) {
+    const errorCode = error.response.data.code;
+    console.log('~~', errorCode)
+
+    return errorCode;
+  }
+};

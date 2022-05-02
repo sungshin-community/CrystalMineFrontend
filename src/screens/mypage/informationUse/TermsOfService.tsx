@@ -24,10 +24,47 @@ type RootStackParamList = {
   Announcement: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-
+export function SpreadList({ id, title, agreementDate, content}: any) {
+  const [isSpread, setIsSpread] = useState<boolean>(false);
+  return (
+    <>
+      <TouchableWithoutFeedback
+        onPress={() => setIsSpread(!isSpread)}>
+        <View style={styles.menuContainer}>
+          <View style={styles.menu}>
+            <Text style={[fontMedium, styles.menuText]}>
+              {title}
+            </Text>
+            <View style={styles.menuIcon}>
+              {isSpread ? <FoldBlackButton /> : <SpreadBlackButton />}
+            </View>
+          </View>
+          <Text
+            style={[
+              fontRegular,
+              {color: '#ADB3BC', fontSize: 13, marginTop: 4},
+            ]}>
+            {agreementDate} 동의
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+      {isSpread && (
+        <>
+          <ScrollView
+            style={{
+              height: Dimensions.get('window').height / 2,
+              backgroundColor: '#FBFBFB',paddingHorizontal: 24, paddingVertical: 16
+            }}>
+              <Markdown>
+              {content}
+              </Markdown>
+          </ScrollView>
+        </>
+      )}
+      </>
+   )
+}
 function TermsOfService({navigation}: Props) {
-  const [isSpreadFirst, setIsSpreadFirst] = useState<boolean>(false);
-  const [isSpreadSecond, setIsSpreadSecond] = useState<boolean>(false);
   const [data, setData] = useState<AgreementWithDate[]>();
 
   useEffect(() => {
@@ -39,74 +76,10 @@ function TermsOfService({navigation}: Props) {
     getList();
   }, []);
 
+
   return (
-    <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
-      <TouchableWithoutFeedback
-        onPress={() => setIsSpreadFirst(!isSpreadFirst)}>
-        <View style={styles.menuContainer}>
-          <View style={styles.menu}>
-            <Text style={[fontMedium, styles.menuText]}>
-              {data ? data[0].title : ''}
-            </Text>
-            <View style={styles.menuIcon}>
-              {isSpreadFirst ? <FoldBlackButton /> : <SpreadBlackButton />}
-            </View>
-          </View>
-          <Text
-            style={[
-              fontRegular,
-              {color: '#ADB3BC', fontSize: 13, marginTop: 4},
-            ]}>
-            {data ? data[0]?.agreementDate : ''} 동의
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      {isSpreadFirst && (
-        <>
-          <ScrollView
-            style={{
-              height: Dimensions.get('window').height / 2,
-              backgroundColor: '#FBFBFB',paddingHorizontal: 24, paddingVertical: 16
-            }}>
-              <Markdown>
-              {data ? data[0]?.content : ''}
-              </Markdown>
-          </ScrollView>
-        </>
-      )}
-      <TouchableWithoutFeedback
-        onPress={() => setIsSpreadSecond(!isSpreadSecond)}>
-        <View style={styles.menuContainer}>
-          <View style={styles.menu}>
-            <Text style={[fontMedium, styles.menuText]}>
-              {data ? data[1].title : ''}
-            </Text>
-            <View style={styles.menuIcon}>
-              {isSpreadSecond ? <FoldBlackButton /> : <SpreadBlackButton />}
-            </View>
-          </View>
-          <Text
-            style={[
-              fontRegular,
-              {color: '#ADB3BC', fontSize: 13, marginTop: 4},
-            ]}>
-            {data ? data[1]?.agreementDate : ''} 동의
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      {isSpreadSecond && (
-        <>
-          <ScrollView
-            style={{
-              height: Dimensions.get('window').height / 2,
-              backgroundColor: '#FBFBFB',paddingHorizontal: 24, paddingVertical: 16
-            }}>
-              <Markdown>
-              {data ? data[1]?.content : ''}
-              </Markdown>
-          </ScrollView>
-        </>
-      )}
+    <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
+    {data?.map((item)=>(<SpreadList id={item.id} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
     </SafeAreaView>
   );
 }

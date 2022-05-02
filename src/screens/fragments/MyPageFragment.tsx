@@ -311,7 +311,7 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => {navigation.navigate('RequestScreen')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   문의하기

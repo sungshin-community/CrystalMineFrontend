@@ -24,7 +24,7 @@ import {CautionText} from '../../../components/Input';
 import PasswordShow from '../../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
-import {changePassword} from '../../../common/myPageApi';
+import {checkPassword} from '../../../common/myPageApi';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -49,11 +49,7 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  InputNewPasswordConfirm: {
-    userId: string;
-    previousPassword: string;
-  };
-  InpuPassword: {userId: string};
+  InputNewPassword: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -87,10 +83,6 @@ export default function InpuPassword({navigation, route}: Props) {
     setShowPassword(!showPassword);
   };
 
-  const changePasswordFunc = async () => {
-    let result: number = await changePassword(password);
-    return result;
-  };
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
       keyboardVerticalOffset={10}
@@ -171,14 +163,12 @@ export default function InpuPassword({navigation, route}: Props) {
           }}>
           {isValidate && isFocused && (
             <PurpleFullButton
-              text="비밀번호 재설정"
+              text="다음"
               onClick={async () => {
-                const result = changePasswordFunc();
+                let result: number = await checkPassword(password);
+                console.log(result)
                 if (result === 0) {
-                  navigation.navigate('InputNewPasswordConfirm', {
-                    userId: route.params.userId,
-                    previousPassword: password,
-                  });
+                  navigation.navigate('InputNewPassword');
                 } else {
                   setIsChangeable(false);
                 }
@@ -187,17 +177,11 @@ export default function InpuPassword({navigation, route}: Props) {
           )}
           {isValidate && !isFocused && (
             <PurpleRoundButton
-              text="비밀번호 재설정"
+              text="다음"
               onClick={async () => {
-                let result: number = await checkNewPassword({
-                  username: route.params.userId,
-                  password: password,
-                });
+                let result: number = await checkPassword(password);
                 if (result === 0) {
-                  navigation.navigate('InputNewPasswordConfirm', {
-                    userId: route.params.userId,
-                    previousPassword: password,
-                  });
+                  navigation.navigate('InputNewPassword');
                 } else {
                   setIsChangeable(false);
                 }
@@ -205,10 +189,10 @@ export default function InpuPassword({navigation, route}: Props) {
             />
           )}
           {!isValidate && isFocused && (
-            <DisabledPurpleFullButton text="비밀번호 재설정" />
+            <DisabledPurpleFullButton text="다음" />
           )}
           {!isValidate && !isFocused && (
-            <DisabledPurpleRoundButton text="비밀번호 재설정" />
+            <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
       </Container>
@@ -296,7 +280,7 @@ export default function InpuPassword({navigation, route}: Props) {
                   password: password,
                 });
                 if (result === 0) {
-                  navigation.navigate('InputNewPasswordConfirm', {
+                  navigation.navigate('InputNewPassword', {
                     userId: route.params.userId,
                     previousPassword: password,
                   });
@@ -315,12 +299,12 @@ export default function InpuPassword({navigation, route}: Props) {
                   password: password,
                 });
                 if (result === 0) {
-                  navigation.navigate('InputNewPasswordConfirm', {
+                  navigation.navigate('InputNewPassword', {
                     userId: route.params.userId,
                     previousPassword: password,
                   });
                 } else {
-                  setIsChangeable(false);
+                  setIsChangeable(false)
                 }
               }}
             />
