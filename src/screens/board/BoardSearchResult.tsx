@@ -20,11 +20,9 @@ function BoardSearchResult({data}: any) {
       <SafeAreaView style={styles.noResult}>
         {console.log('BoardSearchResult data : ', data)}
         {data?.totalElements === 0 ? (
-          <View>
-            <Text style={[fontRegular, styles.noResultText]}>
-              요청하신 검색어에 대한 검색 결과가 없습니다.
-            </Text>
-          </View>
+          <Text style={[fontRegular, styles.noResultText]}>
+            요청하신 검색어에 대한 검색 결과가 없습니다.
+          </Text>
         ) : (
           <ScrollView>
             <Text>하는 중 ...</Text>
@@ -46,7 +44,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgb(244, 244, 244)',
     justifyContent: 'center',
-    alignItems: 'center',
   },
   noResultText: {
     justifyContent: 'center',
