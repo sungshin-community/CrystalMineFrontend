@@ -6,6 +6,7 @@ import {
   Pressable,
   View,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 interface Props {
@@ -56,17 +57,17 @@ export const ModalBottom = ({
                 </Text>
                 <Text>{modalBody}</Text>
               </View>
-              <Pressable
+              <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={modalButtonFunc}>
                 <Text style={styles.textStyle}>{modalButtonText}</Text>
-              </Pressable>
+              </TouchableOpacity>
               {isSecondButton && 
-              <Pressable
+              <TouchableOpacity
                 style={[styles.secondButton, styles.secondButtonClose]}
                 onPress={modalSecondButtonFunc}>
                 <Text style={styles.secondButtonTextStyle}>{modalSecondButtonText}</Text>
-              </Pressable>}
+              </TouchableOpacity>}
             </View>
           </View>
         </Modal>
