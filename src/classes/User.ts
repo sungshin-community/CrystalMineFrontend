@@ -1,7 +1,7 @@
 export default interface User {
     id: number;
     isAuthenticated: boolean;
-    expiredDate: string;
+    authenticatedDate: string;
     expireIn: number;
     profileImage: string;
     username: string;

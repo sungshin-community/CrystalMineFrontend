@@ -30,10 +30,9 @@ export const writeRequest = async (writeRequestDto: WriteRequest) => {
 };
 
 export const uploadProfileImage = async (image: any) => {
-  console.log("인자로 받은 image는", image);
   try {
     const formData = new FormData();
-    const data = {uri: image.uri, name: image.name, type: image.type};
+    const data = {uri: image.uri, name: 'photo.png', type: 'multipart/form-data'};
     formData.append("profileImage", data);
 
     const response = await client.post<Response<ProfileImageResponseDto>>(
