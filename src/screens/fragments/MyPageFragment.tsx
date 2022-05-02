@@ -113,7 +113,7 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>
-          {user?.expireIn && user?.expireIn <= 0 && <View 
+          {user?.expireIn <= 0 && <View 
             style={{
               flexDirection: 'row',
               marginTop: 20,
@@ -301,6 +301,7 @@ const MyPageFragment = ({navigation}: Props) => {
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
+
             <TouchableHighlight
               underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
               <View style={styles.menu}>
@@ -317,14 +318,9 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-<<<<<<< HEAD
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => {navigation.navigate('RequestScreen')}}>
-=======
             </TouchableHighlight>
             <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {}}>
->>>>>>> 378b0a01be64b608a7a09a21e714a201e932eeb9
+              underlayColor='#EEEEEE' onPress={() => { navigation.navigate('RequestScreen')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   문의하기
