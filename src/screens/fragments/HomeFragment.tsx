@@ -68,7 +68,7 @@ const HomeFragment = ({navigation}: Props) => {
         style={{
           backgroundColor: '#F6F6F6',
           paddingTop: 32,
-          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) || !isRegularMember && 32
+          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) || !isRegularMember ? 32 : 0
         }}>
         <Text
           style={{
@@ -301,7 +301,7 @@ const HomeFragment = ({navigation}: Props) => {
         />
         <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>HOT 게시판</Text>
+            <Text style={styles.boardTitle}>HOT 게시글</Text>
             <Text style={styles.more}>더보기</Text>
           </View>
         </TouchableWithoutFeedback>

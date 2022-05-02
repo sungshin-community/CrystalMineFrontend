@@ -19,15 +19,16 @@ const Tab = createMaterialTopTabNavigator();
 function SearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
   const [wordList, setWordList] = useState<string[]>([]);
-  console.log('Search Result route.params 결과 조회하기', route.params);
+  const [boardResultData, setBoardResultData] = useState();
+  const [postResultData, setPostResultData] = useState();
 
   useEffect(() => {
     async function loadRecentSearch() {
       try {
         const boardResult = await getBoardSearch(searchWord);
         const postResult = await getPostSearch(searchWord);
-        console.log('Search Result 페이지 getBoardSearch 결과 : ', boardResult);
-        console.log('Search Result 페이지 getPostSearch 결과 : ', postResult);
+        setBoardResultData(boardResult);
+        setPostResultData(postResult);
 
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
@@ -96,8 +97,14 @@ function SearchResult({navigation, route}: Props) {
       }}
       keyboardDismissMode="on-drag"
       initialLayout={{width: Dimensions.get('window').width}}>
-      <Tab.Screen name="게시글" component={PostSearchResult} />
-      <Tab.Screen name="게시판 이름" component={BoardSearchResult} />
+      <Tab.Screen
+        name="게시글"
+        children={() => <PostSearchResult data={postResultData} />}
+      />
+      <Tab.Screen
+        name="게시판 이름"
+        children={() => <BoardSearchResult data={boardResultData} />}
+      />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>
   );

@@ -4,24 +4,32 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import {SearchBoard} from '../../classes/Search';
+import {fontRegular} from '../../common/font';
 
-interface Props {
-  data: SearchBoard[];
-}
-
-function BoardSearchResult({data}: Props) {
+function BoardSearchResult({data}: any) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <SafeAreaView>
-        <Text>BoardSearchResult</Text>
-        {/* <FlatList data={data} renderItem={} /> */}
+      <SafeAreaView style={styles.noResult}>
+        {console.log('BoardSearchResult data : ', data)}
+        {data?.totalElements === 0 ? (
+          <View>
+            <Text style={[fontRegular, styles.noResultText]}>
+              요청하신 검색어에 대한 검색 결과가 없습니다.
+            </Text>
+          </View>
+        ) : (
+          <ScrollView>
+            <Text>하는 중 ...</Text>
+          </ScrollView>
+        )}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -32,6 +40,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
+  },
+  noResult: {
+    width: '100%',
+    flex: 1,
+    backgroundColor: 'rgb(244, 244, 244)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noResultText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 15,
+    lineHeight: 21,
+    textAlign: 'center',
+    color: '#6E7882',
   },
 });
 
