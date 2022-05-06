@@ -693,7 +693,7 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="QuitMembership"
+                name="QuitTermAgree"
                 component={QuitTermAgree}
                 options={({navigation}) => ({
                   title: '회원 탈퇴',
