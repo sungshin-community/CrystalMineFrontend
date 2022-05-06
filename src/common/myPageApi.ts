@@ -35,7 +35,7 @@ export const uploadProfileImage = async (image: any) => {
     const data = {uri: image.uri, name: 'photo.png', type: 'multipart/form-data'};
     formData.append("profileImage", data);
 
-    let response = await client.post<Response<ProfileImageResponseDto>>(
+    const response = await client.post<Response<ProfileImageResponseDto>>(
       '/upload/profileImage',
       formData,
       {
@@ -45,8 +45,6 @@ export const uploadProfileImage = async (image: any) => {
       }
     );
     console.log("사진 업로드 response는", response.data);
-    let url = response.data.data.url;
-    response = await changeProfileImage(url);
     return response.data;
   } catch (error: any) {
     const errorCode = error.response.data.code;
