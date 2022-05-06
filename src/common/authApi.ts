@@ -178,8 +178,7 @@ export const logout = async () => {
 export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
   try {
     const response = await client.post<Response<TokenReissueDto>>('/auth/reissue-token', tokenReissueDto);
-    await AsyncStorage.setItem('accessToken', response.data.data.accessToken);
-    await AsyncStorage.setItem('refreshToken', response.data.data.refreshToken);
+    await AsyncStorage.multiSet([['accessToken', response.data.data.accessToken], ['refreshToken', response.data.data.refreshToken]]);
     return response.data;
   } catch (e: any) {
     return e.response;
