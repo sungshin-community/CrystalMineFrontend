@@ -51,7 +51,6 @@ const RESEND_OTP_TIME_LIMIT = 90;
 type RootStackParamList = {
   Home: undefined;
   GlobalNavbar: undefined;
-  BoardScreen: undefined;
   RegularMemberAuthSelect: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
