@@ -20,16 +20,20 @@ function PostSearchResult({data}) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.noResult}>
         {console.log('PostSearchResult data : ', data)}
-        {data?.totalElements === 0 ? (
-          <View>
+        {typeof data === undefined ? (
+          data?.totalElements === 0 ? (
             <Text style={[fontRegular, styles.noResultText]}>
               요청하신 검색어에 대한 검색 결과가 없습니다.
             </Text>
-          </View>
+          ) : (
+            <ScrollView>
+              <PostItem post={data} />
+            </ScrollView>
+          )
         ) : (
-          <ScrollView>
-            {/* <PostItem post={data} /> */}
-          </ScrollView>
+          <Text style={[fontRegular, styles.noResultText]}>
+            요청하신 검색어에 대한 검색 결과가 없습니다.
+          </Text>
         )}
       </SafeAreaView>
     </KeyboardAvoidingView>
