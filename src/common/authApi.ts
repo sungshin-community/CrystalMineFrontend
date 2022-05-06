@@ -11,6 +11,7 @@ import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
 import ResetPasswordVerificationRequestDto from '../classes/ResetPasswordVerificationRequestDto';
 import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
+import TokenReissueDto from '../classes/TokenReissueDto';
 export const getAgreements = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/agreement');
@@ -173,6 +174,17 @@ export const logout = async () => {
     return false;
   }
 };
+
+export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
+  try {
+    const response = await client.post<Response<TokenReissueDto>>('/auth/reissue-token', tokenReissueDto);
+    await AsyncStorage.setItem('accessToken', response.data.data.accessToken);
+    await AsyncStorage.setItem('refreshToken', response.data.data.refreshToken);
+    return response.data;
+  } catch (e: any) {
+    return e.response;
+  }
+}
 
 export const checkRegularMember = async () => {
   try {
