@@ -159,7 +159,7 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
     await AsyncStorage.setItem('uuid', response.data.data.uuid);
     return true;
   } catch (e: any) {
-    console.log('여기는 login 함수', e.response.status);
+    console.log('여기는 login 함수', e.response.data);
     return false;
   }
 };
