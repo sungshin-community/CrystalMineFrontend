@@ -17,7 +17,6 @@ client.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("여기는 axios interceptor error는", error);
     const {config, response: { status }} = error;
     if (status === 401) {
       if (error.response.data.code === 'INVALID_AUTH_TOKEN') {
@@ -25,7 +24,6 @@ client.interceptors.response.use(
         const accessToken = await AsyncStorage.getItem('accessToken');
         const refreshToken = await AsyncStorage.getItem('refreshToken');
         const response = await reissueToken({accessToken: accessToken ? accessToken : '', refreshToken: refreshToken ? refreshToken : ''});
-        console.log("여기는 axios intercepter, reissueToken의 리턴값은", response);
         const reissuedAccessToken = response.data.accessToken;
         const reissuedRefreshToken = response.data.refreshToken;
         client.defaults.headers.common.Authorization = reissuedAccessToken ? `Bearer ${reissuedAccessToken}` : '';
