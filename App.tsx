@@ -23,7 +23,6 @@ import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
 import DirectionAgree from './src/screens/signUp/DirectionAgree';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
-import BoardScreen from './src/screens/board/BoardScreen';
 import PostScreen from './src/screens/post/PostScreen';
 
 import GlobalNavbar from './src/components/GlobalNavbar';
@@ -362,19 +361,6 @@ const App = () => {
                 options={{headerShown: false}}
               />
               {/* [F-7] 게시판 */}
-              <Stack.Screen
-                name="BoardScreen"
-                component={BoardScreen}
-                options={{
-                  title: '게시판',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
-                }}
-              />
               <Stack.Screen
                 name="CreateBoard"
                 component={CreateBoard}
@@ -1057,19 +1043,6 @@ const App = () => {
                 options={{headerShown: false}}
               />
               {/* [F-7] 게시판 */}
-              <Stack.Screen
-                name="BoardScreen"
-                component={BoardScreen}
-                options={{
-                  title: '게시판',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
-                }}
-              />
               <Stack.Screen
                 name="CreateBoard"
                 component={CreateBoard}
