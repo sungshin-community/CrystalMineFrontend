@@ -29,6 +29,7 @@ export function SpreadList({ id, title, agreementDate, content}: any) {
   return (
     <>
       <TouchableWithoutFeedback
+        key={id}
         onPress={() => setIsSpread(!isSpread)}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>

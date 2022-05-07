@@ -45,11 +45,24 @@ export const uploadProfileImage = async (image: any) => {
       }
     );
     console.log("사진 업로드 response는", response.data);
-    return response.data.data.url;
+    return response.data;
   } catch (error: any) {
     const errorCode = error.response.data.code;
     console.log("사진 업로드 실패", error.response);
     return errorCode;
+  }
+};
+
+export const changeProfileImage = async (profileImageUrl: string) => {
+  try {
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const response = await client.patch<Response<User>>(
+      '/user/profile-image',
+      {profileImage: profileImageUrl}
+    );
+    return response;
+  } catch (error: any) {
+    return error.response;
   }
 };
 
@@ -58,10 +71,7 @@ export const changePassword = async (password: string) => {
     const accessToken = await AsyncStorage.getItem('accessToken');
     const response = await client.patch<Response<User>>(
       '/user/password',
-      {password: password},
-      { 
-        headers: {Authorization: `Bearer ${accessToken}`},
-      }
+      {password: password}
     );
     return response.data.code;
   } catch (error: any) {
@@ -156,3 +166,16 @@ export const checkPassword = async (password: string) => {
     return errorCode;
   }
 };
+
+export const getQuestionList = async (page: number) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<AxiosResponse>(
+      `/questions?${params}`,
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getQuestionList 함수", e);
+  }
+}

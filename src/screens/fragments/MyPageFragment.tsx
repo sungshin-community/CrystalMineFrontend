@@ -5,14 +5,14 @@ import {
   Text,
   View,
   Switch,
-  TouchableWithoutFeedback,
+  TouchableHighlight,
   StyleSheet,
   Image,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {getUser, uploadProfileImage} from '../../common/myPageApi';
+import {changeProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -22,6 +22,7 @@ import PointIcon from '../../../resources/icon/PointIcon';
 import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
 import { useIsFocused } from "@react-navigation/native";
 import ExclamationMark from '../../../resources/icon/ExclamationMark';
+import Toast from 'react-native-simple-toast';
 
 const styles = StyleSheet.create({
   menu: {
@@ -53,7 +54,7 @@ type RootStackParamList = {
   ChangeNickname: undefined,
   ChangeMajor: undefined,
   ExpiredMember: undefined;
-  RequestScreen: undefined;
+  QuestionList: undefined;
   ListScreen: undefined;
 };
 
@@ -112,7 +113,7 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>
-          {user?.expireIn && user?.expireIn <= 0 && <View 
+          {user?.expireIn <= 0 && <View 
             style={{
               flexDirection: 'row',
               marginTop: 20,
@@ -144,7 +145,8 @@ const MyPageFragment = ({navigation}: Props) => {
           <View
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
-            <TouchableWithoutFeedback
+            <TouchableHighlight
+              underlayColor='#EEEEEE'
               onPress={() => {
                 if (user) {
                   if (user.isAuthenticated === true) {
@@ -191,7 +193,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
             {/* <View style={[styles.menu, {marginTop: 6}]}>
               <Text style={styles.menuTitle}>앱 설정</Text>
             </View>
@@ -247,7 +249,8 @@ const MyPageFragment = ({navigation}: Props) => {
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
             <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
-            <TouchableWithoutFeedback onPress={() => setProfileModalVisible(true)}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => setProfileModalVisible(true)}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   프로필 이미지 변경
@@ -262,8 +265,9 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => {navigation.navigate('ChangeNickname')}}>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ChangeNickname')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   닉네임 변경
@@ -277,8 +281,9 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => {navigation.navigate('ChangeMajor')}}>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ChangeMajor')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   소속 학과 변경
@@ -292,11 +297,13 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
-            <TouchableWithoutFeedback onPress={() => {navigation.navigate('ListScreen')}}>
+
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   이용안내
@@ -311,8 +318,9 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => {navigation.navigate('RequestScreen')}}>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => { navigation.navigate('QuestionList')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   문의하기
@@ -326,11 +334,12 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 10, marginBottom: 16}}>
-            <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => setModalVisible(true)}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   로그아웃
@@ -344,7 +353,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   }}>
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
           </View>
         </View>
         {/* <View style={{paddingVertical: 24, alignItems: 'center'}}>
@@ -378,20 +387,33 @@ const MyPageFragment = ({navigation}: Props) => {
           modalButtonText="앨범에서 이미지 선택"
           modalButton
           modalButtonFunc={async () => {
+            setProfileModalVisible(false);
             launchImageLibrary(
               {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
-              res => {
+              async (res) => {
                 if (res.didCancel) {
                   return;
                 }
                 console.log('image', res);
-                let result = uploadProfileImage(res.assets[0]);
+                let response = await uploadProfileImage(res.assets[0]);
+                if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
+                  setUser(response.data);
+                  Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+                }
+                else {
+                  Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.LONG);
+                }
               },
             );
           }}
           isSecondButton={true}
           modalSecondButtonText="기본 이미지로 변경"
-          modalSecondButtonFunc={() => setProfileModalVisible(false)}
+          modalSecondButtonFunc={async () => {
+            let response = await changeProfileImage('');
+            setUser(response.data.data);
+            setProfileModalVisible(false);
+            Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+          }}
         />
       </ScrollView>
     </SafeAreaView>

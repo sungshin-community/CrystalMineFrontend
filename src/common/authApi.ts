@@ -11,6 +11,7 @@ import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
 import ResetPasswordVerificationRequestDto from '../classes/ResetPasswordVerificationRequestDto';
 import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
+import TokenReissueDto from '../classes/TokenReissueDto';
 export const getAgreements = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/agreement');
@@ -174,6 +175,16 @@ export const logout = async () => {
   }
 };
 
+export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
+  try {
+    const response = await client.post<Response<TokenReissueDto>>('/auth/reissue-token', tokenReissueDto);
+    await AsyncStorage.multiSet([['accessToken', response.data.data.accessToken], ['refreshToken', response.data.data.refreshToken]]);
+    return response.data;
+  } catch (e: any) {
+    return e.response;
+  }
+}
+
 export const checkRegularMember = async () => {
   try {
     const response = await client.get<Response<RegularMemberCheckDto>>('/user');
@@ -252,11 +263,11 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
 
 export const applyQuitMembership = async (password: string) => {
   try {
-    console.log(password)
-    const response = await client.delete<AxiosResponse>('/user', { data: password });
-    console.log('회원탈퇴 성공', response.data); 
+    console.log('받아온 password', password);
+    const response = await client.delete<Response<undefined>>('/user', { password: password });
+    console.log('회원탈퇴 성공', response.data);
     return response.data.data.code;
-   } catch (error: any) {
+  } catch (error: any) {
     console.log('회원탈퇴 실패', error.response.data);
     const errorCode = error.response.data.code;
     return errorCode;
