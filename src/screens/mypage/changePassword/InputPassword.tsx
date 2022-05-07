@@ -49,14 +49,11 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  InputNewPassword: undefined;
+  InputNewPassword: {username: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function InputPassword({
-  navigation,
-  route,
-}: Props) {
+export default function InputPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
@@ -88,118 +85,111 @@ export default function InputPassword({
 
   return (
     <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1}}>
-        <ScrollView
-          style={{backgroundColor: '#fff', flex: 1, paddingHorizontal: 24}}>
-          <TextContainer>
-            <NormalOneLineText>현재 비밀번호를 입력해주세요.</NormalOneLineText>
-            <Description>
-              현재 등록되어 있는 비밀번호를 입력해주세요.
-            </Description>
-          </TextContainer>
-          <MiddleInputContainerStyle
-            style={{
-              borderColor:
-                isWrong || !isChangeable
-                  ? '#ff0000'
-                  : isFocused
-                  ? '#A055FF'
-                  : '#D7DCE6',
-            }}>
-            <TextInput
-              style={{
-                width: '90%',
-                fontSize: 21,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                paddingBottom: 7,
-              }}
-              onFocus={(e: any) => {
-                onInputFocus();
-              }}
-              onBlur={(e: any) => {
-                onInputFocusOut();
-              }}
-              onChangeText={(value: string) => {
-                if (value.length > 0) {
-                  setIsWrong(true);
-                  setIsChangeable(true);
-                } else {
-                  setIsWrong(false);
-                }
-                setPassword(value.replace(/\s/g, ''));
-                validatePassword(value);
-              }}
-              maxLength={25}
-              placeholder="비밀번호"
-              placeholderTextColor="#A0AAB4"
-              keyboardType="default"
-              secureTextEntry={!showPassword} //! 인풋 초기화 얘가 문제
-              clearTextOnFocus={false}
-              autoCapitalize="none"
-              returnKeyType="done"
-              selectionColor="#A055FF"
-              value={password}
-            />
-            {showPassword ? (
-              <PasswordShow onPress={letShowPassword} />
-            ) : (
-              <PasswordNotShow onPress={letShowPassword} />
-            )}
-          </MiddleInputContainerStyle>
-          {isWrong && !isValidate && (
-            <CautionText text="사용할 수 없는 비밀번호 입니다." />
-          )}
-          {!isChangeable && (
-            <CautionText text="비밀번호를 정확하게 입력해 주세요."></CautionText>
-          )}
-        </ScrollView>
-        <View
+      keyboardVerticalOffset={90}
+      behavior={Platform.select({ios: 'padding'})}
+      style={{flex: 1, backgroundColor: '#fff'}}>
+      <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
+        <TextContainer>
+          <NormalOneLineText>현재 비밀번호를 입력해주세요.</NormalOneLineText>
+          <Description>현재 등록되어 있는 비밀번호를 입력해주세요.</Description>
+        </TextContainer>
+        <MiddleInputContainerStyle
           style={{
-            bottom: isFocused ? 0 : 34,
-            justifyContent: 'center',
-            alignItems: 'center',
+            borderColor:
+              isWrong || !isChangeable
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
           }}>
-          {isValidate && isFocused && (
-            <PurpleFullButton
-              text="다음"
-              onClick={async () => {
-                let result: number = await checkNewPassword({
-                  username: route.params.username,
-                  password: password,
-                });
-                if (result === 0) {
-                  setIsChangeable(false);
-                } else {
-                  navigation.navigate('InputNewPassword');
-                }
-              }}
-            />
+          <TextInput
+            style={{
+              width: '90%',
+              fontSize: 21,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              paddingBottom: 7,
+            }}
+            onFocus={(e: any) => {
+              onInputFocus();
+            }}
+            onBlur={(e: any) => {
+              onInputFocusOut();
+            }}
+            onChangeText={(value: string) => {
+              if (value.length > 0) {
+                setIsWrong(true);
+                setIsChangeable(true);
+              } else {
+                setIsWrong(false);
+              }
+              setPassword(value.replace(/\s/g, ''));
+              validatePassword(value);
+            }}
+            maxLength={25}
+            placeholder="비밀번호"
+            placeholderTextColor="#A0AAB4"
+            keyboardType="default"
+            secureTextEntry={!showPassword} //! 인풋 초기화 얘가 문제
+            clearTextOnFocus={false}
+            autoCapitalize="none"
+            returnKeyType="done"
+            selectionColor="#A055FF"
+            value={password}
+          />
+          {showPassword ? (
+            <PasswordShow onPress={letShowPassword} />
+          ) : (
+            <PasswordNotShow onPress={letShowPassword} />
           )}
-          {isValidate && !isFocused && (
-            <PurpleRoundButton
-              text="다음"
-              onClick={async () => {
-                let result: number = await checkNewPassword({
-                  username: route.params.username,
-                  password: password,
-                });
-                if (result === 0) {
-                  setIsChangeable(false);
-                } else {
-                  navigation.navigate('InputNewPassword', );
-                }
-              }}
-            />
-          )}
-          {!isValidate && isFocused && (
-            <DisabledPurpleFullButton text="다음" />
-          )}
-          {!isValidate && !isFocused && (
-            <DisabledPurpleRoundButton text="다음" />
-          )}
-        </View>
+        </MiddleInputContainerStyle>
+        {isWrong && !isValidate && (
+          <CautionText text="사용할 수 없는 비밀번호 입니다." />
+        )}
+        {!isChangeable && (
+          <CautionText text="비밀번호를 정확하게 입력해 주세요."></CautionText>
+        )}
+      </ScrollView>
+      <View
+        style={{
+          bottom: isFocused ? 0 : 34,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {isValidate && isFocused && (
+          <PurpleFullButton
+            text="다음"
+            onClick={async () => {
+              let result: number = await checkNewPassword({
+                username: route.params.username,
+                password: password,
+              });
+              if (result === 0) {
+                setIsChangeable(false);
+              } else {
+                navigation.navigate('InputNewPassword', {username: route.params.username});
+              }
+            }}
+          />
+        )}
+        {isValidate && !isFocused && (
+          <PurpleRoundButton
+            text="다음"
+            onClick={async () => {
+              let result: number = await checkNewPassword({
+                username: route.params.username,
+                password: password,
+              });
+              if (result === 0) {
+                setIsChangeable(false);
+              } else {
+                navigation.navigate('InputNewPassword', {username: route.params.username});
+              }
+            }}
+          />
+        )}
+        {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
+        {!isValidate && !isFocused && <DisabledPurpleRoundButton text="다음" />}
+      </View>
     </KeyboardAvoidingView>
-  )
+  );
 }

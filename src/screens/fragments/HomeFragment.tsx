@@ -162,10 +162,10 @@ const HomeFragment = ({navigation}: Props) => {
             {/* 블라인드 알림 */}
             {homeContents &&
               homeContents.blinds.map((item, index) => (
-                <>
+                <View key={index}>
                   {blindVisibleList && blindVisibleList[index] && (
                     <TouchableWithoutFeedback
-                      key={index}
+                     
                       onPress={() => {
                         blindVisibleList[index] = false;
                         console.log(blindVisibleList);
@@ -210,7 +210,7 @@ const HomeFragment = ({navigation}: Props) => {
                       </View>
                     </TouchableWithoutFeedback>
                   )}
-                </>
+                </View>
               ))}
           </View>
           {modalVisible && (
