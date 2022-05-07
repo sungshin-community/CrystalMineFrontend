@@ -54,7 +54,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const modalBody = (
     <Text>
-      나중에 정회원 인증하기를 선택하실 경우 [마이페이지-정회원인증]에서 인증을 다시 진행할 수 있습니다.
+      나중에 정회원 인증하기를 선택하실 경우 {'\n'}[마이페이지-정회원인증]에서 인증을 다시 진행할 수 있습니다.
     </Text>
   );
   return (
@@ -110,7 +110,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             <ModalBottom
               modalVisible={modalVisible}
               setModalVisible={setModalVisible}
-              modalText={``}
+              modalText
               modalBody={modalBody}
               modalButtonText="확인"
               modalButton

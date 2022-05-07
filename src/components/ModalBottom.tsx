@@ -19,7 +19,7 @@ interface Props {
   modalButtonFunc: any;
   isSecondButton?: boolean;
   modalSecondButtonText?: string;
-  modalSecondButtonFunc?: any
+  modalSecondButtonFunc?: any;
   fontSize?: number;
 }
 export const ModalBottom = ({
@@ -52,9 +52,13 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
-                <Text style={[styles.modalText, {fontSize: fontSize}]}>
-                  {modalText}
-                </Text>
+                {modalText || modalText === '' ? (
+                  <Text style={[styles.modalText, {fontSize: fontSize, marginBottom: 20}]}>
+                    {modalText}
+                  </Text>
+                ) : (
+                  <></>
+                )}
                 <Text>{modalBody}</Text>
               </View>
               <TouchableOpacity
@@ -62,12 +66,15 @@ export const ModalBottom = ({
                 onPress={modalButtonFunc}>
                 <Text style={styles.textStyle}>{modalButtonText}</Text>
               </TouchableOpacity>
-              {isSecondButton && 
-              <TouchableOpacity
-                style={[styles.secondButton, styles.secondButtonClose]}
-                onPress={modalSecondButtonFunc}>
-                <Text style={styles.secondButtonTextStyle}>{modalSecondButtonText}</Text>
-              </TouchableOpacity>}
+              {isSecondButton && (
+                <TouchableOpacity
+                  style={[styles.secondButton, styles.secondButtonClose]}
+                  onPress={modalSecondButtonFunc}>
+                  <Text style={styles.secondButtonTextStyle}>
+                    {modalSecondButtonText}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </Modal>
@@ -86,7 +93,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 45,
     left: '50%',
-    transform: [{ translateX: -Dimensions.get('window').width * 0.445 }],
+    transform: [{translateX: -Dimensions.get('window').width * 0.445}],
   },
   modalView: {
     margin: 2,
@@ -138,6 +145,5 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    marginBottom: 20,
   },
 });
