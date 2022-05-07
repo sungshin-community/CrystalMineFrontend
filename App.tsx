@@ -49,9 +49,8 @@ import Notice from './src/screens/mypage/informationUse/Notice';
 import TermsOfService from './src/screens/mypage/informationUse/TermsOfService';
 import OpenSourceLicense from './src/screens/mypage/informationUse/OpenSourceLicense';
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
-import RequestScreen from './src/screens/mypage/RequestScreen';
-import RequestWriteScreen from './src/screens/mypage/RequestWriteScreen';
-import RequestAnswer from './src/screens/mypage/RequestAnswer';
+import QuestionList from './src/screens/mypage/QuestionList';
+import QuestionWriteScreen from './src/screens/mypage/QuestionWriteScreen';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -727,8 +726,8 @@ const App = () => {
               />
               {/* 마이페이지 - 문의하기 */}
               <Stack.Screen
-                name="RequestScreen"
-                component={RequestScreen}
+                name="QuestionList"
+                component={QuestionList}
                 options={({navigation}) => ({
                   title: '문의하기',
                   headerTitleAlign: 'center',
@@ -747,8 +746,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="RequestWriteScreen"
-                component={RequestWriteScreen}
+                name="QuestionWriteScreen"
+                component={QuestionWriteScreen}
                 options={({navigation}) => ({
                   title: '문의하기',
                   headerTitleAlign: 'center',
@@ -765,19 +764,6 @@ const App = () => {
                     />
                   ),
                 })}
-              />
-              <Stack.Screen
-                name="RequestAnswer"
-                component={RequestAnswer}
-                options={{
-                  title: '문의 내역',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
-                }}
               />
             </Stack.Navigator>
           ) : (
@@ -1428,8 +1414,8 @@ const App = () => {
               />
               {/* 마이페이지 - 문의하기 */}
               <Stack.Screen
-                name="RequestScreen"
-                component={RequestScreen}
+                name="QuestionList"
+                component={QuestionList}
                 options={({navigation}) => ({
                   title: '문의하기',
                   headerTitleAlign: 'center',
@@ -1448,8 +1434,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="RequestWriteScreen"
-                component={RequestWriteScreen}
+                name="QuestionWriteScreen"
+                component={QuestionWriteScreen}
                 options={({navigation}) => ({
                   title: '문의하기',
                   headerTitleAlign: 'center',
@@ -1466,19 +1452,6 @@ const App = () => {
                     />
                   ),
                 })}
-              />
-              <Stack.Screen
-                name="RequestAnswer"
-                component={RequestAnswer}
-                options={{
-                  title: '문의 내역',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
-                }}
               />
             </Stack.Navigator>
           )}

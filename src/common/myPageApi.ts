@@ -166,3 +166,16 @@ export const checkPassword = async (password: string) => {
     return errorCode;
   }
 };
+
+export const getQuestionList = async (page: number) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<AxiosResponse>(
+      `/questions?${params}`,
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getQuestionList 함수", e);
+  }
+}

@@ -54,7 +54,7 @@ type RootStackParamList = {
   ChangeNickname: undefined,
   ChangeMajor: undefined,
   ExpiredMember: undefined;
-  RequestScreen: undefined;
+  QuestionList: undefined;
   ListScreen: undefined;
 };
 
@@ -320,7 +320,7 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </TouchableHighlight>
             <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => { navigation.navigate('RequestScreen')}}>
+              underlayColor='#EEEEEE' onPress={() => { navigation.navigate('QuestionList')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   문의하기
