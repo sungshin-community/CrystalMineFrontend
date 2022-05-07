@@ -77,9 +77,11 @@ const HomeFragment = ({navigation}: Props) => {
             marginBottom: 26,
           }}>
           <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
-            {homeContents?.nickname}
+            {homeContents?.nickname} 
           </Text>
-          {` 님, 안녕하세요!`}
+          {` 님, `}
+          {homeContents && homeContents?.nickname.length > 8 ? <Text>{`\n`}</Text>: <></>}
+          {`안녕하세요!`}
         </Text>
         <View
           style={{
