@@ -31,8 +31,8 @@ function NoticeList({navigation}: Props) {
     <ScrollView>
       <View style={styles.container}>
       {list?.map(item => (
-        <>
-          <View style={styles.menuContainer} key={item.id}>
+        <View key={item.id}>
+          <View style={styles.menuContainer}>
             <Pressable
               hitSlop={{ top: 16 }}
               onPress={() => navigation.navigate('Notice', {noticeId: item.id})}>
@@ -63,7 +63,7 @@ function NoticeList({navigation}: Props) {
               borderBottomWidth: 1,
             }}
           />
-        </>
+        </View>
       ))}
         </View>
     </ScrollView>

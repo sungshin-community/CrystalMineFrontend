@@ -1,92 +1,72 @@
 import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-  ScrollView,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Pressable, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
-import NoticeListDto from '../../../classes/mypage/NoticeDto';
-import {getNoticeList} from '../../../common/myPageApi';
+import {NoticeDto} from '../../../classes/mypage/NoticeDto';
+import {getNotice} from '../../../common/myPageApi';
+import PostItem from '../../../components/PostItem';
 type RootStackParamList = {
-  Notice: { noticeId: number };
+  Notice: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function NoticeList({navigation}: Props) {
-  const [list, setList] = useState<NoticeListDto[]>();
+function Notice({navigation, route}: Props) {
+  const [data, setData] = useState<NoticeDto>();
 
   useEffect(() => {
-    async function getList() {
-      const list = await getNoticeList(0);
-      setList(list);
-      console.log(list);
+    async function getData() {
+      const data = await getNotice(route.params.noticeId);
+      setData(data);
+      console.log(data);
     }
-    getList();
+    getData();
   }, []);
   return (
-    <ScrollView>
-      {list?.map(item => (
-        <>
-          <View style={styles.menuContainer} key={item.id}>
-            <Pressable
-              hitSlop={{ top: 16 }}
-              onPress={() => navigation.navigate('Notice', {noticeId: item.id})}>
-              <View style={styles.menu}>
-                <Text style={[fontMedium, styles.menuText]}>
-                  {item?.title}
+    <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
+      <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={[fontMedium, styles.title]}>{data?.title}</Text>
+            {data?.isNew && (
+              <View style={styles.newIcon}>
+                <Text style={[fontBold, {color: '#FF6060', fontSize: 13}]}>
+                  N
                 </Text>
-                {item.isNew && (
-                  <View style={styles.menuIcon}>
-                    <Text style={[fontBold, {color: '#FF6060', fontSize: 13}]}>
-                      N
-                    </Text>
-                  </View>
-                )}
               </View>
-              <Text
-                style={[
-                  fontRegular,
-                  {color: '#ADB3BC', fontSize: 13, marginTop: 8},
-                ]}>
-                {item.createdAt}
-              </Text>
-            </Pressable>
+            )}
           </View>
-          <View
-            style={{
-              borderBottomColor: '#F0F0F0',
-              borderBottomWidth: 1,
-            }}
-          />
-        </>
-      ))}
-    </ScrollView>
+          <Text>{data?.content}</Text>
+          <Text
+            style={[
+              fontRegular,
+              {color: '#ADB3BC', fontSize: 12, marginTop: 12},
+            ]}>
+            {data?.createdAt}
+          </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  menuContainer: {
+  container: {
     paddingVertical: 16,
     backgroundColor: 'white',
     paddingHorizontal: 24,
   },
-  menuIcon: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  menu: {
+  titleContainer: {
     alignItems: 'center',
     flexDirection: 'row',
+    paddingBottom: 16,
   },
-  menuText: {
+  newIcon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    flex: 1,
+  },
+  title: {
     fontSize: 15,
     color: '#222222',
   },
 });
 
-export default NoticeList;
+export default Notice;
