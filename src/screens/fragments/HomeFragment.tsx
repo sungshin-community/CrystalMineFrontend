@@ -22,8 +22,8 @@ import RightArrowBold from '../../../resources/icon/RightArrowBold';
 import Home from '../../classes/Home';
 import getHomeContents from '../../common/homeApi';
 import {checkRegularMember} from '../../common/authApi';
-import { ModalBottom } from '../../components/ModalBottom';
-import { useIsFocused } from "@react-navigation/native";
+import {ModalBottom} from '../../components/ModalBottom';
+import {useIsFocused} from '@react-navigation/native';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -49,7 +49,7 @@ const HomeFragment = ({navigation}: Props) => {
         setHomeContents(list);
       }
     }
-     if (isFocused) {
+    if (isFocused) {
       getContents();
     }
     checkRegularMemberFunc();
@@ -63,12 +63,18 @@ const HomeFragment = ({navigation}: Props) => {
 
   const blindVisibleList = homeContents?.blinds.map(index => true);
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
         style={{
           backgroundColor: '#F6F6F6',
           paddingTop: 32,
-          paddingBottom: homeContents && (homeContents?.blinds[0] || homeContents?.expireIn <= 7) || !isRegularMember ? 32 : 0
+          paddingBottom:
+            homeContents &&
+            (homeContents?.blinds[0] ||
+              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0) ||
+              isRegularMember)
+              ? 32
+              : 0,
         }}>
         <Text
           style={{
@@ -77,10 +83,14 @@ const HomeFragment = ({navigation}: Props) => {
             marginBottom: 26,
           }}>
           <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
-            {homeContents?.nickname} 
+            {homeContents?.nickname}
           </Text>
           {` 님, `}
-          {homeContents && homeContents?.nickname.length > 8 ? <Text>{`\n`}</Text>: <></>}
+          {homeContents && homeContents?.nickname.length > 8 ? (
+            <Text>{`\n`}</Text>
+          ) : (
+            <></>
+          )}
           {`안녕하세요!`}
         </Text>
         <View
@@ -154,20 +164,26 @@ const HomeFragment = ({navigation}: Props) => {
             ) : (
               <></>
             )}
+            {homeContents &&
+            (homeContents?.blinds[0] ||
+              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0) ||
+              isRegularMember) ? (
+              <View
+                style={{
+                  borderBottomColor: '#F0F0F0',
+                  borderBottomWidth: 1,
+                }}
+              />
+            ) : (
+              <></>
+            )}
 
-            <View
-              style={{
-                borderBottomColor: '#F0F0F0',
-                borderBottomWidth: 1,
-              }}
-            />
             {/* 블라인드 알림 */}
             {homeContents &&
               homeContents.blinds.map((item, index) => (
                 <View key={index}>
                   {blindVisibleList && blindVisibleList[index] && (
                     <TouchableWithoutFeedback
-                     
                       onPress={() => {
                         blindVisibleList[index] = false;
                         console.log(blindVisibleList);
@@ -230,7 +246,7 @@ const HomeFragment = ({navigation}: Props) => {
               isSecondButton={true}
               modalSecondButtonText="확인"
               modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
-              />
+            />
           )}
         </View>
       </View>
@@ -343,7 +359,7 @@ const HomeFragment = ({navigation}: Props) => {
             </Text>
           </View>
         )}
-        </View>
+      </View>
     </ScrollView>
   );
 };
@@ -393,14 +409,12 @@ const styles = StyleSheet.create({
     width: 10,
     marginLeft: 12,
   },
-  postTitleSummaryContainer: {
-  },
+  postTitleSummaryContainer: {},
   postSummaryContainer: {
     alignItems: 'stretch',
-    flex: 1
+    flex: 1,
   },
-  postNewLabelContainer: {
-  },
+  postNewLabelContainer: {},
   HOTpostLike: {
     fontSize: 9,
     marginLeft: 5,
@@ -459,10 +473,7 @@ const modalBody = (
 const modalText = (
   <>
     <View style={{marginBottom: 15}}>
-      <Text style={[fontBold, {fontSize:17}]}>
-       블라인드 안내
-      </Text>
+      <Text style={[fontBold, {fontSize: 17}]}>블라인드 안내</Text>
     </View>
-    
   </>
 );
