@@ -9,15 +9,15 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
-import { getUsageRestrictions } from '../../../common/myPageApi'
-import UsageRestrictionsDto from '../../../classes/mypage/UsageRestrictionsDto'
+import {getUsageRestrictions} from '../../../common/myPageApi';
+import UsageRestrictionsDto from '../../../classes/mypage/UsageRestrictionsDto';
 type RootStackParamList = {
   Announcement: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function UsageRestrictions({ navigation }: Props) {
-   const [list, setList] = useState<UsageRestrictionsDto[]>();
+function UsageRestrictions({navigation}: Props) {
+  const [list, setList] = useState<UsageRestrictionsDto[]>();
 
   useEffect(() => {
     async function getList() {
@@ -28,34 +28,42 @@ function UsageRestrictions({ navigation }: Props) {
   }, []);
   return (
     <ScrollView>
-      {list?.map((item) => ( 
-      <><View style={styles.menuContainer}>
-          <View style={[styles.menu]}>
-            <Text style={[fontRegular, styles.boardName]}>{item.boardTitle}</Text>
-            <View style={styles.menuIcon}>
-              <Text style={[fontRegular, styles.blindDate]}>{item.blindedAt}</Text>
+      {list?.map((item, index) => (
+        <View key={index}>
+          <View style={styles.menuContainer}>
+            <View style={[styles.menu]}>
+              <Text style={[fontRegular, styles.boardName]}>
+                {item.boardTitle}
+              </Text>
+              <View style={styles.menuIcon}>
+                <Text style={[fontRegular, styles.blindDate]}>
+                  {item.blindedAt}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={[styles.menu, {marginTop: 5}]}>
-            <Text style={[fontBold, styles.blindTitle]}>
-              { item.type  === 1 ? '게시글 블라인드' : '댓글 블라인드'}</Text>
-            <View style={styles.menuIcon}>
-              <Text style={[fontRegular, styles.points]}>-{item.point} points</Text>
+            <View style={[styles.menu, {marginTop: 5}]}>
+              <Text style={[fontBold, styles.blindTitle]}>
+                {item.type === 1 ? '게시글 블라인드' : '댓글 블라인드'}
+              </Text>
+              <View style={styles.menuIcon}>
+                <Text style={[fontRegular, styles.points]}>
+                  -{item.point} points
+                </Text>
+              </View>
             </View>
+            <Text style={[fontRegular, styles.blindReason]}>
+              블라인드 사유 : {item.reason}
+            </Text>
           </View>
-          <Text style={[fontRegular, styles.blindReason]}>
-            블라인드 사유 : {item.reason}
-          </Text>
+          <View
+            style={{
+              borderBottomColor: '#F0F0F0',
+              borderBottomWidth: 1,
+            }}
+          />
         </View>
-        <View
-          style={{
-            borderBottomColor: '#F0F0F0',
-            borderBottomWidth: 1,
-          }}
-        /></>))}
-       
-       
-      </ScrollView>
+      ))}
+    </ScrollView>
   );
 }
 
