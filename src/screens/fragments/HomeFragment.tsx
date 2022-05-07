@@ -63,7 +63,7 @@ const HomeFragment = ({navigation}: Props) => {
 
   const blindVisibleList = homeContents?.blinds.map(index => true);
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <View
         style={{
           backgroundColor: '#F6F6F6',
@@ -217,7 +217,7 @@ const HomeFragment = ({navigation}: Props) => {
             <ModalBottom
               modalVisible={modalVisible}
               setModalVisible={setModalVisible}
-              modalText={`블라인드 안내`}
+              modalText={modalText}
               modalBody={modalBody}
               modalButtonText="서비스 이용 방향 보기"
               modalButton
@@ -228,7 +228,7 @@ const HomeFragment = ({navigation}: Props) => {
               isSecondButton={true}
               modalSecondButtonText="확인"
               modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
-            />
+              />
           )}
         </View>
       </View>
@@ -341,7 +341,7 @@ const HomeFragment = ({navigation}: Props) => {
             </Text>
           </View>
         )}
-      </View>
+        </View>
     </ScrollView>
   );
 };
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
 const modalBody = (
   <>
     <View style={{marginBottom: 15}}>
-      <Text>
+      <Text style={{fontSize: 13}}>
         안녕하세요. (사용자 닉네임)님. {`\n`}
         해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
         제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을 참고
@@ -448,5 +448,19 @@ const modalBody = (
       <Text style={[fontBold, {width: 88}]}>블라인드 계정</Text>
       <Text>00000000@sungshin.ac.kr</Text>
     </View>
+    <View style={{flexDirection: 'row'}}>
+      <Text style={[fontBold, {width: 88}]}>블라인드 날짜</Text>
+      <Text>0000.00.00</Text>
+    </View>
+  </>
+);
+const modalText = (
+  <>
+    <View style={{marginBottom: 15}}>
+      <Text style={[fontBold, {fontSize:17}]}>
+       블라인드 안내
+      </Text>
+    </View>
+    
   </>
 );

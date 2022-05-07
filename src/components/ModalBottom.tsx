@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 
 interface Props {
-  modalText?: string;
+  modalText?: any;
   modalButtonText?: string;
   modalButton?: any;
-  modalBody?: React.ReactNode;
+  modalBody?: any;
   setModalVisible: any;
   modalVisible: boolean;
   modalButtonFunc: any;
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 45,
     left: '50%',
-    transform: [{translateX: -Dimensions.get('window').width * 0.445}],
+    transform: [{ translateX: -Dimensions.get('window').width * 0.445 }],
   },
   modalView: {
     margin: 2,

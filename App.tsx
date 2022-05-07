@@ -39,8 +39,8 @@ import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember'
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
 import RegularMemberAuthMyPage from './src/screens/mypage/regularMemberAuth/RegularMemberAuthMyPage';
 import InputPassword from './src/screens/mypage/changePassword/InputPassword';
-import InputNewPassword from './src/screens/mypage/changePassword/InputNewPassword'
-import InputNewPasswordConfirm from './src/screens/mypage/changePassword/InputNewPasswordConfirm'
+import InputNewPassword from './src/screens/mypage/changePassword/InputNewPassword';
+import InputNewPasswordConfirm from './src/screens/mypage/changePassword/InputNewPasswordConfirm';
 import ChangeNickname from './src/screens/mypage/ChangeNickname';
 import ChangeMajor from './src/screens/mypage/ChangeMajor';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
@@ -395,7 +395,7 @@ const App = () => {
                   ),
                 })}
               />
-               <Stack.Screen
+              <Stack.Screen
                 name="PostScreen"
                 component={PostScreen}
                 options={({navigation}) => ({
