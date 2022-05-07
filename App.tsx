@@ -39,7 +39,7 @@ import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMem
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
 import RegularMemberAuthMyPage from './src/screens/mypage/regularMemberAuth/RegularMemberAuthMyPage';
-import InpuPassword from './src/screens/mypage/changePassword/InpuPassword';
+import InputPassword from './src/screens/mypage/changePassword/InputPassword';
 import InputNewPassword from './src/screens/mypage/changePassword/InputNewPassword'
 import InputNewPasswordConfirm from './src/screens/mypage/changePassword/InputNewPasswordConfirm'
 import ChangeNickname from './src/screens/mypage/ChangeNickname';
@@ -410,6 +410,26 @@ const App = () => {
                   ),
                 })}
               />
+               <Stack.Screen
+                name="PostScreen"
+                component={PostScreen}
+                options={({navigation}) => ({
+                  title: '네모 게시판',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
               {/* 마이페이지 - 정회원 인증 */}
@@ -487,8 +507,8 @@ const App = () => {
 
               {/* 마이페이지 - 비밀번호 재설정 */}
               <Stack.Screen
-                name="InpuPassword"
-                component={InpuPassword}
+                name="InputPassword"
+                component={InputPassword}
                 options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
@@ -1201,8 +1221,8 @@ const App = () => {
               />
               {/* 마이페이지 - 비밀번호 재설정 */}
               <Stack.Screen
-                name="InpuPassword"
-                component={InpuPassword}
+                name="InputPassword"
+                component={InputPassword}
                 options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
