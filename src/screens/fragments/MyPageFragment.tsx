@@ -50,7 +50,7 @@ type RootStackParamList = {
   SplashHome: undefined;
   UncertifiedMember: undefined;
   CertifiedMember: undefined;
-  InpuPassword: undefined;
+  InputPassword: {username: string};
   ChangeNickname: undefined,
   ChangeMajor: undefined,
   ExpiredMember: undefined;
@@ -179,7 +179,7 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </TouchableHighlight>
             <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={()=> navigation.navigate('InpuPassword')}>
+              underlayColor='#EEEEEE' onPress={()=> navigation.navigate('InputPassword', {username: user?.username})}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   비밀번호 재설정
