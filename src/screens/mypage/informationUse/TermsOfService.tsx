@@ -80,7 +80,7 @@ function TermsOfService({navigation}: Props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
-    {data?.map((item)=>(<SpreadList id={item.id} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
+      {data?.map((item) => (<SpreadList key={item.id} id={item.id} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
     </SafeAreaView>
   );
 }
