@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import Svg, {Path} from 'react-native-svg';
 import {
   SafeAreaView,
   StyleSheet,
@@ -56,12 +57,27 @@ export function SpreadList({id, title, status, content}: any) {
         <>
           <ScrollView
             style={{
-              height: Dimensions.get('window').height / 2,
+              height: 'auto',
               backgroundColor: '#FBFBFB',
               paddingHorizontal: 24,
               paddingVertical: 16,
             }}>
-            <Markdown>{content}</Markdown>
+            <Text style={[fontBold, {fontSize: 15}]}>글 제목</Text>
+            <Markdown>본문 내용</Markdown>
+            <Text style={styles.date}>2022.02.02</Text>
+            <View
+              style={{
+                borderBottomColor: '#F6F6F6',
+                borderBottomWidth: 1,
+                marginVertical: 16
+              }}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <Arrow/>
+              <Text style={[fontMedium, {fontSize: 15, marginLeft: 12}]}>운영진</Text>
+            </View>
+            <Text style={{marginTop: 8, marginLeft: 30, marginBottom: 10}}>답변 내용</Text>
+            <Text style={[styles.date, {marginLeft: 30}]}>2022.02.02</Text>
           </ScrollView>
         </>
       )}
@@ -75,7 +91,6 @@ function QuestionList({navigation}: Props) {
     async function getList() {
       const list = await getQuestionList(0);
       setData(list);
-      console.log(list);
     }
     getList();
   }, []);
@@ -119,6 +134,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 12,
   },
+  date: {
+    fontSize: 13,
+    color: '#ADB3BC',
+  },
 });
 
 export default QuestionList;
+
+const Arrow = (props: any) => (
+  <Svg
+    width={18}
+    height={18}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M14.25 11.25L9.75 15.75L8.685 14.685L11.3775 12H3V3H4.5V10.5H11.3775L8.685 7.815L9.75 6.75L14.25 11.25Z"
+      fill="black"
+    />
+  </Svg>
+);

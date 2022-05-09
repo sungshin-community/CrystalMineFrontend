@@ -179,3 +179,15 @@ export const getQuestionList = async (page: number) => {
     console.log("여기는 getQuestionList 함수", e);
   }
 }
+
+export const getQuestion = async (answerId: number) => {
+  try {
+    const params = new URLSearchParams();
+    const response = await client.get<AxiosResponse>(
+      `/questions/${answerId}`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getQuestion 함수", e);
+  }
+}
