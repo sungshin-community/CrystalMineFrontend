@@ -1,3 +1,5 @@
+import Images from "../Images";
+
 export default class NoticeListDto {
   id: number = 0;
   title: string = '';
@@ -11,8 +13,4 @@ export class NoticeDto {
   images: Images[] = [];
   isNew: boolean = false;
   createdAt: string = '';
-}
-
-class Images {
-  url: string = '';
 }

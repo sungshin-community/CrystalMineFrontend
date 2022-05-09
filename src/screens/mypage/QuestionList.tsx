@@ -18,18 +18,32 @@ import {
   SpreadBlackButton,
 } from '../../../resources/icon/Button';
 import {useState} from 'react';
-import {getQuestionList} from '../../common/myPageApi';
-import Question from '../../classes/Question';
+import {getQuestionList, getQuestion} from '../../common/myPageApi';
+import QuestionListDto, {QuestionDto} from '../../classes/mypage/Question';
 import Markdown from 'react-native-markdown-display';
+import SearchResult from '../board/SearchResult';
 type RootStackParamList = {
   Announcement: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export function SpreadList({id, title, status, content}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
+  const [data, setData] = useState<QuestionDto>();
+
+  const getQuestionFunc = async (id: number) => {
+    const result: QuestionDto = await getQuestion(id);
+    setData(result);
+    console.log(data);
+  };
+
   return (
     <>
-      <TouchableWithoutFeedback key={id} onPress={() => setIsSpread(!isSpread)}>
+      <TouchableWithoutFeedback
+        key={id}
+        onPress={() => {
+          setIsSpread(!isSpread);
+          getQuestionFunc(id);
+        }}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
             <View
@@ -43,7 +57,7 @@ export function SpreadList({id, title, status, content}: any) {
                   fontSize: 13,
                   textAlign: 'center',
                 }}>
-                답변 대기
+                {status ? '답변 완료' : '답변 대기'}
               </Text>
             </View>
             <Text style={[fontMedium, styles.menuText]}>{title}</Text>
@@ -62,22 +76,32 @@ export function SpreadList({id, title, status, content}: any) {
               paddingHorizontal: 24,
               paddingVertical: 16,
             }}>
-            <Text style={[fontBold, {fontSize: 15}]}>글 제목</Text>
-            <Markdown>본문 내용</Markdown>
-            <Text style={styles.date}>2022.02.02</Text>
-            <View
-              style={{
-                borderBottomColor: '#F6F6F6',
-                borderBottomWidth: 1,
-                marginVertical: 16
-              }}
-            />
-            <View style={{flexDirection: 'row'}}>
-              <Arrow/>
-              <Text style={[fontMedium, {fontSize: 15, marginLeft: 12}]}>운영진</Text>
-            </View>
-            <Text style={{marginTop: 8, marginLeft: 30, marginBottom: 10}}>답변 내용</Text>
-            <Text style={[styles.date, {marginLeft: 30}]}>2022.02.02</Text>
+            <Text style={[fontBold, {fontSize: 15}]}>{data?.title}</Text>
+            <Markdown>{data?.content}</Markdown>
+            <Text style={styles.date}>{data?.createdAt}</Text>
+            {data?.answer && (
+              <>
+                <View
+                  style={{
+                    borderBottomColor: '#F6F6F6',
+                    borderBottomWidth: 1,
+                    marginVertical: 16,
+                  }}
+                />
+                <View style={{flexDirection: 'row'}}>
+                  <Arrow />
+                  <Text style={[fontMedium, {fontSize: 15, marginLeft: 12}]}>
+                    운영진
+                  </Text>
+                </View>
+                <Text style={{marginTop: 8, marginLeft: 30, marginBottom: 10}}>
+                  {data?.answer.content}
+                </Text>
+                <Text style={[styles.date, {marginLeft: 30}]}>
+                  {data?.answer.createdAt}
+                </Text>
+              </>
+            )}
           </ScrollView>
         </>
       )}
@@ -85,7 +109,7 @@ export function SpreadList({id, title, status, content}: any) {
   );
 }
 function QuestionList({navigation}: Props) {
-  const [data, setData] = useState<Question[]>();
+  const [data, setData] = useState<QuestionListDto[]>();
 
   useEffect(() => {
     async function getList() {
