@@ -21,7 +21,8 @@ import {useState} from 'react';
 import {getQuestionList, getQuestion} from '../../common/myPageApi';
 import QuestionListDto, {QuestionDto} from '../../classes/mypage/Question';
 import Markdown from 'react-native-markdown-display';
-import SearchResult from '../board/SearchResult';
+import FloatingWriteButton from '../../../resources/icon/FloatingWriteButton';
+
 type RootStackParamList = {
   Announcement: undefined;
 };
@@ -33,7 +34,6 @@ export function SpreadList({id, title, status, content}: any) {
   const getQuestionFunc = async (id: number) => {
     const result: QuestionDto = await getQuestion(id);
     setData(result);
-    console.log(data);
   };
 
   return (
@@ -120,15 +120,23 @@ function QuestionList({navigation}: Props) {
   }, []);
 
   return (
-    <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
-      {data?.map(item => (
-        <SpreadList
-          key={item.id}
-          id={item.id}
-          status={item.status}
-          title={item.title}></SpreadList>
-      ))}
-    </SafeAreaView>
+    <>
+      <ScrollView  style={{backgroundColor: '#E5E5E5'}}>
+        {data?.map(item => (
+          <SpreadList
+            key={item.id}
+            id={item.id}
+            status={item.status}
+            title={item.title}></SpreadList>
+        ))}
+      </ScrollView>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={() => console.log('click')}
+        style={styles.touchableOpacityStyle}>
+        <FloatingWriteButton style={styles.floatingButtonStyle} />
+      </TouchableOpacity>
+      </>
   );
 }
 
@@ -161,6 +169,25 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 13,
     color: '#ADB3BC',
+  },
+  touchableOpacityStyle: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
+  },
+  floatingButtonStyle: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
