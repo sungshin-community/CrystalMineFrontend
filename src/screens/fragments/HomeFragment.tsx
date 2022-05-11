@@ -59,6 +59,8 @@ const HomeFragment = ({navigation}: Props) => {
     const result: boolean = await checkRegularMember();
     setIsRegularMember(result);
     console.log('정회원 인증 여부', result);
+    if(homeContents?.blinds[0])
+    console.log('s')
   };
 
   const blindVisibleList = homeContents?.blinds.map(index => true);
@@ -71,8 +73,7 @@ const HomeFragment = ({navigation}: Props) => {
           paddingBottom:
             homeContents &&
             (homeContents?.blinds[0] ||
-              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0) ||
-              isRegularMember)
+              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0))
               ? 32
               : 0,
         }}>
@@ -166,8 +167,7 @@ const HomeFragment = ({navigation}: Props) => {
             )}
             {homeContents &&
             (homeContents?.blinds[0] ||
-              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0) ||
-              isRegularMember) ? (
+              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0)) ? (
               <View
                 style={{
                   borderBottomColor: '#F0F0F0',

@@ -121,7 +121,7 @@ function QuestionList({navigation}: Props) {
 
   return (
     <>
-      <ScrollView  style={{backgroundColor: '#E5E5E5'}}>
+      <ScrollView style={{backgroundColor: '#E5E5E5'}}>
         {data?.map(item => (
           <SpreadList
             key={item.id}
@@ -130,13 +130,9 @@ function QuestionList({navigation}: Props) {
             title={item.title}></SpreadList>
         ))}
       </ScrollView>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={() => console.log('click')}
-        style={styles.touchableOpacityStyle}>
-        <FloatingWriteButton style={styles.floatingButtonStyle} />
-      </TouchableOpacity>
-      </>
+
+        <FloatingWriteButton />
+    </>
   );
 }
 
@@ -187,7 +183,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 5
   },
 });
 
