@@ -27,11 +27,11 @@ const StyledFloatingButton = (props: any) => (
     />
   </Svg>
 );
-const FloatingWriteButton = () => {
+const FloatingWriteButton = ({ onPress }: any) => {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => console.log('click')}
+      onPress={onPress}
       style={styles.touchableOpacityStyle}>
       <View style={styles.floatingButtonStyle}>
         <Text>

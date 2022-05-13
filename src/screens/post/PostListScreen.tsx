@@ -8,7 +8,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import FloatingWriteButton from '../../../resources/icon/FloatingWriteButton';
+import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { getBoardDetail } from '../../common/boardApi';

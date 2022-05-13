@@ -15,11 +15,11 @@ import BackButton from '../../components/BackButton';
 import {fontMedium, fontRegular} from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
-import {writeRequest} from '../../common/myPageApi';
+import {writeQuestion} from '../../common/myPageApi';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 type RootStackParamList = {
-  RequestAnswer: {content: string};
+  QuestionList: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -33,31 +33,33 @@ interface ImageResponse {
 }
 
 function RequestWriteScreen({navigation}: Props) {
-  const [body, setBody] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  //임시
+  const [images, setImages] = useState<string[]>([])
+
   const [imageResponse, setImageResponse] = useState<ImageResponse[]>([]);
 
-  useEffect(() => {
-    const onSubmitPress = async () => {
-      await writeRequest({
-        title: body,
-        content: body,
-        questionImageUrl: '',
+  const onSubmitPress = async () => {
+     console.log('title', title, 'content: ', content, 'images', images)
+      const result = await writeQuestion({
+        title: title,
+        content: content,
+        images: ['', ''],
       });
-      navigation.navigate('RequestAnswer', {content: body});
-    };
+     if (result)
+      navigation.navigate('QuestionList')
+   };
+  
+  useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable onPress={onSubmitPress}>
+        <Pressable onPress={(onSubmitPress)}>
           <Text style={[styles.submit, fontRegular]}>제출</Text>
         </Pressable>
       ),
     });
-  }, [body, navigation]);
-
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+  }, [navigation]);
 
   const onSelectImage = () => {
     console.log('image press');
@@ -77,18 +79,15 @@ function RequestWriteScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[fontMedium, styles.title]}>문의 내용</Text>
-        <Text style={[fontRegular, styles.date]}>
-          {year}.{month < 10 ? '0' + month : month}.{day < 10 ? '0' + day : day}
-        </Text>
+        <TextInput placeholder="문의 내용 제목" value={title} onChangeText={value => { setTitle(value); console.log(title) }} style={[fontMedium, styles.title]}></TextInput>
       </View>
       <View>
         <TextInput
           placeholder="문의 내용을 입력해주세요."
-          value={body}
+          value={content}
           autoCorrect={false}
           multiline={true}
-          onChangeText={value => setBody(value)}
+          onChangeText={value => { setContent(value); console.log(content) }}
           onBlur={() => {
             Keyboard.dismiss();
             console.log('키보드다른데클릭');
@@ -96,26 +95,28 @@ function RequestWriteScreen({navigation}: Props) {
           style={[fontRegular, styles.input]}
         />
       </View>
-      <View style={styles.image}>
-        <ImageIcon />
-        <Text style={[fontMedium, styles.imageText]}>이미지</Text>
-      </View>
-      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-        {imageResponse.length !== 0 &&
-          imageResponse.map((asset, index) => (
-            <Image
-              key={index}
-              style={styles.imageBox}
-              source={{uri: asset.uri}}
-            />
-          ))}
-        <View style={[styles.imageSelectBox, styles.imageBox]}>
-          <Pressable onPress={onSelectImage} hitSlop={25}>
-            <PhotoIcon />
-            <Text style={[fontMedium, styles.count]}>
-              {imageResponse.length}/10
-            </Text>
-          </Pressable>
+      <View style={{paddingHorizontal: 24}}>
+        <View style={styles.image}>
+          <ImageIcon />
+          <Text style={[fontMedium, styles.imageText]}>이미지</Text>
+        </View>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          {imageResponse.length !== 0 &&
+            imageResponse.map((asset, index) => (
+              <Image
+                key={index}
+                style={styles.imageBox}
+                source={{uri: asset.uri}}
+              />
+            ))}
+          <View style={[styles.imageSelectBox, styles.imageBox]}>
+            <Pressable onPress={onSelectImage} hitSlop={25}>
+              <PhotoIcon />
+              <Text style={[fontMedium, styles.count]}>
+                {imageResponse.length}/10
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>
@@ -127,32 +128,26 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     flex: 1,
-    paddingHorizontal: 24,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 27,
     marginBottom: 8,
+    paddingHorizontal: 24,
   },
   title: {
     fontSize: 15,
-    marginLeft: 17,
-  },
-  date: {
-    fontSize: 13,
-    color: '#6E7882',
-    marginRight: 18,
   },
   input: {
-    backgroundColor: '#F2F2F2',
-    borderRadius: 20,
+    backgroundColor: '#FBFBFB',
     minHeight: 194,
     fontSize: 15,
-    paddingHorizontal: 16,
     paddingTop: 14,
     paddingBottom: 14,
     lineHeight: 21,
+    paddingHorizontal: 24,
+    textAlignVertical: 'top',
   },
   image: {
     marginTop: 19,

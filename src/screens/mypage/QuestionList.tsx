@@ -21,13 +21,14 @@ import {useState} from 'react';
 import {getQuestionList, getQuestion} from '../../common/myPageApi';
 import QuestionListDto, {QuestionDto} from '../../classes/mypage/Question';
 import Markdown from 'react-native-markdown-display';
-import FloatingWriteButton from '../../../resources/icon/FloatingWriteButton';
+import FloatingWriteButton from '../../components/FloatingWriteButton';
+import {useIsFocused} from '@react-navigation/native';
 
 type RootStackParamList = {
-  Announcement: undefined;
+  QuestionWriteScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-export function SpreadList({id, title, status, content}: any) {
+export function SpreadList({id, title, status}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
 
@@ -110,14 +111,17 @@ export function SpreadList({id, title, status, content}: any) {
 }
 function QuestionList({navigation}: Props) {
   const [data, setData] = useState<QuestionListDto[]>();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     async function getList() {
       const list = await getQuestionList(0);
       setData(list);
     }
-    getList();
-  }, []);
+    if (isFocused) {
+      getList();
+    }
+  }, [isFocused]);
 
   return (
     <>
@@ -131,7 +135,7 @@ function QuestionList({navigation}: Props) {
         ))}
       </ScrollView>
 
-        <FloatingWriteButton />
+      <FloatingWriteButton onPress={ ()=> navigation.navigate('QuestionWriteScreen')}/>
     </>
   );
 }

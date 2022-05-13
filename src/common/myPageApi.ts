@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosResponse} from 'axios';
 import User from '../classes/User';
 import Response from '../classes/Response';
-import WriteRequest from '../classes/WriteRequest';
-import WriteResponse from '../classes/WriteResponse';
+import QuestionWriteRequest from '../classes/QuestionWriteRequest';
+import QuestionWriteResponse from '../classes/QuestionWriteResponse';
 import ProfileImageResponseDto from '../classes/ProfileImageResponseDto';
 
 export const getUser = async () => {
@@ -17,15 +17,16 @@ export const getUser = async () => {
   }
 };
 
-export const writeRequest = async (writeRequestDto: WriteRequest) => {
+export const writeQuestion = async (QuestionWriteRequestDto: QuestionWriteRequest) => {
   try {
-    const response = await client.post<Response<WriteResponse>>(
-      '/user/qna',
-      writeRequestDto
+    console.log('server', QuestionWriteRequestDto)
+    const response = await client.post<Response<QuestionWriteResponse>>(
+      '/questions',
+      QuestionWriteRequestDto
     );
     return response.data.data;
   } catch (error) {
-    console.log('여기는 writeRequest 함수', error);
+    console.log('여기는 writeQuestion 함수', error);
   }
 };
 
