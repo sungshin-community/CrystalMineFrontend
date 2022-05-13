@@ -23,12 +23,16 @@ import QuestionListDto, {QuestionDto} from '../../classes/mypage/Question';
 import Markdown from 'react-native-markdown-display';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import {useIsFocused} from '@react-navigation/native';
-
+import {
+  RectangleChecked,
+  RectangleUnchecked,
+} from '../../../resources/icon/CheckBox';
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-export function SpreadList({id, title, status}: any) {
+
+export function SpreadList({id, title, status, removeState}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
 
@@ -47,6 +51,7 @@ export function SpreadList({id, title, status}: any) {
         }}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
+            {removeState && <RectangleUnchecked style={{marginRight: 12}} />}
             <View
               style={[
                 styles.status,
@@ -78,6 +83,7 @@ export function SpreadList({id, title, status}: any) {
               paddingVertical: 16,
             }}>
             <Text style={[fontBold, {fontSize: 15}]}>{data?.title}</Text>
+
             <Markdown>{data?.content}</Markdown>
             <Text style={styles.date}>{data?.createdAt}</Text>
             {data?.answer && (
@@ -109,9 +115,10 @@ export function SpreadList({id, title, status}: any) {
     </>
   );
 }
-function QuestionList({navigation}: Props) {
+function QuestionList({navigation, route}: Props) {
   const [data, setData] = useState<QuestionListDto[]>();
   const isFocused = useIsFocused();
+  const [letRemove, setLetRemove] = useState(false);
 
   useEffect(() => {
     async function getList() {
@@ -126,16 +133,24 @@ function QuestionList({navigation}: Props) {
   return (
     <>
       <ScrollView style={{backgroundColor: '#E5E5E5'}}>
+        {letRemove && (
+          <View style={{backgroundColor: '#fff', paddingLeft: 24}}>
+            <RectangleUnchecked />
+          </View>
+        )}
         {data?.map(item => (
           <SpreadList
             key={item.id}
             id={item.id}
             status={item.status}
-            title={item.title}></SpreadList>
+            title={item.title}
+            removeState={letRemove}></SpreadList>
         ))}
       </ScrollView>
 
-      <FloatingWriteButton onPress={ ()=> navigation.navigate('QuestionWriteScreen')}/>
+      <FloatingWriteButton
+        onPress={() => navigation.navigate('QuestionWriteScreen')}
+      />
     </>
   );
 }
@@ -187,7 +202,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
 });
 
