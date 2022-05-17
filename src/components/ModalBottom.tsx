@@ -52,14 +52,17 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
-                {modalText || modalText === '' ? (
-                  <Text style={[styles.modalText, {fontSize: fontSize, marginBottom: 20}]}>
+                {((modalText && modalText !== 'no')) && (
+                  <Text
+                    style={[
+                      styles.modalText,
+                      {fontSize: fontSize, marginBottom: 20},
+                    ]}>
                     {modalText}
                   </Text>
-                ) : (
-                  <></>
                 )}
-                <Text>{modalBody}</Text>
+                {modalText === 'no' && <></>}
+                <Text style={{textAlign: 'center'}}>{modalBody}</Text>
               </View>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
