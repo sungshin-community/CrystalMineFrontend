@@ -52,13 +52,13 @@ function QuestionList({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-      <Pressable
-        onPress={() => {
-          console.log('지우기', removeState);
-          setRemoveState(!removeState)
-        }}>
-        <TrashIcon style={{marginRight: 3}} />
-      </Pressable>
+        <Pressable
+          onPress={() => {
+            console.log('지우기', removeState);
+            setRemoveState(!removeState);
+          }}>
+          <TrashIcon style={{marginRight: 3}} />
+        </Pressable>
       ),
     });
   }, [navigation, removeState]);
@@ -66,10 +66,12 @@ function QuestionList({navigation, route}: Props) {
   return (
     <>
       <ScrollView style={{backgroundColor: '#E5E5E5'}}>
-        {removeState && (
+        {removeState ? (
           <View style={{backgroundColor: '#fff', paddingLeft: 24}}>
             <RectangleUnchecked />
           </View>
+        ) : (
+          <View style={{paddingTop: 18, backgroundColor: '#fff'}} />
         )}
         {data?.map(item => (
           <SpreadList
@@ -143,12 +145,20 @@ export default QuestionList;
 export function SpreadList({id, title, status, removeState}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
-
+  const [checkRemove, setCheckRemove] = useState<boolean>(false);
+  const [removeItemList, setRemoveItemList] = useState<number[]>([]);
   const getQuestionFunc = async (id: number) => {
     const result: QuestionDto = await getQuestion(id);
     setData(result);
   };
 
+  const removeItemIndex = (arr: number[], id: number) => {
+    const index = arr.indexOf(id);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+  };
+console.log(removeItemList)
   return (
     <>
       <TouchableWithoutFeedback
@@ -159,7 +169,32 @@ export function SpreadList({id, title, status, removeState}: any) {
         }}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
-            {removeState && <RectangleUnchecked style={{marginRight: 12}} />}
+            {removeState &&
+              (status ? (
+                <View style={{marginLeft: 30}} />
+              ) : checkRemove ? (
+                <Pressable
+                  onPress={() => {
+                    setCheckRemove(!checkRemove);
+                    console.log('delete', id);
+                    removeItemIndex(removeItemList, id);
+                    console.log('>', removeItemList);
+                    setRemoveItemList(removeItemList);
+                  }}>
+                  <RectangleChecked style={{marginRight: 12}} />
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={() => {
+                    setCheckRemove(!checkRemove);
+                    console.log('add', id);
+                    removeItemList.push(id);
+                    console.log('>', removeItemList);
+                    setRemoveItemList(removeItemList);
+                  }}>
+                  <RectangleUnchecked style={{marginRight: 12}} />
+                </Pressable>
+              ))}
             <View
               style={[
                 styles.status,
@@ -223,7 +258,6 @@ export function SpreadList({id, title, status, removeState}: any) {
     </>
   );
 }
-
 
 const Arrow = (props: any) => (
   <Svg
