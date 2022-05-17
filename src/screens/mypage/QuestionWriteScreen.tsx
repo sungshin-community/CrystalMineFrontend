@@ -59,7 +59,7 @@ function RequestWriteScreen({navigation}: Props) {
         </Pressable>
       ),
     });
-  }, [navigation]);
+  }, [navigation, title, content]);
 
   const onSelectImage = () => {
     console.log('image press');
@@ -79,7 +79,7 @@ function RequestWriteScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextInput placeholder="제목을 입력하세요." value={title} onChangeText={value => { setTitle(value); console.log(title) }} style={[fontMedium, styles.title]}></TextInput>
+        <TextInput placeholder="제목을 입력하세요." value={title} onChangeText={value => { setTitle(value);}} style={[fontMedium, styles.title]}></TextInput>
       </View>
       <View>
         <TextInput
@@ -87,7 +87,7 @@ function RequestWriteScreen({navigation}: Props) {
           value={content}
           autoCorrect={false}
           multiline={true}
-          onChangeText={value => { setContent(value); console.log(content) }}
+          onChangeText={value => { setContent(value); }}
           onBlur={() => {
             Keyboard.dismiss();
             console.log('키보드다른데클릭');
