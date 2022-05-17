@@ -36,26 +36,32 @@ function RequestWriteScreen({navigation}: Props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   //임시
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<string[]>([]);
 
   const [imageResponse, setImageResponse] = useState<ImageResponse[]>([]);
 
   const onSubmitPress = async () => {
-     console.log('title', title, 'content: ', content, 'images', images)
-      const result = await writeQuestion({
-        title: title,
-        content: content,
-        images: ['', ''],
-      });
-     if (result)
-      navigation.navigate('QuestionList')
-   };
-  
+    console.log('title', title, 'content: ', content, 'images', images);
+    const result = await writeQuestion({
+      title: title,
+      content: content,
+      images: ['', ''],
+    });
+    if (result) navigation.navigate('QuestionList');
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable onPress={(onSubmitPress)}>
-          <Text style={[styles.submit, fontRegular]}>제출</Text>
+        <Pressable onPress={() => { if (title && content) onSubmitPress();}}>
+          <Text
+            style={[
+              styles.submit,
+              fontRegular,
+              {color: title && content ? '#A055FF' : '#87919B'},
+            ]}>
+            제출
+          </Text>
         </Pressable>
       ),
     });
@@ -79,7 +85,13 @@ function RequestWriteScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextInput placeholder="제목을 입력하세요." value={title} onChangeText={value => { setTitle(value);}} style={[fontMedium, styles.title]}></TextInput>
+        <TextInput
+          placeholder="제목을 입력하세요."
+          value={title}
+          onChangeText={value => {
+            setTitle(value);
+          }}
+          style={[fontMedium, styles.title]}></TextInput>
       </View>
       <View>
         <TextInput
@@ -87,7 +99,9 @@ function RequestWriteScreen({navigation}: Props) {
           value={content}
           autoCorrect={false}
           multiline={true}
-          onChangeText={value => { setContent(value); }}
+          onChangeText={value => {
+            setContent(value);
+          }}
           onBlur={() => {
             Keyboard.dismiss();
             console.log('키보드다른데클릭');
@@ -124,7 +138,7 @@ function RequestWriteScreen({navigation}: Props) {
 }
 
 const styles = StyleSheet.create({
-  submit: {color: '#A055FF', fontSize: 17, marginRight: 8},
+  submit: {fontSize: 17, marginRight: 8},
   container: {
     backgroundColor: '#ffffff',
     flex: 1,
