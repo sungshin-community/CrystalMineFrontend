@@ -52,7 +52,6 @@ import OpenSourceLicense from './src/screens/mypage/informationUse/OpenSourceLic
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
 import QuestionList from './src/screens/mypage/QuestionList';
 import QuestionWriteScreen from './src/screens/mypage/QuestionWriteScreen';
-import QuestionRemove from './src/components/QuestionRemove';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -60,8 +59,6 @@ import CloseButtonIcon from './resources/icon/CloseButtonIcon';
 import QuitTermAgree from './src/screens/mypage/informationUse/quitMembership/QuitTermAgree';
 import QuitPassword from './src/screens/mypage/informationUse/quitMembership/QuitPassword';
 import QuitComplete from './src/screens/mypage/informationUse/quitMembership/QuitComplete';
-
-import TrashIcon from './resources/icon/TrashIcon';
 
 const Stack = createNativeStackNavigator();
 
@@ -767,9 +764,6 @@ const App = () => {
                       }
                     />
                   ),
-                  headerRight: () => (
-                   <QuestionRemove/>
-                  ),
                 })}
               />
               <Stack.Screen
@@ -1457,9 +1451,6 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }
                     />
-                  ),
-                  headerRight: () => (
-                   <QuestionRemove/>
                   ),
                 })}
               />
