@@ -79,11 +79,11 @@ function RequestWriteScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextInput placeholder="문의 내용 제목" value={title} onChangeText={value => { setTitle(value); console.log(title) }} style={[fontMedium, styles.title]}></TextInput>
+        <TextInput placeholder="제목을 입력하세요." value={title} onChangeText={value => { setTitle(value); console.log(title) }} style={[fontMedium, styles.title]}></TextInput>
       </View>
       <View>
         <TextInput
-          placeholder="문의 내용을 입력해주세요."
+          placeholder="내용을 입력하세요."
           value={content}
           autoCorrect={false}
           multiline={true}
