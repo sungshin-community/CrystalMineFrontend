@@ -79,13 +79,26 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
   }
 }
 
-export const getPost = async (postId: number) => {
+export const getPosts = async (postId: number) => {
   try {
     const response = await client.get<AxiosResponse>(
       `/posts/${postId}`
     );
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getPost 함수", e);
+    console.log("여기는 getPosts 함수", e);
+  }
+};
+
+export const getComments = async (postId: number, page: number) => {
+  try {
+      const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<AxiosResponse>(
+      `/posts/${postId}/comments?${params}`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getComments 함수", e);
   }
 };
