@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 import {
   StyleSheet,
   View,
@@ -10,12 +9,25 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
 import Comment, { CommentReply } from '../../components/Comment';
 import InputComment from '../../components/InputComment';
+import PostDto from '../../classes/PostDto';
+import { getPost } from '../../common/boardApi';
+type RootStackParamList = {
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+const PostScreen = ({navigation, route}: Props) => {
+  const [post, setPost] = useState<PostDto>();
 
-const PostScreen = ({navigation}: any) => {
-
+  useEffect(() => {
+    async function init() {
+      const data = await getPost(route.params.postId);
+      setPost(data);
+    }
+    init();
+  }, []);
   return (
     <>
       <KeyboardAvoidingView
@@ -23,7 +35,7 @@ const PostScreen = ({navigation}: any) => {
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-          <Post></Post>
+          <Post post={post}></Post>
           <View style={{flex: 1}}>
             <Comment></Comment>
             <Comment></Comment>

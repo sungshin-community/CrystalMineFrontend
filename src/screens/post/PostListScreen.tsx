@@ -7,20 +7,20 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { getBoardDetail } from '../../common/boardApi';
+import {getBoardDetail} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 
 type RootStackParamList = {
-  PostListScreen: {boardId: number};
+  PostScreen: {postId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostListScreen = ({navigation, route}: Props) => {
-
   const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
 
   useEffect(() => {
@@ -40,9 +40,13 @@ const PostListScreen = ({navigation, route}: Props) => {
     <>
       <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View>
-          {boardDetail?.postResponseDto.content.map((post: ContentPreviewDto, index: number) => (
-            <PostItem key={index} post={post} />
-          ))}
+          {boardDetail?.postResponseDto.content.map(
+            (post: ContentPreviewDto, index: number) => (
+              <Pressable key={index} onPress={() => navigation.navigate('PostScreen', {postId: boardDetail?.postResponseDto.content[index].postId})}>
+                <PostItem post={post} />
+              </Pressable>
+            ),
+          )}
         </View>
       </ScrollView>
 

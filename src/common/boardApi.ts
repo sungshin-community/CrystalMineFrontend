@@ -78,3 +78,14 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
     console.log("여기는 getCustomBoardList 함수", e);
   }
 }
+
+export const getPost = async (postId: number) => {
+  try {
+    const response = await client.get<AxiosResponse>(
+      `/posts/${postId}`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getPost 함수", e);
+  }
+};
