@@ -158,7 +158,7 @@ export function SpreadList({id, title, status, removeState}: any) {
       arr.splice(index, 1);
     }
   };
-console.log(removeItemList)
+  console.log(removeItemList);
   return (
     <>
       <TouchableWithoutFeedback
@@ -172,27 +172,30 @@ console.log(removeItemList)
             {removeState &&
               (status ? (
                 <View style={{marginLeft: 30}} />
-              ) : checkRemove ? (
-                <Pressable
-                  onPress={() => {
-                    setCheckRemove(!checkRemove);
-                    console.log('delete', id);
-                    removeItemIndex(removeItemList, id);
-                    console.log('>', removeItemList);
-                    setRemoveItemList(removeItemList);
-                  }}>
-                  <RectangleChecked style={{marginRight: 12}} />
-                </Pressable>
               ) : (
                 <Pressable
                   onPress={() => {
-                    setCheckRemove(!checkRemove);
-                    console.log('add', id);
-                    removeItemList.push(id);
-                    console.log('>', removeItemList);
-                    setRemoveItemList(removeItemList);
+                    if (checkRemove) {
+                      setCheckRemove(!checkRemove);
+                      console.log('delete', id);
+                      removeItemIndex(removeItemList, id);
+                      console.log('>', removeItemList);
+                      setRemoveItemList(removeItemList);
+                    } else {
+                      setCheckRemove(!checkRemove);
+                      console.log('before>', removeItemList);
+                      console.log('add', id);
+                      const newArr = [...removeItemList];
+                      newArr.push(id);
+                      console.log('after>', newArr);
+                      setRemoveItemList(newArr);
+                    }
                   }}>
-                  <RectangleUnchecked style={{marginRight: 12}} />
+                  {checkRemove ? (
+                    <RectangleChecked style={{marginRight: 12}} />
+                  ) : (
+                    <RectangleUnchecked style={{marginRight: 12}} />
+                  )}
                 </Pressable>
               ))}
             <View
