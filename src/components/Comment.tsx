@@ -71,14 +71,19 @@ const Comment = (comment: any) => {
         </View>
         <Text>{data?.content}</Text>
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 18}}>
-          <Pressable
-            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-            onPress={() => setIsLiked(!isLiked)}>
-            {isLiked ? <PostLike /> : <PostUnlike />}
-          </Pressable>
-          <Text style={styles.postLike}>{data?.likeCount}</Text>
-          <PostComment />
+          style={{flexDirection: 'row', marginTop: 18, justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Pressable
+              hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+              onPress={() => setIsLiked(!isLiked)}>
+              {isLiked ? <PostLike /> : <PostUnlike />}
+            </Pressable>
+            <Text style={styles.postLike}>{data?.likeCount}</Text>
+            <PostComment />
+          </View>
+          <View>
+            <Text style={{color: '#949494', fontSize: 13}}>{data?.createdAt}</Text>
+          </View>
         </View>
       </View>
       <View
@@ -101,7 +106,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Recomment = () => {
+export const Recomment = (recomment: any) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
 
@@ -149,15 +154,15 @@ export const Recomment = () => {
             <Reply style={{marginRight: 8}} />
             <ProfileImage></ProfileImage>
             <View style={{justifyContent: 'center'}}>
-            <Text
-              style={{
-                fontSize: 16,
-                paddingLeft: 8,
-                fontWeight: `500`,
-              }}>
-              수정
+              <Text
+                style={{
+                  fontSize: 16,
+                  paddingLeft: 8,
+                  fontWeight: `500`,
+                }}>
+                수정
               </Text>
-              </View>
+            </View>
           </View>
           <TouchableWithoutFeedback onPress={async () => handleAnimation()}>
             <Animated.View style={animatedStyle}>

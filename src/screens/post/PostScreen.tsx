@@ -11,13 +11,12 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
-import Comment, { Recomment } from '../../components/Comment';
+import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
-import { getComments, getPosts } from '../../common/boardApi';
+import {getComments, getPosts} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
-type RootStackParamList = {
-};
+type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 const PostScreen = ({navigation, route}: Props) => {
   const [posts, setPosts] = useState<PostDto>();
@@ -29,6 +28,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setPosts(data);
       const result = await getComments(route.params.postId, 0);
       setComments(result);
+      console.log(result);
     }
     init();
   }, []);
@@ -40,11 +40,17 @@ const PostScreen = ({navigation, route}: Props) => {
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <Post post={posts}></Post>
-          <View style={{ flex: 1 }}>
-            {comments?.map((comment, index) =>
-              (<Comment key={index} comment={comment}/>))}
-          
-           <Recomment/>
+          <View style={{flex: 1}}>
+            {comments?.map((comment, index) => (
+              <View key={index}>
+                <Comment comment={comment} />
+                {comment.recomments &&
+                  comment.recomments.map((recomment, index) => (
+                    <Recomment key={index} recomment={recomment} />
+                    //recomment 데이터 생긴 후 확인 필요
+                  ))}
+              </View>
+            ))}
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>

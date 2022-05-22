@@ -26,7 +26,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     async function init() {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);
-      console.log(boardDetail.postResponseDto);
       setBoardDetail(boardDetail);
     }
     init();
