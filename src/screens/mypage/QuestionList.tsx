@@ -74,12 +74,12 @@ function QuestionList({navigation, route}: Props) {
           <View style={{paddingTop: 18, backgroundColor: '#fff'}} />
         )}
         {data?.map(item => (
-          <SpreadList
+          <QuestionToggleItem
             key={item.id}
             id={item.id}
             status={item.status}
             title={item.title}
-            removeState={removeState}></SpreadList>
+            removeState={removeState}></QuestionToggleItem>
         ))}
       </ScrollView>
 
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
 });
 
 export default QuestionList;
-export function SpreadList({id, title, status, removeState}: any) {
+
+export function QuestionToggleItem({id, title, status, removeState}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
   const [checkRemove, setCheckRemove] = useState<boolean>(false);
