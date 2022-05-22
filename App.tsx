@@ -380,13 +380,6 @@ const App = () => {
                 name="PostListScreen"
                 component={PostListScreen}
                 options={({navigation}) => ({
-                  title: '고정 게시판',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>
@@ -1069,13 +1062,6 @@ const App = () => {
                 name="PostListScreen"
                 component={PostListScreen}
                 options={({navigation}) => ({
-                  title: '고정 게시판',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>

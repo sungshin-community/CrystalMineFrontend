@@ -3,6 +3,7 @@ import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Board from '../classes/Board';
 import Response from '../classes/Response';
+import BoardDetailDto from '../classes/BoardDetailDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -70,7 +71,7 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
     const params = new URLSearchParams();
     params.append('page', page.toString());
     params.append('sort', sort);
-    const response = await client.get<Response<Board[]>>(
+    const response = await client.get<Response<BoardDetailDto>>(
       `/boards/${boardId}?${params}`
     );
     return response.data.data;

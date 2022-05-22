@@ -28,10 +28,21 @@ const PostScreen = ({navigation, route}: Props) => {
       setPosts(data);
       const result = await getComments(route.params.postId, 0);
       setComments(result);
-      console.log(result);
     }
     init();
   }, []);
+
+    useEffect(() => {
+    navigation.setOptions({
+      title: route.params.boardName,
+      headerTitleAlign: 'center',
+      headerTintColor: '#000000',
+      headerTitleStyle: {
+        fontSize: 19,
+        fontFamily: 'SpoqaHanSansNeo-Medium',
+      },
+    });
+  }, [navigation]);
   return (
     <>
       <KeyboardAvoidingView
