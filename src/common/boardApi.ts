@@ -93,11 +93,12 @@ export const getPosts = async (postId: number) => {
 
 export const getComments = async (postId: number, page: number) => {
   try {
-      const params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.append('page', page.toString());
     const response = await client.get<AxiosResponse>(
       `/posts/${postId}/comments?${params}`
     );
+    console.log(postId, '>', response.data.data)
     return response.data.data;
   } catch (e) {
     console.log("여기는 getComments 함수", e);

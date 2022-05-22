@@ -28,6 +28,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setPosts(data);
       const result = await getComments(route.params.postId, 0);
       setComments(result);
+      console.log(result)
     }
     init();
   }, []);
