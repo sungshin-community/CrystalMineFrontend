@@ -27,10 +27,10 @@ function Post(post: any) {
           <View style={{flexDirection: 'row'}}>
             <ProfileImage></ProfileImage>
             <View style={{justifyContent: 'center'}}>
-            <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
-              {data?.nickname}
+              <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
+                {data?.nickname}
               </Text>
-              </View>
+            </View>
           </View>
           <View style={{flexDirection: 'row'}}>
             <NoScrap />
