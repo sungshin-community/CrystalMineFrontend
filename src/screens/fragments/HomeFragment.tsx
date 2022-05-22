@@ -334,9 +334,9 @@ const HomeFragment = ({navigation}: Props) => {
                   ellipsizeMode="tail"
                   style={[
                     styles.postSummary,
-                    {width: Dimensions.get('window').width - 150},
+                    {width: Dimensions.get('window').width - 150, color: '#000'},
                   ]}>
-                  {/* {item.postContent.slice(0, 30)} */}
+                  {item.postContent.slice(0, 30)}
                 </Text>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <EmptyHeart />
@@ -390,8 +390,8 @@ const styles = StyleSheet.create({
   hotPostContainer: {
     marginVertical: 8,
     flexDirection: 'row',
-    backgroundColor: 'red',
     flex: 1,
+    justifyContent: 'space-between'
   },
   postTitleSummary: {
     fontSize: 13,
