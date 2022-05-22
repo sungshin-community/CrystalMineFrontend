@@ -16,7 +16,7 @@ import Dots from '../../resources/icon/Dots';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
-import CommentDto from '../classes/CommentDto';
+import CommentDto, {RecommentDto} from '../classes/CommentDto';
 const Comment = (comment: any) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
@@ -71,7 +71,11 @@ const Comment = (comment: any) => {
         </View>
         <Text>{data?.content}</Text>
         <View
-          style={{flexDirection: 'row', marginTop: 18, justifyContent: 'space-between'}}>
+          style={{
+            flexDirection: 'row',
+            marginTop: 18,
+            justifyContent: 'space-between',
+          }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
@@ -82,7 +86,9 @@ const Comment = (comment: any) => {
             <PostComment />
           </View>
           <View>
-            <Text style={{color: '#949494', fontSize: 13}}>{data?.createdAt}</Text>
+            <Text style={{color: '#949494', fontSize: 13}}>
+              {data?.createdAt}
+            </Text>
           </View>
         </View>
       </View>
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
 export const Recomment = (recomment: any) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
-
+  const data: RecommentDto = recomment.recomment;
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 1,
@@ -160,7 +166,7 @@ export const Recomment = (recomment: any) => {
                   paddingLeft: 8,
                   fontWeight: `500`,
                 }}>
-                수정
+                {data.displayName}
               </Text>
             </View>
           </View>
@@ -170,20 +176,27 @@ export const Recomment = (recomment: any) => {
             </Animated.View>
           </TouchableWithoutFeedback>
         </View>
-        <Text>
-          힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자
-          아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자
-          아프지말고힘내자 아프지말고힘내자 아프지말고힘내자 아프지말고힘내자
-          아프지말고
-        </Text>
+        <Text>{data.content}</Text>
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 18}}>
-          <Pressable
-            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-            onPress={() => setIsLiked(!isLiked)}>
-            {isLiked ? <PostLike /> : <PostUnlike />}
-          </Pressable>
-          <Text style={styles.postLike}>00</Text>
+          style={{
+            flexDirection: 'row',
+            marginTop: 18,
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Pressable
+              hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+              onPress={() => setIsLiked(!isLiked)}>
+              {isLiked ? <PostLike /> : <PostUnlike />}
+            </Pressable>
+            <Text style={styles.postLike}>{data?.likeCount}</Text>
+            <PostComment />
+          </View>
+          <View>
+            <Text style={{color: '#949494', fontSize: 13}}>
+              {data?.createdAt}
+            </Text>
+          </View>
         </View>
       </View>
       <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
