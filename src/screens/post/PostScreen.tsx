@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostScreen = ({navigation, route}: Props) => {
   const [posts, setPosts] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
-
+  
   useEffect(() => {
     async function init() {
       const data = await getPosts(route.params.postId);
@@ -31,7 +31,7 @@ const PostScreen = ({navigation, route}: Props) => {
       console.log(result)
     }
     init();
-  }, []);
+  }, [setComments, setPosts]);
 
     useEffect(() => {
     navigation.setOptions({
@@ -43,7 +43,8 @@ const PostScreen = ({navigation, route}: Props) => {
         fontFamily: 'SpoqaHanSansNeo-Medium',
       },
     });
-  }, [navigation]);
+    }, [navigation]);
+
   return (
     <>
       <KeyboardAvoidingView
@@ -66,7 +67,7 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
-          <InputComment />
+          <InputComment postId={route.params.postId}/>
         </View>
       </KeyboardAvoidingView>
     </>

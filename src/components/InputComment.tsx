@@ -13,9 +13,22 @@ import {
   Pressable,
 } from 'react-native';
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
-function InputComment() {
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+import {addComment} from '../common/boardApi'
 
+function InputComment(postId: any) {
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [content, setContent] = useState<string>();
+
+  const addCommentFunc = async (
+    postId: number,
+    newComment: string,
+    isAnonymous: boolean,
+  ) => {
+    const result = await addComment(postId, newComment, isAnonymous);
+    if (result) {
+      console.log('댓글 추가 성공');
+    }
+  };
   return (
     <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
       <View
@@ -23,7 +36,7 @@ function InputComment() {
           flexDirection: 'row',
           width: 83,
           justifyContent: 'center',
-          paddingTop: 15,
+          alignItems: 'center',
         }}>
         <Text style={{marginRight: 5}}>익명</Text>
         <Pressable
@@ -41,10 +54,13 @@ function InputComment() {
           placeholder="댓글을 입력해 주세요."
           placeholderTextColor="#87919B"
           multiline={true}
-          style={styles.input}></TextInput>
-        <View style={{paddingVertical: 5}}>
+          onChangeText={value => {
+            setContent(value);
+          }}
+          style={[styles.input, {textAlignVertical: 'center'}]}></TextInput>
+        { content && <Pressable style={{ paddingVertical: 5 }} onPress={() => addCommentFunc(postId.postId, content, isAnonymous)}>
           <CommentSendIcon />
-        </View>
+        </Pressable>}
       </View>
     </View>
   );
@@ -63,5 +79,6 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 13,
     width: Dimensions.get('window').width - 150,
+    paddingTop: Platform.OS === 'ios' ? 14 : 10,
   },
 });
