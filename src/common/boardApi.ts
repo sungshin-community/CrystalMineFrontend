@@ -111,7 +111,7 @@ export const addComment = async (postId: number, content: string, isAnonymous: b
     console.log(postId, content, isAnonymous)
     const response = await client.post<Response<CommentDto>>(
       '/comments',
-      {postId, content: content, isAnonymous: isAnonymous},
+      {postId: postId, content: content, isAnonymous: isAnonymous},
     );
     console.log('addComment 함수 성공', response.data)
     return 0;
