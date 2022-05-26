@@ -24,9 +24,21 @@ function BoardSearchResult({data}: any) {
             요청하신 검색어에 대한 검색 결과가 없습니다.
           </Text>
         ) : (
-          <ScrollView>
-            <Text>하는 중 ...</Text>
-          </ScrollView>
+          data.content.map(
+            (item: {
+              id: number;
+              name: string;
+              introduction: string;
+              isOwner: boolean;
+              isPinned: boolean;
+            }) => {
+              if (item.isOwner && item.isPinned) {
+              } else if (item.isOwner) {
+              } else if (item.isPinned) {
+              } else {
+              }
+            },
+          )
         )}
       </SafeAreaView>
     </KeyboardAvoidingView>
