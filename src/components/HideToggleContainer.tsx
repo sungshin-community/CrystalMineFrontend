@@ -298,12 +298,14 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
             marginTop: 8,
           }}
           nestedScrollEnabled={true}>
-          <Text>
-            <Text style={{fontWeight:'bold'}}>{title}</Text>
-            {"\n"}
-            {"\n"}
-            {content}
-          </Text>
+          <View style={{paddingBottom: 40}}>
+            <Text>
+              <Text style={{fontWeight: 'bold'}}>{title}</Text>
+              {'\n'}
+              {'\n'}
+              {content}
+            </Text>
+          </View>
         </ScrollView>
       )}
     </>
