@@ -695,7 +695,7 @@ const App = () => {
                 name="QuitTermAgree"
                 component={QuitTermAgree}
                 options={({navigation}) => ({
-                  title: '회원 탈퇴',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -715,7 +715,7 @@ const App = () => {
                 name="QuitPassword"
                 component={QuitPassword}
                 options={({navigation}) => ({
-                  title: '회원 탈퇴',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1376,7 +1376,7 @@ const App = () => {
                 name="QuitTermAgree"
                 component={QuitTermAgree}
                 options={({navigation}) => ({
-                  title: '회원 탈퇴',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1396,7 +1396,7 @@ const App = () => {
                 name="QuitPassword"
                 component={QuitPassword}
                 options={({navigation}) => ({
-                  title: '회원 탈퇴',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
