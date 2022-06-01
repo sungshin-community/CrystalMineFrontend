@@ -57,7 +57,6 @@ function SearchResult({navigation, route}: Props) {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
-          value={searchWord}
         />
       ),
       headerRight: (): React.ReactNode => (

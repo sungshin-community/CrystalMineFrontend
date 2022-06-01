@@ -14,7 +14,6 @@ import SearchInput from '../../components/SearchInput';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontRegular} from '../../common/font';
 import SearchCancelButton from '../../components/SearchCancelButton';
-import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
   SearchResult: {
@@ -26,6 +25,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 function BoardSearch({navigation}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
+  console.log('Board Search에서 나오는 searchWord ::: ', searchWord);
+
   const [wordList, setWordList] = useState<string[]>([]);
 
   const startSearching = () => {
@@ -49,7 +50,6 @@ function BoardSearch({navigation}: Props) {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
-          value={searchWord}
         />
       ),
       headerRight: (): React.ReactNode => (
@@ -90,9 +90,9 @@ function BoardSearch({navigation}: Props) {
     setWordList(restWordList);
   };
 
-  const totalDelete = () => {
-    setWordList([]);
-  };
+  // const totalDelete = () => {
+  //   setWordList([]);
+  // };
 
   return (
     <KeyboardAvoidingView
@@ -106,9 +106,9 @@ function BoardSearch({navigation}: Props) {
           }}>
           <View style={styles.rowSpaceBetween}>
             <Text style={[fontBold, styles.title]}>최근 검색어</Text>
-            <Pressable onPress={totalDelete}>
+            {/* <Pressable onPress={totalDelete}>
               <Text style={styles.delete}>전체 삭제</Text>
-            </Pressable>
+            </Pressable> */}
           </View>
           {wordList.length === 0 ? (
             <View style={{alignItems: 'center'}}>
@@ -149,12 +149,12 @@ const styles = StyleSheet.create({
   },
   title: {fontSize: 17, marginBottom: 14},
   text: {fontSize: 15},
-  delete: {
-    fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
-    color: '#A055FF',
-    textDecorationLine: 'underline',
-  },
+  // delete: {
+  //   fontSize: 13,
+  //   fontFamily: 'SpoqaHanSansNeo-Regular',
+  //   color: '#A055FF',
+  //   textDecorationLine: 'underline',
+  // },
   noResult: {
     fontSize: 15,
     color: '#87919B',
