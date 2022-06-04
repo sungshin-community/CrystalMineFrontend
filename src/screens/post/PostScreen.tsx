@@ -21,19 +21,18 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostScreen = ({navigation, route}: Props) => {
   const [posts, setPosts] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
-  
+
   useEffect(() => {
     async function init() {
       const data = await getPosts(route.params.postId);
       setPosts(data);
       const result = await getComments(route.params.postId, 0);
       setComments(result);
-      console.log(result)
     }
     init();
   }, [setComments, setPosts]);
 
-    useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: route.params.boardName,
       headerTitleAlign: 'center',
@@ -43,7 +42,13 @@ const PostScreen = ({navigation, route}: Props) => {
         fontFamily: 'SpoqaHanSansNeo-Medium',
       },
     });
-    }, [navigation]);
+  }, [navigation]);
+
+  const onChangeComments = () => {
+    const temp = comments;
+    setComments(temp);
+    console.log('comment 내용 바뀜');
+  };
 
   return (
     <>
@@ -67,7 +72,10 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
-          <InputComment postId={route.params.postId}/>
+          <InputComment
+            postId={route.params.postId}
+            onChange={onChangeComments}
+          />
         </View>
       </KeyboardAvoidingView>
     </>

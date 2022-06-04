@@ -99,8 +99,7 @@ export const getComments = async (postId: number, page: number) => {
     const response = await client.get<AxiosResponse>(
       `/posts/${postId}/comments?${params}`
     );
-    console.log(postId, '>', response.data.data)
-    return response.data.data;
+    return response.data.data.content;
   } catch (e) {
     console.log("여기는 getComments 함수", e);
   }
@@ -108,7 +107,7 @@ export const getComments = async (postId: number, page: number) => {
 
 export const addComment = async (postId: number, content: string, isAnonymous: boolean) => {
   try {
-    console.log(postId, content, isAnonymous)
+    console.log(postId, content, '익명여부:', isAnonymous)
     const response = await client.post<Response<CommentDto>>(
       '/comments',
       {postId: postId, content: content, isAnonymous: isAnonymous},

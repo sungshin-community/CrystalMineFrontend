@@ -23,7 +23,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
   const [boardName, setBoardName] = useState<string>('');
-
   useEffect(() => {
     async function init() {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);

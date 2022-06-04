@@ -13,9 +13,15 @@ import {
   Pressable,
 } from 'react-native';
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
-import {addComment} from '../common/boardApi'
+import {addComment} from '../common/boardApi';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-function InputComment(postId: any) {
+type RootStackParamList = {
+  PostScreen: {postId: number; boardName: string};
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+function InputComment(postId: any, onChange: any) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [content, setContent] = useState<string>();
 
@@ -29,6 +35,7 @@ function InputComment(postId: any) {
       console.log('댓글 추가 성공');
     }
   };
+
   return (
     <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
       <View
@@ -58,9 +65,19 @@ function InputComment(postId: any) {
             setContent(value);
           }}
           style={[styles.input, {textAlignVertical: 'center'}]}></TextInput>
-        { content && <Pressable style={{ paddingVertical: 5 }} onPress={() => addCommentFunc(postId.postId, content, isAnonymous)}>
-          <CommentSendIcon />
-        </Pressable>}
+        {content && (
+          <Text>
+            <Pressable
+              style={{paddingVertical: 5}}
+              onPress={ ()=>
+                // addCommentFunc(postId.postId, content, isAnonymous);
+                onChange
+              
+              }>
+              <CommentSendIcon />
+            </Pressable>
+          </Text>
+        )}
       </View>
     </View>
   );

@@ -15,7 +15,7 @@ interface  PostResponseDto {
 export interface ContentPreviewDto {
   postId: number;
   profileImage: string;
-  nickname: string;
+  displayName: string;
   isAuthor: boolean;
   title: string;
   content: string;
