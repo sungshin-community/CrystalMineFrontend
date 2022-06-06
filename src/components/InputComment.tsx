@@ -13,29 +13,24 @@ import {
   Pressable,
 } from 'react-native';
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
-import {addComment} from '../common/boardApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useCallback} from 'react';
 
-type RootStackParamList = {
-  PostScreen: {postId: number; boardName: string};
-};
-type Props = NativeStackScreenProps<RootStackParamList>;
-
-function InputComment(postId: any, onChange: any) {
+interface Props {
+  postId?: any;
+  onClick?: any;
+}
+function InputComment({postId, onClick}: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [content, setContent] = useState<string>();
 
-  const addCommentFunc = async (
-    postId: number,
-    newComment: string,
-    isAnonymous: boolean,
-  ) => {
-    const result = await addComment(postId, newComment, isAnonymous);
-    if (result) {
-      console.log('댓글 추가 성공');
-    }
-  };
-
+  const onSubmit = useCallback(
+    () => {
+      onClick(postId, content, isAnonymous);
+      setContent('');
+    },
+    [onClick, content],
+  );
   return (
     <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
       <View
@@ -65,19 +60,17 @@ function InputComment(postId: any, onChange: any) {
             setContent(value);
           }}
           style={[styles.input, {textAlignVertical: 'center'}]}></TextInput>
-        {content && (
-          <Text>
+        <Text>
+          {content && (
             <Pressable
               style={{paddingVertical: 5}}
-              onPress={ ()=>
-                // addCommentFunc(postId.postId, content, isAnonymous);
-                onChange
-              
-              }>
+              onPress={() => {
+                onSubmit();
+              }}>
               <CommentSendIcon />
             </Pressable>
-          </Text>
-        )}
+          )}
+        </Text>
       </View>
     </View>
   );

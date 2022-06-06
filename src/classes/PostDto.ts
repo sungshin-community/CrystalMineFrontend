@@ -1,7 +1,7 @@
 export default interface PostDto {
   postId: number;
   profileImage: string;
-  nickname: string;
+  displayName: string;
   isAuthor: boolean;
   title: string;
   content: string;

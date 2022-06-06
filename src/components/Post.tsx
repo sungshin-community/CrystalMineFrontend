@@ -28,7 +28,7 @@ function Post(post: any) {
             <ProfileImage></ProfileImage>
             <View style={{justifyContent: 'center'}}>
               <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
-                {data?.nickname}
+                {data?.displayName}
               </Text>
             </View>
           </View>
