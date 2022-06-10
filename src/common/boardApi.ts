@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Board from '../classes/Board';
 import Response from '../classes/Response';
 import BoardDetailDto from '../classes/BoardDetailDto';
+import CommentDto from '../classes/CommentDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -98,9 +99,23 @@ export const getComments = async (postId: number, page: number) => {
     const response = await client.get<AxiosResponse>(
       `/posts/${postId}/comments?${params}`
     );
-    console.log(postId, '>', response.data.data)
-    return response.data.data;
+    return response.data.data.content;
   } catch (e) {
     console.log("여기는 getComments 함수", e);
+  }
+};
+
+export const addComment = async (postId: number, content: string, isAnonymous: boolean) => {
+  try {
+    console.log(postId, content, '익명여부:', isAnonymous)
+    const response = await client.post<Response<CommentDto>>(
+      '/comments',
+      {postId: postId, content: content, isAnonymous: isAnonymous},
+    );
+    console.log('addComment 함수 성공', response.data)
+    return 0;
+  } catch (e: any) {
+    console.log('addComment 함수 실패', e.response.data);
+    return e.response.data.status;
   }
 };

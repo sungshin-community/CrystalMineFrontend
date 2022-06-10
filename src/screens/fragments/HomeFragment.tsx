@@ -59,8 +59,6 @@ const HomeFragment = ({navigation}: Props) => {
     const result: boolean = await checkRegularMember();
     setIsRegularMember(result);
     console.log('정회원 인증 여부', result);
-    if(homeContents?.blinds[0])
-    console.log('s')
   };
 
   const blindVisibleList = homeContents?.blinds.map(index => true);
@@ -134,7 +132,7 @@ const HomeFragment = ({navigation}: Props) => {
               <></>
             )}
             {/* 인증 만료 알림 */}
-            {!isRegularMember && homeContents?.expireIn === 0 ? (
+            {!isRegularMember && homeContents?.expireIn <= 0 ? (
               <>
                 <View
                   style={{

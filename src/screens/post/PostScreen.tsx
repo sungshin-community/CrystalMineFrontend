@@ -15,25 +15,41 @@ import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
 import {getComments, getPosts} from '../../common/boardApi';
+import {addComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
+import {useCallback} from 'react';
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
+
 const PostScreen = ({navigation, route}: Props) => {
-  const [posts, setPosts] = useState<PostDto>();
+  const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
+
+  const addCommentFunc = useCallback(
+    async (postId: number, newComment: string, isAnonymous: boolean) => {
+      const result = await addComment(postId, newComment, isAnonymous);
+      if (result) {
+        console.log('댓글 추가 성공');
+      }
+      const postData = await getPosts(route.params.postId);
+      setPost(postData);
+      const commentData = await getComments(route.params.postId, 0);
+      setComments(commentData);
+    },
+    [],
+  );
 
   useEffect(() => {
     async function init() {
-      const data = await getPosts(route.params.postId);
-      setPosts(data);
-      const result = await getComments(route.params.postId, 0);
-      setComments(result);
-      console.log(result)
+      const postData = await getPosts(route.params.postId);
+      setPost(postData);
+      const commentData = await getComments(route.params.postId, 0);
+      setComments(commentData);
     }
     init();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: route.params.boardName,
       headerTitleAlign: 'center',
@@ -44,6 +60,7 @@ const PostScreen = ({navigation, route}: Props) => {
       },
     });
   }, [navigation]);
+
   return (
     <>
       <KeyboardAvoidingView
@@ -51,7 +68,7 @@ const PostScreen = ({navigation, route}: Props) => {
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-          <Post post={posts}></Post>
+          <Post post={post}></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>
@@ -66,7 +83,7 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
-          <InputComment />
+          <InputComment postId={route.params.postId} onClick={addCommentFunc} />
         </View>
       </KeyboardAvoidingView>
     </>

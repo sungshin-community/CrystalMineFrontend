@@ -14,6 +14,7 @@ import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getBoardDetail} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
+import {useIsFocused} from '@react-navigation/native';
 
 type RootStackParamList = {
   PostScreen: {postId: number; boardName: string};
@@ -23,6 +24,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
   const [boardName, setBoardName] = useState<string>('');
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     async function init() {
@@ -30,8 +32,8 @@ const PostListScreen = ({navigation, route}: Props) => {
       setBoardDetail(boardDetail);
       if (boardDetail) setBoardName(boardDetail?.name);
     }
-    init();
-  }, []);
+    if (isFocused) init();
+  }, [isFocused]);
 
   const SampleFunction = () => {
     Alert.alert('플로팅 버튼 눌림!');

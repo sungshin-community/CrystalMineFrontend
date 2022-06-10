@@ -13,9 +13,24 @@ import {
   Pressable,
 } from 'react-native';
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
-function InputComment() {
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useCallback} from 'react';
 
+interface Props {
+  postId?: any;
+  onClick?: any;
+}
+function InputComment({postId, onClick}: Props) {
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [content, setContent] = useState<string>();
+
+  const onSubmit = useCallback(
+    () => {
+      onClick(postId, content, isAnonymous);
+      setContent('');
+    },
+    [onClick, content],
+  );
   return (
     <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
       <View
@@ -23,7 +38,7 @@ function InputComment() {
           flexDirection: 'row',
           width: 83,
           justifyContent: 'center',
-          paddingTop: 15,
+          alignItems: 'center',
         }}>
         <Text style={{marginRight: 5}}>익명</Text>
         <Pressable
@@ -41,10 +56,21 @@ function InputComment() {
           placeholder="댓글을 입력해 주세요."
           placeholderTextColor="#87919B"
           multiline={true}
-          style={styles.input}></TextInput>
-        <View style={{paddingVertical: 5}}>
-          <CommentSendIcon />
-        </View>
+          onChangeText={value => {
+            setContent(value);
+          }}
+          style={[styles.input, {textAlignVertical: 'center'}]}></TextInput>
+        <Text>
+          {content && (
+            <Pressable
+              style={{paddingVertical: 5}}
+              onPress={() => {
+                onSubmit();
+              }}>
+              <CommentSendIcon />
+            </Pressable>
+          )}
+        </Text>
       </View>
     </View>
   );
@@ -63,5 +89,6 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 13,
     width: Dimensions.get('window').width - 150,
+    paddingTop: Platform.OS === 'ios' ? 14 : 10,
   },
 });

@@ -17,7 +17,7 @@ function PostItem({post}: Props) {
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
           <ProfileImage />
-          <Text style={styles.name}>{post.nickname}</Text>
+          <Text style={styles.name}>{post.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
