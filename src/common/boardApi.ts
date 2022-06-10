@@ -119,3 +119,16 @@ export const addComment = async (postId: number, content: string, isAnonymous: b
     return e.response.data.status;
   }
 };
+
+export const setCommentLike = async (commetId: number) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      `/comments/${commetId}/like`
+    );
+    console.log(response.data);
+    return true;
+  } catch (e) {
+    console.log("여기는 setCommentLike 함수", e);
+    return false;
+  }
+};
