@@ -1,17 +1,19 @@
 export default interface PostDto {
   postId: number;
+  boardName: string;
   profileImage: string;
   displayName: string;
-  isAuthor: boolean;
   title: string;
   content: string;
   createdAt: string;
-  commentCount: number;
+  hasTitle: boolean;
+  isAuthor: boolean;
+  isOwner: boolean;
+  isAnonymous: boolean;
   isLiked: boolean;
-  likeCount: number;
   isScraped: boolean;
-  scrapCount: number;
-  imageCount: number;
   isReported: boolean;
-  selfDeleteReject: boolean;
+  likeCount: number;
+  imageCount: number;
+  commentCount: number;
 }

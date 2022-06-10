@@ -47,7 +47,11 @@ const Comment = (comment: any) => {
   };
   return (
     <>
-      <View style={{paddingHorizontal: 24}}>
+      <View
+        style={{
+          paddingHorizontal: 24,
+          backgroundColor: data?.isAuthor ? '#F8F8F8' : '#FFF',
+        }}>
         <View
           style={{
             flexDirection: 'row',
@@ -62,6 +66,7 @@ const Comment = (comment: any) => {
                   fontSize: 16,
                   paddingLeft: 8,
                   fontWeight: `500`,
+                  color: data?.isAuthor ? '#A055FF' : '#000',
                 }}>
                 {data?.displayName}
               </Text>
@@ -73,7 +78,7 @@ const Comment = (comment: any) => {
         <View
           style={{
             flexDirection: 'row',
-            marginTop: 18,
+            marginVertical: 18,
             justifyContent: 'space-between',
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -92,8 +97,7 @@ const Comment = (comment: any) => {
           </View>
         </View>
       </View>
-      <View
-        style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 22}}></View>
+      <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
     </>
   );
 };
@@ -144,10 +148,7 @@ export const Recomment = (recomment: any) => {
       <View
         style={{
           paddingHorizontal: 24,
-          backgroundColor: '#F7F7F7',
-          marginLeft: 14,
-          borderRadius: 10,
-          marginVertical: 4,
+          backgroundColor: data.isAuthor ? '#F8F8F8' : '#FFF',
           paddingBottom: 12,
         }}>
         <View
