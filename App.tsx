@@ -32,6 +32,7 @@ import CreateBoard from './src/screens/board/CreateBoard';
 import PostListScreen from './src/screens/post/PostListScreen';
 import BoardSearch from './src/screens/board/BoardSearch';
 import SearchResult from './src/screens/board/SearchResult';
+import MyPostList from './src/screens/board/MyPostList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
@@ -380,6 +381,26 @@ const App = () => {
                 name="PostListScreen"
                 component={PostListScreen}
                 options={({navigation}) => ({
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MyPostList"
+                component={MyPostList}
+                options={({navigation}) => ({
+                  title: '내가 작성한 글',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>
@@ -1062,6 +1083,26 @@ const App = () => {
                 name="PostListScreen"
                 component={PostListScreen}
                 options={({navigation}) => ({
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MyPostList"
+                component={MyPostList}
+                options={({navigation}) => ({
+                  title: '내가 작성한 글',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                   headerLeft: () => (
                     <BackButtonIcon
                       onPress={() =>

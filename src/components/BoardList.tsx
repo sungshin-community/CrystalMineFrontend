@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 
 import {FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import GrayFlag from '../../resources/icon/GrayFlag';
 import MyPostingIcon, {
   MyCommentIcon,
   ScrapPostingIcon,
 } from '../../resources/icon/MyPostingIcon';
+import OrangeFlag from '../../resources/icon/OrangeFlag';
 import {GrayPin, OrangePin, PurplePin} from '../../resources/icon/Pin';
 import PlusIcon from '../../resources/icon/PlusIcon';
 import Board from '../classes/Board';
@@ -13,14 +15,16 @@ import {toggleBoardPin} from '../common/boardApi';
 interface Props {
   items: Board[];
   onUpdate?: () => void;
+  moveToBoard?: (boardId: number) => void;
 }
 
-export default function BoardList({items}: Props) {
+export default function BoardList({items, moveToBoard}: Props) {
   return (
     items != null && items.length > 0 ? <FlatList
       data={items}
       renderItem={({item}) => (
         <TouchableOpacity
+        onPress={() => moveToBoard(item.id)}
           style={{
             flexDirection: 'row',
             paddingVertical: 9,
@@ -28,11 +32,11 @@ export default function BoardList({items}: Props) {
             backgroundColor: '#F6F6F6',
           }}>
           {!item.isPinned ? (
-            <GrayPin style={{marginLeft: 20}} />
+            item.isOwner ? <GrayFlag style={{marginLeft: 23}} /> : <GrayPin style={{marginLeft: 20}} />
           ) : item.isOfficial ? (
             <PurplePin style={{marginLeft: 20}} />
           ) : (
-            <OrangePin style={{marginLeft: 20}} />
+            item.isOwner ? <OrangeFlag style={{marginLeft: 23}} /> : <OrangePin style={{marginLeft: 20}} />
           )}
           <Text
             style={{
@@ -65,7 +69,7 @@ export default function BoardList({items}: Props) {
   );
 }
 
-export function OfficialBoardList({items, onUpdate}: Props) {
+export function OfficialBoardList({items, onUpdate, moveToBoard}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
@@ -73,6 +77,7 @@ export function OfficialBoardList({items, onUpdate}: Props) {
         data={items}
         renderItem={({item}) => (
           <TouchableOpacity
+            onPress={() => moveToBoard(item.id)}
             style={{
               flexDirection: 'row',
               paddingVertical: 11,
@@ -131,7 +136,7 @@ export function OfficialBoardList({items, onUpdate}: Props) {
   );
 }
 
-export function CustomBoardList({items, onUpdate}: Props) {
+export function CustomBoardList({items, onUpdate, moveToBoard}: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     <View>
@@ -139,6 +144,7 @@ export function CustomBoardList({items, onUpdate}: Props) {
         data={items}
         renderItem={({item}) => (
           <TouchableOpacity
+            onPress={() => moveToBoard(item.id)}
             style={{
               flexDirection: 'row',
               paddingVertical: 11,
@@ -146,7 +152,15 @@ export function CustomBoardList({items, onUpdate}: Props) {
               backgroundColor: '#F6F6F6',
             }}>
             {!item.isPinned ? (
-              <GrayPin
+              item.isOwner ? <GrayFlag style={{marginLeft: 23}}
+              onPress={async () => {
+                let result: boolean = await toggleBoardPin(item.id);
+                if (result) {
+                  item.isPinned = true;
+                  setValue(!value);
+                  onUpdate();
+                }
+              }} /> : <GrayPin
                 style={{marginLeft: 20}}
                 onPress={async () => {
                   let result: boolean = await toggleBoardPin(item.id);
@@ -158,7 +172,15 @@ export function CustomBoardList({items, onUpdate}: Props) {
                 }}
               />
             ) : (
-              <OrangePin
+              item.isOwner ? <OrangeFlag style={{marginLeft: 23}}
+              onPress={async () => {
+                let result: boolean = await toggleBoardPin(item.id);
+                if (result) {
+                  item.isPinned = false;
+                  setValue(!value);
+                  onUpdate();
+                }
+              }} /> : <OrangePin
                 style={{marginLeft: 20}}
                 onPress={async () => {
                   let result: boolean = await toggleBoardPin(item.id);
@@ -197,10 +219,15 @@ export function CustomBoardList({items, onUpdate}: Props) {
   );
 }
 
-export function MenuList() {
+interface MenuProps {
+  toMyPosting: () => void;
+}
+
+export function MenuList({toMyPosting}: MenuProps) {
   return (
     <>
       <TouchableOpacity
+        onPress={toMyPosting}
         style={{
           flexDirection: 'row',
           height: 36,
