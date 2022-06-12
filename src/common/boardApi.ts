@@ -5,7 +5,6 @@ import Board from '../classes/Board';
 import Response from '../classes/Response';
 import BoardDetailDto from '../classes/BoardDetailDto';
 import CommentDto from '../classes/CommentDto';
-
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
   try {
@@ -122,7 +121,7 @@ export const addComment = async (postId: number, content: string, isAnonymous: b
 
 export const setCommentLike = async (commetId: number) => {
   try {
-    const response = await client.post<AxiosResponse>(
+    const response = await client.post<Response<null>>(
       `/comments/${commetId}/like`
     );
     console.log(response.data);

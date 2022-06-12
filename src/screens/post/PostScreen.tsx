@@ -38,7 +38,7 @@ const PostScreen = ({navigation, route}: Props) => {
     },
     [],
   );
-
+ console.log(post?.postId)
   useEffect(() => {
     async function init() {
       const postData = await getPosts(route.params.postId);

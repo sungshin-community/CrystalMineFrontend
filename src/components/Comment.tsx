@@ -16,12 +16,13 @@ import Dots from '../../resources/icon/Dots';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
-import CommentDto, { RecommentDto } from '../classes/CommentDto';
-import { setCommentLike } from '../common/boardApi';
+import CommentDto, {RecommentDto} from '../classes/CommentDto';
+import {setCommentLike} from '../common/boardApi';
 
 const Comment = (comment: any) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [letAddRecomment, setLetAddRecomment] = useState<boolean>(false);
   const data: CommentDto = comment.comment;
 
   const handleAnimation = () => {
@@ -48,18 +49,16 @@ const Comment = (comment: any) => {
     ],
   };
 
-  const handleCommentLike = async(commentId: number) => {
-    const result = await setCommentLike(commentId);
-    console.log(result)
-    if (result) { setIsLiked(true); console.log('댓글 좋아요!') }
-    else { setIsLiked(false); console.log('댓글 좋아요 해제!') }
-  }
+  const handleCommentLike = async (commentId: number) => {
+    const result  = await setCommentLike(commentId);
+    console.log(result);
+  };
   return (
     <>
       <View
         style={{
           paddingHorizontal: 24,
-          backgroundColor: data?.isAuthor ? '#F8F8F8' : '#FFF',
+          backgroundColor: data?.isAuthor ? '#F8F8F8' : letAddRecomment ? '#A055FF' : '#FFF',
         }}>
         <View
           style={{
@@ -93,11 +92,13 @@ const Comment = (comment: any) => {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => handleCommentLike(data.id)}>
+              onPress={() => { setIsLiked(!isLiked); handleCommentLike(data.id) }}>
               {isLiked ? <PostLike /> : <PostUnlike />}
             </Pressable>
             <Text style={styles.postLike}>{data?.likeCount}</Text>
-            <PostComment />
+            <Pressable onPress={() => { setLetAddRecomment(!letAddRecomment); console.log('comment id: ',data.id) }}>
+              <PostComment />
+            </Pressable>
           </View>
           <View>
             <Text style={{color: '#949494', fontSize: 13}}>
@@ -187,30 +188,30 @@ export const Recomment = (recomment: any) => {
           </TouchableWithoutFeedback>
         </View>
         <View style={{marginLeft: 20}}>
-        <Text>{data.content}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 18,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Pressable
-              hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => setIsLiked(!isLiked)}>
-              {isLiked ? <PostLike /> : <PostUnlike />}
-            </Pressable>
-            <Text style={styles.postLike}>{data?.likeCount}</Text>
-            <PostComment />
+          <Text>{data.content}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 18,
+              justifyContent: 'space-between',
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Pressable
+                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                onPress={() => setIsLiked(!isLiked)}>
+                {isLiked ? <PostLike /> : <PostUnlike />}
+              </Pressable>
+              <Text style={styles.postLike}>{data?.likeCount}</Text>
+              <PostComment />
+            </View>
+            <View>
+              <Text style={{color: '#949494', fontSize: 13}}>
+                {data?.createdAt}
+              </Text>
+            </View>
           </View>
-          <View>
-            <Text style={{color: '#949494', fontSize: 13}}>
-              {data?.createdAt}
-            </Text>
-          </View>
         </View>
-        </View>
-        </View>
+      </View>
       <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
     </>
   );
