@@ -18,6 +18,8 @@ import {getComments, getPosts} from '../../common/boardApi';
 import {addComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
+import {setCommentLike} from '../../common/boardApi';
+
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -49,6 +51,14 @@ const PostScreen = ({navigation, route}: Props) => {
     init();
   }, []);
 
+  const handleCommentLike = async (commentId: number) => {
+    const result = await setCommentLike(commentId);
+    const postData = await getPosts(route.params.postId);
+    setPost(postData);
+    const commentData = await getComments(route.params.postId, 0);
+    setComments(commentData);
+  };
+
   useEffect(() => {
     navigation.setOptions({
       title: route.params.boardName,
@@ -72,7 +82,10 @@ const PostScreen = ({navigation, route}: Props) => {
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>
-                <Comment comment={comment} />
+                <Comment
+                  comment={comment}
+                  handleCommentLike={handleCommentLike}
+                />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
                     <Recomment key={index} recomment={recomment} />

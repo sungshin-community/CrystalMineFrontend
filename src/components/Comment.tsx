@@ -17,11 +17,18 @@ import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
-const Comment = (comment: any) => {
-  const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
-  const [isLiked, setIsLiked] = useState<boolean>();
-  const data: CommentDto = comment.comment;
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+interface Props {
+  comment?: any;
+  handleCommentLike?: any;
+}
+const Comment = ({comment, handleCommentLike}: Props) => {
+  const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [letAddRecomment, setLetAddRecomment] = useState<boolean>();
+  const data: CommentDto = comment;
+ 
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 1,
@@ -45,12 +52,13 @@ const Comment = (comment: any) => {
       },
     ],
   };
+
   return (
     <>
       <View
         style={{
           paddingHorizontal: 24,
-          backgroundColor: data?.isAuthor ? '#F8F8F8' : '#FFF',
+          backgroundColor: data?.isAuthor ? '#F8F8F8' : letAddRecomment ? '#A055FF' : '#FFF',
         }}>
         <View
           style={{
@@ -84,11 +92,13 @@ const Comment = (comment: any) => {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => setIsLiked(!isLiked)}>
+              onPress={() => { handleCommentLike(data.id); setIsLiked(!isLiked); }}>
               {isLiked ? <PostLike /> : <PostUnlike />}
             </Pressable>
             <Text style={styles.postLike}>{data?.likeCount}</Text>
-            <PostComment />
+            <Pressable onPress={() => { setLetAddRecomment(!letAddRecomment); console.log('comment id: ',data.id) }}>
+              <PostComment />
+            </Pressable>
           </View>
           <View>
             <Text style={{color: '#949494', fontSize: 13}}>
@@ -177,26 +187,28 @@ export const Recomment = (recomment: any) => {
             </Animated.View>
           </TouchableWithoutFeedback>
         </View>
-        <Text>{data.content}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 18,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Pressable
-              hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => setIsLiked(!isLiked)}>
-              {isLiked ? <PostLike /> : <PostUnlike />}
-            </Pressable>
-            <Text style={styles.postLike}>{data?.likeCount}</Text>
-            <PostComment />
-          </View>
-          <View>
-            <Text style={{color: '#949494', fontSize: 13}}>
-              {data?.createdAt}
-            </Text>
+        <View style={{marginLeft: 20}}>
+          <Text>{data.content}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 18,
+              justifyContent: 'space-between',
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Pressable
+                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                onPress={() => setIsLiked(!isLiked)}>
+                {isLiked ? <PostLike /> : <PostUnlike />}
+              </Pressable>
+              <Text style={styles.postLike}>{data?.likeCount}</Text>
+              <PostComment />
+            </View>
+            <View>
+              <Text style={{color: '#949494', fontSize: 13}}>
+                {data?.createdAt}
+              </Text>
+            </View>
           </View>
         </View>
       </View>

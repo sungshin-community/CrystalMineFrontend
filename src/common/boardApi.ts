@@ -5,7 +5,6 @@ import Board from '../classes/Board';
 import Response from '../classes/Response';
 import BoardDetailDto from '../classes/BoardDetailDto';
 import CommentDto from '../classes/CommentDto';
-
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
   try {
@@ -117,5 +116,18 @@ export const addComment = async (postId: number, content: string, isAnonymous: b
   } catch (e: any) {
     console.log('addComment 함수 실패', e.response.data);
     return e.response.data.status;
+  }
+};
+
+export const setCommentLike = async (commetId: number) => {
+  try {
+    const response = await client.post<Response<null>>(
+      `/comments/${commetId}/like`
+    );
+    console.log(response.data);
+    return true;
+  } catch (e) {
+    console.log("여기는 setCommentLike 함수", e);
+    return false;
   }
 };

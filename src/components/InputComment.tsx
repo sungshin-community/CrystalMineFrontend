@@ -2,7 +2,7 @@ import {
   RectangleUnchecked,
   RectangleChecked,
 } from '../../resources/icon/CheckBox';
-import React, {useState} from 'react';
+import React, {useState, createRef} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -23,11 +23,10 @@ interface Props {
 function InputComment({postId, onClick}: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [content, setContent] = useState<string>();
-
+  const inputRef = createRef();
   const onSubmit = useCallback(
     () => {
       onClick(postId, content, isAnonymous);
-      setContent('');
     },
     [onClick, content],
   );
@@ -59,13 +58,15 @@ function InputComment({postId, onClick}: Props) {
           onChangeText={value => {
             setContent(value);
           }}
-          style={[styles.input, {textAlignVertical: 'center'}]}></TextInput>
+          autoCorrect={false}
+          style={[styles.input, { textAlignVertical: 'center' }]}
+          />
         <Text>
           {content && (
             <Pressable
               style={{paddingVertical: 5}}
               onPress={() => {
-                onSubmit();
+                onSubmit(); setContent(''); inputRef.current.clear();
               }}>
               <CommentSendIcon />
             </Pressable>
