@@ -17,9 +17,20 @@ import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
+import { scrapPost } from '../common/postApi';
 function Post(post: any) {
+  console.log('Post Component', post);
+  
   const [isLiked, setIsLiked] = useState<boolean>();
+  const [isScraped, setIsScraped] = useState<boolean>(false);
   const data: PostDto = post.post;
+
+  const clickScrapPost = (postId: number) => {
+    //! 처음에 받아온 데이터가 스크렙 되어있는지 확인한 불리언 값을 초기값으로 설정해야함
+    setIsScraped(!isScraped);
+    scrapPost(postId);
+  };
+
   return (
     <>
       <View style={styles.postContainer}>
@@ -33,7 +44,9 @@ function Post(post: any) {
             </View>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <NoScrap />
+            <Pressable onPress={() => clickScrapPost(data.postId)}>
+              {isScraped ? <Scrap /> : <NoScrap />}
+            </Pressable>
             <ThreeDots icons={<NoScrap />} />
           </View>
         </View>
