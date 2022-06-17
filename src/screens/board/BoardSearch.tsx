@@ -25,8 +25,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 function BoardSearch({navigation}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
-  console.log('Board Search에서 나오는 searchWord ::: ', searchWord);
-
   const [wordList, setWordList] = useState<string[]>([]);
 
   const startSearching = () => {
@@ -110,7 +108,7 @@ function BoardSearch({navigation}: Props) {
               <Text style={styles.delete}>전체 삭제</Text>
             </Pressable> */}
           </View>
-          {wordList.length === 0 ? (
+          {wordList?.length === 0 ? (
             <View style={{alignItems: 'center'}}>
               <Text style={[fontRegular, styles.noResult]}>
                 최근 검색어가 없습니다

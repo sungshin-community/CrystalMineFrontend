@@ -51,3 +51,17 @@ export const GrayPin = (props: any) => (
     />
   </Svg>
 )
+
+export const OwnerPin = (props: any) => (
+  <Svg
+    width={12}
+    height={14}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M7.52 1.647 7.2 0H0v14h1.6V8.235h4.48l.32 1.647H12V1.647H7.52Z"
+      fill="#FFA767"
+    />
+  </Svg>
+);

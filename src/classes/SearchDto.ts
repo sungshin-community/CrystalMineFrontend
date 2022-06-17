@@ -1,4 +1,4 @@
-export interface BoardContent {
+export interface BoardContentDto {
   id: number;
   name: string;
   introduction: string;
@@ -6,8 +6,8 @@ export interface BoardContent {
   isPinned: boolean;
 }
 
-export interface SearchBoard {
-  content: BoardContent[];
+export interface SearchBoardDto {
+  content: BoardContentDto[];
   pageable: string;
   totalPages: number;
   totalElements: number;
@@ -24,7 +24,7 @@ export interface SearchBoard {
   empty: boolean;
 }
 
-interface PostContent {
+export interface PostContentDto {
   postId: number;
   boardName: string;
   profileImage: string;
@@ -41,8 +41,8 @@ interface PostContent {
   imageCount: number;
 }
 
-export interface SearchPost {
-  content: PostContent[];
+export interface SearchPostDto {
+  content: PostContentDto[];
   pageable: string;
   totalPages: number;
   totalElements: number;

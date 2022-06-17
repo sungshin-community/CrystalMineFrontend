@@ -17,7 +17,6 @@ interface Props {
 function SearchInput({setSearchWord, startSearching}: Props) {
   const searchingWord = (word: any) => {
     setSearchWord(word);
-    console.log('Search Input에서 나오는 searchWord ::: ', word);
   };
 
   return (

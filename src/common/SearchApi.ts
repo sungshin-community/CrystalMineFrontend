@@ -1,10 +1,10 @@
 import Response from '../classes/Response';
 import client from './client';
-import {SearchBoard, SearchPost} from '../classes/Search';
+import {SearchBoardDto, SearchPostDto} from '../classes/SearchDto';
 
 export const getBoardSearch = async (searchWord: string) => {
   try {
-    const response = await client.get<Response<SearchBoard[]>>(
+    const response = await client.get<Response<SearchBoardDto[]>>(
       `/search/boards?keyword=${searchWord}`,
     );
     console.log('게시판 검색 : ', response.data.data);
@@ -16,7 +16,7 @@ export const getBoardSearch = async (searchWord: string) => {
 
 export const getPostSearch = async (searchWord: string) => {
   try {
-    const response = await client.get<Response<SearchPost[]>>(
+    const response = await client.get<Response<SearchPostDto[]>>(
       `/search/posts?keyword=${searchWord}`,
     );
     console.log('게시글 검색 : ', response.data.data);
