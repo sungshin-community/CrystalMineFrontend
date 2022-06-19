@@ -6,10 +6,10 @@ import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
-import MyPostDto from '../classes/MyPostDto';
+import { MyPostContentDto } from '../classes/board/MyPostDto';
 
 interface Props {
-  post: MyPostDto
+  post: MyPostContentDto
 }
 
 export default function MyPostItem({post}: Props) {

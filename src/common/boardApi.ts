@@ -5,6 +5,7 @@ import Board from '../classes/Board';
 import Response from '../classes/Response';
 import BoardDetailDto from '../classes/BoardDetailDto';
 import CommentDto from '../classes/CommentDto';
+import MyPostDto from '../classes/MyPostDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -67,7 +68,7 @@ export const toggleBoardPin = async (boardId: number) => {
   }
 };
 
-export const getBoardDetail = async (boardId: number, page: number, sort: string = "createdAt") => {
+export const getBoardDetail = async (boardId: number, page: number = 0, sort: string = "createdAt") => {
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
@@ -78,6 +79,21 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
     return response.data.data;
   } catch (e) {
     console.log("여기는 getCustomBoardList 함수", e);
+  }
+}
+
+export async function getMyPostList(page: number = 0, sort: string = "createdAt") {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('sort', sort);
+    const response = await client.get<Response<MyPostDto>>(
+      `/posts?${params}`
+    );
+    console.log(response.data.data);
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getMyPostList 함수", e);
   }
 }
 
