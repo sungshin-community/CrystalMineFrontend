@@ -74,8 +74,9 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
     params.append('page', page.toString());
     params.append('sort', sort);
     const response = await client.get<Response<BoardDetailDto>>(
-      `/boards/${boardId}?${params}`
+      `/boards/${boardId}/posts?${params}`
     );
+    console.log(response.data.data);
     return response.data.data;
   } catch (e) {
     console.log("여기는 getCustomBoardList 함수", e);

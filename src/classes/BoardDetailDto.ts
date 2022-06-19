@@ -1,14 +1,4 @@
 export default interface BoardDetailDto {
-  id: number;
-  name: string;
-  isOwner: boolean;
-  isPinned: boolean;
-  isReported: boolean;
-  deletedAt: string;
-  postResponseDto: PostResponseDto;
-}
-
-interface  PostResponseDto {
   content: ContentPreviewDto[];
 }
 
