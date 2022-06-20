@@ -414,7 +414,7 @@ const App = () => {
                 name="PostScreen"
                 component={PostScreen}
                 options={({navigation}) => ({
-                  title: '네모 게시판',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1116,7 +1116,7 @@ const App = () => {
                 name="PostScreen"
                 component={PostScreen}
                 options={({navigation}) => ({
-                  title: '네모 게시판',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {

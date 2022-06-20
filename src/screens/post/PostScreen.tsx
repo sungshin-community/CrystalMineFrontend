@@ -27,6 +27,18 @@ const PostScreen = ({navigation, route}: Props) => {
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
 
+  useEffect(() => {
+    navigation.setOptions({
+      title: post?.boardName,
+      headerTitleAlign: 'center',
+      headerTintColor: '#000000',
+      headerTitleStyle: {
+        fontSize: 19,
+        fontFamily: 'SpoqaHanSansNeo-Medium',
+      },
+    });
+  }, [navigation, post?.boardName]);
+
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
       const result = await addComment(postId, newComment, isAnonymous);
@@ -39,7 +51,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setComments(commentData);
     },
     [],
-  );
+    );
 
   useEffect(() => {
     async function init() {
@@ -59,17 +71,6 @@ const PostScreen = ({navigation, route}: Props) => {
     setComments(commentData);
   };
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: route.params.boardName,
-      headerTitleAlign: 'center',
-      headerTintColor: '#000000',
-      headerTitleStyle: {
-        fontSize: 19,
-        fontFamily: 'SpoqaHanSansNeo-Medium',
-      },
-    });
-  }, [navigation]);
 
   return (
     <>

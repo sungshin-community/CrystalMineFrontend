@@ -12,12 +12,12 @@ import {
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getBoardDetail} from '../../common/boardApi';
+import {getBoardDetail, getBoardInfo} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import {useIsFocused} from '@react-navigation/native';
 
 type RootStackParamList = {
-  PostScreen: {postId: number; boardName: string};
+  PostScreen: {postId: number;};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -29,9 +29,9 @@ const PostListScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     async function init() {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);
+      const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardDetail(boardDetail);
-      console.log("boardDetail", boardDetail);
-      if (boardDetail) setBoardName(""); // TODO: 이 부분 채우기 (API 변경으로 게시판 이름이 안 옴)
+      setBoardName(boardInfo.name);
     }
     if (isFocused) init();
   }, [isFocused]);
@@ -63,7 +63,6 @@ const PostListScreen = ({navigation, route}: Props) => {
                 onPress={() =>
                   navigation.navigate('PostScreen', {
                     postId: boardDetail?.content[index].postId,
-                    boardName: "",  // TODO: 이 부분 채우기 (API 변경으로 게시판 이름이 안 옴)
                   })
                 }>
                 <PostItem post={post} />

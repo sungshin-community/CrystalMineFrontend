@@ -68,6 +68,17 @@ export const toggleBoardPin = async (boardId: number) => {
   }
 };
 
+export const getBoardInfo = async (boardId: number) => {
+  try {
+    const response = await client.get<Response<null>>(
+      `/boards/${boardId}`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getBoardInfo 함수", e);
+  }
+};
+
 export const getBoardDetail = async (boardId: number, page: number = 0, sort: string = "createdAt") => {
   try {
     const params = new URLSearchParams();
@@ -76,7 +87,6 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/${boardId}/posts?${params}`
     );
-    console.log(response.data.data);
     return response.data.data;
   } catch (e) {
     console.log("여기는 getCustomBoardList 함수", e);
