@@ -1,12 +1,19 @@
-import Blind from "./Blind";
-import PinBoardDto from "./PinBoardDto";
-import HotBoardDto from "./HotBoardDto";
+export interface PinBoardDto {
+  boardId: number;
+  boardName: string;
+  recentPostContent: string;
+  todayNewPost: boolean;
+}
 
-export default interface Home {
-  expireIn: number;
-  nickname: string,
-  blacklistId: number,
-  blinds: Blind[],
-  pinBoardDtos: PinBoardDto[],
-  hotBoardDto: HotBoardDto,
-  }
+export interface HotBoardDto {
+  boardId: number;
+  boardName: string;
+  hotPosts: HotPostDto[];
+}
+
+export interface HotPostDto {
+  postId: number;
+  postContent: string;
+  likeCount: number;
+  commentCount: number;
+}

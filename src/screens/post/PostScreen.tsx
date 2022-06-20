@@ -18,12 +18,26 @@ import {getComments, getPosts} from '../../common/boardApi';
 import {addComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
+import {setCommentLike} from '../../common/boardApi';
+
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostScreen = ({navigation, route}: Props) => {
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: post?.boardName,
+      headerTitleAlign: 'center',
+      headerTintColor: '#000000',
+      headerTitleStyle: {
+        fontSize: 19,
+        fontFamily: 'SpoqaHanSansNeo-Medium',
+      },
+    });
+  }, [navigation, post?.boardName]);
 
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
@@ -37,8 +51,8 @@ const PostScreen = ({navigation, route}: Props) => {
       setComments(commentData);
     },
     [],
-  );
- console.log(post?.postId)
+    );
+
   useEffect(() => {
     async function init() {
       const postData = await getPosts(route.params.postId);
@@ -49,17 +63,14 @@ const PostScreen = ({navigation, route}: Props) => {
     init();
   }, []);
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: route.params.boardName,
-      headerTitleAlign: 'center',
-      headerTintColor: '#000000',
-      headerTitleStyle: {
-        fontSize: 19,
-        fontFamily: 'SpoqaHanSansNeo-Medium',
-      },
-    });
-  }, [navigation]);
+  const handleCommentLike = async (commentId: number) => {
+    const result = await setCommentLike(commentId);
+    const postData = await getPosts(route.params.postId);
+    setPost(postData);
+    const commentData = await getComments(route.params.postId, 0);
+    setComments(commentData);
+  };
+
 
   return (
     <>
@@ -72,7 +83,10 @@ const PostScreen = ({navigation, route}: Props) => {
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>
-                <Comment comment={comment} />
+                <Comment
+                  comment={comment}
+                  handleCommentLike={handleCommentLike}
+                />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
                     <Recomment key={index} recomment={recomment} />

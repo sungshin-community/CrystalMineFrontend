@@ -1,15 +1,24 @@
 import client from './client';
 import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Home from '../classes/Home';
+import { PinBoardDto, HotBoardDto } from '../classes/Home';
 
-const getHomeContents = async () => {
+export const getPinBoardContents = async () => {
     try {
-         const response = await client.get<AxiosResponse<Home>>("/home");
+         const response = await client.get<AxiosResponse<PinBoardDto[]>>("/home/pin-boards");
         return response.data.data;
     }
     catch (e) {
-        console.log("여기는 getHomeContents 함수", e);
+        console.log("여기는 getPinBoardContents 함수", e);
     }
 };
-export default getHomeContents;
+
+export const getHotBoardContents = async () => {
+    try {
+         const response = await client.get<AxiosResponse<HotBoardDto>>("/home/hot-posts");
+        return response.data.data;
+    }
+    catch (e) {
+        console.log("여기는 getHotBoardContents 함수", e);
+    }
+};

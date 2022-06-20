@@ -12,12 +12,12 @@ import {
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getBoardDetail} from '../../common/boardApi';
+import {getBoardDetail, getBoardInfo} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import {useIsFocused} from '@react-navigation/native';
 
 type RootStackParamList = {
-  PostScreen: {postId: number; boardName: string};
+  PostScreen: {postId: number;};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -29,8 +29,9 @@ const PostListScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     async function init() {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);
+      const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardDetail(boardDetail);
-      if (boardDetail) setBoardName(boardDetail?.name);
+      setBoardName(boardInfo.name);
     }
     if (isFocused) init();
   }, [isFocused]);
@@ -55,14 +56,13 @@ const PostListScreen = ({navigation, route}: Props) => {
     <>
       <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View>
-          {boardDetail?.postResponseDto.content.map(
+          {boardDetail?.content.map(
             (post: ContentPreviewDto, index: number) => (
               <Pressable
                 key={index}
                 onPress={() =>
                   navigation.navigate('PostScreen', {
-                    postId: boardDetail?.postResponseDto.content[index].postId,
-                    boardName: boardDetail?.name,
+                    postId: boardDetail?.content[index].postId,
                   })
                 }>
                 <PostItem post={post} />

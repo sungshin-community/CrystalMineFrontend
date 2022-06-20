@@ -17,14 +17,18 @@ import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
-import {setCommentLike} from '../common/boardApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Comment = (comment: any) => {
+interface Props {
+  comment?: any;
+  handleCommentLike?: any;
+}
+const Comment = ({comment, handleCommentLike}: Props) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [letAddRecomment, setLetAddRecomment] = useState<boolean>(false);
-  const data: CommentDto = comment.comment;
-
+  const [letAddRecomment, setLetAddRecomment] = useState<boolean>();
+  const data: CommentDto = comment;
+ 
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 1,
@@ -49,10 +53,6 @@ const Comment = (comment: any) => {
     ],
   };
 
-  const handleCommentLike = async (commentId: number) => {
-    const result  = await setCommentLike(commentId);
-    console.log(result);
-  };
   return (
     <>
       <View
@@ -92,7 +92,7 @@ const Comment = (comment: any) => {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => { setIsLiked(!isLiked); handleCommentLike(data.id) }}>
+              onPress={() => { handleCommentLike(data.id); setIsLiked(!isLiked); }}>
               {isLiked ? <PostLike /> : <PostUnlike />}
             </Pressable>
             <Text style={styles.postLike}>{data?.likeCount}</Text>
