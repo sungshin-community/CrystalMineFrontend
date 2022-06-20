@@ -19,8 +19,8 @@ import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMark
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
-import Home from '../../classes/Home';
-import getHomeContents from '../../common/homeApi';
+import {PinBoardDto, HotBoardDto} from '../../classes/Home';
+import {getHotBoardContents, getPinBoardContents} from '../../common/homeApi';
 import {checkRegularMember} from '../../common/authApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
@@ -35,7 +35,8 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
-  const [homeContents, setHomeContents] = useState<Home>();
+  const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>();
+  const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
   const [isRegularMember, setIsRegularMember] = useState<boolean>(false);
   const [blindVisible, setBlindVisible] = useState<boolean[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -44,9 +45,11 @@ const HomeFragment = ({navigation}: Props) => {
 
   useEffect(() => {
     async function getContents() {
-      const list = await getHomeContents();
-      if (list != null) {
-        setHomeContents(list);
+      const pinBoardData = await getPinBoardContents();
+      const hotBoardData = await getHotBoardContents();
+      if (pinBoardData != null && hotBoardData != null) {
+        setPinBoardContents(pinBoardData);
+        setHotBoardContents(hotBoardData);
       }
     }
     if (isFocused) {
@@ -61,9 +64,10 @@ const HomeFragment = ({navigation}: Props) => {
     console.log('정회원 인증 여부', result);
   };
 
-  const blindVisibleList = homeContents?.blinds.map(index => true);
+  // const blindVisibleList = homeContents?.blinds.map(index => true);
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+      {/*
       <View
         style={{
           backgroundColor: '#F6F6F6',
@@ -103,7 +107,7 @@ const HomeFragment = ({navigation}: Props) => {
               paddingHorizontal: 18,
               backgroundColor: '#fff',
             }}>
-            {/* 인증 만료기간 알림 */}
+            //인증 만료기간 알림
             {homeContents?.expireIn &&
             homeContents?.expireIn > 0 &&
             homeContents?.expireIn <= 7 ? (
@@ -131,7 +135,7 @@ const HomeFragment = ({navigation}: Props) => {
             ) : (
               <></>
             )}
-            {/* 인증 만료 알림 */}
+            //인증 만료 알림
             {!isRegularMember && homeContents?.expireIn <= 0 ? (
               <>
                 <View
@@ -176,7 +180,7 @@ const HomeFragment = ({navigation}: Props) => {
               <></>
             )}
 
-            {/* 블라인드 알림 */}
+            //블라인드 알림
             {homeContents &&
               homeContents.blinds.map((item, index) => (
                 <View key={index}>
@@ -248,6 +252,7 @@ const HomeFragment = ({navigation}: Props) => {
           )}
         </View>
       </View>
+*/}
       <View
         style={{
           padding: 24,
@@ -260,7 +265,7 @@ const HomeFragment = ({navigation}: Props) => {
         </TouchableWithoutFeedback>
         {/* 게시판 글 목록 */}
         {isRegularMember ? (
-          homeContents?.pinBoardDtos.map((item, index) => (
+          pinBoardContents?.map((item, index) => (
             <TouchableOpacity
               key={index}
               onPress={() =>
@@ -322,7 +327,7 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
         </TouchableWithoutFeedback>
         {isRegularMember ? (
-          homeContents?.hotBoardDto.hotPostDtos.map((item, index) => (
+          hotBoardContents?.hotPosts.map((item, index) => (
             <TouchableWithoutFeedback
               key={index}
               onPress={() => navigation.navigate('PostScreen')}>
@@ -332,7 +337,10 @@ const HomeFragment = ({navigation}: Props) => {
                   ellipsizeMode="tail"
                   style={[
                     styles.postSummary,
-                    {width: Dimensions.get('window').width - 150, color: '#000'},
+                    {
+                      width: Dimensions.get('window').width - 150,
+                      color: '#000',
+                    },
                   ]}>
                   {item.postContent.slice(0, 30)}
                 </Text>
@@ -389,7 +397,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flexDirection: 'row',
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   postTitleSummary: {
     fontSize: 13,
