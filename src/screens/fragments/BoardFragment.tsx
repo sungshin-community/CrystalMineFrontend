@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-
 import {ScrollView, View, Text} from 'react-native';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import BoardList, {
   MenuList,
   CustomBoardList,
@@ -16,7 +15,13 @@ import {
   getPinnedBoardList,
 } from '../../common/boardApi';
 
-export default function BoardFragment() {
+type RootStackParamList = {
+  MyPostList: undefined;
+  PostListScreen: {boardId: number};
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function BoardFragment({navigation}: Props) {
   const [pinnedBoardList, setPinnedBoardList] = useState<Board[]>([]);
   const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
@@ -43,6 +48,15 @@ export default function BoardFragment() {
     setPinnedBoardList(pinnedBoardList);
   }
 
+  const moveToMyPostList = () => {
+    navigation.navigate('MyPostList')
+  }
+
+  const moveToBoard = (boardId: number) => {
+    navigation.navigate('PostListScreen', {boardId: boardId});
+  }
+
+
   useEffect(() => {
     async function getBoardList() {
       const pinnedBoardList = await getPinnedBoardList();
@@ -61,14 +75,16 @@ export default function BoardFragment() {
     getBoardList();
   }, []);
 
+  
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
         style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
-        <BoardListContainer boardCategory="모아보기" component={<MenuList />} />
+        <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} />} />
         <BoardListContainer
           boardCategory="고정게시판"
-          component={<BoardList items={pinnedBoardList} />}
+          component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} />}
         />
         {/* <BoardListContainer
           boardCategory="공식게시판"
@@ -88,16 +104,16 @@ export default function BoardFragment() {
         </View>
         <OfficialBoardListContainer
           boardCategory="수정광장"
-          component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} />}
+          component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} />}
         />
         <OfficialBoardListContainer
           defaultFolded={true}
           boardCategory="학과게시판"
-          component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} />}
+          component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} />}
         />
         <CustomBoardListContainer
           boardCategory="수정게시판"
-          component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} />}
+          component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} />}
         />
         <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
       </View>

@@ -30,7 +30,8 @@ const PostListScreen = ({navigation, route}: Props) => {
     async function init() {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);
       setBoardDetail(boardDetail);
-      if (boardDetail) setBoardName(boardDetail?.name);
+      console.log("boardDetail", boardDetail);
+      if (boardDetail) setBoardName(""); // TODO: 이 부분 채우기 (API 변경으로 게시판 이름이 안 옴)
     }
     if (isFocused) init();
   }, [isFocused]);
@@ -55,14 +56,14 @@ const PostListScreen = ({navigation, route}: Props) => {
     <>
       <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View>
-          {boardDetail?.postResponseDto.content.map(
+          {boardDetail?.content.map(
             (post: ContentPreviewDto, index: number) => (
               <Pressable
                 key={index}
                 onPress={() =>
                   navigation.navigate('PostScreen', {
-                    postId: boardDetail?.postResponseDto.content[index].postId,
-                    boardName: boardDetail?.name,
+                    postId: boardDetail?.content[index].postId,
+                    boardName: "",  // TODO: 이 부분 채우기 (API 변경으로 게시판 이름이 안 옴)
                   })
                 }>
                 <PostItem post={post} />

@@ -73,7 +73,7 @@ export default function QuitPassword({navigation}: Props) {
             본인 확인을 위해 비밀번호를 입력해주세요.
           </Description>
         </View>
-        <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 24}}>
+        <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 44}}>
           <View
             style={[
               styles.inputContainer,
@@ -162,11 +162,11 @@ export default function QuitPassword({navigation}: Props) {
             setModalVisible={setModalVisible}
             modalButtonText="네"
             modalButtonFunc={async () => {
-              let result: string = await applyQuitMembership(password);
-              if (result === 'DELETE_AUTH_SUCCESS') {
+              let result: boolean = await applyQuitMembership(password);
+              setModalVisible(false);
+              if (result) {
                 navigation.navigate('QuitComplete');
               } else {
-                setModalVisible(false);
                 setIsPasswordCorrect(false);
               }
             }}
@@ -279,8 +279,8 @@ export default function QuitPassword({navigation}: Props) {
             setModalVisible={setModalVisible}
             modalButtonText="네"
             modalButtonFunc={async () => {
-               let result: string = await applyQuitMembership(password);
-              if (result === 'DELETE_AUTH_SUCCESS') {
+              let result: boolean = await applyQuitMembership(password);
+              if (result) {
                 navigation.navigate('QuitComplete');
               } else {
                 setModalVisible(false);
