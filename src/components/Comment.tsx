@@ -25,6 +25,7 @@ interface Props {
   handleCommentLike?: any;
   isRecomment: boolean;
   setIsRecomment?: any;
+  inputRef: any;
 }
 const Comment = ({
   comment,
@@ -32,6 +33,7 @@ const Comment = ({
   handleCommentLike,
   isRecomment,
   setIsRecomment,
+  inputRef,
 }: Props) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
@@ -119,6 +121,7 @@ const Comment = ({
                 setParentId(data.id);
                 setIsRecomment(!isRecomment);
                 setIsRecommentState(!isRecommentState);
+                inputRef.current.focus();
               }}>
               <PostComment />
             </Pressable>

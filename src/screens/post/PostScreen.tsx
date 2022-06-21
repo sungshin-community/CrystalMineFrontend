@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -28,6 +28,8 @@ const PostScreen = ({navigation, route}: Props) => {
   const [comments, setComments] = useState<CommentDto[]>();
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const [parentId, setParentId] = useState<number>();
+  const [newComment, setNewComment] = useState<string>('');
+  const inputRef = useRef(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -46,6 +48,7 @@ const PostScreen = ({navigation, route}: Props) => {
       if (result) {
         console.log('댓글 추가 성공');
       }
+      setNewComment('');
       const postData = await getPosts(route.params.postId);
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
@@ -60,6 +63,7 @@ const PostScreen = ({navigation, route}: Props) => {
         console.log('대댓글 추가 성공');
       }
       setIsRecomment(false)
+      setNewComment('');
       const postData = await getPosts(route.params.postId);
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
@@ -104,6 +108,7 @@ const PostScreen = ({navigation, route}: Props) => {
                   handleCommentLike={handleCommentLike}
                   isRecomment={isRecomment}
                   setIsRecomment={setIsRecomment}
+                  inputRef={inputRef}
                 />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
@@ -115,7 +120,7 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
-          <InputComment postId={route.params.postId} parentId={parentId} onClickAddComment={addCommentFunc} isRecomment={isRecomment} onClickAddRecomment={addRecommentFunc}/>
+          <InputComment postId={route.params.postId} parentId={parentId} onClickAddComment={addCommentFunc} isRecomment={isRecomment} onClickAddRecomment={addRecommentFunc} content={newComment} setContent={setNewComment} inputRef={inputRef}/>
         </View>
       </KeyboardAvoidingView>
     </>

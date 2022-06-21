@@ -2,7 +2,7 @@ import {
   RectangleUnchecked,
   RectangleChecked,
 } from '../../resources/icon/CheckBox';
-import React, {useState, createRef} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -22,6 +22,9 @@ interface Props {
   onClickAddComment?: any;
   isRecomment?: boolean;
   onClickAddRecomment: any;
+  content: string;
+  setContent: any;
+  inputRef: any;
 }
 function InputComment({
   postId,
@@ -29,9 +32,11 @@ function InputComment({
   onClickAddComment,
   isRecomment,
   onClickAddRecomment,
+  content,
+  setContent,
+  inputRef,
 }: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
-  const [content, setContent] = useState<string>();
   const onSubmit = useCallback(() => {
     if (isRecomment)
       onClickAddRecomment(postId, parentId, content, isAnonymous);
@@ -59,6 +64,7 @@ function InputComment({
           {flexDirection: 'row', justifyContent: 'space-between'},
         ]}>
         <TextInput
+          ref={inputRef}
           placeholder="댓글을 입력해 주세요."
           placeholderTextColor="#87919B"
           multiline={true}
@@ -74,7 +80,6 @@ function InputComment({
               style={{paddingVertical: 5}}
               onPress={() => {
                 onSubmit();
-                setContent('');
               }}>
               <CommentSendIcon />
             </Pressable>
