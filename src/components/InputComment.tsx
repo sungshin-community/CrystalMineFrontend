@@ -43,7 +43,12 @@ function InputComment({
     else onClickAddComment(postId, content, isAnonymous);
   }, [onClickAddComment, content]);
   return (
-    <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingVertical: 5,
+        paddingBottom: Platform.OS === 'ios' ? 40 : 10,
+      }}>
       <View
         style={{
           flexDirection: 'row',
@@ -72,12 +77,12 @@ function InputComment({
             setContent(value);
           }}
           autoCorrect={false}
-          style={[styles.input, {textAlignVertical: 'center'}]}
+          style={[styles.input]}
         />
         <Text>
           {content && (
             <Pressable
-              style={{paddingVertical: 5}}
+              style={{paddingTop: Platform.OS === 'ios' ? 7: 5}}
               onPress={() => {
                 onSubmit();
               }}>
@@ -103,6 +108,8 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 13,
     width: Dimensions.get('window').width - 150,
-    paddingTop: Platform.OS === 'ios' ? 14 : 10,
+    paddingVertical: 5,
+    paddingTop: Platform.OS == 'ios' ? 13: 0,
+    minHeight: 44,
   },
 });
