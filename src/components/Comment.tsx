@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -21,14 +21,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props {
   comment?: any;
+  setParentId?: any;
   handleCommentLike?: any;
+  isRecomment: boolean;
+  setIsRecomment?: any;
 }
-const Comment = ({comment, handleCommentLike}: Props) => {
+const Comment = ({
+  comment,
+  setParentId,
+  handleCommentLike,
+  isRecomment,
+  setIsRecomment,
+}: Props) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [letAddRecomment, setLetAddRecomment] = useState<boolean>();
+  const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
- 
+
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 1,
@@ -52,13 +60,21 @@ const Comment = ({comment, handleCommentLike}: Props) => {
       },
     ],
   };
+  useEffect(() => {
+    if(!isRecomment)
+    setIsRecommentState(false);
+  }, [isRecomment]);
 
   return (
     <>
       <View
         style={{
           paddingHorizontal: 24,
-          backgroundColor: data?.isAuthor ? '#F8F8F8' : letAddRecomment ? '#A055FF' : '#FFF',
+          backgroundColor: isRecommentState
+            ? '#EEDCFD'
+            : data?.isOfReader
+            ? '#F8F8F8'
+            : '#FFF',
         }}>
         <View
           style={{
@@ -74,7 +90,7 @@ const Comment = ({comment, handleCommentLike}: Props) => {
                   fontSize: 16,
                   paddingLeft: 8,
                   fontWeight: `500`,
-                  color: data?.isAuthor ? '#A055FF' : '#000',
+                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                 }}>
                 {data?.displayName}
               </Text>
@@ -92,11 +108,18 @@ const Comment = ({comment, handleCommentLike}: Props) => {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => { handleCommentLike(data.id); setIsLiked(!isLiked); }}>
-              {isLiked ? <PostLike /> : <PostUnlike />}
+              onPress={() => {
+                handleCommentLike(data.id);
+              }}>
+              {data.isLiked ? <PostLike /> : <PostUnlike />}
             </Pressable>
             <Text style={styles.postLike}>{data?.likeCount}</Text>
-            <Pressable onPress={() => { setLetAddRecomment(!letAddRecomment); console.log('comment id: ',data.id) }}>
+            <Pressable
+              onPress={() => {
+                setParentId(data.id);
+                setIsRecomment(!isRecomment);
+                setIsRecommentState(!isRecommentState);
+              }}>
               <PostComment />
             </Pressable>
           </View>
@@ -126,10 +149,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Recomment = (recomment: any) => {
+interface RecommentProps {
+  recomment?: any;
+  handleCommentLike?: any;
+}
+
+export const Recomment = ({recomment, handleCommentLike}: RecommentProps) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
-  const data: RecommentDto = recomment.recomment;
+  const data: RecommentDto = recomment;
   const handleAnimation = () => {
     Animated.timing(rotateAnimation, {
       toValue: 1,
@@ -158,7 +186,7 @@ export const Recomment = (recomment: any) => {
       <View
         style={{
           paddingHorizontal: 24,
-          backgroundColor: data.isAuthor ? '#F8F8F8' : '#FFF',
+          backgroundColor: data.isOfReader ? '#F8F8F8' : '#FFF',
           paddingBottom: 12,
         }}>
         <View
@@ -176,6 +204,7 @@ export const Recomment = (recomment: any) => {
                   fontSize: 16,
                   paddingLeft: 8,
                   fontWeight: `500`,
+                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                 }}>
                 {data.displayName}
               </Text>
@@ -198,11 +227,10 @@ export const Recomment = (recomment: any) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Pressable
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => setIsLiked(!isLiked)}>
-                {isLiked ? <PostLike /> : <PostUnlike />}
+                onPress={() => handleCommentLike(data.id)}>
+                {data.isLiked ? <PostLike /> : <PostUnlike />}
               </Pressable>
               <Text style={styles.postLike}>{data?.likeCount}</Text>
-              <PostComment />
             </View>
             <View>
               <Text style={{color: '#949494', fontSize: 13}}>

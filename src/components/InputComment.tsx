@@ -18,18 +18,25 @@ import {useCallback} from 'react';
 
 interface Props {
   postId?: any;
-  onClick?: any;
+  parentId?: number;
+  onClickAddComment?: any;
+  isRecomment?: boolean;
+  onClickAddRecomment: any;
 }
-function InputComment({postId, onClick}: Props) {
+function InputComment({
+  postId,
+  parentId,
+  onClickAddComment,
+  isRecomment,
+  onClickAddRecomment,
+}: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [content, setContent] = useState<string>();
-  const inputRef = createRef();
-  const onSubmit = useCallback(
-    () => {
-      onClick(postId, content, isAnonymous);
-    },
-    [onClick, content],
-  );
+  const onSubmit = useCallback(() => {
+    if (isRecomment)
+      onClickAddRecomment(postId, parentId, content, isAnonymous);
+    else onClickAddComment(postId, content, isAnonymous);
+  }, [onClickAddComment, content]);
   return (
     <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
       <View
@@ -59,14 +66,15 @@ function InputComment({postId, onClick}: Props) {
             setContent(value);
           }}
           autoCorrect={false}
-          style={[styles.input, { textAlignVertical: 'center' }]}
-          />
+          style={[styles.input, {textAlignVertical: 'center'}]}
+        />
         <Text>
           {content && (
             <Pressable
               style={{paddingVertical: 5}}
               onPress={() => {
-                onSubmit(); setContent(''); inputRef.current.clear();
+                onSubmit();
+                setContent('');
               }}>
               <CommentSendIcon />
             </Pressable>

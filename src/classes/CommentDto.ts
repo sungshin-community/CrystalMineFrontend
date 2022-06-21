@@ -5,15 +5,18 @@ export default interface CommentDto {
   isAnonymous: boolean;
   displayName: string;
   profileImageUrl: string;
-  isAuthor: boolean;
+  isOfReader: boolean;
+  isOfBoardOwner: boolean;
+  isOfPostAuthor: boolean;
+  isOfBlacklist: boolean;
+  isOfDeletedUser: boolean;
   content: string;
-  likeCount: number;
   createdAt: string;
+  likeCount: number;
   isLiked: boolean;
   isReported: boolean;
   isBlind: boolean;
   isDeleted: boolean;
-  recomments: RecommentDto[]
 }
 
 export interface RecommentDto {
@@ -23,10 +26,14 @@ export interface RecommentDto {
   isAnonymous: boolean;
   displayName: string;
   profileImageUrl: string;
-  isAuthor: boolean;
+  isOfReader: boolean;
+  isOfBoardOwner: boolean;
+  isOfPostAuthor: boolean;
+  isOfBlacklist: boolean;
+  isOfDeletedUser: boolean;
   content: string;
-  likeCount: number;
   createdAt: string;
+  likeCount: number;
   isLiked: boolean;
   isReported: boolean;
   isBlind: boolean;
