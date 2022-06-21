@@ -2,7 +2,7 @@ import {
   RectangleUnchecked,
   RectangleChecked,
 } from '../../resources/icon/CheckBox';
-import React, {useState, createRef} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -18,20 +18,37 @@ import {useCallback} from 'react';
 
 interface Props {
   postId?: any;
-  onClick?: any;
+  parentId?: number;
+  onClickAddComment?: any;
+  isRecomment?: boolean;
+  onClickAddRecomment: any;
+  content: string;
+  setContent: any;
+  inputRef: any;
 }
-function InputComment({postId, onClick}: Props) {
+function InputComment({
+  postId,
+  parentId,
+  onClickAddComment,
+  isRecomment,
+  onClickAddRecomment,
+  content,
+  setContent,
+  inputRef,
+}: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
-  const [content, setContent] = useState<string>();
-  const inputRef = createRef();
-  const onSubmit = useCallback(
-    () => {
-      onClick(postId, content, isAnonymous);
-    },
-    [onClick, content],
-  );
+  const onSubmit = useCallback(() => {
+    if (isRecomment)
+      onClickAddRecomment(postId, parentId, content, isAnonymous);
+    else onClickAddComment(postId, content, isAnonymous);
+  }, [onClickAddComment, content]);
   return (
-    <View style={{flexDirection: 'row', paddingVertical: 5, paddingBottom: 30}}>
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingVertical: 5,
+        paddingBottom: Platform.OS === 'ios' ? 40 : 10,
+      }}>
       <View
         style={{
           flexDirection: 'row',
@@ -52,6 +69,7 @@ function InputComment({postId, onClick}: Props) {
           {flexDirection: 'row', justifyContent: 'space-between'},
         ]}>
         <TextInput
+          ref={inputRef}
           placeholder="댓글을 입력해 주세요."
           placeholderTextColor="#87919B"
           multiline={true}
@@ -59,14 +77,14 @@ function InputComment({postId, onClick}: Props) {
             setContent(value);
           }}
           autoCorrect={false}
-          style={[styles.input, { textAlignVertical: 'center' }]}
-          />
+          style={[styles.input]}
+        />
         <Text>
           {content && (
             <Pressable
-              style={{paddingVertical: 5}}
+              style={{paddingTop: Platform.OS === 'ios' ? 7: 5}}
               onPress={() => {
-                onSubmit(); setContent(''); inputRef.current.clear();
+                onSubmit();
               }}>
               <CommentSendIcon />
             </Pressable>
@@ -90,6 +108,8 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 13,
     width: Dimensions.get('window').width - 150,
-    paddingTop: Platform.OS === 'ios' ? 14 : 10,
+    paddingVertical: 5,
+    paddingTop: Platform.OS == 'ios' ? 13: 0,
+    minHeight: 44,
   },
 });

@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Board from '../classes/Board';
 import Response from '../classes/Response';
 import BoardDetailDto from '../classes/BoardDetailDto';
-import CommentDto from '../classes/CommentDto';
+import CommentDto, { RecommentDto } from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
 
 export const getPinnedBoardList = async () => {
@@ -157,5 +157,20 @@ export const setCommentLike = async (commetId: number) => {
   } catch (e) {
     console.log("여기는 setCommentLike 함수", e);
     return false;
+  }
+};
+
+export const addRecomment = async (postId: number, parentId: number, content: string, isAnonymous: boolean) => {
+  try {
+    console.log(postId, content, parentId, '익명여부:', isAnonymous)
+    const response = await client.post<Response<RecommentDto>>(
+      `/comments/${parentId}`,
+      {postId: postId, parentId: parentId, content: content, isAnonymous: isAnonymous},
+    );
+    console.log('addRecomment 함수 성공', response.data)
+    return 0;
+  } catch (e: any) {
+    console.log('addRecomment 함수 실패', e.response.data);
+    return e.response.data.status;
   }
 };

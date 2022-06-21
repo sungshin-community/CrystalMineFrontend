@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,7 +15,7 @@ import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
 import {getComments, getPosts} from '../../common/boardApi';
-import {addComment} from '../../common/boardApi';
+import {addComment, addRecomment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
 import {setCommentLike} from '../../common/boardApi';
@@ -26,6 +26,10 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostScreen = ({navigation, route}: Props) => {
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
+  const [isRecomment, setIsRecomment] = useState<boolean>(false);
+  const [parentId, setParentId] = useState<number>();
+  const [newComment, setNewComment] = useState<string>('');
+  const inputRef = useRef(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -38,13 +42,28 @@ const PostScreen = ({navigation, route}: Props) => {
       },
     });
   }, [navigation, post?.boardName]);
-
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
       const result = await addComment(postId, newComment, isAnonymous);
       if (result) {
         console.log('댓글 추가 성공');
       }
+      setNewComment('');
+      const postData = await getPosts(route.params.postId);
+      setPost(postData);
+      const commentData = await getComments(route.params.postId, 0);
+      setComments(commentData);
+    },
+    [],
+    );
+  const addRecommentFunc = useCallback(
+    async (postId: number, parentId: number, newComment: string, isAnonymous: boolean) => {
+      const result = await addRecomment(postId, parentId, newComment, isAnonymous);
+      if (result) {
+        console.log('대댓글 추가 성공');
+      }
+      setIsRecomment(false)
+      setNewComment('');
       const postData = await getPosts(route.params.postId);
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
@@ -85,11 +104,15 @@ const PostScreen = ({navigation, route}: Props) => {
               <View key={index}>
                 <Comment
                   comment={comment}
+                  setParentId={setParentId}
                   handleCommentLike={handleCommentLike}
+                  isRecomment={isRecomment}
+                  setIsRecomment={setIsRecomment}
+                  inputRef={inputRef}
                 />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
-                    <Recomment key={index} recomment={recomment} />
+                    <Recomment key={index} recomment={recomment} handleCommentLike={handleCommentLike} />
                     //recomment 데이터 생긴 후 확인 필요
                   ))}
               </View>
@@ -97,7 +120,7 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
-          <InputComment postId={route.params.postId} onClick={addCommentFunc} />
+          <InputComment postId={route.params.postId} parentId={parentId} onClickAddComment={addCommentFunc} isRecomment={isRecomment} onClickAddRecomment={addRecommentFunc} content={newComment} setContent={setNewComment} inputRef={inputRef}/>
         </View>
       </KeyboardAvoidingView>
     </>
