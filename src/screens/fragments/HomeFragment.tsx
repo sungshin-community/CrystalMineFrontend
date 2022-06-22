@@ -21,9 +21,10 @@ import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
 import {PinBoardDto, HotBoardDto} from '../../classes/Home';
 import {getHotBoardContents, getPinBoardContents} from '../../common/homeApi';
-import {checkRegularMember} from '../../common/authApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
+import User from '../../classes/User';
+import {getUser} from '../../common/myPageApi';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -37,9 +38,9 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>();
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
-  const [isRegularMember, setIsRegularMember] = useState<boolean>(false);
   const [blindVisible, setBlindVisible] = useState<boolean[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [user, setUser] = useState<User>();
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
 
@@ -55,20 +56,22 @@ const HomeFragment = ({navigation}: Props) => {
     if (isFocused) {
       getContents();
     }
-    checkRegularMemberFunc();
   }, [isFocused]);
 
-  const checkRegularMemberFunc = async () => {
-    const result: boolean = await checkRegularMember();
-    setIsRegularMember(result);
-    console.log('정회원 인증 여부', result);
-  };
+  useEffect(() => {
+    async function getUserInfo() {
+      const userDto = await getUser();
+      setUser(userDto);
+    }
+    if (isFocused) {
+      getUserInfo();
+    }
+  }, [isFocused]);
 
   // const blindVisibleList = homeContents?.blinds.map(index => true);
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-      {/*
-      <View
+      {/* <View
         style={{
           backgroundColor: '#F6F6F6',
           paddingTop: 32,
@@ -78,96 +81,94 @@ const HomeFragment = ({navigation}: Props) => {
               (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0))
               ? 32
               : 0,
+        }}> */}
+      <Text
+        style={{
+          fontSize: 22,
+          marginLeft: 40,
+          marginBottom: 26,
         }}>
-        <Text
-          style={{
-            fontSize: 22,
-            marginLeft: 40,
-            marginBottom: 26,
-          }}>
-          <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
-            {homeContents?.nickname}
-          </Text>
-          {` 님, `}
-          {homeContents && homeContents?.nickname.length > 8 ? (
-            <Text>{`\n`}</Text>
-          ) : (
-            <></>
-          )}
-          {`안녕하세요!`}
+        <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+          {user?.nickname}
         </Text>
+        {` 님, `}
+        {user && user?.nickname.length > 8 ? <Text>{`\n`}</Text> : <></>}
+        {`안녕하세요!`}
+      </Text>
+      {/* 임시 안내문구 */}
+      <Text
+        style={{color: 'white', textAlign: 'center', backgroundColor: 'red'}}>
+        *공지* {'\n'}알림 구현 전까지 일시적으로 홈 알림 부분이 깨짐을
+        알려드립니다
+      </Text>
+
+      <View
+        style={{
+          borderRadius: 20,
+        }}>
         <View
           style={{
             borderRadius: 20,
+            marginHorizontal: 24,
+            paddingHorizontal: 18,
+            backgroundColor: '#fff',
           }}>
-          <View
-            style={{
-              borderRadius: 20,
-              marginHorizontal: 24,
-              paddingHorizontal: 18,
-              backgroundColor: '#fff',
-            }}>
-            //인증 만료기간 알림
-            {homeContents?.expireIn &&
-            homeContents?.expireIn > 0 &&
-            homeContents?.expireIn <= 7 ? (
-              <>
-                <TouchableWithoutFeedback
-                  onPress={() =>
-                    navigation.navigate('RegularMemberAuthMyPage')
-                  }>
-                  <View style={styles.newsContainer}>
-                    <View style={{flexDirection: 'row'}}>
-                      <NewsExclamationMarkIcon />
-                      <View>
-                        <Text style={styles.newsTitle}>
-                          인증 만료일이 {homeContents?.expireIn}일 남았어요!
-                        </Text>
-                        <Text style={styles.newsMore}>인증하러 가기</Text>
-                      </View>
-                    </View>
+          {/* 인증 만료기간 알림 */}
+          {user?.expireIn && user?.expireIn > 0 && user?.expireIn <= 7 ? (
+            <>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('RegularMemberAuthMyPage')}>
+                <View style={styles.newsContainer}>
+                  <View style={{flexDirection: 'row'}}>
+                    <NewsExclamationMarkIcon />
                     <View>
-                      <RightArrowBold />
+                      <Text style={styles.newsTitle}>
+                        인증 만료일이 {user?.expireIn}일 남았어요!
+                      </Text>
+                      <Text style={styles.newsMore}>인증하러 가기</Text>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              </>
-            ) : (
-              <></>
-            )}
-            //인증 만료 알림
-            {!isRegularMember && homeContents?.expireIn <= 0 ? (
-              <>
-                <View
-                  style={{
-                    borderBottomColor: '#F0F0F0',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                <TouchableWithoutFeedback
-                  onPress={() =>
-                    navigation.navigate('RegularMemberAuthMyPage')
-                  }>
-                  <View style={styles.newsContainer}>
-                    <View style={{flexDirection: 'row'}}>
-                      <NewsExclamationMarkIcon />
-                      <View>
-                        <Text style={styles.newsTitle}>
-                          정회원 인증이 필요해요.
-                        </Text>
-                        <Text style={styles.newsMore}>인증하러 가기</Text>
-                      </View>
-                    </View>
+                  <View>
+                    <RightArrowBold />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </>
+          ) : (
+            <></>
+          )}
+          {/* 인증 만료 알림 */}
+          {!user?.isAuthenticated && user?.expireIn <= 0 ? (
+            <>
+              <View
+                style={{
+                  borderBottomColor: '#F0F0F0',
+                  borderBottomWidth: 1,
+                }}
+              />
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('RegularMemberAuthMyPage')}>
+                <View style={styles.newsContainer}>
+                  <View style={{flexDirection: 'row'}}>
+                    <NewsExclamationMarkIcon />
                     <View>
-                      <RightArrowBold />
+                      <Text style={styles.newsTitle}>
+                        정회원 인증이 필요해요.
+                      </Text>
+                      <Text style={styles.newsMore}>인증하러 가기</Text>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              </>
-            ) : (
-              <></>
-            )}
-            {homeContents &&
+                  <View>
+                    <RightArrowBold />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {/* {homeContents &&
             (homeContents?.blinds[0] ||
               (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0)) ? (
               <View
@@ -178,9 +179,9 @@ const HomeFragment = ({navigation}: Props) => {
               />
             ) : (
               <></>
-            )}
+            )} */}
 
-            //블라인드 알림
+          {/* //블라인드 알림
             {homeContents &&
               homeContents.blinds.map((item, index) => (
                 <View key={index}>
@@ -231,28 +232,29 @@ const HomeFragment = ({navigation}: Props) => {
                     </TouchableWithoutFeedback>
                   )}
                 </View>
-              ))}
-          </View>
-          {modalVisible && (
-            <ModalBottom
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              modalText={modalText}
-              modalBody={modalBody}
-              modalButtonText="서비스 이용 방향 보기"
-              modalButton
-              modalButtonFunc={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate('TermsOfService');
-              }}
-              isSecondButton={true}
-              modalSecondButtonText="확인"
-              modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
-            />
-          )}
+              ))} */}
         </View>
+        {modalVisible && (
+          <ModalBottom
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalText={modalText}
+            modalBody={modalBody}
+            modalButtonText="서비스 이용 방향 보기"
+            modalButton
+            modalButtonFunc={() => {
+              setModalVisible(!modalVisible);
+              navigation.navigate('TermsOfService');
+            }}
+            isSecondButton={true}
+            modalSecondButtonText="확인"
+            modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
+          />
+        )}
       </View>
-*/}
+
+      {/* </View> */}
+
       <View
         style={{
           padding: 24,
@@ -264,7 +266,7 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
         </TouchableWithoutFeedback>
         {/* 게시판 글 목록 */}
-        {isRegularMember ? (
+        {user?.isAuthenticated ? (
           pinBoardContents?.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -326,7 +328,7 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={styles.more}>더보기</Text>
           </View>
         </TouchableWithoutFeedback>
-        {isRegularMember ? (
+        {user?.isAuthenticated ? (
           hotBoardContents?.hotPosts.map((item, index) => (
             <TouchableWithoutFeedback
               key={index}
