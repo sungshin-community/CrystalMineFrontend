@@ -184,6 +184,15 @@ export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
     return e.response;
   }
 }
+ export const checkRegularMember = async () => {
+  try {
+    const response = await client.get<Response<User>>('/user');
+    return response.data.data.isAuthenticated;
+  } catch (e: any) {
+    console.log('여기는 checkRegularMember 함수', e.response);
+    return false;
+  }
+};
 
 export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPasswordRequestDto) => {
   let response;
