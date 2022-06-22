@@ -14,7 +14,7 @@ import Post from '../../components/Post';
 import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
-import {getComments, getPosts, setPostLike} from '../../common/boardApi';
+import {getComments, getPosts, setPostLike, setPostScrap} from '../../common/boardApi';
 import {addComment, addRecomment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
@@ -56,6 +56,14 @@ const PostScreen = ({navigation, route}: Props) => {
   // 게시글 공감
   const handlePostLike = async (postId: number) => {
     const result = await setPostLike(postId);
+    const postData = await getPosts(route.params.postId);
+    setPost(postData);
+    const commentData = await getComments(route.params.postId, 0);
+    setComments(commentData);
+  };
+  // 게시글 스크랩
+   const handlePostScrap = async (postId: number) => {
+    const result = await setPostScrap(postId);
     const postData = await getPosts(route.params.postId);
     setPost(postData);
     const commentData = await getComments(route.params.postId, 0);
@@ -118,7 +126,7 @@ const PostScreen = ({navigation, route}: Props) => {
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-          <Post post={post} handlePostLike={handlePostLike}></Post>
+          <Post post={post} handlePostLike={handlePostLike} handlePostScrap={handlePostScrap}></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>

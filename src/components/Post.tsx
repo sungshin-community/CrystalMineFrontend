@@ -18,21 +18,22 @@ import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 interface Props {
   post: any;
   handlePostLike: any;
+  handlePostScrap: any;
 }
 
-function Post({post, handlePostLike}: Props) {
+function Post({post, handlePostLike, handlePostScrap}: Props) {
   const data: PostDto = post;
-
-  const handleScrap = (
-    <View style={{ marginRight: 5 }}>
-      <NoScrap />
+  const handleScrapComponent = (
+    <View style={{marginRight: 5}}>
+      <TouchableWithoutFeedback onPress={() => handlePostScrap(data.postId)}>
+        {data?.isScraped ? <Scrap /> : <NoScrap />}
+      </TouchableWithoutFeedback>
     </View>
   );
-
   return (
     <>
       <View style={styles.postContainer}>
@@ -46,7 +47,11 @@ function Post({post, handlePostLike}: Props) {
             </View>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <SpinningThreeDots defaultIcon={handleScrap} isMine={data?.isAuthor} />
+            <SpinningThreeDots
+              isScrap={true}
+              isMine={data?.isAuthor}
+              handleScrapComponent={handleScrapComponent}
+            />
           </View>
         </View>
         <View style={styles.postBody}>

@@ -5,16 +5,18 @@ import {
   StyleSheet,
   Animated,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
 import {NoScrap} from '../../resources/icon/Scrap';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import Siren from '../../resources/icon/Siren';
 interface Props {
-  defaultIcon?: any;
+  isScrap?: boolean;
   isMine: boolean;
+  handleScrapComponent?: any;
 }
-function SpinningThreeDots({defaultIcon, isMine}: Props) {
+function SpinningThreeDots({isScrap = false, isMine, handleScrapComponent}: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const handleAnimation = () => {
@@ -42,7 +44,9 @@ function SpinningThreeDots({defaultIcon, isMine}: Props) {
     <>
       <View style={{flexDirection: 'row'}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {!isOptionState && defaultIcon}
+          {!isOptionState && isScrap && (
+           handleScrapComponent
+          )}
           {isOptionState &&
             (isMine ? (
               <TrashIcon style={{marginRight: 5}} />

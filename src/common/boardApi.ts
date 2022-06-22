@@ -125,7 +125,6 @@ export const setPostLike = async (postId: number) => {
     const response = await client.post<Response<null>>(
       `/posts/${postId}/like`
     );
-    console.log(postId)
     return true;
   } catch (e) {
     console.log("여기는 setPostLike 함수", e);
@@ -133,6 +132,17 @@ export const setPostLike = async (postId: number) => {
   }
 };
 // 게시글 스크랩
+export const setPostScrap = async (postId: number) => {
+  try {
+    const response = await client.post<Response<null>>(
+      `/posts/${postId}/scrap`
+    );
+    return true;
+  } catch (e) {
+    console.log("여기는 setPostScrap 함수", e);
+    return false;
+  }
+};
 // 게시글 신고
 // 게시글 삭제
 
