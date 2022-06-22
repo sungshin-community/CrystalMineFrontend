@@ -17,7 +17,7 @@ import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import SpinningThreeDots from './SpinningThreeDots';
 
 interface Props {
   comment?: any;
@@ -35,36 +35,11 @@ const Comment = ({
   setIsRecomment,
   inputRef,
 }: Props) => {
-  const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
 
-  const handleAnimation = () => {
-    Animated.timing(rotateAnimation, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(() => {
-      rotateAnimation.setValue(0);
-    });
-    setRotateAnimation(rotateAnimation);
-  };
-
-  const interpolateRotating = rotateAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '90deg'],
-  });
-
-  const animatedStyle = {
-    transform: [
-      {
-        rotate: interpolateRotating,
-      },
-    ],
-  };
   useEffect(() => {
-    if(!isRecomment)
-    setIsRecommentState(false);
+    if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
 
   return (
@@ -98,7 +73,7 @@ const Comment = ({
               </Text>
             </View>
           </View>
-          <ThreeDots />
+          <SpinningThreeDots isMine={data.isOfReader} />
         </View>
         <Text>{data?.content}</Text>
         <View
@@ -161,29 +136,7 @@ export const Recomment = ({recomment, handleCommentLike}: RecommentProps) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
   const data: RecommentDto = recomment;
-  const handleAnimation = () => {
-    Animated.timing(rotateAnimation, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(() => {
-      rotateAnimation.setValue(0);
-    });
-    setRotateAnimation(rotateAnimation);
-  };
 
-  const interpolateRotating = rotateAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '90deg'],
-  });
-
-  const animatedStyle = {
-    transform: [
-      {
-        rotate: interpolateRotating,
-      },
-    ],
-  };
   return (
     <>
       <View
@@ -213,11 +166,7 @@ export const Recomment = ({recomment, handleCommentLike}: RecommentProps) => {
               </Text>
             </View>
           </View>
-          <TouchableWithoutFeedback onPress={async () => handleAnimation()}>
-            <Animated.View style={animatedStyle}>
-              <ThreeDots />
-            </Animated.View>
-          </TouchableWithoutFeedback>
+          <SpinningThreeDots isMine={data.isOfReader} />
         </View>
         <View style={{marginLeft: 20}}>
           <Text>{data.content}</Text>

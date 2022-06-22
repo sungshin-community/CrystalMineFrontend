@@ -17,9 +17,16 @@ import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
+import SpinningThreeDots from './SpinningThreeDots';
 function Post(post: any) {
   const [isLiked, setIsLiked] = useState<boolean>();
   const data: PostDto = post.post;
+
+  const handleScrap = (
+    <View style={{marginRight: 5}}>
+      <NoScrap />
+    </View>
+  );
   return (
     <>
       <View style={styles.postContainer}>
@@ -32,9 +39,8 @@ function Post(post: any) {
               </Text>
             </View>
           </View>
-          <View style={{flexDirection: 'row'}}>
-            <NoScrap />
-            <ThreeDots icons={<NoScrap />} />
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <SpinningThreeDots defaultIcon={handleScrap} isMine={data?.isAuthor} />
           </View>
         </View>
         <View style={styles.postBody}>
