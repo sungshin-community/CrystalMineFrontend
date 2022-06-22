@@ -6,12 +6,12 @@ import Major from '../classes/Major';
 import SignUpResponseDto from '../classes/SignUpResponseDto';
 import SignInRequestDto from '../classes/SignInRequestDto';
 import VerificationRequestDto from '../classes/VerificationRequestDto';
-import RegularMemberCheckDto from '../classes/RegularMemberCheckDto';
 import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
 import ResetPasswordVerificationRequestDto from '../classes/ResetPasswordVerificationRequestDto';
 import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
 import TokenReissueDto from '../classes/TokenReissueDto';
+import User from '../classes/User';
 export const getAgreements = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/agreement');
@@ -184,16 +184,6 @@ export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
     return e.response;
   }
 }
-
-export const checkRegularMember = async () => {
-  try {
-    const response = await client.get<Response<RegularMemberCheckDto>>('/user');
-    return response.data.data.isAuthenticated;
-  } catch (e: any) {
-    console.log('여기는 checkRegularMember 함수', e.response);
-    return false;
-  }
-};
 
 export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPasswordRequestDto) => {
   let response;
