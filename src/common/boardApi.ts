@@ -108,6 +108,7 @@ export async function getMyPostList(page: number = 0, sort: string = "createdAt"
   }
 }
 
+// 게시글
 export const getPosts = async (postId: number) => {
   try {
     const response = await client.get<AxiosResponse>(
@@ -118,7 +119,24 @@ export const getPosts = async (postId: number) => {
     console.log("여기는 getPosts 함수", e);
   }
 };
+// 게시글 공감
+export const setPostLike = async (postId: number) => {
+  try {
+    const response = await client.post<Response<null>>(
+      `/posts/${postId}/like`
+    );
+    console.log(postId)
+    return true;
+  } catch (e) {
+    console.log("여기는 setPostLike 함수", e);
+    return false;
+  }
+};
+// 게시글 스크랩
+// 게시글 신고
+// 게시글 삭제
 
+// 댓글
 export const getComments = async (postId: number, page: number) => {
   try {
     const params = new URLSearchParams();
@@ -131,7 +149,7 @@ export const getComments = async (postId: number, page: number) => {
     console.log("여기는 getComments 함수", e);
   }
 };
-
+// 댓글 생성
 export const addComment = async (postId: number, content: string, isAnonymous: boolean) => {
   try {
     console.log(postId, content, '익명여부:', isAnonymous)
@@ -146,20 +164,7 @@ export const addComment = async (postId: number, content: string, isAnonymous: b
     return e.response.data.status;
   }
 };
-
-export const setCommentLike = async (commetId: number) => {
-  try {
-    const response = await client.post<Response<null>>(
-      `/comments/${commetId}/like`
-    );
-    console.log(response.data);
-    return true;
-  } catch (e) {
-    console.log("여기는 setCommentLike 함수", e);
-    return false;
-  }
-};
-
+// 대댓글 생성
 export const addRecomment = async (postId: number, parentId: number, content: string, isAnonymous: boolean) => {
   try {
     console.log(postId, content, parentId, '익명여부:', isAnonymous)
@@ -174,3 +179,17 @@ export const addRecomment = async (postId: number, parentId: number, content: st
     return e.response.data.status;
   }
 };
+// 댓글, 대댓글 공감
+export const setCommentLike = async (commetId: number) => {
+  try {
+    const response = await client.post<Response<null>>(
+      `/comments/${commetId}/like`
+    );
+    return true;
+  } catch (e) {
+    console.log("여기는 setCommentLike 함수", e);
+    return false;
+  }
+};
+// 댓글, 대댓글 신고
+// 댓글, 대댓글 삭제

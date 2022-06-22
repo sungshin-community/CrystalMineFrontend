@@ -18,15 +18,21 @@ import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
-function Post(post: any) {
-  const [isLiked, setIsLiked] = useState<boolean>();
-  const data: PostDto = post.post;
+import { useEffect } from 'react';
+interface Props {
+  post: any;
+  handlePostLike: any;
+}
+
+function Post({post, handlePostLike}: Props) {
+  const data: PostDto = post;
 
   const handleScrap = (
-    <View style={{marginRight: 5}}>
+    <View style={{ marginRight: 5 }}>
       <NoScrap />
     </View>
   );
+
   return (
     <>
       <View style={styles.postContainer}>
@@ -53,8 +59,8 @@ function Post(post: any) {
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 22}}>
           <Pressable
             hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-            onPress={() => setIsLiked(!isLiked)}>
-            {isLiked ? <PostLike /> : <PostUnlike />}
+            onPress={() => handlePostLike(data.postId)}>
+            {data?.isLiked ? <PostLike /> : <PostUnlike />}
           </Pressable>
           <Text style={styles.postLike}>{data?.likeCount}</Text>
           <PostComment />

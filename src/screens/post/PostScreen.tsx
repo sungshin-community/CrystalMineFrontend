@@ -14,7 +14,7 @@ import Post from '../../components/Post';
 import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
-import {getComments, getPosts} from '../../common/boardApi';
+import {getComments, getPosts, setPostLike} from '../../common/boardApi';
 import {addComment, addRecomment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
@@ -42,6 +42,26 @@ const PostScreen = ({navigation, route}: Props) => {
       },
     });
   }, [navigation, post?.boardName]);
+
+  // 초기화
+  useEffect(() => {
+    async function init() {
+      const postData = await getPosts(route.params.postId);
+      setPost(postData);
+      const commentData = await getComments(route.params.postId, 0);
+      setComments(commentData);
+    }
+    init();
+  }, []);
+  // 게시글 공감
+  const handlePostLike = async (postId: number) => {
+    const result = await setPostLike(postId);
+    const postData = await getPosts(route.params.postId);
+    setPost(postData);
+    const commentData = await getComments(route.params.postId, 0);
+    setComments(commentData);
+  };
+  // 댓글 생성
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
       const result = await addComment(postId, newComment, isAnonymous);
@@ -55,14 +75,25 @@ const PostScreen = ({navigation, route}: Props) => {
       setComments(commentData);
     },
     [],
-    );
+  );
+  // 대댓글 생성
   const addRecommentFunc = useCallback(
-    async (postId: number, parentId: number, newComment: string, isAnonymous: boolean) => {
-      const result = await addRecomment(postId, parentId, newComment, isAnonymous);
+    async (
+      postId: number,
+      parentId: number,
+      newComment: string,
+      isAnonymous: boolean,
+    ) => {
+      const result = await addRecomment(
+        postId,
+        parentId,
+        newComment,
+        isAnonymous,
+      );
       if (result) {
         console.log('대댓글 추가 성공');
       }
-      setIsRecomment(false)
+      setIsRecomment(false);
       setNewComment('');
       const postData = await getPosts(route.params.postId);
       setPost(postData);
@@ -70,18 +101,8 @@ const PostScreen = ({navigation, route}: Props) => {
       setComments(commentData);
     },
     [],
-    );
-
-  useEffect(() => {
-    async function init() {
-      const postData = await getPosts(route.params.postId);
-      setPost(postData);
-      const commentData = await getComments(route.params.postId, 0);
-      setComments(commentData);
-    }
-    init();
-  }, []);
-
+  );
+  // 댓글, 대댓글 공감
   const handleCommentLike = async (commentId: number) => {
     const result = await setCommentLike(commentId);
     const postData = await getPosts(route.params.postId);
@@ -90,7 +111,6 @@ const PostScreen = ({navigation, route}: Props) => {
     setComments(commentData);
   };
 
-
   return (
     <>
       <KeyboardAvoidingView
@@ -98,7 +118,7 @@ const PostScreen = ({navigation, route}: Props) => {
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-          <Post post={post}></Post>
+          <Post post={post} handlePostLike={handlePostLike}></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>
@@ -112,7 +132,11 @@ const PostScreen = ({navigation, route}: Props) => {
                 />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
-                    <Recomment key={index} recomment={recomment} handleCommentLike={handleCommentLike} />
+                    <Recomment
+                      key={index}
+                      recomment={recomment}
+                      handleCommentLike={handleCommentLike}
+                    />
                     //recomment 데이터 생긴 후 확인 필요
                   ))}
               </View>
@@ -120,7 +144,16 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
-          <InputComment postId={route.params.postId} parentId={parentId} onClickAddComment={addCommentFunc} isRecomment={isRecomment} onClickAddRecomment={addRecommentFunc} content={newComment} setContent={setNewComment} inputRef={inputRef}/>
+          <InputComment
+            postId={route.params.postId}
+            parentId={parentId}
+            onClickAddComment={addCommentFunc}
+            isRecomment={isRecomment}
+            onClickAddRecomment={addRecommentFunc}
+            content={newComment}
+            setContent={setNewComment}
+            inputRef={inputRef}
+          />
         </View>
       </KeyboardAvoidingView>
     </>
