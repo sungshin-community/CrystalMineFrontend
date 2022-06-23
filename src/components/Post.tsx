@@ -28,7 +28,7 @@ interface Props {
 function Post({post, handlePostLike, handlePostScrap}: Props) {
   const data: PostDto = post;
   const handleScrapComponent = (
-    <View style={{marginRight: 5}}>
+    <View style={{marginRight: 16}}>
       <TouchableWithoutFeedback onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
       </TouchableWithoutFeedback>

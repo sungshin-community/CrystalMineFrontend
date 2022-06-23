@@ -145,6 +145,17 @@ export const setPostScrap = async (postId: number) => {
 };
 // 게시글 신고
 // 게시글 삭제
+export const deletePosts = async (postId: number) => {
+  try {
+    const response = await client.delete<Response<null>>(
+      `/posts/${postId}`
+    );
+    return true;
+  } catch (e) {
+    console.log("여기는 deletePosts 함수", e);
+    return false;
+  }
+};
 
 // 댓글
 export const getComments = async (postId: number, page: number) => {
@@ -203,3 +214,14 @@ export const setCommentLike = async (commetId: number) => {
 };
 // 댓글, 대댓글 신고
 // 댓글, 대댓글 삭제
+export const deleteComment = async (commentId: number) => {
+  try {
+    const response = await client.patch<Response<CommentDto>>(
+      `/comments/${commentId}`
+    );
+    return true;
+  } catch (e) {
+    console.log("여기는 deleteComment 함수", e);
+    return false;
+  }
+};

@@ -18,6 +18,9 @@ import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import SpinningThreeDots from './SpinningThreeDots';
+import TrashIcon from '../../resources/icon/TrashIcon';
+import { ModalBottom } from '../components/ModalBottom';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   comment?: any;
@@ -26,6 +29,7 @@ interface Props {
   isRecomment: boolean;
   setIsRecomment?: any;
   inputRef: any;
+  handleCommentDelete: any;
 }
 const Comment = ({
   comment,
@@ -34,13 +38,41 @@ const Comment = ({
   isRecomment,
   setIsRecomment,
   inputRef,
+  handleCommentDelete,
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
+
+  const handleCommentDeleteComponent = (
+    <>
+      {modalVisible && (
+        <ModalBottom
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          modalText={`작성한 댓글을 삭제하시겠습니까?`}
+          modalBody=""
+          modalButtonText="삭제"
+          modalButton
+          modalButtonFunc={() => { handleCommentDelete(data.id); setModalVisible(false); Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.LONG) }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setModalVisible(false)}
+        />
+      )}
+      <Pressable
+        onPress={() => {
+          setModalVisible(true);
+          console.log(modalVisible);
+        }}>
+        <TrashIcon style={{marginRight: 12}} />
+      </Pressable>
+    </>
+  );
 
   return (
     <>
@@ -73,7 +105,10 @@ const Comment = ({
               </Text>
             </View>
           </View>
-          <SpinningThreeDots isMine={data.isOfReader} />
+          <SpinningThreeDots
+            isMine={data.isOfReader}
+            handleDeleteComponent={handleCommentDeleteComponent}
+          />
         </View>
         <Text>{data?.content}</Text>
         <View

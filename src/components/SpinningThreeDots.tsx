@@ -8,15 +8,14 @@ import {
   Pressable,
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
-import {NoScrap} from '../../resources/icon/Scrap';
-import TrashIcon from '../../resources/icon/TrashIcon';
 import Siren from '../../resources/icon/Siren';
 interface Props {
   isScrap?: boolean;
   isMine: boolean;
   handleScrapComponent?: any;
+  handleDeleteComponent: any
 }
-function SpinningThreeDots({isScrap = false, isMine, handleScrapComponent}: Props) {
+function SpinningThreeDots({isScrap = false, isMine, handleScrapComponent, handleDeleteComponent}: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const handleAnimation = () => {
@@ -48,10 +47,10 @@ function SpinningThreeDots({isScrap = false, isMine, handleScrapComponent}: Prop
            handleScrapComponent
           )}
           {isOptionState &&
-            (isMine ? (
-              <TrashIcon style={{marginRight: 5}} />
+            (isMine ? (      
+            handleDeleteComponent
             ) : (
-              <Siren style={{marginRight: 5}} />
+              <Siren style={{marginRight: 14}} />
             ))}
         </View>
         <View style={{flexDirection: 'row'}}>

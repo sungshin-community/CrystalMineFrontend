@@ -14,7 +14,7 @@ import Post from '../../components/Post';
 import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
-import {getComments, getPosts, setPostLike, setPostScrap} from '../../common/boardApi';
+import {deleteComment, getComments, getPosts, setPostLike, setPostScrap} from '../../common/boardApi';
 import {addComment, addRecomment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
@@ -118,7 +118,14 @@ const PostScreen = ({navigation, route}: Props) => {
     const commentData = await getComments(route.params.postId, 0);
     setComments(commentData);
   };
-
+  // 댓글, 대댓글 삭제
+  const handleCommentDelete = async (commentId: number) => {
+    const result = await deleteComment(commentId);
+    const postData = await getPosts(route.params.postId);
+    setPost(postData);
+    const commentData = await getComments(route.params.postId, 0);
+    setComments(commentData);
+  };
   return (
     <>
       <KeyboardAvoidingView
@@ -137,6 +144,7 @@ const PostScreen = ({navigation, route}: Props) => {
                   isRecomment={isRecomment}
                   setIsRecomment={setIsRecomment}
                   inputRef={inputRef}
+                  handleCommentDelete={handleCommentDelete }
                 />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
