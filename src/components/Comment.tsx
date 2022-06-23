@@ -19,7 +19,7 @@ import PostComment from '../../resources/icon/PostComment';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
-import { ModalBottom } from '../components/ModalBottom';
+import {ModalBottom} from '../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
 
 interface Props {
@@ -58,7 +58,14 @@ const Comment = ({
           modalBody=""
           modalButtonText="삭제"
           modalButton
-          modalButtonFunc={() => { handleCommentDelete(data.id); setModalVisible(false); Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.LONG) }}
+          modalButtonFunc={() => {
+            handleCommentDelete(data.id);
+            setModalVisible(false);
+            Toast.show(
+              '작성하신 댓글이 성공적으로 삭제되었습니다.',
+              Toast.LONG,
+            );
+          }}
           isSecondButton={true}
           modalSecondButtonText="취소"
           modalSecondButtonFunc={() => setModalVisible(false)}
@@ -105,43 +112,52 @@ const Comment = ({
               </Text>
             </View>
           </View>
-          <SpinningThreeDots
-            isMine={data.isOfReader}
-            handleDeleteComponent={handleCommentDeleteComponent}
-          />
+          {!data.isDeleted && (
+            <SpinningThreeDots
+              isMine={data.isOfReader}
+              handleDeleteComponent={handleCommentDeleteComponent}
+            />
+          )}
         </View>
-        <Text>{data?.content}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginVertical: 18,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Pressable
-              hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-              onPress={() => {
-                handleCommentLike(data.id);
+        <Text style={{color: data.isDeleted ? '#6E7882' : '#000'}}>
+          {data?.content}
+        </Text>
+        {!data.isDeleted && (
+          <>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 16,
+                justifyContent: 'space-between',
               }}>
-              {data.isLiked ? <PostLike /> : <PostUnlike />}
-            </Pressable>
-            <Text style={styles.postLike}>{data?.likeCount}</Text>
-            <Pressable
-              onPress={() => {
-                setParentId(data.id);
-                setIsRecomment(!isRecomment);
-                setIsRecommentState(!isRecommentState);
-                inputRef.current.focus();
-              }}>
-              <PostComment />
-            </Pressable>
-          </View>
-          <View>
-            <Text style={{color: '#949494', fontSize: 13}}>
-              {data?.createdAt}
-            </Text>
-          </View>
-        </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Pressable
+                  hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                  onPress={() => {
+                    handleCommentLike(data.id);
+                  }}>
+                  {data.isLiked ? <PostLike /> : <PostUnlike />}
+                </Pressable>
+                <Text style={styles.postLike}>{data?.likeCount}</Text>
+                <Pressable
+                  onPress={() => {
+                    setParentId(data.id);
+                    setIsRecomment(!isRecomment);
+                    setIsRecommentState(!isRecommentState);
+                    inputRef.current.focus();
+                  }}>
+                  <PostComment />
+                </Pressable>
+              </View>
+              <View>
+                <Text style={{color: '#949494', fontSize: 13}}>
+                  {data?.createdAt}
+                </Text>
+              </View>
+            </View>
+          </>
+        )}
+        <View style={{marginBottom: 16}} />
       </View>
       <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
     </>
