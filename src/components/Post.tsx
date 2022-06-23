@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
 import styled from 'styled-components';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
@@ -18,21 +20,69 @@ import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
-import {useEffect} from 'react';
+import TrashIcon from '../../resources/icon/TrashIcon';
+import {ModalBottom} from '../components/ModalBottom';
+import Toast from 'react-native-simple-toast';
+import { useNavigation } from '@react-navigation/native';
+type RootStackParamList = {
+  PostListScreen: {boardId: number};
+};
+type NaviProps = NativeStackScreenProps<RootStackParamList>;
 interface Props {
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
+  handlePostDelete: any;
+  boardId: number;
 }
 
-function Post({post, handlePostLike, handlePostScrap}: Props) {
+function Post(
+  {post, handlePostLike, handlePostScrap, handlePostDelete, boardId}: Props
+) {
+  const navigation = useNavigation();
+  
   const data: PostDto = post;
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const handleScrapComponent = (
     <View style={{marginRight: 16}}>
       <TouchableWithoutFeedback onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
       </TouchableWithoutFeedback>
     </View>
+  );
+  const handlePostDeleteComponent = (
+    <>
+      {modalVisible && (
+        <ModalBottom
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          modalText={`작성한 게시글을 삭제하시겠습니까?`}
+          modalBody=""
+          modalButtonText="삭제"
+          modalButton
+          modalButtonFunc={() => {
+            if (handlePostDelete(data.postId)) {
+              setModalVisible(false);
+              Toast.show(
+                '작성하신 게시글이 성공적으로 삭제되었습니다.',
+                Toast.LONG,
+              );
+              navigation.navigate('PostListScreen', {boardId: boardId});
+            }
+          }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setModalVisible(false)}
+        />
+      )}
+      <Pressable
+        onPress={() => {
+          setModalVisible(true);
+          console.log(modalVisible);
+        }}>
+        <TrashIcon style={{marginRight: 12}} />
+      </Pressable>
+    </>
   );
   return (
     <>
@@ -51,6 +101,7 @@ function Post({post, handlePostLike, handlePostScrap}: Props) {
               isScrap={true}
               isMine={data?.isAuthor}
               handleScrapComponent={handleScrapComponent}
+              handleDeleteComponent={handlePostDeleteComponent}
             />
           </View>
         </View>

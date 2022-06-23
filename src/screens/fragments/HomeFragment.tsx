@@ -254,7 +254,6 @@ const HomeFragment = ({navigation}: Props) => {
       </View>
 
       {/* </View> */}
-
       <View
         style={{
           padding: 24,

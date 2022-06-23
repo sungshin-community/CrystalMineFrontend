@@ -14,7 +14,7 @@ import Post from '../../components/Post';
 import Comment, {Recomment} from '../../components/Comment';
 import InputComment from '../../components/InputComment';
 import PostDto from '../../classes/PostDto';
-import {deleteComment, getComments, getPosts, setPostLike, setPostScrap} from '../../common/boardApi';
+import {deleteComment, deletePosts, getComments, getPosts, setPostLike, setPostScrap} from '../../common/boardApi';
 import {addComment, addRecomment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
@@ -68,6 +68,12 @@ const PostScreen = ({navigation, route}: Props) => {
     setPost(postData);
     const commentData = await getComments(route.params.postId, 0);
     setComments(commentData);
+  };
+  // 게시글 삭제
+   const handlePostDelete = async (postId: number) => {
+     const result = await deletePosts(postId);
+     if (result) return true;
+     else return false;
   };
   // 댓글 생성
   const addCommentFunc = useCallback(
@@ -133,7 +139,7 @@ const PostScreen = ({navigation, route}: Props) => {
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-          <Post post={post} handlePostLike={handlePostLike} handlePostScrap={handlePostScrap}></Post>
+          <Post post={post} handlePostLike={handlePostLike} handlePostScrap={handlePostScrap} handlePostDelete={handlePostDelete} boardId={route.params.boardId}></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>

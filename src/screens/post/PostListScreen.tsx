@@ -15,9 +15,10 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getBoardDetail, getBoardInfo} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import {useIsFocused} from '@react-navigation/native';
-
+import Toast from 'react-native-simple-toast';
+import {getPosts} from '../../common/boardApi';
 type RootStackParamList = {
-  PostScreen: {postId: number;};
+  PostScreen: {boardId: number; postId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -61,11 +62,18 @@ const PostListScreen = ({navigation, route}: Props) => {
             (post: ContentPreviewDto, index: number) => (
               <Pressable
                 key={index}
-                onPress={() =>
-                  navigation.navigate('PostScreen', {
-                    postId: boardDetail?.content[index].postId,
-                  })
-                }>
+                onPress={async () => {
+                  const result = await getPosts(
+                    boardDetail?.content[index].postId,
+                  );
+                  if (result === 'NOT_FOUND')
+                    Toast.show('삭제된 게시글입니다.', Toast.LONG);
+                  else
+                    navigation.navigate('PostScreen', {
+                      boardId: route.params.boardId,
+                      postId: boardDetail?.content[index].postId,
+                    });
+                }}>
                 <PostItem post={post} />
               </Pressable>
             ),

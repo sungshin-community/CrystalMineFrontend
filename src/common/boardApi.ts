@@ -111,12 +111,13 @@ export async function getMyPostList(page: number = 0, sort: string = "createdAt"
 // 게시글
 export const getPosts = async (postId: number) => {
   try {
-    const response = await client.get<AxiosResponse>(
+    const response = await client.get<Response<null>>(
       `/posts/${postId}`
     );
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getPosts 함수", e);
+    console.log("여기는 getPosts 함수", e.response.data);
+    return e.response.data.status;
   }
 };
 // 게시글 공감
@@ -145,6 +146,7 @@ export const setPostScrap = async (postId: number) => {
 };
 // 게시글 신고
 // 게시글 삭제
+// TODO: postId 쉼표 구분으로 여러개 받아야함
 export const deletePosts = async (postId: number) => {
   try {
     const response = await client.delete<Response<null>>(
