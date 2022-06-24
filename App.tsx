@@ -5,7 +5,8 @@ import {Pressable} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
-//screens
+// screens
+// signIn
 import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
 import SignInId from './src/screens/signIn/SignInId';
@@ -14,7 +15,7 @@ import ResetPasswordInputId from './src/screens/signIn/ResetPasswordInputId';
 import ResetPasswordInputRegularMemberAuthNumber from './src/screens/signIn/ResetPasswordInputRegularMemberAuthNumber';
 import ResetPasswordInputNewPassword from './src/screens/signIn/ResetPasswordInputNewPassword';
 import ResetPasswordInputNewPasswordConfirm from './src/screens/signIn/ResetPasswordInputNewPasswordConfirm';
-
+// signUp
 import SignUpId from './src/screens/signUp/SignUpId';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
@@ -27,14 +28,16 @@ import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import PostScreen from './src/screens/post/PostScreen';
 
 import GlobalNavbar from './src/components/GlobalNavbar';
-import CreateBoard from './src/screens/board/CreateBoard';
-
-import PostListScreen from './src/screens/post/PostListScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// board
+import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
+import CreateBoard from './src/screens/board/createBoard/CreateBoard';
 import BoardSearch from './src/screens/board/BoardSearch';
+// post
+import PostListScreen from './src/screens/post/PostListScreen';
 import SearchResult from './src/screens/board/SearchResult';
 import MyPostList from './src/screens/board/MyPostList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+// myPage
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMember';
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
@@ -363,10 +366,10 @@ const App = () => {
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen
-                name="CreateBoard"
-                component={CreateBoard}
+                name="TermAgreeCreateBoard"
+                component={TermAgreeCreateBoard}
                 options={{
-                  title: '게시판 생성',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -374,6 +377,26 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                 }}
+              />
+              <Stack.Screen
+                name="CreateBoard"
+                component={CreateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 생성',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
               />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
@@ -1065,10 +1088,10 @@ const App = () => {
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen
-                name="CreateBoard"
-                component={CreateBoard}
+                name="TermAgreeCreateBoard"
+                component={TermAgreeCreateBoard}
                 options={{
-                  title: '게시판 생성',
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1076,6 +1099,26 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                 }}
+              />
+              <Stack.Screen
+                name="CreateBoard"
+                component={CreateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 생성',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
               />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />

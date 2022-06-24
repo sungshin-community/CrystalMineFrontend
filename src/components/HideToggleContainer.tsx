@@ -1,14 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, Text, View, TouchableWithoutFeedback, ScrollView, Dimensions} from 'react-native';
-import {FoldButton, SpreadButton, BigFoldButton, BigSpreadButton, GreyBigFoldButton, GreyBigSpreadButton} from '../../resources/icon/Button';
-import { Checked, Unchecked } from '../../resources/icon/CheckBox';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
+import {
+  FoldButton,
+  SpreadButton,
+  BigFoldButton,
+  BigSpreadButton,
+  GreyBigFoldButton,
+  GreyBigSpreadButton,
+} from '../../resources/icon/Button';
+import {Checked, Unchecked} from '../../resources/icon/CheckBox';
 import PlusIcon from '../../resources/icon/PlusIcon';
-import { SmallText } from '../components/Top';
+import {SmallText} from '../components/Top';
 
 interface Props {
   boardCategory: string;
   component: JSX.Element;
   defaultFolded?: boolean;
+  moveToCreateBoard?: any;
 }
 interface AgreementProps {
   id: number;
@@ -50,7 +65,7 @@ export function BoardListContainer({boardCategory, component}: Props) {
             lineHeight: 20,
             flex: 1,
             fontWeight: 'bold',
-            color: '#222222'
+            color: '#222222',
           }}>
           {boardCategory}
         </Text>
@@ -87,7 +102,12 @@ export function BoardListContainer({boardCategory, component}: Props) {
   );
 }
 
-export function CustomBoardListContainer({boardCategory, component}: Props) {
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+export function CustomBoardListContainer({
+  boardCategory,
+  component,
+  moveToCreateBoard,
+}: Props) {
   const [isSpread, setIsSpread] = useState<boolean>(true);
   return (
     <>
@@ -111,7 +131,7 @@ export function CustomBoardListContainer({boardCategory, component}: Props) {
             lineHeight: 20,
             flex: 1,
             fontWeight: 'bold',
-            color: '#222222'
+            color: '#222222',
           }}>
           {boardCategory}
         </Text>
@@ -123,7 +143,7 @@ export function CustomBoardListContainer({boardCategory, component}: Props) {
       </TouchableOpacity>
       {isSpread && (
         <>
-          <TouchableWithoutFeedback onPress={() => console.log('눌림')}>
+          <TouchableWithoutFeedback onPress={() => moveToCreateBoard()}>
             <View
               style={{
                 flexDirection: 'row',
@@ -133,9 +153,9 @@ export function CustomBoardListContainer({boardCategory, component}: Props) {
                 borderRadius: 10,
                 borderColor: '#E2E4E8',
                 borderWidth: 1,
-                marginBottom: 16
+                marginBottom: 16,
               }}>
-              <PlusIcon style={{marginLeft: 18, marginRight: 12 }} />
+              <PlusIcon style={{marginLeft: 18, marginRight: 12}} />
               <Text
                 style={{
                   color: '#6E7882',
@@ -171,9 +191,14 @@ export function CustomBoardListContainer({boardCategory, component}: Props) {
   );
 }
 
-
-export function OfficialBoardListContainer({boardCategory, component, defaultFolded}: Props) {
-  const [isSpread, setIsSpread] = useState<boolean>(defaultFolded ? false : true);
+export function OfficialBoardListContainer({
+  boardCategory,
+  component,
+  defaultFolded,
+}: Props) {
+  const [isSpread, setIsSpread] = useState<boolean>(
+    defaultFolded ? false : true,
+  );
   return (
     <>
       <TouchableOpacity
@@ -196,7 +221,7 @@ export function OfficialBoardListContainer({boardCategory, component, defaultFol
             lineHeight: 20,
             flex: 1,
             fontWeight: '500',
-            color: '#6E7882'
+            color: '#6E7882',
           }}>
           {boardCategory}
         </Text>
@@ -233,12 +258,18 @@ export function OfficialBoardListContainer({boardCategory, component, defaultFol
   );
 }
 
-export function AgreementContainer({id, checked, title, content, onChange}: AgreementProps) {
+export function AgreementContainer({
+  id,
+  checked,
+  title,
+  content,
+  onChange,
+}: AgreementProps) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(checked);
   useEffect(() => {
     setIsChecked(checked);
-  }, [checked])
+  }, [checked]);
   return (
     <>
       <TouchableOpacity
@@ -261,7 +292,7 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
           onPress={(e: any) => {
             onChange(id, !isChecked);
             setIsChecked(!isChecked);
-            }}>
+          }}>
           {isChecked ? (
             <Checked
               style={{marginRight: 16}}
@@ -290,7 +321,7 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
       {isSpread && (
         <ScrollView
           style={{
-            height:(Dimensions.get('window').height / 5),
+            height: Dimensions.get('window').height / 5,
             marginLeft: 40,
             marginRight: 40,
             backgroundColor: '#F6F6F6',
@@ -309,15 +340,21 @@ export function AgreementContainer({id, checked, title, content, onChange}: Agre
         </ScrollView>
       )}
     </>
-  )
+  );
 }
 
-export function DirectionContainer({id, checked, title, content, onChange}: DirectionProps) {
+export function DirectionContainer({
+  id,
+  checked,
+  title,
+  content,
+  onChange,
+}: DirectionProps) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(checked);
   useEffect(() => {
     setIsChecked(checked);
-  }, [checked])
+  }, [checked]);
   return (
     <>
       <TouchableOpacity
@@ -340,7 +377,7 @@ export function DirectionContainer({id, checked, title, content, onChange}: Dire
           onPress={(e: any) => {
             onChange(id, !isChecked);
             setIsChecked(!isChecked);
-            }}>
+          }}>
           {isChecked ? (
             <Checked
               style={{marginRight: 16}}
@@ -369,7 +406,7 @@ export function DirectionContainer({id, checked, title, content, onChange}: Dire
       {isSpread && (
         <ScrollView
           style={{
-            height:(Dimensions.get('window').height / 5),
+            height: Dimensions.get('window').height / 5,
             marginLeft: 40,
             marginRight: 40,
             backgroundColor: '#F6F6F6',
@@ -378,13 +415,15 @@ export function DirectionContainer({id, checked, title, content, onChange}: Dire
           }}
           nestedScrollEnabled={true}>
           <Text>
-            <Text style={{fontWeight:'bold'}}>{title}</Text>
-            {"\n"}
-            {"\n"}
-            {content.map(c => <Text>{`⦁ ${c === null ? '' : c}\n`}</Text>)}
+            <Text style={{fontWeight: 'bold'}}>{title}</Text>
+            {'\n'}
+            {'\n'}
+            {content.map(c => (
+              <Text>{`⦁ ${c === null ? '' : c}\n`}</Text>
+            ))}
           </Text>
         </ScrollView>
       )}
     </>
-  )
+  );
 }

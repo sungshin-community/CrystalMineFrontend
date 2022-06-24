@@ -17,7 +17,8 @@ import {
 
 type RootStackParamList = {
   MyPostList: undefined;
-  PostListScreen: {boardId: number};
+  PostListScreen: { boardId: number };
+  TermAgreeCreateBoard: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -54,6 +55,10 @@ export default function BoardFragment({navigation}: Props) {
 
   const moveToBoard = (boardId: number) => {
     navigation.navigate('PostListScreen', {boardId: boardId});
+  }
+
+  const moveToCreateBoard = () => {
+    navigation.navigate('TermAgreeCreateBoard');
   }
 
 
@@ -114,6 +119,7 @@ export default function BoardFragment({navigation}: Props) {
         <CustomBoardListContainer
           boardCategory="수정게시판"
           component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} />}
+          moveToCreateBoard={moveToCreateBoard}
         />
         <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
       </View>
