@@ -14,7 +14,7 @@ import TokenReissueDto from '../classes/TokenReissueDto';
 import User from '../classes/User';
 export const getAgreements = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/contract/agreement');
+    const response = await client.get<Response<Agreement[]>>('/contract/agreements/0');
     return response.data.data;
   } catch {
     return [];
@@ -22,7 +22,7 @@ export const getAgreements = async () => {
 }
 export const getDirectionAgreements = async () => {
   try {
-    const response = await client.get<Response<DirectionAgreement[]>>('/contract/direction');
+    const response = await client.get<Response<DirectionAgreement[]>>('/contract/directions');
     return response.data.data;
   } catch {
     return [];
