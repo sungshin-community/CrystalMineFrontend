@@ -158,6 +158,7 @@ const PostScreen = ({navigation, route}: Props) => {
                       key={index}
                       recomment={recomment}
                       handleCommentLike={handleCommentLike}
+                      handleCommentDelete={handleCommentDelete}
                     />
                     //recomment 데이터 생긴 후 확인 필요
                   ))}

@@ -181,13 +181,51 @@ const styles = StyleSheet.create({
 interface RecommentProps {
   recomment?: any;
   handleCommentLike?: any;
+  handleCommentDelete: any;
 }
 
-export const Recomment = ({recomment, handleCommentLike}: RecommentProps) => {
+export const Recomment = ({
+  recomment,
+  handleCommentLike,
+  handleCommentDelete,
+}: RecommentProps) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
-  const data: RecommentDto = recomment;
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  const data: RecommentDto = recomment;
+  const handleCommentDeleteComponent = (
+    <>
+      {modalVisible && (
+        <ModalBottom
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          modalText={`작성한 댓글을 삭제하시겠습니까?`}
+          modalBody=""
+          modalButtonText="삭제"
+          modalButton
+          modalButtonFunc={() => {
+            handleCommentDelete(data.id);
+            setModalVisible(false);
+            Toast.show(
+              '작성하신 댓글이 성공적으로 삭제되었습니다.',
+              Toast.LONG,
+            );
+          }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setModalVisible(false)}
+        />
+      )}
+      <Pressable
+        onPress={() => {
+          setModalVisible(true);
+          console.log(modalVisible);
+        }}>
+        <TrashIcon style={{marginRight: 12}} />
+      </Pressable>
+    </>
+  );
   return (
     <>
       <View
@@ -217,30 +255,41 @@ export const Recomment = ({recomment, handleCommentLike}: RecommentProps) => {
               </Text>
             </View>
           </View>
-          <SpinningThreeDots isMine={data.isOfReader} />
+          {!data.isDeleted && (
+            <SpinningThreeDots
+              isMine={data.isOfReader}
+              handleDeleteComponent={handleCommentDeleteComponent}
+            />
+          )}
         </View>
         <View style={{marginLeft: 20}}>
-          <Text>{data.content}</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 18,
-              justifyContent: 'space-between',
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Pressable
-                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => handleCommentLike(data.id)}>
-                {data.isLiked ? <PostLike /> : <PostUnlike />}
-              </Pressable>
-              <Text style={styles.postLike}>{data?.likeCount}</Text>
-            </View>
-            <View>
-              <Text style={{color: '#949494', fontSize: 13}}>
-                {data?.createdAt}
-              </Text>
-            </View>
-          </View>
+          <Text style={{color: data.isDeleted ? '#6E7882' : '#000'}}>
+            {data?.content}
+          </Text>
+          {!data.isDeleted && (
+            <>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 16,
+                  justifyContent: 'space-between',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Pressable
+                    hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                    onPress={() => handleCommentLike(data.id)}>
+                    {data.isLiked ? <PostLike /> : <PostUnlike />}
+                  </Pressable>
+                  <Text style={styles.postLike}>{data?.likeCount}</Text>
+                </View>
+                <View>
+                  <Text style={{color: '#949494', fontSize: 13}}>
+                    {data?.createdAt}
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
         </View>
       </View>
       <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
