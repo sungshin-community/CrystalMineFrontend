@@ -15,10 +15,10 @@ import BackButton from '../../../components/BackButton';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import ImageIcon from '../../../../resources/icon/ImageIcon';
 import PhotoIcon from '../../../../resources/icon/PhotoIcon';
-import {writeQuestion} from '../../../common/myPageApi';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {ModalBottom} from '../../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
+import {createBoard} from '../../../common/boardApi';
 import {
   Checked,
   RectangleChecked,
@@ -26,7 +26,7 @@ import {
 } from '../../../../resources/icon/CheckBox';
 
 type RootStackParamList = {
-  QuestionList: undefined;
+  PostListScreen: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -40,72 +40,71 @@ interface ImageResponse {
 }
 
 function CreateBoard({navigation}: Props) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  //임시
-  const [images, setImages] = useState<string[]>([]);
-
-  const [imageResponse, setImageResponse] = useState<ImageResponse[]>([]);
+  const [boardName, setBoardName] = useState<string>('');
+  const [boardIntroduction, setBoardIntroduction] = useState<string>('');
+  const [hotable, setHotable] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onSubmitPress = async () => {
-    console.log('title', title, 'content: ', content, 'images', images);
-    const result = await writeQuestion({
-      title: title,
-      content: content,
-      images: ['', ''],
-    });
+    const result = await createBoard(boardName, boardIntroduction, hotable);
     if (result) {
-      navigation.navigate('QuestionList');
-      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG);
+      Toast.show('게시판을 성공적으로 생성했습니다.', Toast.LONG);
+      navigation.navigate('PostListScreen', {boardId: result.id});
     }
   };
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (title && content) setModalVisible(true);
+            if (boardName && boardIntroduction) setModalVisible(true);
           }}>
           <Text
             style={[
               styles.submit,
               fontRegular,
-              {color: title && content ? '#A055FF' : '#87919B'},
+              {color: boardName && boardIntroduction ? '#A055FF' : '#87919B'},
             ]}>
             완료
           </Text>
         </Pressable>
       ),
     });
-  }, [navigation, title, content]);
+  }, [navigation, boardName, boardIntroduction]);
 
   return (
     <>
       <View style={styles.container}>
-        <View style={{marginHorizontal: 24}}>
+        <View style={{marginHorizontal: 24, paddingTop: 20}}>
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
           <TextInput
             placeholder="게시판 이름을 입력해주세요."
-            value={title}
+            value={boardName}
             onChangeText={value => {
-              setTitle(value);
+              setBoardName(value);
+            }}
+            style={{fontSize: 13}}
+            maxLength={15}
+          />
+          <View
+            style={{
+              borderBottomColor: '#F6F6F6',
+              borderBottomWidth: 1,
+              marginBottom: 15,
             }}
           />
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 설명</Text>
           <TextInput
             placeholder="게시판 설명을 입력해주세요."
-            value={content}
-            multiline={true}
+            value={boardIntroduction}
             onChangeText={value => {
-              setContent(value);
+              setBoardIntroduction(value);
             }}
             onBlur={() => {
               Keyboard.dismiss();
-              console.log('키보드다른데클릭');
             }}
             style={[styles.input]}
+            maxLength={22}
           />
         </View>
         <View
@@ -114,7 +113,12 @@ function CreateBoard({navigation}: Props) {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <RectangleUnchecked />
+          <Pressable
+            onPress={() => {
+              setHotable(!hotable);
+            }}>
+            {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
+          </Pressable>
           <Text style={[fontMedium, {marginLeft: 5}]}>핫게시판 전송 허용</Text>
         </View>
       </View>
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     textAlignVertical: 'top',
+    fontSize: 13,
   },
   option: {
     marginTop: 19,

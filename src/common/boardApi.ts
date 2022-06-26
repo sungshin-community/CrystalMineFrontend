@@ -6,6 +6,7 @@ import Response from '../classes/Response';
 import BoardDetailDto from '../classes/BoardDetailDto';
 import CommentDto, { RecommentDto } from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
+import { DirectionAgreement } from '../classes/Agreement';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -68,6 +69,16 @@ export const toggleBoardPin = async (boardId: number) => {
   }
 };
 
+export const getBoardirectionAgreements = async () => {
+  try {
+    const response = await client.get<Response<DirectionAgreement[]>>('/boards/directions');
+    console.log(response.data)
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}
+
 export const getBoardInfo = async (boardId: number) => {
   try {
     const response = await client.get<Response<null>>(
@@ -92,6 +103,21 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
     console.log("여기는 getCustomBoardList 함수", e);
   }
 }
+
+export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
+  try {
+    console.log(name, introduction, hotable)
+    const response = await client.post<Response<Board>>(
+      '/boards',
+      {name: name, introduction: introduction, hotable: hotable},
+    );
+    console.log('createBoard 함수 성공', response.data)
+    return response.data.data;
+  } catch (e: any) {
+    console.log('createBoard 함수 실패', e.response.data);
+    return e.response.data.status;
+  }
+};
 
 export async function getMyPostList(page: number = 0, sort: string = "createdAt") {
   try {

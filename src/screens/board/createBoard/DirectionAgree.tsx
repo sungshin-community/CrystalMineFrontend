@@ -29,7 +29,7 @@ import {
 } from '../../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../../components/HideToggleContainer';
 import Agreement from '../../../classes/Agreement';
-import {getDirectionAgreements} from '../../../common/authApi';
+import {getBoardirectionAgreements} from '../../../common/boardApi';
 
 type RootStackParamList = {
   CreateBoard: undefined;
@@ -67,7 +67,7 @@ function TermAgreeCreateBoard({navigation}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getDirectionAgreements();
+      const agreementList = await getBoardirectionAgreements();
       agreementList.map(a => (a.checked = false));
       setAgreements(agreementList);
       for (let i = 0; i < 2; i++) {
