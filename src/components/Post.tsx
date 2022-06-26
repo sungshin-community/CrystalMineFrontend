@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   postBody: {
-    marginTop: 8,
+    marginTop: 15,
   },
   postLike: {
     fontSize: 13,
