@@ -134,10 +134,6 @@ export const checkAuthNumber = async (code: string) => {
     return 0;
   } catch (e: any) {
     console.log('여기는 checkAuthNumber 함수', e.response.data);
-    console.log(
-      '여기는 checkAuthNumber 함수',
-      e.response.data.data
-    );
     return e.response.data.data.attemptCount;
   }
 };
@@ -201,7 +197,6 @@ export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPassw
       '/mail/reset-password',
       resetPasswordRequestDto,
     );
-    console.log(response.data.code);
     return 'SEND_RESET_PASSWORD_MAIL_SUCCESS';
   } catch (e) {
     console.log('여기는 비밀번호 재설정 이메일 전송 함수', e.response.data.code);
