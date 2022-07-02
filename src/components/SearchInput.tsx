@@ -12,10 +12,9 @@ import SearchIcon from '../../resources/icon/SearchIcon';
 interface Props {
   setSearchWord: (value: any) => void;
   startSearching: () => void;
-  value: string;
 }
 
-function SearchInput({setSearchWord, startSearching, value}: Props) {
+function SearchInput({setSearchWord, startSearching}: Props) {
   const searchingWord = (word: any) => {
     setSearchWord(word);
   };
@@ -31,7 +30,6 @@ function SearchInput({setSearchWord, startSearching, value}: Props) {
         autoCorrect={false}
         autoCapitalize="none"
         onSubmitEditing={startSearching}
-        value={value}
         keyboardType="default"
         enablesReturnKeyAutomatically
       />

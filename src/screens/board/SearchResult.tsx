@@ -9,9 +9,10 @@ import SearchInput from '../../components/SearchInput';
 import SearchCancelButton from '../../components/SearchCancelButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
+import { SearchBoardDto, SearchPostDto } from '../../classes/SearchDto';
 
 type RootStackParamList = {
-  BoardSearch: undefined;
+  GlobalNavbar: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
@@ -19,25 +20,30 @@ const Tab = createMaterialTopTabNavigator();
 function SearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
   const [wordList, setWordList] = useState<string[]>([]);
-  const [boardResultData, setBoardResultData] = useState();
-  const [postResultData, setPostResultData] = useState();
+  const [boardResultData, setBoardResultData] = useState<SearchBoardDto>();
+  const [postResultData, setPostResultData] = useState<SearchPostDto>();
 
   useEffect(() => {
-    async function loadRecentSearch() {
+    async function loadData() {
       try {
+        console.log('await 시작');
         const boardResult = await getBoardSearch(searchWord);
         const postResult = await getPostSearch(searchWord);
         setBoardResultData(boardResult);
         setPostResultData(postResult);
-
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
+        // const result = [boardResult, postResult];
+        // return result;
       } catch (error) {
         console.error('failed to load recent search', error);
       }
     }
-    loadRecentSearch();
+    loadData();
+    // const result = loadData();
+    // setBoardResultData(result[0]);
+    // setPostResultData(result[1]);
   }, []);
 
   const startSearching = () => {
@@ -57,12 +63,11 @@ function SearchResult({navigation, route}: Props) {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
-          value={searchWord}
         />
       ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
-          onPress={() => navigation.navigate('BoardSearch')}
+          onPress={() => navigation.navigate('GlobalNavbar')}
         />
       ),
     });
