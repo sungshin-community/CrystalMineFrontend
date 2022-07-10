@@ -17,6 +17,7 @@ import {
 
 type RootStackParamList = {
   MyPostList: undefined;
+  ScrapedPostList: undefined;
   PostListScreen: { boardId: number };
   TermAgreeCreateBoard: undefined;
 };
@@ -53,6 +54,10 @@ export default function BoardFragment({navigation}: Props) {
     navigation.navigate('MyPostList')
   }
 
+  const moveToScrapedPostList = () => {
+    navigation.navigate('ScrapedPostList')
+  }
+
   const moveToBoard = (boardId: number) => {
     navigation.navigate('PostListScreen', {boardId: boardId});
   }
@@ -86,7 +91,7 @@ export default function BoardFragment({navigation}: Props) {
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
         style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
-        <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} />} />
+        <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toScrapedPosting={moveToScrapedPostList} />} />
         <BoardListContainer
           boardCategory="고정게시판"
           component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} />}

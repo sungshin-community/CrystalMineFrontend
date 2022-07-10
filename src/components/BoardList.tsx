@@ -221,9 +221,10 @@ export function CustomBoardList({items, onUpdate, moveToBoard}: Props) {
 
 interface MenuProps {
   toMyPosting: () => void;
+  toScrapedPosting: () => void;
 }
 
-export function MenuList({toMyPosting}: MenuProps) {
+export function MenuList({toMyPosting, toScrapedPosting}: MenuProps) {
   return (
     <>
       <TouchableOpacity
@@ -264,6 +265,7 @@ export function MenuList({toMyPosting}: MenuProps) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={toScrapedPosting}
         style={{
           flexDirection: 'row',
           height: 36,
