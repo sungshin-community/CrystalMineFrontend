@@ -221,9 +221,11 @@ export function CustomBoardList({items, onUpdate, moveToBoard}: Props) {
 
 interface MenuProps {
   toMyPosting: () => void;
+  toScrapedPosting: () => void;
+  toMyCommentList: () => void;
 }
 
-export function MenuList({toMyPosting}: MenuProps) {
+export function MenuList({toMyPosting, toMyCommentList, toScrapedPosting}: MenuProps) {
   return (
     <>
       <TouchableOpacity
@@ -246,6 +248,7 @@ export function MenuList({toMyPosting}: MenuProps) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={toMyCommentList}
         style={{
           flexDirection: 'row',
           height: 36,
@@ -264,6 +267,7 @@ export function MenuList({toMyPosting}: MenuProps) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={toScrapedPosting}
         style={{
           flexDirection: 'row',
           height: 36,
