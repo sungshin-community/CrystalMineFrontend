@@ -66,13 +66,13 @@ export const ModalBottom = ({
               </View>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
-                onPress={modalButtonFunc}>
+                onPress={()=>modalButtonFunc()}>
                 <Text style={styles.textStyle}>{modalButtonText}</Text>
               </TouchableOpacity>
               {isSecondButton && (
                 <TouchableOpacity
                   style={[styles.secondButton, styles.secondButtonClose]}
-                  onPress={modalSecondButtonFunc}>
+                  onPress={() => modalSecondButtonFunc()}>
                   <Text style={styles.secondButtonTextStyle}>
                     {modalSecondButtonText}
                   </Text>
@@ -82,7 +82,7 @@ export const ModalBottom = ({
           </View>
         </Modal>
       </View>
-      <Pressable hitSlop={10} onPress={modalButtonFunc}>
+      <Pressable hitSlop={10} onPress={()=>modalButtonFunc()}>
         {modalButton}
       </Pressable>
     </>

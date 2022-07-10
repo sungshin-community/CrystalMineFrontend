@@ -303,7 +303,7 @@ export const Recomment = ({
       </Pressable>
     </>
   );
-  const handleCommentReportComponent = (
+   const handleCommentReportComponent = (
     <>
       {reportCheckModalVisible && (
         <ModalBottom
@@ -314,8 +314,8 @@ export const Recomment = ({
           modalButtonText="확인"
           modalButton
           modalButtonFunc={() => {
-            setReportModalVisible(true);
             setReportCheckModalVisible(false);
+            setReportModalVisible(true);
           }}
         />
       )}
@@ -326,22 +326,26 @@ export const Recomment = ({
           modalText={`댓글 신고`}
           modalButtonText="신고하기"
           modalButton
-          modalButtonFunc={() => {
-            const result = handleCommentReport(data.id, 1);
-            if (result) {
-              setReportModalVisible(false);
-              if (result === 'CREATE_COMMENT_REPORT_SUCCESS')
-                Toast.show(
-                  '신고하신 내용이 정상적으로 접수되었습니다.',
-                  Toast.LONG,
-                );
-              else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH')
-                Toast.show(
-                  '보유 포인트가 부족하여 신고가 불가능합니다.',
-                  Toast.LONG,
-                );
-              else Toast.show(result.detail, Toast.LONG);
+          modalButtonFunc={async () => {
+            console.log('dd')
+            const result = await handleCommentReport(data.id, 1, '');
+            console.log('왜 여기를 출력안하지',result)
+            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
+              console.log('댓글 신고 성공')
+              Toast.show(
+                '신고하신 내용이 정상적으로 접수되었습니다.',
+                Toast.LONG,
+              );
             }
+            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족')
+              Toast.show(
+                '보유 포인트가 부족하여 신고가 불가능합니다.',
+                Toast.LONG,
+              );
+            }
+            else Toast.show(result.detail, Toast.LONG);
+            setReportModalVisible(false);
           }}
           isSecondButton={true}
           modalSecondButtonText="취소"
