@@ -254,6 +254,19 @@ export const setCommentLike = async (commetId: number) => {
   }
 };
 // 댓글, 대댓글 신고
+export const reportComment = async (commentId: number, reasonId: number, detail?: string) => {
+  try {
+    const response = await client.post<Response<CommentDto>>(
+      `/comments/${commentId}/report`,
+      {reasonId: reasonId, detail: detail},
+    );
+    console.log('reportComment 함수 성공', response.data)
+    return response.data;
+  } catch (e: any) {
+    console.log('reportComment 함수 실패', e.response.data);
+    return e.response.data;
+  }
+};
 // 댓글, 대댓글 삭제
 export const deleteComment = async (commentId: number) => {
   try {

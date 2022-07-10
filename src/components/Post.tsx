@@ -51,9 +51,7 @@ function Post({
 
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
@@ -124,7 +122,7 @@ function Post({
             const result = handlePostReport(data.postId , 0);
             if (result) {
               console.log(result);
-              setReportCheckModalVisible(false);
+              setReportModalVisible(false);
               Toast.show(result, Toast.LONG);
             }
           }}

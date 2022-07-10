@@ -27,14 +27,12 @@ export const SelectModalBottom = ({
   modalText,
   modalButtonText,
   modalButton,
-  modalBody = '',
   setModalVisible,
   modalVisible,
-  modalButtonFunc = () => setModalVisible(!modalVisible),
+  modalButtonFunc,
   isSecondButton = false,
   modalSecondButtonText,
   modalSecondButtonFunc,
-  fontSize,
 }: Props) => {
   return (
     <>

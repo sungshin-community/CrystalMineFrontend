@@ -55,11 +55,8 @@ export const Report = (props: any) => (
       stroke="#222222"
       stroke-width="2"
     />
-    <Rect
-      x="1"
-      y="17"
-      width="16"
-      height="3"
+    <Path
+      d="M1 18C1 17.4477 1.44772 17 2 17H16C16.5523 17 17 17.4477 17 18V19C17 19.5523 16.5523 20 16 20H2C1.44772 20 1 19.5523 1 19V18Z"
       stroke="#222222"
       stroke-width="2"
     />
@@ -76,8 +73,7 @@ export const Report = (props: any) => (
       width="2"
       height="3"
       transform="matrix(-0.714345 0.699794 0.699794 0.714345 3 2)"
-      fill="#332222223D4B"
+      fill="#222222"
     />
   </Svg>
 );
-
