@@ -87,7 +87,7 @@ const Comment = ({
         style={{
           paddingHorizontal: 24,
           backgroundColor: isRecommentState
-            ? '#EEDCFD'
+            ? '#FAF5FF'
             : data?.isOfReader
             ? '#F8F8F8'
             : '#FFF',
