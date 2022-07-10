@@ -7,6 +7,7 @@ import BoardDetailDto from '../classes/BoardDetailDto';
 import CommentDto, { RecommentDto } from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
 import { DirectionAgreement } from '../classes/Agreement';
+import MyCommentDto from '../classes/MyCommentDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -145,6 +146,21 @@ export async function getScrapedPostList(page: number = 0) {
     return response.data.data.content;
   } catch (e) {
     console.log("여기는 getScrapedPostList 함수", e);
+  }
+}
+
+export async function getMyCommentList(page: number, sort: string = "createdAt") {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('sort', sort);
+    const response = await client.get<Response<MyCommentDto>>(
+      `/comments?${params}`
+    );
+    console.log(response.data.data);
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getMyCommentList 함수", e);
   }
 }
 

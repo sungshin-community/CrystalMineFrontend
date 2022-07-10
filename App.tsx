@@ -64,6 +64,7 @@ import QuitTermAgree from './src/screens/mypage/informationUse/quitMembership/Qu
 import QuitPassword from './src/screens/mypage/informationUse/quitMembership/QuitPassword';
 import QuitComplete from './src/screens/mypage/informationUse/quitMembership/QuitComplete';
 import ScrapedPostList from './src/screens/board/ScrapedPostList';
+import MyCommentList from './src/screens/board/MyCommentList';
 
 const Stack = createNativeStackNavigator();
 
@@ -439,6 +440,26 @@ const App = () => {
                 component={ScrapedPostList}
                 options={({navigation}) => ({
                   title: '내가 스크랩한 글',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MyCommentList"
+                component={MyCommentList}
+                options={({navigation}) => ({
+                  title: '내가 작성한 댓글',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1181,6 +1202,26 @@ const App = () => {
                 component={ScrapedPostList}
                 options={({navigation}) => ({
                   title: '내가 스크랩한 글',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MyCommentList"
+                component={MyCommentList}
+                options={({navigation}) => ({
+                  title: '내가 작성한 댓글',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
