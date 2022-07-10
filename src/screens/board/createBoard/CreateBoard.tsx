@@ -83,7 +83,7 @@ function CreateBoard({navigation}: Props) {
             onChangeText={value => {
               setBoardName(value);
             }}
-            style={{fontSize: 13}}
+            style={{fontSize: 13, paddingVertical: 22}}
             maxLength={15}
           />
           <View
@@ -93,8 +93,10 @@ function CreateBoard({navigation}: Props) {
               marginBottom: 15,
             }}
           />
-          <Text style={[fontMedium, {fontSize: 15}]}>게시판 설명</Text>
+          <Text style={[fontMedium, { fontSize: 15 }]}>게시판 설명</Text>
+          <View style={{height: 149}}>
           <TextInput
+            textAlignVertical="top"       
             placeholder="게시판 설명을 입력해주세요."
             value={boardIntroduction}
             onChangeText={value => {
@@ -105,7 +107,8 @@ function CreateBoard({navigation}: Props) {
             }}
             style={[styles.input]}
             maxLength={22}
-          />
+            />
+            </View>
         </View>
         <View
           style={{
@@ -119,7 +122,7 @@ function CreateBoard({navigation}: Props) {
             }}>
             {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
           </Pressable>
-          <Text style={[fontMedium, {marginLeft: 5}]}>핫게시판 전송 허용</Text>
+          <Text style={[{marginLeft: 5}]}>핫게시판 전송 허용</Text>
         </View>
       </View>
       {modalVisible && (
@@ -147,7 +150,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    minHeight: 194,
     paddingTop: 14,
     paddingBottom: 14,
     textAlignVertical: 'top',

@@ -368,7 +368,7 @@ const App = () => {
               <Stack.Screen
                 name="TermAgreeCreateBoard"
                 component={TermAgreeCreateBoard}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
@@ -376,7 +376,10 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="CreateBoard"
@@ -1090,7 +1093,7 @@ const App = () => {
               <Stack.Screen
                 name="TermAgreeCreateBoard"
                 component={TermAgreeCreateBoard}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
@@ -1098,7 +1101,10 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                }}
+                  headerRight: () => (
+                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="CreateBoard"
