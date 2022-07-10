@@ -101,7 +101,7 @@ const Comment = ({
           }}
         />
       )}
-      {!reportCheckModalVisible && reportModalVisible && (
+      {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
