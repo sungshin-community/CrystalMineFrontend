@@ -2,40 +2,21 @@ import * as React from 'react';
 import Svg, {Path, Rect} from 'react-native-svg';
 
 const NoReport = (props: any) => (
-  <Svg
-    width="18"
-    height="21"
-    viewBox="0 0 18 21"
+   <Svg
+    width={18}
+    height={21}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}>
+    {...props}
+  >
     <Path
-      d="M3 12C3 8.68629 5.68629 6 9 6C12.3137 6 15 8.68629 15 12V17H3V12Z"
-      stroke="#333D4B"
-      stroke-width="2"
+      d="M3 12a6 6 0 1 1 12 0v5H3v-5ZM1 18a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-1Z"
+      stroke="#222"
+      strokeWidth={2}
     />
-    <Rect
-      x="1"
-      y="17"
-      width="16"
-      height="3"
-      stroke="#333D4B"
-      stroke-width="2"
-    />
-    <Rect x="8" width="2" height="3" fill="#333D4B" />
-    <Rect
-      x="15"
-      y="2"
-      width="2"
-      height="3"
-      transform="rotate(44.4105 15 2)"
-      fill="#333D4B"
-    />
-    <Rect
-      width="2"
-      height="3"
-      transform="matrix(-0.714345 0.699794 0.699794 0.714345 3 2)"
-      fill="#333D4B"
+    <Path
+      fill="#222"
+      d="M8 0h2v3H8zM15 2l1.429 1.4-2.1 2.143-1.428-1.4zM3 2 1.571 3.4l2.1 2.143 1.428-1.4z"
     />
   </Svg>
 );
@@ -44,36 +25,19 @@ export default NoReport;
 
 export const Report = (props: any) => (
   <Svg
-    width="18"
-    height="21"
-    viewBox="0 0 18 21"
+    width={18}
+    height={21}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}>
     <Path
-      d="M3 12C3 8.68629 5.68629 6 9 6C12.3137 6 15 8.68629 15 12V17H3V12Z"
-      stroke="#222222"
-      stroke-width="2"
+      d="M3 12a6 6 0 1 1 12 0v5H3v-5ZM1 17h16v3H1z"
+      stroke="#BDBDBD"
+      strokeWidth={2}
     />
     <Path
-      d="M1 18C1 17.4477 1.44772 17 2 17H16C16.5523 17 17 17.4477 17 18V19C17 19.5523 16.5523 20 16 20H2C1.44772 20 1 19.5523 1 19V18Z"
-      stroke="#222222"
-      stroke-width="2"
-    />
-    <Rect x="8" width="2" height="3" fill="#222222" />
-    <Rect
-      x="15"
-      y="2"
-      width="2"
-      height="3"
-      transform="rotate(44.4105 15 2)"
-      fill="#222222"
-    />
-    <Rect
-      width="2"
-      height="3"
-      transform="matrix(-0.714345 0.699794 0.699794 0.714345 3 2)"
-      fill="#222222"
+      fill="#BDBDBD"
+      d="M8 0h2v3H8zM15 2l1.429 1.4-2.1 2.143-1.428-1.4zM3 2 1.571 3.4l2.1 2.143 1.428-1.4z"
     />
   </Svg>
 );

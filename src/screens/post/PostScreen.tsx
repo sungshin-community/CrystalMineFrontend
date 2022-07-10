@@ -154,6 +154,7 @@ const PostScreen = ({navigation, route}: Props) => {
     reasonId: number,
     detail?: string,
   ) => {
+    console.log('김횬')
     const result = await reportComment(recommentId, reasonId, detail);
     const commentData = await getComments(route.params.postId, 0);
     setComments(commentData);

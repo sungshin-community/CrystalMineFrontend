@@ -108,8 +108,9 @@ const Comment = ({
           modalText={`댓글 신고`}
           modalButtonText="신고하기"
           modalButton
-          modalButtonFunc={() => {
-            const result = handleCommentReport(data.id, 1, '');
+          modalButtonFunc={async () => {
+            console.log('dd')
+            const result = await handleCommentReport(data.id, 1, '');
             console.log('왜 여기를 출력안하지',result)
             if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
               console.log('댓글 신고 성공')
