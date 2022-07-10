@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import {fontMedium} from '../common/font';
 
 interface Props {
   modalText?: any;
@@ -22,18 +23,16 @@ interface Props {
   modalSecondButtonFunc?: any;
   fontSize?: number;
 }
-export const ModalBottom = ({
+export const SelectModalBottom = ({
   modalText,
   modalButtonText,
   modalButton,
-  modalBody = '',
   setModalVisible,
   modalVisible,
-  modalButtonFunc = () => setModalVisible(!modalVisible),
+  modalButtonFunc,
   isSecondButton = false,
   modalSecondButtonText,
   modalSecondButtonFunc,
-  fontSize,
 }: Props) => {
   return (
     <>
@@ -52,21 +51,24 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
-                {((modalText && modalText !== 'no')) && (
-                  <Text
-                    style={[
-                      styles.modalText,
-                      {fontSize: fontSize, marginBottom: 20},
-                    ]}>
-                    {modalText}
-                  </Text>
-                )}
-                {modalText === 'no' && <></>}
-                <Text style={{textAlign: 'center'}}>{modalBody}</Text>
+                <Text style={[fontMedium, {fontSize: 17, marginBottom: 15}]}>
+                  {modalText}
+                </Text>
+                <Text
+                  style={{
+                    color: '#CCCCCC',
+                    textAlign: 'center',
+                    fontSize: 12,
+                    marginBottom: 25,
+                  }}>
+                  신고 사유에 대한 자세한 내용은 {`\n`} 마이페이지 > 수정광산
+                  이용방향을 참고하여 주세요.
+                </Text>
+                <Text>TODO: 이용 방향 정해지면 채우기</Text>
               </View>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
-                onPress={()=>modalButtonFunc()}>
+                onPress={modalButtonFunc}>
                 <Text style={styles.textStyle}>{modalButtonText}</Text>
               </TouchableOpacity>
               {isSecondButton && (

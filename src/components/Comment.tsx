@@ -20,7 +20,9 @@ import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
+import {SelectModalBottom} from './SelectModalBottom';
 import Toast from 'react-native-simple-toast';
+import NoReport, {Report} from '../../resources/icon/Report';
 
 interface Props {
   comment?: any;
@@ -30,6 +32,7 @@ interface Props {
   setIsRecomment?: any;
   inputRef: any;
   handleCommentDelete: any;
+  handleCommentReport?: any;
 }
 const Comment = ({
   comment,
@@ -39,11 +42,13 @@ const Comment = ({
   setIsRecomment,
   inputRef,
   handleCommentDelete,
+  handleCommentReport,
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
@@ -80,6 +85,72 @@ const Comment = ({
       </Pressable>
     </>
   );
+  const handleCommentReportComponent = (
+    <>
+      {reportCheckModalVisible && (
+        <ModalBottom
+          modalVisible={reportCheckModalVisible}
+          setModalVisible={setReportCheckModalVisible}
+          modalText={`댓글 신고`}
+          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          modalButtonText="확인"
+          modalButton
+          modalButtonFunc={() => {
+            setReportCheckModalVisible(false);
+            setReportModalVisible(true);
+          }}
+        />
+      )}
+      {reportModalVisible && (
+        <SelectModalBottom
+          modalVisible={reportModalVisible}
+          setModalVisible={setReportModalVisible}
+          modalText={`댓글 신고`}
+          modalButtonText="신고하기"
+          modalButton
+          modalButtonFunc={async () => {
+            console.log('dd')
+            const result = await handleCommentReport(data.id, 1, '');
+            console.log('왜 여기를 출력안하지',result)
+            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
+              console.log('댓글 신고 성공')
+              Toast.show(
+                '신고하신 내용이 정상적으로 접수되었습니다.',
+                Toast.LONG,
+              );
+            }
+            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족')
+              Toast.show(
+                '보유 포인트가 부족하여 신고가 불가능합니다.',
+                Toast.LONG,
+              );
+            }
+            else Toast.show(result.detail, Toast.LONG);
+            setReportModalVisible(false);
+          }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setReportModalVisible(false)}
+        />
+      )}
+      {data?.isReported ? (
+        <Pressable
+          onPress={() => {
+            Toast.show('이미 신고한 댓글입니다.', Toast.SHORT);
+          }}>
+          <Report style={{marginRight: 14}} />
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => {
+            setReportCheckModalVisible(true);
+          }}>
+          <NoReport style={{marginRight: 14}} />
+        </Pressable>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -87,7 +158,7 @@ const Comment = ({
         style={{
           paddingHorizontal: 24,
           backgroundColor: isRecommentState
-            ? '#EEDCFD'
+            ? '#FAF5FF'
             : data?.isOfReader
             ? '#F8F8F8'
             : '#FFF',
@@ -116,6 +187,7 @@ const Comment = ({
             <SpinningThreeDots
               isMine={data.isOfReader}
               handleDeleteComponent={handleCommentDeleteComponent}
+              handleReportComponent={handleCommentReportComponent}
             />
           )}
         </View>
@@ -182,17 +254,22 @@ interface RecommentProps {
   recomment?: any;
   handleCommentLike?: any;
   handleCommentDelete: any;
+  handleCommentReport?: any;
 }
 
 export const Recomment = ({
   recomment,
   handleCommentLike,
   handleCommentDelete,
+  handleCommentReport,
 }: RecommentProps) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
+    boolean
+  >(false);
+  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const data: RecommentDto = recomment;
   const handleCommentDeleteComponent = (
     <>
@@ -224,6 +301,72 @@ export const Recomment = ({
         }}>
         <TrashIcon style={{marginRight: 12}} />
       </Pressable>
+    </>
+  );
+   const handleCommentReportComponent = (
+    <>
+      {reportCheckModalVisible && (
+        <ModalBottom
+          modalVisible={reportCheckModalVisible}
+          setModalVisible={setReportCheckModalVisible}
+          modalText={`댓글 신고`}
+          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          modalButtonText="확인"
+          modalButton
+          modalButtonFunc={() => {
+            setReportCheckModalVisible(false);
+            setReportModalVisible(true);
+          }}
+        />
+      )}
+      {reportModalVisible && (
+        <SelectModalBottom
+          modalVisible={reportModalVisible}
+          setModalVisible={setReportModalVisible}
+          modalText={`댓글 신고`}
+          modalButtonText="신고하기"
+          modalButton
+          modalButtonFunc={async () => {
+            console.log('dd')
+            const result = await handleCommentReport(data.id, 1, '');
+            console.log('왜 여기를 출력안하지',result)
+            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
+              console.log('댓글 신고 성공')
+              Toast.show(
+                '신고하신 내용이 정상적으로 접수되었습니다.',
+                Toast.LONG,
+              );
+            }
+            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족')
+              Toast.show(
+                '보유 포인트가 부족하여 신고가 불가능합니다.',
+                Toast.LONG,
+              );
+            }
+            else Toast.show(result.detail, Toast.LONG);
+            setReportModalVisible(false);
+          }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setReportModalVisible(false)}
+        />
+      )}
+      {data?.isReported ? (
+        <Pressable
+          onPress={() => {
+            Toast.show('이미 신고한 댓글입니다.', Toast.SHORT);
+          }}>
+          <Report style={{marginRight: 14}} />
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => {
+            setReportCheckModalVisible(true);
+          }}>
+          <NoReport style={{marginRight: 14}} />
+        </Pressable>
+      )}
     </>
   );
   return (
@@ -259,6 +402,7 @@ export const Recomment = ({
             <SpinningThreeDots
               isMine={data.isOfReader}
               handleDeleteComponent={handleCommentDeleteComponent}
+              handleReportComponent={handleCommentReportComponent}
             />
           )}
         </View>

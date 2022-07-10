@@ -23,7 +23,9 @@ import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {SelectModalBottom} from '../components/SelectModalBottom';
+import NoReport, {Report} from '../../resources/icon/Report';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
 };
@@ -32,18 +34,26 @@ interface Props {
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
-  handlePostDelete: any;
+  handlePostDelete?: any;
+  handlePostReport?: any;
   boardId: number;
 }
 
-function Post(
-  {post, handlePostLike, handlePostScrap, handlePostDelete, boardId}: Props
-) {
+function Post({
+  post,
+  handlePostLike,
+  handlePostScrap,
+  handlePostDelete,
+  handlePostReport,
+  boardId,
+}: Props) {
   const navigation = useNavigation();
-  
+
   const data: PostDto = post;
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const handleScrapComponent = (
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <TouchableWithoutFeedback onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
@@ -52,17 +62,17 @@ function Post(
   );
   const handlePostDeleteComponent = (
     <>
-      {modalVisible && (
+      {deleteModalVisible && (
         <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
+          modalVisible={deleteModalVisible}
+          setModalVisible={setDeleteModalVisible}
           modalText={`작성한 게시글을 삭제하시겠습니까?`}
           modalBody=""
           modalButtonText="삭제"
           modalButton
           modalButtonFunc={() => {
             if (handlePostDelete(data.postId)) {
-              setModalVisible(false);
+              setDeleteModalVisible(false);
               Toast.show(
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
                 Toast.LONG,
@@ -72,18 +82,64 @@ function Post(
           }}
           isSecondButton={true}
           modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          modalSecondButtonFunc={() => setDeleteModalVisible(false)}
         />
       )}
       <Pressable
         onPress={() => {
-          setModalVisible(true);
-          console.log(modalVisible);
+          setDeleteModalVisible(true);
+          console.log(deleteModalVisible);
         }}>
         <TrashIcon style={{marginRight: 12}} />
       </Pressable>
     </>
   );
+
+  const handlePostReportComponent = (
+    <>
+      {reportCheckModalVisible && (
+        <ModalBottom
+          modalVisible={reportCheckModalVisible}
+          setModalVisible={setReportCheckModalVisible}
+          modalText={`게시글 신고`}
+          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          modalButtonText="확인"
+          modalButton
+          modalButtonFunc={() => {
+            setReportModalVisible(true);
+            setReportCheckModalVisible(false);
+          }}
+        />
+      )}
+      {reportModalVisible && (
+        <SelectModalBottom
+          modalVisible={reportModalVisible}
+          setModalVisible={setReportModalVisible}
+          modalText={`게시글 신고`}
+          modalButtonText="신고하기"
+          modalButton
+          modalButtonFunc={() => {
+            const result = handlePostReport(data.postId , 0);
+            if (result) {
+              console.log(result);
+              setReportModalVisible(false);
+              Toast.show(result, Toast.LONG);
+            }
+          }}
+          isSecondButton={true}
+          modalSecondButtonText="취소"
+          modalSecondButtonFunc={() => setReportModalVisible(false)}
+        />
+      )}
+      <Pressable
+        onPress={() => {
+          setReportCheckModalVisible(true);
+        }}>
+        {data?.isReported ? <Report style={{marginRight: 14}} /> : <NoReport style={{marginRight: 14}} />}
+      </Pressable>
+    </>
+  );
+
   return (
     <>
       <View style={styles.postContainer}>
@@ -100,8 +156,9 @@ function Post(
             <SpinningThreeDots
               isScrap={true}
               isMine={data?.isAuthor}
-              handleScrapComponent={handleScrapComponent}
+              handleScrapComponent={handlePostScrapComponent}
               handleDeleteComponent={handlePostDeleteComponent}
+              handleReportComponent={handlePostReportComponent}
             />
           </View>
         </View>
