@@ -9,18 +9,19 @@ import {
   Easing,
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
-import Siren from '../../resources/icon/Siren';
 interface Props {
   isScrap?: boolean;
   isMine: boolean;
   handleScrapComponent?: any;
-  handleDeleteComponent: any;
+  handleDeleteComponent?: any;
+  handleReportComponent?: any;
 }
 function SpinningThreeDots({
   isScrap = false,
   isMine,
   handleScrapComponent,
   handleDeleteComponent,
+  handleReportComponent
 }: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
@@ -63,7 +64,7 @@ function SpinningThreeDots({
             (isMine ? (
               handleDeleteComponent
             ) : (
-              <Siren style={{marginRight: 14}} />
+              handleReportComponent
             ))}
         </View>
         <View style={{flexDirection: 'row'}}>

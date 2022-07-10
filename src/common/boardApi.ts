@@ -171,6 +171,19 @@ export const setPostScrap = async (postId: number) => {
   }
 };
 // 게시글 신고
+export const reportPost = async (postId: number, reasonId: number, detail: string) => {
+  try {
+    const response = await client.post<Response<Board>>(
+      `/posts/${postId}/report`,
+      {reasonId: reasonId, detail: detail},
+    );
+    console.log('reportPost 함수 성공', response.data)
+    return response.data.data;
+  } catch (e: any) {
+    console.log('reportPost 함수 실패', e.response.data);
+    return e.response.data.status;
+  }
+};
 // 게시글 삭제
 // TODO: postId 쉼표 구분으로 여러개 받아야함
 export const deletePosts = async (postId: number) => {
