@@ -77,7 +77,7 @@ function Post({
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
                 Toast.LONG,
               );
-              navigation.navigate('PostListScreen', {boardId: boardId});
+              navigation.goBack();
             }
           }}
           isSecondButton={true}
