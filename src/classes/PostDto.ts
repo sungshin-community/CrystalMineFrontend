@@ -17,3 +17,11 @@ export default interface PostDto {
   imageCount: number;
   commentCount: number;
 }
+
+export interface PostWriteDto {
+  boardId : number;
+  title : string;
+  content : string;
+  images : string[];
+  isAnonymous : boolean;
+}
