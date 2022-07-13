@@ -14,7 +14,11 @@ import {
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getBoardDetail, getBoardInfo, toggleBoardPin} from '../../common/boardApi';
+import {
+  getBoardDetail,
+  getBoardInfo,
+  toggleBoardPin,
+} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
@@ -26,7 +30,7 @@ import {fontRegular} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {BigGrayPin, BigPurplePin} from '../../../resources/icon/Pin';
-import { async } from 'q';
+import {async} from 'q';
 
 type RootStackParamList = {
   PostScreen: {boardId: number; postId: number};
@@ -36,7 +40,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
   const [boardInfo, seBoardInfo] = useState<Board>();
-  const [isBoardPinned, setIsBoardPinned] = useState<boolean>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -55,18 +58,23 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
-        <Pressable onPress={async () => { const result = await toggleBoardPin(route.params.boardId); console.log("게시판 고정/해제"); setIsBoardPinned(!isBoardPinned) } }>
-        {boardInfo?.isOwner ? (
-          boardInfo?.isPinned ? (
-            <BigOrangeFlag />
+        <Pressable
+          onPress={async () => {
+            const result = await toggleBoardPin(route.params.boardId);
+            const boardInfo = await getBoardInfo(route.params.boardId);
+            seBoardInfo(boardInfo);
+          }}>
+          {boardInfo?.isOwner ? (
+            boardInfo?.isPinned ? (
+              <BigOrangeFlag />
+            ) : (
+              <BigGrayFlag />
+            )
+          ) : boardInfo?.isPinned ? (
+            <BigPurplePin />
           ) : (
-            <BigGrayFlag />
-          )
-        ) : boardInfo?.isPinned ? (
-          <BigPurplePin />
-        ) : (
-          <BigGrayPin />
-        )}
+            <BigGrayPin />
+          )}
         </Pressable>
         <Text style={[fontRegular, {marginLeft: 8, fontSize: 15}]}>
           {boardInfo?.name}
@@ -79,6 +87,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
       headerRight: () => <SpinningThreeDots />,
+      headerTitleAlign: 'center',
     });
   }, [navigation, boardInfo]);
 
