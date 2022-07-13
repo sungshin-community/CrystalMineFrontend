@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // board
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
+import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
 import BoardSearch from './src/screens/board/BoardSearch';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
@@ -388,6 +389,26 @@ const App = () => {
                 component={CreateBoard}
                 options={({navigation}) => ({
                   title: '게시판 생성',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="UpdateBoard"
+                component={UpdateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 수정',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -1153,6 +1174,26 @@ const App = () => {
                 component={CreateBoard}
                 options={({navigation}) => ({
                   title: '게시판 생성',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="UpdateBoard"
+                component={UpdateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 수정',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {

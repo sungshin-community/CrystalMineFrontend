@@ -36,7 +36,8 @@ import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';
 
 type RootStackParamList = {
-  PostScreen: {boardId: number; postId: number};
+  PostScreen: { boardId: number; postId: number };
+  UpdateBoard: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -103,7 +104,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   );
     const handleBoardSettingComponent = (
     <View style={{marginRight: 14}}>
-        <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
+        <Pressable hitSlop={10} onPress={() => navigation.navigate('UpdateBoard')}>
           <SettingIcon/>
       </Pressable>
     </View>

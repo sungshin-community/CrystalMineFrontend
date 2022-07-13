@@ -39,7 +39,7 @@ interface ImageResponse {
   width: number;
 }
 
-function CreateBoard({navigation}: Props) {
+function UpdateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
   const [hotable, setHotable] = useState<boolean>(false);
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateBoard;
+export default UpdateBoard;
