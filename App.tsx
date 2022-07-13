@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Pressable} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar, Platform, Alert} from 'react-native';
 import WaterMark from './src/components/WaterMark';
 // screens
 // signIn
@@ -66,9 +66,20 @@ import QuitComplete from './src/screens/mypage/informationUse/quitMembership/Qui
 import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
 
+import messaging from '@react-native-firebase/messaging';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  //  useEffect(() => {
+  //    const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //      console.log('Message');
+  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
+
+  //   return unsubscribe;
+  //  }, []);
+  
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 

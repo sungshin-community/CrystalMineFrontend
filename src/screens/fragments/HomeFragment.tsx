@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 import {fontBold} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -25,7 +26,6 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
 import User from '../../classes/User';
 import {getUser} from '../../common/myPageApi';
-
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPageFragment: undefined;
