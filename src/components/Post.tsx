@@ -55,9 +55,9 @@ function Post({
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
-      <TouchableWithoutFeedback onPress={() => handlePostScrap(data.postId)}>
+      <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
-      </TouchableWithoutFeedback>
+      </Pressable>
     </View>
   );
   const handlePostDeleteComponent = (
@@ -154,11 +154,10 @@ function Post({
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
-              isScrap={true}
               isMine={data?.isAuthor}
-              handleScrapComponent={handlePostScrapComponent}
-              handleDeleteComponent={handlePostDeleteComponent}
-              handleReportComponent={handlePostReportComponent}
+              handleDefaultModeComponent={handlePostScrapComponent}
+              handleOptionModeIsMineComponent={handlePostDeleteComponent}
+              handleOptionModeIsNotMineComponent={handlePostReportComponent}
             />
           </View>
         </View>

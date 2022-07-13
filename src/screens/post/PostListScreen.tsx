@@ -31,6 +31,9 @@ import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {BigGrayPin, BigPurplePin} from '../../../resources/icon/Pin';
 import {async} from 'q';
+import SearchIcon from '../../../resources/icon/SearchIcon';
+import NoReport, {Report} from '../../../resources/icon/Report';
+import SettingIcon from '../../../resources/icon/SettingIcon';
 
 type RootStackParamList = {
   PostScreen: {boardId: number; postId: number};
@@ -86,11 +89,32 @@ const PostListScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
-      headerRight: () => <SpinningThreeDots />,
+      headerRight: () => <SpinningThreeDots handleDefaultModeComponent={handleBoardSearchComponent} isMine={boardInfo?.isOwner} handleOptionModeIsMineComponent={handleBoardSettingComponent} handleOptionModeIsNotMineComponent={handleBoardReportComponent}/>,
       headerTitleAlign: 'center',
     });
   }, [navigation, boardInfo]);
 
+    const handleBoardSearchComponent = (
+    <View style={{marginRight: 14}}>
+        <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
+          <SearchIcon/>
+      </Pressable>
+    </View>
+  );
+    const handleBoardSettingComponent = (
+    <View style={{marginRight: 14}}>
+        <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
+          <SettingIcon/>
+      </Pressable>
+    </View>
+  );
+    const handleBoardReportComponent = (
+    <View style={{marginRight: 14}}>
+        <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
+          <NoReport/>
+      </Pressable>
+    </View>
+  );
   return (
     <>
       {boardDetail?.content.length === 0 ? (

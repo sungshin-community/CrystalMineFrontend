@@ -186,8 +186,8 @@ const Comment = ({
           {!data.isDeleted && (
             <SpinningThreeDots
               isMine={data.isOfReader}
-              handleDeleteComponent={handleCommentDeleteComponent}
-              handleReportComponent={handleCommentReportComponent}
+              handleOptionModeIsMineComponent={handleCommentDeleteComponent}
+              handleOptionModeIsNotMineComponent={handleCommentReportComponent}
             />
           )}
         </View>
@@ -401,8 +401,8 @@ export const Recomment = ({
           {!data.isDeleted && (
             <SpinningThreeDots
               isMine={data.isOfReader}
-              handleDeleteComponent={handleCommentDeleteComponent}
-              handleReportComponent={handleCommentReportComponent}
+              handleOptionModeIsMineComponent={handleCommentDeleteComponent}
+              handleOptionModeIsNotMineComponent={handleCommentReportComponent}
             />
           )}
         </View>

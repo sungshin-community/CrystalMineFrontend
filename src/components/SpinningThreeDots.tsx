@@ -10,18 +10,16 @@ import {
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
 interface Props {
-  isScrap?: boolean;
+  handleDefaultModeComponent?: any;
   isMine?: boolean;
-  handleScrapComponent?: any;
-  handleDeleteComponent?: any;
-  handleReportComponent?: any;
+  handleOptionModeIsMineComponent?: any;
+  handleOptionModeIsNotMineComponent?: any;
 }
 function SpinningThreeDots({
-  isScrap = false,
+  handleDefaultModeComponent,
   isMine,
-  handleScrapComponent,
-  handleDeleteComponent,
-  handleReportComponent
+  handleOptionModeIsMineComponent,
+  handleOptionModeIsNotMineComponent
 }: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
@@ -57,14 +55,14 @@ function SpinningThreeDots({
 
   return (
     <>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {!isOptionState && isScrap && handleScrapComponent}
+          {!isOptionState && handleDefaultModeComponent}
           {isOptionState &&
             (isMine ? (
-              handleDeleteComponent
+              handleOptionModeIsMineComponent
             ) : (
-              handleReportComponent
+              handleOptionModeIsNotMineComponent
             ))}
         </View>
         <View style={{flexDirection: 'row'}}>
