@@ -120,7 +120,7 @@ const App = () => {
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
-                options={({navigation}) => ({
+                options={({ navigation }) => ({
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (

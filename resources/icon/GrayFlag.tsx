@@ -17,3 +17,18 @@ const GrayFlag = (props: any) => (
 )
 
 export default GrayFlag;
+
+export const BigGrayFlag = (props: any) => (
+  <Svg
+    width={16}
+    height={19}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path
+      d="M10.027 2.235 9.6 0H0v19h2.133v-7.823h5.974l.426 2.235H16V2.235h-5.973Z"
+      fill="#87919B"
+    />
+  </Svg>
+)

@@ -82,7 +82,7 @@ export const getBoardirectionAgreements = async () => {
 
 export const getBoardInfo = async (boardId: number) => {
   try {
-    const response = await client.get<Response<null>>(
+    const response = await client.get<Response<Board>>(
       `/boards/${boardId}`
     );
     return response.data.data;
@@ -132,8 +132,6 @@ export const editBoard = async (boardId: number, introduction: string, hotable: 
     return e.response.data.status;
   }
 };
-
-
 
 export async function getMyPostList(page: number = 0, sort: string = "createdAt") {
   try {

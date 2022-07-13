@@ -9,17 +9,24 @@ import {
   ScrollView,
   Pressable,
   Text,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getBoardDetail, getBoardInfo} from '../../common/boardApi';
+import {getBoardDetail, getBoardInfo, toggleBoardPin} from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
-import { getPosts } from '../../common/boardApi';
+import {getPosts} from '../../common/boardApi';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
+import SpinningThreeDots from '../../components/SpinningThreeDots';
+import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
+import {fontRegular} from '../../common/font';
+import Board from '../../classes/Board';
+import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
+import {BigGrayPin, BigPurplePin} from '../../../resources/icon/Pin';
+import { async } from 'q';
 
 type RootStackParamList = {
   PostScreen: {boardId: number; postId: number};
@@ -28,8 +35,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
-  const [boardName, setBoardName] = useState<string>('');
-
+  const [boardInfo, seBoardInfo] = useState<Board>();
+  const [isBoardPinned, setIsBoardPinned] = useState<boolean>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -37,7 +44,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardDetail(boardDetail);
-      setBoardName(boardInfo.name);
+      seBoardInfo(boardInfo);
     }
     if (isFocused) init();
   }, [isFocused]);
@@ -45,43 +52,59 @@ const PostListScreen = ({navigation, route}: Props) => {
   const SampleFunction = () => {
     Alert.alert('플로팅 버튼 눌림!');
   };
+  const HeaderIcon = () => {
+    return (
+      <>
+        <Pressable onPress={async () => { const result = await toggleBoardPin(route.params.boardId); console.log("게시판 고정/해제"); setIsBoardPinned(!isBoardPinned) } }>
+        {boardInfo?.isOwner ? (
+          boardInfo?.isPinned ? (
+            <BigOrangeFlag />
+          ) : (
+            <BigGrayFlag />
+          )
+        ) : boardInfo?.isPinned ? (
+          <BigPurplePin />
+        ) : (
+          <BigGrayPin />
+        )}
+        </Pressable>
+        <Text style={[fontRegular, {marginLeft: 8, fontSize: 15}]}>
+          {boardInfo?.name}
+        </Text>
+      </>
+    );
+  };
 
   useEffect(() => {
     navigation.setOptions({
-      title: boardName,
-      headerTitleAlign: 'center',
-      headerTintColor: '#000000',
-      headerTitleStyle: {
-        fontSize: 19,
-        fontFamily: 'SpoqaHanSansNeo-Medium',
-      },
+      headerTitle: () => <HeaderIcon />,
+      headerRight: () => <SpinningThreeDots />,
     });
-  }, [navigation, boardName]);
+  }, [navigation, boardInfo]);
 
   return (
     <>
       {boardDetail?.content.length === 0 ? (
         <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text
-          style={{
-            color: '#6E7882',
-            fontSize: 15,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            textAlign: 'center',
-            lineHeight: 22.5,
-            marginTop: 20
-          }}>
-          아직 작성된 게시글이 없습니다.{"\n"}
-          첫 글을 작성해주세요.
-        </Text>
-      </View>
-    </SafeAreaView>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: '#6E7882',
+                fontSize: 15,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+                textAlign: 'center',
+                lineHeight: 22.5,
+                marginTop: 20,
+              }}>
+              아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
+            </Text>
+          </View>
+        </SafeAreaView>
       ) : (
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
           <View>

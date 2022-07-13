@@ -11,7 +11,7 @@ import {
 import Dots from '../../resources/icon/Dots';
 interface Props {
   isScrap?: boolean;
-  isMine: boolean;
+  isMine?: boolean;
   handleScrapComponent?: any;
   handleDeleteComponent?: any;
   handleReportComponent?: any;
