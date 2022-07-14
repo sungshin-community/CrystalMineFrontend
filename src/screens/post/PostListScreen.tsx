@@ -34,7 +34,6 @@ import {
   BigOrangePin,
   BigPurplePin,
 } from '../../../resources/icon/Pin';
-import {async} from 'q';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';

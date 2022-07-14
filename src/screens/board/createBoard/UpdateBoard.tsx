@@ -41,12 +41,13 @@ function UpdateBoard({navigation, route}: Props) {
       setBoardInfo(boardInfo);
     }
     init()
-    if (boardInfo) {
-      setNewBoardIntroduction(boardInfo?.introduction);
-      setNewHotable(boardInfo?.hotable);
-    }
   }, []);
-
+  
+  useEffect(() => {
+    setNewBoardIntroduction(boardInfo?.introduction);
+    setNewHotable(boardInfo?.hotable);
+  },[boardInfo])
+  
   const onSubmitPress = async () => {
     const result = await updateBoard(
       route.params.boardId,
