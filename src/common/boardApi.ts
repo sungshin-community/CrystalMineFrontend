@@ -107,6 +107,7 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
 
 export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
   try {
+    console.log(',',hotable)
     const response = await client.post<Response<Board>>(
       '/boards',
       {name: name, introduction: introduction, hotable: hotable},
@@ -119,16 +120,17 @@ export const createBoard = async (name: string, introduction: string, hotable: b
   }
 };
 
-export const editBoard = async (boardId: number, introduction: string, hotable: boolean) => {
+export const updateBoard = async (boardId: number, introduction: string, hotable: boolean) => {
   try {
-    const response = await client.post<Response<Board>>(
+    console.log(hotable)
+    const response = await client.patch<Response<Board>>(
       `/boards/${boardId}`,
       {introduction: introduction, hotable: hotable},
     );
-    console.log('editBoard 함수 성공', response.data)
+    console.log('updateBoard 함수 성공', response.data)
     return response.data.data;
   } catch (e: any) {
-    console.log('editBoard 함수 실패', e.response.data);
+    console.log('updateBoard 함수 실패', e.response.data);
     return e.response.data.status;
   }
 };

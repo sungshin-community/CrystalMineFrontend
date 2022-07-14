@@ -30,15 +30,6 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-interface ImageResponse {
-  fileName: string;
-  fileSize: number;
-  height: number;
-  type: string;
-  uri: string;
-  width: number;
-}
-
 function CreateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
@@ -80,6 +71,7 @@ function CreateBoard({navigation}: Props) {
           <TextInput
             placeholder="게시판 이름을 입력해주세요."
             value={boardName}
+            autoCorrect={false}
             onChangeText={value => {
               setBoardName(value);
             }}
@@ -93,22 +85,23 @@ function CreateBoard({navigation}: Props) {
               marginBottom: 15,
             }}
           />
-          <Text style={[fontMedium, { fontSize: 15 }]}>게시판 설명</Text>
+          <Text style={[fontMedium, {fontSize: 15}]}>게시판 설명</Text>
           <View style={{height: 149}}>
-          <TextInput
-            textAlignVertical="top"       
-            placeholder="게시판 설명을 입력해주세요."
-            value={boardIntroduction}
-            onChangeText={value => {
-              setBoardIntroduction(value);
-            }}
-            onBlur={() => {
-              Keyboard.dismiss();
-            }}
-            style={[styles.input]}
-            maxLength={22}
+            <TextInput
+              textAlignVertical="top"
+              placeholder="게시판 설명을 입력해주세요."
+              value={boardIntroduction}
+              autoCorrect={false}
+              onChangeText={value => {
+                setBoardIntroduction(value);
+              }}
+              onBlur={() => {
+                Keyboard.dismiss();
+              }}
+              style={[styles.input]}
+              maxLength={22}
             />
-            </View>
+          </View>
         </View>
         <View
           style={{

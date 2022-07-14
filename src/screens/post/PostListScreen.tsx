@@ -41,13 +41,13 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 
 type RootStackParamList = {
   PostScreen: {boardId: number; postId: number};
-  UpdateBoard: undefined;
+  UpdateBoard: { boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<BoardDetailDto>();
-  const [boardInfo, seBoardInfo] = useState<Board>();
+  const [boardInfo, setBoardInfo] = useState<Board>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       const boardDetail = await getBoardDetail(route.params.boardId, 0);
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardDetail(boardDetail);
-      seBoardInfo(boardInfo);
+      setBoardInfo(boardInfo);
     }
     if (isFocused) init();
   }, [isFocused]);
@@ -70,7 +70,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           onPress={async () => {
             const result = await toggleBoardPin(route.params.boardId);
             const boardInfo = await getBoardInfo(route.params.boardId);
-            seBoardInfo(boardInfo);
+            setBoardInfo(boardInfo);
           }}>
           {boardInfo?.isOwner ? (
             boardInfo?.isPinned ? (
@@ -121,7 +121,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     <View style={{marginRight: 14}}>
       <Pressable
         hitSlop={10}
-        onPress={() => navigation.navigate('UpdateBoard')}>
+        onPress={() => navigation.navigate('UpdateBoard', { boardId: route.params.boardId})}>
         <SettingIcon />
       </Pressable>
     </View>
