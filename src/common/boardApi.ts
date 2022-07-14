@@ -1,5 +1,5 @@
 import client from './client';
-import {AxiosResponse} from 'axios';
+import { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Board from '../classes/Board';
 import Response from '../classes/Response';
@@ -8,6 +8,7 @@ import CommentDto, { RecommentDto } from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
 import { DirectionAgreement } from '../classes/Agreement';
 import MyCommentDto from '../classes/MyCommentDto';
+import { PostWriteDto, PostWriteInfoDto } from '../classes/PostDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -50,7 +51,7 @@ export const getCustomBoardList = async () => {
   try {
     const params = new URLSearchParams();
     params.append('type', '0');
-    const response = await client.get<Response<Board[]>>( `/boards?${params}`);
+    const response = await client.get<Response<Board[]>>(`/boards?${params}`);
     return response.data.data;
   } catch (e) {
     console.log("여기는 getCustomBoardList 함수", e);
@@ -109,7 +110,7 @@ export const createBoard = async (name: string, introduction: string, hotable: b
   try {
     const response = await client.post<Response<Board>>(
       '/boards',
-      {name: name, introduction: introduction, hotable: hotable},
+      { name: name, introduction: introduction, hotable: hotable },
     );
     console.log('createBoard 함수 성공', response.data)
     return response.data.data;
@@ -123,7 +124,7 @@ export const editBoard = async (boardId: number, introduction: string, hotable: 
   try {
     const response = await client.post<Response<Board>>(
       `/boards/${boardId}`,
-      {introduction: introduction, hotable: hotable},
+      { introduction: introduction, hotable: hotable },
     );
     console.log('editBoard 함수 성공', response.data)
     return response.data.data;
@@ -220,7 +221,7 @@ export const reportPost = async (postId: number, reasonId: number, detail: strin
   try {
     const response = await client.post<Response<Board>>(
       `/posts/${postId}/report`,
-      {reasonId: reasonId, detail: detail},
+      { reasonId: reasonId, detail: detail },
     );
     console.log('reportPost 함수 성공', response.data)
     return response.data.data;
@@ -262,7 +263,7 @@ export const addComment = async (postId: number, content: string, isAnonymous: b
     console.log(postId, content, '익명여부:', isAnonymous)
     const response = await client.post<Response<CommentDto>>(
       '/comments',
-      {postId: postId, content: content, isAnonymous: isAnonymous},
+      { postId: postId, content: content, isAnonymous: isAnonymous },
     );
     console.log('addComment 함수 성공', response.data)
     return 0;
@@ -277,7 +278,7 @@ export const addRecomment = async (postId: number, parentId: number, content: st
     console.log(postId, content, parentId, '익명여부:', isAnonymous)
     const response = await client.post<Response<RecommentDto>>(
       `/comments/${parentId}`,
-      {postId: postId, parentId: parentId, content: content, isAnonymous: isAnonymous},
+      { postId: postId, parentId: parentId, content: content, isAnonymous: isAnonymous },
     );
     console.log('addRecomment 함수 성공', response.data)
     return 0;
@@ -303,7 +304,7 @@ export const reportComment = async (commentId: number, reasonId: number, detail?
   try {
     const response = await client.post<Response<CommentDto>>(
       `/comments/${commentId}/report`,
-      {reasonId: reasonId, detail: detail},
+      { reasonId: reasonId, detail: detail },
     );
     console.log('reportComment 함수 성공', response.data)
     return response.data;
@@ -324,3 +325,32 @@ export const deleteComment = async (commentId: number) => {
     return false;
   }
 };
+// 게시글 생성
+export const postWritePost = async (props: {
+  boardId: number;
+  title: string;
+  content: string;
+  images: string[];
+  isAnonymous: boolean;
+}) => {
+  try {
+    const response = await client.post<Response<PostWriteDto>>('/posts', {
+      ...props,
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+// 게시글 생성 시 필요한 정보 조회
+export const getWritePostInfo = async (id: number) => {
+  try {
+    const response = await client.get<Response<PostWriteInfoDto>>(
+      `/posts/info/${id}`,
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+}

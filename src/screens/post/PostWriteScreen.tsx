@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import {
   Image,
@@ -12,11 +13,12 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { fontMedium, fontRegular } from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
-import { writeQuestion } from '../../common/myPageApi';
+import { RectangleChecked, RectangleUnchecked, Checked } from '../../../resources/icon/CheckBox';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { ModalBottom } from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
-import { postWritePost } from '../../common/boardApi';
+import { getWritePostInfo, postWritePost } from '../../common/boardApi';
+import ProfileImage from '../../../resources/icon/ProfileImage';
+import { PostWriteInfoDto } from '../../classes/PostDto';
 
 type RootStackParamList = {
   PostListScreen: undefined;
@@ -32,14 +34,46 @@ interface ImageResponse {
   width: number;
 }
 
+interface Direction {
+  content: string[];
+  id: number;
+  title: string;
+}
+
 function PostWriteScreen({ navigation, route }: Props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
   const [images, setImages] = useState<string[]>([]);
-
   const [imageResponse, setImageResponse] = useState<ImageResponse[]>([]);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [direction, setDirection] = useState<string>('');
+  const [isInfo, setIsInfo] = useState<PostWriteInfoDto>({});
+  const [isShow, setIsShow] = useState<boolean>(true);
+
+  useEffect(() => {
+    const userInfo = async () => {
+      if (route.params.boardId) {
+        let result = await getWritePostInfo(route.params.boardId);
+        if (result) {
+          console.log('사용자 정보 조회', result);
+          setIsInfo(result);
+          const placeholder = result.directions
+            .map((item: Direction) => {
+              return `이용방향 ${item.id}.
+        ${item.title}
+        
+        ${item.content.map((_item, _index) => {
+                return `${item.id}-${_index + 1} ${_item}
+`;
+              })}
+`;
+            })
+            .reduce((acc, cur) => acc + cur);
+          setDirection(placeholder);
+        }
+      }
+    };
+    userInfo();
+  }, [route.params.boardId]);
 
   const onSubmitPress = async () => {
     const result = await postWritePost({
@@ -47,23 +81,23 @@ function PostWriteScreen({ navigation, route }: Props) {
       title: title,
       content: content,
       images: images,
-      isAnonymous: false
-    })
-    if (result) { navigation.navigate('PostListScreen'); Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG) }
+      isAnonymous: false,
+    });
+    if (result) {
+      navigation.navigate('PostListScreen');
+      Toast.show('게시글이 등록되었스빈다.', Toast.LONG);
+    }
   };
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable
-          onPress={() => {
-            if (title && content) setModalVisible(true);
-          }}>
+        <Pressable onPress={onSubmitPress}>
           <Text
             style={[
               styles.submit,
               fontRegular,
-              { color: title && content ? '#A055FF' : '#87919B' },
+              { color: title && content ? '#A055FF' : '#d8b9ff' },
             ]}>
             완료
           </Text>
@@ -73,8 +107,6 @@ function PostWriteScreen({ navigation, route }: Props) {
   }, [navigation, title, content]);
 
   const onSelectImage = () => {
-    console.log('image press');
-
     launchImageLibrary(
       { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
       res => {
@@ -90,17 +122,36 @@ function PostWriteScreen({ navigation, route }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextInput
-          placeholder="제목을 입력하세요."
-          value={title}
-          onChangeText={value => {
-            setTitle(value);
-          }}
-          style={[fontMedium, styles.title]} />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row' }}>
+            <ProfileImage />
+            <View style={{ justifyContent: 'center' }}>
+              <Text style={{ fontSize: 16, paddingLeft: 8, fontWeight: '500' }}>
+                {isShow ? '익명' : isInfo.nickname}
+              </Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{marginRight: 4}}>익명</Text>
+            <Pressable onPress={() => setIsShow(!isShow)}>
+              {isShow ? <RectangleChecked /> : <RectangleUnchecked />}
+            </Pressable>
+          </View>
+        </View>
+        {isInfo && isInfo.hasTitle && (
+          <TextInput
+            placeholder="제목을 입력하세요."
+            value={title}
+            onChangeText={value => {
+              setTitle(value);
+            }}
+            style={[fontMedium, styles.title]}
+          />
+        )}
       </View>
       <View>
         <TextInput
-          placeholder="내용을 입력하세요."
+          placeholder={direction}
           value={content}
           multiline={true}
           onChangeText={value => {
@@ -108,7 +159,6 @@ function PostWriteScreen({ navigation, route }: Props) {
           }}
           onBlur={() => {
             Keyboard.dismiss();
-            console.log('키보드다른데클릭');
           }}
           style={[fontRegular, styles.input]}
         />
@@ -148,7 +198,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 27,
     marginBottom: 8,
@@ -158,7 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    backgroundColor: '#FBFBFB',
     minHeight: 194,
     fontSize: 15,
     paddingTop: 14,
