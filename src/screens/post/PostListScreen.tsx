@@ -111,14 +111,14 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [navigation, boardInfo]);
 
   const handleBoardSearchComponent = (
-    <View style={{marginRight: 14}}>
+    <View style={{marginRight: 4}}>
       <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
         <SearchIcon />
       </Pressable>
     </View>
   );
   const handleBoardSettingComponent = (
-    <View style={{marginRight: 14}}>
+    <View style={{marginRight: 10}}>
       <Pressable
         hitSlop={10}
         onPress={() => navigation.navigate('UpdateBoard', { boardId: route.params.boardId})}>
@@ -127,7 +127,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     </View>
   );
   const handleBoardReportComponent = (
-    <View style={{marginRight: 14}}>
+    <View style={{marginRight: 10}}>
       <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
         <NoReport />
       </Pressable>
