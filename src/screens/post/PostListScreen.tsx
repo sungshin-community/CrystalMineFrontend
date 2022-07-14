@@ -29,14 +29,18 @@ import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {fontRegular} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
-import {BigGrayPin, BigPurplePin} from '../../../resources/icon/Pin';
+import {
+  BigGrayPin,
+  BigOrangePin,
+  BigPurplePin,
+} from '../../../resources/icon/Pin';
 import {async} from 'q';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';
 
 type RootStackParamList = {
-  PostScreen: { boardId: number; postId: number };
+  PostScreen: {boardId: number; postId: number};
   UpdateBoard: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -75,7 +79,11 @@ const PostListScreen = ({navigation, route}: Props) => {
               <BigGrayFlag />
             )
           ) : boardInfo?.isPinned ? (
-            <BigPurplePin />
+            boardInfo?.type === 1 || boardInfo?.type === 2 ? (
+              <BigPurplePin />
+            ) : (
+              <BigOrangePin />
+            )
           ) : (
             <BigGrayPin />
           )}
@@ -90,29 +98,38 @@ const PostListScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
-      headerRight: () => <SpinningThreeDots handleDefaultModeComponent={handleBoardSearchComponent} isMine={boardInfo?.isOwner} handleOptionModeIsMineComponent={handleBoardSettingComponent} handleOptionModeIsNotMineComponent={handleBoardReportComponent}/>,
+      headerRight: () => (
+        <SpinningThreeDots
+          handleDefaultModeComponent={handleBoardSearchComponent}
+          isMine={boardInfo?.isOwner}
+          handleOptionModeIsMineComponent={handleBoardSettingComponent}
+          handleOptionModeIsNotMineComponent={handleBoardReportComponent}
+        />
+      ),
       headerTitleAlign: 'center',
     });
   }, [navigation, boardInfo]);
 
-    const handleBoardSearchComponent = (
+  const handleBoardSearchComponent = (
     <View style={{marginRight: 14}}>
-        <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
-          <SearchIcon/>
+      <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
+        <SearchIcon />
       </Pressable>
     </View>
   );
-    const handleBoardSettingComponent = (
+  const handleBoardSettingComponent = (
     <View style={{marginRight: 14}}>
-        <Pressable hitSlop={10} onPress={() => navigation.navigate('UpdateBoard')}>
-          <SettingIcon/>
+      <Pressable
+        hitSlop={10}
+        onPress={() => navigation.navigate('UpdateBoard')}>
+        <SettingIcon />
       </Pressable>
     </View>
   );
-    const handleBoardReportComponent = (
+  const handleBoardReportComponent = (
     <View style={{marginRight: 14}}>
-        <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
-          <NoReport/>
+      <Pressable hitSlop={10} onPress={() => console.log('search icon click')}>
+        <NoReport />
       </Pressable>
     </View>
   );
