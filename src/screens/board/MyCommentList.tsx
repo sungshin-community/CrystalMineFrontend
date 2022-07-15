@@ -26,7 +26,7 @@ export default function MyCommentList({navigation, route}: Props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#EEEEEE' }}>
-      <View>
+      <View style={{marginLeft: 24, width: 66, height: 24, backgroundColor: '#f6f6f6'}}>
         <Text>
           최신순
         </Text>

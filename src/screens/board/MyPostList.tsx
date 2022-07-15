@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, Pressable, View, FlatList} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Pressable, View, FlatList, TouchableOpacity} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MyPostDto from '../../classes/MyPostDto';
 import MyPostItem from '../../components/MyPostItem';
@@ -7,39 +7,47 @@ import { getMyPostList } from '../../common/boardApi';
 import { MyPostContentDto } from '../../classes/board/MyPostDto';
 
 type RootStackParamList = {
-  PostScreen: {boardId: number; postId: number};
+  PostScreen: {postId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function MyPostList({navigation, route}: Props) {
 
   const [myPostList, setMyPostList] = useState<MyPostContentDto[]>([]);
+  const [sortBy, setSortBy] = useState<string>('createdAt');
 
   const moveToPost = (postId: number) => {
     navigation.navigate('PostScreen', {
-      boardId: 1, // TODO: 게시판 ID 하드코딩 고치기
       postId: postId
     });
   }
 
   useEffect(() => {
     async function init() {
-      const postList = await getMyPostList(0, "createdAt");
+      const postList = await getMyPostList(0, sortBy);
       setMyPostList(postList);
     }
     init();
-  }, []);
+  }, [sortBy]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#EEEEEE' }}>
-      <View>
+    <SafeAreaView style={{ backgroundColor: '#FFFFFF' }}>
+      <TouchableOpacity
+        onPress={() => {
+          if (sortBy === 'createdAt') {
+            setSortBy('likeCount');
+          } else {
+            setSortBy('createdAt');
+          }
+        }}
+        style={{marginLeft: 24, width: 66, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <Text>
-          최신순
+          {sortBy === 'createdAt' ? "최신순" : "공감순"}
         </Text>
-      </View>
+      </TouchableOpacity>
       <FlatList
         data={myPostList}
-        renderItem={({item}) => <MyPostItem post={item} />}
+        renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} />}
         ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
       />
     </SafeAreaView>

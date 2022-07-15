@@ -198,6 +198,7 @@ export const getPosts = async (postId: number) => {
     const response = await client.get<Response<null>>(
       `/posts/${postId}`
     );
+    console.log('getPosts 함수 성공', response.data)
     return response.data.data;
   } catch (e) {
     console.log("여기는 getPosts 함수", e.response.data);

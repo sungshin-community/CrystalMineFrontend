@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import PostComment from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
@@ -9,12 +9,13 @@ import ProfileImage from '../../resources/icon/ProfileImage';
 import { MyPostContentDto } from '../classes/board/MyPostDto';
 
 interface Props {
-  post: MyPostContentDto
+  post: MyPostContentDto;
+  moveToPost: (postId: number) => void;
 }
 
-export default function MyPostItem({post}: Props) {
+export default function MyPostItem({post, moveToPost}: Props) {
   return (
-    <View style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
+    <TouchableOpacity style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}} onPress={() => moveToPost(post.postId)}>
       <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
         <SmallBoard />
         <Text style={{color: '#87919B', marginLeft: 8}}>{post.boardName}</Text>
@@ -42,7 +43,7 @@ export default function MyPostItem({post}: Props) {
           {post.commentCount}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

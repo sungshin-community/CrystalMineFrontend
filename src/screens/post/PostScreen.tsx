@@ -173,7 +173,7 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostScrap={handlePostScrap}
             handlePostDelete={handlePostDelete}
             handlePostReport={handlePostReport}
-            boardId={route.params.boardId}></Post>
+          ></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>

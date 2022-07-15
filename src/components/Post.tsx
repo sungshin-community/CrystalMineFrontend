@@ -26,17 +26,13 @@ import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
-type RootStackParamList = {
-  PostListScreen: {boardId: number};
-};
-type NaviProps = NativeStackScreenProps<RootStackParamList>;
+
 interface Props {
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
   handlePostDelete?: any;
   handlePostReport?: any;
-  boardId: number;
 }
 
 function Post({
@@ -44,8 +40,7 @@ function Post({
   handlePostLike,
   handlePostScrap,
   handlePostDelete,
-  handlePostReport,
-  boardId,
+  handlePostReport
 }: Props) {
   const navigation = useNavigation();
 
