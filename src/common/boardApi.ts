@@ -178,7 +178,20 @@ export async function getMyCommentList(page: number, sort: string = "createdAt")
     console.log("여기는 getMyCommentList 함수", e);
   }
 }
-
+//게시판 신고
+export const reportBoard = async (boardId: number, reasonId: number, detail: string) => {
+  try {
+    const response = await client.post<Response<Board>>(
+      `/boards/${boardId}/report`,
+      {reasonId: reasonId, detail: detail},
+    );
+    console.log('reportBoard 함수 성공', response.data)
+    return response.data;
+  } catch (e: any) {
+    console.log('reportBoard 함수 실패', e.response.data);
+    return e.response.data;
+  }
+};
 // 게시글
 export const getPosts = async (postId: number) => {
   try {
@@ -226,7 +239,7 @@ export const reportPost = async (postId: number, reasonId: number, detail: strin
     return response.data;
   } catch (e: any) {
     console.log('reportPost 함수 실패', e.response.data);
-    return e.response.data.status;
+    return e.response.data;
   }
 };
 // 게시글 삭제

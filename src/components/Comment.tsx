@@ -53,7 +53,6 @@ const Comment = ({
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
 
-  useEffect(() => { }, [reportCheckModalVisible,reportModalVisible ])
   const handleCommentDeleteComponent = (
     <>
       {modalVisible && (
