@@ -21,7 +21,7 @@ import ProfileImage from '../../../resources/icon/ProfileImage';
 import { PostWriteInfoDto } from '../../classes/PostDto';
 
 type RootStackParamList = {
-  PostListScreen: undefined;
+  PostListScreen: { boardId: number };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -41,6 +41,7 @@ interface Direction {
 }
 
 function PostWriteScreen({ navigation, route }: Props) {
+  const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([]);
@@ -52,16 +53,17 @@ function PostWriteScreen({ navigation, route }: Props) {
   useEffect(() => {
     const userInfo = async () => {
       if (route.params.boardId) {
+        setBoardId(route.params.boardId);
         let result = await getWritePostInfo(route.params.boardId);
+
         if (result) {
-          console.log('사용자 정보 조회', result);
           setIsInfo(result);
           const placeholder = result.directions
             .map((item: Direction) => {
               return `이용방향 ${item.id}.
-        ${item.title}
+${item.title}
         
-        ${item.content.map((_item, _index) => {
+${item.content.map((_item, _index) => {
                 return `${item.id}-${_index + 1} ${_item}
 `;
               })}
@@ -77,15 +79,15 @@ function PostWriteScreen({ navigation, route }: Props) {
 
   const onSubmitPress = async () => {
     const result = await postWritePost({
-      boardId: route.params.boardId,
+      boardId: boardId,
       title: title,
       content: content,
       images: images,
-      isAnonymous: false,
+      isAnonymous: isShow,
     });
     if (result) {
-      navigation.navigate('PostListScreen');
-      Toast.show('게시글이 등록되었스빈다.', Toast.LONG);
+      navigation.navigate('PostListScreen', { boardId });
+      Toast.show('게시글이 등록되었습니다.', Toast.LONG);
     }
   };
 
@@ -97,7 +99,16 @@ function PostWriteScreen({ navigation, route }: Props) {
             style={[
               styles.submit,
               fontRegular,
-              { color: title && content ? '#A055FF' : '#d8b9ff' },
+              {
+                color:
+                  isInfo && isInfo.hasTitle
+                    ? title && content
+                      ? '#A055FF'
+                      : '#d8b9ff'
+                    : content
+                      ? '#A055FF'
+                      : '#d8b9ff',
+              },
             ]}>
             완료
           </Text>
@@ -107,16 +118,19 @@ function PostWriteScreen({ navigation, route }: Props) {
   }, [navigation, title, content]);
 
   const onSelectImage = () => {
-    launchImageLibrary(
-      { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
-      res => {
-        if (res.didCancel) {
-          return;
-        }
-        console.log('image', res);
-        setImageResponse(res.assets);
-      },
-    );
+    if (imageResponse.length < 10) {
+      setImages(item => [...item, {}])
+      launchImageLibrary(
+        { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
+        res => {
+          if (res.didCancel) {
+            return;
+          }
+          console.log('image', res.assets);
+          setImageResponse(res.assets);
+        },
+      );
+    }
   };
 
   return (
@@ -124,15 +138,21 @@ function PostWriteScreen({ navigation, route }: Props) {
       <View style={styles.header}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row' }}>
-            <ProfileImage />
+            {isShow || (isInfo && !isInfo.profileImage) ? (
+              <ProfileImage />
+            ) : (
+              <View style={styles.profileImage}>
+                <Image source={{ uri: isInfo.profileImage }} />
+              </View>
+            )}
             <View style={{ justifyContent: 'center' }}>
               <Text style={{ fontSize: 16, paddingLeft: 8, fontWeight: '500' }}>
-                {isShow ? '익명' : isInfo.nickname}
+                {isShow ? '수정' : isInfo.nickname}
               </Text>
             </View>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{marginRight: 4}}>익명</Text>
+            <Text style={{ marginRight: 4 }}>익명</Text>
             <Pressable onPress={() => setIsShow(!isShow)}>
               {isShow ? <RectangleChecked /> : <RectangleUnchecked />}
             </Pressable>
@@ -169,14 +189,12 @@ function PostWriteScreen({ navigation, route }: Props) {
           <Text style={[fontMedium, styles.imageText]}>이미지</Text>
         </View>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {imageResponse.length !== 0 &&
-            imageResponse.map((asset, index) => (
-              <Image
-                key={index}
-                style={styles.imageBox}
-                source={{ uri: asset.uri }}
-              />
-            ))}
+          {images.map((item, index) => (
+            <Image
+            key={index}
+            style={styles.imageBox}
+            source={{ uri: item.uri }} />
+          ))}
           <View style={[styles.imageSelectBox, styles.imageBox]}>
             <Pressable onPress={onSelectImage} hitSlop={25}>
               <PhotoIcon />
@@ -239,6 +257,12 @@ const styles = StyleSheet.create({
     fontSize: 8,
     color: '#d1d1d1',
   },
+  profileImage: {
+    width: 24,
+    height: 24,
+    borderRadius: 50,
+    backgroundColor: '#675',
+  }
 });
 
 export default PostWriteScreen;

@@ -333,12 +333,14 @@ export const postWritePost = async (props: {
   images: string[];
   isAnonymous: boolean;
 }) => {
+  console.log('api props 조회', props);
+  
   try {
     const response = await client.post<Response<PostWriteDto>>('/posts', {
       ...props,
     });
-    console.log(response);
-    return response;
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.log(error);
   }
