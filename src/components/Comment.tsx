@@ -53,6 +53,7 @@ const Comment = ({
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
 
+  useEffect(() => { }, [reportCheckModalVisible,reportModalVisible ])
   const handleCommentDeleteComponent = (
     <>
       {modalVisible && (
@@ -109,17 +110,15 @@ const Comment = ({
           modalButtonText="신고하기"
           modalButton
           modalButtonFunc={async () => {
-            console.log('dd')
             const result = await handleCommentReport(data.id, 1, '');
-            console.log('왜 여기를 출력안하지',result)
-            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
+            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
               console.log('댓글 신고 성공')
               Toast.show(
                 '신고하신 내용이 정상적으로 접수되었습니다.',
                 Toast.LONG,
               );
             }
-            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+            else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
               console.log('보유 포인트 부족')
               Toast.show(
                 '보유 포인트가 부족하여 신고가 불가능합니다.',
@@ -303,7 +302,7 @@ export const Recomment = ({
       </Pressable>
     </>
   );
-   const handleCommentReportComponent = (
+    const handleCommentReportComponent = (
     <>
       {reportCheckModalVisible && (
         <ModalBottom
@@ -327,17 +326,15 @@ export const Recomment = ({
           modalButtonText="신고하기"
           modalButton
           modalButtonFunc={async () => {
-            console.log('dd')
             const result = await handleCommentReport(data.id, 1, '');
-            console.log('왜 여기를 출력안하지',result)
-            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
+            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
               console.log('댓글 신고 성공')
               Toast.show(
                 '신고하신 내용이 정상적으로 접수되었습니다.',
                 Toast.LONG,
               );
             }
-            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+            else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
               console.log('보유 포인트 부족')
               Toast.show(
                 '보유 포인트가 부족하여 신고가 불가능합니다.',

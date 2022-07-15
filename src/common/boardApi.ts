@@ -223,7 +223,7 @@ export const reportPost = async (postId: number, reasonId: number, detail: strin
       {reasonId: reasonId, detail: detail},
     );
     console.log('reportPost 함수 성공', response.data)
-    return response.data.data;
+    return response.data;
   } catch (e: any) {
     console.log('reportPost 함수 실패', e.response.data);
     return e.response.data.status;

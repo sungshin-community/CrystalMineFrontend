@@ -53,6 +53,7 @@ function Post({
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
@@ -96,7 +97,7 @@ function Post({
   );
 
   const handlePostReportComponent = (
-    <>
+     <>
       {reportCheckModalVisible && (
         <ModalBottom
           modalVisible={reportCheckModalVisible}
@@ -106,8 +107,8 @@ function Post({
           modalButtonText="확인"
           modalButton
           modalButtonFunc={() => {
-            setReportModalVisible(true);
             setReportCheckModalVisible(false);
+            setReportModalVisible(true);
           }}
         />
       )}
@@ -118,25 +119,45 @@ function Post({
           modalText={`게시글 신고`}
           modalButtonText="신고하기"
           modalButton
-          modalButtonFunc={() => {
-            const result = handlePostReport(data.postId , 0);
-            if (result) {
-              console.log(result);
-              setReportModalVisible(false);
-              Toast.show(result, Toast.LONG);
+          modalButtonFunc={async () => {
+            const result = await handlePostReport(data.postId, 1, '');
+            if (result.code === 'CREATE_POST_REPORT_SUCCESS') {
+              console.log('게시글 신고 성공')
+              Toast.show(
+                '신고하신 내용이 정상적으로 접수되었습니다.',
+                Toast.LONG,
+              );
             }
+            else if (result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족')
+              Toast.show(
+                '보유 포인트가 부족하여 신고가 불가능합니다.',
+                Toast.LONG,
+              );
+            }
+            else Toast.show(result.detail, Toast.LONG);
+            setReportModalVisible(false);
           }}
           isSecondButton={true}
           modalSecondButtonText="취소"
           modalSecondButtonFunc={() => setReportModalVisible(false)}
         />
       )}
-      <Pressable
-        onPress={() => {
-          setReportCheckModalVisible(true);
-        }}>
-        {data?.isReported ? <Report style={{marginRight: 14}} /> : <NoReport style={{marginRight: 14}} />}
-      </Pressable>
+      {data?.isReported ? (
+        <Pressable
+          onPress={() => {
+            Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+          }}>
+          <Report style={{marginRight: 14}} />
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => {
+            setReportCheckModalVisible(true);
+          }}>
+          <NoReport style={{marginRight: 14}} />
+        </Pressable>
+      )}
     </>
   );
 
