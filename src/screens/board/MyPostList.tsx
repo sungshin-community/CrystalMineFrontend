@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
+import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MyPostItem from '../../components/MyPostItem';
 import { deleteMyPosts, getMyPostList } from '../../common/boardApi';
@@ -23,6 +23,7 @@ export default function MyPostList({navigation, route}: Props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const moveToPost = (post: MyPostContentDto) => {
     if (deleteMode) {
@@ -80,6 +81,7 @@ export default function MyPostList({navigation, route}: Props) {
       const postList = await getMyPostList(0, sortBy);
       setCurrentPage(0);
       setMyPostList(postList);
+      setIsLoading(false);
     }
     init();
   }, [sortBy]);
@@ -117,9 +119,13 @@ export default function MyPostList({navigation, route}: Props) {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#FFFFFF' }}>
+    <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1}}>
+      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+      <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      </View>
       <TouchableOpacity
         onPress={() => {
+          setIsLoading(true);
           if (sortBy === 'createdAt') {
             setSortBy('likeCount');
           } else {
