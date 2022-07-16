@@ -184,7 +184,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           <Report style={{marginRight: 10}} />
         </Pressable>
       ) : (
-        <Pressable hitSlop={5} 
+        <Pressable hitSlop={5}
           onPress={() => {
             setReportCheckModalVisible(true);
           }}>

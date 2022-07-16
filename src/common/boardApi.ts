@@ -137,6 +137,7 @@ export const updateBoard = async (boardId: number, introduction: string, hotable
 };
 
 export async function getMyPostList(page: number = 0, sort: string = "createdAt") {
+  console.log("페이지는", page);
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
@@ -148,6 +149,19 @@ export async function getMyPostList(page: number = 0, sort: string = "createdAt"
     return response.data.data.content;
   } catch (e) {
     console.log("여기는 getMyPostList 함수", e);
+  }
+}
+
+export async function deleteMyPosts(postIds: number[]) {
+  try {
+    const postIdListStr = postIds.join(",");
+    const response = await client.delete<AxiosResponse>(
+      `/posts/${postIdListStr}`
+    );
+    console.log(response.data.data);
+    return response.data;
+  } catch (e) {
+    console.log("여기는 deleteMyPosts 함수", e);
   }
 }
 

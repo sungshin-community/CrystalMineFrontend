@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, Pressable, View, FlatList, TouchableOpacity} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MyPostDto from '../../classes/MyPostDto';
 import MyPostItem from '../../components/MyPostItem';
-import { getMyPostList } from '../../common/boardApi';
+import { deleteMyPosts, getMyPostList } from '../../common/boardApi';
 import { MyPostContentDto } from '../../classes/board/MyPostDto';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
-import SettingIcon from '../../../resources/icon/SettingIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import TrashIcon from '../../../resources/icon/TrashIcon';
 import CancelButton from '../../../resources/icon/Cancel';
+import { ModalBottom } from '../../components/ModalBottom';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -17,10 +16,13 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function MyPostList({navigation, route}: Props) {
-
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const [myPostList, setMyPostList] = useState<MyPostContentDto[]>([]);
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const moveToPost = (post: MyPostContentDto) => {
     if (deleteMode) {
@@ -37,7 +39,12 @@ export default function MyPostList({navigation, route}: Props) {
     navigation.setOptions({
       headerRight: () => deleteMode ? 
         <>
-          <Text style={{color: '#A055FF'}}>삭제</Text>
+          <TouchableOpacity
+            onPress={() => {setDeleteModalVisible(true)}}
+            hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
+          >
+            <Text style={{color: '#A055FF', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               setDeleteMode(false);
@@ -52,16 +59,26 @@ export default function MyPostList({navigation, route}: Props) {
         : 
         <SpinningThreeDots
           handleDefaultModeComponent={handleBoardSearchComponent}
-          handleOptionModeIsNotMineComponent={handleBoardReportComponent}
+          handleOptionModeIsNotMineComponent={handleDeleteComponent}
         />
       ,
       headerTitleAlign: 'center',
     });
-  }, [navigation, deleteMode]);
+  }, [navigation, deleteMode, deleteButtonEnabled]);
+
+  useEffect(() => {
+    const checkedCount = myPostList.filter(p => p.isChecked).length;
+    if (checkedCount > 0) {
+      setDeleteButtonEnabled(true);
+    } else {
+      setDeleteButtonEnabled(false);
+    }
+  }, [myPostList]);
 
   useEffect(() => {
     async function init() {
       const postList = await getMyPostList(0, sortBy);
+      setCurrentPage(0);
       setMyPostList(postList);
     }
     init();
@@ -75,7 +92,7 @@ export default function MyPostList({navigation, route}: Props) {
     </View>
   );
 
-  const handleBoardReportComponent = (
+  const handleDeleteComponent = (
     <TouchableOpacity
       onPress={() => {
         setDeleteMode(true);
@@ -84,6 +101,20 @@ export default function MyPostList({navigation, route}: Props) {
       <TrashIcon />
     </TouchableOpacity>
   );
+
+  const handleRefresh = async () => {
+    const postList = await getMyPostList(0, sortBy);
+    setCurrentPage(0);
+    setMyPostList(postList);
+  }
+
+  const fetchNextPage = async () => {
+    let thisPagePostList: MyPostContentDto[] = await getMyPostList(currentPage + 1, sortBy);
+    setMyPostList(myPostList.concat(thisPagePostList));
+    if (thisPagePostList.length > 0) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF' }}>
@@ -104,7 +135,39 @@ export default function MyPostList({navigation, route}: Props) {
         data={myPostList}
         renderItem={({item, index}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
         ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
+        refreshing={isRefreshing}
+        onRefresh={handleRefresh}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            colors={['#A055FF']} // for android
+            tintColor={'#A055FF'} // for ios
+          />
+        }
+        onEndReached={fetchNextPage}
+        onEndReachedThreshold={0.8}
       />
+      {deleteModalVisible && (
+        <ModalBottom
+          modalVisible={deleteModalVisible}
+          setModalVisible={setDeleteModalVisible}
+          modalText="선택하신 게시글을 삭제하시겠습니까?"
+          modalButtonText="삭제"
+          modalSecondButtonText='취소'
+          modalButton
+          modalButtonFunc={async () => {
+            await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
+            const postList = await getMyPostList(currentPage, sortBy);
+            setMyPostList(postList);
+            setDeleteMode(false);
+            setDeleteModalVisible(false);
+          }}
+          modalSecondButtonFunc={() => {
+            setDeleteModalVisible(false);
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }
