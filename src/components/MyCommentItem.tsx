@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import PostComment from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
@@ -10,12 +10,15 @@ import { MyPostContentDto } from '../classes/board/MyPostDto';
 import MyCommentDto from '../classes/MyCommentDto';
 
 interface Props {
-  comment: MyCommentDto
+  comment: MyCommentDto;
+  moveToPost: (postId: number) => void;
 }
 
-export default function MyCommentItem({comment}: Props) {
+export default function MyCommentItem({comment, moveToPost}: Props) {
   return (
-    <View style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
+    <TouchableOpacity
+      onPress={() => moveToPost(comment.postId)}
+      style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
       <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
         <SmallBoard />
         <Text style={{color: '#87919B', marginLeft: 8}}>{comment.boardName}</Text>
@@ -33,17 +36,9 @@ export default function MyCommentItem({comment}: Props) {
         <Text style={[styles.textSmall, styles.iconCount]}>
           {comment.likeCount}
         </Text>
-        <PostImage />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {comment.imageCount}
-        </Text>
-        <PostComment />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {comment.commentCount}
-        </Text>
       </View>
       <Text style={{color: "#A0A8B0", fontSize: 13}}>게시글 내용: {comment.postContent}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
