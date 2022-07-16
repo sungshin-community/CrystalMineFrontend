@@ -78,6 +78,7 @@ export default function MyPostList({navigation, route}: Props) {
 
   useEffect(() => {
     async function init() {
+      setIsLoading(true);
       const postList = await getMyPostList(0, sortBy);
       setCurrentPage(0);
       setMyPostList(postList);
@@ -125,7 +126,6 @@ export default function MyPostList({navigation, route}: Props) {
       </View>
       <TouchableOpacity
         onPress={() => {
-          setIsLoading(true);
           if (sortBy === 'createdAt') {
             setSortBy('likeCount');
           } else {
@@ -138,8 +138,9 @@ export default function MyPostList({navigation, route}: Props) {
         </Text>
       </TouchableOpacity>
       <FlatList
+        style={{marginTop: 10}}
         data={myPostList}
-        renderItem={({item, index}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
+        renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
         ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
         refreshing={isRefreshing}
         onRefresh={handleRefresh}
@@ -163,9 +164,11 @@ export default function MyPostList({navigation, route}: Props) {
           modalSecondButtonText='취소'
           modalButton
           modalButtonFunc={async () => {
+            setIsLoading(true);
             await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getMyPostList(currentPage, sortBy);
             setMyPostList(postList);
+            setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);
           }}
