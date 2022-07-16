@@ -8,6 +8,7 @@ import CommentDto, { RecommentDto } from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
 import { DirectionAgreement } from '../classes/Agreement';
 import MyCommentDto from '../classes/MyCommentDto';
+import { MyPostContentDto } from '../classes/board/MyPostDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -140,7 +141,7 @@ export async function getMyPostList(page: number = 0, sort: string = "createdAt"
     const params = new URLSearchParams();
     params.append('page', page.toString());
     params.append('sort', sort);
-    const response = await client.get<Response<MyPostDto>>(
+    const response = await client.get<Response<MyPostContentDto>>(
       `/posts?${params}`
     );
     console.log(response.data.data);

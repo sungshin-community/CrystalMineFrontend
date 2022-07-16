@@ -10,12 +10,14 @@ import { MyPostContentDto } from '../classes/board/MyPostDto';
 
 interface Props {
   post: MyPostContentDto;
-  moveToPost: (postId: number) => void;
+  moveToPost: (post: MyPostContentDto) => void;
+  deleteMode: boolean;
 }
 
-export default function MyPostItem({post, moveToPost}: Props) {
+export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
   return (
-    <TouchableOpacity style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}} onPress={() => moveToPost(post.postId)}>
+    <TouchableOpacity activeOpacity={deleteMode ? 1 : 0.5} style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}} onPress={() => moveToPost(post)}>
+      <View style={{opacity: deleteMode && !post.isChecked ? 0.5 : 1}}>
       <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
         <SmallBoard />
         <Text style={{color: '#87919B', marginLeft: 8}}>{post.boardName}</Text>
@@ -42,6 +44,7 @@ export default function MyPostItem({post, moveToPost}: Props) {
         <Text style={[styles.textSmall, styles.iconCount]}>
           {post.commentCount}
         </Text>
+      </View>
       </View>
     </TouchableOpacity>
   );

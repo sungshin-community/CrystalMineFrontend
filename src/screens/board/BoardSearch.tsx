@@ -126,7 +126,7 @@ function BoardSearch({navigation}: Props) {
                   style={{marginRight: 5}}
                   onPress={() => deleteRecentWord(index)}
                   hitSlop={5}>
-                  <CancelButton />
+                  <CancelButton color='#87919B' />
                 </Pressable>
               </View>
             ))
