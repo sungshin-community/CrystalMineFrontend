@@ -228,7 +228,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{flex: 1}}>
       <View
         style={{
           position: 'absolute',
@@ -246,6 +246,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           style={{zIndex: 100}}
         />
       </View>
+      <View style={{backgroundColor: "#fff", paddingBottom: 5}}>
        <TouchableOpacity
         onPress={() => {
           if (sortBy === 'createdAt') {
@@ -259,6 +260,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           {sortBy === 'createdAt' ? "최신순" : "공감순"}
         </Text>
         </TouchableOpacity>
+        </View>
       {boardDetail?.length === 0 ? (
         <SafeAreaView style={{flex: 1}}>
           <View
