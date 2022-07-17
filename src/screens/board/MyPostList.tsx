@@ -9,6 +9,7 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import TrashIcon from '../../../resources/icon/TrashIcon';
 import CancelButton from '../../../resources/icon/Cancel';
 import { ModalBottom } from '../../components/ModalBottom';
+import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -24,6 +25,7 @@ export default function MyPostList({navigation, route}: Props) {
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
 
   const moveToPost = (post: MyPostContentDto) => {
     if (deleteMode) {
@@ -110,9 +112,12 @@ export default function MyPostList({navigation, route}: Props) {
   );
 
   const handleRefresh = async () => {
-    const postList = await getMyPostList(0, sortBy);
-    setCurrentPage(0);
-    setMyPostList(postList);
+    // if (!deleteMode) {
+      const postList = await getMyPostList(0, sortBy);
+      setCurrentPage(0);
+      setMyPostList(postList);
+      setIsCheckedAll(false);
+    // }
   }
 
   const fetchNextPage = async () => {
@@ -128,37 +133,74 @@ export default function MyPostList({navigation, route}: Props) {
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          if (sortBy === 'createdAt') {
-            setSortBy('likeCount');
-          } else {
-            setSortBy('createdAt');
-          }
-        }}
-        style={{marginLeft: 24, width: 66, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <Text>
-          {sortBy === 'createdAt' ? "최신순" : "공감순"}
+      {myPostList.length === 0 ? <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#F6F6F6'
+        }}>
+        <Text
+          style={{
+            color: '#6E7882',
+            fontSize: 15,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+            textAlign: 'center',
+            lineHeight: 22.5,
+            marginTop: 20,
+          }}>
+          아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
         </Text>
-      </TouchableOpacity>
-      <FlatList
-        style={{marginTop: 10}}
-        data={myPostList}
-        renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
-        ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
-        refreshing={isRefreshing}
-        onRefresh={handleRefresh}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            colors={['#A055FF']} // for android
-            tintColor={'#A055FF'} // for ios
-          />
-        }
-        onEndReached={fetchNextPage}
-        onEndReachedThreshold={0.8}
-      />
+      </View> :
+      <View style={{flex: 1}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity
+            onPress={() => {
+              if (sortBy === 'createdAt') {
+                setSortBy('likeCount');
+              } else {
+                setSortBy('createdAt');
+              }
+            }}
+            style={{marginLeft: 24, width: 66, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            <Text>
+              {sortBy === 'createdAt' ? "최신순" : "공감순"}
+            </Text>
+          </TouchableOpacity>
+          {deleteMode &&
+          <TouchableOpacity
+            onPress={() => {
+              setIsCheckedAll(!isCheckedAll);
+              const tempList = myPostList.map(p => ({...p, isChecked: !isCheckedAll}));
+              setMyPostList(tempList);
+            }}
+            style={{flexDirection: 'row',
+              flex: 1,
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              paddingRight: 27}}>
+            {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
+          </TouchableOpacity>}
+        </View>
+        <FlatList
+          style={{marginTop: 10}}
+          data={myPostList}
+          renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
+          ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              colors={['#A055FF']} // for android
+              tintColor={'#A055FF'} // for ios
+            />
+          }
+          onEndReached={fetchNextPage}
+          onEndReachedThreshold={0.8}
+        />
+      </View>}
       {deleteModalVisible && (
         <ModalBottom
           modalVisible={deleteModalVisible}
