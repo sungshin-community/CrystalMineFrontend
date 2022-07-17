@@ -7,6 +7,7 @@ import {
   View,
   Image,
   ScrollView,
+  Modal,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -28,6 +29,8 @@ import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { useEffect } from 'react';
 
 interface Props {
   post: any;
@@ -45,21 +48,25 @@ function Post({
   handlePostReport,
 }: Props) {
   const navigation = useNavigation();
-
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
     boolean
   >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
-
+  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const handlePostScrapComponent = (
-    <View style={{marginRight: 16}}>
+    <View style={{ marginRight: 16 }}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
       </Pressable>
     </View>
   );
+  const imgArr: any[] = []
+  useEffect(() => { const imgTemp = {'url': ''}
+  const temp = data?.images.map((url) => { imgTemp['url'] = url; imgArr.push(imgTemp) })
+  console.log('temp', temp, data.images)}, data?.images)
+
   const handlePostDeleteComponent = (
     <>
       {deleteModalVisible && (
@@ -167,7 +174,6 @@ function Post({
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-
             <View style={{justifyContent: 'center'}}>
               <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
                 {data?.displayName}
@@ -189,16 +195,26 @@ function Post({
         <Text style={{color: '#949494', fontSize: 12, marginTop: 12}}>
           {data?.createdAt}
         </Text>
-        <View style={{ flexDirection: 'row', marginTop: 16 }}>
+        <View style={{flexDirection: 'row', marginTop: 16}}>
           <ScrollView horizontal={true}>
-          {data?.thumbnails.map((url, index) => (
-          <Image key={index}
-            style={{width: 120, height: 120, borderRadius: 10, marginRight: 16}}
-            source={{uri: url}}
-          />
-          ))}
-            </ScrollView>
-          </View>
+            {data?.thumbnails.map((url, index) => (
+              <Pressable key={index} onPress={()=> setIsPhotoVisible(true)}>
+                <Image
+                  style={{
+                    width: 120,
+                    height: 120,
+                    borderRadius: 10,
+                    marginRight: 16,
+                  }}
+                  source={{uri: url}}
+                />
+              </Pressable>
+            ))}
+        <Modal visible={isPhotoVisible} transparent={true}>
+          <ImageViewer imageUrls={data.images}/>
+        </Modal>
+          </ScrollView>
+        </View>
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 22}}>
           <Pressable

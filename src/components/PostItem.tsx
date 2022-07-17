@@ -17,7 +17,7 @@ function PostItem({post}: Props) {
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
           <Image style={{ width: 24, height: 24, borderRadius: 12 }}
-            source={{uri: post.profileImage === 'null' ? 'https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg': post.profileImage}}/>
+            source={{uri: post.profileImage}}/>
           <Text style={styles.name}>{post.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
