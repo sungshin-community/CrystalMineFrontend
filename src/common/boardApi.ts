@@ -92,7 +92,7 @@ export const getBoardInfo = async (boardId: number) => {
   }
 };
 
-export const getBoardDetail = async (boardId: number, page: number = 0, sort: string = "createdAt") => {
+export const getBoardDetail = async (boardId: number, page: number, sort: string) => {
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
@@ -100,7 +100,7 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/${boardId}/posts?${params}`
     );
-    return response.data.data;
+    return response.data.data.content;
   } catch (e) {
     console.log("여기는 getCustomBoardList 함수", e);
   }

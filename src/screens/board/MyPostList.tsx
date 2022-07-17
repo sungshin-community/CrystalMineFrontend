@@ -38,6 +38,10 @@ export default function MyPostList({navigation, route}: Props) {
 
   useEffect(() => {
     navigation.setOptions({
+       headerTitleStyle: {
+        fontSize: 15,
+        fontFamily: 'SpoqaHanSansNeo-Medium',
+      },
       headerRight: () => deleteMode ? 
         <>
           <TouchableOpacity
@@ -122,7 +126,7 @@ export default function MyPostList({navigation, route}: Props) {
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1}}>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-      <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+       <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
       <TouchableOpacity
         onPress={() => {
