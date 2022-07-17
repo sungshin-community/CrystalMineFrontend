@@ -5,6 +5,8 @@ export default interface PostDto {
   displayName: string;
   title: string;
   content: string;
+  thumbnails: string[];
+  images: string[];
   createdAt: string;
   hasTitle: boolean;
   isAuthor: boolean;

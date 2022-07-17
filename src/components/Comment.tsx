@@ -173,7 +173,6 @@ const Comment = ({
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImageUrl}}
             />
-
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={{

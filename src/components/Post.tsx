@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
+  ScrollView,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -188,6 +189,16 @@ function Post({
         <Text style={{color: '#949494', fontSize: 12, marginTop: 12}}>
           {data?.createdAt}
         </Text>
+        <View style={{ flexDirection: 'row', marginTop: 16 }}>
+          <ScrollView horizontal={true}>
+          {data?.thumbnails.map((url, index) => (
+          <Image key={index}
+            style={{width: 120, height: 120, borderRadius: 10, marginRight: 16}}
+            source={{uri: url}}
+          />
+          ))}
+            </ScrollView>
+          </View>
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 22}}>
           <Pressable
