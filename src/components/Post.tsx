@@ -76,7 +76,6 @@ function Post({
   // }
   // if(data)
   // imgUrlsArr(data.images)
-
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
