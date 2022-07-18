@@ -30,7 +30,8 @@ import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
+import {BackHandler} from 'react-native';
 
 interface Props {
   post: any;
@@ -55,17 +56,34 @@ function Post({
   >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
+  const images = [
+    {
+      url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
+    },
+    {
+      url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
+    },
+  ];
+  const closePhotoModal = () => {
+    if (isPhotoVisible) {
+      setIsPhotoVisible(false);
+    }
+  };
+  // const imgUrlsArr = (arr: string[]) => {
+  //   const img = new Object();
+  //   const array = arr.map(url => img.url = url)
+  //   console.log('>', array)
+  // }
+  // if(data)
+  // imgUrlsArr(data.images)
+
   const handlePostScrapComponent = (
-    <View style={{ marginRight: 16 }}>
+    <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
       </Pressable>
     </View>
   );
-  const imgArr: any[] = []
-  useEffect(() => { const imgTemp = {'url': ''}
-  const temp = data?.images.map((url) => { imgTemp['url'] = url; imgArr.push(imgTemp) })
-  console.log('temp', temp, data.images)}, data?.images)
 
   const handlePostDeleteComponent = (
     <>
@@ -198,7 +216,7 @@ function Post({
         <View style={{flexDirection: 'row', marginTop: 16}}>
           <ScrollView horizontal={true}>
             {data?.thumbnails.map((url, index) => (
-              <Pressable key={index} onPress={()=> setIsPhotoVisible(true)}>
+              <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
                 <Image
                   style={{
                     width: 120,
@@ -210,9 +228,16 @@ function Post({
                 />
               </Pressable>
             ))}
-        <Modal visible={isPhotoVisible} transparent={true}>
-          <ImageViewer imageUrls={data.images}/>
-        </Modal>
+            <Modal
+              visible={isPhotoVisible}
+              transparent={true}
+              onRequestClose={closePhotoModal}>
+              <ImageViewer
+                imageUrls={images}
+                onCancel={() => closePhotoModal()}
+                enableSwipeDown
+              />
+            </Modal>
           </ScrollView>
         </View>
         <View
