@@ -45,6 +45,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 type RootStackParamList = {
   PostScreen: {boardId: number; postId: number};
+  PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -324,7 +325,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         activeOpacity={0.5}
         onPress={SampleFunction}
         style={styles.touchableOpacityStyle}>
-        <FloatingWriteButton style={styles.floatingButtonStyle} />
+        <FloatingWriteButton onPress={() => navigation.navigate('PostWriteScreen', {boardId: route.params.boardId})} style={styles.floatingButtonStyle} />
       </TouchableOpacity>
     </View>
   );

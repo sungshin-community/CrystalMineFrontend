@@ -19,3 +19,24 @@ export default interface PostDto {
   imageCount: number;
   commentCount: number;
 }
+
+export interface PostWriteDto {
+  boardId: number;
+  title: string;
+  content: string;
+  images: string[];
+  isAnonymous: boolean;
+}
+
+export interface PostWriteInfoDto {
+  boardName: string;
+  profileImage: string;
+  nickname: string;
+  isOwner: boolean;
+  hasTitle: boolean;
+  directions: {
+    id: number;
+    title: string;
+    content: string[];
+  }[];
+}
