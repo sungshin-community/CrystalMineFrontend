@@ -69,13 +69,11 @@ function Post({
       setIsPhotoVisible(false);
     }
   };
-  // const imgUrlsArr = (arr: string[]) => {
-  //   const img = new Object();
-  //   const array = arr.map(url => img.url = url)
-  //   console.log('>', array)
-  // }
-  // if(data)
-  // imgUrlsArr(data.images)
+  const imgUrlCoverting = (arr: string[]) => {
+    const array = arr.map(url => { return { url: url } })
+    return array
+  }
+  
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
@@ -231,11 +229,11 @@ function Post({
               visible={isPhotoVisible}
               transparent={true}
               onRequestClose={closePhotoModal}>
-              <ImageViewer
-                imageUrls={images}
+              {data &&  <ImageViewer
+                imageUrls={imgUrlCoverting(data?.images)}
                 onCancel={() => closePhotoModal()}
                 enableSwipeDown
-              />
+              /> }
             </Modal>
           </ScrollView>
         </View>
