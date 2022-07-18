@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-const OrangeFlag = (props: any) => (
+export const OrangeFlag = (props: any) => (
   <Svg
     width={18}
     height={18}

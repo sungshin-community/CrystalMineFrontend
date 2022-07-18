@@ -20,6 +20,7 @@ import Toast from 'react-native-simple-toast';
 import { getWritePostInfo, postWritePost } from '../../common/boardApi';
 import ProfileImage from '../../../resources/icon/ProfileImage';
 import { PostWriteInfoDto } from '../../classes/PostDto';
+import { OrangeFlag } from '../../../resources/icon/OrangeFlag'
 
 type RootStackParamList = {
   PostListScreen: { boardId: number };
@@ -137,7 +138,7 @@ ${item.content.map((_item, _index) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {isShow || (isInfo && !isInfo.profileImage) ? (
                 <ProfileImage />
               ) : (
@@ -145,10 +146,11 @@ ${item.content.map((_item, _index) => {
                   <Image source={{ uri: isInfo.profileImage }} />
                 </View>
               )}
-              <View style={{ justifyContent: 'center' }}>
-                <Text style={{ fontSize: 16, paddingLeft: 8, fontWeight: '500' }}>
+              <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+                <Text style={{ fontSize: 16, paddingLeft: 8, paddingRight: 6, fontWeight: '500' }}>
                   {isShow ? '수정' : isInfo.nickname}
                 </Text>
+                {isInfo && isInfo.isOwner && !isShow && <OrangeFlag />}
               </View>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
