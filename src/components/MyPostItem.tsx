@@ -1,27 +1,40 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
+import { RectangleChecked, RectangleUnchecked } from '../../resources/icon/CheckBox';
 import PostComment from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
-import ProfileImage from '../../resources/icon/ProfileImage';
 import { MyPostContentDto } from '../classes/board/MyPostDto';
 
 interface Props {
-  post: MyPostContentDto
+  post: MyPostContentDto;
+  moveToPost: (post: MyPostContentDto) => void;
+  deleteMode: boolean;
 }
 
-export default function MyPostItem({post}: Props) {
+export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
   return (
-    <View style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
-      <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
-        <SmallBoard />
-        <Text style={{color: '#87919B', marginLeft: 8}}>{post.boardName}</Text>
-      </View>
+    <TouchableOpacity activeOpacity={deleteMode ? 1 : 0.5} style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}} onPress={() => moveToPost(post)}>
+      <View style={{opacity: deleteMode && !post.isChecked ? 0.5 : 1}}>
+        <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
+          <SmallBoard style={{marginLeft: 11}} />
+          <Text style={{color: '#87919B', marginLeft: 8}}>{post.boardName}</Text>
+          {deleteMode && (
+            <View style={{flexDirection: 'row',
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingRight: 13}}>
+              {post.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
+            </View>
+            )
+          }
+        </View>
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
-          <ProfileImage />
+          <Image style={{width: 24, height: 24, borderRadius: 12}} source={{uri: post.profileImage}} />
           <Text style={styles.name}>{post.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
@@ -42,7 +55,8 @@ export default function MyPostItem({post}: Props) {
           {post.commentCount}
         </Text>
       </View>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
@@ -58,6 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+    marginTop: 12
   },
   name: {
     paddingTop: 2,
@@ -88,7 +103,7 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 26,
+    paddingBottom: 24,
   },
   iconCount: {
     marginLeft: 5,

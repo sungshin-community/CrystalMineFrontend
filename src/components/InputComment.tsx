@@ -36,8 +36,9 @@ function InputComment({
   setContent,
   inputRef,
 }: Props) {
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const onSubmit = useCallback(() => {
+    console.log('익명여부', isAnonymous)
     if (isRecomment)
       onClickAddRecomment(postId, parentId, content, isAnonymous);
     else onClickAddComment(postId, content, isAnonymous);

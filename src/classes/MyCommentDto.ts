@@ -10,5 +10,6 @@ export default interface MyCommentDto {
   displayName: string,
   isOfPostAuthor: boolean,
   likeCount: number,
-  createdAt: string
+  createdAt: string,
+  isLiked: boolean
 }

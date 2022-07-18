@@ -14,6 +14,7 @@ export const getUser = async () => {
     return response.data.data;
   } catch (e) {
     console.log('여기는 getUser 함수', e);
+    return false;
   }
 };
 

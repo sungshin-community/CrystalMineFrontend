@@ -5,6 +5,9 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
+  Image,
+  ScrollView,
+  Modal,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -26,17 +29,15 @@ import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
-type RootStackParamList = {
-  PostListScreen: {boardId: number};
-};
-type NaviProps = NativeStackScreenProps<RootStackParamList>;
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { useEffect } from 'react';
+
 interface Props {
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
   handlePostDelete?: any;
   handlePostReport?: any;
-  boardId: number;
 }
 
 function Post({
@@ -45,21 +46,27 @@ function Post({
   handlePostScrap,
   handlePostDelete,
   handlePostReport,
-  boardId,
 }: Props) {
   const navigation = useNavigation();
-
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
+    boolean
+  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const handlePostScrapComponent = (
-    <View style={{marginRight: 16}}>
-      <TouchableWithoutFeedback onPress={() => handlePostScrap(data.postId)}>
+    <View style={{ marginRight: 16 }}>
+      <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
-      </TouchableWithoutFeedback>
+      </Pressable>
     </View>
   );
+  const imgArr: any[] = []
+  useEffect(() => { const imgTemp = {'url': ''}
+  const temp = data?.images.map((url) => { imgTemp['url'] = url; imgArr.push(imgTemp) })
+  console.log('temp', temp, data.images)}, data?.images)
+
   const handlePostDeleteComponent = (
     <>
       {deleteModalVisible && (
@@ -106,8 +113,8 @@ function Post({
           modalButtonText="확인"
           modalButton
           modalButtonFunc={() => {
-            setReportModalVisible(true);
             setReportCheckModalVisible(false);
+            setReportModalVisible(true);
           }}
         />
       )}
@@ -118,25 +125,43 @@ function Post({
           modalText={`게시글 신고`}
           modalButtonText="신고하기"
           modalButton
-          modalButtonFunc={() => {
-            const result = handlePostReport(data.postId , 0);
-            if (result) {
-              console.log(result);
-              setReportModalVisible(false);
-              Toast.show(result, Toast.LONG);
-            }
+          modalButtonFunc={async () => {
+            const result = await handlePostReport(data.postId, 1, '');
+            if (result.code === 'CREATE_POST_REPORT_SUCCESS') {
+              console.log('게시글 신고 성공');
+              Toast.show(
+                '신고하신 내용이 정상적으로 접수되었습니다.',
+                Toast.LONG,
+              );
+            } else if (result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족');
+              Toast.show(
+                '보유 포인트가 부족하여 신고가 불가능합니다.',
+                Toast.LONG,
+              );
+            } else Toast.show(result.detail, Toast.LONG);
+            setReportModalVisible(false);
           }}
           isSecondButton={true}
           modalSecondButtonText="취소"
           modalSecondButtonFunc={() => setReportModalVisible(false)}
         />
       )}
-      <Pressable
-        onPress={() => {
-          setReportCheckModalVisible(true);
-        }}>
-        {data?.isReported ? <Report style={{marginRight: 14}} /> : <NoReport style={{marginRight: 14}} />}
-      </Pressable>
+      {data?.isReported ? (
+        <Pressable
+          onPress={() => {
+            Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+          }}>
+          <Report style={{marginRight: 14}} />
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={() => {
+            setReportCheckModalVisible(true);
+          }}>
+          <NoReport style={{marginRight: 14}} />
+        </Pressable>
+      )}
     </>
   );
 
@@ -145,7 +170,10 @@ function Post({
       <View style={styles.postContainer}>
         <View style={styles.postHeader}>
           <View style={{flexDirection: 'row'}}>
-            <ProfileImage></ProfileImage>
+            <Image
+              style={{width: 24, height: 24, borderRadius: 12}}
+              source={{uri: data?.profileImage}}
+            />
             <View style={{justifyContent: 'center'}}>
               <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
                 {data?.displayName}
@@ -154,11 +182,10 @@ function Post({
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
-              isScrap={true}
               isMine={data?.isAuthor}
-              handleScrapComponent={handlePostScrapComponent}
-              handleDeleteComponent={handlePostDeleteComponent}
-              handleReportComponent={handlePostReportComponent}
+              handleDefaultModeComponent={handlePostScrapComponent}
+              handleOptionModeIsMineComponent={handlePostDeleteComponent}
+              handleOptionModeIsNotMineComponent={handlePostReportComponent}
             />
           </View>
         </View>
@@ -168,6 +195,26 @@ function Post({
         <Text style={{color: '#949494', fontSize: 12, marginTop: 12}}>
           {data?.createdAt}
         </Text>
+        <View style={{flexDirection: 'row', marginTop: 16}}>
+          <ScrollView horizontal={true}>
+            {data?.thumbnails.map((url, index) => (
+              <Pressable key={index} onPress={()=> setIsPhotoVisible(true)}>
+                <Image
+                  style={{
+                    width: 120,
+                    height: 120,
+                    borderRadius: 10,
+                    marginRight: 16,
+                  }}
+                  source={{uri: url}}
+                />
+              </Pressable>
+            ))}
+        <Modal visible={isPhotoVisible} transparent={true}>
+          <ImageViewer imageUrls={data.images}/>
+        </Modal>
+          </ScrollView>
+        </View>
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 22}}>
           <Pressable

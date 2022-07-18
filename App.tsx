@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // board
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
+import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
 import BoardSearch from './src/screens/board/BoardSearch';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
@@ -121,7 +122,7 @@ const App = () => {
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
-                options={({navigation}) => ({
+                options={({ navigation }) => ({
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
@@ -404,6 +405,26 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="UpdateBoard"
+                component={UpdateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
               <Stack.Screen
@@ -447,7 +468,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -467,7 +488,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -487,7 +508,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -507,7 +528,6 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1189,6 +1209,26 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="UpdateBoard"
+                component={UpdateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
               <Stack.Screen
@@ -1232,7 +1272,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1252,7 +1292,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1272,7 +1312,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1292,7 +1332,6 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (

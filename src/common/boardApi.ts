@@ -9,6 +9,7 @@ import MyPostDto from '../classes/MyPostDto';
 import { DirectionAgreement } from '../classes/Agreement';
 import MyCommentDto from '../classes/MyCommentDto';
 import { PostWriteDto, PostWriteInfoDto } from '../classes/PostDto';
+import { MyPostContentDto } from '../classes/board/MyPostDto';
 
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
@@ -83,7 +84,7 @@ export const getBoardirectionAgreements = async () => {
 
 export const getBoardInfo = async (boardId: number) => {
   try {
-    const response = await client.get<Response<null>>(
+    const response = await client.get<Response<Board>>(
       `/boards/${boardId}`
     );
     return response.data.data;
@@ -92,7 +93,7 @@ export const getBoardInfo = async (boardId: number) => {
   }
 };
 
-export const getBoardDetail = async (boardId: number, page: number = 0, sort: string = "createdAt") => {
+export const getBoardDetail = async (boardId: number, page: number, sort: string) => {
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
@@ -100,7 +101,7 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/${boardId}/posts?${params}`
     );
-    return response.data.data;
+    return response.data.data.content;
   } catch (e) {
     console.log("여기는 getCustomBoardList 함수", e);
   }
@@ -108,6 +109,7 @@ export const getBoardDetail = async (boardId: number, page: number = 0, sort: st
 
 export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
   try {
+    console.log(',',hotable)
     const response = await client.post<Response<Board>>(
       '/boards',
       { name: name, introduction: introduction, hotable: hotable },
@@ -120,34 +122,47 @@ export const createBoard = async (name: string, introduction: string, hotable: b
   }
 };
 
-export const editBoard = async (boardId: number, introduction: string, hotable: boolean) => {
+export const updateBoard = async (boardId: number, introduction: string, hotable: boolean) => {
   try {
-    const response = await client.post<Response<Board>>(
+    console.log(hotable)
+    const response = await client.patch<Response<Board>>(
       `/boards/${boardId}`,
       { introduction: introduction, hotable: hotable },
     );
-    console.log('editBoard 함수 성공', response.data)
+    console.log('updateBoard 함수 성공', response.data)
     return response.data.data;
   } catch (e: any) {
-    console.log('editBoard 함수 실패', e.response.data);
+    console.log('updateBoard 함수 실패', e.response.data);
     return e.response.data.status;
   }
 };
 
-
-
 export async function getMyPostList(page: number = 0, sort: string = "createdAt") {
+  console.log("페이지는", page);
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
     params.append('sort', sort);
-    const response = await client.get<Response<MyPostDto>>(
+    const response = await client.get<Response<MyPostContentDto>>(
       `/posts?${params}`
     );
     console.log(response.data.data);
     return response.data.data.content;
   } catch (e) {
     console.log("여기는 getMyPostList 함수", e);
+  }
+}
+
+export async function deleteMyPosts(postIds: number[]) {
+  try {
+    const postIdListStr = postIds.join(",");
+    const response = await client.delete<AxiosResponse>(
+      `/posts/${postIdListStr}`
+    );
+    console.log(response.data.data);
+    return response.data;
+  } catch (e) {
+    console.log("여기는 deleteMyPosts 함수", e);
   }
 }
 
@@ -179,13 +194,27 @@ export async function getMyCommentList(page: number, sort: string = "createdAt")
     console.log("여기는 getMyCommentList 함수", e);
   }
 }
-
+//게시판 신고
+export const reportBoard = async (boardId: number, reasonId: number, detail: string) => {
+  try {
+    const response = await client.post<Response<Board>>(
+      `/boards/${boardId}/report`,
+      {reasonId: reasonId, detail: detail},
+    );
+    console.log('reportBoard 함수 성공', response.data)
+    return response.data;
+  } catch (e: any) {
+    console.log('reportBoard 함수 실패', e.response.data);
+    return e.response.data;
+  }
+};
 // 게시글
 export const getPosts = async (postId: number) => {
   try {
     const response = await client.get<Response<null>>(
       `/posts/${postId}`
     );
+    console.log('getPosts 함수 성공', response.data)
     return response.data.data;
   } catch (e) {
     console.log("여기는 getPosts 함수", e.response.data);
@@ -224,10 +253,10 @@ export const reportPost = async (postId: number, reasonId: number, detail: strin
       { reasonId: reasonId, detail: detail },
     );
     console.log('reportPost 함수 성공', response.data)
-    return response.data.data;
+    return response.data;
   } catch (e: any) {
     console.log('reportPost 함수 실패', e.response.data);
-    return e.response.data.status;
+    return e.response.data;
   }
 };
 // 게시글 삭제

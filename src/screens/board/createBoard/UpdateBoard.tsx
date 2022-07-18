@@ -18,7 +18,8 @@ import PhotoIcon from '../../../../resources/icon/PhotoIcon';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {ModalBottom} from '../../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
-import {createBoard} from '../../../common/boardApi';
+import {updateBoard, getBoardInfo} from '../../../common/boardApi';
+import Board from '../../../classes/Board';
 import {
   Checked,
   RectangleChecked,
@@ -30,16 +31,32 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function CreateBoard({navigation}: Props) {
-  const [boardName, setBoardName] = useState<string>('');
-  const [boardIntroduction, setBoardIntroduction] = useState<string>('');
-  const [hotable, setHotable] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+function UpdateBoard({navigation, route}: Props) {
+  const [boardInfo, setBoardInfo] = useState<Board>();
+  const [newBoardIntroduction, setNewBoardIntroduction] = useState<string>('');
+  const [newHotable, setNewHotable] = useState<boolean>();
+  useEffect(() => {
+    async function init() {
+      const boardInfo = await getBoardInfo(route.params.boardId);
+      setBoardInfo(boardInfo);
+    }
+    init()
+  }, []);
+  
+  useEffect(() => {
+    setNewBoardIntroduction(boardInfo?.introduction);
+    setNewHotable(boardInfo?.hotable);
+  },[boardInfo])
+  
   const onSubmitPress = async () => {
-    const result = await createBoard(boardName, boardIntroduction, hotable);
+    const result = await updateBoard(
+      route.params.boardId,
+      newBoardIntroduction,
+      !newHotable,
+    );
+    // TODO: newHotable 불리언값 반대로 해야 적상 작동함. 확인 필요.
     if (result) {
-      Toast.show('게시판을 성공적으로 생성했습니다.', Toast.LONG);
+      Toast.show('게시판을 성공적으로 수정했습니다.', Toast.LONG);
       navigation.navigate('PostListScreen', {boardId: result.id});
     }
   };
@@ -48,20 +65,23 @@ function CreateBoard({navigation}: Props) {
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (boardName && boardIntroduction) setModalVisible(true);
+            if (newBoardIntroduction) onSubmitPress();
           }}>
           <Text
             style={[
               styles.submit,
               fontRegular,
-              {color: boardName && boardIntroduction ? '#A055FF' : '#87919B'},
+              {
+                color:
+                  newBoardIntroduction ? '#A055FF' : '#87919B',
+              },
             ]}>
             완료
           </Text>
         </Pressable>
       ),
     });
-  }, [navigation, boardName, boardIntroduction]);
+  }, [navigation, newBoardIntroduction]);
 
   return (
     <>
@@ -69,14 +89,9 @@ function CreateBoard({navigation}: Props) {
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
           <TextInput
-            placeholder="게시판 이름을 입력해주세요."
-            value={boardName}
-            autoCorrect={false}
-            onChangeText={value => {
-              setBoardName(value);
-            }}
-            style={{fontSize: 13, paddingVertical: 20}}
-            maxLength={15}
+            value={boardInfo?.name}
+            editable={false}
+            style={{fontSize: 13, paddingVertical: 20, color: '#6E7882'}}
           />
           <View
             style={{
@@ -90,10 +105,9 @@ function CreateBoard({navigation}: Props) {
             <TextInput
               textAlignVertical="top"
               placeholder="게시판 설명을 입력해주세요."
-              value={boardIntroduction}
-              autoCorrect={false}
+              value={newBoardIntroduction}
               onChangeText={value => {
-                setBoardIntroduction(value);
+                setNewBoardIntroduction(value);
               }}
               onBlur={() => {
                 Keyboard.dismiss();
@@ -111,27 +125,13 @@ function CreateBoard({navigation}: Props) {
           }}>
           <Pressable
             onPress={() => {
-              setHotable(!hotable);
+              setNewHotable(!newHotable);
             }}>
-            {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
+            {newHotable ? <RectangleChecked /> : <RectangleUnchecked />}
           </Pressable>
           <Text style={[{marginLeft: 5}]}>핫게시판 전송 허용</Text>
         </View>
       </View>
-      {modalVisible && (
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          modalText="게시판 삭제 공지"
-          modalBody={`게시판 삭제 기능은 아직 개발 중이므로 게시판 삭제는 불가능합니다.
-        `}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
-            onSubmitPress();
-            setModalVisible(false);
-          }}></ModalBottom>
-      )}
     </>
   );
 }
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateBoard;
+export default UpdateBoard;

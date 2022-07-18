@@ -51,3 +51,54 @@ export const GrayPin = (props: any) => (
     />
   </Svg>
 )
+
+export const BigPurplePin = (props: any) => (
+  <Svg
+    width={16}
+    height={22}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M16 11.488s-.389.023-.914-.122c-1.452-.39-2.515-1.685-2.515-3.224V2.564h2.286V.333H1.143v2.231h2.286v5.578c0 1.54-1.063 2.833-2.515 3.224-.525.145-.914.122-.914.122v2.231h6.834l.023 6.832c0 .614.514 1.116 1.143 1.116s1.143-.502 1.143-1.116L9.12 13.72H16v-2.23Z"
+      fill="#A055FF"
+    />
+  </Svg>
+)
+export const BigOrangePin = (props: any) => (
+  <Svg
+    width={16}
+    height={22}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M16 11.488s-.389.023-.914-.122c-1.452-.39-2.515-1.685-2.515-3.224V2.564h2.286V.333H1.143v2.231h2.286v5.578c0 1.54-1.063 2.833-2.515 3.224-.525.145-.914.122-.914.122v2.231h6.834l.023 6.832c0 .614.514 1.116 1.143 1.116s1.143-.502 1.143-1.116L9.12 13.72H16v-2.23Z"
+      fill="#FFA767"
+    />
+  </Svg>
+)
+export const BigGrayPin = (props: any) => (
+  <Svg
+    width={16}
+    height={22}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M16 11.488s-.389.023-.914-.122c-1.452-.39-2.515-1.685-2.515-3.224V2.564h2.286V.333H1.143v2.231h2.286v5.578c0 1.54-1.063 2.833-2.515 3.224-.525.145-.914.122-.914.122v2.231h6.834l.023 6.832c0 .614.514 1.116 1.143 1.116s1.143-.502 1.143-1.116L9.12 13.72H16v-2.23Z"
+      fill="#87919B"
+    />
+  </Svg>
+)
+
+

@@ -44,7 +44,7 @@ const PostScreen = ({navigation, route}: Props) => {
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
       headerTitleStyle: {
-        fontSize: 19,
+        fontSize: 15,
         fontFamily: 'SpoqaHanSansNeo-Medium',
       },
     });
@@ -89,6 +89,8 @@ const PostScreen = ({navigation, route}: Props) => {
     detail?: string,
   ) => {
     const result = await reportPost(postId, reasonId, detail);
+    const postData = await getPosts(route.params.postId);
+    setPost(postData);
     return result;
   };
   // 댓글 생성
@@ -154,12 +156,9 @@ const PostScreen = ({navigation, route}: Props) => {
     reasonId: number,
     detail?: string,
   ) => {
-    console.log('김횬')
     const result = await reportComment(recommentId, reasonId, detail);
     const commentData = await getComments(route.params.postId, 0);
-    setComments(commentData);
-    console.log('여긴 하나', result.code);
-    return result.code;
+    return result;
   };
   return (
     <>
@@ -174,7 +173,7 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostScrap={handlePostScrap}
             handlePostDelete={handlePostDelete}
             handlePostReport={handlePostReport}
-            boardId={route.params.boardId}></Post>
+          ></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>

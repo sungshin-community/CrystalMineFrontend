@@ -6,6 +6,7 @@ import {
   Animated,
   TouchableWithoutFeedback,
   Pressable,
+  Image,
 } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import ProfileImage from '../../resources/icon/ProfileImage';
@@ -47,7 +48,9 @@ const Comment = ({
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
+    boolean
+  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
@@ -109,24 +112,20 @@ const Comment = ({
           modalButtonText="신고하기"
           modalButton
           modalButtonFunc={async () => {
-            console.log('dd')
             const result = await handleCommentReport(data.id, 1, '');
-            console.log('왜 여기를 출력안하지',result)
-            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
-              console.log('댓글 신고 성공')
+            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
+              console.log('댓글 신고 성공');
               Toast.show(
                 '신고하신 내용이 정상적으로 접수되었습니다.',
                 Toast.LONG,
               );
-            }
-            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족')
+            } else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족');
               Toast.show(
                 '보유 포인트가 부족하여 신고가 불가능합니다.',
                 Toast.LONG,
               );
-            }
-            else Toast.show(result.detail, Toast.LONG);
+            } else Toast.show(result.detail, Toast.LONG);
             setReportModalVisible(false);
           }}
           isSecondButton={true}
@@ -170,7 +169,10 @@ const Comment = ({
             justifyContent: 'space-between',
           }}>
           <View style={{flexDirection: 'row'}}>
-            <ProfileImage></ProfileImage>
+            <Image
+              style={{width: 24, height: 24, borderRadius: 12}}
+              source={{uri: data?.profileImageUrl}}
+            />
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={{
@@ -186,8 +188,8 @@ const Comment = ({
           {!data.isDeleted && (
             <SpinningThreeDots
               isMine={data.isOfReader}
-              handleDeleteComponent={handleCommentDeleteComponent}
-              handleReportComponent={handleCommentReportComponent}
+              handleOptionModeIsMineComponent={handleCommentDeleteComponent}
+              handleOptionModeIsNotMineComponent={handleCommentReportComponent}
             />
           )}
         </View>
@@ -303,7 +305,7 @@ export const Recomment = ({
       </Pressable>
     </>
   );
-   const handleCommentReportComponent = (
+  const handleCommentReportComponent = (
     <>
       {reportCheckModalVisible && (
         <ModalBottom
@@ -327,24 +329,20 @@ export const Recomment = ({
           modalButtonText="신고하기"
           modalButton
           modalButtonFunc={async () => {
-            console.log('dd')
             const result = await handleCommentReport(data.id, 1, '');
-            console.log('왜 여기를 출력안하지',result)
-            if (result === 'CREATE_COMMENT_REPORT_SUCCESS') {
-              console.log('댓글 신고 성공')
+            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
+              console.log('댓글 신고 성공');
               Toast.show(
                 '신고하신 내용이 정상적으로 접수되었습니다.',
                 Toast.LONG,
               );
-            }
-            else if (result === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족')
+            } else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
+              console.log('보유 포인트 부족');
               Toast.show(
                 '보유 포인트가 부족하여 신고가 불가능합니다.',
                 Toast.LONG,
               );
-            }
-            else Toast.show(result.detail, Toast.LONG);
+            } else Toast.show(result.detail, Toast.LONG);
             setReportModalVisible(false);
           }}
           isSecondButton={true}
@@ -385,7 +383,11 @@ export const Recomment = ({
           }}>
           <View style={{flexDirection: 'row'}}>
             <Reply style={{marginRight: 8}} />
-            <ProfileImage></ProfileImage>
+            <Image
+              style={{width: 24, height: 24, borderRadius: 12}}
+              source={{uri: data?.profileImageUrl}}
+            />
+
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={{
@@ -401,8 +403,8 @@ export const Recomment = ({
           {!data.isDeleted && (
             <SpinningThreeDots
               isMine={data.isOfReader}
-              handleDeleteComponent={handleCommentDeleteComponent}
-              handleReportComponent={handleCommentReportComponent}
+              handleOptionModeIsMineComponent={handleCommentDeleteComponent}
+              handleOptionModeIsNotMineComponent={handleCommentReportComponent}
             />
           )}
         </View>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "283604849183",
+    "project_id": "crystalmine-1936",
+    "storage_bucket": "crystalmine-1936.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283604849183:android:a968b3f70992f3f396fb2a",
+        "android_client_info": {
+          "package_name": "com.crystalminefrontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283604849183-54j5sif90m7u3hruemiqd1201et6pm0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.crystalminefrontend",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "283604849183-sql3huuvn9u3l642uqqek8305hodg4cl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBibXLRw8HJTZDNKJK0XivfBfG2yqKgAwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283604849183-sql3huuvn9u3l642uqqek8305hodg4cl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
