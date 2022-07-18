@@ -44,7 +44,7 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 type RootStackParamList = {
-  PostScreen: {boardId: number; postId: number};
+  PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
 };
@@ -296,7 +296,6 @@ const PostListScreen = ({navigation, route}: Props) => {
                     Toast.show('삭제된 게시글입니다.', Toast.LONG);
                   else
                     navigation.navigate('PostScreen', {
-                      boardId: route.params.boardId,
                       postId: boardDetail[index].postId,
                     });
                 }}>
@@ -323,7 +322,6 @@ const PostListScreen = ({navigation, route}: Props) => {
       )}
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={SampleFunction}
         style={styles.touchableOpacityStyle}>
         <FloatingWriteButton onPress={() => navigation.navigate('PostWriteScreen', {boardId: route.params.boardId})} style={styles.floatingButtonStyle} />
       </TouchableOpacity>
