@@ -32,6 +32,7 @@ type RootStackParamList = {
   PostScreen: undefined;
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
+  Board: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -258,12 +259,12 @@ const HomeFragment = ({navigation}: Props) => {
         style={{
           padding: 24,
         }}>
-        <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.rowContainer}>
             <Text style={styles.boardTitle}>고정 게시판</Text>
+        <TouchableWithoutFeedback onPress={() => {navigation.navigate('Board')}}>
             <Text style={styles.more}>더보기</Text>
-          </View>
         </TouchableWithoutFeedback>
+          </View>
         {/* 게시판 글 목록 */}
         {user?.isAuthenticated ? (
           pinBoardContents?.map((item, index) => (
@@ -321,12 +322,12 @@ const HomeFragment = ({navigation}: Props) => {
             marginTop: 24,
           }}
         />
-        <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.rowContainer}>
             <Text style={styles.boardTitle}>HOT 게시글</Text>
+        <TouchableWithoutFeedback onPress={() => {navigation.navigate('PostListScreen', {boardId: 1})}}>
             <Text style={styles.more}>더보기</Text>
-          </View>
         </TouchableWithoutFeedback>
+          </View>
         {user?.isAuthenticated ? (
           hotBoardContents?.hotPosts.map((item, index) => (
             <TouchableWithoutFeedback

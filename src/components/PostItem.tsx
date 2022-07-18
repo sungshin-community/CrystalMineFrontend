@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import PostComment from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
@@ -16,7 +16,8 @@ function PostItem({post}: Props) {
     <View style={styles.container}>
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
-          <ProfileImage />
+          <Image style={{ width: 24, height: 24, borderRadius: 12 }}
+            source={{uri: post.profileImage}}/>
           <Text style={styles.name}>{post.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>

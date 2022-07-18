@@ -19,7 +19,7 @@ const addRefreshSubscriber = (callback: any) => {
 
 client.interceptors.request.use(async (request: any) => {
   const accessToken = await AsyncStorage.getItem('accessToken');
-  console.log(accessToken)
+  // console.log(accessToken)
   request.headers.Authorization =  accessToken ? `Bearer ${accessToken}` : '';
   return request;
 });

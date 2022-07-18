@@ -38,6 +38,7 @@ import BoardSearch from './src/screens/board/BoardSearch';
 import PostListScreen from './src/screens/post/PostListScreen';
 import SearchResult from './src/screens/board/SearchResult';
 import MyPostList from './src/screens/board/MyPostList';
+import PostWriteScreen from './src/screens/post/PostWriteScreen';
 // myPage
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMember';
@@ -440,6 +441,26 @@ const App = () => {
                 })}
               />
               <Stack.Screen
+                name="PostWriteScreen"
+                component={PostWriteScreen}
+                options={({navigation}) => ({
+                  title: '게시글 작성',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
                 name="MyPostList"
                 component={MyPostList}
                 options={({navigation}) => ({
@@ -507,7 +528,6 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1225,6 +1245,26 @@ const App = () => {
                 })}
               />
               <Stack.Screen
+                name="PostWriteScreen"
+                component={PostWriteScreen}
+                options={({navigation}) => ({
+                  title: '게시글 작성',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <BackButtonIcon
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
                 name="MyPostList"
                 component={MyPostList}
                 options={({navigation}) => ({
@@ -1292,7 +1332,6 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
