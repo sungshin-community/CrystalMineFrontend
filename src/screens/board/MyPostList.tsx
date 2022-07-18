@@ -10,6 +10,7 @@ import TrashIcon from '../../../resources/icon/TrashIcon';
 import CancelButton from '../../../resources/icon/Cancel';
 import { ModalBottom } from '../../components/ModalBottom';
 import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
+import Toast from 'react-native-simple-toast';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -210,6 +211,7 @@ export default function MyPostList({navigation, route}: Props) {
             await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getMyPostList(currentPage, sortBy);
             setMyPostList(postList);
+            Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.LONG);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);
