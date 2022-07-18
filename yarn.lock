@@ -6021,10 +6021,22 @@ react-native-fit-image@^1.5.5:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-image-pan-zoom@^2.1.12:
+  version "2.1.12"
+  resolved "https://registry.npmjs.org/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.12.tgz"
+  integrity sha512-BF66XeP6dzuANsPmmFsJshM2Jyh/Mo1t8FsGc1L9Q9/sVP8MJULDabB1hms+eAoqgtyhMr5BuXV3E1hJ5U5H6Q==
+
 react-native-image-picker@^4.7.3:
   version "4.7.3"
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.7.3.tgz"
   integrity sha512-eRKm4wlsmZHmsWFyv77kYc2F+ZyEVqe0m7mqhsMzWk6TQT4FBDtEDxmRDDFq+ivCu/1QD+EPhmYcAIpeGr7Ekg==
+
+react-native-image-zoom-viewer@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/react-native-image-zoom-viewer/-/react-native-image-zoom-viewer-3.0.1.tgz"
+  integrity sha512-la6s5DNSuq4GCRLsi5CZ29FPjgTpdCuGIRdO5T9rUrAtxrlpBPhhSnHrbmPVxsdtOUvxHacTh2Gfa9+RraMZQA==
+  dependencies:
+    react-native-image-pan-zoom "^2.1.12"
 
 react-native-markdown-display@7.0.0-alpha.2:
   version "7.0.0-alpha.2"
