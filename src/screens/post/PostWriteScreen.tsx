@@ -4,6 +4,7 @@ import {
   Image,
   Keyboard,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -42,10 +43,9 @@ interface Direction {
 
 function PostWriteScreen({ navigation, route }: Props) {
   const [boardId, setBoardId] = useState<number>(0);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [images, setImages] = useState<string[]>([]);
-  const [imageResponse, setImageResponse] = useState<ImageResponse[]>([]);
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [images, setImages] = useState<string[]>([]); // 글 등록할 때 보낼 이미지 url 배열
   const [direction, setDirection] = useState<string>('');
   const [isInfo, setIsInfo] = useState<PostWriteInfoDto>({});
   const [isShow, setIsShow] = useState<boolean>(true);
@@ -118,7 +118,7 @@ ${item.content.map((_item, _index) => {
   }, [navigation, title, content]);
 
   const onSelectImage = () => {
-    if (imageResponse.length < 10) {
+    if (images.length < 10) {
       setImages(item => [...item, {}])
       launchImageLibrary(
         { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
@@ -126,86 +126,87 @@ ${item.content.map((_item, _index) => {
           if (res.didCancel) {
             return;
           }
-          console.log('image', res.assets);
-          setImageResponse(res.assets);
+          setImages([...images, res.assets[0]['uri']]);
         },
       );
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View style={{ flexDirection: 'row' }}>
-            {isShow || (isInfo && !isInfo.profileImage) ? (
-              <ProfileImage />
-            ) : (
-              <View style={styles.profileImage}>
-                <Image source={{ uri: isInfo.profileImage }} />
+    <ScrollView style={{ backgroundColor: '#fff' }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row' }}>
+              {isShow || (isInfo && !isInfo.profileImage) ? (
+                <ProfileImage />
+              ) : (
+                <View style={styles.profileImage}>
+                  <Image source={{ uri: isInfo.profileImage }} />
+                </View>
+              )}
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={{ fontSize: 16, paddingLeft: 8, fontWeight: '500' }}>
+                  {isShow ? '수정' : isInfo.nickname}
+                </Text>
               </View>
-            )}
-            <View style={{ justifyContent: 'center' }}>
-              <Text style={{ fontSize: 16, paddingLeft: 8, fontWeight: '500' }}>
-                {isShow ? '수정' : isInfo.nickname}
-              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ marginRight: 4 }}>익명</Text>
+              <Pressable onPress={() => setIsShow(!isShow)}>
+                {isShow ? <RectangleChecked /> : <RectangleUnchecked />}
+              </Pressable>
             </View>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 4 }}>익명</Text>
-            <Pressable onPress={() => setIsShow(!isShow)}>
-              {isShow ? <RectangleChecked /> : <RectangleUnchecked />}
-            </Pressable>
-          </View>
+          {isInfo && isInfo.hasTitle && (
+            <TextInput
+              placeholder="제목을 입력하세요."
+              value={title}
+              onChangeText={value => {
+                setTitle(value);
+              }}
+              style={[fontMedium, styles.title]}
+            />
+          )}
         </View>
-        {isInfo && isInfo.hasTitle && (
+        <View>
           <TextInput
-            placeholder="제목을 입력하세요."
-            value={title}
+            placeholder={direction}
+            value={content}
+            multiline={true}
             onChangeText={value => {
-              setTitle(value);
+              setContent(value);
             }}
-            style={[fontMedium, styles.title]}
+            onBlur={() => {
+              Keyboard.dismiss();
+            }}
+            style={[fontRegular, styles.input]}
           />
-        )}
-      </View>
-      <View>
-        <TextInput
-          placeholder={direction}
-          value={content}
-          multiline={true}
-          onChangeText={value => {
-            setContent(value);
-          }}
-          onBlur={() => {
-            Keyboard.dismiss();
-          }}
-          style={[fontRegular, styles.input]}
-        />
-      </View>
-      <View style={{ paddingHorizontal: 24 }}>
-        <View style={styles.image}>
-          <ImageIcon />
-          <Text style={[fontMedium, styles.imageText]}>이미지</Text>
         </View>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {images.map((item, index) => (
-            <Image
-            key={index}
-            style={styles.imageBox}
-            source={{ uri: item.uri }} />
-          ))}
-          <View style={[styles.imageSelectBox, styles.imageBox]}>
-            <Pressable onPress={onSelectImage} hitSlop={25}>
-              <PhotoIcon />
-              <Text style={[fontMedium, styles.count]}>
-                {imageResponse.length}/10
-              </Text>
-            </Pressable>
+        <View style={{ paddingHorizontal: 24 }}>
+          <View style={styles.image}>
+            <ImageIcon />
+            <Text style={[fontMedium, styles.imageText]}>이미지</Text>
+          </View>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            {images.map((item, index) => (
+              <Image
+                key={index}
+                style={styles.imageBox}
+                source={{ uri: item }} />
+            ))}
+            <View style={[styles.imageSelectBox, styles.imageBox]}>
+              <Pressable onPress={onSelectImage} hitSlop={25}>
+                <PhotoIcon />
+                <Text style={[fontMedium, styles.count]}>
+                  {images.length}/10
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -214,6 +215,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     flex: 1,
+    paddingBottom: 40,
   },
   header: {
     justifyContent: 'space-between',
