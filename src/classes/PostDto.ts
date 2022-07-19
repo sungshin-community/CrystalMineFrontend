@@ -1,5 +1,6 @@
 export default interface PostDto {
   postId: number;
+  boardId: number;
   boardName: string;
   profileImage: string;
   displayName: string;

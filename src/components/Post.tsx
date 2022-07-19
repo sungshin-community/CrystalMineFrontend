@@ -90,8 +90,8 @@ function Post({
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
                 Toast.LONG,
               );
-              navigation.goBack();
-              // navigation.navigate('PostListScreen', {boardId: boardId});
+              // navigation.goBack();
+              navigation.navigate('PostListScreen', {boardId: data.boardId});
               console.log('게시글 삭제 성공')
             }
           }}
