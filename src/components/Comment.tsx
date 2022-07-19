@@ -171,7 +171,7 @@ const Comment = ({
           <View style={{flexDirection: 'row'}}>
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: data?.profileImageUrl}}
+              source={{uri: data?.profileImage}}
             />
             <View style={{justifyContent: 'center'}}>
               <Text
@@ -385,7 +385,7 @@ export const Recomment = ({
             <Reply style={{marginRight: 8}} />
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: data?.profileImageUrl}}
+              source={{uri: data?.profileImage}}
             />
 
             <View style={{justifyContent: 'center'}}>
