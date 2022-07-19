@@ -92,9 +92,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       setCurrentPage(currentPage + 1);
     }
   };
-  const SampleFunction = () => {
-    Alert.alert('플로팅 버튼 눌림!');
-  };
+
   const HeaderIcon = () => {
     return (
       <>

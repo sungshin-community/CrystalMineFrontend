@@ -17,3 +17,16 @@ export interface HotPostDto {
   likeCount: number;
   commentCount: number;
 }
+
+export interface HomeNotificationDto {
+  content: HomeNotification[];
+}
+
+export interface HomeNotification {
+  id: number;
+  sender: string;
+  type: number;
+  title: string;
+  content: string;
+  reason: string;
+}
