@@ -26,6 +26,7 @@ export default function MyPostList({navigation, route}: Props) {
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
 
   const moveToPost = (post: MyPostContentDto) => {
@@ -125,17 +126,19 @@ export default function MyPostList({navigation, route}: Props) {
   }
 
   const fetchNextPage = async () => {
+    setIsNextPageLoading(true);
     let thisPagePostList: MyPostContentDto[] = await getMyPostList(currentPage + 1, sortBy);
     setMyPostList(myPostList.concat(thisPagePostList));
     if (thisPagePostList.length > 0) {
       setCurrentPage(currentPage + 1);
     }
+    setIsNextPageLoading(false);
   }
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1}}>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-       <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
       {myPostList.length === 0 ? 
       <View
@@ -184,6 +187,9 @@ export default function MyPostList({navigation, route}: Props) {
               justifyContent: 'flex-end',
               alignItems: 'center',
               paddingRight: 27}}>
+            <Text style={{marginRight: 9, fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Medium'}}>
+              {`${myPostList.filter(c => c.isChecked).length}/${myPostList.length}`}
+            </Text>
             {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
           </TouchableOpacity>}
         </View>
@@ -203,8 +209,11 @@ export default function MyPostList({navigation, route}: Props) {
             />
           }
           onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.8}
+          onEndReachedThreshold={0.6}
         />
+        <View>
+          {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}
+        </View>
       </View>}
       {deleteModalVisible && (
         <ModalBottom
