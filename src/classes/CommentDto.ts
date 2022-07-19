@@ -4,7 +4,7 @@ export default interface CommentDto {
   postId: number;
   isAnonymous: boolean;
   displayName: string;
-  profileImageUrl: string;
+  profileImage: string;
   isOfReader: boolean;
   isOfBoardOwner: boolean;
   isOfPostAuthor: boolean;
@@ -25,7 +25,7 @@ export interface RecommentDto {
   postId: number;
   isAnonymous: boolean;
   displayName: string;
-  profileImageUrl: string;
+  profileImage: string;
   isOfReader: boolean;
   isOfBoardOwner: boolean;
   isOfPostAuthor: boolean;

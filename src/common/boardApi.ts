@@ -109,7 +109,6 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
 
 export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
   try {
-    console.log(',', hotable)
     const response = await client.post<Response<Board>>(
       '/boards',
       { name: name, introduction: introduction, hotable: hotable },
@@ -138,7 +137,6 @@ export const updateBoard = async (boardId: number, introduction: string, hotable
 };
 
 export async function getMyPostList(page: number = 0, sort: string = "createdAt") {
-  console.log("페이지는", page);
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
@@ -163,6 +161,19 @@ export async function deleteMyPosts(postIds: number[]) {
     return response.data;
   } catch (e) {
     console.log("여기는 deleteMyPosts 함수", e);
+  }
+}
+
+export async function deleteMyComments(commendIds: number[]) {
+  try {
+    const commendIdListStr = commendIds.join(",");
+    const response = await client.patch<AxiosResponse>(
+      `/comments/${commendIdListStr}`
+    );
+    console.log(response.data.data);
+    return response.data;
+  } catch (e) {
+    console.log("여기는 deleteMyComments 함수", e);
   }
 }
 

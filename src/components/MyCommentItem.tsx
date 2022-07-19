@@ -1,31 +1,40 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
-import PostComment from '../../resources/icon/PostComment';
-import PostImage from '../../resources/icon/PostImage';
+import { RectangleChecked, RectangleUnchecked } from '../../resources/icon/CheckBox';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
-import ProfileImage from '../../resources/icon/ProfileImage';
-import { MyPostContentDto } from '../classes/board/MyPostDto';
 import MyCommentDto from '../classes/MyCommentDto';
 
 interface Props {
   comment: MyCommentDto;
-  moveToPost: (postId: number) => void;
+  moveToPost: (comment: MyCommentDto) => void;
+  deleteMode: boolean;
 }
 
-export default function MyCommentItem({comment, moveToPost}: Props) {
+export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) {
   return (
-    <TouchableOpacity
-      onPress={() => moveToPost(comment.postId)}
+    <TouchableOpacity activeOpacity={deleteMode ? 1 : 0.5}
+      onPress={() => moveToPost(comment)}
       style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
-      <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
-        <SmallBoard />
+      <View style={{opacity: deleteMode && !comment.isChecked ? 0.5 : 1}}>
+      <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
+        <SmallBoard style={{marginLeft: 11}} />
         <Text style={{color: '#87919B', marginLeft: 8}}>{comment.boardName}</Text>
+        {deleteMode && (
+            <View style={{flexDirection: 'row',
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingRight: 13}}>
+              {comment.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
+            </View>
+            )
+          }
       </View>
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
-          <ProfileImage />
+        <Image style={{width: 24, height: 24, borderRadius: 12, marginLeft: 10}} source={{uri: comment.profileImage}} />
           <Text style={styles.name}>{comment.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{comment.createdAt}</Text>
@@ -37,7 +46,12 @@ export default function MyCommentItem({comment, moveToPost}: Props) {
           {comment.likeCount}
         </Text>
       </View>
-      <Text style={{color: "#A0A8B0", fontSize: 13}}>게시글 내용: {comment.postContent}</Text>
+      <Text
+        style={{color: "#A0A8B0", fontSize: 13, marginBottom: 16, marginLeft: 10, marginRight: 10}}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >게시글 내용: {comment.postContent}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -54,6 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+    marginTop: 12
   },
   name: {
     paddingTop: 2,
@@ -79,12 +94,14 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 14,
+    marginLeft: 10,
     lineHeight: 22.5,
   },
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 26,
+    paddingBottom: 16,
+    marginLeft: 10
   },
   iconCount: {
     marginLeft: 5,

@@ -10,6 +10,7 @@ import TrashIcon from '../../../resources/icon/TrashIcon';
 import CancelButton from '../../../resources/icon/Cancel';
 import { ModalBottom } from '../../components/ModalBottom';
 import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
+import Toast from 'react-native-simple-toast';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -41,7 +42,7 @@ export default function MyPostList({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
        headerTitleStyle: {
-        fontSize: 15,
+        fontSize: 19,
         fontFamily: 'SpoqaHanSansNeo-Medium',
       },
       headerRight: () => deleteMode ? 
@@ -50,7 +51,7 @@ export default function MyPostList({navigation, route}: Props) {
             onPress={() => {setDeleteModalVisible(true)}}
             hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
           >
-            <Text style={{color: '#A055FF', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
+            <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -80,6 +81,9 @@ export default function MyPostList({navigation, route}: Props) {
     } else {
       setDeleteButtonEnabled(false);
     }
+    const isAllChecked = myPostList.filter(c => !c.isChecked).length === 0;
+    setIsCheckedAll(isAllChecked);
+
   }, [myPostList]);
 
   useEffect(() => {
@@ -112,12 +116,12 @@ export default function MyPostList({navigation, route}: Props) {
   );
 
   const handleRefresh = async () => {
-    // if (!deleteMode) {
+    if (!deleteMode) {
       const postList = await getMyPostList(0, sortBy);
       setCurrentPage(0);
       setMyPostList(postList);
       setIsCheckedAll(false);
-    // }
+    }
   }
 
   const fetchNextPage = async () => {
@@ -133,7 +137,8 @@ export default function MyPostList({navigation, route}: Props) {
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
-      {myPostList.length === 0 ? <View
+      {myPostList.length === 0 ? 
+      <View
         style={{
           flex: 1,
           justifyContent: 'center',
@@ -149,12 +154,12 @@ export default function MyPostList({navigation, route}: Props) {
             lineHeight: 22.5,
             marginTop: 20,
           }}>
-          아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
+          {isLoading ? "" : "아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요."}
         </Text>
       </View> :
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity
+        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, height: 46}}>
+          {!deleteMode && <TouchableOpacity
             onPress={() => {
               if (sortBy === 'createdAt') {
                 setSortBy('likeCount');
@@ -166,7 +171,7 @@ export default function MyPostList({navigation, route}: Props) {
             <Text>
               {sortBy === 'createdAt' ? "최신순" : "공감순"}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
           {deleteMode &&
           <TouchableOpacity
             onPress={() => {
@@ -214,6 +219,7 @@ export default function MyPostList({navigation, route}: Props) {
             await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getMyPostList(currentPage, sortBy);
             setMyPostList(postList);
+            Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.LONG);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);

@@ -468,7 +468,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 15,
+                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -488,7 +488,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 15,
+                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -508,7 +508,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 15,
+                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1272,7 +1272,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 15,
+                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1292,7 +1292,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 15,
+                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
@@ -1312,7 +1312,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 15,
+                    fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (

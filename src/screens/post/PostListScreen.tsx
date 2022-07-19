@@ -44,7 +44,7 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 type RootStackParamList = {
-  PostScreen: {boardId: number; postId: number};
+  PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
 };
@@ -54,9 +54,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
   const isFocused = useIsFocused();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -92,9 +90,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       setCurrentPage(currentPage + 1);
     }
   };
-  const SampleFunction = () => {
-    Alert.alert('플로팅 버튼 눌림!');
-  };
+
   const HeaderIcon = () => {
     return (
       <>
@@ -120,7 +116,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             <BigGrayPin />
           )}
         </Pressable>
-        <Text style={[fontRegular, {marginLeft: 8, fontSize: 15}]}>
+        <Text style={[fontRegular, { marginLeft: 8, fontSize: boardInfo && boardInfo.name.length <= 10? 19: 17, maxWidth: 180}]}
+          numberOfLines={1} ellipsizeMode="tail">
           {boardInfo?.name}
         </Text>
       </>
@@ -296,7 +293,6 @@ const PostListScreen = ({navigation, route}: Props) => {
                     Toast.show('삭제된 게시글입니다.', Toast.LONG);
                   else
                     navigation.navigate('PostScreen', {
-                      boardId: route.params.boardId,
                       postId: boardDetail[index].postId,
                     });
                 }}>
@@ -323,7 +319,6 @@ const PostListScreen = ({navigation, route}: Props) => {
       )}
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={SampleFunction}
         style={styles.touchableOpacityStyle}>
         <FloatingWriteButton onPress={() => navigation.navigate('PostWriteScreen', {boardId: route.params.boardId})} style={styles.floatingButtonStyle} />
       </TouchableOpacity>
