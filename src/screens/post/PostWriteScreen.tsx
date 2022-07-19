@@ -17,7 +17,7 @@ import PhotoIcon from '../../../resources/icon/PhotoIcon';
 import { RectangleChecked, RectangleUnchecked, Checked } from '../../../resources/icon/CheckBox';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
-import { getWritePostInfo, postWritePost } from '../../common/boardApi';
+import { getWritePostInfo, postWritePost, uploadPostImages } from '../../common/boardApi';
 import ProfileImage from '../../../resources/icon/ProfileImage';
 import { PostWriteInfoDto } from '../../classes/PostDto';
 import { OrangeFlag } from '../../../resources/icon/OrangeFlag'
@@ -123,11 +123,14 @@ ${item.content.map((_item, _index) => {
       setImages(item => [...item, {}])
       launchImageLibrary(
         { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
-        res => {
+        async res => {
           if (res.didCancel) {
             return;
           }
-          setImages([...images, res.assets[0]['uri']]);
+          let response = await uploadPostImages(res.assets[0]);
+          if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
+            setImages([...images, response.data.urls[0]]);
+          }
         },
       );
     }
