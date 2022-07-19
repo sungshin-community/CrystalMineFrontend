@@ -109,7 +109,6 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
 
 export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
   try {
-    console.log(',',hotable)
     const response = await client.post<Response<Board>>(
       '/boards',
       { name: name, introduction: introduction, hotable: hotable },

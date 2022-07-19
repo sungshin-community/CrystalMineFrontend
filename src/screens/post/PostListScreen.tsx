@@ -54,9 +54,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
   const isFocused = useIsFocused();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -118,7 +116,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             <BigGrayPin />
           )}
         </Pressable>
-        <Text style={[fontRegular, {marginLeft: 8, fontSize: 15}]}>
+        <Text style={[fontRegular, { marginLeft: 8, fontSize: boardInfo && boardInfo.name.length <= 10? 19: 17, maxWidth: 180}]}
+          numberOfLines={1} ellipsizeMode="tail">
           {boardInfo?.name}
         </Text>
       </>

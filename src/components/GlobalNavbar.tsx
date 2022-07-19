@@ -98,7 +98,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             </Pressable>
           ),
           headerTitleStyle: {
-            fontSize: 17,
+            fontSize: 19,
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
         }}
@@ -109,6 +109,10 @@ function GlobalNavbar({navigation}: ScreenProps) {
         options={{
           title: '쪽지',
           headerTitleAlign: 'center',
+           headerTitleStyle: {
+            fontSize: 19,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+          },
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <MessageTabIcon size={size} color={color} focused={focused} />
@@ -122,6 +126,10 @@ function GlobalNavbar({navigation}: ScreenProps) {
         options={{
           title: '알림',
           headerTitleAlign: 'center',
+           headerTitleStyle: {
+            fontSize: 19,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+          },
           tabBarIcon: ({size, color, focused}: Props) => {
             return <AlertTabIcon size={size} color={color} focused={focused} />;
           },
@@ -136,9 +144,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
-          headerTitleStyle: {
-            fontSize: 17,
-            fontWeight: '400',
+           headerTitleStyle: {
+            fontSize: 19,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
           },
         }}
       />
