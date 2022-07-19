@@ -5,7 +5,7 @@ export default class MyCommentDto {
   content: string = '';
   postContent: string = '';
   boardName: string = '';
-  profileImageUrl: string = '';
+  profileImage: string = '';
   isAnonymous: boolean = true;
   displayName: string = '';
   isOfPostAuthor: boolean = false;

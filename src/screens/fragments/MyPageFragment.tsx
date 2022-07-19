@@ -396,7 +396,6 @@ const MyPageFragment = ({navigation}: Props) => {
                 if (res.didCancel) {
                   return;
                 }
-                console.log('image', res);
                 let response = await uploadProfileImage(res.assets[0]);
                 if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
                   setUser(response.data);
