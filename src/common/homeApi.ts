@@ -36,3 +36,14 @@ export async function getNotification(page: number = 0) {
     console.log("여기는 getNotification 함수", e);
   }
 }
+
+export async function getUnreadNotification() {
+  try {
+    const response = await client.get<Response<HomeNotificationDto>>(
+      `/notification/unread`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getUnreadNotification 함수", e);
+  }
+}

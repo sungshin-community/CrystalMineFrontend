@@ -24,6 +24,7 @@ import {
   getHotBoardContents,
   getNotification,
   getPinBoardContents,
+  getUnreadNotification,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
@@ -48,7 +49,6 @@ const HomeFragment = ({navigation}: Props) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
   const [noti, setNoti] = useState<HomeNotification[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
 
@@ -56,7 +56,7 @@ const HomeFragment = ({navigation}: Props) => {
     async function getContents() {
       const pinBoardData = await getPinBoardContents();
       const hotBoardData = await getHotBoardContents();
-      const notification = await getNotification(0);
+      const notification = await getUnreadNotification();
 
       if (pinBoardData != null && hotBoardData != null) {
         setPinBoardContents(pinBoardData);
@@ -78,15 +78,6 @@ const HomeFragment = ({navigation}: Props) => {
     }
   }, [isFocused]);
 
-  const fetchNextPage = async () => {
-    let thisPagePostList: HomeNotification[] = await getNotification(
-      currentPage + 1,
-    );
-    setNoti(noti.concat(thisPagePostList));
-    if (thisPagePostList.length > 0) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -152,8 +143,6 @@ const HomeFragment = ({navigation}: Props) => {
               ItemSeparatorComponent={() => (
                 <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
               )}
-              onEndReached={fetchNextPage}
-              onEndReachedThreshold={0.8}
             />
           </View>
 
