@@ -54,54 +54,44 @@ export default function CertifiedMember({navigation}: Props) {
     }
   };
   letThreeLetter(dDay);
-  return (
-    <>
-      <Container>
-        <Animatable.Text
-          animation="fadeInUp"
-          delay={500}
-          duration={1200}
-          easing={'ease-in-out-quad'}>
-          <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
-        </Animatable.Text>
-        <Animatable.Text
-          animation="fadeInUp"
-          delay={900}
-          duration={1200}
-          easing={'ease-in-out-quad'}>
-          <View style={{flexDirection: 'row'}}>
+
+  const expireInComponent = (<View style={{flexDirection: 'row'}}>
             {dDay.map((day, index) => (
-              <View style={styles.expirationDate}>
+              <View style={styles.expirationDate} key={index}>
                 <TextInput
                   key={index}
-                  style={{fontSize: 45, textAlign: 'center', color: '#222222'}}
+                  style={{fontSize: 45, textAlign: 'center', color: '#222222', paddingBottom: 0 }}
                   editable={false}>
                   {day}
                 </TextInput>
               </View>
             ))}
             <Text style={[styles.title, fontMedium]}>일 남았습니다.</Text>
-          </View>
-        </Animatable.Text>
-        <Animatable.Text
-          animation="fadeIn"
-          delay={2100}
+  </View>)
+  
+  return (
+    <>
+      <Container>
+       
+          <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
+        
+         {expireInComponent}
+       <View
           style={{marginTop: 90}}>
           <Description
             style={[
               styles.textDescription,
               fontBold,
-              {marginBottom: 11, color: '#A055FF'},
+              {color: '#A055FF', marginBottom: 11},
             ]}>
-            정회원 인증 완료 ({user?.authenticatedDate}) {'\n'}
+            정회원 인증 완료 ({user?.authenticatedDate})
           </Description>
-          <Description style={styles.textDescription}>
+          <Description style={[styles.textDescription]}>
             {user?.username}@sungshin.ac.kr
           </Description>
-        </Animatable.Text>
+        </View>
       </Container>
       <View style={styles.buttonContainer}>
-        <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
             <View style={{margin: 16}}>
               {expireIn > 7 ? (
@@ -114,7 +104,6 @@ export default function CertifiedMember({navigation}: Props) {
               )}
             </View>
           </ButtonCenter>
-        </Animatable.View>
       </View>
     </>
   );
@@ -140,7 +129,7 @@ const styles = StyleSheet.create({
     borderColor: '#A055FF',
     width: 40,
     marginRight: 10,
-    marginTop: -20,
+    marginTop: Platform.OS === 'ios' ? -20 : -25,
   },
   textDescription: {
     fontSize: 15,

@@ -387,7 +387,6 @@ export const Recomment = ({
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={{

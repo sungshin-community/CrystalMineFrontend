@@ -42,7 +42,7 @@ export default function MyPostList({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
        headerTitleStyle: {
-        fontSize: 15,
+        fontSize: 19,
         fontFamily: 'SpoqaHanSansNeo-Medium',
       },
       headerRight: () => deleteMode ? 

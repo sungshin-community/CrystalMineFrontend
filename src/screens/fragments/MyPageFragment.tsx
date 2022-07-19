@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Image,
+  Pressable,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
@@ -113,35 +114,38 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>
-          {user?.expireIn <= 0 && <View 
-            style={{
-              flexDirection: 'row',
-              marginTop: 20,
-              marginHorizontal: 24,
-              paddingLeft: 18,
-              height: 70,
-              backgroundColor: '#FFFFFF',
-              borderRadius: 20,
-              alignItems: 'center'
-            }}
-          >
-            <ExclamationMark style={{marginRight: 10}} />
-            <View>
-              <Text style={{color: '#222222', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>정회원 인증이 필요해요!</Text>
-              <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>정회원 인증하기</Text>
-            </View>
-            <View 
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingRight: 16
-              }}
-            >
-              <RightArrow />
-            </View>
-          </View>}
+          {user && (user?.expireIn <= 0 || user?.expireIn === null )&&
+            <Pressable onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  marginHorizontal: 24,
+                  paddingLeft: 18,
+                  height: 70,
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 20,
+                  alignItems: 'center'
+                }}
+              >
+                <ExclamationMark style={{ marginRight: 10 }} />
+                <View>
+                  <Text style={{ color: '#222222', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular' }}>정회원 인증이 필요해요!</Text>
+                  <Text style={{ color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular' }}>정회원 인증하기</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    paddingRight: 16
+                  }}
+                >
+                  <RightArrow />
+                </View>
+              </View>
+            </Pressable>}
           <View
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
@@ -149,15 +153,13 @@ const MyPageFragment = ({navigation}: Props) => {
               underlayColor='#EEEEEE'
               onPress={() => {
                 if (user) {
-                  if (user.isAuthenticated === true) {
-                    if (user?.expireIn === 0) {
+                    if (user?.expireIn <= 0) {
                       navigation.navigate('ExpiredMember');
                     } else if (user?.expireIn > 0) {
                       navigation.navigate('CertifiedMember');
                     } else {
                       navigation.navigate('UncertifiedMember');
                     }
-                  }
                 }
               }}>
               <View style={styles.menu}>

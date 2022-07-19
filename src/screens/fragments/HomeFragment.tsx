@@ -31,6 +31,7 @@ import {useIsFocused} from '@react-navigation/native';
 import User from '../../classes/User';
 import {getUser} from '../../common/myPageApi';
 import CheckMark from '../../../resources/icon/CheckMark';
+import Toast from 'react-native-simple-toast';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -78,7 +79,6 @@ const HomeFragment = ({navigation}: Props) => {
     }
   }, [isFocused]);
 
-
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
@@ -117,10 +117,17 @@ const HomeFragment = ({navigation}: Props) => {
                 <>
                   <TouchableWithoutFeedback
                     onPress={() => {
-                      if (item.type === 1 || item.type === 2 || item.type === 3) {
+                      if (
+                        item.type === 1 ||
+                        item.type === 2 ||
+                        item.type === 3
+                      ) {
                         navigation.navigate('RegularMemberAuthMyPage');
-                      }
-                      else if (item.type === 4 || item.type === 5 || item.type === 6) {
+                      } else if (
+                        item.type === 4 ||
+                        item.type === 5 ||
+                        item.type === 6
+                      ) {
                         setModalVisible(true);
                       }
                     }}>
@@ -173,7 +180,11 @@ const HomeFragment = ({navigation}: Props) => {
           <Text style={styles.boardTitle}>고정 게시판</Text>
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate('Board');
+              {
+                user?.isAuthenticated
+                  ? navigation.navigate('Board')
+                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+              }
             }}>
             <Text style={styles.more}>더보기</Text>
           </TouchableWithoutFeedback>
@@ -239,7 +250,11 @@ const HomeFragment = ({navigation}: Props) => {
           <Text style={styles.boardTitle}>HOT 게시글</Text>
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate('PostListScreen', {boardId: 1});
+              {
+                user?.isAuthenticated
+                  ? navigation.navigate('PostListScreen', {boardId: 1})
+                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+              }
             }}>
             <Text style={styles.more}>더보기</Text>
           </TouchableWithoutFeedback>
