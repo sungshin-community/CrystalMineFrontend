@@ -143,8 +143,9 @@ function DirectionAgree({navigation}: Props) {
                   이용 방향 전체 확인
                 </Text>
               </TouchableOpacity>
-              {agreements.map(a => (
+              {agreements.map((a, index) => (
                 <DirectionContainer
+                  key={index}
                   id={a.id}
                   title={a.title}
                   content={a.content}

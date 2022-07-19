@@ -157,17 +157,15 @@ const HomeFragment = ({navigation}: Props) => {
             <ModalBottom
               modalVisible={modalVisible}
               setModalVisible={setModalVisible}
-              modalText={modalText}
-              modalBody={modalBody}
-              modalButtonText="서비스 이용 방향 보기"
-              modalButton
-              modalButtonFunc={() => {
+              title={modalText}
+              content={modalBody}
+              purpleButtonText="서비스 이용 방향 보기"
+              purpleButtonFunc={() => {
                 setModalVisible(!modalVisible);
                 navigation.navigate('TermsOfService');
               }}
-              isSecondButton={true}
-              modalSecondButtonText="확인"
-              modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
+              whiteButtonText="확인"
+              whiteButtonFunc={() => setModalVisible(!modalVisible)}
             />
           )}
         </View>

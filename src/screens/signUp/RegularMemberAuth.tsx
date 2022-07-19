@@ -188,17 +188,14 @@ export default function RegularMemberAuth({navigation}: Props) {
                 zIndex: 999,
               }}
             /> */}
-              <ModalBottom
+               <ModalBottom
                 modalVisible={!modalVisible}
                 setModalVisible={setModalVisible}
-                modalText={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
-                modalBody=""
-                modalButtonText="인증번호 재전송"
-                modalButton
-                modalButtonFunc={onResendOtpButtonPress}
-                isSecondButton={true}
-                modalSecondButtonText="인증 취소"
-                modalSecondButtonFunc={() => navigation.navigate('RegularMemberAuthSelect')}
+                content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
+                purpleButtonText="인증번호 재전송"
+                purpleButtonFunc={onResendOtpButtonPress}
+                whiteButtonText="인증 취소"
+                whiteButtonFunc={() => navigation.navigate('RegularMemberAuthSelect')}
               />
           </>
         )}
@@ -245,17 +242,13 @@ export default function RegularMemberAuth({navigation}: Props) {
         </TouchableWithoutFeedback>
       </View>
 
-      {tryCnt <= 0 && (
+ {tryCnt <= 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
-          modalText={`인증번호 입력 최대 횟수를 초과하였습니다.
-        5분 뒤 다시 인증을 시도해주세요.
-        `}
-          modalBody=""
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={gotoHome}></ModalBottom>
+          content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={gotoHome}></ModalBottom>
       )}
       <View
         style={{

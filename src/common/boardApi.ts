@@ -177,6 +177,19 @@ export async function deleteMyComments(commendIds: number[]) {
   }
 }
 
+export async function cancelScrapedPosts(postIds: number[]) {
+  try {
+    const postIdListStr = postIds.join(",");
+    const response = await client.delete<AxiosResponse>(
+      `/scrap/${postIdListStr}`
+    );
+    console.log(response.data.data);
+    return response.data;
+  } catch (e) {
+    console.log("여기는 cancelScrapedPosts 함수", e);
+  }
+}
+
 export async function getScrapedPostList(page: number = 0) {
   try {
     const params = new URLSearchParams();

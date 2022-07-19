@@ -183,11 +183,11 @@ const PostListScreen = ({navigation, route}: Props) => {
       <ModalBottom
         modalVisible={reportCheckModalVisible}
         setModalVisible={setReportCheckModalVisible}
-        modalText={`게시판 신고`}
-        modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-        modalButtonText="확인"
-        modalButton
-        modalButtonFunc={() => {
+        title={`게시판 신고`}
+        content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+        isContentCenter={false}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
           setReportCheckModalVisible(false);
           setReportModalVisible(true);
         }}

@@ -188,12 +188,9 @@ export default function ResetPasswordInputNewPasswordConfirm({
           <ModalBottom
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            modalText={`비밀번호가 성공적으로 변경 되었습니다.
-            이전 화면으로 이동합니다.`}
-            modalBody=""
-            modalButtonText="확인"
-            modalButton
-            modalButtonFunc={() => navigation.navigate('SplashHome')}
+            content={`비밀번호가 성공적으로 변경 되었습니다.\n이전 화면으로 이동합니다.`}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => navigation.navigate('SplashHome')}
           />
         </View>
       </Container>
@@ -284,12 +281,10 @@ export default function ResetPasswordInputNewPasswordConfirm({
           <ModalBottom
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            modalText={`비밀번호가 성공적으로 변경 되었습니다. 
+            content={`비밀번호가 성공적으로 변경 되었습니다. 
             이전 화면으로 이동합니다.`}
-            modalBody=""
-            modalButtonText="확인"
-            modalButton
-            modalButtonFunc={() => navigation.navigate('SplashHome')}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => navigation.navigate('SplashHome')}
           />
         </View>
       </Container>

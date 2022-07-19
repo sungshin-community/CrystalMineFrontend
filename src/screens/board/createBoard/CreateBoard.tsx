@@ -122,12 +122,11 @@ function CreateBoard({navigation}: Props) {
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText="게시판 삭제 공지"
-          modalBody={`게시판 삭제 기능은 아직 개발 중이므로 게시판 삭제는 불가능합니다.
-        `}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title="게시판 삭제 공지"
+          content={`•  게시판 삭제 기능은 아직 개발 중이므로 게시판 삭제는 불가능합니다.`}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             onSubmitPress();
             setModalVisible(false);
           }}></ModalBottom>

@@ -79,11 +79,9 @@ function Post({
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
-          modalText={`작성한 게시글을 삭제하시겠습니까?`}
-          modalBody=""
-          modalButtonText="삭제"
-          modalButton
-          modalButtonFunc={() => {
+          content={`작성한 게시글을 삭제하시겠습니까?`}
+          purpleButtonText="삭제"
+          purpleButtonFunc={() => {
             if (handlePostDelete(data.postId)) {
               setDeleteModalVisible(false);
               Toast.show(
@@ -95,9 +93,8 @@ function Post({
               console.log('게시글 삭제 성공')
             }
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setDeleteModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setDeleteModalVisible(false)}
         />
       )}
       <Pressable
@@ -109,18 +106,18 @@ function Post({
       </Pressable>
     </>
   );
-
+const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`
   const handlePostReportComponent = (
     <>
       {reportCheckModalVisible && (
         <ModalBottom
           modalVisible={reportCheckModalVisible}
           setModalVisible={setReportCheckModalVisible}
-          modalText={`게시글 신고`}
-          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title="게시글 신고"
+          content={content}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             setReportCheckModalVisible(false);
             setReportModalVisible(true);
           }}
