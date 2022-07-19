@@ -62,11 +62,9 @@ const Comment = ({
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText={`작성한 댓글을 삭제하시겠습니까?`}
-          modalBody=""
-          modalButtonText="삭제"
-          modalButton
-          modalButtonFunc={() => {
+          content={`작성한 댓글을 삭제하시겠습니까?`}
+          purpleButtonText="삭제"
+          purpleButtonFunc={() => {
             handleCommentDelete(data.id);
             setModalVisible(false);
             Toast.show(
@@ -74,9 +72,8 @@ const Comment = ({
               Toast.LONG,
             );
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setModalVisible(false)}
         />
       )}
       <Pressable
@@ -94,11 +91,11 @@ const Comment = ({
         <ModalBottom
           modalVisible={reportCheckModalVisible}
           setModalVisible={setReportCheckModalVisible}
-          modalText={`댓글 신고`}
-          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title={`댓글 신고`}
+          isContentCenter={false}
+          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             setReportCheckModalVisible(false);
             setReportModalVisible(true);
           }}
@@ -279,11 +276,9 @@ export const Recomment = ({
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText={`작성한 댓글을 삭제하시겠습니까?`}
-          modalBody=""
-          modalButtonText="삭제"
-          modalButton
-          modalButtonFunc={() => {
+          content={`작성한 댓글을 삭제하시겠습니까?`}
+          purpleButtonText="삭제"
+          purpleButtonFunc={() => {
             handleCommentDelete(data.id);
             setModalVisible(false);
             Toast.show(
@@ -291,9 +286,8 @@ export const Recomment = ({
               Toast.LONG,
             );
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setModalVisible(false)}
         />
       )}
       <Pressable
@@ -311,11 +305,11 @@ export const Recomment = ({
         <ModalBottom
           modalVisible={reportCheckModalVisible}
           setModalVisible={setReportCheckModalVisible}
-          modalText={`댓글 신고`}
-          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title={`댓글 신고`}
+          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             setReportCheckModalVisible(false);
             setReportModalVisible(true);
           }}

@@ -210,11 +210,10 @@ export default function MyPostList({navigation, route}: Props) {
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
-          modalText="선택하신 게시글을 삭제하시겠습니까?"
-          modalButtonText="삭제"
-          modalSecondButtonText='취소'
-          modalButton
-          modalButtonFunc={async () => {
+          content="선택하신 게시글을 삭제하시겠습니까?"
+          purpleButtonText="삭제"
+          whiteButtonText='취소'
+          purpleButtonFunc={async () => {
             setIsLoading(true);
             await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getMyPostList(currentPage, sortBy);
@@ -224,7 +223,7 @@ export default function MyPostList({navigation, route}: Props) {
             setDeleteMode(false);
             setDeleteModalVisible(false);
           }}
-          modalSecondButtonFunc={() => {
+          whiteButtonFunc={() => {
             setDeleteModalVisible(false);
           }}
         />

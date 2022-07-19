@@ -369,26 +369,21 @@ const MyPageFragment = ({navigation}: Props) => {
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText="로그아웃 하시겠습니까?"
-          modalBody=""
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={async () => {
+          content="로그아웃 하시겠습니까?"
+          purpleButtonText="확인"
+          purpleButtonFunc={async () => {
             await logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setModalVisible(false)}
         />
         <ModalBottom
           modalVisible={profileModalVisible}
           setModalVisible={setProfileModalVisible}
-          modalText="프로필 사진 변경"
-          modalBody=""
-          modalButtonText="앨범에서 이미지 선택"
-          modalButton
-          modalButtonFunc={async () => {
+          title="프로필 사진 변경"
+          purpleButtonText="앨범에서 이미지 선택"
+          purpleButtonFunc={async () => {
             setProfileModalVisible(false);
             launchImageLibrary(
               {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
@@ -407,9 +402,8 @@ const MyPageFragment = ({navigation}: Props) => {
               },
             );
           }}
-          isSecondButton={true}
-          modalSecondButtonText="기본 이미지로 변경"
-          modalSecondButtonFunc={async () => {
+          whiteButtonText="기본 이미지로 변경"
+          whiteButtonFunc={async () => {
             let response = await changeProfileImage('');
             setUser(response.data.data);
             setProfileModalVisible(false);

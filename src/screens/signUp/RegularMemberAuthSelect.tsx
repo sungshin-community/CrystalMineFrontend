@@ -110,11 +110,10 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             <ModalBottom
               modalVisible={modalVisible}
               setModalVisible={setModalVisible}
-              modalText
-              modalBody={modalBody}
-              modalButtonText="확인"
-              modalButton
-              modalButtonFunc={() => {
+              content={modalBody}
+              isContentCenter={false}
+              purpleButtonText="확인"
+              purpleButtonFunc={() => {
                 setModalVisible(!modalVisible);
                 navigation.navigate('GlobalNavbar');
               }}

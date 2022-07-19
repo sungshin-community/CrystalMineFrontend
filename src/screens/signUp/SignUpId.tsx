@@ -14,6 +14,7 @@ import {
   Platform,
   Dimensions,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
@@ -147,6 +148,7 @@ export default function SignUpId({navigation, route}: Props) {
           <Text style={[fontRegular, styles.blackText]}>
             신청 후 평균 7일 이내로 생성되며, 신청 결과는
             {'\n'}포탈의 해당 페이지에서 확인하실 수 있습니다.
+            {'\n'}
           </Text>
         </View>
       </View>
@@ -203,15 +205,17 @@ export default function SignUpId({navigation, route}: Props) {
                 <Description style={{marginRight: 5.5}}>
                   학교에서 제공하는 성신 G-mail 계정을 사용합니다
                 </Description>
+                <Pressable onPress={()=>setModalVisible(true) }>
+                  <SignUpQuestionMark />
+                </Pressable>
                 <ModalBottom
                   modalVisible={modalVisible}
                   setModalVisible={setModalVisible}
-                  modalText={`학교 G-mail 계정 생성 방법`}
-                  fontSize={17}
-                  modalBody={modalBody}
-                  modalButtonText="확인"
-                  modalButton={<SignUpQuestionMark />}
-                  modalButtonFunc={() => setModalVisible(!modalVisible)}
+                  title={`학교 G-mail 계정 생성 방법`}
+                  content={modalBody}
+                  isContentCenter={false}
+                  purpleButtonText="확인"
+                  purpleButtonFunc={() => setModalVisible(!modalVisible)}
                 />
               </View>
             </TextContainer>
@@ -363,16 +367,18 @@ export default function SignUpId({navigation, route}: Props) {
               <Description style={{marginRight: 5.5}}>
                 학교에서 제공하는 성신 G-mail 계정을 사용합니다
               </Description>
-              <ModalBottom
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                modalText={`학교 G-mail 계정 생성 방법`}
-                fontSize={17}
-                modalBody={modalBody}
-                modalButtonText="확인"
-                modalButton={<SignUpQuestionMark />}
-                modalButtonFunc={() => setModalVisible(!modalVisible)}
-              />
+              <Pressable onPress={()=>setModalVisible(true) }>
+                  <SignUpQuestionMark />
+                </Pressable>
+                <ModalBottom
+                  modalVisible={modalVisible}
+                  setModalVisible={setModalVisible}
+                  title={`학교 G-mail 계정 생성 방법`}
+                  content={modalBody}
+                  isContentCenter={false}
+                  purpleButtonText="확인"
+                  purpleButtonFunc={() => setModalVisible(!modalVisible)}
+                />
             </View>
           </TextContainer>
 

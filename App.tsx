@@ -1042,10 +1042,13 @@ const App = () => {
               <Stack.Screen
                 name="DirectionAgree"
                 component={DirectionAgree}
-                options={{
-                  title: '',
-                  animation: 'slide_from_right',
-                }}
+                  options={({ navigation }) => ({
+                    title: '',
+                    animation: 'slide_from_right',
+                    headerRight: () => (
+                      <CloseButtonIcon onPress={() => navigation.navigate('GlobalNavbar')} />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="RegularMemberAuthSelect"

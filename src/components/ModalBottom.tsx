@@ -8,32 +8,29 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import { fontBold, fontMedium, fontRegular } from '../common/font';
 
 interface Props {
-  modalText?: any;
-  modalButtonText?: string;
-  modalButton?: any;
-  modalBody?: any;
-  setModalVisible: any;
   modalVisible: boolean;
-  modalButtonFunc: any;
-  isSecondButton?: boolean;
-  modalSecondButtonText?: string;
-  modalSecondButtonFunc?: any;
-  fontSize?: number;
+  setModalVisible: any;
+  title?: any;
+  content?: any;
+  isContentCenter?: boolean;
+  purpleButtonText?: string;
+  purpleButtonFunc: any;
+  whiteButtonText?: string;
+  whiteButtonFunc?: any;
 }
 export const ModalBottom = ({
-  modalText,
-  modalButtonText,
-  modalButton,
-  modalBody = '',
-  setModalVisible,
   modalVisible,
-  modalButtonFunc = () => setModalVisible(!modalVisible),
-  isSecondButton = false,
-  modalSecondButtonText,
-  modalSecondButtonFunc,
-  fontSize,
+  setModalVisible,
+  title,
+  content,
+  isContentCenter = true,
+  purpleButtonText,
+  purpleButtonFunc,
+  whiteButtonText,
+  whiteButtonFunc,
 }: Props) => {
   return (
     <>
@@ -52,29 +49,27 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
-                {((modalText && modalText !== 'no')) && (
+                {title && (
                   <Text
-                    style={[
-                      styles.modalText,
-                      {fontSize: fontSize, marginBottom: 20},
+                    style={[fontBold,
+                      styles.title,
                     ]}>
-                    {modalText}
+                    {title}
                   </Text>
                 )}
-                {modalText === 'no' && <></>}
-                <Text style={{textAlign: 'center'}}>{modalBody}</Text>
+                {content && <Text style={[fontRegular, {textAlign: isContentCenter ? 'center' : 'left', fontSize: 13}]}>{content}</Text>}
               </View>
               <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={()=>modalButtonFunc()}>
-                <Text style={styles.textStyle}>{modalButtonText}</Text>
+                style={[styles.button, styles.buttonClose, {marginTop: content ? 20 : 0}]}
+                onPress={()=>purpleButtonFunc()}>
+                <Text style={styles.textStyle}>{purpleButtonText}</Text>
               </TouchableOpacity>
-              {isSecondButton && (
+              {whiteButtonText && (
                 <TouchableOpacity
                   style={[styles.secondButton, styles.secondButtonClose]}
-                  onPress={() => modalSecondButtonFunc()}>
+                  onPress={() => whiteButtonFunc()}>
                   <Text style={styles.secondButtonTextStyle}>
-                    {modalSecondButtonText}
+                    {whiteButtonText}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -82,17 +77,17 @@ export const ModalBottom = ({
           </View>
         </Modal>
       </View>
-      <Pressable hitSlop={10} onPress={()=>modalButtonFunc()}>
+      {/* <Pressable hitSlop={10} onPress={()=>modalButtonFunc()}>
         {modalButton}
-      </Pressable>
+      </Pressable> */}
     </>
   );
 };
 
 const styles = StyleSheet.create({
   centeredView: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     position: 'absolute',
     bottom: 45,
     left: '50%',
@@ -119,7 +114,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     height: 42,
-    marginTop: 20,
   },
   secondButton: {
     borderRadius: 10,
@@ -145,8 +139,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
-  modalText: {
+  title: {
     textAlign: 'center',
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 17,
+    marginBottom: 20,
   },
 });
