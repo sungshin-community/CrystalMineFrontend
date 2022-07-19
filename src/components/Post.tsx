@@ -51,19 +51,10 @@ function Post({
   const navigation = useNavigation();
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
-  const images = [
-    {
-      url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
-    },
-    {
-      url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
-    },
-  ];
+
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -100,6 +91,8 @@ function Post({
                 Toast.LONG,
               );
               navigation.goBack();
+              // navigation.navigate('PostListScreen', {boardId: boardId});
+              console.log('게시글 삭제 성공')
             }
           }}
           isSecondButton={true}
