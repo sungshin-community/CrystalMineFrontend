@@ -50,7 +50,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
         style={{color: "#A0A8B0", fontSize: 13, marginBottom: 16, marginLeft: 10, marginRight: 10}}
         numberOfLines={1}
         ellipsizeMode="tail"
-      >게시글 내용: {comment.postContent}</Text>
+      >{comment.postContent}</Text>
       </View>
     </TouchableOpacity>
   );
