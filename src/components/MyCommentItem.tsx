@@ -34,7 +34,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
       </View>
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
-        <Image style={{width: 24, height: 24, borderRadius: 12, marginLeft: 10}} source={{uri: comment.profileImageUrl}} />
+        <Image style={{width: 24, height: 24, borderRadius: 12, marginLeft: 10}} source={{uri: comment.profileImage}} />
           <Text style={styles.name}>{comment.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{comment.createdAt}</Text>

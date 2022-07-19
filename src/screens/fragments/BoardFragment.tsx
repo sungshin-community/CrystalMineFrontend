@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Text} from 'react-native';
+import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { useIsFocused } from "@react-navigation/native";
 import BoardList, {
   MenuList,
   CustomBoardList,
@@ -14,6 +15,7 @@ import {
   getOfficialBoardList,
   getPinnedBoardList,
 } from '../../common/boardApi';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type RootStackParamList = {
   MyPostList: undefined;
@@ -29,6 +31,9 @@ export default function BoardFragment({navigation}: Props) {
   const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
   const [departmentBoardList, setDepartmentBoardList] = useState<Board[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const isFocused = useIsFocused();
+  const [isInited, setIsInited] = useState<Boolean>(false);
 
   const updateOfficialBoardList = async () => {
     const officialBoardList = await getOfficialBoardList();
@@ -73,6 +78,9 @@ export default function BoardFragment({navigation}: Props) {
 
   useEffect(() => {
     async function getBoardList() {
+      if (!isInited) {
+        setIsLoading(true);
+      }
       const pinnedBoardList = await getPinnedBoardList();
       const customBoardList = await getCustomBoardList();
       const officialBoardList = await getOfficialBoardList();
@@ -81,57 +89,67 @@ export default function BoardFragment({navigation}: Props) {
       setCustomBoardList(customBoardList);
       setOfficialBoardList(officialBoardList);
       setDepartmentBoardList(departmentBoardList);
-
+      if (!isInited) {
+        setIsLoading(false);
+        setIsInited(true);
+      }
     }
     // getOfficialBoards();
     // getCustomBoards();
     // getPinnedBoards();
-    getBoardList();
-  }, []);
+    if (isFocused) {
+      getBoardList();
+    }
+  }, [navigation, isFocused]);
 
   
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-      <View
-        style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
-        <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
-        <BoardListContainer
-          boardCategory="고정게시판"
-          component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} />}
-        />
-        {/* <BoardListContainer
-          boardCategory="공식게시판"
-          component={<OfficialBoardList items={officialBoardList} />}
-        /> */}
-        <View style={{height: 60, paddingLeft: 25, alignItems: 'center', flexDirection: 'row'}}>
-          <Text style={{
-            fontSize: 17,
-            fontFamily: 'SpoqaHanSansNeo',
-            lineHeight: 20,
-            flex: 1,
-            fontWeight: 'bold',
-            color: '#222222'
-          }}>
-            공식게시판
-          </Text>
-        </View>
-        <OfficialBoardListContainer
-          boardCategory="수정광장"
-          component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} />}
-        />
-        <OfficialBoardListContainer
-          defaultFolded={true}
-          boardCategory="학과게시판"
-          component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} />}
-        />
-        <CustomBoardListContainer
-          boardCategory="수정게시판"
-          component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} />}
-          moveToCreateBoard={moveToCreateBoard}
-        />
-        <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+       <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
-    </ScrollView>
+      <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+        <View
+          style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
+          <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
+          <BoardListContainer
+            boardCategory="고정게시판"
+            component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} />}
+          />
+          {/* <BoardListContainer
+            boardCategory="공식게시판"
+            component={<OfficialBoardList items={officialBoardList} />}
+          /> */}
+          <View style={{height: 60, paddingLeft: 25, alignItems: 'center', flexDirection: 'row'}}>
+            <Text style={{
+              fontSize: 17,
+              fontFamily: 'SpoqaHanSansNeo',
+              lineHeight: 20,
+              flex: 1,
+              fontWeight: 'bold',
+              color: '#222222'
+            }}>
+              공식게시판
+            </Text>
+          </View>
+          <OfficialBoardListContainer
+            boardCategory="수정광장"
+            component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} />}
+          />
+          <OfficialBoardListContainer
+            defaultFolded={true}
+            boardCategory="학과게시판"
+            component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} />}
+          />
+          <CustomBoardListContainer
+            boardCategory="수정게시판"
+            component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} />}
+            moveToCreateBoard={moveToCreateBoard}
+          />
+          <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
