@@ -103,21 +103,7 @@ export const SelectModalBottom = ({
                     isCheckedReportNum,
                     detail,
                   );
-                  if (result.code === 'CREATE_POST_REPORT_SUCCESS') {
-                    console.log('게시글 신고 성공');
-                    Toast.show(
-                      '신고하신 내용이 정상적으로 접수되었습니다.',
-                      Toast.LONG,
-                    );
-                  } else if (
-                    result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH'
-                  ) {
-                    console.log('보유 포인트 부족');
-                    Toast.show(
-                      '보유 포인트가 부족하여 신고가 불가능합니다.',
-                      Toast.LONG,
-                    );
-                  } else Toast.show(result.detail, Toast.LONG);
+                  Toast.show(result.detail, Toast.LONG);
                   setModalVisible(false);
                 }}>
                 <Text style={styles.textStyle}>{purpleButtonText}</Text>

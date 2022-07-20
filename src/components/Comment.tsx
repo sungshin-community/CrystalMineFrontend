@@ -105,29 +105,12 @@ const Comment = ({
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
-          modalText={`댓글 신고`}
-          modalButtonText="신고하기"
-          modalButton
-          modalButtonFunc={async () => {
-            const result = await handleCommentReport(data.id, 1, '');
-            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
-              console.log('댓글 신고 성공');
-              Toast.show(
-                '신고하신 내용이 정상적으로 접수되었습니다.',
-                Toast.LONG,
-              );
-            } else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족');
-              Toast.show(
-                '보유 포인트가 부족하여 신고가 불가능합니다.',
-                Toast.LONG,
-              );
-            } else Toast.show(result.detail, Toast.LONG);
-            setReportModalVisible(false);
-          }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setReportModalVisible(false)}
+          title={`댓글 신고`}
+          purpleButtonText="신고하기"
+          reportId={data.id}
+          reportFunc={handleCommentReport}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
         />
       )}
       {data?.isReported ? (
@@ -319,29 +302,12 @@ export const Recomment = ({
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
-          modalText={`댓글 신고`}
-          modalButtonText="신고하기"
-          modalButton
-          modalButtonFunc={async () => {
-            const result = await handleCommentReport(data.id, 1, '');
-            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
-              console.log('댓글 신고 성공');
-              Toast.show(
-                '신고하신 내용이 정상적으로 접수되었습니다.',
-                Toast.LONG,
-              );
-            } else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족');
-              Toast.show(
-                '보유 포인트가 부족하여 신고가 불가능합니다.',
-                Toast.LONG,
-              );
-            } else Toast.show(result.detail, Toast.LONG);
-            setReportModalVisible(false);
-          }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setReportModalVisible(false)}
+          title={`댓글 신고`}
+          purpleButtonText="신고하기"
+          reportId={data.id}
+          reportFunc={handleCommentReport}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
         />
       )}
       {data?.isReported ? (

@@ -366,6 +366,7 @@ export const setCommentLike = async (commetId: number) => {
 // 댓글, 대댓글 신고
 export const reportComment = async (commentId: number, reasonId: number, detail?: string) => {
   try {
+    console.log('신고사유: ', reasonId)
     const response = await client.post<Response<CommentDto>>(
       `/comments/${commentId}/report`,
       { reasonId: reasonId, detail: detail },
