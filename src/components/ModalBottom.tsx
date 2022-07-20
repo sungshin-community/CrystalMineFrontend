@@ -77,9 +77,6 @@ export const ModalBottom = ({
           </View>
         </Modal>
       </View>
-      {/* <Pressable hitSlop={10} onPress={()=>modalButtonFunc()}>
-        {modalButton}
-      </Pressable> */}
     </>
   );
 };

@@ -127,29 +127,12 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
-          modalText={`게시글 신고`}
-          modalButtonText="신고하기"
-          modalButton
-          modalButtonFunc={async () => {
-            const result = await handlePostReport(data.postId, 1, '');
-            if (result.code === 'CREATE_POST_REPORT_SUCCESS') {
-              console.log('게시글 신고 성공');
-              Toast.show(
-                '신고하신 내용이 정상적으로 접수되었습니다.',
-                Toast.LONG,
-              );
-            } else if (result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족');
-              Toast.show(
-                '보유 포인트가 부족하여 신고가 불가능합니다.',
-                Toast.LONG,
-              );
-            } else Toast.show(result.detail, Toast.LONG);
-            setReportModalVisible(false);
-          }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setReportModalVisible(false)}
+          title={`게시글 신고`}
+          purpleButtonText="신고하기"
+          reportId={data.postId}
+          reportFunc={handlePostReport}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
         />
       )}
       {data?.isReported ? (

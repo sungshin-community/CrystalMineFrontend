@@ -191,11 +191,10 @@ export default function MyCommentList({navigation, route}: Props) {
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
-          modalText="선택하신 댓글을 삭제하시겠습니까?"
-          modalButtonText="삭제"
-          modalSecondButtonText='취소'
-          modalButton
-          modalButtonFunc={async () => {
+          content="선택하신 댓글을 삭제하시겠습니까?"
+          purpleButtonText="삭제"
+          whiteButtonText='취소'
+          purpleButtonFunc={async () => {
             setIsLoading(true);
             await deleteMyComments(myCommentList.filter(c => c.isChecked).map(c => c.id));
             const commentList = await getMyCommentList(currentPage, sortBy);
@@ -205,7 +204,7 @@ export default function MyCommentList({navigation, route}: Props) {
             setDeleteMode(false);
             setDeleteModalVisible(false);
           }}
-          modalSecondButtonFunc={() => {
+          whiteButtonFunc={() => {
             setDeleteModalVisible(false);
           }}
         />

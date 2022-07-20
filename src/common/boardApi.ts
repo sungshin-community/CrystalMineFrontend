@@ -107,6 +107,17 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
   }
 }
 
+export const getReportReason = async () => {
+  try {
+    const response = await client.get<Response<Board>>(
+      `/contract/report-reasons`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getReportReason 함수", e);
+  }
+};
+
 export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
   try {
     const response = await client.post<Response<Board>>(
@@ -219,7 +230,7 @@ export async function getMyCommentList(page: number, sort: string = "createdAt")
   }
 }
 //게시판 신고
-export const reportBoard = async (boardId: number, reasonId: number, detail: string) => {
+export const reportBoard = async (boardId: number, reasonId: number, detail?: string) => {
   try {
     const response = await client.post<Response<Board>>(
       `/boards/${boardId}/report`,
@@ -270,7 +281,7 @@ export const setPostScrap = async (postId: number) => {
   }
 };
 // 게시글 신고
-export const reportPost = async (postId: number, reasonId: number, detail: string) => {
+export const reportPost = async (postId: number, reasonId: number, detail?: string) => {
   try {
     const response = await client.post<Response<Board>>(
       `/posts/${postId}/report`,
