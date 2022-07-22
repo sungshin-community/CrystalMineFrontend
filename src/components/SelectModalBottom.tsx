@@ -172,6 +172,7 @@ export const ReportItem = ({
           onPress={() => {
             setIsCheckedReportNum(list.length + 1);
             // inputRef.current.focus();
+            setDetail(null)
           }}>
           {isCheckedReportNum === list.length + 1 ? (
             <RadioButtonChecked style={{marginRight: 10}} />

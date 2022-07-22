@@ -3,6 +3,18 @@ import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PinBoardDto, HotBoardDto, HomeNotification, HomeNotificationDto } from '../classes/Home';
 import Response from '../classes/Response';
+import { Authentication } from '../classes/Authentication';
+
+export const getAuthentication = async() => {
+  try {
+    const response = await client.get<Response<Authentication>>(
+      `/user/authentication`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getAuthentication 함수", e);
+  }
+}
 
 export const getPinBoardContents = async () => {
     try {
