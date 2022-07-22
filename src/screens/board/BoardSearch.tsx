@@ -49,7 +49,7 @@ function BoardSearch({navigation}: Props) {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
-          value={searchWord}
+          // value={searchWord}
         />
       ),
       headerRight: (): React.ReactNode => (

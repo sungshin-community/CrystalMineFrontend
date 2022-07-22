@@ -57,7 +57,7 @@ function SearchResult({navigation, route}: Props) {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
-          value={searchWord}
+          // value={searchWord}
         />
       ),
       headerRight: (): React.ReactNode => (
@@ -103,7 +103,11 @@ function SearchResult({navigation, route}: Props) {
       />
       <Tab.Screen
         name="게시판 이름"
-        children={() => <BoardSearchResult data={boardResultData} />}
+        children={() => {
+          // if (boardResultData) {
+            return <BoardSearchResult data={boardResultData} />;
+          // } else {return;}
+      }}
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>
