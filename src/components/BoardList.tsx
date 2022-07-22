@@ -109,7 +109,7 @@ export function OfficialBoardList({items, onUpdate, moveToBoard}: Props) {
                 }}
               />
             )}
-            <View>
+            <View style={{flex: 1}}>
               <Text
                 style={{
                   fontSize: 14,
@@ -120,10 +120,13 @@ export function OfficialBoardList({items, onUpdate, moveToBoard}: Props) {
                 {item.name}
               </Text>
               <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
                 style={{
                   fontSize: 14,
                   color: '#9F9F9F',
                   marginLeft: 15,
+                  marginRight: 15,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}>
                 {item.introduction}
@@ -192,7 +195,7 @@ export function CustomBoardList({items, onUpdate, moveToBoard}: Props) {
                 }}
               />
             )}
-            <View>
+            <View style={{flex: 1}}>
               <Text
                 style={{
                   fontSize: 14,
@@ -203,10 +206,13 @@ export function CustomBoardList({items, onUpdate, moveToBoard}: Props) {
                 {item.name}
               </Text>
               <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
                 style={{
                   fontSize: 14,
                   color: '#9F9F9F',
                   marginLeft: 15,
+                  marginRight: 15,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}>
                 {item.introduction}
