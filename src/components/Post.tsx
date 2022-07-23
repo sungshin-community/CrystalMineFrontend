@@ -10,7 +10,6 @@ import {
   Modal,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
 import styled from 'styled-components';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';

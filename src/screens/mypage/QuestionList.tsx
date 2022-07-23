@@ -13,6 +13,8 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  Image,
+  Modal
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
@@ -40,6 +42,7 @@ import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {ModalBottom} from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
 import PostItem from '../../components/PostItem';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
@@ -365,9 +368,16 @@ export default QuestionList;
 export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
+  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
+
   const getQuestionFunc = async (id: number) => {
     const result: QuestionDto = await getQuestion(id);
     setData(result);
+  };
+  const closePhotoModal = () => {
+    if (isPhotoVisible) {
+      setIsPhotoVisible(false);
+    }
   };
 
   return (
@@ -430,7 +440,35 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
               paddingVertical: 16,
             }}>
             <Text style={[fontBold, {fontSize: 15, marginBottom: 10}]}>{data?.title}</Text>
-            <Text style={{marginBottom: 10}}>{data?.content}</Text>
+            <Text style={{ marginBottom: 10 }}>{data?.content}</Text>
+              {data?.images.length !== 0 &&
+            <View style={{ flexDirection: 'row', marginTop: 16 }}>
+                <ScrollView horizontal={true}>
+                  {data?.images.map((url, index) => (
+                    <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
+                      <Image
+                        style={{
+                          width: 70,
+                          height: 70,
+                          borderRadius: 10,
+                          marginRight: 8,
+                        }}
+                        source={{ uri: url.url }}
+                      />
+                    </Pressable>
+                  ))}
+                  <Modal
+                    visible={isPhotoVisible}
+                    transparent={true}
+                    onRequestClose={closePhotoModal}>
+                    {data && <ImageViewer
+                      imageUrls={data.images}
+                      onCancel={() => closePhotoModal()}
+                      enableSwipeDown
+                    />}
+                  </Modal>
+                </ScrollView>
+        </View>}
             <Text style={styles.date}>{data?.createdAt}</Text>
             {data?.answer && (
               <>
