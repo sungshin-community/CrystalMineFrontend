@@ -55,13 +55,9 @@ export const uploadProfileImage = async (image: any) => {
   }
 };
 
-export const changeProfileImage = async (profileImageUrl: string) => {
+export const setDefaultProfileImage = async () => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.patch<Response<User>>(
-      '/user/profile-image',
-      {profileImage: profileImageUrl}
-    );
+    const response = await client.patch<Response<User>>('/user/profile-image-default');
     return response;
   } catch (error: any) {
     return error.response;
@@ -70,7 +66,6 @@ export const changeProfileImage = async (profileImageUrl: string) => {
 
 export const changePassword = async (password: string) => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken');
     const response = await client.patch<Response<User>>(
       '/user/password',
       {password: password}

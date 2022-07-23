@@ -24,7 +24,7 @@ import {
 } from '../../../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../../../components/HideToggleContainer';
 import Agreement from '../../../../classes/Agreement';
-import {getAgreements} from '../../../../common/authApi';
+import {getAgreements, getQuitAgreements} from '../../../../common/authApi';
 
 type RootStackParamList = {
   SplashHome: undefined;
@@ -63,7 +63,7 @@ function QuitTermAgree({navigation}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getAgreements();
+      const agreementList = await getQuitAgreements();
       agreementList.map(a => (a.checked = false));
       setAgreements(agreementList);
       for (let i = 0; i < 2; i++) {

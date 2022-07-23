@@ -13,7 +13,7 @@ import {
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {changeProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
+import {setDefaultProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -404,7 +404,7 @@ const MyPageFragment = ({navigation}: Props) => {
           }}
           whiteButtonText="기본 이미지로 변경"
           whiteButtonFunc={async () => {
-            let response = await changeProfileImage('');
+            let response = await setDefaultProfileImage();
             setUser(response.data.data);
             setProfileModalVisible(false);
             Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
