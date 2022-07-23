@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  TouchableHighlight,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
@@ -140,41 +141,43 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
   const handleBoardSearchComponent = (
-    <View style={{marginRight: 4}}>
-      <Pressable hitSlop={5} onPress={() => console.log('search icon click')}>
-        <SearchIcon />
-      </Pressable>
-    </View>
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
+      onPress={() => console.log('search icon click')}>
+      <SearchIcon />
+    </TouchableHighlight>
   );
   const handleBoardSettingComponent = (
-    <View style={{marginRight: 10}}>
-      <Pressable
-        hitSlop={5}
-        onPress={() =>
-          navigation.navigate('UpdateBoard', {boardId: route.params.boardId})
-        }>
-        <SettingIcon />
-      </Pressable>
-    </View>
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
+      onPress={() =>
+        navigation.navigate('UpdateBoard', {boardId: route.params.boardId})
+      }>
+      <SettingIcon />
+    </TouchableHighlight>
   );
   const handleBoardReportComponent = (
     <>
       {boardInfo?.isReported ? (
-        <Pressable
-          hitSlop={5}
+        <TouchableHighlight
+          style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+          underlayColor='#EEEEEE'
           onPress={() => {
             Toast.show('이미 신고한 게시판입니다.', Toast.SHORT);
           }}>
-          <Report style={{marginRight: 10}} />
-        </Pressable>
+          <Report />
+        </TouchableHighlight>
       ) : (
-        <Pressable
-          hitSlop={5}
+        <TouchableHighlight
+          style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+          underlayColor='#EEEEEE'
           onPress={() => {
             setReportCheckModalVisible(true);
           }}>
-          <NoReport style={{marginRight: 10}} />
-        </Pressable>
+          <NoReport />
+        </TouchableHighlight>
       )}
     </>
   );

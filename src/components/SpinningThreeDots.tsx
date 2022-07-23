@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Pressable,
   Easing,
+  TouchableHighlight,
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
 interface Props {
@@ -66,7 +67,9 @@ function SpinningThreeDots({
             ))}
         </View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableWithoutFeedback
+          <TouchableHighlight
+            style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+            underlayColor='#EEEEEE'
             onPress={() => {
               handleAnimation();
               setIsOptionState(!isOptionState);
@@ -74,7 +77,7 @@ function SpinningThreeDots({
             <Animated.View style={animatedStyle}>
               <Dots />
             </Animated.View>
-          </TouchableWithoutFeedback>
+          </TouchableHighlight>
         </View>
       </View>
     </>
