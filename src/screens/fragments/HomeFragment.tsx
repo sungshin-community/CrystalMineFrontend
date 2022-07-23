@@ -33,6 +33,7 @@ import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
 import {NoticeDto} from '../../classes/mypage/NoticeDto';
+import { PlatformOS } from '../../components/PlatformOS';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -59,41 +60,47 @@ const HomeFragment = ({navigation}: Props) => {
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
 
-  const blindModalBody = (
+  const blacklistModalContent = (
     <>
-      <Text style={[fontRegular, {fontSize: 13}]}>
-        안녕하세요. {user?.nickname}님. {`\n`}
-        해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
-        제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을 참고
-        부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
-        불가능합니다. {`\n`}
-        이용 제한 처리일로 부터 7일 후, 서비스에서 자동으로 로그아웃 되며 학교
-        G-mail 계정으로도 관련 내용을 보내드리고 있으니 확인 바랍니다.
-        {`\n`}
-        {`\n`}
-      </Text>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-          이용 제한 계정
-        </Text>
-        <Text>{user?.blacklist.username}@sungshin.ac.kr</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-          이용 제한 날짜
-        </Text>
-        <Text>0000.00.00</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-          이용 제한 사유
-        </Text>
-        <Text>0000.00.00</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[fontBold, {width: 88, marginRight: 7}]}>작성 내용</Text>
-        <Text>0000.00.00</Text>
-      </View>
+      {user?.blacklist && (
+        <>
+          <Text style={[fontRegular, {fontSize: 13}]}>
+            안녕하세요. {user?.nickname}님. {`\n`}
+            해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
+            제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을
+            참고 부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
+            불가능합니다. {`\n`}
+            이용 제한 처리일로 부터 7일 후, 서비스에서 자동으로 로그아웃 되며
+            학교 G-mail 계정으로도 관련 내용을 보내드리고 있으니 확인 바랍니다.
+            {`\n`}
+            {`\n`}
+          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              이용 제한 계정
+            </Text>
+            <Text>{user?.blacklist.username}@sungshin.ac.kr</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              이용 제한 날짜
+            </Text>
+            <Text>0000.00.00</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              이용 제한 사유
+            </Text>
+            <Text>0000.00.00</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              작성 내용
+            </Text>
+            <Text>0000.00.00</Text>
+          </View>
+        </>
+      )}
     </>
   );
   useEffect(() => {
@@ -174,18 +181,44 @@ const HomeFragment = ({navigation}: Props) => {
                         setBlindModalVisible(true);
                         const itemContent = (
                           <View>
-                            <View style={{ marginBottom: 16 }}>
-                              <Text style={[fontRegular, { fontSize: 15, textAlign: 'center' }]}>{item.title}</Text>
-                              </View>
-                            <Text style={[fontMedium, {fontSize: 13, color: '#666666'}]}>{item.type === 4 ? '생성한 게시판:' : item.type === 5 ? '고정한 게시판:' : item.type === 6 ? '게시글 내용:' : item.type === 7 ? '댓글 내용:' : ''}</Text>
-                            <Text style={[fontRegular, { fontSize: 13, color: '#6E7882' }]}>{item.content}</Text>
-                            <View style={{marginTop: 16}}>
-                            <Text style={[fontRegular]}>{item.type === 4 ? '생성한 게시판이' : item.type === 5 ? '고정한 게시판이' : item.type === 6 ? '작성한 게시글이' : item.type === 7 ? '작성한 댓글이' : ''} {item.sender}에 의해 블라인드 되었습니다.{'\n'}사유는 다음과 같습니다.</Text>
+                            <Text style={[fontRegular, {marginBottom: 15}]}>
+                              {item.type === 4
+                                ? '생성한 게시판이'
+                                : item.type === 5
+                                ? '고정한 게시판이'
+                                : item.type === 6
+                                ? '작성한 게시글이'
+                                : item.type === 7
+                                ? '작성한 댓글이'
+                                : ''}{' '}
+                              15회 이상 신고되어, {item.sender}에 의해{`\n`}블라인드 되었습니다. 사유는 다음과 같습니다.
+                            </Text>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text
+                                style={[fontBold, {width: 88, marginRight: 7}]}>
+                                블라인드 사유
+                              </Text>
+                              <Text style={{width: 148}}>{item.reason}과도한 비난</Text>
                             </View>
-                            <Text>{item.reason}</Text>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text
+                                style={[fontBold, {width: 88, marginRight: 7}]}>
+                                 {item.type === 4
+                                ? '게시판 이름'
+                                : item.type === 5
+                                ? '게시판 이름'
+                                : item.type === 6
+                                ? '작성 내용'
+                                : item.type === 7
+                                ? '작성 내용:'
+                                : ''}
+                              </Text>
+                              <Text style={{ width: Dimensions.get('window').width - 178}}>{item.content}</Text>
                             </View>
+                     
+                          </View>
                         );
-                        setModalBody(itemContent)
+                        setModalBody(itemContent);
                       }
                     }}>
                     <View style={styles.newsContainer}>
@@ -212,9 +245,10 @@ const HomeFragment = ({navigation}: Props) => {
               <ModalBottom
                 modalVisible={blindModalVisible}
                 setModalVisible={setBlindModalVisible}
+                title="블라인드 안내"
                 content={modalBody}
                 isContentCenter={false}
-                purpleButtonText="서비스 이용 방향 보기"
+                purpleButtonText="수정광산 이용 방향 보기"
                 purpleButtonFunc={() => {
                   setBlindModalVisible(!blindModalVisible);
                   navigation.navigate('TermsOfService');
@@ -359,7 +393,7 @@ const HomeFragment = ({navigation}: Props) => {
           modalVisible={blacklistblindModalVisible}
           setModalVisible={setBlacklistblindModalVisible}
           title={'서비스 이용 제한 안내'}
-          content={blindModalBody}
+          content={blacklistModalContent}
           isContentCenter={false}
           purpleButtonText="서비스 이용 방향 보기"
           purpleButtonFunc={() => {

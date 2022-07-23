@@ -8,7 +8,7 @@ import { Authentication } from '../classes/Authentication';
 export const getAuthentication = async() => {
   try {
     const response = await client.get<Response<Authentication>>(
-      `/user/authentication`
+      `/user/access`
     );
     return response.data.data;
   } catch (e) {
