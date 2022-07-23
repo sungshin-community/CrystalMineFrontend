@@ -171,44 +171,47 @@ const PostListScreen = ({navigation, route}: Props) => {
         <Pressable
           hitSlop={5}
           onPress={() => {
+            console.log('눌리긴 하니')
             setReportCheckModalVisible(true);
+            console.log(reportCheckModalVisible)
           }}>
           <NoReport style={{marginRight: 10}} />
         </Pressable>
       )}
     </>
   );
-  {
-    reportCheckModalVisible && (
-      <ModalBottom
-        modalVisible={reportCheckModalVisible}
-        setModalVisible={setReportCheckModalVisible}
-        title={`게시판 신고`}
-        content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-        isContentCenter={false}
-        purpleButtonText="확인"
-        purpleButtonFunc={() => {
-          setReportCheckModalVisible(false);
-          setReportModalVisible(true);
-        }}
-      />
-    );
-  }
-  {
-    reportModalVisible && (
-       <SelectModalBottom
-          modalVisible={reportModalVisible}
-          setModalVisible={setReportModalVisible}
-          title={`게시판 신고`}
-          purpleButtonText="신고하기"
-          reportId={boardInfo?.id}
-          reportFunc={reportBoard}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setReportModalVisible(false)}
-        />
-    );
-  }
   return (
+  <>
+      {
+        reportCheckModalVisible && (
+          <ModalBottom
+            modalVisible={reportCheckModalVisible}
+            setModalVisible={setReportCheckModalVisible}
+            title={`게시판 신고`}
+            content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+            isContentCenter={false}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => {
+              setReportCheckModalVisible(false);
+              setReportModalVisible(true);
+            }}
+          />
+        )
+      }
+      {
+        reportModalVisible && (
+           <SelectModalBottom
+              modalVisible={reportModalVisible}
+              setModalVisible={setReportModalVisible}
+              title={`게시판 신고`}
+              purpleButtonText="신고하기"
+              reportId={boardInfo?.id}
+              reportFunc={reportBoard}
+              whiteButtonText="취소"
+              whiteButtonFunc={() => setReportModalVisible(false)}
+            />
+        )
+      }
     <View style={{flex: 1}}>
       <View
         style={{
@@ -305,7 +308,8 @@ const PostListScreen = ({navigation, route}: Props) => {
         style={styles.touchableOpacityStyle}>
         <FloatingWriteButton onPress={() => navigation.navigate('PostWriteScreen', {boardId: route.params.boardId})} style={styles.floatingButtonStyle} />
       </TouchableOpacity>
-    </View>
+      </View>
+      </>
   );
 };
 export default PostListScreen;

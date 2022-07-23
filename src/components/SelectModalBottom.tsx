@@ -49,6 +49,8 @@ export const SelectModalBottom = ({
   const [reason, setReason] = useState<Reason[]>([]);
   const [isCheckedReportNum, setIsCheckedReportNum] = useState<number>(1);
   const [detail, setDetail] = useState<string>('');
+  const inputRef = useRef(null);
+
   useEffect(() => {
     async function init() {
       const result = await getReportReason();
@@ -103,8 +105,33 @@ export const SelectModalBottom = ({
                     isCheckedReportNum,
                     detail,
                   );
-                  Toast.show(result.detail, Toast.LONG);
-                  setModalVisible(false);
+                  if (result.code === ('CREATE_BOARD_REPORT_SUCCESS' || 'CREATE_POST_REPORT_SUCCESS' || 'CREATE_COMMENT_REPORT_SUCCESS')) {
+                    Toast.show(
+                      '신고하신 내용이 정상적으로 접수되었습니다.',
+                      Toast.LONG,
+                    );
+                    setModalVisible(false);
+                  } else if (
+                    result.code === ('BOARD_REPORT_FAIL_POINT_NOT_ENOUGH'|| 'POST_REPORT_FAIL_POINT_NOT_ENOUGH' || 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH')
+                  ) {
+                    setModalVisible(false);
+                    Toast.show(
+                      '보유 포인트가 부족하여 신고가 불가능합니다.',
+                      Toast.LONG,
+                    );
+                  } else if (
+                    result.code === ('BOARD_REPORT_FAIL_REASON_DETAIL_NECESSARY' || 'POST_REPORT_FAIL_REASON_DETAIL_NECESSARY' ||'COMMENT_REPORT_FAIL_REASON_DETAIL_NECESSARY')
+                  ) {
+                    Toast.show(
+                      '기타 사유에 대한 내용이 필요합니다',
+                      Toast.LONG,
+                    );
+                    setModalVisible(true);
+                  } else {
+                    //TODO: 나머지 에러날 경우 에러화면으로 이동
+                    Toast.show(result.detail, Toast.LONG);
+                    setModalVisible(false);
+                  }
                 }}>
                 <Text style={styles.textStyle}>{purpleButtonText}</Text>
               </TouchableOpacity>
@@ -130,6 +157,7 @@ interface ReportItemProps {
   setIsCheckedReportNum: any;
   detail?: string;
   setDetail?: any;
+  inputRef?: any;
 }
 export const ReportItem = ({
   list,
@@ -137,12 +165,11 @@ export const ReportItem = ({
   setIsCheckedReportNum,
   detail,
   setDetail,
+  inputRef,
 }: ReportItemProps) => {
-  const inputRef = useRef(null);
-
   return (
     <>
-      {list.map(item => (
+      {list.slice(0, list.length - 1).map(item => (
         <View
           style={{
             flexDirection: 'row',
@@ -170,18 +197,17 @@ export const ReportItem = ({
         }}>
         <Pressable
           onPress={() => {
-            setIsCheckedReportNum(list.length + 1);
-            // inputRef.current.focus();
-            setDetail(null)
+            setIsCheckedReportNum(list.length);
+            setDetail(null);
           }}>
-          {isCheckedReportNum === list.length + 1 ? (
+          {isCheckedReportNum === list.length ? (
             <RadioButtonChecked style={{marginRight: 10}} />
           ) : (
             <RadioButtonUnChecked style={{marginRight: 10}} />
           )}
         </Pressable>
         <Text>기타</Text>
-        {isCheckedReportNum !== list.length + 1 ? (
+        {isCheckedReportNum !== list.length ? (
           <View
             style={{
               width: 240,
@@ -198,7 +224,8 @@ export const ReportItem = ({
               onChangeText={value => {
                 setDetail(value);
               }}
-              editable={isCheckedReportNum === list.length + 1 ? true : false}
+              maxLength={50}
+              editable={isCheckedReportNum === list.length ? true : false}
               style={{
                 backgroundColor: '#F6F6F6',
                 fontSize: 13,
