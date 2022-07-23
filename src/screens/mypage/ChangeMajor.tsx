@@ -8,6 +8,7 @@ import {
   Text,
   StyleSheet,
   Platform,
+  Pressable,
 } from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {
@@ -19,7 +20,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
-import { changeMajor } from '../../common/myPageApi';
+import {changeMajor} from '../../common/myPageApi';
 import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
@@ -96,12 +97,14 @@ export default function ChangeMajor({navigation}: Props) {
         <Text style={styles.greyText}>2. 문의하기를 통해 </Text>
         <Text style={[styles.greyText, styles.blackText]}>학과 추가 요청</Text>
       </View>
-      <Text style={styles.greyText}>
-        3. 학과 추가 안내를 받은 후, 마이페이지에서
-      </Text>
-      <Text style={[styles.greyText, styles.blackText]}>
-        {'     '}학과 변경 진행
-      </Text>
+      <View>
+        <Text style={styles.greyText}>
+          3. 학과 추가 안내를 받은 후, 마이페이지에서
+        </Text>
+        <Text style={[styles.greyText, styles.blackText]}>
+          {'     '}학과 변경 진행
+        </Text>
+      </View>
     </>
   );
 
@@ -118,7 +121,7 @@ export default function ChangeMajor({navigation}: Props) {
             left: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: 1,
-            elevation: 1
+            elevation: 1,
           }}
         />
       ) : null}
@@ -126,20 +129,20 @@ export default function ChangeMajor({navigation}: Props) {
         <NormalOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
         </NormalOneLineText>
+        <Pressable onPress={() => setModalVisible(true)}>
+          <Description style={{textDecorationLine: 'underline'}}>
+            소속 학과가 선택지에 없나요?
+          </Description>
+        </Pressable>
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText={`소속 학과가 학과 리스트에 없을 경우,
+          title={`소속 학과가 학과 리스트에 없을 경우,
 아래 내용을 따라 이용 부탁드립니다.`}
-          fontSize={15}
-          modalBody={modalBody}
-          modalButtonText="확인"
-          modalButton={
-            <Description style={{textDecorationLine: 'underline'}}>
-              소속 학과가 선택지에 없나요?
-            </Description>
-          }
-          modalButtonFunc={() => setModalVisible(!modalVisible)}
+          content={modalBody}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => setModalVisible(!modalVisible)}
         />
       </Container>
       <View style={{flex: 1}}>
@@ -163,13 +166,14 @@ export default function ChangeMajor({navigation}: Props) {
               onClick={async () => {
                 let result: string = await changeMajor(selectedMajorId);
                 if (result === 'UPDATE_DEPARTMENT_SUCCESS') {
-                  Toast.show('소속 학과가 성공적으로 변경되었습니다.', Toast.LONG);
+                  Toast.show(
+                    '소속 학과가 성공적으로 변경되었습니다.',
+                    Toast.LONG,
+                  );
                   navigation.pop();
-                }
-                else if (result === 'DEPARTMENT_NOT_FOUND') {
+                } else if (result === 'DEPARTMENT_NOT_FOUND') {
                   Toast.show('학과 정보를 찾을 수 없습니다.', Toast.LONG);
-                }
-                else {
+                } else {
                   Toast.show('학과 변경에 실패하였습니다.', Toast.LONG);
                 }
               }}

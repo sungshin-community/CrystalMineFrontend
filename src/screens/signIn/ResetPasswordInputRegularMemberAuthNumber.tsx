@@ -126,7 +126,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
   return (
     <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View style={{flex: 1}}>
-        <View style={{marginTop: 130, marginLeft: 24}}>
+        <View style={{marginTop: 37, marginLeft: 24}}>
           <TwoLineTitle
             firstLineText="성신 G-mail 로 전송된"
             secondLineText="인증번호를 입력해주세요"
@@ -191,14 +191,11 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
               <ModalBottom
                 modalVisible={!modalVisible}
                 setModalVisible={setModalVisible}
-                modalText={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
-                modalBody=""
-                modalButtonText="인증번호 재전송"
-                modalButton
-                modalButtonFunc={onResendOtpButtonPress}
-                isSecondButton={true}
-                modalSecondButtonText="인증 취소"
-                modalSecondButtonFunc={() => navigation.navigate('SplashHome')}
+                content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
+                purpleButtonText="인증번호 재전송"
+                purpleButtonFunc={onResendOtpButtonPress}
+                whiteButtonText="인증 취소"
+                whiteButtonFunc={() => navigation.navigate('SplashHome')}
               />
           </>
         )}
@@ -249,13 +246,9 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
-          modalText={`인증번호 입력 최대 횟수를 초과하였습니다.
-        5분 뒤 다시 인증을 시도해주세요.
-        `}
-          modalBody=""
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={gotoHome}></ModalBottom>
+          content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={gotoHome}></ModalBottom>
       )}
       <View
         style={{

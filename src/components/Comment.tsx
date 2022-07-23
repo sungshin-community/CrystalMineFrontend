@@ -62,11 +62,9 @@ const Comment = ({
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText={`작성한 댓글을 삭제하시겠습니까?`}
-          modalBody=""
-          modalButtonText="삭제"
-          modalButton
-          modalButtonFunc={() => {
+          content={`작성한 댓글을 삭제하시겠습니까?`}
+          purpleButtonText="삭제"
+          purpleButtonFunc={() => {
             handleCommentDelete(data.id);
             setModalVisible(false);
             Toast.show(
@@ -74,9 +72,8 @@ const Comment = ({
               Toast.LONG,
             );
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setModalVisible(false)}
         />
       )}
       <Pressable
@@ -94,11 +91,11 @@ const Comment = ({
         <ModalBottom
           modalVisible={reportCheckModalVisible}
           setModalVisible={setReportCheckModalVisible}
-          modalText={`댓글 신고`}
-          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title={`댓글 신고`}
+          isContentCenter={false}
+          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             setReportCheckModalVisible(false);
             setReportModalVisible(true);
           }}
@@ -108,29 +105,12 @@ const Comment = ({
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
-          modalText={`댓글 신고`}
-          modalButtonText="신고하기"
-          modalButton
-          modalButtonFunc={async () => {
-            const result = await handleCommentReport(data.id, 1, '');
-            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
-              console.log('댓글 신고 성공');
-              Toast.show(
-                '신고하신 내용이 정상적으로 접수되었습니다.',
-                Toast.LONG,
-              );
-            } else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족');
-              Toast.show(
-                '보유 포인트가 부족하여 신고가 불가능합니다.',
-                Toast.LONG,
-              );
-            } else Toast.show(result.detail, Toast.LONG);
-            setReportModalVisible(false);
-          }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setReportModalVisible(false)}
+          title={`댓글 신고`}
+          purpleButtonText="신고하기"
+          reportId={data.id}
+          reportFunc={handleCommentReport}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
         />
       )}
       {data?.isReported ? (
@@ -171,7 +151,7 @@ const Comment = ({
           <View style={{flexDirection: 'row'}}>
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: data?.profileImageUrl}}
+              source={{uri: data?.profileImage}}
             />
             <View style={{justifyContent: 'center'}}>
               <Text
@@ -279,11 +259,9 @@ export const Recomment = ({
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText={`작성한 댓글을 삭제하시겠습니까?`}
-          modalBody=""
-          modalButtonText="삭제"
-          modalButton
-          modalButtonFunc={() => {
+          content={`작성한 댓글을 삭제하시겠습니까?`}
+          purpleButtonText="삭제"
+          purpleButtonFunc={() => {
             handleCommentDelete(data.id);
             setModalVisible(false);
             Toast.show(
@@ -291,9 +269,8 @@ export const Recomment = ({
               Toast.LONG,
             );
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setModalVisible(false)}
         />
       )}
       <Pressable
@@ -311,11 +288,11 @@ export const Recomment = ({
         <ModalBottom
           modalVisible={reportCheckModalVisible}
           setModalVisible={setReportCheckModalVisible}
-          modalText={`댓글 신고`}
-          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title={`댓글 신고`}
+          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             setReportCheckModalVisible(false);
             setReportModalVisible(true);
           }}
@@ -325,29 +302,12 @@ export const Recomment = ({
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
-          modalText={`댓글 신고`}
-          modalButtonText="신고하기"
-          modalButton
-          modalButtonFunc={async () => {
-            const result = await handleCommentReport(data.id, 1, '');
-            if (result.code === 'CREATE_COMMENT_REPORT_SUCCESS') {
-              console.log('댓글 신고 성공');
-              Toast.show(
-                '신고하신 내용이 정상적으로 접수되었습니다.',
-                Toast.LONG,
-              );
-            } else if (result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족');
-              Toast.show(
-                '보유 포인트가 부족하여 신고가 불가능합니다.',
-                Toast.LONG,
-              );
-            } else Toast.show(result.detail, Toast.LONG);
-            setReportModalVisible(false);
-          }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setReportModalVisible(false)}
+          title={`댓글 신고`}
+          purpleButtonText="신고하기"
+          reportId={data.id}
+          reportFunc={handleCommentReport}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
         />
       )}
       {data?.isReported ? (
@@ -385,9 +345,8 @@ export const Recomment = ({
             <Reply style={{marginRight: 8}} />
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: data?.profileImageUrl}}
+              source={{uri: data?.profileImage}}
             />
-
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={{

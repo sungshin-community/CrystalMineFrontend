@@ -44,7 +44,7 @@ const PostScreen = ({navigation, route}: Props) => {
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
       headerTitleStyle: {
-        fontSize: 15,
+        fontSize: post &&  post?.boardName.length <= 10? 19: 17,
         fontFamily: 'SpoqaHanSansNeo-Medium',
       },
     });

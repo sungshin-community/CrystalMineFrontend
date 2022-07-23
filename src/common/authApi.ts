@@ -246,14 +246,14 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
   }
 };
 
-// TODO: 탈퇴 이용약관
-// export const getQuitAgreements = async () => {
-//   try {
-//     const response = await client.get<Response<>>('/')
-//     return response.data.data;
-//   } catch (error) {                                                                                     c
-//   }
-// }
+export const getQuitAgreements = async () => {
+  try {
+    const response = await client.get<Response<Agreement[]>>('/contract/agreements/1');
+    return response.data.data;
+  } catch {
+    return [];
+  }
+};
 
 export const applyQuitMembership = async (password: string) => {
   try {

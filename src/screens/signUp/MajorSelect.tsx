@@ -8,6 +8,7 @@ import {
   Text,
   StyleSheet,
   Platform,
+  Pressable,
 } from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
 import {
@@ -139,20 +140,20 @@ export default function MajorSelect({navigation, route}: Props) {
         <NormalOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
         </NormalOneLineText>
+        <Pressable onPress={()=>setModalVisible(true) }>
+          <Description style={{textDecorationLine: 'underline'}}>
+              소속 학과가 선택지에 없나요?
+          </Description>
+          </Pressable>
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText={`소속 학과가 학과 리스트에 없을 경우,
+          title={`소속 학과가 학과 리스트에 없을 경우,
 아래 내용을 따라 이용 부탁드립니다.`}
-          fontSize={15}
-          modalBody={modalBody}
-          modalButtonText="확인"
-          modalButton={
-            <Description style={{textDecorationLine: 'underline'}}>
-              소속 학과가 선택지에 없나요?
-            </Description>
-          }
-          modalButtonFunc={() => setModalVisible(!modalVisible)}
+          content={modalBody}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => setModalVisible(!modalVisible)}
         />
       </Container>
       <View style={{flex: 1}}>

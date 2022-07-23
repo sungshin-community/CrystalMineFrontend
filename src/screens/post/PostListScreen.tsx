@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  TouchableHighlight,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
@@ -44,7 +45,7 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 type RootStackParamList = {
-  PostScreen: {boardId: number; postId: number};
+  PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
 };
@@ -54,9 +55,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
   const isFocused = useIsFocused();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -92,9 +91,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       setCurrentPage(currentPage + 1);
     }
   };
-  const SampleFunction = () => {
-    Alert.alert('플로팅 버튼 눌림!');
-  };
+
   const HeaderIcon = () => {
     return (
       <>
@@ -120,7 +117,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             <BigGrayPin />
           )}
         </Pressable>
-        <Text style={[fontRegular, {marginLeft: 8, fontSize: 15}]}>
+        <Text style={[fontRegular, { marginLeft: 8, fontSize: boardInfo && boardInfo.name.length <= 10? 19: 17, maxWidth: 180}]}
+          numberOfLines={1} ellipsizeMode="tail">
           {boardInfo?.name}
         </Text>
       </>
@@ -143,92 +141,80 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
   const handleBoardSearchComponent = (
-    <View style={{marginRight: 4}}>
-      <Pressable hitSlop={5} onPress={() => console.log('search icon click')}>
-        <SearchIcon />
-      </Pressable>
-    </View>
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
+      onPress={() => console.log('search icon click')}>
+      <SearchIcon />
+    </TouchableHighlight>
   );
   const handleBoardSettingComponent = (
-    <View style={{marginRight: 10}}>
-      <Pressable
-        hitSlop={5}
-        onPress={() =>
-          navigation.navigate('UpdateBoard', {boardId: route.params.boardId})
-        }>
-        <SettingIcon />
-      </Pressable>
-    </View>
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
+      onPress={() =>
+        navigation.navigate('UpdateBoard', {boardId: route.params.boardId})
+      }>
+      <SettingIcon />
+    </TouchableHighlight>
   );
   const handleBoardReportComponent = (
     <>
       {boardInfo?.isReported ? (
-        <Pressable
-          hitSlop={5}
+        <TouchableHighlight
+          style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+          underlayColor='#EEEEEE'
           onPress={() => {
             Toast.show('이미 신고한 게시판입니다.', Toast.SHORT);
           }}>
-          <Report style={{marginRight: 10}} />
-        </Pressable>
+          <Report />
+        </TouchableHighlight>
       ) : (
-        <Pressable
-          hitSlop={5}
+        <TouchableHighlight
+          style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+          underlayColor='#EEEEEE'
           onPress={() => {
+            console.log('눌리긴 하니')
             setReportCheckModalVisible(true);
+            console.log(reportCheckModalVisible)
           }}>
-          <NoReport style={{marginRight: 10}} />
-        </Pressable>
+          <NoReport />
+        </TouchableHighlight>
       )}
     </>
   );
-  {
-    reportCheckModalVisible && (
-      <ModalBottom
-        modalVisible={reportCheckModalVisible}
-        setModalVisible={setReportCheckModalVisible}
-        modalText={`게시판 신고`}
-        modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-        modalButtonText="확인"
-        modalButton
-        modalButtonFunc={() => {
-          setReportCheckModalVisible(false);
-          setReportModalVisible(true);
-        }}
-      />
-    );
-  }
-  {
-    reportModalVisible && (
-      <SelectModalBottom
-        modalVisible={reportModalVisible}
-        setModalVisible={setReportModalVisible}
-        modalText={`게시판 신고`}
-        modalButtonText="신고하기"
-        modalButton
-        modalButtonFunc={async () => {
-          const result = await reportBoard(boardInfo.id, 1, '');
-          if (result.code === 'CREATE_BOARD_REPORT_SUCCESS') {
-            console.log('게시판 신고 성공');
-            Toast.show(
-              '신고하신 내용이 정상적으로 접수되었습니다.',
-              Toast.LONG,
-            );
-          } else if (result.code === 'BOARD_REPORT_FAIL_POINT_NOT_ENOUGH') {
-            console.log('보유 포인트 부족');
-            Toast.show(
-              '보유 포인트가 부족하여 신고가 불가능합니다.',
-              Toast.LONG,
-            );
-          } else Toast.show(result.detail, Toast.LONG);
-          setReportModalVisible(false);
-        }}
-        isSecondButton={true}
-        modalSecondButtonText="취소"
-        modalSecondButtonFunc={() => setReportModalVisible(false)}
-      />
-    );
-  }
   return (
+  <>
+      {
+        reportCheckModalVisible && (
+          <ModalBottom
+            modalVisible={reportCheckModalVisible}
+            setModalVisible={setReportCheckModalVisible}
+            title={`게시판 신고`}
+            content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+            isContentCenter={false}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => {
+              setReportCheckModalVisible(false);
+              setReportModalVisible(true);
+            }}
+          />
+        )
+      }
+      {
+        reportModalVisible && (
+           <SelectModalBottom
+              modalVisible={reportModalVisible}
+              setModalVisible={setReportModalVisible}
+              title={`게시판 신고`}
+              purpleButtonText="신고하기"
+              reportId={boardInfo?.id}
+              reportFunc={reportBoard}
+              whiteButtonText="취소"
+              whiteButtonFunc={() => setReportModalVisible(false)}
+            />
+        )
+      }
     <View style={{flex: 1}}>
       <View
         style={{
@@ -296,7 +282,6 @@ const PostListScreen = ({navigation, route}: Props) => {
                     Toast.show('삭제된 게시글입니다.', Toast.LONG);
                   else
                     navigation.navigate('PostScreen', {
-                      boardId: route.params.boardId,
                       postId: boardDetail[index].postId,
                     });
                 }}>
@@ -323,11 +308,11 @@ const PostListScreen = ({navigation, route}: Props) => {
       )}
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={SampleFunction}
         style={styles.touchableOpacityStyle}>
         <FloatingWriteButton onPress={() => navigation.navigate('PostWriteScreen', {boardId: route.params.boardId})} style={styles.floatingButtonStyle} />
       </TouchableOpacity>
-    </View>
+      </View>
+      </>
   );
 };
 export default PostListScreen;

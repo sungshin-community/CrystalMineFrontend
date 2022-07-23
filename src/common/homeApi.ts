@@ -1,7 +1,20 @@
 import client from './client';
 import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PinBoardDto, HotBoardDto } from '../classes/Home';
+import { PinBoardDto, HotBoardDto, HomeNotification, HomeNotificationDto } from '../classes/Home';
+import Response from '../classes/Response';
+import { Authentication } from '../classes/Authentication';
+
+export const getAuthentication = async() => {
+  try {
+    const response = await client.get<Response<Authentication>>(
+      `/user/access`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getAuthentication 함수", e);
+  }
+}
 
 export const getPinBoardContents = async () => {
     try {
@@ -22,3 +35,27 @@ export const getHotBoardContents = async () => {
         console.log("여기는 getHotBoardContents 함수", e);
     }
 };
+
+export async function getNotification(page: number = 0) {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<Response<HomeNotificationDto>>(
+      `/notification?${params}`
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getNotification 함수", e);
+  }
+}
+
+export async function getUnreadNotification() {
+  try {
+    const response = await client.get<Response<HomeNotificationDto>>(
+      `/notification/unread`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getUnreadNotification 함수", e);
+  }
+}

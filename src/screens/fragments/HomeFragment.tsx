@@ -10,7 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import {fontBold} from '../../common/font';
+import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {PurpleRoundButton} from '../../components/Button';
@@ -19,12 +19,21 @@ import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMark
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
-import {PinBoardDto, HotBoardDto} from '../../classes/Home';
-import {getHotBoardContents, getPinBoardContents} from '../../common/homeApi';
+import {PinBoardDto, HotBoardDto, HomeNotification} from '../../classes/Home';
+import {
+  getAuthentication,
+  getHotBoardContents,
+  getNotification,
+  getPinBoardContents,
+  getUnreadNotification,
+} from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
-import User from '../../classes/User';
-import {getUser} from '../../common/myPageApi';
+import CheckMark from '../../../resources/icon/CheckMark';
+import Toast from 'react-native-simple-toast';
+import {Authentication} from '../../classes/Authentication';
+import {NoticeDto} from '../../classes/mypage/NoticeDto';
+import { PlatformOS } from '../../components/PlatformOS';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -34,237 +43,240 @@ type RootStackParamList = {
   TermsOfService: undefined;
   Board: undefined;
 };
-
+type notiItemDto = {
+  notiItem: HomeNotification;
+};
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>();
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
-  const [blindVisible, setBlindVisible] = useState<boolean[]>([]);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [user, setUser] = useState<User>();
+  const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
+    boolean
+  >();
+  const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
+  const [modalBody, setModalBody] = useState<JSX.Element>();
+  const [user, setUser] = useState<Authentication>();
+  const [noti, setNoti] = useState<HomeNotification[]>([]);
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
 
+  const blacklistModalContent = (
+    <>
+      {user?.blacklist && (
+        <>
+          <Text style={[fontRegular, {fontSize: 13}]}>
+            안녕하세요. {user?.nickname}님. {`\n`}
+            해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
+            제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을
+            참고 부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
+            불가능합니다. {`\n`}
+            이용 제한 처리일로 부터 7일 후, 서비스에서 자동으로 로그아웃 되며
+            학교 G-mail 계정으로도 관련 내용을 보내드리고 있으니 확인 바랍니다.
+            {`\n`}
+            {`\n`}
+          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              이용 제한 계정
+            </Text>
+            <Text>{user?.blacklist.username}@sungshin.ac.kr</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              이용 제한 날짜
+            </Text>
+            <Text>0000.00.00</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              이용 제한 사유
+            </Text>
+            <Text>0000.00.00</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+              작성 내용
+            </Text>
+            <Text>0000.00.00</Text>
+          </View>
+        </>
+      )}
+    </>
+  );
   useEffect(() => {
     async function getContents() {
       const pinBoardData = await getPinBoardContents();
       const hotBoardData = await getHotBoardContents();
+      const notification = await getUnreadNotification();
+
       if (pinBoardData != null && hotBoardData != null) {
         setPinBoardContents(pinBoardData);
         setHotBoardContents(hotBoardData);
       }
+      setNoti(notification);
     }
     if (isFocused) {
       getContents();
     }
   }, [isFocused]);
-
   useEffect(() => {
     async function getUserInfo() {
-      const userDto = await getUser();
+      const userDto = await getAuthentication();
       setUser(userDto);
     }
     if (isFocused) {
       getUserInfo();
     }
   }, [isFocused]);
-
-  // const blindVisibleList = homeContents?.blinds.map(index => true);
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-      {/* <View
-        style={{
-          backgroundColor: '#F6F6F6',
-          paddingTop: 32,
-          paddingBottom:
-            homeContents &&
-            (homeContents?.blinds[0] ||
-              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0))
-              ? 32
-              : 0,
-        }}> */}
-      <Text
-        style={{
-          fontSize: 22,
-          marginLeft: 40,
-          marginBottom: 26,
-        }}>
-        <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
-          {user?.nickname}
-        </Text>
-        {` 님, `}
-        {user && user?.nickname.length > 8 ? <Text>{`\n`}</Text> : <></>}
-        {`안녕하세요!`}
-      </Text>
-      {/* 임시 안내문구 */}
-      <Text
-        style={{color: 'white', textAlign: 'center', backgroundColor: 'red'}}>
-        *공지* {'\n'}알림 구현 전까지 일시적으로 홈 알림 부분이 깨짐을
-        알려드립니다
-      </Text>
-
       <View
         style={{
-          borderRadius: 20,
+          backgroundColor: '#F6F6F6',
+          paddingVertical: 32,
         }}>
+        <Text
+          style={{
+            fontSize: 22,
+            marginLeft: 40,
+            marginBottom: noti.length !== 0 ? 26 : 0,
+          }}>
+          <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+            {user?.nickname}
+          </Text>
+          {` 님, `}
+          {user && user?.nickname.length > 8 ? <Text>{`\n`}</Text> : <></>}
+          {`안녕하세요!`}
+        </Text>
+
         <View
           style={{
             borderRadius: 20,
-            marginHorizontal: 24,
-            paddingHorizontal: 18,
-            backgroundColor: '#fff',
           }}>
-          {/* 인증 만료기간 알림 */}
-          {user?.expireIn && user?.expireIn > 0 && user?.expireIn <= 7 ? (
-            <>
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('RegularMemberAuthMyPage')}>
-                <View style={styles.newsContainer}>
-                  <View style={{flexDirection: 'row'}}>
-                    <NewsExclamationMarkIcon />
-                    <View>
-                      <Text style={styles.newsTitle}>
-                        인증 만료일이 {user?.expireIn}일 남았어요!
-                      </Text>
-                      <Text style={styles.newsMore}>인증하러 가기</Text>
-                    </View>
-                  </View>
-                  <View>
-                    <RightArrowBold />
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </>
-          ) : (
-            <></>
-          )}
-          {/* 인증 만료 알림 */}
-          {!user?.isAuthenticated && user?.expireIn <= 0 ? (
-            <>
-              <View
-                style={{
-                  borderBottomColor: '#F0F0F0',
-                  borderBottomWidth: 1,
-                }}
-              />
-              <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('RegularMemberAuthMyPage')}>
-                <View style={styles.newsContainer}>
-                  <View style={{flexDirection: 'row'}}>
-                    <NewsExclamationMarkIcon />
-                    <View>
-                      <Text style={styles.newsTitle}>
-                        정회원 인증이 필요해요.
-                      </Text>
-                      <Text style={styles.newsMore}>인증하러 가기</Text>
-                    </View>
-                  </View>
-                  <View>
-                    <RightArrowBold />
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </>
-          ) : (
-            <></>
-          )}
-
-          {/* {homeContents &&
-            (homeContents?.blinds[0] ||
-              (homeContents?.expireIn <= 7 && homeContents?.expireIn > 0)) ? (
-              <View
-                style={{
-                  borderBottomColor: '#F0F0F0',
-                  borderBottomWidth: 1,
-                }}
-              />
-            ) : (
-              <></>
-            )} */}
-
-          {/* //블라인드 알림
-            {homeContents &&
-              homeContents.blinds.map((item, index) => (
-                <View key={index}>
-                  {blindVisibleList && blindVisibleList[index] && (
-                    <TouchableWithoutFeedback
-                      onPress={() => {
-                        blindVisibleList[index] = false;
-                        console.log(blindVisibleList);
-                        setBlindVisible(blindVisibleList);
-                        setModalVisible(!modalVisible);
-                      }}>
-                      <View style={styles.newsContainer}>
-                        <View style={{flexDirection: 'row'}}>
-                          <NewsExclamationMarkIcon />
+          <View
+            style={{
+              borderRadius: 20,
+              marginHorizontal: 24,
+              paddingHorizontal: 18,
+              backgroundColor: '#fff',
+            }}>
+            <FlatList
+              data={noti}
+              renderItem={({item}) => (
+                <>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      if (
+                        item.type === 1 ||
+                        item.type === 2 ||
+                        item.type === 3
+                      ) {
+                        navigation.navigate('RegularMemberAuthMyPage');
+                      } else if (
+                        item.type === 4 ||
+                        item.type === 5 ||
+                        item.type === 6 ||
+                        item.type === 7
+                      ) {
+                        setBlindModalVisible(true);
+                        const itemContent = (
                           <View>
-                            {item.type === 1 && (
-                              <Text style={styles.newsTitle}>
-                                작성한 게시글이 블라인드 되었어요.
-                              </Text>
-                            )}
-                            {item.type === 2 && (
-                              <Text style={styles.newsTitle}>
-                                작성한 댓글이 블라인드 되었어요.
-                              </Text>
-                            )}
-                            {item.type === 3 && (
-                              <Text style={styles.newsTitle}>
-                                작성한 게시판이 블라인드 되었어요.
-                              </Text>
-                            )}
-                            {item.type === 4 && (
-                              <Text style={styles.newsTitle}>
-                                고정한 게시판이 블라인드 되었어요.
-                              </Text>
-                            )}
-                            <Text
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                              style={styles.newsMore}>
-                              {item.content}
+                            <Text style={[fontRegular, {marginBottom: 15}]}>
+                              {item.type === 4
+                                ? '생성한 게시판이'
+                                : item.type === 5
+                                ? '고정한 게시판이'
+                                : item.type === 6
+                                ? '작성한 게시글이'
+                                : item.type === 7
+                                ? '작성한 댓글이'
+                                : ''}{' '}
+                              15회 이상 신고되어, {item.sender}에 의해{`\n`}블라인드 되었습니다. 사유는 다음과 같습니다.
                             </Text>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text
+                                style={[fontBold, {width: 88, marginRight: 7}]}>
+                                블라인드 사유
+                              </Text>
+                              <Text style={{width: 148}}>{item.reason}과도한 비난</Text>
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                              <Text
+                                style={[fontBold, {width: 88, marginRight: 7}]}>
+                                 {item.type === 4
+                                ? '게시판 이름'
+                                : item.type === 5
+                                ? '게시판 이름'
+                                : item.type === 6
+                                ? '작성 내용'
+                                : item.type === 7
+                                ? '작성 내용:'
+                                : ''}
+                              </Text>
+                              <Text style={{ width: Dimensions.get('window').width - 178}}>{item.content}</Text>
+                            </View>
+                     
                           </View>
-                        </View>
+                        );
+                        setModalBody(itemContent);
+                      }
+                    }}>
+                    <View style={styles.newsContainer}>
+                      <View style={{flexDirection: 'row'}}>
+                        {item.type === 0 && <CheckMark />}
+                        {item.type !== 0 && <NewsExclamationMarkIcon />}
                         <View>
-                          <RightArrowBold />
+                          <Text style={styles.newsTitle}>{item.title}</Text>
+                          <Text style={styles.newsMore}>{item.content}</Text>
                         </View>
                       </View>
-                    </TouchableWithoutFeedback>
-                  )}
-                </View>
-              ))} */}
+                      <View>
+                        <RightArrowBold />
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+            />
+            {blindModalVisible && (
+              <ModalBottom
+                modalVisible={blindModalVisible}
+                setModalVisible={setBlindModalVisible}
+                title="블라인드 안내"
+                content={modalBody}
+                isContentCenter={false}
+                purpleButtonText="수정광산 이용 방향 보기"
+                purpleButtonFunc={() => {
+                  setBlindModalVisible(!blindModalVisible);
+                  navigation.navigate('TermsOfService');
+                }}
+                whiteButtonText="확인"
+                whiteButtonFunc={() => setBlindModalVisible(!blindModalVisible)}
+              />
+            )}
+          </View>
         </View>
-        {modalVisible && (
-          <ModalBottom
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            modalText={modalText}
-            modalBody={modalBody}
-            modalButtonText="서비스 이용 방향 보기"
-            modalButton
-            modalButtonFunc={() => {
-              setModalVisible(!modalVisible);
-              navigation.navigate('TermsOfService');
-            }}
-            isSecondButton={true}
-            modalSecondButtonText="확인"
-            modalSecondButtonFunc={() => setModalVisible(!modalVisible)}
-          />
-        )}
       </View>
-
-      {/* </View> */}
       <View
         style={{
           padding: 24,
         }}>
-          <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>고정 게시판</Text>
-        <TouchableWithoutFeedback onPress={() => {navigation.navigate('Board')}}>
+        <View style={styles.rowContainer}>
+          <Text style={styles.boardTitle}>고정 게시판</Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              {
+                user?.isAuthenticated
+                  ? navigation.navigate('Board')
+                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+              }
+            }}>
             <Text style={styles.more}>더보기</Text>
-        </TouchableWithoutFeedback>
-          </View>
+          </TouchableWithoutFeedback>
+        </View>
         {/* 게시판 글 목록 */}
         {user?.isAuthenticated ? (
           pinBoardContents?.map((item, index) => (
@@ -322,12 +334,19 @@ const HomeFragment = ({navigation}: Props) => {
             marginTop: 24,
           }}
         />
-          <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>HOT 게시글</Text>
-        <TouchableWithoutFeedback onPress={() => {navigation.navigate('PostListScreen', {boardId: 1})}}>
+        <View style={styles.rowContainer}>
+          <Text style={styles.boardTitle}>HOT 게시글</Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              {
+                user?.isAuthenticated
+                  ? navigation.navigate('PostListScreen', {boardId: 1})
+                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+              }
+            }}>
             <Text style={styles.more}>더보기</Text>
-        </TouchableWithoutFeedback>
-          </View>
+          </TouchableWithoutFeedback>
+        </View>
         {user?.isAuthenticated ? (
           hotBoardContents?.hotPosts.map((item, index) => (
             <TouchableWithoutFeedback
@@ -368,6 +387,27 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
         )}
       </View>
+      {user?.blacklist && setBlacklistblindModalVisible(true)}
+      {blacklistblindModalVisible && (
+        <ModalBottom
+          modalVisible={blacklistblindModalVisible}
+          setModalVisible={setBlacklistblindModalVisible}
+          title={'서비스 이용 제한 안내'}
+          content={blacklistModalContent}
+          isContentCenter={false}
+          purpleButtonText="서비스 이용 방향 보기"
+          purpleButtonFunc={() => {
+            //TODO: 따로 제작해둔 화면으로 이동
+            setBlacklistblindModalVisible(!blacklistblindModalVisible);
+            navigation.navigate('TermsOfService');
+          }}
+          whiteButtonText="확인"
+          whiteButtonFunc={() =>
+            // TODO: 앱 종료
+            setBlacklistblindModalVisible(!blacklistblindModalVisible)
+          }
+        />
+      )}
     </ScrollView>
   );
 };
@@ -455,33 +495,3 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 160,
   },
 });
-
-const modalBody = (
-  <>
-    <View style={{marginBottom: 15}}>
-      <Text style={{fontSize: 13}}>
-        안녕하세요. (사용자 닉네임)님. {`\n`}
-        해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
-        제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을 참고
-        부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
-        불가능합니다. {`\n`}
-        근데 이거 아직 내용 안나와서 내용 수정해야합니다.
-      </Text>
-    </View>
-    <View style={{flexDirection: 'row'}}>
-      <Text style={[fontBold, {width: 88}]}>블라인드 계정</Text>
-      <Text>00000000@sungshin.ac.kr</Text>
-    </View>
-    <View style={{flexDirection: 'row'}}>
-      <Text style={[fontBold, {width: 88}]}>블라인드 날짜</Text>
-      <Text>0000.00.00</Text>
-    </View>
-  </>
-);
-const modalText = (
-  <>
-    <View style={{marginBottom: 15}}>
-      <Text style={[fontBold, {fontSize: 17}]}>블라인드 안내</Text>
-    </View>
-  </>
-);

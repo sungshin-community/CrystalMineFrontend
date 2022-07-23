@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
+import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, TouchableHighlightBase, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MyPostItem from '../../components/MyPostItem';
 import { deleteMyPosts, getMyPostList } from '../../common/boardApi';
@@ -54,15 +54,17 @@ export default function MyPostList({navigation, route}: Props) {
           >
             <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          <TouchableHighlight
+            style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+            underlayColor='#EEEEEE'
             onPress={() => {
               setDeleteMode(false);
               const tempList = myPostList.map(p => ({...p, isChecked: false}));
               setMyPostList(tempList);
             }}
           >
-            <CancelButton color='#333D4B' style={{marginLeft: 8}} />
-          </TouchableOpacity>
+            <CancelButton color='#333D4B' />
+          </TouchableHighlight>
           
         </>
         : 
@@ -99,21 +101,24 @@ export default function MyPostList({navigation, route}: Props) {
   }, [sortBy]);
 
   const handleBoardSearchComponent = (
-    <View style={{marginRight: 4}}>
-      <Pressable hitSlop={5} onPress={() => console.log('search icon click')}>
-        <SearchIcon />
-      </Pressable>
-    </View>
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
+      onPress={() => console.log('search icon click')}>
+      <SearchIcon />
+    </TouchableHighlight>
   );
 
   const handleDeleteComponent = (
-    <TouchableOpacity
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
       onPress={() => {
         setDeleteMode(true);
       }}
-      hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}>
+    >
       <TrashIcon />
-    </TouchableOpacity>
+    </TouchableHighlight>
   );
 
   const handleRefresh = async () => {
@@ -219,11 +224,10 @@ export default function MyPostList({navigation, route}: Props) {
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
-          modalText="선택하신 게시글을 삭제하시겠습니까?"
-          modalButtonText="삭제"
-          modalSecondButtonText='취소'
-          modalButton
-          modalButtonFunc={async () => {
+          content="선택하신 게시글을 삭제하시겠습니까?"
+          purpleButtonText="삭제"
+          whiteButtonText='취소'
+          purpleButtonFunc={async () => {
             setIsLoading(true);
             await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getMyPostList(currentPage, sortBy);
@@ -233,7 +237,7 @@ export default function MyPostList({navigation, route}: Props) {
             setDeleteMode(false);
             setDeleteModalVisible(false);
           }}
-          modalSecondButtonFunc={() => {
+          whiteButtonFunc={() => {
             setDeleteModalVisible(false);
           }}
         />

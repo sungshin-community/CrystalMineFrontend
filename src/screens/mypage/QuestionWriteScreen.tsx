@@ -50,7 +50,10 @@ function RequestWriteScreen({navigation}: Props) {
       content: content,
       images: ['', ''],
     });
-    if (result) { navigation.navigate('QuestionList'); Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG) }
+    if (result) {
+      navigation.navigate('QuestionList');
+      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG);
+    }
   };
 
   useEffect(() => {
@@ -144,16 +147,13 @@ function RequestWriteScreen({navigation}: Props) {
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText='no'
-          modalBody={`작성하신 문의글은 답변 대기 상태가 되며,
-답변이 달린 후로는 문의글을
-삭제할 수 없음을 알려드립니다.
-        `}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => { onSubmitPress(); setModalVisible(false);}}></ModalBottom>
+          content={`작성하신 문의글은 답변 대기 상태가 되며,\n답변이 달린 후로는 문의글을\n삭제할 수 없음을 알려드립니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
+            onSubmitPress();
+            setModalVisible(false);
+          }}></ModalBottom>
       )}
-     
     </>
   );
 }

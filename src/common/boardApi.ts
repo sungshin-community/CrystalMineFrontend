@@ -107,9 +107,19 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
   }
 }
 
+export const getReportReason = async () => {
+  try {
+    const response = await client.get<Response<Board>>(
+      `/contract/report-reasons`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 getReportReason 함수", e);
+  }
+};
+
 export const createBoard = async (name: string, introduction: string, hotable: boolean) => {
   try {
-    console.log(',',hotable)
     const response = await client.post<Response<Board>>(
       '/boards',
       { name: name, introduction: introduction, hotable: hotable },
@@ -220,11 +230,11 @@ export async function getMyCommentList(page: number, sort: string = "createdAt")
   }
 }
 //게시판 신고
-export const reportBoard = async (boardId: number, reasonId: number, detail: string) => {
+export const reportBoard = async (boardId: number, reasonId: number, detail?: string) => {
   try {
     const response = await client.post<Response<Board>>(
       `/boards/${boardId}/report`,
-      {reasonId: reasonId, detail: detail},
+      { reasonId: reasonId, detail: detail },
     );
     console.log('reportBoard 함수 성공', response.data)
     return response.data;
@@ -271,7 +281,7 @@ export const setPostScrap = async (postId: number) => {
   }
 };
 // 게시글 신고
-export const reportPost = async (postId: number, reasonId: number, detail: string) => {
+export const reportPost = async (postId: number, reasonId: number, detail?: string) => {
   try {
     const response = await client.post<Response<Board>>(
       `/posts/${postId}/report`,
@@ -388,7 +398,7 @@ export const postWritePost = async (props: {
   isAnonymous: boolean;
 }) => {
   console.log('api props 조회', props);
-  
+
   try {
     const response = await client.post<Response<PostWriteDto>>('/posts', {
       ...props,
@@ -408,5 +418,25 @@ export const getWritePostInfo = async (id: number) => {
     return response.data.data;
   } catch (error) {
     console.log(error);
+  }
+}
+// 게시글 생성 시 이미지 업로드
+export const uploadPostImages = async (image: any) => {
+  try {
+    const formData = new FormData();
+    const data = { uri: image.uri, name: 'photo.png', type: 'multipart/form-data' };
+    formData.append("postImages", data);
+
+    const response = await client.post<Response<string[]>>(
+      '/upload/postImages', formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.log('api 사진 업로드 실패', error);
   }
 }

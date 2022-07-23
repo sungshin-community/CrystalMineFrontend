@@ -10,7 +10,6 @@ import {
   Modal,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
 import styled from 'styled-components';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
@@ -51,32 +50,20 @@ function Post({
   const navigation = useNavigation();
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
-  const images = [
-    {
-      url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
-    },
-    {
-      url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
-    },
-  ];
+
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
     }
   };
-  // const imgUrlsArr = (arr: string[]) => {
-  //   const img = new Object();
-  //   const array = arr.map(url => img.url = url)
-  //   console.log('>', array)
-  // }
-  // if(data)
-  // imgUrlsArr(data.images)
-
+  const imgUrlCoverting = (arr: string[]) => {
+    const array = arr.map(url => { return { url: url } })
+    return array
+  }
+  
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
@@ -91,23 +78,22 @@ function Post({
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
-          modalText={`작성한 게시글을 삭제하시겠습니까?`}
-          modalBody=""
-          modalButtonText="삭제"
-          modalButton
-          modalButtonFunc={() => {
+          content={`작성한 게시글을 삭제하시겠습니까?`}
+          purpleButtonText="삭제"
+          purpleButtonFunc={() => {
             if (handlePostDelete(data.postId)) {
               setDeleteModalVisible(false);
               Toast.show(
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
                 Toast.LONG,
               );
-              navigation.goBack();
+              // navigation.goBack();
+              navigation.navigate('PostListScreen', {boardId: data.boardId});
+              console.log('게시글 삭제 성공')
             }
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setDeleteModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setDeleteModalVisible(false)}
         />
       )}
       <Pressable
@@ -119,18 +105,18 @@ function Post({
       </Pressable>
     </>
   );
-
+const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`
   const handlePostReportComponent = (
     <>
       {reportCheckModalVisible && (
         <ModalBottom
           modalVisible={reportCheckModalVisible}
           setModalVisible={setReportCheckModalVisible}
-          modalText={`게시글 신고`}
-          modalBody={`- 신고 후에는 내용을 수정할 수 없습니다.\n - 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={() => {
+          title="게시글 신고"
+          content={content}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
             setReportCheckModalVisible(false);
             setReportModalVisible(true);
           }}
@@ -140,29 +126,12 @@ function Post({
         <SelectModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
-          modalText={`게시글 신고`}
-          modalButtonText="신고하기"
-          modalButton
-          modalButtonFunc={async () => {
-            const result = await handlePostReport(data.postId, 1, '');
-            if (result.code === 'CREATE_POST_REPORT_SUCCESS') {
-              console.log('게시글 신고 성공');
-              Toast.show(
-                '신고하신 내용이 정상적으로 접수되었습니다.',
-                Toast.LONG,
-              );
-            } else if (result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH') {
-              console.log('보유 포인트 부족');
-              Toast.show(
-                '보유 포인트가 부족하여 신고가 불가능합니다.',
-                Toast.LONG,
-              );
-            } else Toast.show(result.detail, Toast.LONG);
-            setReportModalVisible(false);
-          }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setReportModalVisible(false)}
+          title={`게시글 신고`}
+          purpleButtonText="신고하기"
+          reportId={data.postId}
+          reportFunc={handlePostReport}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
         />
       )}
       {data?.isReported ? (
@@ -232,11 +201,11 @@ function Post({
               visible={isPhotoVisible}
               transparent={true}
               onRequestClose={closePhotoModal}>
-              <ImageViewer
-                imageUrls={images}
+              {data &&  <ImageViewer
+                imageUrls={imgUrlCoverting(data?.images)}
                 onCancel={() => closePhotoModal()}
                 enableSwipeDown
-              />
+              /> }
             </Modal>
           </ScrollView>
         </View>

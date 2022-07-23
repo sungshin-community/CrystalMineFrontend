@@ -15,7 +15,7 @@ import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Platform, Pressable} from 'react-native';
+import {Platform, Pressable, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRegularMember} from '../common/authApi';
 
@@ -68,9 +68,12 @@ function GlobalNavbar({navigation}: ScreenProps) {
             return <HomeTabIcon size={size} color={color} focused={focused} />;
           },
           headerRight: () => (
-            <Pressable onPress={onSearchPress}>
-              <SearchIcon style={{marginRight: 19}} />
-            </Pressable>
+            <TouchableHighlight
+              style={{marginRight: 11, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+              underlayColor='#EEEEEE'
+              onPress={onSearchPress}>
+              <SearchIcon />
+            </TouchableHighlight>
           ),
         }}
       />
@@ -93,12 +96,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
             return <BoardTabIcon size={size} color={color} focused={focused} />;
           },
           headerRight: () => (
-            <Pressable onPress={onSearchPress}>
-              <SearchIcon style={{marginRight: 19}} />
-            </Pressable>
+            <TouchableHighlight
+              style={{marginRight: 11, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+              underlayColor='#EEEEEE'
+              onPress={onSearchPress}>
+              <SearchIcon />
+            </TouchableHighlight>
           ),
           headerTitleStyle: {
-            fontSize: 17,
+            fontSize: 19,
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
         }}
@@ -109,6 +115,10 @@ function GlobalNavbar({navigation}: ScreenProps) {
         options={{
           title: '쪽지',
           headerTitleAlign: 'center',
+           headerTitleStyle: {
+            fontSize: 19,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+          },
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <MessageTabIcon size={size} color={color} focused={focused} />
@@ -122,6 +132,10 @@ function GlobalNavbar({navigation}: ScreenProps) {
         options={{
           title: '알림',
           headerTitleAlign: 'center',
+           headerTitleStyle: {
+            fontSize: 19,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+          },
           tabBarIcon: ({size, color, focused}: Props) => {
             return <AlertTabIcon size={size} color={color} focused={focused} />;
           },
@@ -136,9 +150,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
-          headerTitleStyle: {
-            fontSize: 17,
-            fontWeight: '400',
+           headerTitleStyle: {
+            fontSize: 19,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
           },
         }}
       />

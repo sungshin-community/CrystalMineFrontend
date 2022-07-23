@@ -8,11 +8,12 @@ import {
   TouchableHighlight,
   StyleSheet,
   Image,
+  Pressable,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {changeProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
+import {setDefaultProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -113,35 +114,38 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>
-          {user?.expireIn <= 0 && <View 
-            style={{
-              flexDirection: 'row',
-              marginTop: 20,
-              marginHorizontal: 24,
-              paddingLeft: 18,
-              height: 70,
-              backgroundColor: '#FFFFFF',
-              borderRadius: 20,
-              alignItems: 'center'
-            }}
-          >
-            <ExclamationMark style={{marginRight: 10}} />
-            <View>
-              <Text style={{color: '#222222', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>정회원 인증이 필요해요!</Text>
-              <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>정회원 인증하기</Text>
-            </View>
-            <View 
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingRight: 16
-              }}
-            >
-              <RightArrow />
-            </View>
-          </View>}
+          {user && (user?.expireIn <= 0 || user?.expireIn === null )&&
+            <Pressable onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  marginHorizontal: 24,
+                  paddingLeft: 18,
+                  height: 70,
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 20,
+                  alignItems: 'center'
+                }}
+              >
+                <ExclamationMark style={{ marginRight: 10 }} />
+                <View>
+                  <Text style={{ color: '#222222', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular' }}>정회원 인증이 필요해요!</Text>
+                  <Text style={{ color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular' }}>정회원 인증하기</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    paddingRight: 16
+                  }}
+                >
+                  <RightArrow />
+                </View>
+              </View>
+            </Pressable>}
           <View
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
@@ -149,15 +153,13 @@ const MyPageFragment = ({navigation}: Props) => {
               underlayColor='#EEEEEE'
               onPress={() => {
                 if (user) {
-                  if (user.isAuthenticated === true) {
-                    if (user?.expireIn === 0) {
+                    if (user?.expireIn <= 0) {
                       navigation.navigate('ExpiredMember');
                     } else if (user?.expireIn > 0) {
                       navigation.navigate('CertifiedMember');
                     } else {
                       navigation.navigate('UncertifiedMember');
                     }
-                  }
                 }
               }}>
               <View style={styles.menu}>
@@ -367,26 +369,21 @@ const MyPageFragment = ({navigation}: Props) => {
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          modalText="로그아웃 하시겠습니까?"
-          modalBody=""
-          modalButtonText="확인"
-          modalButton
-          modalButtonFunc={async () => {
+          content="로그아웃 하시겠습니까?"
+          purpleButtonText="확인"
+          purpleButtonFunc={async () => {
             await logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           }}
-          isSecondButton={true}
-          modalSecondButtonText="취소"
-          modalSecondButtonFunc={() => setModalVisible(false)}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setModalVisible(false)}
         />
         <ModalBottom
           modalVisible={profileModalVisible}
           setModalVisible={setProfileModalVisible}
-          modalText="프로필 사진 변경"
-          modalBody=""
-          modalButtonText="앨범에서 이미지 선택"
-          modalButton
-          modalButtonFunc={async () => {
+          title="프로필 사진 변경"
+          purpleButtonText="앨범에서 이미지 선택"
+          purpleButtonFunc={async () => {
             setProfileModalVisible(false);
             launchImageLibrary(
               {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
@@ -405,10 +402,9 @@ const MyPageFragment = ({navigation}: Props) => {
               },
             );
           }}
-          isSecondButton={true}
-          modalSecondButtonText="기본 이미지로 변경"
-          modalSecondButtonFunc={async () => {
-            let response = await changeProfileImage('');
+          whiteButtonText="기본 이미지로 변경"
+          whiteButtonFunc={async () => {
+            let response = await setDefaultProfileImage();
             setUser(response.data.data);
             setProfileModalVisible(false);
             Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);

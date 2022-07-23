@@ -157,11 +157,11 @@ export default function QuitPassword({navigation}: Props) {
         )}
         {modalVisible && (
           <ModalBottom
-            modalText="정말 탈퇴하시겠습니까?"
+            content="정말 탈퇴하시겠습니까?"
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            modalButtonText="네"
-            modalButtonFunc={async () => {
+            purpleButtonText="네"
+            purpleButtonFunc={async () => {
               let result: boolean = await applyQuitMembership(password);
               setModalVisible(false);
               if (result) {
@@ -170,10 +170,8 @@ export default function QuitPassword({navigation}: Props) {
                 setIsPasswordCorrect(false);
               }
             }}
-            isSecondButton={true}
-            modalSecondButtonText="아니요"
-            modalSecondButtonFunc={() => setModalVisible(false)}
-            fontSize={15}
+            whiteButtonText="아니요"
+            whiteButtonFunc={() => setModalVisible(false)}
           />
         )}
         {!isValidate && !isPasswordFocused && (
@@ -274,11 +272,11 @@ export default function QuitPassword({navigation}: Props) {
         )}
         {modalVisible && (
           <ModalBottom
-            modalText="정말 탈퇴하시겠습니까?"
+            content="정말 탈퇴하시겠습니까?"
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            modalButtonText="네"
-            modalButtonFunc={async () => {
+            purpleButtonText="네"
+            purpleButtonFunc={async () => {
               let result: boolean = await applyQuitMembership(password);
               if (result) {
                 navigation.navigate('QuitComplete');
@@ -287,10 +285,8 @@ export default function QuitPassword({navigation}: Props) {
                 setIsPasswordCorrect(false);
               }
             }}
-            isSecondButton={true}
-            modalSecondButtonText="아니요"
-            modalSecondButtonFunc={() => setModalVisible(false)}
-            fontSize={15}
+            whiteButtonText="아니요"
+            whiteButtonFunc={() => setModalVisible(false)}
           />
         )}
         {!isValidate && !isPasswordFocused && (

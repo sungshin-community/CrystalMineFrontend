@@ -55,13 +55,9 @@ export const uploadProfileImage = async (image: any) => {
   }
 };
 
-export const changeProfileImage = async (profileImageUrl: string) => {
+export const setDefaultProfileImage = async () => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.patch<Response<User>>(
-      '/user/profile-image',
-      {profileImage: profileImageUrl}
-    );
+    const response = await client.patch<Response<User>>('/user/profile-image-default');
     return response;
   } catch (error: any) {
     return error.response;
@@ -70,7 +66,6 @@ export const changeProfileImage = async (profileImageUrl: string) => {
 
 export const changePassword = async (password: string) => {
   try {
-    const accessToken = await AsyncStorage.getItem('accessToken');
     const response = await client.patch<Response<User>>(
       '/user/password',
       {password: password}
@@ -191,5 +186,19 @@ export const getQuestion = async (answerId: number) => {
     return response.data.data;
   } catch (e) {
     console.log("여기는 getQuestion 함수", e);
+  }
+}
+
+export async function deleteQuestions(questionIds: number[]) {
+  try {
+    console.log(questionIds)
+    const questionIdListStr = questionIds.join(",");
+    const response = await client.delete<AxiosResponse>(
+      `/questions/${questionIdListStr}`
+    );
+    console.log(response.data.data);
+    return response.data;
+  } catch (e) {
+    console.log("여기는 deleteQuestions 함수", e);
   }
 }
