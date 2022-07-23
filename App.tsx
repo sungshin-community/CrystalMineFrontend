@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Pressable} from 'react-native';
+import {Pressable, TouchableHighlight} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
@@ -126,14 +126,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -144,14 +157,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -162,14 +188,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -180,14 +219,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -198,14 +250,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -216,14 +281,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -267,11 +345,15 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -282,11 +364,15 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -297,14 +383,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -315,14 +414,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -333,14 +445,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -351,14 +476,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -381,7 +519,16 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -397,11 +544,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -417,11 +568,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -432,11 +587,15 @@ const App = () => {
                 component={PostListScreen}
                 options={({navigation}) => ({
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -452,11 +611,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -472,11 +635,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -492,11 +659,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -512,11 +683,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -531,11 +706,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -554,11 +733,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -574,11 +757,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -594,11 +781,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -609,7 +800,25 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -622,14 +831,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -640,14 +862,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -658,14 +893,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -677,11 +925,15 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -692,11 +944,15 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -713,11 +969,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -733,11 +993,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -753,11 +1017,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -773,11 +1041,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -793,11 +1065,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -813,11 +1089,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -833,11 +1113,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -853,11 +1137,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -881,11 +1169,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -901,11 +1193,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -930,14 +1226,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -948,14 +1257,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -966,14 +1288,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -984,14 +1319,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1002,14 +1350,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1020,14 +1381,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1074,11 +1448,15 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1089,11 +1467,15 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1104,14 +1486,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1122,14 +1517,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1140,14 +1548,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1158,14 +1579,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1188,7 +1622,16 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1204,11 +1647,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1224,11 +1671,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1239,11 +1690,15 @@ const App = () => {
                 component={PostListScreen}
                 options={({navigation}) => ({
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1259,11 +1714,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1279,11 +1738,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1299,11 +1762,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1319,11 +1786,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1338,11 +1809,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1361,11 +1836,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1381,11 +1860,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1401,11 +1884,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1416,7 +1903,16 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1428,14 +1924,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1446,14 +1955,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1464,14 +1986,27 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                   headerRight: () => (
-                    <CloseButtonIcon onPress={() => navigation.popToTop()} />
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      onPress={() =>
+                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
+
+                      }
+                    >
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1483,11 +2018,15 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1498,11 +2037,15 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1519,11 +2062,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1539,11 +2086,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1559,11 +2110,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1579,11 +2134,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1599,11 +2158,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1619,11 +2182,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1639,11 +2206,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1659,11 +2230,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1687,11 +2262,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1707,11 +2286,15 @@ const App = () => {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                   headerLeft: () => (
-                    <BackButtonIcon
+                    <TouchableHighlight
+                      underlayColor='#EEEEEE'
+                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }
-                    />
+                    >
+                      <BackButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
