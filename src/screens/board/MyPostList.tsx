@@ -220,7 +220,7 @@ export default function MyPostList({navigation, route}: Props) {
           {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}
         </View>
       </View>}
-      {deleteModalVisible && (
+      {deleteModalVisible && deleteButtonEnabled && (
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}

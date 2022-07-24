@@ -203,7 +203,7 @@ export default function MyCommentList({navigation, route}: Props) {
           onEndReached={fetchNextPage}
           onEndReachedThreshold={0.8}
       />
-      {deleteModalVisible && (
+      {deleteModalVisible && deleteButtonEnabled && (
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}

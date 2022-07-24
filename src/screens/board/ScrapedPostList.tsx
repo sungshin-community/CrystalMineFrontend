@@ -193,7 +193,7 @@ export default function ScrapedPostList({navigation}: Props) {
         onEndReachedThreshold={0.8}
       />
     </View>}
-      {deleteModalVisible && (
+      {deleteModalVisible && deleteButtonEnabled && (
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
