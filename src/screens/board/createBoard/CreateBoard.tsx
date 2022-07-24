@@ -47,12 +47,7 @@ function CreateBoard({navigation}: Props) {
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (boardName.length > 16 || boardIntroduction.length > 23)
-              Toast.show(
-                '게시판 이름, 설명의 글자 수를 확인해주세요.',
-                Toast.LONG,
-              );
-            else if (boardName && boardIntroduction)  onSubmitPress();
+            if (boardName && boardIntroduction)  onSubmitPress();
           }}>
           <Text
             style={[
@@ -78,7 +73,13 @@ function CreateBoard({navigation}: Props) {
             autoCorrect={false}
             onChangeText={value => {
               setBoardName(value);
+              if (value.length === 15)
+                 Toast.show(
+                '게시판 이름, 설명의 글자 수를 확인해주세요.',
+                Toast.LONG,
+              );
             }}
+            maxLength={15}
             style={{fontSize: 15, paddingVertical: 20}}
           />
           <View
@@ -97,7 +98,13 @@ function CreateBoard({navigation}: Props) {
               autoCorrect={false}
               onChangeText={value => {
                 setBoardIntroduction(value);
+                 if (value.length === 22)
+                 Toast.show(
+                '게시판 이름, 설명의 글자 수를 확인해주세요.',
+                Toast.LONG,
+              );
               }}
+              maxLength={22}
               onBlur={() => {
                 Keyboard.dismiss();
               }}
