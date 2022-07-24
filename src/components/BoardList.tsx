@@ -321,7 +321,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
             marginLeft: 15,
             fontFamily: 'SpoqaHanSansNeo-Regular',
           }}>
-          스크랩
+          내가 스크랩한 글
         </Text>
       </TouchableOpacity>
     </>
