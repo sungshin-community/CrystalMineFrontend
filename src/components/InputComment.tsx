@@ -24,7 +24,6 @@ interface Props {
   onClickAddRecomment: any;
   content: string;
   setContent: any;
-  inputRef: any;
 }
 function InputComment({
   postId,
@@ -33,8 +32,7 @@ function InputComment({
   isRecomment,
   onClickAddRecomment,
   content,
-  setContent,
-  inputRef,
+  setContent
 }: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const onSubmit = useCallback(() => {
@@ -43,6 +41,7 @@ function InputComment({
       onClickAddRecomment(postId, parentId, content, isAnonymous);
     else onClickAddComment(postId, content, isAnonymous);
   }, [onClickAddComment, content]);
+
   return (
     <View
       style={{
@@ -70,13 +69,13 @@ function InputComment({
           {flexDirection: 'row', justifyContent: 'space-between'},
         ]}>
         <TextInput
-          ref={inputRef}
           placeholder="댓글을 입력해 주세요."
           placeholderTextColor="#87919B"
           multiline={true}
           onChangeText={value => {
             setContent(value);
           }}
+          value={content}
           autoCorrect={false}
           style={[styles.input]}
         />
