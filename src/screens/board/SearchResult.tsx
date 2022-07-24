@@ -26,8 +26,8 @@ function SearchResult({navigation, route}: Props) {
     async function loadRecentSearch() {
       try {
         // TODO: 페이지네이션, 정렬 기능 추가
-        const boardResult = await getBoardSearch(searchWord);
-        const postResult = await getPostSearch(searchWord);
+        const boardResult = await getBoardSearch(searchWord, 0, 'pinCount');
+        const postResult = await getPostSearch(searchWord, 0, 'createdAt');
         setBoardResultData(boardResult);
         setPostResultData(postResult);
         console.log('tab page', postResult);

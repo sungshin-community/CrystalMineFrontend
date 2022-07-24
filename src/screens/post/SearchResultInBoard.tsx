@@ -23,8 +23,8 @@ function SearchResultInBoard({navigation, route}: Props) {
   useEffect(() => {
     async function loadRecentSearch() {
       try {
-        // TODO: 페이지네이션, 정렬 기능 추가
-        const postResult = await getPostSearch(searchWord);
+        // TODO: 게시글 api 수정 후 연결, 게시글 정렬 api 추가
+        const postResult = await getPostSearch(searchWord, 0, 'createdAt');
         setPostResultData(postResult);
 
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
