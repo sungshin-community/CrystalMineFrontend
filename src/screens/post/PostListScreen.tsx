@@ -244,28 +244,29 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
-        <View style={{backgroundColor: '#fff', paddingBottom: 5}}>
-          <TouchableOpacity
-            onPress={() => {
-              if (sortBy === 'createdAt') {
-                setSortBy('likeCount');
-              } else {
-                setSortBy('createdAt');
-              }
-            }}
-            style={{
-              marginLeft: 24,
-              width: 66,
-              height: 24,
-              backgroundColor: '#f6f6f6',
-              borderRadius: 12,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
-          </TouchableOpacity>
-        </View>
+        {boardDetail?.length !== 0 &&
+          <View style={{ backgroundColor: '#fff'}}>
+            <TouchableOpacity
+              onPress={() => {
+                if (sortBy === 'createdAt') {
+                  setSortBy('likeCount');
+                } else {
+                  setSortBy('createdAt');
+                }
+              }}
+              style={{
+                marginLeft: 24,
+                width: 66,
+                height: 24,
+                backgroundColor: '#f6f6f6',
+                borderRadius: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
+            </TouchableOpacity>
+          </View>}
         {boardDetail?.length === 0 ? (
           <SafeAreaView style={{flex: 1}}>
             <View
