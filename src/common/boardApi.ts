@@ -192,7 +192,7 @@ export async function cancelScrapedPosts(postIds: number[]) {
   try {
     const postIdListStr = postIds.join(",");
     const response = await client.delete<AxiosResponse>(
-      `/scrap/${postIdListStr}`
+      `/posts/scrap/${postIdListStr}`
     );
     console.log(response.data.data);
     return response.data;
