@@ -13,4 +13,8 @@ export default class MyCommentDto {
   createdAt: string = '';
   isLiked: boolean = false;
   isChecked: boolean = false;
+  isBoardDeleted: boolean = false;
+  isBoardBlinded: boolean = false;
+  isPostDeleted: boolean = false;
+  isPostBlinded: boolean = false;
 }
