@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -160,87 +161,81 @@ const HomeFragment = ({navigation}: Props) => {
               paddingHorizontal: 18,
               backgroundColor: '#fff',
             }}>
-            <FlatList
-              data={noti}
-              renderItem={({item}) => (
-                <>
-                  <TouchableWithoutFeedback
-                    onPress={() => {
-                      if (
-                        item.type === 1 ||
-                        item.type === 2 ||
-                        item.type === 3
-                      ) {
-                        navigation.navigate('RegularMemberAuthMyPage');
-                      } else if (
-                        item.type === 4 ||
-                        item.type === 5 ||
-                        item.type === 6 ||
-                        item.type === 7
-                      ) {
-                        setBlindModalVisible(true);
-                        const itemContent = (
-                          <View>
-                            <Text style={[fontRegular, {marginBottom: 15}]}>
-                              {item.type === 4
-                                ? '생성한 게시판이'
-                                : item.type === 5
-                                ? '고정한 게시판이'
-                                : item.type === 6
-                                ? '작성한 게시글이'
-                                : item.type === 7
-                                ? '작성한 댓글이'
-                                : ''}{' '}
-                              15회 이상 신고되어, {item.sender}에 의해{`\n`}블라인드 되었습니다. 사유는 다음과 같습니다.
-                            </Text>
-                            <View style={{flexDirection: 'row'}}>
-                              <Text
-                                style={[fontBold, {width: 88, marginRight: 7}]}>
-                                블라인드 사유
-                              </Text>
-                              <Text style={{width: 148}}>{item.reason}과도한 비난</Text>
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                              <Text
-                                style={[fontBold, {width: 88, marginRight: 7}]}>
-                                 {item.type === 4
-                                ? '게시판 이름'
-                                : item.type === 5
-                                ? '게시판 이름'
-                                : item.type === 6
-                                ? '작성 내용'
-                                : item.type === 7
-                                ? '작성 내용:'
-                                : ''}
-                              </Text>
-                              <Text style={{ width: Dimensions.get('window').width - 178}}>{item.content}</Text>
-                            </View>
-                     
-                          </View>
-                        );
-                        setModalBody(itemContent);
-                      }
-                    }}>
-                    <View style={styles.newsContainer}>
-                      <View style={{flexDirection: 'row'}}>
-                        {item.type === 0 && <CheckMark />}
-                        {item.type !== 0 && <NewsExclamationMarkIcon />}
-                        <View>
-                          <Text style={styles.newsTitle}>{item.title}</Text>
-                          <Text style={styles.newsMore}>{item.content}</Text>
-                        </View>
-                      </View>
+            {noti.map((item, index) =>
+              <TouchableHighlight
+                style={{borderTopWidth: index === 0 ? 0 : 1, borderTopColor: '#F6F6F6'}}
+                onPress={() => {
+                  if (
+                    item.type === 1 ||
+                    item.type === 2 ||
+                    item.type === 3
+                  ) {
+                    navigation.navigate('RegularMemberAuthMyPage');
+                  } else if (
+                    item.type === 4 ||
+                    item.type === 5 ||
+                    item.type === 6 ||
+                    item.type === 7
+                  ) {
+                    setBlindModalVisible(true);
+                    const itemContent = (
                       <View>
-                        <RightArrowBold />
+                        <Text style={[fontRegular, {marginBottom: 15}]}>
+                          {item.type === 4
+                            ? '생성한 게시판이'
+                            : item.type === 5
+                            ? '고정한 게시판이'
+                            : item.type === 6
+                            ? '작성한 게시글이'
+                            : item.type === 7
+                            ? '작성한 댓글이'
+                            : ''}{' '}
+                          15회 이상 신고되어, {item.sender}에 의해{`\n`}블라인드 되었습니다. 사유는 다음과 같습니다.
+                        </Text>
+                        <View style={{flexDirection: 'row'}}>
+                          <Text
+                            style={[fontBold, {width: 88, marginRight: 7}]}>
+                            블라인드 사유
+                          </Text>
+                          <Text style={{width: 148}}>{item.reason}과도한 비난</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                          <Text
+                            style={[fontBold, {width: 88, marginRight: 7}]}>
+                              {item.type === 4
+                            ? '게시판 이름'
+                            : item.type === 5
+                            ? '게시판 이름'
+                            : item.type === 6
+                            ? '작성 내용'
+                            : item.type === 7
+                            ? '작성 내용:'
+                            : ''}
+                          </Text>
+                          <Text style={{ width: Dimensions.get('window').width - 178}}>{item.content}</Text>
+                        </View>
+                  
                       </View>
+                    );
+                    setModalBody(itemContent);
+                  }
+                }}>
+                <View style={styles.newsContainer}>
+                  <View style={{flexDirection: 'row'}}>
+                    {item.type === 0 && <CheckMark />}
+                    {item.type !== 0 && <NewsExclamationMarkIcon />}
+                    <View>
+                      <Text style={styles.newsTitle}>{item.title}</Text>
+                      <Text style={styles.newsMore}>{item.content}</Text>
                     </View>
-                  </TouchableWithoutFeedback>
-                </>
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-              )}
-            />
+                  </View>
+                  <View>
+                    <RightArrowBold />
+                  </View>
+                </View>
+              </TouchableHighlight>)
+            }
+            
             {blindModalVisible && (
               <ModalBottom
                 modalVisible={blindModalVisible}

@@ -14,7 +14,8 @@ import {
   RefreshControl,
   ActivityIndicator,
   Image,
-  Modal
+  Modal,
+  TouchableHighlight
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
@@ -64,13 +65,15 @@ function QuestionList({navigation, route}: Props) {
   const isFocused = useIsFocused();
   const handleDeleteComponent = (
     <View style={{marginRight: 10}}>
-      <TouchableOpacity
+      <TouchableHighlight
+        style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+        underlayColor='#EEEEEE'
         onPress={() => {
           setDeleteMode(true);
         }}
-        hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}>
+      >
         <TrashIcon />
-      </TouchableOpacity>
+      </TouchableHighlight>
     </View>
   );
   const moveToPost = (question: QuestionListDto) => {
@@ -121,7 +124,9 @@ function QuestionList({navigation, route}: Props) {
                 삭제
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            <TouchableHighlight
+              style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+              underlayColor='#EEEEEE'
               onPress={() => {
                 setDeleteMode(false);
                 const tempList = questionList?.map(p => ({
@@ -130,8 +135,8 @@ function QuestionList({navigation, route}: Props) {
                 }));
                 setQuestionList(tempList);
               }}>
-              <CancelButton color="#333D4B" style={{marginLeft: 8}} />
-            </TouchableOpacity>
+              <CancelButton color="#333D4B" />
+            </TouchableHighlight>
           </>
         ) : (
           <SpinningThreeDots

@@ -264,6 +264,8 @@ const PostListScreen = ({navigation, route}: Props) => {
               }}
               style={{
                 marginLeft: 24,
+                marginBottom: 10,
+                marginTop: 16,
                 width: 66,
                 height: 24,
                 backgroundColor: '#f6f6f6',
@@ -297,41 +299,39 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </SafeAreaView>
         ) : (
-          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-            <FlatList
-              style={{marginTop: 10}}
-              data={boardDetail}
-              renderItem={({item, index}) => (
-                <Pressable
-                  onPress={async () => {
-                    const result = await getPosts(boardDetail[index].postId);
-                    if (result === 'NOT_FOUND')
-                      Toast.show('삭제된 게시글입니다.', Toast.LONG);
-                    else
-                      navigation.navigate('PostScreen', {
-                        postId: boardDetail[index].postId,
-                      });
-                  }}>
-                  <PostItem post={item} />
-                </Pressable>
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-              )}
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={handleRefresh}
-                  colors={['#A055FF']} // for android
-                  tintColor={'#A055FF'} // for ios
-                />
-              }
-              onEndReached={fetchNextPage}
-              onEndReachedThreshold={0.8}
-            />
-          </ScrollView>
+          <FlatList
+            style={{flex: 1, backgroundColor: '#FFFFFF'}}
+            data={boardDetail}
+            renderItem={({item, index}) => (
+              <Pressable
+                onPress={async () => {
+                  const result = await getPosts(boardDetail[index].postId);
+                  if (result === 'NOT_FOUND')
+                    Toast.show('삭제된 게시글입니다.', Toast.LONG);
+                  else
+                    navigation.navigate('PostScreen', {
+                      postId: boardDetail[index].postId,
+                    });
+                }}>
+                <PostItem post={item} />
+              </Pressable>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+            )}
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+                colors={['#A055FF']} // for android
+                tintColor={'#A055FF'} // for ios
+              />
+            }
+            onEndReached={fetchNextPage}
+            onEndReachedThreshold={0.8}
+          />
         )}
         <TouchableOpacity
           activeOpacity={0.5}

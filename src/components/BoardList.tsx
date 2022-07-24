@@ -22,9 +22,7 @@ interface Props {
 
 export default function BoardList({ items, moveToBoard, search }: Props) {
   return (
-    items != null && items.length > 0 ? <FlatList
-      data={items}
-      renderItem={({ item }) => (
+    items != null && items.length > 0 ? items.map(item => 
         <TouchableOpacity
           onPress={() => moveToBoard(item.id)}
           style={{
@@ -58,8 +56,8 @@ export default function BoardList({ items, moveToBoard, search }: Props) {
             </View>
           )}
         </TouchableOpacity>
-      )}
-    /> :
+      )
+     :
       <View
         style={{
           alignItems: 'center',
@@ -82,80 +80,89 @@ export default function BoardList({ items, moveToBoard, search }: Props) {
 export function OfficialBoardList({ items, onUpdate, moveToBoard }: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
-    <View>
-      <FlatList
-        data={items}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => moveToBoard(item.id)}
-            style={{
-              flexDirection: 'row',
-              paddingVertical: 11,
-              alignItems: 'center',
-              backgroundColor: '#F6F6F6',
-            }}>
-            {!item.isPinned ? (
-              <GrayPin
-                style={{ marginLeft: 20 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = true;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }}
-              />
-            ) : (
-              <PurplePin
-                style={{ marginLeft: 20 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = false;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }}
-              />
-            )}
-            <View style={{flex: 1}}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: '#000000',
-                  marginLeft: 15,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                }}>
-                {item.name}
-              </Text>
-              <Text
-                numberOfLines={1}
-                ellipsizeMode="tail"
-                style={{
-                  fontSize: 14,
-                  color: '#9F9F9F',
-                  marginLeft: 15,
-                  marginRight: 15,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                }}>
-                {item.introduction}
-              </Text>
-            </View>
-          </TouchableOpacity>
+    items != null && items.length > 0 ? items.map(item => 
+      <TouchableOpacity
+        onPress={() => moveToBoard(item.id)}
+        style={{
+          flexDirection: 'row',
+          paddingVertical: 11,
+          alignItems: 'center',
+          backgroundColor: '#F6F6F6',
+        }}>
+        {!item.isPinned ? (
+          <GrayPin
+            style={{ marginLeft: 20 }}
+            onPress={async () => {
+              let result: boolean = await toggleBoardPin(item.id);
+              if (result) {
+                item.isPinned = true;
+                setValue(!value);
+                onUpdate();
+              }
+            }}
+          />
+        ) : (
+          <PurplePin
+            style={{ marginLeft: 20 }}
+            onPress={async () => {
+              let result: boolean = await toggleBoardPin(item.id);
+              if (result) {
+                item.isPinned = false;
+                setValue(!value);
+                onUpdate();
+              }
+            }}
+          />
         )}
-      />
-    </View>
-  );
+        <View style={{flex: 1}}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: '#000000',
+              marginLeft: 15,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+            }}>
+            {item.name}
+          </Text>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{
+              fontSize: 14,
+              color: '#9F9F9F',
+              marginLeft: 15,
+              marginRight: 15,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+            }}>
+            {item.introduction}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    )
+    :
+    <View
+        style={{
+          alignItems: 'center',
+          backgroundColor: '#F6F6F6',
+          paddingVertical: 10
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 15,
+            color: '#6E7882',
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+          }}>
+          생성된 공식 게시판이 없습니다
+        </Text>
+      </View>
+  )
 }
 
 export function CustomBoardList({ items, onUpdate, moveToBoard }: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
-    <View>
-      <FlatList
-        data={items}
-        renderItem={({ item }) => (
+    items != null && items.length > 0 ? items.map(item => 
           <TouchableOpacity
             onPress={() => moveToBoard(item.id)}
             style={{
@@ -229,9 +236,25 @@ export function CustomBoardList({ items, onUpdate, moveToBoard }: Props) {
               </Text>
             </View>
           </TouchableOpacity>
-        )}
-      />
-    </View>
+
+)
+:
+<View
+    style={{
+      alignItems: 'center',
+      backgroundColor: '#F6F6F6',
+      paddingVertical: 10
+    }}
+  >
+    <Text
+      style={{
+        fontSize: 15,
+        color: '#6E7882',
+        fontFamily: 'SpoqaHanSansNeo-Regular',
+      }}>
+      생성된 수정 게시판이 없습니다
+    </Text>
+  </View>
   );
 }
 
