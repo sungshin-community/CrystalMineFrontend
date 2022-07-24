@@ -25,7 +25,7 @@ export default function MyCommentList({navigation, route}: Props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
 
   const moveToPost = (comment: MyCommentDto) => {
@@ -156,6 +156,27 @@ export default function MyCommentList({navigation, route}: Props) {
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
+      {myCommentList.length === 0 ?
+      <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F6F6F6'
+      }}>
+      <Text
+        style={{
+          color: '#6E7882',
+          fontSize: 15,
+          fontFamily: 'SpoqaHanSansNeo-Regular',
+          textAlign: 'center',
+          lineHeight: 22.5,
+          marginTop: 20,
+        }}>
+        {isLoading ? "" : "아직 작성된 댓글이 없습니다.\n첫 댓글을 작성해주세요."}
+      </Text>
+    </View> :
+    <View style={{flex: 1}}>
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, height: 46}}>
         {!deleteMode && <TouchableOpacity
           onPress={() => {
@@ -206,6 +227,7 @@ export default function MyCommentList({navigation, route}: Props) {
           onEndReached={fetchNextPage}
           onEndReachedThreshold={0.8}
       />
+      </View>}
       {deleteModalVisible && (
         <ModalBottom
           modalVisible={deleteModalVisible}

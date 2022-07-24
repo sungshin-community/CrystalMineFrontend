@@ -25,7 +25,7 @@ export default function MyPostList({navigation, route}: Props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
 
