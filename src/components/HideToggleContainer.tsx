@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   Dimensions,
+  TouchableHighlight,
 } from 'react-native';
 import {
   FoldButton,
@@ -143,18 +144,20 @@ export function CustomBoardListContainer({
       </TouchableOpacity>
       {isSpread && (
         <>
-          <TouchableWithoutFeedback onPress={() => moveToCreateBoard()}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: '#FFFFFF',
-                height: 44,
-                borderRadius: 10,
-                borderColor: '#E2E4E8',
-                borderWidth: 1,
-                marginBottom: 16,
-              }}>
+          <TouchableHighlight
+            underlayColor='#EEEEEE'
+            onPress={() => moveToCreateBoard()}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#FFFFFF',
+              height: 44,
+              borderRadius: 10,
+              borderColor: '#E2E4E8',
+              borderWidth: 1,
+              marginBottom: 16,
+            }}>
+            <>
               <PlusIcon style={{marginLeft: 18, marginRight: 12}} />
               <Text
                 style={{
@@ -164,8 +167,8 @@ export function CustomBoardListContainer({
                 }}>
                 새 게시판 만들기
               </Text>
-            </View>
-          </TouchableWithoutFeedback>
+            </>
+          </TouchableHighlight>
           <View
             style={{
               height: 17,
