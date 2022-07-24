@@ -10,6 +10,11 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  Image,
+  Modal
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
@@ -18,7 +23,11 @@ import {
   SpreadBlackButton,
 } from '../../../resources/icon/Button';
 import {useState} from 'react';
-import {getQuestionList, getQuestion} from '../../common/myPageApi';
+import {
+  getQuestionList,
+  getQuestion,
+  deleteQuestions,
+} from '../../common/myPageApi';
 import QuestionListDto, {QuestionDto} from '../../classes/mypage/Question';
 import Markdown from 'react-native-markdown-display';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
@@ -28,65 +37,279 @@ import {
   RectangleUnchecked,
 } from '../../../resources/icon/CheckBox';
 import TrashIcon from '../../../resources/icon/TrashIcon';
+import CancelButton from '../../../resources/icon/Cancel';
+import SpinningThreeDots from '../../components/SpinningThreeDots';
+import {ModalBottom} from '../../components/ModalBottom';
+import Toast from 'react-native-simple-toast';
+import PostItem from '../../components/PostItem';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 function QuestionList({navigation, route}: Props) {
-  const [data, setData] = useState<QuestionListDto[]>();
-  const [removeState, setRemoveState] = useState(false);
-
+  const [questionList, setQuestionList] = useState<QuestionListDto[]>();
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(
+    false,
+  );
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
+  const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  //
   const isFocused = useIsFocused();
-
+  const handleDeleteComponent = (
+    <View style={{marginRight: 10}}>
+      <TouchableOpacity
+        onPress={() => {
+          setDeleteMode(true);
+        }}
+        hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}>
+        <TrashIcon />
+      </TouchableOpacity>
+    </View>
+  );
+  const moveToPost = (question: QuestionListDto) => {
+    if (deleteMode) {
+      const tempList = questionList.map(p =>
+        p.id === question.id ? {...p, isChecked: !p.isChecked} : p,
+      );
+      setQuestionList(tempList);
+    } else {
+      console.log('음 여기서 뭘할까');
+    }
+  };
   useEffect(() => {
     async function getList() {
       const list = await getQuestionList(0);
-      setData(list);
+      setQuestionList(list);
     }
     if (isFocused) {
       getList();
     }
   }, [isFocused]);
+  useEffect(() => {
+    const checkedCount = questionList?.filter(p => p.isChecked).length;
+    if (checkedCount > 0) {
+      setDeleteButtonEnabled(true);
+    } else {
+      setDeleteButtonEnabled(false);
+    }
+    const isAllChecked = questionList?.filter(c => !c.isChecked).length === 0;
+    setIsCheckedAll(isAllChecked);
+  }, [questionList]);
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: (): React.ReactNode => (
-        <Pressable
-          onPress={() => {
-            console.log('지우기', removeState);
-            setRemoveState(!removeState);
-          }}>
-          <TrashIcon style={{marginRight: 3}} />
-        </Pressable>
-      ),
+      headerRight: () =>
+        deleteMode ? (
+          <>
+            <TouchableOpacity
+              onPress={() => {
+                deleteButtonEnabled && setDeleteModalVisible(true);
+              }}
+              hitSlop={{top: 5, bottom: 5, left: 10, right: 10}}>
+              <Text
+                style={{
+                  color: '#FF6060',
+                  opacity: deleteButtonEnabled ? 1 : 0.3,
+                }}>
+                삭제
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setDeleteMode(false);
+                const tempList = questionList?.map(p => ({
+                  ...p,
+                  isChecked: false,
+                }));
+                setQuestionList(tempList);
+              }}>
+              <CancelButton color="#333D4B" style={{marginLeft: 8}} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <SpinningThreeDots
+            handleOptionModeIsNotMineComponent={handleDeleteComponent}
+          />
+        ),
     });
-  }, [navigation, removeState]);
+  }, [navigation, deleteMode, deleteButtonEnabled]);
+
+  const handleRefresh = async () => {
+    if (!deleteMode) {
+      const postList = await getQuestionList(0);
+      setCurrentPage(0);
+      setQuestionList(postList);
+      setIsCheckedAll(false);
+    }
+  };
+
+  const fetchNextPage = async () => {
+    setIsNextPageLoading(true);
+    let thisPagePostList: QuestionListDto[] = await getQuestionList(
+      currentPage + 1,
+    );
+    setQuestionList(questionList.concat(thisPagePostList));
+    if (thisPagePostList.length > 0) {
+      setCurrentPage(currentPage + 1);
+    }
+    setIsNextPageLoading(false);
+  };
 
   return (
-    <>
-      <ScrollView style={{backgroundColor: '#E5E5E5'}}>
-        {removeState ? (
-          <View style={{backgroundColor: '#fff', paddingLeft: 24}}>
-            <RectangleUnchecked />
+    <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
+      </View>
+      {questionList?.length === 0 ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#F6F6F6',
+          }}>
+          <Text
+            style={{
+              color: '#6E7882',
+              fontSize: 15,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              textAlign: 'center',
+              lineHeight: 22.5,
+              marginTop: 20,
+            }}>
+            {isLoading
+              ? ''
+              : '아직 작성된 문의사항이 없습니다.\n첫 문의사항을 작성해주세요.'}
+          </Text>
+        </View>
+      ) : (
+        <View style={{flex: 1}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            {deleteMode && (
+              <TouchableOpacity
+                onPress={() => {
+                  setIsCheckedAll(!isCheckedAll);
+                  const tempList = questionList?.map(p => ({
+                    ...p,
+                    isChecked: !isCheckedAll,
+                  }));
+                  setQuestionList(tempList);
+                }}
+                style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  paddingRight: 27,
+                }}>
+                <Text
+                  style={{
+                    marginRight: 9,
+                    fontSize: 13,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  }}>
+                  {`${questionList?.filter(c => c.isChecked).length}/${
+                    questionList?.length
+                  }`}
+                </Text>
+                {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
+              </TouchableOpacity>
+            )}
           </View>
-        ) : (
-          <View style={{paddingTop: 18, backgroundColor: '#fff'}} />
-        )}
-        {data?.map(item => (
-          <SpreadList
-            key={item.id}
-            id={item.id}
-            status={item.status}
-            title={item.title}
-            removeState={removeState}></SpreadList>
-        ))}
-      </ScrollView>
-
+          <FlatList
+            style={{marginTop: 10}}
+            data={questionList}
+            renderItem={({item, index}) => (
+              <SpreadList
+                key={index}
+                questionItem={item}
+                deleteMode={deleteMode}
+                moveToPost={moveToPost}></SpreadList>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+            )}
+            // refreshing={isRefreshing}
+            // onRefresh={handleRefresh}
+            // refreshControl={
+            //   <RefreshControl
+            //     refreshing={isRefreshing}
+            //     onRefresh={handleRefresh}
+            //     colors={['#A055FF']} // for android
+            //     tintColor={'#A055FF'} // for ios
+            //   />
+            // }
+            // onEndReached={fetchNextPage}
+            // onEndReachedThreshold={0.8}
+          />
+          <View>
+            {isNextPageLoading && (
+              <ActivityIndicator
+                size="large"
+                color={'#A055FF'}
+                animating={isNextPageLoading}
+                style={{zIndex: 100}}
+              />
+            )}
+          </View>
+        </View>
+      )}
+      {deleteModalVisible && (
+        <ModalBottom
+          modalVisible={deleteModalVisible}
+          setModalVisible={setDeleteModalVisible}
+          content="선택하신 문의를 삭제하시겠습니까?"
+          purpleButtonText="삭제"
+          whiteButtonText="취소"
+          purpleButtonFunc={async () => {
+            setIsLoading(true);
+            console.log(
+              questionList,
+            );
+            await deleteQuestions(
+              questionList.filter(p => p.isChecked).map(p => p.id),
+            );
+            const qList = await getQuestionList(currentPage);
+            setQuestionList(qList);
+            Toast.show('문의가 성공적으로 삭제되었습니다', Toast.LONG);
+            setIsLoading(false);
+            setDeleteMode(false);
+            setDeleteModalVisible(false);
+          }}
+          whiteButtonFunc={() => {
+            setDeleteModalVisible(false);
+          }}
+        />
+      )}
       <FloatingWriteButton
         onPress={() => navigation.navigate('QuestionWriteScreen')}
       />
-    </>
+    </SafeAreaView>
   );
 }
 
@@ -142,80 +365,68 @@ const styles = StyleSheet.create({
 });
 
 export default QuestionList;
-export function SpreadList({id, title, status, removeState}: any) {
+export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
-  const [checkRemove, setCheckRemove] = useState<boolean>(false);
-  const [removeItemList, setRemoveItemList] = useState<number[]>([]);
+  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
+
   const getQuestionFunc = async (id: number) => {
     const result: QuestionDto = await getQuestion(id);
     setData(result);
   };
-
-  const removeItemIndex = (arr: number[], id: number) => {
-    const index = arr.indexOf(id);
-    if (index > -1) {
-      arr.splice(index, 1);
+  const closePhotoModal = () => {
+    if (isPhotoVisible) {
+      setIsPhotoVisible(false);
     }
   };
-  console.log(removeItemList);
+
   return (
     <>
       <TouchableWithoutFeedback
-        key={id}
         onPress={() => {
           setIsSpread(!isSpread);
-          getQuestionFunc(id);
+          getQuestionFunc(questionItem.id);
         }}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
-            {removeState &&
-              (status ? (
+            <View
+              style={[
+                styles.status,
+                {backgroundColor: questionItem.status ? '#F1E7FF' : '#F6F6F6'},
+              ]}>
+              <Text
+                style={{
+                  color: questionItem.status ? '#A055FF' : '#6E7882',
+                  fontSize: 13,
+                  textAlign: 'center',
+                }}>
+                {questionItem.status ? '답변 완료' : '답변 대기'}
+              </Text>
+            </View>
+            <Text style={[fontMedium, styles.menuText]}>
+              {questionItem.title}
+            </Text>
+            <View style={styles.menuIcon}>
+            {!deleteMode &&
+              (isSpread ? <FoldBlackButton /> : <SpreadBlackButton />)}
+            </View> 
+             {deleteMode &&
+              (questionItem.status ? (
                 <View style={{marginLeft: 30}} />
               ) : (
                 <Pressable
                   onPress={() => {
-                    if (checkRemove) {
-                      setCheckRemove(!checkRemove);
-                      console.log('delete', id);
-                      removeItemIndex(removeItemList, id);
-                      console.log('>', removeItemList);
-                      setRemoveItemList(removeItemList);
-                    } else {
-                      setCheckRemove(!checkRemove);
-                      console.log('before>', removeItemList);
-                      console.log('add', id);
-                      const newArr = [...removeItemList];
-                      newArr.push(id);
-                      console.log('after>', newArr);
-                      setRemoveItemList(newArr);
-                    }
+                    moveToPost(questionItem);
                   }}>
-                  {checkRemove ? (
-                    <RectangleChecked style={{marginRight: 12}} />
+                  <View style={{marginRight: 2.5}}>
+                  {questionItem.isChecked ? (
+                    <RectangleChecked/>
                   ) : (
-                    <RectangleUnchecked style={{marginRight: 12}} />
-                  )}
+                    <RectangleUnchecked/>
+                    )}
+                    </View>
                 </Pressable>
               ))}
-            <View
-              style={[
-                styles.status,
-                {backgroundColor: status ? '#F1E7FF' : '#F6F6F6'},
-              ]}>
-              <Text
-                style={{
-                  color: status ? '#A055FF' : '#6E7882',
-                  fontSize: 13,
-                  textAlign: 'center',
-                }}>
-                {status ? '답변 완료' : '답변 대기'}
-              </Text>
-            </View>
-            <Text style={[fontMedium, styles.menuText]}>{title}</Text>
-            <View style={styles.menuIcon}>
-              {isSpread ? <FoldBlackButton /> : <SpreadBlackButton />}
-            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -228,9 +439,36 @@ export function SpreadList({id, title, status, removeState}: any) {
               paddingHorizontal: 24,
               paddingVertical: 16,
             }}>
-            <Text style={[fontBold, {fontSize: 15}]}>{data?.title}</Text>
-
-            <Markdown>{data?.content}</Markdown>
+            <Text style={[fontBold, {fontSize: 15, marginBottom: 10}]}>{data?.title}</Text>
+            <Text style={{ marginBottom: 10 }}>{data?.content}</Text>
+              {data?.images.length !== 0 &&
+            <View style={{ flexDirection: 'row', marginTop: 16 }}>
+                <ScrollView horizontal={true}>
+                  {data?.images.map((url, index) => (
+                    <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
+                      <Image
+                        style={{
+                          width: 70,
+                          height: 70,
+                          borderRadius: 10,
+                          marginRight: 8,
+                        }}
+                        source={{ uri: url.url }}
+                      />
+                    </Pressable>
+                  ))}
+                  <Modal
+                    visible={isPhotoVisible}
+                    transparent={true}
+                    onRequestClose={closePhotoModal}>
+                    {data && <ImageViewer
+                      imageUrls={data.images}
+                      onCancel={() => closePhotoModal()}
+                      enableSwipeDown
+                    />}
+                  </Modal>
+                </ScrollView>
+        </View>}
             <Text style={styles.date}>{data?.createdAt}</Text>
             {data?.answer && (
               <>
@@ -247,9 +485,11 @@ export function SpreadList({id, title, status, removeState}: any) {
                     운영진
                   </Text>
                 </View>
-                <Text style={{marginTop: 8, marginLeft: 30, marginBottom: 10}}>
+                <View style={{marginTop: 8, marginLeft: 30, marginBottom: 10}}>
+                <Text>
                   {data?.answer.content}
-                </Text>
+                  </Text>
+                  </View>
                 <Text style={[styles.date, {marginLeft: 30}]}>
                   {data?.answer.createdAt}
                 </Text>

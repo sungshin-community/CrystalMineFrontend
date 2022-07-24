@@ -188,3 +188,17 @@ export const getQuestion = async (answerId: number) => {
     console.log("여기는 getQuestion 함수", e);
   }
 }
+
+export async function deleteQuestions(questionIds: number[]) {
+  try {
+    console.log(questionIds)
+    const questionIdListStr = questionIds.join(",");
+    const response = await client.delete<AxiosResponse>(
+      `/questions/${questionIdListStr}`
+    );
+    console.log(response.data.data);
+    return response.data;
+  } catch (e) {
+    console.log("여기는 deleteQuestions 함수", e);
+  }
+}

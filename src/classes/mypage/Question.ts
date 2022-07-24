@@ -1,9 +1,10 @@
 import Images from "../Images";
  
-export default interface QuestionListDto {
-  id: number;
-  status: boolean;
-  title: string;
+export default class QuestionListDto {
+  id: number = 0;;
+  status: boolean = false;
+  title: string = '';
+  isChecked: boolean = false;
 }
 
 export interface QuestionDto {
@@ -11,9 +12,10 @@ export interface QuestionDto {
   status: boolean;
   title: string;
   content: string;
-  img: Images[];
+  images: Images[];
   createdAt: string;
   answer: Answer;
+  // isChecked: boolean;
 }
 
 interface Answer {
