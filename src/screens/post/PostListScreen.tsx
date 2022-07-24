@@ -54,7 +54,9 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
   const isFocused = useIsFocused();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
+    boolean
+  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -116,8 +118,17 @@ const PostListScreen = ({navigation, route}: Props) => {
             <BigGrayPin />
           )}
         </Pressable>
-        <Text style={[fontRegular, { marginLeft: 8, fontSize: boardInfo && boardInfo.name.length <= 10? 19: 17, maxWidth: 180}]}
-          numberOfLines={1} ellipsizeMode="tail">
+        <Text
+          style={[
+            fontRegular,
+            {
+              marginLeft: 8,
+              fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
+              maxWidth: 180,
+            },
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
           {boardInfo?.name}
         </Text>
       </>
@@ -128,12 +139,19 @@ const PostListScreen = ({navigation, route}: Props) => {
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
-        <SpinningThreeDots
-          handleDefaultModeComponent={handleBoardSearchComponent}
-          isMine={boardInfo?.isOwner}
-          handleOptionModeIsMineComponent={handleBoardSettingComponent}
-          handleOptionModeIsNotMineComponent={handleBoardReportComponent}
-        />
+        <>
+          {boardInfo?.type !== 1 && (
+            <SpinningThreeDots
+              handleDefaultModeComponent={handleBoardSearchComponent}
+              isMine={boardInfo?.isOwner}
+              handleOptionModeIsMineComponent={handleBoardSettingComponent}
+              handleOptionModeIsNotMineComponent={handleBoardReportComponent}
+            />
+          )}
+          {boardInfo?.type === 1 && (
+             handleBoardSearchComponent
+          )}
+        </>
       ),
       headerTitleAlign: 'center',
     });
@@ -171,9 +189,9 @@ const PostListScreen = ({navigation, route}: Props) => {
         <Pressable
           hitSlop={5}
           onPress={() => {
-            console.log('눌리긴 하니')
+            console.log('눌리긴 하니');
             setReportCheckModalVisible(true);
-            console.log(reportCheckModalVisible)
+            console.log(reportCheckModalVisible);
           }}>
           <NoReport style={{marginRight: 10}} />
         </Pressable>
@@ -181,135 +199,145 @@ const PostListScreen = ({navigation, route}: Props) => {
     </>
   );
   return (
-  <>
-      {
-        reportCheckModalVisible && (
-          <ModalBottom
-            modalVisible={reportCheckModalVisible}
-            setModalVisible={setReportCheckModalVisible}
-            title={`게시판 신고`}
-            content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-            isContentCenter={false}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => {
-              setReportCheckModalVisible(false);
-              setReportModalVisible(true);
-            }}
-          />
-        )
-      }
-      {
-        reportModalVisible && (
-           <SelectModalBottom
-              modalVisible={reportModalVisible}
-              setModalVisible={setReportModalVisible}
-              title={`게시판 신고`}
-              purpleButtonText="신고하기"
-              reportId={boardInfo?.id}
-              reportFunc={reportBoard}
-              whiteButtonText="취소"
-              whiteButtonFunc={() => setReportModalVisible(false)}
-            />
-        )
-      }
-    <View style={{flex: 1}}>
-      <View
-        style={{
-          position: 'absolute',
-          alignItems: 'center',
-          justifyContent: 'center',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        }}>
-        <ActivityIndicator
-          size="large"
-          color={'#A055FF'}
-          animating={isLoading}
-          style={{zIndex: 100}}
+    <>
+      {reportCheckModalVisible && (
+        <ModalBottom
+          modalVisible={reportCheckModalVisible}
+          setModalVisible={setReportCheckModalVisible}
+          title={`게시판 신고`}
+          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
+            setReportCheckModalVisible(false);
+            setReportModalVisible(true);
+          }}
         />
-      </View>
-      <View style={{backgroundColor: "#fff", paddingBottom: 5}}>
-       <TouchableOpacity
-        onPress={() => {
-          if (sortBy === 'createdAt') {
-            setSortBy('likeCount');
-          } else {
-            setSortBy('createdAt');
-          }
-        }}
-        style={{marginLeft: 24, width: 66, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <Text>
-          {sortBy === 'createdAt' ? "최신순" : "공감순"}
-        </Text>
-        </TouchableOpacity>
-        </View>
-      {boardDetail?.length === 0 ? (
-        <SafeAreaView style={{flex: 1}}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                color: '#6E7882',
-                fontSize: 15,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                textAlign: 'center',
-                lineHeight: 22.5,
-                marginTop: 20,
-              }}>
-              아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
-            </Text>
-          </View>
-        </SafeAreaView>
-      ) : (
-        <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-          <FlatList
-            style={{marginTop: 10}}
-            data={boardDetail}
-            renderItem={({item, index}) => (
-              <Pressable
-                onPress={async () => {
-                  const result = await getPosts(boardDetail[index].postId);
-                  if (result === 'NOT_FOUND')
-                    Toast.show('삭제된 게시글입니다.', Toast.LONG);
-                  else
-                    navigation.navigate('PostScreen', {
-                      postId: boardDetail[index].postId,
-                    });
-                }}>
-                <PostItem post={item} />
-              </Pressable>
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-            )}
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                colors={['#A055FF']} // for android
-                tintColor={'#A055FF'} // for ios
-              />
-            }
-            onEndReached={fetchNextPage}
-            onEndReachedThreshold={0.8}
-          />
-        </ScrollView>
       )}
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={styles.touchableOpacityStyle}>
-        <FloatingWriteButton onPress={() => navigation.navigate('PostWriteScreen', {boardId: route.params.boardId})} style={styles.floatingButtonStyle} />
-      </TouchableOpacity>
+      {reportModalVisible && (
+        <SelectModalBottom
+          modalVisible={reportModalVisible}
+          setModalVisible={setReportModalVisible}
+          title={`게시판 신고`}
+          purpleButtonText="신고하기"
+          reportId={boardInfo?.id}
+          reportFunc={reportBoard}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => setReportModalVisible(false)}
+        />
+      )}
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}>
+          <ActivityIndicator
+            size="large"
+            color={'#A055FF'}
+            animating={isLoading}
+            style={{zIndex: 100}}
+          />
+        </View>
+        <View style={{backgroundColor: '#fff', paddingBottom: 5}}>
+          <TouchableOpacity
+            onPress={() => {
+              if (sortBy === 'createdAt') {
+                setSortBy('likeCount');
+              } else {
+                setSortBy('createdAt');
+              }
+            }}
+            style={{
+              marginLeft: 24,
+              width: 66,
+              height: 24,
+              backgroundColor: '#f6f6f6',
+              borderRadius: 12,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
+          </TouchableOpacity>
+        </View>
+        {boardDetail?.length === 0 ? (
+          <SafeAreaView style={{flex: 1}}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#6E7882',
+                  fontSize: 15,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  textAlign: 'center',
+                  lineHeight: 22.5,
+                  marginTop: 20,
+                }}>
+                아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
+              </Text>
+            </View>
+          </SafeAreaView>
+        ) : (
+          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+            <FlatList
+              style={{marginTop: 10}}
+              data={boardDetail}
+              renderItem={({item, index}) => (
+                <Pressable
+                  onPress={async () => {
+                    const result = await getPosts(boardDetail[index].postId);
+                    if (result === 'NOT_FOUND')
+                      Toast.show('삭제된 게시글입니다.', Toast.LONG);
+                    else
+                      navigation.navigate('PostScreen', {
+                        postId: boardDetail[index].postId,
+                      });
+                  }}>
+                  <PostItem post={item} />
+                </Pressable>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={fetchNextPage}
+              onEndReachedThreshold={0.8}
+            />
+          </ScrollView>
+        )}
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.touchableOpacityStyle}>
+          <FloatingWriteButton
+            onPress={() =>
+              navigation.navigate('PostWriteScreen', {
+                boardId: route.params.boardId,
+              })
+            }
+            style={styles.floatingButtonStyle}
+          />
+        </TouchableOpacity>
       </View>
-      </>
+    </>
   );
 };
 export default PostListScreen;
