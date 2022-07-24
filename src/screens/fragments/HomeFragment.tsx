@@ -163,6 +163,7 @@ const HomeFragment = ({navigation}: Props) => {
             }}>
             {noti.map((item, index) =>
               <TouchableHighlight
+                key={index}
                 style={{borderTopWidth: index === 0 ? 0 : 1, borderTopColor: '#F6F6F6'}}
                 onPress={() => {
                   if (

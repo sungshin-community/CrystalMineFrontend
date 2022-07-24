@@ -22,8 +22,9 @@ interface Props {
 
 export default function BoardList({ items, moveToBoard, search }: Props) {
   return (
-    items != null && items.length > 0 ? items.map(item => 
+    items != null && items.length > 0 ? items.map((item, index) => 
         <TouchableOpacity
+          key={index}
           onPress={() => moveToBoard(item.id)}
           style={{
             paddingVertical: 9,
@@ -80,8 +81,9 @@ export default function BoardList({ items, moveToBoard, search }: Props) {
 export function OfficialBoardList({ items, onUpdate, moveToBoard }: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
-    items != null && items.length > 0 ? items.map(item => 
+    items != null && items.length > 0 ? items.map((item, index) => 
       <TouchableOpacity
+        key={index}
         onPress={() => moveToBoard(item.id)}
         style={{
           flexDirection: 'row',
@@ -162,8 +164,9 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard }: Props) {
 export function CustomBoardList({ items, onUpdate, moveToBoard }: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
-    items != null && items.length > 0 ? items.map(item => 
+    items != null && items.length > 0 ? items.map((item, index) => 
           <TouchableOpacity
+            key={index}
             onPress={() => moveToBoard(item.id)}
             style={{
               flexDirection: 'row',
