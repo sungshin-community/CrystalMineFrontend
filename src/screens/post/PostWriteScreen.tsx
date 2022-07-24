@@ -119,21 +119,42 @@ ${item.content.map((_item, _index) => {
   }, [navigation, title, content]);
 
   const onSelectImage = () => {
+    //! 하나씩 선택해야하는 코드
     if (images.length < 10) {
       setImages(item => [...item, {}])
       launchImageLibrary(
         { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
         async res => {
           if (res.didCancel) {
-            return;
+            let notSelectImage = images.slice(0, images.length);
+            return setImages(notSelectImage);
           }
           let response = await uploadPostImages(res.assets[0]);
+
           if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
             setImages([...images, response.data.urls[0]]);
           }
         },
       );
     }
+    //! 복수 선택 업로드 > 강제 종료 이슈 임시 주석 처리
+    // if (images.length < 10) {
+    //   launchImageLibrary(
+    //     { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
+    //     res => {
+    //       if (res.didCancel) {
+    //         return;
+    //       }
+    //       res.assets.map(async item => {
+    //         setImages(_item => [..._item, {}])
+    //         let response = await uploadPostImages(item);
+    //         if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
+    //           setImages([...images, response.data.urls[0]]);
+    //         }
+    //       })
+    //     },
+    //   );
+    // }
   };
 
   return (
@@ -200,14 +221,14 @@ ${item.content.map((_item, _index) => {
                 style={styles.imageBox}
                 source={{ uri: item }} />
             ))}
-            <View style={[styles.imageSelectBox, styles.imageBox]}>
+            {images.length < 10 && <View style={[styles.imageSelectBox, styles.imageBox]}>
               <Pressable onPress={onSelectImage} hitSlop={25}>
                 <PhotoIcon />
                 <Text style={[fontMedium, styles.count]}>
                   {images.length}/10
                 </Text>
               </Pressable>
-            </View>
+            </View>}
           </View>
         </View>
       </View>
