@@ -31,9 +31,9 @@ export default function BoardFragment({navigation}: Props) {
   const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
   const [departmentBoardList, setDepartmentBoardList] = useState<Board[]>([]);
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const isFocused = useIsFocused();
-  const [isInited, setIsInited] = useState<Boolean>(false);
+  const [isInited, setIsInited] = useState<boolean>(false);
 
   const updateOfficialBoardList = async () => {
     const officialBoardList = await getOfficialBoardList();
