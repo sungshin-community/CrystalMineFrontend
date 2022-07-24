@@ -34,7 +34,6 @@ function CreateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
   const [hotable, setHotable] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onSubmitPress = async () => {
     const result = await createBoard(boardName, boardIntroduction, hotable);
@@ -48,7 +47,12 @@ function CreateBoard({navigation}: Props) {
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (boardName && boardIntroduction) setModalVisible(true);
+            if (boardName.length > 16 || boardIntroduction.length > 23)
+              Toast.show(
+                '게시판 이름, 설명의 글자 수를 확인해주세요.',
+                Toast.LONG,
+              );
+            else if (boardName && boardIntroduction)  onSubmitPress();
           }}>
           <Text
             style={[
@@ -69,14 +73,13 @@ function CreateBoard({navigation}: Props) {
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
           <TextInput
-            placeholder="게시판 이름을 입력해주세요."
+            placeholder="게시판 이름은 공백포함 15글자까지 입력 가능합니다."
             value={boardName}
             autoCorrect={false}
             onChangeText={value => {
               setBoardName(value);
             }}
-            style={{fontSize: 13, paddingVertical: 20}}
-            maxLength={15}
+            style={{fontSize: 15, paddingVertical: 20}}
           />
           <View
             style={{
@@ -89,7 +92,7 @@ function CreateBoard({navigation}: Props) {
           <View style={{height: 149}}>
             <TextInput
               textAlignVertical="top"
-              placeholder="게시판 설명을 입력해주세요."
+              placeholder="게시판 설명은 공백포함 22글자까지 입력 가능합니다."
               value={boardIntroduction}
               autoCorrect={false}
               onChangeText={value => {
@@ -98,8 +101,7 @@ function CreateBoard({navigation}: Props) {
               onBlur={() => {
                 Keyboard.dismiss();
               }}
-              style={[styles.input]}
-              maxLength={22}
+              style={[styles.input, {fontSize: 15}]}
             />
           </View>
         </View>
@@ -115,22 +117,9 @@ function CreateBoard({navigation}: Props) {
             }}>
             {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
           </Pressable>
-          <Text style={[{marginLeft: 5}]}>핫게시판 전송 허용</Text>
+          <Text style={[{marginLeft: 5}]}>HOT 게시판 전송 허용</Text>
         </View>
       </View>
-      {modalVisible && (
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          title="게시판 삭제 공지"
-          content={`•  게시판 삭제 기능은 아직 개발 중이므로 게시판 삭제는 불가능합니다.`}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            onSubmitPress();
-            setModalVisible(false);
-          }}></ModalBottom>
-      )}
     </>
   );
 }
@@ -145,7 +134,6 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     textAlignVertical: 'top',
-    fontSize: 13,
   },
   option: {
     marginTop: 19,
