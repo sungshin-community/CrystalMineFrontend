@@ -47,7 +47,7 @@ export default function ScrapedPostList({navigation}: Props) {
       headerRight: () => deleteMode ? 
         <>
           <TouchableOpacity
-            onPress={() => {setDeleteModalVisible(true)}}
+            onPress={() => {if (myPostList.filter(c => c.isChecked).length > 0) {setDeleteModalVisible(true)}}}
             hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
           >
             <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
@@ -172,6 +172,9 @@ export default function ScrapedPostList({navigation}: Props) {
               justifyContent: 'flex-end',
               alignItems: 'center',
               paddingRight: 27}}>
+            <Text style={{marginRight: 9, fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Medium'}}>
+              {`${myPostList.filter(c => c.isChecked).length}/${myPostList.length}`}
+            </Text>
             {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
           </TouchableOpacity>}
         </View>
@@ -193,7 +196,7 @@ export default function ScrapedPostList({navigation}: Props) {
         onEndReachedThreshold={0.8}
       />
     </View>}
-      {deleteModalVisible && deleteButtonEnabled && (
+      {deleteModalVisible && (
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}

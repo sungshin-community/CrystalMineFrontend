@@ -49,7 +49,7 @@ export default function MyPostList({navigation, route}: Props) {
       headerRight: () => deleteMode ? 
         <>
           <TouchableOpacity
-            onPress={() => {setDeleteModalVisible(true)}}
+            onPress={() => {if (myPostList.filter(p => p.isChecked).length > 0) {setDeleteModalVisible(true)}}}
             hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
           >
             <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
@@ -84,7 +84,7 @@ export default function MyPostList({navigation, route}: Props) {
     } else {
       setDeleteButtonEnabled(false);
     }
-    const isAllChecked = myPostList.filter(c => !c.isChecked).length === 0;
+    const isAllChecked = myPostList.filter(p => !p.isChecked).length === 0;
     setIsCheckedAll(isAllChecked);
 
   }, [myPostList]);
@@ -193,7 +193,7 @@ export default function MyPostList({navigation, route}: Props) {
               alignItems: 'center',
               paddingRight: 27}}>
             <Text style={{marginRight: 9, fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Medium'}}>
-              {`${myPostList.filter(c => c.isChecked).length}/${myPostList.length}`}
+              {`${myPostList.filter(p => p.isChecked).length}/${myPostList.length}`}
             </Text>
             {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
           </TouchableOpacity>}
@@ -220,7 +220,7 @@ export default function MyPostList({navigation, route}: Props) {
           {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}
         </View>
       </View>}
-      {deleteModalVisible && deleteButtonEnabled && (
+      {deleteModalVisible && (
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
