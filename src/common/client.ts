@@ -19,7 +19,7 @@ const addRefreshSubscriber = (callback: any) => {
 
 client.interceptors.request.use(async (request: any) => {
   const accessToken = await AsyncStorage.getItem('accessToken');
-  console.log(accessToken)
+  // console.log(accessToken)
   request.headers.Authorization =  accessToken ? `Bearer ${accessToken}` : '';
   return request;
 });
@@ -31,6 +31,11 @@ client.interceptors.response.use(
   async (error) => {
     const {config, response: { status }} = error;
     const originalRequest = config;
+    if (error.response.status === 500 && originalRequest.url === '/auth/reissue-token') {
+      // 리프레시 토큰마저 만료됐으면 로그인 화면으로 이동시키기
+      await AsyncStorage.setItem('accessToken', '');
+      return Promise.reject(error);
+  }
     if (status === 401 && error.response.data.code === 'INVALID_AUTH_TOKEN') {
       if (!isRefreshing) {
         isRefreshing = true;
