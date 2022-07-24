@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, ActivityIndicator, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MyPostItem from '../../components/MyPostItem';
 import { deleteMyComments, getMyCommentList } from '../../common/boardApi';
-import { MyPostContentDto } from '../../classes/board/MyPostDto';
 import MyCommentDto from '../../classes/MyCommentDto';
 import MyCommentItem from '../../components/MyCommentItem';
 import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
