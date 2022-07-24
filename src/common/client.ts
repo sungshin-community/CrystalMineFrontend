@@ -50,7 +50,7 @@ client.interceptors.response.use(
       const retryOriginalRequest = new Promise((resolve) => {
         addRefreshSubscriber((accessToken: string) => {
           originalRequest.headers.Authorization = "Bearer " + accessToken;
-          resolve(client(originalRequest));
+          return resolve(client(originalRequest));
         });
       });
       return retryOriginalRequest;
