@@ -25,7 +25,7 @@ import {
   toggleBoardPin,
 } from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {getPosts} from '../../common/boardApi';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
@@ -48,6 +48,7 @@ type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
+  BoardSearch: {boardName: string}
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -158,11 +159,15 @@ const PostListScreen = ({navigation, route}: Props) => {
     });
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
+  const searchBtn = () => {
+    navigation.navigate('BoardSearch', { boardName: boardInfo.name })
+  }
+
   const handleBoardSearchComponent = (
     <TouchableHighlight
       style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
       underlayColor='#EEEEEE'
-      onPress={() => console.log('search icon click')}>
+      onPress={searchBtn}>
       <SearchIcon />
     </TouchableHighlight>
   );

@@ -67,6 +67,7 @@ import QuitPassword from './src/screens/mypage/informationUse/quitMembership/Qui
 import QuitComplete from './src/screens/mypage/informationUse/quitMembership/QuitComplete';
 import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
+import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
 
 const Stack = createNativeStackNavigator();
 
@@ -582,6 +583,7 @@ const App = () => {
               />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
+              <Stack.Screen name="SearchResultInBoard" component={SearchResultInBoard} />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
@@ -1685,6 +1687,7 @@ const App = () => {
               />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
+              <Stack.Screen name="SearchResultInBoard" component={SearchResultInBoard} />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}

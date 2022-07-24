@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import PostSearchResult from './PostSearchResult';
 import {Dimensions} from 'react-native';
-import BoardSearchResult from './BoardSearchResult';
-import TagSearchResult from './TagSearchResult';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SearchInput from '../../components/SearchInput';
 import SearchCancelButton from '../../components/SearchCancelButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
+import PostSearchResult from '../board/PostSearchResult';
+import TagSearchResult from '../board/TagSearchResult';
 
 type RootStackParamList = {
   BoardSearch: undefined;
@@ -16,22 +15,18 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
 
-function SearchResult({navigation, route}: Props) {
+function SearchResultInBoard({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
   const [wordList, setWordList] = useState<string[]>([]);
-  const [boardResultData, setBoardResultData] = useState();
   const [postResultData, setPostResultData] = useState();
 
   useEffect(() => {
     async function loadRecentSearch() {
       try {
         // TODO: 페이지네이션, 정렬 기능 추가
-        const boardResult = await getBoardSearch(searchWord);
         const postResult = await getPostSearch(searchWord);
-        setBoardResultData(boardResult);
         setPostResultData(postResult);
-        console.log('tab page', postResult);
-        
+
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
@@ -59,6 +54,7 @@ function SearchResult({navigation, route}: Props) {
         <SearchInput
           setSearchWord={setSearchWord}
           startSearching={startSearching}
+          boardName={route.params.boardName}
         />
       ),
       headerRight: (): React.ReactNode => (
@@ -84,7 +80,7 @@ function SearchResult({navigation, route}: Props) {
           width: 24,
           bottom: -4,
           borderRadius: 10,
-          marginHorizontal: 53,
+          marginHorizontal: 85,
         },
         tabBarShowLabel: true,
         tabBarLabelStyle: {
@@ -102,13 +98,9 @@ function SearchResult({navigation, route}: Props) {
         name="게시글"
         children={() => <PostSearchResult data={postResultData} />}
       />
-      <Tab.Screen
-        name="게시판 이름"
-        children={() => <BoardSearchResult data={boardResultData} />}
-      />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>
   );
 }
 
-export default SearchResult;
+export default SearchResultInBoard;
