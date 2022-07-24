@@ -197,21 +197,20 @@ export default function ScrapedPostList({navigation}: Props) {
         <ModalBottom
           modalVisible={deleteModalVisible}
           setModalVisible={setDeleteModalVisible}
-          modalText="선택하신 게시글을 삭제하시겠습니까?"
-          modalButtonText="삭제"
-          modalSecondButtonText='취소'
-          modalButton
-          modalButtonFunc={async () => {
+          content={"선택하신 게시글을 내가 스크랩한 글에서\n삭제하시겠습니까?"}
+          purpleButtonText="삭제"
+          whiteButtonText='취소'
+          purpleButtonFunc={async () => {
             setIsLoading(true);
             await cancelScrapedPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getScrapedPostList(currentPage);
             setMyPostList(postList);
-            Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.LONG);
+            Toast.show("스크랩한 게시글이 성공적으로 삭제되었습니다", Toast.LONG);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);
           }}
-          modalSecondButtonFunc={() => {
+          whiteButtonFunc={() => {
             setDeleteModalVisible(false);
           }}
         />
