@@ -9,11 +9,12 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
 import QuestionMark from '../../../resources/icon/QuestionMark';
-import {changeProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
+import {setDefaultProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -67,14 +68,23 @@ const MyPageFragment = ({navigation}: Props) => {
   const [allowMessage, setAllowMessage] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
+  const [isInited, setIsInited] = useState<boolean>(false);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     async function getUserInfo() {
+      if (!isInited) {
+        setIsLoading(true);
+      }
       const userDto = await getUser();
       setUser(userDto);
+      if (!isInited) {
+        setIsLoading(false);
+        setIsInited(true);
+      }
     }
     if (isFocused) {
       getUserInfo();
@@ -83,6 +93,9 @@ const MyPageFragment = ({navigation}: Props) => {
 
   return (
     <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
+      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      </View>
       <ScrollView>
         <View>
           <View
@@ -404,7 +417,7 @@ const MyPageFragment = ({navigation}: Props) => {
           }}
           whiteButtonText="기본 이미지로 변경"
           whiteButtonFunc={async () => {
-            let response = await changeProfileImage('');
+            let response = await setDefaultProfileImage();
             setUser(response.data.data);
             setProfileModalVisible(false);
             Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);

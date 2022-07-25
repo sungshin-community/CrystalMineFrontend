@@ -1,42 +1,33 @@
 import React from 'react';
 import {
-  FlatList,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View,
 } from 'react-native';
-import {ContentPreviewDto} from '../../classes/BoardDetailDto';
-import {fontRegular} from '../../common/font';
+import { fontRegular } from '../../common/font';
 import PostItem from '../../components/PostItem';
 
-function PostSearchResult({data}) {
+function PostSearchResult({ data }: any) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.noResult}>
-        {console.log('PostSearchResult data : ', data)}
-        {typeof data === undefined ? (
-          data?.totalElements === 0 ? (
-            <Text style={[fontRegular, styles.noResultText]}>
-              요청하신 검색어에 대한 검색 결과가 없습니다.
-            </Text>
-          ) : (
-            <ScrollView>
-              <PostItem post={data} />
-            </ScrollView>
-          )
-        ) : (
+        {data ? data.totalElements === 0 ? (
           <Text style={[fontRegular, styles.noResultText]}>
             요청하신 검색어에 대한 검색 결과가 없습니다.
           </Text>
-        )}
+        ) : (
+          <ScrollView>
+            <PostItem post={data} />
+          </ScrollView>
+        ) : null
+        }
       </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView >
   );
 }
 

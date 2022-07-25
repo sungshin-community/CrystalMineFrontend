@@ -31,9 +31,9 @@ export default function BoardFragment({navigation}: Props) {
   const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
   const [departmentBoardList, setDepartmentBoardList] = useState<Board[]>([]);
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const isFocused = useIsFocused();
-  const [isInited, setIsInited] = useState<Boolean>(false);
+  const [isInited, setIsInited] = useState<boolean>(false);
 
   const updateOfficialBoardList = async () => {
     const officialBoardList = await getOfficialBoardList();
@@ -107,7 +107,7 @@ export default function BoardFragment({navigation}: Props) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-       <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
       <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <View

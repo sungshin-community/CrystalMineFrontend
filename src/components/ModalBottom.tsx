@@ -57,7 +57,7 @@ export const ModalBottom = ({
                     {title}
                   </Text>
                 )}
-                {content && <Text style={[fontRegular, {textAlign: isContentCenter ? 'center' : 'left', fontSize: 13}]}>{content}</Text>}
+                {content && <Text style={[fontRegular, {textAlign: isContentCenter ? 'center' : 'left', fontSize: 15}]}>{content}</Text>}
               </View>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose, {marginTop: content ? 20 : 0}]}

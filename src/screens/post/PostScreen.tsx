@@ -36,7 +36,6 @@ const PostScreen = ({navigation, route}: Props) => {
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const [parentId, setParentId] = useState<number>();
   const [newComment, setNewComment] = useState<string>('');
-  const inputRef = useRef(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -183,7 +182,6 @@ const PostScreen = ({navigation, route}: Props) => {
                   handleCommentLike={handleCommentLike}
                   isRecomment={isRecomment}
                   setIsRecomment={setIsRecomment}
-                  inputRef={inputRef}
                   handleCommentDelete={handleCommentDelete}
                   handleCommentReport={handleCommentReport}
                 />
@@ -211,7 +209,6 @@ const PostScreen = ({navigation, route}: Props) => {
             onClickAddRecomment={addRecommentFunc}
             content={newComment}
             setContent={setNewComment}
-            inputRef={inputRef}
           />
         </View>
       </KeyboardAvoidingView>

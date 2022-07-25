@@ -178,7 +178,7 @@ export async function deleteMyPosts(postIds: number[]) {
 export async function deleteMyComments(commendIds: number[]) {
   try {
     const commendIdListStr = commendIds.join(",");
-    const response = await client.patch<AxiosResponse>(
+    const response = await client.delete<AxiosResponse>(
       `/comments/${commendIdListStr}`
     );
     console.log(response.data.data);
@@ -192,7 +192,7 @@ export async function cancelScrapedPosts(postIds: number[]) {
   try {
     const postIdListStr = postIds.join(",");
     const response = await client.delete<AxiosResponse>(
-      `/scrap/${postIdListStr}`
+      `/posts/scrap/${postIdListStr}`
     );
     console.log(response.data.data);
     return response.data;

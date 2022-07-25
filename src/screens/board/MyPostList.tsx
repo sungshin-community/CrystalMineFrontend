@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
+import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, TouchableHighlightBase, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MyPostItem from '../../components/MyPostItem';
 import { deleteMyPosts, getMyPostList } from '../../common/boardApi';
@@ -25,7 +25,7 @@ export default function MyPostList({navigation, route}: Props) {
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
 
@@ -49,20 +49,22 @@ export default function MyPostList({navigation, route}: Props) {
       headerRight: () => deleteMode ? 
         <>
           <TouchableOpacity
-            onPress={() => {setDeleteModalVisible(true)}}
+            onPress={() => {if (myPostList.filter(p => p.isChecked).length > 0) {setDeleteModalVisible(true)}}}
             hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
           >
             <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          <TouchableHighlight
+            style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+            underlayColor='#EEEEEE'
             onPress={() => {
               setDeleteMode(false);
               const tempList = myPostList.map(p => ({...p, isChecked: false}));
               setMyPostList(tempList);
             }}
           >
-            <CancelButton color='#333D4B' style={{marginLeft: 8}} />
-          </TouchableOpacity>
+            <CancelButton color='#333D4B' />
+          </TouchableHighlight>
           
         </>
         : 
@@ -82,7 +84,7 @@ export default function MyPostList({navigation, route}: Props) {
     } else {
       setDeleteButtonEnabled(false);
     }
-    const isAllChecked = myPostList.filter(c => !c.isChecked).length === 0;
+    const isAllChecked = myPostList.filter(p => !p.isChecked).length === 0;
     setIsCheckedAll(isAllChecked);
 
   }, [myPostList]);
@@ -99,21 +101,24 @@ export default function MyPostList({navigation, route}: Props) {
   }, [sortBy]);
 
   const handleBoardSearchComponent = (
-    <View style={{marginRight: 4}}>
-      <Pressable hitSlop={5} onPress={() => console.log('search icon click')}>
-        <SearchIcon />
-      </Pressable>
-    </View>
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
+      onPress={() => console.log('search icon click')}>
+      <SearchIcon />
+    </TouchableHighlight>
   );
 
   const handleDeleteComponent = (
-    <TouchableOpacity
+    <TouchableHighlight
+      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+      underlayColor='#EEEEEE'
       onPress={() => {
         setDeleteMode(true);
       }}
-      hitSlop={{top: 5, bottom: 5, left: 5, right: 5}}>
+    >
       <TrashIcon />
-    </TouchableOpacity>
+    </TouchableHighlight>
   );
 
   const handleRefresh = async () => {
@@ -188,7 +193,7 @@ export default function MyPostList({navigation, route}: Props) {
               alignItems: 'center',
               paddingRight: 27}}>
             <Text style={{marginRight: 9, fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Medium'}}>
-              {`${myPostList.filter(c => c.isChecked).length}/${myPostList.length}`}
+              {`${myPostList.filter(p => p.isChecked).length}/${myPostList.length}`}
             </Text>
             {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
           </TouchableOpacity>}

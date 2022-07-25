@@ -12,10 +12,10 @@ import SearchIcon from '../../resources/icon/SearchIcon';
 interface Props {
   setSearchWord: (value: any) => void;
   startSearching: () => void;
-  value: string;
+  boardName?: string;
 }
 
-function SearchInput({setSearchWord, startSearching, value}: Props) {
+function SearchInput({ setSearchWord, startSearching, boardName }: Props) {
   const searchingWord = (word: any) => {
     setSearchWord(word);
   };
@@ -24,14 +24,13 @@ function SearchInput({setSearchWord, startSearching, value}: Props) {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="전체 게시판에서 검색"
+        placeholder={boardName ? `[${boardName.substring(0, 5)}...] 게시판에서 검색` : "전체 게시판에서 검색"}
         placeholderTextColor="#898989"
         returnKeyType="search"
         onChangeText={(word: any) => searchingWord(word)}
         autoCorrect={false}
         autoCapitalize="none"
         onSubmitEditing={startSearching}
-        value={value}
         keyboardType="default"
         enablesReturnKeyAutomatically
       />
