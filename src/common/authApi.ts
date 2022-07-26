@@ -35,24 +35,10 @@ export const checkEmailConflict = async (studentId: string) => {
       '/auth/check-username/' + studentId,
     );
     if (response.status === 200) {
-      return true;
+      return response.data.code;
     }
   } catch (error) {
-    return false;
-  }
-  return false;
-};
-
-export const checkBlackList = async (studentId: string) => {
-  try {
-    const response = await client.get<AxiosResponse>(
-      '/auth/check-blacklist/' + studentId,
-    );
-    if (response.status === 200) {
-      return true;
-    }
-  } catch (error) {
-    return false;
+    return error.message;
   }
   return false;
 };
