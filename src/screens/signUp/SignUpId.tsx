@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -17,8 +17,8 @@ import {
   Pressable,
 } from 'react-native';
 
-import {NormalOneLineText, Description} from '../../components/Top';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { NormalOneLineText, Description } from '../../components/Top';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import {
   DisabledPurpleRoundButton,
@@ -26,10 +26,10 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {ModalBottom} from '../../components/ModalBottom';
-import {checkEmailConflict, checkBlackList} from '../../common/authApi';
-import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
-import {fontRegular} from '../../common/font';
+import { ModalBottom } from '../../components/ModalBottom';
+import { checkEmailConflict, checkBlackList } from '../../common/authApi';
+import { SignUpQuestionMark } from '../../../resources/icon/QuestionMark';
+import { fontRegular } from '../../common/font';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  SignUpPassword: {userId: string; agreementIds: number[]};
+  SignUpPassword: { userId: string; agreementIds: number[] };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpId({navigation, route}: Props) {
+export default function SignUpId({ navigation, route }: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
@@ -152,8 +152,8 @@ export default function SignUpId({navigation, route}: Props) {
           </Text>
         </View>
       </View>
-      <View style={[styles.paragraph, {marginTop: 8, marginBottom: 0}]}>
-        <View style={{marginLeft: 5, marginRight: 13, paddingTop: 3}}>
+      <View style={[styles.paragraph, { marginTop: 8, marginBottom: 0 }]}>
+        <View style={{ marginLeft: 5, marginRight: 13, paddingTop: 3 }}>
           <Text style={[fontRegular, styles.greyText]}>*</Text>
         </View>
         <View>
@@ -186,7 +186,7 @@ export default function SignUpId({navigation, route}: Props) {
       <KeyboardAvoidingView
         keyboardVerticalOffset={10}
         behavior={'padding'}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}>
         <View
           style={{
             width: (Dimensions.get('window').width / 7) * 2,
@@ -198,14 +198,14 @@ export default function SignUpId({navigation, route}: Props) {
           <ScrollView
             scrollEnabled={false}
             keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: '#fff'}}>
+            style={{ backgroundColor: '#fff' }}>
             <TextContainer>
               <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Description style={{marginRight: 5.5}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Description style={{ marginRight: 5.5 }}>
                   학교에서 제공하는 성신 G-mail 계정을 사용합니다
                 </Description>
-                <Pressable onPress={()=>setModalVisible(true) }>
+                <Pressable onPress={() => setModalVisible(true)}>
                   <SignUpQuestionMark />
                 </Pressable>
                 <ModalBottom
@@ -233,8 +233,8 @@ export default function SignUpId({navigation, route}: Props) {
                       isDuplicate || isBlackList
                         ? '#ff0000'
                         : isFocused
-                        ? '#A055FF'
-                        : '#D7DCE6',
+                          ? '#A055FF'
+                          : '#D7DCE6',
                   },
                 ]}>
                 <TextInput
@@ -268,7 +268,7 @@ export default function SignUpId({navigation, route}: Props) {
               )}
               {isBlackList && (
                 <Text style={styles.errorMessage}>
-                  가입이 불가능한 계정입니다.
+                  가입이 불가능하거나 접근할 수 없는 계정입니다.
                 </Text>
               )}
             </View>
@@ -283,15 +283,13 @@ export default function SignUpId({navigation, route}: Props) {
               <PurpleFullButton
                 text="다음"
                 onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  let resultBlackList: boolean = await checkBlackList(
-                    studentId,
-                  );
-                  if (!result) {
+                  let result: string = await checkEmailConflict(studentId);
+                  if (result === 'Request failed with status code 409') {
                     setIsDuplicate(true);
                     return;
-                  } else if (!resultBlackList) {
+                  } else if (result === 'Request failed with status code 403') {
                     setIsBlackList(true);
+                    return;
                   }
                   navigation.navigate('SignUpPassword', {
                     userId: studentId,
@@ -305,15 +303,13 @@ export default function SignUpId({navigation, route}: Props) {
               <PurpleRoundButton
                 text="다음"
                 onClick={async () => {
-                  let result: boolean = await checkEmailConflict(studentId);
-                  let resultBlackList: boolean = await checkBlackList(
-                    studentId,
-                  );
-                  if (!result) {
+                  let result: string = await checkEmailConflict(studentId);
+                  if (result === 'Request failed with status code 409') {
                     setIsDuplicate(true);
                     return;
-                  } else if (!resultBlackList) {
+                  } else if (result === 'Request failed with status code 403') {
                     setIsBlackList(true);
+                    return;
                   }
                   navigation.navigate('SignUpPassword', {
                     userId: studentId,
@@ -360,25 +356,25 @@ export default function SignUpId({navigation, route}: Props) {
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff'}}>
+          style={{ backgroundColor: '#fff' }}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Description style={{marginRight: 5.5}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Description style={{ marginRight: 5.5 }}>
                 학교에서 제공하는 성신 G-mail 계정을 사용합니다
               </Description>
-              <Pressable onPress={()=>setModalVisible(true) }>
-                  <SignUpQuestionMark />
-                </Pressable>
-                <ModalBottom
-                  modalVisible={modalVisible}
-                  setModalVisible={setModalVisible}
-                  title={`학교 G-mail 계정 생성 방법`}
-                  content={modalBody}
-                  isContentCenter={false}
-                  purpleButtonText="확인"
-                  purpleButtonFunc={() => setModalVisible(!modalVisible)}
-                />
+              <Pressable onPress={() => setModalVisible(true)}>
+                <SignUpQuestionMark />
+              </Pressable>
+              <ModalBottom
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                title={`학교 G-mail 계정 생성 방법`}
+                content={modalBody}
+                isContentCenter={false}
+                purpleButtonText="확인"
+                purpleButtonFunc={() => setModalVisible(!modalVisible)}
+              />
             </View>
           </TextContainer>
 
@@ -394,8 +390,8 @@ export default function SignUpId({navigation, route}: Props) {
                     isDuplicate || isBlackList
                       ? '#ff0000'
                       : isFocused
-                      ? '#A055FF'
-                      : '#D7DCE6',
+                        ? '#A055FF'
+                        : '#D7DCE6',
                 },
               ]}>
               <TextInput
@@ -444,13 +440,13 @@ export default function SignUpId({navigation, route}: Props) {
             <PurpleFullButton
               text="다음"
               onClick={async () => {
-                let result: boolean = await checkEmailConflict(studentId);
-                let resultBlackList: boolean = await checkBlackList(studentId);
-                if (!result) {
+                let result: string = await checkEmailConflict(studentId);
+                if (result === 'Request failed with status code 409') {
                   setIsDuplicate(true);
                   return;
-                } else if (!resultBlackList) {
+                } else if (result === 'Request failed with status code 403') {
                   setIsBlackList(true);
+                  return;
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
@@ -464,13 +460,13 @@ export default function SignUpId({navigation, route}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                let result: boolean = await checkEmailConflict(studentId);
-                let resultBlackList: boolean = await checkBlackList(studentId);
-                if (!result) {
+                let result: string = await checkEmailConflict(studentId);
+                if (result === 'Request failed with status code 409') {
                   setIsDuplicate(true);
                   return;
-                } else if (!resultBlackList) {
+                } else if (result === 'Request failed with status code 403') {
                   setIsBlackList(true);
+                  return;
                 }
                 navigation.navigate('SignUpPassword', {
                   userId: studentId,
