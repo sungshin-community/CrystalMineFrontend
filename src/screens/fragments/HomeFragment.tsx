@@ -43,6 +43,7 @@ type RootStackParamList = {
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
   Board: undefined;
+  InformationUse: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -337,6 +338,7 @@ const HomeFragment = ({navigation}: Props) => {
               {
                 user?.isAuthenticated
                   ? navigation.navigate('PostListScreen', {boardId: 1})
+                  // ? navigation.navigate('InformationUse')
                   : Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
             }}>
@@ -393,9 +395,8 @@ const HomeFragment = ({navigation}: Props) => {
           isContentCenter={false}
           purpleButtonText="서비스 이용 방향 보기"
           purpleButtonFunc={() => {
-            //TODO: 따로 제작해둔 화면으로 이동
             setBlacklistblindModalVisible(!blacklistblindModalVisible);
-            navigation.navigate('TermsOfService');
+            navigation.navigate('InformationUse');
           }}
           whiteButtonText="확인"
           whiteButtonFunc={() =>
