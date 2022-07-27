@@ -6,6 +6,7 @@ import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
 import { ContentPreviewDto } from '../classes/BoardDetailDto';
+import { fontMedium } from '../common/font';
 
 interface Props {
   post: ContentPreviewDto
@@ -22,7 +23,8 @@ function PostItem({post}: Props) {
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
-      <Text style={[styles.text, styles.content]}>{post.content}</Text>
+      {post.title && <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>{post.title}</Text>}
+      <Text numberOfLines={post.title ? 2 : 3} ellipsizeMode="tail" style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
         {post.isLiked ? <PostLike /> : <PostUnlike />}
         <Text style={[styles.textSmall, styles.iconCount]}>
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     color: '#949494',
   },
   content: {
-    marginBottom: 14,
+    marginBottom: 16,
     lineHeight: 22.5,
   },
   icon: {

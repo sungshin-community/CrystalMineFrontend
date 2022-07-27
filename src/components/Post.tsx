@@ -31,6 +31,7 @@ import NoReport, {Report} from '../../resources/icon/Report';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useEffect} from 'react';
 import {BackHandler} from 'react-native';
+import { fontMedium, fontRegular } from '../common/font';
 
 interface Props {
   post: any;
@@ -162,7 +163,7 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
               source={{uri: data?.profileImage}}
             />
             <View style={{justifyContent: 'center'}}>
-              <Text style={{fontSize: 16, paddingLeft: 8, fontWeight: `500`}}>
+              <Text style={[fontRegular,{fontSize: 16, paddingLeft: 8, fontWeight: `500`}]}>
                 {data?.displayName}
               </Text>
             </View>
@@ -176,10 +177,11 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
             />
           </View>
         </View>
+        {data.hasTitle && <Text style={[fontMedium, { fontSize: 17, marginTop: 12 }]}>{data.title}</Text>}
         <View style={styles.postBody}>
-          <Text>{data?.content}</Text>
+          <Text style={fontRegular}>{data?.content}</Text>
         </View>
-        <Text style={{color: '#949494', fontSize: 12, marginTop: 12}}>
+        <Text style={[fontRegular, {color: '#949494', fontSize: 12, marginTop: 12}]}>
           {data?.createdAt}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 16}}>
