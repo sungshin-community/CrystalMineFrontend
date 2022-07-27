@@ -316,7 +316,23 @@ const MyPageFragment = ({navigation}: Props) => {
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
-
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  수정광산 이용 방향
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
             <TouchableHighlight
               underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
               <View style={styles.menu}>
