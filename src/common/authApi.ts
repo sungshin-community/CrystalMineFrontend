@@ -12,6 +12,8 @@ import Response from '../classes/Response';
 import Agreement, {DirectionAgreement} from '../classes/Agreement';
 import TokenReissueDto from '../classes/TokenReissueDto';
 import User from '../classes/User';
+
+// 서비스 이용약관
 export const getAgreements = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/agreements/0');
@@ -20,6 +22,7 @@ export const getAgreements = async () => {
     return [];
   }
 }
+// 서비스 이용 방향
 export const getDirectionAgreements = async () => {
   try {
     const response = await client.get<Response<DirectionAgreement[]>>('/contract/directions');

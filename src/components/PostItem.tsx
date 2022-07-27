@@ -15,7 +15,7 @@ function PostItem({post}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image style={{ width: 24, height: 24, borderRadius: 12 }}
             source={{uri: post.profileImage}}/>
           <Text style={styles.name}>{post.displayName}</Text>

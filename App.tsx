@@ -58,6 +58,7 @@ import OpenSourceLicense from './src/screens/mypage/informationUse/OpenSourceLic
 import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrictions';
 import QuestionList from './src/screens/mypage/QuestionList';
 import QuestionWriteScreen from './src/screens/mypage/QuestionWriteScreen';
+import InformationUse from './src/screens/mypage/blindMemberAccess/InformationUse';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -123,29 +124,40 @@ const App = () => {
               <Stack.Screen
                 name="TermAgree"
                 component={TermAgree}
-                options={({ navigation }) => ({
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -159,24 +171,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -190,24 +213,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -221,24 +255,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -252,24 +297,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -283,24 +339,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -347,12 +414,17 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -366,12 +438,17 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -385,24 +462,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -416,24 +504,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -447,24 +546,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -478,24 +588,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -521,13 +642,19 @@ const App = () => {
                   },
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -546,12 +673,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -570,12 +702,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -583,19 +720,27 @@ const App = () => {
               />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
-              <Stack.Screen name="SearchResultInBoard" component={SearchResultInBoard} />
+              <Stack.Screen
+                name="SearchResultInBoard"
+                component={SearchResultInBoard}
+              />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
                 options={({navigation}) => ({
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -614,12 +759,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -638,12 +788,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -662,12 +817,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -686,12 +846,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -709,12 +874,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -736,12 +906,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -760,12 +935,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -784,12 +964,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -803,28 +988,37 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
                         <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
-                      <CloseButtonIcon />
-                    </TouchableHighlight>
-
-                      }
-                    >
+                          underlayColor="#EEEEEE"
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 20,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onPress={() => (
+                            <CloseButtonIcon
+                              onPress={() => navigation.popToTop()}
+                            />
+                          )}>
+                          <CloseButtonIcon />
+                        </TouchableHighlight>
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
                 })}
               />
-
               {/* 마이페이지 - 비밀번호 재설정 */}
               <Stack.Screen
                 name="InputPassword"
@@ -834,24 +1028,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -865,24 +1070,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -896,24 +1112,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -928,12 +1155,17 @@ const App = () => {
                   title: '',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -947,12 +1179,17 @@ const App = () => {
                   title: '',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -972,12 +1209,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -996,12 +1238,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1020,12 +1267,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1044,12 +1296,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1068,12 +1325,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1092,12 +1354,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1116,12 +1383,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1140,12 +1412,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1172,12 +1449,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1196,12 +1478,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1229,24 +1516,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1260,24 +1558,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1291,24 +1600,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1322,24 +1642,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1353,24 +1684,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1384,24 +1726,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1418,11 +1771,13 @@ const App = () => {
               <Stack.Screen
                 name="DirectionAgree"
                 component={DirectionAgree}
-                  options={({ navigation }) => ({
-                    title: '',
-                    animation: 'slide_from_right',
-                    headerRight: () => (
-                      <CloseButtonIcon onPress={() => navigation.navigate('GlobalNavbar')} />
+                options={({navigation}) => ({
+                  title: '',
+                  animation: 'slide_from_right',
+                  headerRight: () => (
+                    <CloseButtonIcon
+                      onPress={() => navigation.navigate('GlobalNavbar')}
+                    />
                   ),
                 })}
               />
@@ -1451,12 +1806,17 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1470,12 +1830,17 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1489,24 +1854,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1520,24 +1896,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1551,24 +1938,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1582,24 +1980,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1625,13 +2034,19 @@ const App = () => {
                   },
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1650,12 +2065,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1674,12 +2094,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1687,19 +2112,27 @@ const App = () => {
               />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
-              <Stack.Screen name="SearchResultInBoard" component={SearchResultInBoard} />
+              <Stack.Screen
+                name="SearchResultInBoard"
+                component={SearchResultInBoard}
+              />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
                 options={({navigation}) => ({
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1718,12 +2151,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1742,12 +2180,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1766,12 +2209,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1790,12 +2238,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1813,12 +2266,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1840,12 +2298,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1864,12 +2327,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1888,12 +2356,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1907,13 +2380,45 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              {/* 이용제한 사용자가 볼 수정광산 이용안내 */}
+              <Stack.Screen
+                name="InformationUse"
+                component={InformationUse}
+                options={({navigation}) => ({
+                  title: '수정광산 이용안내',
+                  headerTitleAlign: 'center',
+                  animation: 'slide_from_right',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon onPress={() => navigation.goBack()} />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1928,24 +2433,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1959,24 +2475,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1990,24 +2517,35 @@ const App = () => {
                   animation: 'slide_from_right',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
                   headerRight: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-                      onPress={() =>
-                        <CloseButtonIcon onPress={() => navigation.popToTop()} />
-
-                      }
-                    >
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => (
+                        <CloseButtonIcon
+                          onPress={() => navigation.popToTop()}
+                        />
+                      )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2022,12 +2560,17 @@ const App = () => {
                   title: '',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2041,12 +2584,17 @@ const App = () => {
                   title: '',
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2066,12 +2614,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2090,12 +2643,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2114,12 +2672,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2138,12 +2701,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2162,12 +2730,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2186,12 +2759,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2210,12 +2788,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2234,12 +2817,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2266,12 +2854,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2290,12 +2883,17 @@ const App = () => {
                   },
                   headerLeft: () => (
                     <TouchableHighlight
-                      underlayColor='#EEEEEE'
-                      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
-                      }
-                    >
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),

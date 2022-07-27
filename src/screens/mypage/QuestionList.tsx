@@ -61,7 +61,6 @@ function QuestionList({navigation, route}: Props) {
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  //
   const isFocused = useIsFocused();
   const handleDeleteComponent = (
     <View style={{marginRight: 10}}>
@@ -374,7 +373,6 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [data, setData] = useState<QuestionDto>();
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
-
   const getQuestionFunc = async (id: number) => {
     const result: QuestionDto = await getQuestion(id);
     setData(result);
@@ -384,7 +382,8 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
       setIsPhotoVisible(false);
     }
   };
-
+  
+  console.log(data)
   return (
     <>
       <TouchableWithoutFeedback
