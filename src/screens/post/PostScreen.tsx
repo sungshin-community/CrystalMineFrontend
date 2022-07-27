@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {
   StyleSheet,
+  Text,
   View,
   Image,
   TouchableOpacity,
@@ -27,6 +28,7 @@ import {addComment, addRecomment, reportComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
 import {setCommentLike} from '../../common/boardApi';
+import {fontMedium} from '../../common/font';
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -39,15 +41,22 @@ const PostScreen = ({navigation, route}: Props) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: post?.boardName,
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
-      headerTitleStyle: {
-        fontSize: post &&  post?.boardName.length <= 10? 19: 17,
-        fontFamily: 'SpoqaHanSansNeo-Medium',
-      },
+      headerTitle: () => <HeaderTitle />,
     });
   }, [navigation, post?.boardName]);
+
+  const HeaderTitle = () => {
+    return (
+      <View style={{flexDirection: 'row'}}>
+          <Text style={[fontMedium, {width: 100, fontSize: 17}]} ellipsizeMode={'tail'} numberOfLines={1}>
+            [{post?.boardName}
+          </Text>
+        <Text style={[fontMedium, { fontSize: 17 }]}>]의 게시글</Text>
+      </View>
+    );
+  };
 
   // 초기화
   useEffect(() => {
@@ -171,8 +180,7 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
             handlePostDelete={handlePostDelete}
-            handlePostReport={handlePostReport}
-          ></Post>
+            handlePostReport={handlePostReport}></Post>
           <View style={{flex: 1}}>
             {comments?.map((comment, index) => (
               <View key={index}>

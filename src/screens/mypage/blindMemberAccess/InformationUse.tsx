@@ -21,7 +21,7 @@ function InformationUse() {
        setTermService(term);
      }
     getInfo();
-  })
+  },[])
   return (
     <Tab.Navigator
       screenOptions={{

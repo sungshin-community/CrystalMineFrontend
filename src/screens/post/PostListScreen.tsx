@@ -31,7 +31,7 @@ import {getPosts} from '../../common/boardApi';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
-import {fontRegular} from '../../common/font';
+import {fontMedium, fontRegular} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {
@@ -122,7 +122,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         </Pressable>
         <Text
           style={[
-            fontRegular,
+            fontMedium,
             {
               marginLeft: 8,
               fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
