@@ -58,9 +58,6 @@ function ListScreen({navigation}: Props) {
             </View>
           </View>
         </Pressable>
-      </View>
-      <View style={{ padding: 8 }}/>
-      <View style={styles.menuContainer}>
         <Pressable hitSlop={{ top: 16 }}
           onPress={() => navigation.navigate('UsageRestrictions')}>
           <View style={styles.menu}>
@@ -70,6 +67,9 @@ function ListScreen({navigation}: Props) {
             </View>
           </View>
         </Pressable>
+      </View>
+      <View style={{ padding: 8 }}/>
+      <View style={styles.menuContainer}>
         <Pressable
           hitSlop={{bottom: 16}}
           onPress={() => navigation.navigate('QuitTermAgree')}>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingLeft: 32,
   },
-  menuContainer: {paddingVertical: 16, backgroundColor: 'white'},
+  menuContainer: {paddingVertical: 12, backgroundColor: 'white'},
   menuIcon: {
     flexDirection: 'row',
     flex: 1,
