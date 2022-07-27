@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, Pressable, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Pressable, View, Image, ScrollView, Modal} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import {NoticeDto} from '../../../classes/mypage/NoticeDto';
 import {getNotice} from '../../../common/myPageApi';
 import PostItem from '../../../components/PostItem';
+import ImageViewer from 'react-native-image-zoom-viewer';
+
 type RootStackParamList = {
   Notice: undefined;
 };
@@ -12,6 +14,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 function Notice({navigation, route}: Props) {
   const [data, setData] = useState<NoticeDto>();
+  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
 
   useEffect(() => {
     async function getData() {
@@ -21,6 +24,11 @@ function Notice({navigation, route}: Props) {
     }
     getData();
   }, []);
+    const closePhotoModal = () => {
+    if (isPhotoVisible) {
+      setIsPhotoVisible(false);
+    }
+  };
   return (
     <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
       <View style={styles.container}>
@@ -41,7 +49,35 @@ function Notice({navigation, route}: Props) {
               {color: '#ADB3BC', fontSize: 12, marginTop: 12},
             ]}>
             {data?.createdAt}
-          </Text>
+        </Text>
+        {data?.images.length !== 0 &&
+            <View style={{ flexDirection: 'row', marginTop: 16 }}>
+                <ScrollView horizontal={true}>
+                  {data?.images.map((url, index) => (
+                    <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
+                      <Image
+                        style={{
+                          width: 120,
+                          height: 120,
+                          borderRadius: 10,
+                          marginRight: 16,
+                        }}
+                        source={{ uri: url.url }}
+                      />
+                    </Pressable>
+                  ))}
+                  <Modal
+                    visible={isPhotoVisible}
+                    transparent={true}
+                    onRequestClose={closePhotoModal}>
+                    {data && <ImageViewer
+                      imageUrls={data.images}
+                      onCancel={() => closePhotoModal()}
+                      enableSwipeDown
+                    />}
+                  </Modal>
+                </ScrollView>
+        </View>}
       </View>
     </SafeAreaView>
   );
