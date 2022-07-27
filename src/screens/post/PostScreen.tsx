@@ -50,10 +50,9 @@ const PostScreen = ({navigation, route}: Props) => {
   const HeaderTitle = () => {
     return (
       <View style={{flexDirection: 'row'}}>
-          <Text style={[fontMedium, {width: 100, fontSize: 17}]} ellipsizeMode={'tail'} numberOfLines={1}>
-            [{post?.boardName}
+          <Text style={[fontMedium, {fontSize: 17}]} numberOfLines={1}>
+            [{post && post?.boardName.length <= 5 ? post?.boardName : post?.boardName.substr(0, 5).concat('...')}]의 게시글
           </Text>
-        <Text style={[fontMedium, { fontSize: 17 }]}>]의 게시글</Text>
       </View>
     );
   };

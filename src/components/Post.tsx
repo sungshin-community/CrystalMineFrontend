@@ -177,42 +177,42 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
             />
           </View>
         </View>
-        {data.hasTitle && <Text style={[fontMedium, { fontSize: 17, marginTop: 12 }]}>{data.title}</Text>}
+        {data && data.hasTitle && <Text style={[fontMedium, { fontSize: 17, marginTop: 12 }]}>{data.title}</Text>}
         <View style={styles.postBody}>
           <Text style={fontRegular}>{data?.content}</Text>
         </View>
         <Text style={[fontRegular, {color: '#949494', fontSize: 12, marginTop: 12}]}>
           {data?.createdAt}
         </Text>
-        <View style={{flexDirection: 'row', marginTop: 16}}>
-          <ScrollView horizontal={true}>
-            {data?.thumbnails.map((url, index) => (
-              <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
-                <Image
-                  style={{
-                    width: 120,
-                    height: 120,
-                    borderRadius: 10,
-                    marginRight: 16,
-                  }}
-                  source={{uri: url}}
-                />
-              </Pressable>
-            ))}
-            <Modal
-              visible={isPhotoVisible}
-              transparent={true}
-              onRequestClose={closePhotoModal}>
-              {data &&  <ImageViewer
-                imageUrls={imgUrlCoverting(data?.images)}
-                onCancel={() => closePhotoModal()}
-                enableSwipeDown
-              /> }
-            </Modal>
-          </ScrollView>
-        </View>
+          <View style={{ flexDirection: 'row', marginTop: 16 }}>
+            <ScrollView horizontal={true}>
+              {data?.thumbnails.map((url, index) => (
+                <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
+                  <Image
+                    style={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: 10,
+                      marginRight: 16,
+                    }}
+                    source={{ uri: url }}
+                  />
+                </Pressable>
+              ))}
+              <Modal
+                visible={isPhotoVisible}
+                transparent={true}
+                onRequestClose={closePhotoModal}>
+                {data && <ImageViewer
+                  imageUrls={imgUrlCoverting(data?.images)}
+                  onCancel={() => closePhotoModal()}
+                  enableSwipeDown
+                />}
+              </Modal>
+            </ScrollView>
+          </View>
         <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 22}}>
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
           <Pressable
             hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
             onPress={() => handlePostLike(data.postId)}>
