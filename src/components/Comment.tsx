@@ -148,7 +148,7 @@ const Comment = ({
             marginVertical: 15,
             justifyContent: 'space-between',
           }}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
