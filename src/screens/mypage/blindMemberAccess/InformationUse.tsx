@@ -36,6 +36,7 @@ function InformationUse() {
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 5},
           shadowRadius: 20,
+          margin: 0
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#A055FF',
@@ -75,7 +76,7 @@ function InformationUse() {
         )}
       />
       <Tab.Screen
-        name="개인정보 처리방침"
+        name={`개인정보\n처리방침`}
         children={() => (
           <View style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
               <Markdown>{agreements ? agreements?.agreement[1].content: ''}</Markdown>
