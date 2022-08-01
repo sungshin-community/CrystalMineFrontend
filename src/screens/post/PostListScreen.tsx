@@ -333,18 +333,19 @@ const PostListScreen = ({navigation, route}: Props) => {
             onEndReachedThreshold={0.8}
           />
         )}
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.touchableOpacityStyle}>
-          <FloatingWriteButton
-            onPress={() =>
-              navigation.navigate('PostWriteScreen', {
-                boardId: route.params.boardId,
-              })
-            }
-            style={styles.floatingButtonStyle}
-          />
-        </TouchableOpacity>
+        {boardInfo?.id !== 1 &&
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.touchableOpacityStyle}>
+            <FloatingWriteButton
+              onPress={() =>
+                navigation.navigate('PostWriteScreen', {
+                  boardId: route.params.boardId,
+                })
+              }
+              style={styles.floatingButtonStyle}
+            />
+          </TouchableOpacity>}
       </View>
     </>
   );
