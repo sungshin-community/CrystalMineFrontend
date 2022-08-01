@@ -2447,7 +2447,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() => (
-                        <CloseButtonIcon onPress={() => navigation.goBack()} />
+                        <CloseButtonIcon onPress={() =>  navigation.goBack()} />
                       )}>
                       <CloseButtonIcon />
                     </TouchableHighlight>

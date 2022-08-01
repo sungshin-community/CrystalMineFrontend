@@ -17,7 +17,7 @@ export const DirectionAgreeScreen = () => {
   }, [])
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingVertical: 16 }}>
+    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingVertical: 20 }}>
       <Markdown>
         {data?.direction[0].content ? data?.direction[0].content : ""}
       </Markdown>
