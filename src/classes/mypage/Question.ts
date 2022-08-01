@@ -12,7 +12,8 @@ export interface QuestionDto {
   status: boolean;
   title: string;
   content: string;
-  images: Images[];
+  images: string[];
+  thumbnails: string[];
   createdAt: string;
   answer: Answer;
   // isChecked: boolean;
