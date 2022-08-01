@@ -37,19 +37,12 @@ interface ImageResponse {
 function RequestWriteScreen({navigation}: Props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  //임시
-  const [images, setImages] = useState<string[]>([]);
-
-  const [imageResponse, setImageResponse] = useState<ImageResponse[]>([]);
+  const [imageResponse, setImageResponse] = useState<any>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onSubmitPress = async () => {
-    console.log('title', title, 'content: ', content, 'images', images);
-    const result = await writeQuestion({
-      title: title,
-      content: content,
-      images: ['', ''],
-    });
+    console.log('title', title, 'content: ', content, 'images', imageResponse);
+    const result = await writeQuestion(title, content, imageResponse);
     if (result) {
       navigation.navigate('QuestionList');
       Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG);
@@ -78,7 +71,6 @@ function RequestWriteScreen({navigation}: Props) {
 
   const onSelectImage = () => {
     console.log('image press');
-
     launchImageLibrary(
       {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
       res => {
