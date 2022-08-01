@@ -18,7 +18,7 @@ export const getPostSearch = async (searchWord: string, page: number, sort: stri
     const response = await client.get<Response<SearchPost[]>>(
       `/search/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
     );
-    // console.log('api 게시판탭에서 검색', searchWord, response.data.data);
+    console.log('api 게시판탭에서 검색', searchWord, response.data);
     return response.data.data;
   } catch (error) {
     console.log('게시글 검색 실패', error);
