@@ -9,7 +9,7 @@ import VerificationRequestDto from '../classes/VerificationRequestDto';
 import ResetPasswordRequestDto from '../classes/ResetPasswordRequestDto';
 import ResetPasswordVerificationRequestDto from '../classes/ResetPasswordVerificationRequestDto';
 import Response from '../classes/Response';
-import Agreement, {DirectionAgreement} from '../classes/Agreement';
+import Agreement, {AgreementAll, DirectionAgreement} from '../classes/Agreement';
 import TokenReissueDto from '../classes/TokenReissueDto';
 import User from '../classes/User';
 
@@ -25,7 +25,17 @@ export const getAgreements = async () => {
 // 서비스 이용 방향
 export const getDirectionAgreements = async () => {
   try {
-    const response = await client.get<Response<DirectionAgreement[]>>('/contract/directions');
+    const response = await client.get<Response<Agreement[]>>('/contract/directions');
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}
+
+// 통으로 내려오는 이용 방향, 이용약관, 개인정보 처리방침
+export const getAllAgreements = async () => {
+  try {
+    const response = await client.get<Response<AgreementAll>>('/contract');
     return response.data.data;
   } catch {
     return [];
@@ -120,6 +130,7 @@ export const checkAuthNumber = async (code: string) => {
         },
       },
     );
+    console.log(response.data.data)
     return 0;
   } catch (e: any) {
     console.log('여기는 checkAuthNumber 함수', e.response.data);

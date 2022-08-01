@@ -50,6 +50,7 @@ import InputNewPassword from './src/screens/mypage/changePassword/InputNewPasswo
 import InputNewPasswordConfirm from './src/screens/mypage/changePassword/InputNewPasswordConfirm';
 import ChangeNickname from './src/screens/mypage/ChangeNickname';
 import ChangeMajor from './src/screens/mypage/ChangeMajor';
+import { DirectionAgreeScreen } from './src/screens/mypage/DirectionAgreeScreen';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import NoticeList from './src/screens/mypage/informationUse/NoticeList';
 import Notice from './src/screens/mypage/informationUse/Notice';
@@ -2582,6 +2583,35 @@ const App = () => {
                 component={ChangeMajor}
                 options={({navigation}) => ({
                   title: '',
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="DirectionAgreeScreen"
+                component={DirectionAgreeScreen}
+                options={({navigation}) => ({
+                  title: '수정광산 이용 방향',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"

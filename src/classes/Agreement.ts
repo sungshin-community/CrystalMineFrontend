@@ -16,3 +16,7 @@ export class AgreementWithDate {
   agreementDate: string = '';
   content: string = '';
 }
+export interface AgreementAll {
+  direction: Agreement[],
+  agreement: Agreement[],
+}

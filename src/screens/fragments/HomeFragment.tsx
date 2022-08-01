@@ -44,6 +44,7 @@ type RootStackParamList = {
   TermsOfService: undefined;
   Board: undefined;
   InformationUse: undefined;
+  DirectionAgreeScreen: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -248,7 +249,7 @@ const HomeFragment = ({navigation}: Props) => {
                 purpleButtonText="수정광산 이용 방향 보기"
                 purpleButtonFunc={() => {
                   setBlindModalVisible(!blindModalVisible);
-                  navigation.navigate('TermsOfService');
+                  navigation.navigate('DirectionAgreeScreen');
                 }}
                 whiteButtonText="확인"
                 whiteButtonFunc={() => setBlindModalVisible(!blindModalVisible)}

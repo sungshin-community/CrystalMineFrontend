@@ -58,6 +58,7 @@ type RootStackParamList = {
   ExpiredMember: undefined;
   QuestionList: undefined;
   ListScreen: undefined;
+  DirectionAgreeScreen: undefined
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -317,7 +318,7 @@ const MyPageFragment = ({navigation}: Props) => {
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
             <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('DirectionAgreeScreen')}}>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   수정광산 이용 방향
