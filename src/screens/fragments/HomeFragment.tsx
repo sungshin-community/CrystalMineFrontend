@@ -88,19 +88,13 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 날짜
             </Text>
-            <Text>0000.00.00</Text>
+            <Text>{user?.blacklist.createdAt}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 사유
             </Text>
-            <Text>0000.00.00</Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-              작성 내용
-            </Text>
-            <Text>0000.00.00</Text>
+            <Text>{user?.blacklist.reason}</Text>
           </View>
         </>
       )}

@@ -178,7 +178,7 @@ function QuestionList({navigation, route}: Props) {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
+    <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View
         style={{
           position: 'absolute',
@@ -269,16 +269,16 @@ function QuestionList({navigation, route}: Props) {
             ItemSeparatorComponent={() => (
               <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
             )}
-            // refreshing={isRefreshing}
-            // onRefresh={handleRefresh}
-            // refreshControl={
-            //   <RefreshControl
-            //     refreshing={isRefreshing}
-            //     onRefresh={handleRefresh}
-            //     colors={['#A055FF']} // for android
-            //     tintColor={'#A055FF'} // for ios
-            //   />
-            // }
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+                colors={['#A055FF']} // for android
+                tintColor={'#A055FF'} // for ios
+              />
+            }
             // onEndReached={fetchNextPage}
             // onEndReachedThreshold={0.8}
           />
@@ -319,9 +319,10 @@ function QuestionList({navigation, route}: Props) {
           }}
         />
       )}
-      <FloatingWriteButton
-        onPress={() => navigation.navigate('QuestionWriteScreen')}
-      />
+      {!deleteMode &&
+        <FloatingWriteButton
+          onPress={() => navigation.navigate('QuestionWriteScreen')}
+        />}
     </SafeAreaView>
   );
 }
@@ -399,6 +400,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
     });
     return array;
   };
+
   return (
     <>
       <TouchableWithoutFeedback
@@ -449,7 +451,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
           </View>
         </View>
       </TouchableWithoutFeedback>
-      {isSpread && (
+      {!deleteMode && isSpread && (
         <>
           <ScrollView
             style={{
