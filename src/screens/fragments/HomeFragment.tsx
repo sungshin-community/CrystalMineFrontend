@@ -432,12 +432,14 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'center'
   },
   hotPostContainer: {
     marginVertical: 8,
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'space-between',
+    alignItems: 'center'
   },
   postTitleSummary: {
     fontSize: 13,
