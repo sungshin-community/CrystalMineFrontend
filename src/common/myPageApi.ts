@@ -23,21 +23,19 @@ export const writeQuestion = async (
 ) => {
   try {
     const formData = new FormData();
-    images.map((picture: any, index: number) => {
+    images.map((image: any, index: number) => {
     const photo = {
-        uri: picture.uri,
-        type: 'multipart/form-data',
+        uri: image.uri,
         name: `${index}.jpg`,
+        type: 'multipart/form-data',
       };
-      formData.append('image', photo);
+      formData.append('images', photo);
     });
     const question = {
-      question: {
         title: title,
         content: content
-      }
     }
-    formData.append("data", new Blob([JSON.stringify(question)], {type: "application/json"}))
+    formData.append("question", { question: JSON.stringify(question), type: "application/json" })
     const response = await client.post<Response<QuestionWriteResponse>>(
       '/questions',
       formData,
@@ -55,10 +53,10 @@ export const uploadProfileImage = async (image: any) => {
   try {
     const formData = new FormData();
     const data = {uri: image.uri, name: 'photo.png', type: 'multipart/form-data'};
-    formData.append("profileImage", data);
+    formData.append("image", data);
 
     const response = await client.post<Response<ProfileImageResponseDto>>(
-      '/upload/profileImage',
+      '/user/profile-image',
       formData,
       {
         headers: {

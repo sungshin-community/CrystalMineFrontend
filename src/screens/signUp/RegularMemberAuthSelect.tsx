@@ -13,7 +13,6 @@ import {TwoLineTitle, Description} from '../../components/Top';
 import {PurpleRoundButton, WhiteRoundButton} from '../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import CheckSuryong from '../../../resources/icon/custom/CheckSuryong';
 import {ModalBottom} from '../../components/ModalBottom';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -85,7 +84,6 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
               paddingHorizontal: Dimensions.get('window').width / 4,
               paddingVertical: Dimensions.get('window').height / 8,
             }}>
-            <CheckSuryong/>
           </View>
         </Animatable.View>
       </Container>

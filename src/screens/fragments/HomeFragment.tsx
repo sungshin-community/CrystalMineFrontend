@@ -35,6 +35,9 @@ import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
 import {NoticeDto} from '../../classes/mypage/NoticeDto';
 import { PlatformOS } from '../../components/PlatformOS';
+import HappySuryong from '../../../resources/icon/custom/HappySuryong';
+import RemoveDataSuryong from '../../../resources/icon/custom/RemoveDataSuryong';
+import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -129,7 +132,7 @@ const HomeFragment = ({navigation}: Props) => {
     }
   }, [isFocused]);
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <View
         style={{
           backgroundColor: '#F6F6F6',
