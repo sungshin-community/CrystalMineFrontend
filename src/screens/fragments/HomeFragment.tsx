@@ -177,7 +177,7 @@ const HomeFragment = ({navigation}: Props) => {
                     setBlindModalVisible(true);
                     const itemContent = (
                       <View>
-                        <Text style={[fontRegular, {marginBottom: 15}]}>
+                        <Text style={[fontRegular, {marginBottom: 15, width: Dimensions.get('window').width - 100}]}>
                           {item.type === 4
                             ? '생성한 게시판이'
                             : item.type === 5
@@ -187,7 +187,7 @@ const HomeFragment = ({navigation}: Props) => {
                             : item.type === 7
                             ? '작성한 댓글이'
                             : ''}{' '}
-                          15회 이상 신고되어, {item.sender}에 의해{`\n`}블라인드 되었습니다. 사유는 다음과 같습니다.
+                          15회 이상 신고되어, {item.sender}에 의해 블라인드 되었습니다. 사유는 다음과 같습니다.
                         </Text>
                         <View style={{flexDirection: 'row'}}>
                           <Text
