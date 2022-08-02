@@ -341,7 +341,7 @@ export const Recomment = ({
             marginVertical: 15,
             justifyContent: 'space-between',
           }}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Reply style={{marginRight: 8}} />
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}

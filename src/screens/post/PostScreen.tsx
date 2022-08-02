@@ -29,6 +29,8 @@ import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
 import {setCommentLike} from '../../common/boardApi';
 import {fontMedium} from '../../common/font';
+import Toast from 'react-native-simple-toast';
+
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -50,9 +52,13 @@ const PostScreen = ({navigation, route}: Props) => {
   const HeaderTitle = () => {
     return (
       <View style={{flexDirection: 'row'}}>
-          <Text style={[fontMedium, {fontSize: 17}]} numberOfLines={1}>
-            [{post && post?.boardName.length <= 5 ? post?.boardName : post?.boardName.substr(0, 5).concat('...')}]의 게시글
-          </Text>
+        <Text style={[fontMedium, {fontSize: 17}]} numberOfLines={1}>
+          [
+          {post && post?.boardName.length <= 5
+            ? post?.boardName
+            : post?.boardName.substr(0, 5).concat('...')}
+          ]의 게시글
+        </Text>
       </View>
     );
   };
@@ -61,10 +67,21 @@ const PostScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     async function init() {
       const postData = await getPosts(route.params.postId);
-      setPost(postData);
+      if (postData.code === 'POST_ALREADY_BLIND') {
+        Toast.show('블라인드된 게시글입니다.', Toast.LONG);
+        navigation.goBack();
+      } else if (
+        postData.code === 'POST_NOT_FOUND' ||
+        postData.code === 'POST_ALREADY_DELETED'
+      ) {
+        Toast.show('삭제된 게시글입니다.', Toast.LONG);
+        navigation.goBack();
+      } else setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
     }
+    console.log('삭제됐을경우"', post);
+
     init();
   }, []);
   // 게시글 공감

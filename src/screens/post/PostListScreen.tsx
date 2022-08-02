@@ -69,8 +69,17 @@ const PostListScreen = ({navigation, route}: Props) => {
     async function init() {
       setIsLoading(true);
       const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
+       if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
+        Toast.show('블라인드된 게시판입니다.', Toast.LONG);
+        navigation.goBack();
+      } else if (
+        boardDetail.code === 'BOARD_NOT_FOUND' ||
+        boardDetail.code === 'BOARD_ALREADY_DELETED'
+      ) {
+        Toast.show('삭제된 게시판입니다.', Toast.LONG);
+        navigation.goBack();
+      } else  setBoardDetail(boardDetail);
       const boardInfo = await getBoardInfo(route.params.boardId);
-      setBoardDetail(boardDetail);
       setBoardInfo(boardInfo);
       setIsLoading(false);
     }
@@ -305,10 +314,6 @@ const PostListScreen = ({navigation, route}: Props) => {
             renderItem={({item, index}) => (
               <Pressable
                 onPress={async () => {
-                  const result = await getPosts(boardDetail[index].postId);
-                  if (result === 'NOT_FOUND')
-                    Toast.show('삭제된 게시글입니다.', Toast.LONG);
-                  else
                     navigation.navigate('PostScreen', {
                       postId: boardDetail[index].postId,
                     });
