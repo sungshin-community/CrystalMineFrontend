@@ -19,25 +19,24 @@ export const getUser = async () => {
 };
 
 export const writeQuestion = async (
- title: string, content: string, images?: any
+  title: string,
+  content: string,
+  images?: any,
 ) => {
   try {
     const formData = new FormData();
     images.map((image: any, index: number) => {
-    const photo = {
+      const photo = {
         uri: image.uri,
         name: `${index}.jpg`,
         type: 'multipart/form-data',
       };
       formData.append('images', photo);
     });
-    const question = {
-        title: title,
-        content: content
-    }
-    formData.append("question", { question: JSON.stringify(question), type: "application/json" })
+    formData.append('title', title);
+    formData.append('content', content);
     const response = await client.post<Response<QuestionWriteResponse>>(
-      '/questions',
+      `/questions`,
       formData,
       {
         headers: {'Content-Type': 'multipart/form-data'},
@@ -52,23 +51,26 @@ export const writeQuestion = async (
 export const uploadProfileImage = async (image: any) => {
   try {
     const formData = new FormData();
-    const data = {uri: image.uri, name: 'photo.png', type: 'multipart/form-data'};
-    formData.append("image", data);
-
+    const data = {
+      uri: image.uri,
+      name: 'photo.png',
+      type: 'multipart/form-data',
+    };
+    formData.append('image', data);
     const response = await client.post<Response<ProfileImageResponseDto>>(
       '/user/profile-image',
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
-    console.log("사진 업로드 response는", response.data);
+    console.log('사진 업로드 response는', response.data);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     const errorCode = error.response.data;
-    console.log("사진 업로드 실패", error.response);
+    console.log('사진 업로드 실패', error.response);
     return errorCode;
   }
 };
