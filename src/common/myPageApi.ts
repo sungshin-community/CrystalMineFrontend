@@ -69,7 +69,7 @@ export const uploadProfileImage = async (image: any) => {
     console.log("사진 업로드 response는", response.data);
     return response.data;
   } catch (error: any) {
-    const errorCode = error.response.data.code;
+    const errorCode = error.response.data;
     console.log("사진 업로드 실패", error.response);
     return errorCode;
   }

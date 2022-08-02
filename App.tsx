@@ -728,7 +728,8 @@ const App = () => {
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
-                options={({navigation}) => ({
+                options={({ navigation }) => ({
+                  title: '',
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"
@@ -2149,7 +2150,8 @@ const App = () => {
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
-                options={({navigation}) => ({
+                  options={({ navigation }) => ({
+                  title: '',
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"

@@ -62,6 +62,7 @@ const HomeFragment = ({navigation}: Props) => {
   const [noti, setNoti] = useState<HomeNotification[]>([]);
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const blacklistModalContent = (
     <>
@@ -102,6 +103,7 @@ const HomeFragment = ({navigation}: Props) => {
   );
   useEffect(() => {
     async function getContents() {
+      setIsLoading(true);
       const pinBoardData = await getPinBoardContents();
       const hotBoardData = await getHotBoardContents();
       const notification = await getUnreadNotification();
@@ -111,6 +113,7 @@ const HomeFragment = ({navigation}: Props) => {
         setHotBoardContents(hotBoardData);
       }
       setNoti(notification);
+      setIsLoading(false);
     }
     if (isFocused) {
       getContents();

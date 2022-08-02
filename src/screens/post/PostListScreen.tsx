@@ -140,7 +140,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           ]}
           numberOfLines={1}
           ellipsizeMode="tail">
-          {boardInfo?.name}
+          {boardInfo? boardInfo?.name : ''}
         </Text>
       </>
     );
