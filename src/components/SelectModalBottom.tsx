@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Platform
 } from 'react-native';
 import {Checked} from '../../resources/icon/CheckBox';
 import RadioButtonUnChecked, {
@@ -231,6 +232,7 @@ export const ReportItem = ({
                 fontSize: 13,
                 borderRadius: 10,
                 padding: 0,
+                paddingVertical: Platform.OS == 'ios' ? 5: 0
               }}
             />
           </View>
