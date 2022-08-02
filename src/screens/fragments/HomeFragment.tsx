@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableHighlight,
+  Pressable,
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -27,6 +28,7 @@ import {
   getNotification,
   getPinBoardContents,
   getUnreadNotification,
+  readNotification,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
@@ -34,7 +36,7 @@ import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
 import {NoticeDto} from '../../classes/mypage/NoticeDto';
-import { PlatformOS } from '../../components/PlatformOS';
+import {PlatformOS} from '../../components/PlatformOS';
 import HappySuryong from '../../../resources/icon/custom/HappySuryong';
 import RemoveDataSuryong from '../../../resources/icon/custom/RemoveDataSuryong';
 import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
@@ -132,7 +134,7 @@ const HomeFragment = ({navigation}: Props) => {
     }
   }, [isFocused]);
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
         style={{
           backgroundColor: '#F6F6F6',
@@ -163,27 +165,35 @@ const HomeFragment = ({navigation}: Props) => {
               paddingHorizontal: 18,
               backgroundColor: '#fff',
             }}>
-            {noti.map((item, index) =>
+            {noti.map((item, index) => (
               <TouchableHighlight
                 key={index}
-                style={{borderTopWidth: index === 0 ? 0 : 1, borderTopColor: '#F6F6F6'}}
-                onPress={() => {
-                  if (
-                    item.type === 1 ||
-                    item.type === 2 ||
-                    item.type === 3
-                  ) {
-                    navigation.navigate('RegularMemberAuthMyPage');
+                style={{
+                  borderTopWidth: index === 0 ? 0 : 1,
+                  borderTopColor: '#F6F6F6',
+                }}
+                onPress={async () => {
+                  if (item.type === 1 || item.type === 2 || item.type === 3) {
+                    const result = await readNotification(item.id);
+                    if (result) navigation.navigate('RegularMemberAuthMyPage');
                   } else if (
                     item.type === 4 ||
                     item.type === 5 ||
                     item.type === 6 ||
                     item.type === 7
                   ) {
-                    setBlindModalVisible(true);
+                    const result = await readNotification(item.id);
+                    if (result) setBlindModalVisible(true);
                     const itemContent = (
                       <View>
-                        <Text style={[fontRegular, {marginBottom: 15, width: Dimensions.get('window').width - 100}]}>
+                        <Text
+                          style={[
+                            fontRegular,
+                            {
+                              marginBottom: 15,
+                              width: Dimensions.get('window').width - 100,
+                            },
+                          ]}>
                           {item.type === 4
                             ? '생성한 게시판이'
                             : item.type === 5
@@ -193,37 +203,46 @@ const HomeFragment = ({navigation}: Props) => {
                             : item.type === 7
                             ? '작성한 댓글이'
                             : ''}{' '}
-                          15회 이상 신고되어, {item.sender}에 의해 블라인드 되었습니다. 사유는 다음과 같습니다.
+                          15회 이상 신고되어, {item.sender}에 의해 블라인드
+                          되었습니다. 사유는 다음과 같습니다.
                         </Text>
                         <View style={{flexDirection: 'row'}}>
-                          <Text
-                            style={[fontBold, {width: 88, marginRight: 7}]}>
+                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
                             블라인드 사유
                           </Text>
-                          <Text style={{width: 148}}>{item.reason}과도한 비난</Text>
+                          <Text style={{width: 148}}>
+                            {item.reason}과도한 비난
+                          </Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                          <Text
-                            style={[fontBold, {width: 88, marginRight: 7}]}>
-                              {item.type === 4
-                            ? '게시판 이름'
-                            : item.type === 5
-                            ? '게시판 이름'
-                            : item.type === 6
-                            ? '작성 내용'
-                            : item.type === 7
-                            ? '작성 내용:'
-                            : ''}
+                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                            {item.type === 4
+                              ? '게시판 이름'
+                              : item.type === 5
+                              ? '게시판 이름'
+                              : item.type === 6
+                              ? '작성 내용'
+                              : item.type === 7
+                              ? '작성 내용:'
+                              : ''}
                           </Text>
-                          <Text style={{ width: Dimensions.get('window').width - 178}}>{item.content}</Text>
+                          <Text
+                            style={{
+                              width: Dimensions.get('window').width - 178,
+                            }}>
+                            {item.content}
+                          </Text>
                         </View>
-                  
                       </View>
                     );
                     setModalBody(itemContent);
                   }
                 }}>
-                <View style={styles.newsContainer}>
+                <Pressable
+                  style={styles.newsContainer}
+                  onPress={async () => {
+                    const result = await readNotification(item.id);
+                  }}>
                   <View style={{flexDirection: 'row'}}>
                     {item.type === 0 && <CheckMark />}
                     {item.type !== 0 && <NewsExclamationMarkIcon />}
@@ -235,10 +254,10 @@ const HomeFragment = ({navigation}: Props) => {
                   <View>
                     <RightArrowBold />
                   </View>
-                </View>
-              </TouchableHighlight>)
-            }
-            
+                </Pressable>
+              </TouchableHighlight>
+            ))}
+
             {blindModalVisible && (
               <ModalBottom
                 modalVisible={blindModalVisible}
@@ -339,8 +358,8 @@ const HomeFragment = ({navigation}: Props) => {
               {
                 user?.isAuthenticated
                   ? navigation.navigate('PostListScreen', {boardId: 1})
-                  // ? navigation.navigate('InformationUse')
-                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                  : // ? navigation.navigate('InformationUse')
+                    Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
             }}>
             <Text style={styles.more}>더보기</Text>
@@ -432,14 +451,14 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   hotPostContainer: {
     marginVertical: 8,
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   postTitleSummary: {
     fontSize: 13,

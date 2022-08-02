@@ -62,13 +62,11 @@ export async function getUnreadNotification() {
 
 export async function readNotification(notificationId: number = 0) {
   try {
-    const params = new URLSearchParams(); 
-    params.append('page', notificationId.toString());
-    const response = await client.patch<Response<HomeNotificationDto>>(
-      `/notification?${params}`
+    const response = await client.patch<Response<null>>(
+      `/notification/${notificationId}`
     );
     return response.data.data;
   } catch (e) {
-    console.log("여기는 readNotification 함수", e);
+    console.log("여기는 readNotification 함수", e.response);
   }
 }
