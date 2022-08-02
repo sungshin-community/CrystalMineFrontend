@@ -64,7 +64,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
-
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
   useEffect(() => {
     async function init() {
       setIsLoading(true);
@@ -82,6 +82,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
       setIsLoading(false);
+      if(boardDetail?.length === 0) setIsEmpty(true)
     }
     if (isFocused) init();
   }, [isFocused, sortBy]);
@@ -206,7 +207,6 @@ const PostListScreen = ({navigation, route}: Props) => {
           style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
           underlayColor='#EEEEEE'
           onPress={() => {
-            console.log('눌리긴 하니');
             setReportCheckModalVisible(true);
             console.log(reportCheckModalVisible);
           }}>
@@ -286,7 +286,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
             </TouchableOpacity>
           </View>}
-        {boardDetail?.length === 0 ? (
+        {isEmpty? (
           <SafeAreaView style={{flex: 1}}>
             <View
               style={{
@@ -303,7 +303,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                   lineHeight: 22.5,
                   marginTop: 20,
                 }}>
-                아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
+                아직 작성된 게시글이 없습니다.{`\n`}첫 글을 작성해주세요.
               </Text>
             </View>
           </SafeAreaView>
