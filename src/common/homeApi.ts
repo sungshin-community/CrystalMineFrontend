@@ -59,3 +59,16 @@ export async function getUnreadNotification() {
     console.log("여기는 getUnreadNotification 함수", e);
   }
 }
+
+export async function readNotification(notificationId: number = 0) {
+  try {
+    const params = new URLSearchParams(); 
+    params.append('page', notificationId.toString());
+    const response = await client.patch<Response<HomeNotificationDto>>(
+      `/notification?${params}`
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log("여기는 readNotification 함수", e);
+  }
+}
