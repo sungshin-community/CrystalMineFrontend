@@ -68,13 +68,13 @@ const PostScreen = ({navigation, route}: Props) => {
     async function init() {
       const postData = await getPosts(route.params.postId);
       if (postData.code === 'POST_ALREADY_BLIND') {
-        Toast.show('블라인드된 게시글입니다.', Toast.LONG);
+        Toast.show('시스템에 의해 블라인드된 게시글입니다.', Toast.LONG);
         navigation.goBack();
       } else if (
         postData.code === 'POST_NOT_FOUND' ||
         postData.code === 'POST_ALREADY_DELETED'
       ) {
-        Toast.show('삭제된 게시글입니다.', Toast.LONG);
+        Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.LONG);
         navigation.goBack();
       } else setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
