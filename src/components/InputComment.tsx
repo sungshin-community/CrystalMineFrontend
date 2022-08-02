@@ -85,17 +85,19 @@ function InputComment({
           style={[styles.input]}
           maxLength={500}
         />
+        <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
         <Text>
           {content && (
             <Pressable
-              style={{paddingTop: Platform.OS === 'ios' ? 7: 5}}
+              style={{paddingBottom: Platform.OS === 'ios' ? 3: 5, bottom: 0}}
               onPress={() => {
                 onSubmit();
               }}>
               <CommentSendIcon />
             </Pressable>
-          )}
-        </Text>
+            )}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -117,5 +119,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingTop: Platform.OS == 'ios' ? 13: 0,
     minHeight: 44,
+    maxHeight: 230
   },
 });
