@@ -165,7 +165,18 @@ const Comment = ({
               </Text>
             </View>
           </View>
-          {!data.isDeleted && (
+          {data.isDeleted ? (
+            data.isOfReader ? (
+              <></>
+            ) : (
+              <SpinningThreeDots
+                isMine={data.isOfReader}
+                handleOptionModeIsNotMineComponent={
+                  handleCommentReportComponent
+                }
+              />
+            )
+          ) : (
             <SpinningThreeDots
               isMine={data.isOfReader}
               handleOptionModeIsMineComponent={handleCommentDeleteComponent}
@@ -181,7 +192,7 @@ const Comment = ({
             <View
               style={{
                 flexDirection: 'row',
-                marginTop: 16,
+                marginTop: 15,
                 justifyContent: 'space-between',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -211,7 +222,7 @@ const Comment = ({
             </View>
           </>
         )}
-        <View style={{marginBottom: 16}} />
+        <View style={{marginBottom: 15}} />
       </View>
       <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
     </>
@@ -359,7 +370,18 @@ export const Recomment = ({
               </Text>
             </View>
           </View>
-          {!data.isDeleted && (
+          {data.isDeleted ? (
+            data.isOfReader ? (
+              <></>
+            ) : (
+              <SpinningThreeDots
+                isMine={data.isOfReader}
+                handleOptionModeIsNotMineComponent={
+                  handleCommentReportComponent
+                }
+              />
+            )
+          ) : (
             <SpinningThreeDots
               isMine={data.isOfReader}
               handleOptionModeIsMineComponent={handleCommentDeleteComponent}
@@ -376,7 +398,7 @@ export const Recomment = ({
               <View
                 style={{
                   flexDirection: 'row',
-                  marginTop: 16,
+                  marginTop: 15,
                   justifyContent: 'space-between',
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>

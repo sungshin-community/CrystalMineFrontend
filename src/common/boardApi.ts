@@ -382,7 +382,7 @@ export const reportComment = async (commentId: number, reasonId: number, detail?
 // 댓글, 대댓글 삭제
 export const deleteComment = async (commentId: number) => {
   try {
-    const response = await client.patch<Response<CommentDto>>(
+    const response = await client.delete<Response<CommentDto>>(
       `/comments/${commentId}`
     );
     return true;

@@ -80,8 +80,6 @@ const PostScreen = ({navigation, route}: Props) => {
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
     }
-    console.log('삭제됐을경우"', post);
-
     init();
   }, []);
   // 게시글 공감
