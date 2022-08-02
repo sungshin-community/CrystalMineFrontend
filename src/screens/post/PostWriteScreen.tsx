@@ -50,6 +50,7 @@ function PostWriteScreen({ navigation, route }: Props) {
   const [direction, setDirection] = useState<string>('');
   const [isInfo, setIsInfo] = useState<PostWriteInfoDto>({});
   const [isShow, setIsShow] = useState<boolean>(true);
+  const [imageResponse, setImageResponse] = useState<any>([]);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -79,19 +80,14 @@ ${item.content.map((_item, _index) => {
   }, [route.params.boardId]);
 
   const onSubmitPress = async () => {
-    const result = await postWritePost({
-      boardId: boardId,
-      title: title,
-      content: content,
-      images: images,
-      isAnonymous: isShow,
-    });
+    console.log(boardId,title,content,isShow,imageResponse)
+    const result = await postWritePost(boardId, title, content, isShow, imageResponse);
     if (result) {
       navigation.navigate('PostListScreen', { boardId });
       Toast.show('게시글이 등록되었습니다.', Toast.LONG);
     }
   };
-
+console.log(isInfo)
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
@@ -118,25 +114,25 @@ ${item.content.map((_item, _index) => {
     });
   }, [navigation, title, content]);
 
-  const onSelectImage = () => {
-    //! 하나씩 선택해야하는 코드
-    if (images.length < 10) {
-      setImages(item => [...item, {}])
-      launchImageLibrary(
-        { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
-        async res => {
-          if (res.didCancel) {
-            let notSelectImage = images.slice(0, images.length);
-            return setImages(notSelectImage);
-          }
-          let response = await uploadPostImages(res.assets[0]);
+  // const onSelectImage = () => {
+  //   //! 하나씩 선택해야하는 코드
+  //   if (images.length < 10) {
+  //     setImages(item => [...item, {}])
+  //     launchImageLibrary(
+  //       { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
+  //       async res => {
+  //         if (res.didCancel) {
+  //           let notSelectImage = images.slice(0, images.length);
+  //           return setImages(notSelectImage);
+  //         }
+  //         let response = await uploadPostImages(res.assets[0]);
 
-          if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
-            setImages([...images, response.data.urls[0]]);
-          }
-        },
-      );
-    }
+  //         if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
+  //           setImages([...images, response.data.urls[0]]);
+  //         }
+  //       },
+  //     );
+  //   }
     //! 복수 선택 업로드 > 강제 종료 이슈 임시 주석 처리
     // if (images.length < 10) {
     //   launchImageLibrary(
@@ -155,6 +151,18 @@ ${item.content.map((_item, _index) => {
     //     },
     //   );
     // }
+  const onSelectImage = () => {
+    console.log('image press');
+    launchImageLibrary(
+      {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
+      res => {
+        if (res.didCancel) {
+          return;
+        }
+        console.log('image', res);
+        setImageResponse(res.assets);
+      },
+    );
   };
 
   return (
@@ -215,17 +223,17 @@ ${item.content.map((_item, _index) => {
             <Text style={[fontMedium, styles.imageText]}>이미지</Text>
           </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-            {images.map((item, index) => (
+            {imageResponse.map((item, index) => (
               <Image
                 key={index}
                 style={styles.imageBox}
-                source={{ uri: item }} />
+                source={{ uri: item.uri }} />
             ))}
-            {images.length < 10 && <View style={[styles.imageSelectBox, styles.imageBox]}>
+            {imageResponse.length < 10 && <View style={[styles.imageSelectBox, styles.imageBox]}>
               <Pressable onPress={onSelectImage} hitSlop={25}>
                 <PhotoIcon />
                 <Text style={[fontMedium, styles.count]}>
-                  {images.length}/10
+                  {imageResponse.length}/10
                 </Text>
               </Pressable>
             </View>}
