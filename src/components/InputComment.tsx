@@ -15,6 +15,7 @@ import {
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useCallback} from 'react';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   postId?: any;
@@ -74,10 +75,15 @@ function InputComment({
           multiline={true}
           onChangeText={value => {
             setContent(value);
+            if (value.length === 500)
+               Toast.show(
+                '댓글 내용은 500글자까지만 입력 가능합니다.',
+                Toast.LONG,)
           }}
           value={content}
           autoCorrect={false}
           style={[styles.input]}
+          maxLength={500}
         />
         <Text>
           {content && (
