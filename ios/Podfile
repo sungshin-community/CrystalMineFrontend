@@ -13,6 +13,8 @@ target 'CrystalMineFrontend' do
   )
 
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'CrystalMineFrontendTests' do
     inherit! :complete
     # Pods for testing
