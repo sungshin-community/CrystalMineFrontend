@@ -154,11 +154,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -196,11 +192,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -238,11 +230,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -280,11 +268,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -322,11 +306,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -364,11 +344,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -487,11 +463,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -529,11 +501,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -571,11 +539,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -613,11 +577,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -651,11 +611,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -998,24 +954,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <TouchableHighlight
-                          underlayColor="#EEEEEE"
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 20,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                          onPress={() => (
-                            <CloseButtonIcon
-                              onPress={() => navigation.popToTop()}
-                            />
-                          )}>
-                          <CloseButtonIcon />
-                        </TouchableHighlight>
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1054,11 +993,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1096,11 +1031,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1138,11 +1069,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1571,11 +1498,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1613,11 +1536,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1655,11 +1574,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1697,11 +1612,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1739,11 +1650,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1781,11 +1688,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.popToTop()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1806,9 +1709,18 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                   headerRight: () => (
-                    <CloseButtonIcon
-                      onPress={() => navigation.navigate('GlobalNavbar')}
-                    />
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
                   ),
                 })}
               />
@@ -1909,11 +1821,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1951,11 +1859,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1993,11 +1897,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2035,11 +1935,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2073,11 +1969,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2420,11 +2312,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2448,9 +2336,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon onPress={() =>  navigation.goBack()} />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2489,11 +2375,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2531,11 +2413,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2573,11 +2451,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => (
-                        <CloseButtonIcon
-                          onPress={() => navigation.popToTop()}
-                        />
-                      )}>
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
