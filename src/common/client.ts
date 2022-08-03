@@ -31,7 +31,7 @@ client.interceptors.response.use(
   async (error) => {
     const {config, response: { status }} = error;
     const originalRequest = config;
-    if (error.response.status === 500 && originalRequest.url === '/auth/reissue-token') {
+    if (error.response.status === 401 && originalRequest.url === '/auth/reissue-token') {
       // 리프레시 토큰마저 만료됐으면 로그인 화면으로 이동시키기
       await AsyncStorage.setItem('accessToken', '');
       return Promise.reject(error);
