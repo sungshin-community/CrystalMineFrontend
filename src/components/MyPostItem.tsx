@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 17,
     fontFamily: 'SpoqaHanSansNeo-Bold',
+    marginLeft: 10
   },
   timeStamp: {
     paddingTop: 6,
