@@ -281,7 +281,8 @@ export function AgreementContainer({
         onPress={(e: any) => setIsSpread(!isSpread)}
         style={{
           marginLeft: 35,
-          marginTop: 16,
+          marginTop: 14,
+          marginBottom: 5,
           marginRight: 41,
           flexDirection: 'row',
           alignItems: 'center',
@@ -330,11 +331,10 @@ export function AgreementContainer({
             marginLeft: 40,
             marginRight: 40,
             backgroundColor: '#F6F6F6',
-            padding: 20,
-            marginTop: 8,
+            paddingHorizontal: 24,
           }}
           nestedScrollEnabled={true}>
-          <View style={{ paddingBottom: 40 }}>
+          <View style={{ paddingTop: 15, paddingBottom: 15}}>
             <Markdown>
               {content}
             </Markdown>
