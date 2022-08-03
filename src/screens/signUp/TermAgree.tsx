@@ -29,7 +29,7 @@ import {
 } from '../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../components/HideToggleContainer';
 import Agreement from '../../classes/Agreement';
-import { getAgreements } from '../../common/authApi';
+import { getSignUpContract } from '../../common/contractApi';
 
 type RootStackParamList = {
   SplashHome: undefined;
@@ -66,7 +66,7 @@ function TermAgree({navigation}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getAgreements();
+      const agreementList = await getSignUpContract();
       agreementList.map(a => a.checked = false);
       setAgreements(agreementList);
       for(let i = 0; i < 2; i++) {
@@ -156,7 +156,7 @@ function TermAgree({navigation}: Props) {
                   약관 전체 동의
                 </Text>
               </TouchableOpacity>
-              {agreements.map((a) => <AgreementContainer id={a.id} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
+              {agreements.map((a, index) => <AgreementContainer id={index} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
             </View>
           </View>
         </ScrollView>

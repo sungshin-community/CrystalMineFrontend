@@ -104,6 +104,7 @@ export function BoardListContainer({boardCategory, component}: Props) {
 }
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Markdown from 'react-native-markdown-display';
 export function CustomBoardListContainer({
   boardCategory,
   component,
@@ -270,6 +271,7 @@ export function AgreementContainer({
 }: AgreementProps) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(checked);
+
   useEffect(() => {
     setIsChecked(checked);
   }, [checked]);
@@ -332,13 +334,10 @@ export function AgreementContainer({
             marginTop: 8,
           }}
           nestedScrollEnabled={true}>
-          <View style={{paddingBottom: 40}}>
-            <Text>
-              <Text style={{fontWeight: 'bold'}}>{title}</Text>
-              {'\n'}
-              {'\n'}
+          <View style={{ paddingBottom: 40 }}>
+            <Markdown>
               {content}
-            </Text>
+            </Markdown>
           </View>
         </ScrollView>
       )}
