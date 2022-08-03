@@ -13,3 +13,13 @@ export const getSignUpContract = async () => {
     return [];
   }
 }
+
+// 회원가입 관련 약관 조회
+export const getContractGuide = async () => {
+  try {
+    const response = await client.get<Response<AgreementAll[]>>('/contract/guide');
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}

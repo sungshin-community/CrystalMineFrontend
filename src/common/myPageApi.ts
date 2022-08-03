@@ -144,7 +144,7 @@ export const getNotice = async (noticeId: number) => {
 };
 export const getAgreementsWithDate = async () => {
   try {
-    const response = await client.get<AxiosResponse>('/user/agreement');
+    const response = await client.get<AxiosResponse>('/user/agreements');
     return response.data.data;
   } catch (e) {
     console.log('여기는 getAgreementsWithDate함수', e);

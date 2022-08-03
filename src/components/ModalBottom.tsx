@@ -38,6 +38,7 @@ export const ModalBottom = ({
         <Modal
           animationType="slide"
           transparent={true}
+          
           visible={modalVisible}
           onRequestClose={() => {
             setModalVisible(!modalVisible);
