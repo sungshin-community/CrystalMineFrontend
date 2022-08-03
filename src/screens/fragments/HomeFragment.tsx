@@ -43,7 +43,7 @@ import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
-  MyPageFragment: undefined;
+  MyPage: undefined;
   PostScreen: undefined;
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
@@ -106,6 +106,7 @@ const HomeFragment = ({navigation}: Props) => {
       )}
     </>
   );
+
   useEffect(() => {
     async function getContents() {
       setIsLoading(true);
@@ -123,7 +124,7 @@ const HomeFragment = ({navigation}: Props) => {
     if (isFocused) {
       getContents();
     }
-  }, [isFocused]);
+  }, [isFocused, modalBody]);
   useEffect(() => {
     async function getUserInfo() {
       const userDto = await getAuthentication();
@@ -144,7 +145,7 @@ const HomeFragment = ({navigation}: Props) => {
           style={{
             fontSize: 22,
             marginLeft: 40,
-            marginBottom: noti.length !== 0 ? 26 : 0,
+            marginBottom: noti?.length !== 0 ? 26 : 0,
           }}>
           <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
             {user?.nickname}
@@ -165,25 +166,36 @@ const HomeFragment = ({navigation}: Props) => {
               paddingHorizontal: 18,
               backgroundColor: '#fff',
             }}>
-            {noti.map((item, index) => (
-              <TouchableHighlight
+            {noti?.map((item, index) => (
+              <Pressable
                 key={index}
-                style={{
-                  borderTopWidth: index === 0 ? 0 : 1,
-                  borderTopColor: '#F6F6F6',
-                }}
+                style={[
+                  {
+                    borderTopWidth: index === 0 ? 0 : 1,
+                    borderTopColor: '#F6F6F6',
+                    backgroundColor: 'yellow',
+                  },
+                  styles.newsContainer,
+                ]}
                 onPress={async () => {
-                  if (item.type === 1 || item.type === 2 || item.type === 3) {
+                  if (item.type === 0) {
                     const result = await readNotification(item.id);
-                    if (result) navigation.navigate('RegularMemberAuthMyPage');
+                    console.log('알람 확인 후 마이페이지로 이동'); navigation.navigate('MyPage');
+                  } else if (
+                    item.type === 1 ||
+                    item.type === 2 ||
+                    item.type === 3
+                  ) {
+                    if (user?.isAuthenticated) {
+                      const result = await readNotification(item.id);
+                      console.log('알람 확인 후 정회원인증으로 이동'); navigation.navigate('RegularMemberAuthMyPage');
+                    } else navigation.navigate('RegularMemberAuthMyPage');
                   } else if (
                     item.type === 4 ||
                     item.type === 5 ||
                     item.type === 6 ||
                     item.type === 7
                   ) {
-                    const result = await readNotification(item.id);
-                    if (result) setBlindModalVisible(true);
                     const itemContent = (
                       <View>
                         <Text
@@ -203,8 +215,9 @@ const HomeFragment = ({navigation}: Props) => {
                             : item.type === 7
                             ? '작성한 댓글이'
                             : ''}{' '}
-                          15회 이상 신고되어, {item.sender}에 의해 블라인드
-                          되었습니다. 사유는 다음과 같습니다.
+                          {item.sender === '시스템'
+                            ? '15회 이상 신고되어, 시스템에 의해 블라인드 되었습니다. 사유는 다음과 같습니다.'
+                            : '작성한 댓글이 운영진에 의해 블라인드 되었습니다. 사유는 다음과 같습니다.'}
                         </Text>
                         <View style={{flexDirection: 'row'}}>
                           <Text style={[fontBold, {width: 88, marginRight: 7}]}>
@@ -235,27 +248,23 @@ const HomeFragment = ({navigation}: Props) => {
                         </View>
                       </View>
                     );
-                    setModalBody(itemContent);
+                   setModalBody(itemContent);
+                    const result = await readNotification(item.id); console.log('블라인드 알림 확인');
+                    setBlindModalVisible(true);
                   }
                 }}>
-                <Pressable
-                  style={styles.newsContainer}
-                  onPress={async () => {
-                    const result = await readNotification(item.id);
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    {item.type === 0 && <CheckMark />}
-                    {item.type !== 0 && <NewsExclamationMarkIcon />}
-                    <View>
-                      <Text style={styles.newsTitle}>{item.title}</Text>
-                      <Text style={styles.newsMore}>{item.content}</Text>
-                    </View>
-                  </View>
+                <View style={{flexDirection: 'row'}}>
+                  {item.type === 0 && <CheckMark />}
+                  {item.type !== 0 && <NewsExclamationMarkIcon />}
                   <View>
-                    <RightArrowBold />
+                    <Text style={styles.newsTitle}>{item.title}</Text>
+                    <Text style={styles.newsMore}>{item.content}</Text>
                   </View>
-                </Pressable>
-              </TouchableHighlight>
+                </View>
+                <View>
+                  <RightArrowBold />
+                </View>
+              </Pressable>
             ))}
 
             {blindModalVisible && (
@@ -271,7 +280,9 @@ const HomeFragment = ({navigation}: Props) => {
                   navigation.navigate('DirectionAgreeScreen');
                 }}
                 whiteButtonText="확인"
-                whiteButtonFunc={() => setBlindModalVisible(!blindModalVisible)}
+                whiteButtonFunc={() => {
+                  setBlindModalVisible(!blindModalVisible);
+                }}
               />
             )}
           </View>

@@ -152,7 +152,7 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
       )}
     </>
   );
-
+console.log(data)
   return (
     <>
       <View style={styles.postContainer}>
@@ -177,7 +177,7 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
             />
           </View>
         </View>
-        {data && data.hasTitle && <Text style={[fontMedium, { fontSize: 17, marginTop: 12 }]}>{data.title}</Text>}
+        {data?.hasTitle && <Text style={[fontMedium, { fontSize: 17, marginTop: 12 }]}>{data.title}</Text>}
         <View style={styles.postBody}>
           <Text style={fontRegular}>{data?.content}</Text>
         </View>
