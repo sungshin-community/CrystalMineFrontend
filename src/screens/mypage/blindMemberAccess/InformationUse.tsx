@@ -13,6 +13,7 @@ import Agreement, {
   DirectionAgreement,
 } from '../../../classes/Agreement';
 import { fontRegular } from '../../../common/font';
+import { getContractGuide } from '../../../common/contractApi';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -24,7 +25,7 @@ function InformationUse() {
 
   useEffect(() => {
     async function getInfo() {
-      const agreements = await getAllAgreements();
+      const agreements = await getContractGuide();
       setAgreements(agreements);
     }
     getInfo();
@@ -60,18 +61,18 @@ function InformationUse() {
       initialLayout={{width: Dimensions.get('window').width}}>
       {/* TODO: 확정나고 변경 */}
       <Tab.Screen
-        name="이용 방향"
+        name={`수정광산\n이용 방향`}
         children={() => (
           <View style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
-            <Markdown>{agreements ? agreements?.direction[0].content: ''}</Markdown>
+            <Markdown>{agreements ? agreements?.direction.content: ''}</Markdown>
           </View>
         )}
       />
       <Tab.Screen
-        name="이용약관"
+        name={`서비스\n이용약관`}
         children={() => (
           <View style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
-            <Markdown>{agreements ? agreements?.agreement[0].content: ''}</Markdown>
+            <Markdown>{agreements ? agreements?.agreement.content: ''}</Markdown>
           </View>
         )}
       />
@@ -79,7 +80,7 @@ function InformationUse() {
         name={`개인정보\n처리방침`}
         children={() => (
           <View style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
-              <Markdown>{agreements ? agreements?.agreement[1].content: ''}</Markdown>
+              <Markdown>{agreements ? agreements?.policy.content: ''}</Markdown>
           </View>
         )}
       />
