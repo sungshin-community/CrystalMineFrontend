@@ -248,7 +248,7 @@ export const resetPassword = async (resetPasswordRequestDto: SignInRequestDto) =
 
 export const getQuitAgreements = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/contract/agreements/1');
+    const response = await client.get<Response<Agreement[]>>('/contract/delete-account');
     return response.data.data;
   } catch {
     return [];

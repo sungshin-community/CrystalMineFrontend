@@ -70,7 +70,6 @@ function QuitTermAgree({navigation}: Props) {
         console.log(
           agreements[i].title,
           agreements[i].checked,
-          agreements[i].id,
         );
       }
     }
@@ -150,9 +149,9 @@ function QuitTermAgree({navigation}: Props) {
                 주의사항 확인 및 동의
               </Text>
             </TouchableOpacity>
-            {agreements.map(a => (
+            {agreements.map((a, index) => (
               <AgreementContainer
-                id={a.id}
+                id={index}
                 title={a.title}
                 content={a.content}
                 checked={a.checked}
