@@ -178,23 +178,25 @@ const HomeFragment = ({navigation}: Props) => {
                   styles.newsContainer,
                 ]}
                 onPress={async () => {
-                  if (item.type === 0) {
-                    const result = await readNotification(item.id);
-                    console.log('알람 확인 후 마이페이지로 이동'); navigation.navigate('MyPage');
+                  if (item.type === 'WELCOME') {
+                    // const result = await readNotification(item.id);
+                    console.log('알람 확인 후 마이페이지로 이동');
+                    navigation.navigate('MyPage');
                   } else if (
-                    item.type === 1 ||
-                    item.type === 2 ||
-                    item.type === 3
+                    item.type === 'BEFORE_EXPIRE' ||
+                    item.type === 'EXPIRE' ||
+                    item.type === 'NOT_AUTHENTICATED'
                   ) {
                     if (user?.isAuthenticated) {
-                      const result = await readNotification(item.id);
-                      console.log('알람 확인 후 정회원인증으로 이동'); navigation.navigate('RegularMemberAuthMyPage');
+                      // const result = await readNotification(item.id);
+                      console.log('알람 확인 후 정회원인증으로 이동');
+                      navigation.navigate('RegularMemberAuthMyPage');
                     } else navigation.navigate('RegularMemberAuthMyPage');
                   } else if (
-                    item.type === 4 ||
-                    item.type === 5 ||
-                    item.type === 6 ||
-                    item.type === 7
+                    item.type === 'BOARD_BLIND' ||
+                    item.type === 'PIN_BOARD_BLIND' ||
+                    item.type === 'POST_BLIND' ||
+                    item.type === 'COMMENT_BLIND'
                   ) {
                     const itemContent = (
                       <View>
@@ -206,36 +208,25 @@ const HomeFragment = ({navigation}: Props) => {
                               width: Dimensions.get('window').width - 100,
                             },
                           ]}>
-                          {item.type === 4
-                            ? '생성한 게시판이'
-                            : item.type === 5
-                            ? '고정한 게시판이'
-                            : item.type === 6
-                            ? '작성한 게시글이'
-                            : item.type === 7
-                            ? '작성한 댓글이'
-                            : ''}{' '}
-                          {item.sender === '시스템'
-                            ? '15회 이상 신고되어, 시스템에 의해 블라인드 되었습니다. 사유는 다음과 같습니다.'
-                            : '작성한 댓글이 운영진에 의해 블라인드 되었습니다. 사유는 다음과 같습니다.'}
+                         {item.blind?.message}
                         </Text>
                         <View style={{flexDirection: 'row'}}>
                           <Text style={[fontBold, {width: 88, marginRight: 7}]}>
                             블라인드 사유
                           </Text>
                           <Text style={{width: 148}}>
-                            {item.reason}과도한 비난
+                            {item.blind?.reason}
                           </Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
                           <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-                            {item.type === 4
+                            {item.type === 'BOARD_BLIND'
                               ? '게시판 이름'
-                              : item.type === 5
+                              : item.type === 'PIN_BOARD_BLIND'
                               ? '게시판 이름'
-                              : item.type === 6
+                              : item.type === 'POST_BLIND'
                               ? '작성 내용'
-                              : item.type === 7
+                              : item.type === 'COMMENT_BLIND'
                               ? '작성 내용:'
                               : ''}
                           </Text>
@@ -243,22 +234,61 @@ const HomeFragment = ({navigation}: Props) => {
                             style={{
                               width: Dimensions.get('window').width - 178,
                             }}>
-                            {item.content}
+                            {item.blind?.content}
                           </Text>
                         </View>
                       </View>
                     );
-                   setModalBody(itemContent);
-                    const result = await readNotification(item.id); console.log('블라인드 알림 확인');
+                    setModalBody(itemContent);
+                    // const result = await readNotification(item.id);
+                    console.log('블라인드 알림 확인');
+                    setBlindModalVisible(true);
+                  }
+                  else if(
+                    item.type === 'DELETE_BOARD_BLIND' ||
+                    item.type === 'DELETE_POST_BLIND' ||
+                    item.type === 'DELETE_COMMENT_BLIND'
+                  ) {
+                    const itemContent = (
+                      <View>
+                        <Text
+                          style={[
+                            fontRegular,
+                            {
+                              marginBottom: 15,
+                              width: Dimensions.get('window').width - 100,
+                            },
+                          ]}>
+                         {item.unblind?.message}
+                        </Text>
+                        <View style={{flexDirection: 'row'}}>
+                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                             {item.type === 'DELETE_BOARD_BLIND'
+                              ? '게시판 이름'
+                              : item.type === 'DELETE_POST_BLIND'
+                              ? '작성 내용'
+                              : item.type === 'DELETE_COMMENT_BLIND'
+                              ? '작성 내용:'
+                              : ''}
+                          </Text>
+                          <Text style={{width: Dimensions.get('window').width - 178}}>
+                            {item.unblind?.content}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                    setModalBody(itemContent);
+                    // const result = await readNotification(item.id);
+                    console.log('블라인드 알림 확인');
                     setBlindModalVisible(true);
                   }
                 }}>
                 <View style={{flexDirection: 'row'}}>
-                  {item.type === 0 && <CheckMark />}
-                  {item.type !== 0 && <NewsExclamationMarkIcon />}
+                  {item.type === 'WELCOME' && <CheckMark />}
+                  {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
                   <View>
                     <Text style={styles.newsTitle}>{item.title}</Text>
-                    <Text style={styles.newsMore}>{item.content}</Text>
+                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content :item.blind?.content ? item.blind?.content: item.unblind?.content}</Text>
                   </View>
                 </View>
                 <View>
@@ -368,8 +398,8 @@ const HomeFragment = ({navigation}: Props) => {
             onPress={() => {
               {
                 user?.isAuthenticated
-                  ? navigation.navigate('PostListScreen', {boardId: 1}):
-                  // ? navigation.navigate('InformationUse') :
+                  ? navigation.navigate('PostListScreen', {boardId: 1})
+                  : // ? navigation.navigate('InformationUse') :
                     Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
             }}>

@@ -92,8 +92,10 @@ function QuestionList({navigation, route}: Props) {
   };
   useEffect(() => {
     async function getList() {
+      setIsLoading(true);
       const list = await getQuestionList(0);
       setQuestionList(list);
+      setIsLoading(false);
     }
     if (isFocused) {
       getList();
@@ -176,9 +178,9 @@ function QuestionList({navigation, route}: Props) {
     }
     setIsNextPageLoading(false);
   };
-
+ console.log(questionList?.length)
   return (
-    <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View
         style={{
           position: 'absolute',

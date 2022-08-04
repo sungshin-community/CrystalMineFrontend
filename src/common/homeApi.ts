@@ -41,7 +41,7 @@ export async function getNotification(page: number = 0) {
     const params = new URLSearchParams();
     params.append('page', page.toString());
     const response = await client.get<Response<HomeNotificationDto>>(
-      `/notification?${params}`
+      `/notifications/home?${params}`
     );
     return response.data.data.content;
   } catch (e) {
@@ -52,7 +52,7 @@ export async function getNotification(page: number = 0) {
 export async function getUnreadNotification() {
   try {
     const response = await client.get<Response<HomeNotificationDto>>(
-      `/notification/unread`
+      `/notifications/home`
     );
     return response.data.data;
   } catch (e) {

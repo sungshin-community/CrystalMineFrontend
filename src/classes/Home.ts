@@ -1,3 +1,4 @@
+
 export interface PinBoardDto {
   boardId: number;
   boardName: string;
@@ -24,9 +25,20 @@ export interface HomeNotificationDto {
 
 export interface HomeNotification {
   id: number;
-  sender: string;
-  type: number;
+  from: string;
+  type: string;
   title: string;
-  content: string;
+  content?: string;
+  blind?: BlindDto
+  unblind?: UnblindDto
+}
+
+interface BlindDto {
+  message: string;
   reason: string;
+  content: string;
+}
+interface UnblindDto {
+  message: string;
+  content: string;
 }
