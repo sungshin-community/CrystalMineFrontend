@@ -14,10 +14,10 @@ import { MyPostContentDto } from '../classes/board/MyPostDto';
 export const getPinnedBoardList = async () => {
   let boardList: Board[] = [];
   try {
-    const officialResponse = await client.get<Response<Board[]>>(`/boards/pin?type=1`);
+    const officialResponse = await client.get<Response<Board[]>>(`/boards/pin?type=OFFICIAL`);
     officialResponse.data.data.forEach(b => (b.isOfficial = true));
     boardList = boardList.concat(officialResponse.data.data);
-    const customResponse = await client.get<Response<Board[]>>(`/boards/pin?type=0`);
+    const customResponse = await client.get<Response<Board[]>>(`/boards/pin?type=PUBLIC`);
     customResponse.data.data.forEach(b => (b.isOfficial = false));
     boardList = boardList.concat(customResponse.data.data);
     return boardList;
@@ -29,7 +29,7 @@ export const getPinnedBoardList = async () => {
 export const getOfficialBoardList = async () => {
   try {
     const params = new URLSearchParams();
-    params.append('type', '1');
+    params.append('type', 'OFFICIAL');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
     return response.data.data;
   } catch (e) {
@@ -40,7 +40,7 @@ export const getOfficialBoardList = async () => {
 export const getDepartmentBoardList = async () => {
   try {
     const params = new URLSearchParams();
-    params.append('type', '2');
+    params.append('type', 'DEPARTMENT');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
     return response.data.data;
   } catch (e) {
@@ -51,7 +51,7 @@ export const getDepartmentBoardList = async () => {
 export const getCustomBoardList = async () => {
   try {
     const params = new URLSearchParams();
-    params.append('type', '0');
+    params.append('type', 'PUBLIC');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
     return response.data.data;
   } catch (e) {
