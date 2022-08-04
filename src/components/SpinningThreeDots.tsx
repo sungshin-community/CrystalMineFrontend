@@ -56,7 +56,7 @@ function SpinningThreeDots({
 
   return (
     <>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', padding: 0, margin: 0}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {!isOptionState && handleDefaultModeComponent}
           {isOptionState &&
@@ -67,9 +67,9 @@ function SpinningThreeDots({
             ))}
         </View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight
-            style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-            underlayColor='#EEEEEE'
+          <Pressable
+            // style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
+            // underlayColor='#EEEEEE'
             onPress={() => {
               handleAnimation();
               setIsOptionState(!isOptionState);
@@ -77,7 +77,7 @@ function SpinningThreeDots({
             <Animated.View style={animatedStyle}>
               <Dots />
             </Animated.View>
-          </TouchableHighlight>
+          </Pressable>
         </View>
       </View>
     </>

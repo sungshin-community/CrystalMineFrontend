@@ -64,15 +64,25 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
-
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
   useEffect(() => {
     async function init() {
       setIsLoading(true);
       const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
+       if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
+        Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.LONG);
+        navigation.goBack();
+      } else if (
+        boardDetail.code === 'BOARD_NOT_FOUND' ||
+        boardDetail.code === 'BOARD_ALREADY_DELETED'
+      ) {
+        Toast.show('삭제된 게시판입니다.', Toast.LONG);
+        navigation.goBack();
+      } else  setBoardDetail(boardDetail);
       const boardInfo = await getBoardInfo(route.params.boardId);
-      setBoardDetail(boardDetail);
       setBoardInfo(boardInfo);
       setIsLoading(false);
+      if(boardDetail?.length === 0) setIsEmpty(true)
     }
     if (isFocused) init();
   }, [isFocused, sortBy]);
@@ -131,7 +141,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           ]}
           numberOfLines={1}
           ellipsizeMode="tail">
-          {boardInfo?.name}
+          {boardInfo? boardInfo?.name : ''}
         </Text>
       </>
     );
@@ -197,7 +207,6 @@ const PostListScreen = ({navigation, route}: Props) => {
           style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
           underlayColor='#EEEEEE'
           onPress={() => {
-            console.log('눌리긴 하니');
             setReportCheckModalVisible(true);
             console.log(reportCheckModalVisible);
           }}>
@@ -277,7 +286,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
             </TouchableOpacity>
           </View>}
-        {boardDetail?.length === 0 ? (
+        {isEmpty? (
           <SafeAreaView style={{flex: 1}}>
             <View
               style={{
@@ -294,7 +303,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                   lineHeight: 22.5,
                   marginTop: 20,
                 }}>
-                아직 작성된 게시글이 없습니다.{'\n'}첫 글을 작성해주세요.
+                아직 작성된 게시글이 없습니다.{`\n`}첫 글을 작성해주세요.
               </Text>
             </View>
           </SafeAreaView>
@@ -305,10 +314,6 @@ const PostListScreen = ({navigation, route}: Props) => {
             renderItem={({item, index}) => (
               <Pressable
                 onPress={async () => {
-                  const result = await getPosts(boardDetail[index].postId);
-                  if (result === 'NOT_FOUND')
-                    Toast.show('삭제된 게시글입니다.', Toast.LONG);
-                  else
                     navigation.navigate('PostScreen', {
                       postId: boardDetail[index].postId,
                     });
@@ -333,18 +338,19 @@ const PostListScreen = ({navigation, route}: Props) => {
             onEndReachedThreshold={0.8}
           />
         )}
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.touchableOpacityStyle}>
-          <FloatingWriteButton
-            onPress={() =>
-              navigation.navigate('PostWriteScreen', {
-                boardId: route.params.boardId,
-              })
-            }
-            style={styles.floatingButtonStyle}
-          />
-        </TouchableOpacity>
+        {boardInfo?.id !== 1 &&
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.touchableOpacityStyle}>
+            <FloatingWriteButton
+              onPress={() =>
+                navigation.navigate('PostWriteScreen', {
+                  boardId: route.params.boardId,
+                })
+              }
+              style={styles.floatingButtonStyle}
+            />
+          </TouchableOpacity>}
       </View>
     </>
   );

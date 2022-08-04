@@ -39,7 +39,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{comment.createdAt}</Text>
       </View>
-      <Text style={[styles.text, styles.content]}>{comment.content}</Text>
+      <Text numberOfLines={3} ellipsizeMode="tail" style={[styles.text, styles.content]}>{comment.content}</Text>
       <View style={styles.icon}>
         {comment.isLiked ? <PostLike /> : <PostUnlike />}
         <Text style={[styles.textSmall, styles.iconCount]}>

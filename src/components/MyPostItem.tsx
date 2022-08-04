@@ -40,7 +40,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
       {post.hasTitle && <Text style={styles.titleText}>{post.title}</Text>}
-      <Text style={[styles.text, styles.content]}>{post.content}</Text>
+      <Text numberOfLines={post.title ? 2 : 3} ellipsizeMode="tail" style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
         {post.isLiked ? <PostLike /> : <PostUnlike />}
         <Text style={[styles.textSmall, styles.iconCount]}>
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 17,
     fontFamily: 'SpoqaHanSansNeo-Bold',
+    marginLeft: 10
   },
   timeStamp: {
     paddingTop: 6,

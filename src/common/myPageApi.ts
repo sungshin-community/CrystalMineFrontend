@@ -18,12 +18,29 @@ export const getUser = async () => {
   }
 };
 
-export const writeQuestion = async (QuestionWriteRequestDto: QuestionWriteRequest) => {
+export const writeQuestion = async (
+  title: string,
+  content: string,
+  images?: any,
+) => {
   try {
-    console.log('server', QuestionWriteRequestDto)
+    const formData = new FormData();
+    images.map((image: any, index: number) => {
+      const photo = {
+        uri: image.uri,
+        name: `${index}.jpg`,
+        type: 'multipart/form-data',
+      };
+      formData.append('images', photo);
+    });
+    formData.append('title', title);
+    formData.append('content', content);
     const response = await client.post<Response<QuestionWriteResponse>>(
-      '/questions',
-      QuestionWriteRequestDto
+      `/questions`,
+      formData,
+      {
+        headers: {'Content-Type': 'multipart/form-data'},
+      },
     );
     return response.data.data;
   } catch (error) {
@@ -34,44 +51,48 @@ export const writeQuestion = async (QuestionWriteRequestDto: QuestionWriteReques
 export const uploadProfileImage = async (image: any) => {
   try {
     const formData = new FormData();
-    const data = {uri: image.uri, name: 'photo.png', type: 'multipart/form-data'};
-    formData.append("profileImage", data);
-
+    const data = {
+      uri: image.uri,
+      name: 'photo.png',
+      type: 'multipart/form-data',
+    };
+    formData.append('image', data);
     const response = await client.post<Response<ProfileImageResponseDto>>(
-      '/upload/profileImage',
+      '/user/profile-image',
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
-    console.log("사진 업로드 response는", response.data);
+    console.log('사진 업로드 response는', response.data);
     return response.data;
-  } catch (error: any) {
-    const errorCode = error.response.data.code;
-    console.log("사진 업로드 실패", error.response);
+  } catch (error) {
+    const errorCode = error.response.data;
+    console.log('사진 업로드 실패', error.response);
     return errorCode;
   }
 };
 
 export const setDefaultProfileImage = async () => {
   try {
-    const response = await client.patch<Response<User>>('/user/profile-image-default');
+    const response = await client.patch<Response<User>>(
+      '/user/profile-image-default',
+    );
     return response;
-  } catch (error: any) {
+  } catch (error) {
     return error.response;
   }
 };
 
 export const changePassword = async (password: string) => {
   try {
-    const response = await client.patch<Response<User>>(
-      '/user/password',
-      {password: password}
-    );
+    const response = await client.patch<Response<User>>('/user/password', {
+      password: password,
+    });
     return response.data.code;
-  } catch (error: any) {
+  } catch (error) {
     const errorCode = error.response.data.code;
     return errorCode;
   }
@@ -79,12 +100,11 @@ export const changePassword = async (password: string) => {
 
 export const changeNickname = async (nickname: string) => {
   try {
-    const response = await client.patch<Response<User>>(
-      '/user/nickname',
-      {nickname: nickname}
-    );
+    const response = await client.patch<Response<User>>('/user/nickname', {
+      nickname: nickname,
+    });
     return response.data.code;
-  } catch (error: any) {
+  } catch (error) {
     const errorCode = error.response.data.code;
     return errorCode;
   }
@@ -92,9 +112,11 @@ export const changeNickname = async (nickname: string) => {
 
 export const changeMajor = async (departmentId: number) => {
   try {
-    const response = await client.patch<Response<User>>('/user/department', {departmentId: departmentId});
+    const response = await client.patch<Response<User>>('/user/department', {
+      departmentId: departmentId,
+    });
     return response.data.code;
-  } catch (error: any) {
+  } catch (error) {
     const errorCode = error.response.data.code;
     return errorCode;
   }
@@ -104,34 +126,30 @@ export const getNoticeList = async (page: number) => {
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
-    const response = await client.get<AxiosResponse>(
-      `/notices?${params}`,
-    );
+    const response = await client.get<AxiosResponse>(`/notices?${params}`);
     return response.data.data.content;
   } catch (e) {
-    console.log("여기는 getNoticeList 함수", e);
+    console.log('여기는 getNoticeList 함수', e);
   }
-}
+};
 
 export const getNotice = async (noticeId: number) => {
   try {
     const params = new URLSearchParams();
-    const response = await client.get<AxiosResponse>(
-      `/notices/${noticeId}`
-    );
+    const response = await client.get<AxiosResponse>(`/notices/${noticeId}`);
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getNotice 함수", e);
+    console.log('여기는 getNotice 함수', e);
   }
-}
+};
 export const getAgreementsWithDate = async () => {
   try {
-    const response = await client.get<AxiosResponse>('/user/agreement');
+    const response = await client.get<AxiosResponse>('/user/agreements');
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getAgreementsWithDate함수", e);
+    console.log('여기는 getAgreementsWithDate함수', e);
   }
-}
+};
 
 export const getUsageRestrictions = async (page: number) => {
   try {
@@ -140,9 +158,9 @@ export const getUsageRestrictions = async (page: number) => {
     const response = await client.get<AxiosResponse>(`/user/blinds?${params}`);
     return response.data.data.content;
   } catch (e) {
-    console.log("여기는 getUsageRestrictions 함수", e);
+    console.log('여기는 getUsageRestrictions 함수', e);
   }
-}
+};
 
 export const checkPassword = async (password: string) => {
   try {
@@ -150,15 +168,15 @@ export const checkPassword = async (password: string) => {
     const response = await client.post<Response<User>>(
       '/user/check-password',
       {password: password},
-      { 
+      {
         headers: {Authorization: `Bearer ${accessToken}`},
-      }
+      },
     );
-    console.log('~', response.data)
+    console.log('~', response.data);
     return response.data.code;
-  } catch (error: any) {
+  } catch (error) {
     const errorCode = error.response.data.code;
-    console.log('~~', errorCode)
+    console.log('~~', errorCode);
 
     return errorCode;
   }
@@ -168,37 +186,33 @@ export const getQuestionList = async (page: number) => {
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
-    const response = await client.get<AxiosResponse>(
-      `/questions?${params}`,
-    );
+    const response = await client.get<AxiosResponse>(`/questions?${params}`);
     return response.data.data.content;
   } catch (e) {
-    console.log("여기는 getQuestionList 함수", e);
+    console.log('여기는 getQuestionList 함수', e);
   }
-}
+};
 
 export const getQuestion = async (answerId: number) => {
   try {
     const params = new URLSearchParams();
-    const response = await client.get<AxiosResponse>(
-      `/questions/${answerId}`
-    );
+    const response = await client.get<AxiosResponse>(`/questions/${answerId}`);
     return response.data.data;
   } catch (e) {
-    console.log("여기는 getQuestion 함수", e);
+    console.log('여기는 getQuestion 함수', e);
   }
-}
+};
 
 export async function deleteQuestions(questionIds: number[]) {
   try {
-    console.log(questionIds)
-    const questionIdListStr = questionIds.join(",");
+    console.log(questionIds);
+    const questionIdListStr = questionIds.join(',');
     const response = await client.delete<AxiosResponse>(
-      `/questions/${questionIdListStr}`
+      `/questions/${questionIdListStr}`,
     );
     console.log(response.data.data);
     return response.data;
   } catch (e) {
-    console.log("여기는 deleteQuestions 함수", e);
+    console.log('여기는 deleteQuestions 함수', e);
   }
 }

@@ -1,27 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import Markdown from 'react-native-markdown-display';
-import { getAgreements, getDirectionAgreements } from '../../../common/authApi';
-import Agreement, { DirectionAgreement } from '../../../classes/Agreement';
+import Markdown, {renderRules} from 'react-native-markdown-display';
+import {
+  getAgreements,
+  getAllAgreements,
+  getDirectionAgreements,
+} from '../../../common/authApi';
+import Agreement, {
+  AgreementAll,
+  DirectionAgreement,
+} from '../../../classes/Agreement';
+import { fontRegular } from '../../../common/font';
+import { getContractGuide } from '../../../common/contractApi';
 
 const Tab = createMaterialTopTabNavigator();
 
 function InformationUse() {
-  const [directionUse, setDirectionUse] = useState<DirectionAgreement[]>();
-  const [termService, setTermService] = useState<Agreement[]>();
+  const [agreements, setAgreements] = useState<AgreementAll>();
+  const [directionUse, setDirectionUse] = useState<string>('');
+  const [termService, setTermService] = useState<string>('');
   const [privacyPolicy, setPrivacyPolicy] = useState<string>('');
 
   useEffect(() => {
-     async function getInfo() {
-       const direction = await getDirectionAgreements();
-       const term = await getAgreements();
-       setDirectionUse(direction);
-       setTermService(term);
-     }
+    async function getInfo() {
+      const agreements = await getContractGuide();
+      setAgreements(agreements);
+    }
     getInfo();
-  },[])
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -29,6 +37,7 @@ function InformationUse() {
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 5},
           shadowRadius: 20,
+          margin: 0
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#A055FF',
@@ -49,19 +58,31 @@ function InformationUse() {
         tabBarInactiveTintColor: '#717171',
       }}
       keyboardDismissMode="on-drag"
-      initialLayout={{ width: Dimensions.get('window').width }}>
+      initialLayout={{width: Dimensions.get('window').width}}>
       {/* TODO: 확정나고 변경 */}
       <Tab.Screen
-        name="이용 방향"
-        children={() => <View style={{ paddingHorizontal: 24, paddingVertical: 20 }}><Text>ㅇㅇ</Text></View>}
+        name={`수정광산\n이용 방향`}
+        children={() => (
+          <View style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <Markdown>{agreements ? agreements?.direction.content: ''}</Markdown>
+          </View>
+        )}
       />
       <Tab.Screen
-        name="이용약관"
-        children={() => <Text>sdfsdf</Text>}
+        name={`서비스\n이용약관`}
+        children={() => (
+          <View style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <Markdown>{agreements ? agreements?.agreement.content: ''}</Markdown>
+          </View>
+        )}
       />
       <Tab.Screen
-        name="개인정보 처리방침"
-        children={() => <Text>sdfsdf</Text>}
+        name={`개인정보\n처리방침`}
+        children={() => (
+          <View style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+              <Markdown>{agreements ? agreements?.policy.content: ''}</Markdown>
+          </View>
+        )}
       />
       {/* <Tab.Screen name="태그" component={TagSearchResult} /> */}
     </Tab.Navigator>

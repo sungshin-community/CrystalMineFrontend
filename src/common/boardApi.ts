@@ -92,7 +92,8 @@ export const getBoardInfo = async (boardId: number) => {
     console.log("여기는 getBoardInfo 함수", e);
   }
 };
-
+ 
+// 게시글 목록
 export const getBoardDetail = async (boardId: number, page: number, sort: string) => {
   try {
     const params = new URLSearchParams();
@@ -103,7 +104,8 @@ export const getBoardDetail = async (boardId: number, page: number, sort: string
     );
     return response.data.data.content;
   } catch (e) {
-    console.log("여기는 getCustomBoardList 함수", e);
+    console.log("여기는 getCustomBoardList 함수", e.response.data);
+    return e.response.data;
   }
 }
 
@@ -243,7 +245,7 @@ export const reportBoard = async (boardId: number, reasonId: number, detail?: st
     return e.response.data;
   }
 };
-// 게시글
+// 게시글 상세
 export const getPosts = async (postId: number) => {
   try {
     const response = await client.get<Response<null>>(
@@ -253,7 +255,7 @@ export const getPosts = async (postId: number) => {
     return response.data.data;
   } catch (e) {
     console.log("여기는 getPosts 함수", e.response.data);
-    return e.response.data.status;
+    return e.response.data;
   }
 };
 // 게시글 공감
@@ -380,7 +382,7 @@ export const reportComment = async (commentId: number, reasonId: number, detail?
 // 댓글, 대댓글 삭제
 export const deleteComment = async (commentId: number) => {
   try {
-    const response = await client.patch<Response<CommentDto>>(
+    const response = await client.delete<Response<CommentDto>>(
       `/comments/${commentId}`
     );
     return true;

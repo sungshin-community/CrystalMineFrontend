@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableHighlight,
+  Pressable,
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -27,6 +28,7 @@ import {
   getNotification,
   getPinBoardContents,
   getUnreadNotification,
+  readNotification,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
@@ -34,11 +36,14 @@ import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
 import {NoticeDto} from '../../classes/mypage/NoticeDto';
-import { PlatformOS } from '../../components/PlatformOS';
+import {PlatformOS} from '../../components/PlatformOS';
+import HappySuryong from '../../../resources/icon/custom/HappySuryong';
+import RemoveDataSuryong from '../../../resources/icon/custom/RemoveDataSuryong';
+import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
-  MyPageFragment: undefined;
+  MyPage: undefined;
   PostScreen: undefined;
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
@@ -62,6 +67,7 @@ const HomeFragment = ({navigation}: Props) => {
   const [noti, setNoti] = useState<HomeNotification[]>([]);
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const blacklistModalContent = (
     <>
@@ -88,26 +94,22 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 날짜
             </Text>
-            <Text>0000.00.00</Text>
+            <Text>{user?.blacklist.createdAt}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 사유
             </Text>
-            <Text>0000.00.00</Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-              작성 내용
-            </Text>
-            <Text>0000.00.00</Text>
+            <Text>{user?.blacklist.reason}</Text>
           </View>
         </>
       )}
     </>
   );
+
   useEffect(() => {
     async function getContents() {
+      setIsLoading(true);
       const pinBoardData = await getPinBoardContents();
       const hotBoardData = await getHotBoardContents();
       const notification = await getUnreadNotification();
@@ -117,11 +119,12 @@ const HomeFragment = ({navigation}: Props) => {
         setHotBoardContents(hotBoardData);
       }
       setNoti(notification);
+      setIsLoading(false);
     }
     if (isFocused) {
       getContents();
     }
-  }, [isFocused]);
+  }, [isFocused, modalBody]);
   useEffect(() => {
     async function getUserInfo() {
       const userDto = await getAuthentication();
@@ -142,7 +145,7 @@ const HomeFragment = ({navigation}: Props) => {
           style={{
             fontSize: 22,
             marginLeft: 40,
-            marginBottom: noti.length !== 0 ? 26 : 0,
+            marginBottom: noti?.length !== 0 ? 26 : 0,
           }}>
           <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
             {user?.nickname}
@@ -163,82 +166,137 @@ const HomeFragment = ({navigation}: Props) => {
               paddingHorizontal: 18,
               backgroundColor: '#fff',
             }}>
-            {noti.map((item, index) =>
-              <TouchableHighlight
+            {noti?.map((item, index) => (
+              <Pressable
                 key={index}
-                style={{borderTopWidth: index === 0 ? 0 : 1, borderTopColor: '#F6F6F6'}}
-                onPress={() => {
-                  if (
-                    item.type === 1 ||
-                    item.type === 2 ||
-                    item.type === 3
-                  ) {
-                    navigation.navigate('RegularMemberAuthMyPage');
+                style={[
+                  {
+                    borderTopWidth: index === 0 ? 0 : 1,
+                    borderTopColor: '#F6F6F6',
+                    backgroundColor: 'yellow',
+                  },
+                  styles.newsContainer,
+                ]}
+                onPress={async () => {
+                  if (item.type === 'WELCOME') {
+                    // const result = await readNotification(item.id);
+                    console.log('알람 확인 후 마이페이지로 이동');
+                    navigation.navigate('MyPage');
                   } else if (
-                    item.type === 4 ||
-                    item.type === 5 ||
-                    item.type === 6 ||
-                    item.type === 7
+                    item.type === 'BEFORE_EXPIRE' ||
+                    item.type === 'EXPIRE' ||
+                    item.type === 'NOT_AUTHENTICATED'
                   ) {
-                    setBlindModalVisible(true);
+                    if (user?.isAuthenticated) {
+                      // const result = await readNotification(item.id);
+                      console.log('알람 확인 후 정회원인증으로 이동');
+                      navigation.navigate('RegularMemberAuthMyPage');
+                    } else navigation.navigate('RegularMemberAuthMyPage');
+                  } else if (
+                    item.type === 'BOARD_BLIND' ||
+                    item.type === 'PIN_BOARD_BLIND' ||
+                    item.type === 'POST_BLIND' ||
+                    item.type === 'COMMENT_BLIND'
+                  ) {
                     const itemContent = (
                       <View>
-                        <Text style={[fontRegular, {marginBottom: 15}]}>
-                          {item.type === 4
-                            ? '생성한 게시판이'
-                            : item.type === 5
-                            ? '고정한 게시판이'
-                            : item.type === 6
-                            ? '작성한 게시글이'
-                            : item.type === 7
-                            ? '작성한 댓글이'
-                            : ''}{' '}
-                          15회 이상 신고되어, {item.sender}에 의해{`\n`}블라인드 되었습니다. 사유는 다음과 같습니다.
+                        <Text
+                          style={[
+                            fontRegular,
+                            {
+                              marginBottom: 15,
+                              width: Dimensions.get('window').width - 100,
+                            },
+                          ]}>
+                         {item.blind?.message}
                         </Text>
                         <View style={{flexDirection: 'row'}}>
-                          <Text
-                            style={[fontBold, {width: 88, marginRight: 7}]}>
+                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
                             블라인드 사유
                           </Text>
-                          <Text style={{width: 148}}>{item.reason}과도한 비난</Text>
+                          <Text style={{width: 148}}>
+                            {item.blind?.reason}
+                          </Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                          <Text
-                            style={[fontBold, {width: 88, marginRight: 7}]}>
-                              {item.type === 4
-                            ? '게시판 이름'
-                            : item.type === 5
-                            ? '게시판 이름'
-                            : item.type === 6
-                            ? '작성 내용'
-                            : item.type === 7
-                            ? '작성 내용:'
-                            : ''}
+                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                            {item.type === 'BOARD_BLIND'
+                              ? '게시판 이름'
+                              : item.type === 'PIN_BOARD_BLIND'
+                              ? '게시판 이름'
+                              : item.type === 'POST_BLIND'
+                              ? '작성 내용'
+                              : item.type === 'COMMENT_BLIND'
+                              ? '작성 내용:'
+                              : ''}
                           </Text>
-                          <Text style={{ width: Dimensions.get('window').width - 178}}>{item.content}</Text>
+                          <Text
+                            style={{
+                              width: Dimensions.get('window').width - 178,
+                            }}>
+                            {item.blind?.content}
+                          </Text>
                         </View>
-                  
                       </View>
                     );
                     setModalBody(itemContent);
+                    // const result = await readNotification(item.id);
+                    console.log('블라인드 알림 확인');
+                    setBlindModalVisible(true);
+                  }
+                  else if(
+                    item.type === 'DELETE_BOARD_BLIND' ||
+                    item.type === 'DELETE_POST_BLIND' ||
+                    item.type === 'DELETE_COMMENT_BLIND'
+                  ) {
+                    const itemContent = (
+                      <View>
+                        <Text
+                          style={[
+                            fontRegular,
+                            {
+                              marginBottom: 15,
+                              width: Dimensions.get('window').width - 100,
+                            },
+                          ]}>
+                         {item.unblind?.message}
+                        </Text>
+                        <View style={{flexDirection: 'row'}}>
+                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                             {item.type === 'DELETE_BOARD_BLIND'
+                              ? '게시판 이름'
+                              : item.type === 'DELETE_POST_BLIND'
+                              ? '작성 내용'
+                              : item.type === 'DELETE_COMMENT_BLIND'
+                              ? '작성 내용:'
+                              : ''}
+                          </Text>
+                          <Text style={{width: Dimensions.get('window').width - 178}}>
+                            {item.unblind?.content}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                    setModalBody(itemContent);
+                    // const result = await readNotification(item.id);
+                    console.log('블라인드 알림 확인');
+                    setBlindModalVisible(true);
                   }
                 }}>
-                <View style={styles.newsContainer}>
-                  <View style={{flexDirection: 'row'}}>
-                    {item.type === 0 && <CheckMark />}
-                    {item.type !== 0 && <NewsExclamationMarkIcon />}
-                    <View>
-                      <Text style={styles.newsTitle}>{item.title}</Text>
-                      <Text style={styles.newsMore}>{item.content}</Text>
-                    </View>
-                  </View>
+                <View style={{flexDirection: 'row'}}>
+                  {item.type === 'WELCOME' && <CheckMark />}
+                  {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
                   <View>
-                    <RightArrowBold />
+                    <Text style={styles.newsTitle}>{item.title}</Text>
+                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content :item.blind?.content ? item.blind?.content: item.unblind?.content}</Text>
                   </View>
                 </View>
-              </TouchableHighlight>)
-            }
-            
+                <View>
+                  <RightArrowBold />
+                </View>
+              </Pressable>
+            ))}
+
             {blindModalVisible && (
               <ModalBottom
                 modalVisible={blindModalVisible}
@@ -252,7 +310,9 @@ const HomeFragment = ({navigation}: Props) => {
                   navigation.navigate('DirectionAgreeScreen');
                 }}
                 whiteButtonText="확인"
-                whiteButtonFunc={() => setBlindModalVisible(!blindModalVisible)}
+                whiteButtonFunc={() => {
+                  setBlindModalVisible(!blindModalVisible);
+                }}
               />
             )}
           </View>
@@ -339,8 +399,8 @@ const HomeFragment = ({navigation}: Props) => {
               {
                 user?.isAuthenticated
                   ? navigation.navigate('PostListScreen', {boardId: 1})
-                  // ? navigation.navigate('InformationUse')
-                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                  : // ? navigation.navigate('InformationUse') :
+                    Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
             }}>
             <Text style={styles.more}>더보기</Text>
@@ -432,12 +492,14 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
   hotPostContainer: {
     marginVertical: 8,
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   postTitleSummary: {
     fontSize: 13,

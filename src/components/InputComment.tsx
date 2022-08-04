@@ -15,6 +15,7 @@ import {
 import CommentSendIcon from '../../resources/icon/CommentSendIcon';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useCallback} from 'react';
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   postId?: any;
@@ -74,22 +75,29 @@ function InputComment({
           multiline={true}
           onChangeText={value => {
             setContent(value);
+            if (value.length === 500)
+               Toast.show(
+                '댓글 내용은 500글자까지만 입력 가능합니다.',
+                Toast.LONG,)
           }}
           value={content}
           autoCorrect={false}
           style={[styles.input]}
+          maxLength={500}
         />
+        <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
         <Text>
           {content && (
             <Pressable
-              style={{paddingTop: Platform.OS === 'ios' ? 7: 5}}
+              style={{paddingBottom: Platform.OS === 'ios' ? 3: 5, bottom: 0}}
               onPress={() => {
                 onSubmit();
               }}>
               <CommentSendIcon />
             </Pressable>
-          )}
-        </Text>
+            )}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -111,5 +119,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingTop: Platform.OS == 'ios' ? 13: 0,
     minHeight: 44,
+    maxHeight: 230
   },
 });

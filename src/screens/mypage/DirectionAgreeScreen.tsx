@@ -5,21 +5,22 @@ import {
 import Markdown from 'react-native-markdown-display';
 import { AgreementAll, DirectionAgreement } from '../../classes/Agreement';
 import { getAllAgreements } from '../../common/authApi';
+import { getContractGuide } from '../../common/contractApi';
 
 export const DirectionAgreeScreen = () => {
   const [data, setData] = useState<AgreementAll>();
   useEffect(() => {
     async function init() {
-      const result = await getAllAgreements();
+      const result = await getContractGuide();
       setData(result);
     }
     init();
   }, [])
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingVertical: 16 }}>
+    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingVertical: 20 }}>
       <Markdown>
-        {data?.direction[0].content ? data?.direction[0].content : ""}
+        {data?.direction.content ? data?.direction.content : ""}
       </Markdown>
     </ScrollView>
     );

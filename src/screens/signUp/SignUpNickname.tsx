@@ -142,7 +142,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {nickname.length > 1 && isFocused && (
+          {nickname.length >= 1 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
@@ -161,7 +161,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             />
           )}
 
-          {nickname.length > 1 && !isFocused && (
+          {nickname.length >= 1 && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
@@ -180,11 +180,11 @@ export default function SignUpNickname({navigation, route}: Props) {
             />
           )}
 
-          {nickname.length < 2 && isFocused && (
+          {nickname.length < 1 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {nickname.length < 2 && !isFocused && (
+          {nickname.length < 1 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
@@ -256,7 +256,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {nickname.length > 1 && isFocused && (
+          {nickname.length >= 1 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
@@ -275,7 +275,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             />
           )}
 
-          {nickname.length > 1 && !isFocused && (
+          {nickname.length >= 1 && !isFocused && (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
@@ -294,11 +294,11 @@ export default function SignUpNickname({navigation, route}: Props) {
             />
           )}
 
-          {nickname.length < 2 && isFocused && (
+          {nickname.length < 1 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {nickname.length < 2 && !isFocused && (
+          {nickname.length < 1 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>

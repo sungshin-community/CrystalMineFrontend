@@ -54,11 +54,13 @@ export function SpreadList({ id, title, agreementDate, content}: any) {
           <ScrollView
             style={{
               height: Dimensions.get('window').height / 2,
-              backgroundColor: '#FBFBFB',paddingHorizontal: 24, paddingVertical: 16
+              backgroundColor: '#FBFBFB',paddingHorizontal: 24,
             }}>
+            <View style={{ paddingTop: 15, paddingBottom: 15}}>
               <Markdown>
               {content}
               </Markdown>
+            </View>
           </ScrollView>
         </>
       )}
@@ -80,7 +82,7 @@ function TermsOfService({navigation}: Props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
-      {data?.map((item) => (<SpreadList key={item.id} id={item.id} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
+      {data?.map((item, index) => (<SpreadList key={index} id={index} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
     </SafeAreaView>
   );
 }
