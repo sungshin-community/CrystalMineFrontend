@@ -274,7 +274,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
         onPress={toMyPosting}
         style={{
           flexDirection: 'row',
-          height: 36,
+          height: 40,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -293,7 +293,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
         onPress={toMyCommentList}
         style={{
           flexDirection: 'row',
-          height: 36,
+          height: 40,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -312,7 +312,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
         onPress={toScrapedPosting}
         style={{
           flexDirection: 'row',
-          height: 36,
+          height: 40,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
