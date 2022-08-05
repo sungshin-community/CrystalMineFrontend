@@ -44,7 +44,7 @@ import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPage: undefined;
-  PostScreen: undefined;
+  PostScreen: {postId: number};
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
   Board: undefined;
@@ -106,7 +106,6 @@ const HomeFragment = ({navigation}: Props) => {
       )}
     </>
   );
-
   useEffect(() => {
     async function getContents() {
       setIsLoading(true);
@@ -259,7 +258,7 @@ const HomeFragment = ({navigation}: Props) => {
                               width: Dimensions.get('window').width - 100,
                             },
                           ]}>
-                         {item.unblind?.message}
+                         {item.deleteBlind?.message}
                         </Text>
                         <View style={{flexDirection: 'row'}}>
                           <Text style={[fontBold, {width: 88, marginRight: 7}]}>
@@ -268,11 +267,11 @@ const HomeFragment = ({navigation}: Props) => {
                               : item.type === 'DELETE_POST_BLIND'
                               ? '작성 내용'
                               : item.type === 'DELETE_COMMENT_BLIND'
-                              ? '작성 내용:'
+                              ? '작성 내용'
                               : ''}
                           </Text>
-                          <Text style={{width: Dimensions.get('window').width - 178}}>
-                            {item.unblind?.content}
+                          <Text ellipsizeMode={'tail'} numberOfLines={3} style={{width: Dimensions.get('window').width - 178} }>
+                            {item.deleteBlind?.content}
                           </Text>
                         </View>
                       </View>
@@ -288,7 +287,7 @@ const HomeFragment = ({navigation}: Props) => {
                   {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
                   <View>
                     <Text style={styles.newsTitle}>{item.title}</Text>
-                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content :item.blind?.content ? item.blind?.content: item.unblind?.content}</Text>
+                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content :item.blind?.content ? item.blind?.content: item.deleteBlind?.content}</Text>
                   </View>
                 </View>
                 <View>
@@ -398,7 +397,7 @@ const HomeFragment = ({navigation}: Props) => {
             onPress={() => {
               {
                 user?.isAuthenticated
-                  ? navigation.navigate('PostListScreen', {boardId: 1})
+                  ? navigation.navigate('PostListScreen', {boardId: 2})
                   : // ? navigation.navigate('InformationUse') :
                     Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
@@ -410,7 +409,7 @@ const HomeFragment = ({navigation}: Props) => {
           hotBoardContents?.hotPosts.map((item, index) => (
             <TouchableWithoutFeedback
               key={index}
-              onPress={() => navigation.navigate('PostScreen')}>
+              onPress={() => navigation.navigate('PostScreen', { postId: item.postId })}>
               <View style={styles.hotPostContainer}>
                 <Text
                   numberOfLines={1}

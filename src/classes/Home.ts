@@ -30,7 +30,7 @@ export interface HomeNotification {
   title: string;
   content?: string;
   blind?: BlindDto
-  unblind?: UnblindDto
+  deleteBlind?: UnblindDto
 }
 
 interface BlindDto {

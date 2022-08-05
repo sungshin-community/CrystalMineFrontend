@@ -28,7 +28,7 @@ export const getPinBoardContents = async () => {
 
 export const getHotBoardContents = async () => {
     try {
-         const response = await client.get<AxiosResponse<HotBoardDto>>("/home/hot-posts");
+      const response = await client.get<AxiosResponse<HotBoardDto>>("/home/hot-posts");
         return response.data.data;
     }
     catch (e) {

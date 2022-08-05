@@ -23,7 +23,7 @@ function PostItem({post}: Props) {
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
-      {post.title ? <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>{post.title}</Text>:<></>}
+      {post.hasTitle ? <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>{post.title}</Text>:<></>}
       <Text numberOfLines={post.title ? 2 : 3} ellipsizeMode="tail" style={[styles.text, styles.content]}>{post.content}</Text>
       <View style={styles.icon}>
         {post.isLiked ? <PostLike /> : <PostUnlike />}

@@ -3,7 +3,7 @@ export default interface Board {
   name: string;
   introduction: string;
   hotable: boolean;
-  type: number;
+  type: string;
   isOwner: boolean;
   isPinned: boolean;
   isReported: boolean;

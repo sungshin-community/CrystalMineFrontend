@@ -16,6 +16,7 @@ import {
   getPinnedBoardList,
 } from '../../common/boardApi';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { fontRegular } from '../../common/font';
 
 type RootStackParamList = {
   MyPostList: undefined;
@@ -110,7 +111,7 @@ export default function BoardFragment({navigation}: Props) {
   
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
         <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
@@ -127,14 +128,13 @@ export default function BoardFragment({navigation}: Props) {
             component={<OfficialBoardList items={officialBoardList} />}
           /> */}
           <View style={{height: 60, paddingLeft: 25, alignItems: 'center', flexDirection: 'row'}}>
-            <Text style={{
+            <Text style={[fontRegular,{
               fontSize: 17,
-              fontFamily: 'SpoqaHanSansNeo',
               lineHeight: 20,
               flex: 1,
               fontWeight: 'bold',
               color: '#222222'
-            }}>
+            }]}>
               공식게시판
             </Text>
           </View>
@@ -155,6 +155,6 @@ export default function BoardFragment({navigation}: Props) {
           <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+      </>
   );
 }

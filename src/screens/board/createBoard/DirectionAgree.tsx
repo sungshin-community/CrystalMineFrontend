@@ -30,6 +30,7 @@ import {
 import {AgreementContainer} from '../../../components/HideToggleContainer';
 import Agreement from '../../../classes/Agreement';
 import {getBoardirectionAgreements} from '../../../common/boardApi';
+import { getContractCreateBoard } from '../../../common/contractApi';
 
 type RootStackParamList = {
   CreateBoard: undefined;
@@ -67,16 +68,9 @@ function TermAgreeCreateBoard({navigation}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getBoardirectionAgreements();
+      const agreementList = await getContractCreateBoard();
       agreementList.map(a => (a.checked = false));
       setAgreements(agreementList);
-      for (let i = 0; i < 2; i++) {
-        console.log(
-          agreements[i].title,
-          agreements[i].checked,
-          agreements[i].id,
-        );
-      }
     }
     init();
   }, []);
@@ -156,10 +150,10 @@ function TermAgreeCreateBoard({navigation}: Props) {
                   이용 방향 및 주의사항 전체 확인
                 </Text>
               </TouchableOpacity>
-              {agreements.map(a => (
+              {agreements.map((a, index) => (
                 <AgreementContainer
-                  key={a.id}
-                  id={a.id}
+                  key={index}
+                  id={index}
                   title={a.title}
                   content={a.content}
                   checked={a.checked}
