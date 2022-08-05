@@ -24,11 +24,11 @@ export interface SearchBoard {
   empty: boolean;
 }
 
-interface PostContent {
+export interface PostContent {
   postId: number;
   boardName: string;
   profileImage: string;
-  nickname: string;
+  displayName: string; /////
   isAuthor: boolean;
   title: string;
   content: string;
@@ -37,6 +37,9 @@ interface PostContent {
   isLiked: boolean;
   likeCount: number;
   isScraped: boolean;
+  hasTitle: boolean;
+  isOwner: boolean;
+  isAnonymous: boolean;
   scrapCount: number;
   imageCount: number;
 }

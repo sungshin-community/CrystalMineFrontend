@@ -7,27 +7,31 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import { fontRegular } from '../../common/font';
-import PostItem from '../../components/PostItem';
+import {PostContent} from '../../classes/Search';
+import {fontRegular} from '../../common/font';
+import PostSearchItem from '../../components/PostSearchItem';
 
-function PostSearchResult({ data }: any) {
+function PostSearchResult({data}: any) {
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.noResult}>
-        {data ? data.totalElements === 0 ? (
-          <Text style={[fontRegular, styles.noResultText]}>
-            요청하신 검색어에 대한 검색 결과가 없습니다.
-          </Text>
-        ) : (
-          <ScrollView>
-            <PostItem post={data} />
-          </ScrollView>
-        ) : null
-        }
+        {data ? (
+          data.totalElements === 0 ? (
+            <Text style={[fontRegular, styles.noResultText]}>
+              요청하신 검색어에 대한 검색 결과가 없습니다.
+            </Text>
+          ) : (
+            <ScrollView style={{ backgroundColor: '#fff'}}>
+              {data.content.map((item: PostContent, index: number) => (
+                <PostSearchItem key={index} post={item} />
+              ))}
+            </ScrollView>
+          )
+        ) : null}
       </SafeAreaView>
-    </KeyboardAvoidingView >
+    </KeyboardAvoidingView>
   );
 }
 
