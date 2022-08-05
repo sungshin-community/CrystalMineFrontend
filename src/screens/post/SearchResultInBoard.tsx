@@ -5,7 +5,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SearchInput from '../../components/SearchInput';
 import SearchCancelButton from '../../components/SearchCancelButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
+import {getPostSearchInBoard} from '../../common/SearchApi';
 import PostSearchResult from '../board/PostSearchResult';
 import TagSearchResult from '../board/TagSearchResult';
 
@@ -23,9 +23,14 @@ function SearchResultInBoard({navigation, route}: Props) {
   useEffect(() => {
     async function loadRecentSearch() {
       try {
-        // TODO: 게시글 api 수정 후 연결, 게시글 정렬 api 추가
-        const postResult = await getPostSearch(searchWord, 0, 'createdAt');
-        setPostResultData(postResult);
+        const postResult = await getPostSearchInBoard(
+          searchWord,
+          0,
+          'createdAt',
+        );
+        if (postResult) {
+          setPostResultData(postResult);
+        }
 
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
@@ -96,7 +101,9 @@ function SearchResultInBoard({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        children={() => <PostSearchResult data={postResultData} />}
+        children={() => (
+          <PostSearchResult data={postResultData} searchWord={searchWord} />
+        )}
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>

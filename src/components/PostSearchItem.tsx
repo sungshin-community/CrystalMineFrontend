@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
 import PostComment from '../../resources/icon/PostComment';
@@ -11,57 +10,55 @@ import {fontMedium} from '../common/font';
 
 interface Props {
   post: PostContent;
+  moveToPost: (postId: number) => void;
 }
 
-function PostSearchItem({post}: Props) {
-  console.log(post);
-  const navigation = useNavigation();
-
+function PostSearchItem({post, moveToPost}: Props) {
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate('MyPostList')}>
-      <View style={styles.nameContainer}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {post.profileImage ? (
-            <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: post.profileImage}}
-            />
-          ) : (
-            <ProfileImage />
-          )}
-          <Text style={styles.name}>{post.displayName}</Text>
+      <Pressable onPress={() => moveToPost(post.postId)}>
+        <View style={styles.nameContainer}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            {post.profileImage ? (
+              <Image
+                style={{width: 24, height: 24, borderRadius: 12}}
+                source={{uri: post.profileImage}}
+              />
+            ) : (
+              <ProfileImage />
+            )}
+            <Text style={styles.name}>{post.displayName}</Text>
+          </View>
+          <Text style={[styles.textSmall, styles.timeStamp]}>
+            {post.createdAt}
+          </Text>
         </View>
-        <Text style={[styles.textSmall, styles.timeStamp]}>
-          {post.createdAt}
+        {post.title ? (
+          <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>
+            {post.title}
+          </Text>
+        ) : null}
+        <Text
+          numberOfLines={post.title ? 2 : 3}
+          ellipsizeMode="tail"
+          style={[styles.text, styles.content]}>
+          {post.content}
         </Text>
-      </View>
-      {post.title ? (
-        <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>
-          {post.title}
-        </Text>
-      ) : null}
-      <Text
-        numberOfLines={post.title ? 2 : 3}
-        ellipsizeMode="tail"
-        style={[styles.text, styles.content]}>
-        {post.content}
-      </Text>
-      <View style={styles.icon}>
-        {post.isLiked ? <PostLike /> : <PostUnlike />}
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.likeCount}
-        </Text>
-        <PostImage />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.imageCount}
-        </Text>
-        <PostComment />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.commentCount}
-        </Text>
-      </View>
-    </Pressable>
+        <View style={styles.icon}>
+          {post.isLiked ? <PostLike /> : <PostUnlike />}
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.likeCount}
+          </Text>
+          <PostImage />
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.imageCount}
+          </Text>
+          <PostComment />
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.commentCount}
+          </Text>
+        </View>
+      </Pressable>
     </View>
   );
 }

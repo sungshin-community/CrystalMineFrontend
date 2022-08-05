@@ -35,3 +35,15 @@ export const getPostSearchInBoard = async (searchWord: string, page: number, sor
     console.log('특정 게시판 내 게시글 검색 실패', error);
   }
 }
+
+export const getMyPostSearch = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchPost[]>>(
+      `/search/1/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    // console.log('api 내가 쓴 글에서 검색', searchWord, response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.log('특정 게시판 내 게시글 검색 실패', error);
+  }
+}

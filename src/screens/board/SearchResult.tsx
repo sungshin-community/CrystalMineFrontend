@@ -33,8 +33,7 @@ function SearchResult({navigation, route}: Props) {
         if (postResult) {
           setPostResultData(postResult);
         }
-        console.log('tab page', postResult);
-        
+
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
@@ -103,7 +102,9 @@ function SearchResult({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        children={() => <PostSearchResult data={postResultData} />}
+        children={() => (
+          <PostSearchResult data={postResultData} searchWord={searchWord} />
+        )}
       />
       <Tab.Screen
         name="게시판 이름"
