@@ -56,7 +56,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [hotBoardPosts, setHotBoardPosts] = useState<ContentPreviewDto[]>([]);
   const isFocused = useIsFocused();
   const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
     boolean
@@ -66,15 +65,13 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   useEffect(() => {
     async function init() {
       setIsLoading(true);
       if (route.params.boardId === 2) {
-        const hotBoardData = await getHotBoardPosts(0, sortBy);
-        if (hotBoardData) { setHotBoardPosts(hotBoardData); }
-        console.log(sortBy, hotBoardPosts);
+        const hotBoardData = await getHotBoardPosts(0);
+        setBoardDetail(hotBoardData);
       } else {
         const boardDetail = await getBoardDetail(
           route.params.boardId,
@@ -95,48 +92,40 @@ const PostListScreen = ({navigation, route}: Props) => {
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
       setIsLoading(false);
-
-      if (route.params.boardId === 2 && hotBoardPosts.length === 0) {
-        setIsEmpty(true);
-      } else if (route.params.boardId !== 2 && boardDetail.length === 0) {
-        setIsEmpty(true);
-      } else setIsEmpty(false);
     }
     if (isFocused) init();
   }, [isFocused, sortBy]);
 
   const handleRefresh = async () => {
-    const postList = await getBoardDetail(route.params.boardId, 0, sortBy);
-    setCurrentPage(0);
-    setBoardDetail(postList);
-  };
-
-  const fetchNextPage = async () => {
-    let thisPagePostList: ContentPreviewDto[] = await getBoardDetail(
-      route.params.boardId,
-      currentPage + 1,
-      sortBy,
-    );
-    setBoardDetail(boardDetail.concat(thisPagePostList));
-    if (thisPagePostList.length > 0) {
-      setCurrentPage(currentPage + 1);
+    if (route.params.boardId === 2) {
+      const postList = await getHotBoardPosts(0);
+      setCurrentPage(0);
+      setHotBoardPosts(postList);
+    } else {
+      const postList = await getBoardDetail(route.params.boardId, 0, sortBy);
+      setCurrentPage(0);
+      setBoardDetail(postList);
     }
   };
 
-  const handleRefreshHotBoard = async () => {
-    const postList = await getHotBoardPosts(0, sortBy);
-    setCurrentPage(0);
-    setHotBoardPosts(postList);
-  };
-
-  const fetchNextPageHotBoard = async () => {
-    let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
-      currentPage + 1,
-      sortBy,
-    );
-    setHotBoardPosts(hotBoardPosts.concat(thisPagePostList));
-    if (thisPagePostList.length > 0) {
-      setCurrentPage(currentPage + 1);
+  const fetchNextPage = async () => {
+    if (route.params.boardId === 2) {
+      let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
+        currentPage + 1
+      );
+      if (thisPagePostList.length > 0) {
+        setCurrentPage(currentPage + 1);
+      }
+    } else {
+      let thisPagePostList: ContentPreviewDto[] = await getBoardDetail(
+        route.params.boardId,
+        currentPage + 1,
+        sortBy,
+      );
+      setBoardDetail(boardDetail.concat(thisPagePostList));
+      if (thisPagePostList.length > 0) {
+        setCurrentPage(currentPage + 1);
+      }
     }
   };
 
@@ -322,7 +311,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
-        {!isEmpty && (
+        {boardDetail.length !== 0 && route.params.boardId !== 2 && (
           <View style={{backgroundColor: '#fff'}}>
             <TouchableOpacity
               onPress={() => {
@@ -348,69 +337,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             </TouchableOpacity>
           </View>
         )}
-        {!isEmpty ? (
-          boardInfo?.id !== 2 ? (
-            <FlatList
-              style={{flex: 1, backgroundColor: '#FFFFFF'}}
-              data={boardDetail}
-              renderItem={({item, index}) => (
-                <Pressable
-                  onPress={async () => {
-                    navigation.navigate('PostScreen', {
-                      postId: item.postId,
-                    });
-                  }}>
-                  <PostItem post={item} />
-                </Pressable>
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-              )}
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={handleRefresh}
-                  colors={['#A055FF']} // for android
-                  tintColor={'#A055FF'} // for ios
-                />
-              }
-              onEndReached={fetchNextPage}
-              onEndReachedThreshold={0.8}
-            />
-          ) : (
-            <FlatList
-              style={{flex: 1, backgroundColor: '#FFFFFF'}}
-              data={hotBoardPosts}
-              renderItem={({item, index}) => (
-                <Pressable
-                  onPress={async () => {
-                    navigation.navigate('PostScreen', {
-                      postId: item.postId,
-                    });
-                  }}>
-                  <PostItem post={item} />
-                </Pressable>
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-              )}
-              refreshing={isRefreshing}
-              onRefresh={handleRefreshHotBoard}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={handleRefreshHotBoard}
-                  colors={['#A055FF']} // for android
-                  tintColor={'#A055FF'} // for ios
-                />
-              }
-              onEndReached={fetchNextPageHotBoard}
-              onEndReachedThreshold={0.8}
-            />
-          )
-        ) : (
+        {boardDetail.length === 0 ? (
           <SafeAreaView style={{flex: 1}}>
             <View
               style={{
@@ -427,10 +354,42 @@ const PostListScreen = ({navigation, route}: Props) => {
                   lineHeight: 22.5,
                   marginTop: 20,
                 }}>
-                아직 작성된 게시글이 없습니다.{`\n`}첫 글을 작성해주세요.
+                {isLoading
+                  ? ''
+                  : route.params.boardId === 2 ? '공감을 10개 이상 받은 게시글이 없습니다.' : '아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요.'}
               </Text>
             </View>
           </SafeAreaView>
+        ) : (
+          <FlatList
+            style={{flex: 1, backgroundColor: '#FFFFFF'}}
+            data={boardDetail}
+            renderItem={({item, index}) => (
+              <Pressable
+                onPress={async () => {
+                  navigation.navigate('PostScreen', {
+                    postId: item.postId,
+                  });
+                }}>
+                <PostItem post={item} />
+              </Pressable>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+            )}
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+                colors={['#A055FF']} // for android
+                tintColor={'#A055FF'} // for ios
+              />
+            }
+            onEndReached={fetchNextPage}
+            onEndReachedThreshold={0.8}
+          />
         )}
         {boardInfo?.id !== 2 && (
           <TouchableOpacity

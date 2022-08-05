@@ -232,11 +232,10 @@ export async function getMyCommentList(page: number, sort: string = "createdAt")
   }
 }
 // HOT 게시판 글 목록
-export const getHotBoardPosts = async (page: number, sort: string) => {
+export const getHotBoardPosts = async (page: number) => {
   try {
     const params = new URLSearchParams();
     params.append('page', page.toString());
-    params.append('sort', sort);
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/hot-board/posts?${params}`
     );
