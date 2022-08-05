@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -14,22 +13,40 @@ import {
 } from 'react-native';
 import {PostContent} from '../../classes/Search';
 import {fontRegular} from '../../common/font';
-import {getPostSearch} from '../../common/SearchApi';
-import FloatingWriteButton from '../../components/FloatingWriteButton';
+import {getPostSearch, getPostSearchInBoard} from '../../common/SearchApi';
 import PostSearchItem from '../../components/PostSearchItem';
 
-function PostSearchResult({data, searchWord}: any) {
+interface Props {
+  searchWord: string;
+  isInBoard?: boolean; // 특정 게시판에서 검색하는 경우에는 true
+}
+
+function PostSearchResult({searchWord, isInBoard}: Props) {
   const navigation = useNavigation();
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    if (data) {
-      setIsData(data);
-      setIsLoading(false);
-    }
+    const getData = async () => {
+      setIsLoading(true);
+      try {
+        let postResult;
+        if (isInBoard) {
+          postResult = await getPostSearchInBoard(searchWord, 0, 'createdAt');
+        } else {
+          postResult = await getPostSearch(searchWord, 0, 'createdAt');
+        }
+
+        if (postResult) {
+          setIsData(postResult);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('failed to load recent search', error);
+      }
+    };
+    getData();
   }, []);
 
   const moveToPost = (postId: number) => {
@@ -48,7 +65,7 @@ function PostSearchResult({data, searchWord}: any) {
     sortData();
   }, [sortBy]);
 
-  if (isData.length <= 0) {
+  if (isLoading) {
     return (
       <View
         style={{

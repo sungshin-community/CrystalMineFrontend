@@ -22,28 +22,35 @@ type RootStackParamList = {
   SearchResultInBoard: {
     searchWord: any;
     boardName: any;
+    boardId: number;
   };
   GlobalNavbar: undefined;
+  PostListScreen: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
+// 검색 버튼 누른 후 [최근 검색어]가 나오는 화면
 function BoardSearch({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
   const [wordList, setWordList] = useState<string[]>([]);
 
+  // SearchInput 컴포넌트에서 검색 버튼을 눌렀을 경우 실행되는 함수
   const startSearching = () => {
     if (searchWord.length > 1) {
       const newWordList = [searchWord].concat(wordList);
-      const duplicateFilter = [...new Set(newWordList)];
+      const duplicateFilter = [...new Set(newWordList)]; // 최근 검색어 중복 체크
       if (duplicateFilter.length === 6) {
+        // 최근 검색어를 담은 배열이 6개가 된 경우 맨 끝(오래된 검색어) 검색어 삭제
         duplicateFilter.pop();
       }
       setWordList(duplicateFilter);
 
       if (route.params) {
+        // route.params(게시판 이름)가 있는 경우 > 특정 게시판 탭 내 검색
         navigation.navigate('SearchResultInBoard', {
           searchWord: searchWord,
           boardName: route.params.boardName,
+          boardId: route.params.boardId,
         });
       } else {
         navigation.navigate('SearchResult', {
@@ -70,13 +77,20 @@ function BoardSearch({navigation, route}: Props) {
         ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
-          onPress={() => navigation.navigate('GlobalNavbar')}
+          onPress={() => {
+            if (route.params) {
+              navigation.navigate('PostListScreen', {boardId: route.params.boardId})
+            } else {
+              navigation.navigate('GlobalNavbar')
+            }
+          }}
         />
       ),
       headerBackVisible: false,
     });
   }, [navigation, searchWord, wordList]);
 
+  // 최근 검색어 불러오기
   useEffect(() => {
     async function loadRecentSearch() {
       try {
@@ -90,6 +104,7 @@ function BoardSearch({navigation, route}: Props) {
     loadRecentSearch();
   }, []);
 
+  // 최근 검색어 저장
   useEffect(() => {
     async function saveRecentSearch() {
       try {
@@ -101,11 +116,13 @@ function BoardSearch({navigation, route}: Props) {
     saveRecentSearch();
   }, [wordList]);
 
+  // 최근 검색어에서 개별 삭제
   const deleteRecentWord = (index: number) => {
     const restWordList = wordList.filter((_, idx) => idx !== index);
     setWordList(restWordList);
   };
 
+  // 최근 검색어 전체 삭제
   const totalDelete = () => {
     setWordList([]);
   };
