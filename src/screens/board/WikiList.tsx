@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -13,40 +14,22 @@ import {
 } from 'react-native';
 import {PostContent} from '../../classes/Search';
 import {fontRegular} from '../../common/font';
-import {getPostSearch, getPostSearchInBoard} from '../../common/SearchApi';
+import {getPostSearch} from '../../common/SearchApi';
+import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostSearchItem from '../../components/PostSearchItem';
 
-interface Props {
-  searchWord: string;
-  isInBoard?: boolean; // 특정 게시판에서 검색하는 경우에는 true
-}
-
-function PostSearchResult({searchWord, isInBoard}: Props) {
+function WikiList({data}: any) {
   const navigation = useNavigation();
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const getData = async () => {
-      setIsLoading(true);
-      try {
-        let postResult;
-        if (isInBoard) {
-          postResult = await getPostSearchInBoard(searchWord, 0, 'createdAt');
-        } else {
-          postResult = await getPostSearch(searchWord, 0, 'createdAt');
-        }
-
-        if (postResult) {
-          setIsData(postResult);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('failed to load recent search', error);
-      }
-    };
-    getData();
+    setIsLoading(true);
+    if (data) {
+      setIsData(data);
+      setIsLoading(false);
+    }
   }, []);
 
   const moveToPost = (postId: number) => {
@@ -56,16 +39,16 @@ function PostSearchResult({searchWord, isInBoard}: Props) {
   useEffect(() => {
     const sortData = async () => {
       setIsLoading(true);
-      let newData = await getPostSearch(searchWord, 0, sortBy);
-      if (newData) {
-        setIsData(newData);
-        setIsLoading(false);
-      }
+      // let newData = await getPostSearch(searchWord, 0, sortBy);
+      // if (newData) {
+      //   setIsData(newData);
+      //   setIsLoading(false);
+      // }
     };
     sortData();
   }, [sortBy]);
 
-  if (isLoading) {
+  if (isData.length <= 0) {
     return (
       <View
         style={{
@@ -152,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostSearchResult;
+export default WikiList;

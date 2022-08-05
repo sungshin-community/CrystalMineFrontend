@@ -24,6 +24,7 @@ type RootStackParamList = {
   ScrapedPostList: undefined;
   PostListScreen: { boardId: number };
   TermAgreeCreateBoard: undefined;
+  WikiTab: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -66,7 +67,11 @@ export default function BoardFragment({navigation}: Props) {
   }
 
   const moveToBoard = (boardId: number) => {
-    navigation.navigate('PostListScreen', {boardId: boardId});
+    if (boardId === 5) {
+      navigation.navigate('WikiTab', {boardId: boardId});
+    } else {
+      navigation.navigate('PostListScreen', {boardId: boardId});
+    }
   }
 
   const moveToCreateBoard = () => {
