@@ -18,7 +18,7 @@ import {getPostSearch} from '../../common/SearchApi';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostSearchItem from '../../components/PostSearchItem';
 
-function PostSearchResult({data, searchWord}: any) {
+function WikiList({data}: any) {
   const navigation = useNavigation();
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
@@ -39,11 +39,11 @@ function PostSearchResult({data, searchWord}: any) {
   useEffect(() => {
     const sortData = async () => {
       setIsLoading(true);
-      let newData = await getPostSearch(searchWord, 0, sortBy);
-      if (newData) {
-        setIsData(newData);
-        setIsLoading(false);
-      }
+      // let newData = await getPostSearch(searchWord, 0, sortBy);
+      // if (newData) {
+      //   setIsData(newData);
+      //   setIsLoading(false);
+      // }
     };
     sortData();
   }, [sortBy]);
@@ -135,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostSearchResult;
+export default WikiList;
