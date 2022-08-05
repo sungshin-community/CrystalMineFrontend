@@ -26,7 +26,7 @@ function BoardSearchResult({ data }: any) {
   const moveToBoard = (boardId: number) => {
     navigation.navigate('PostListScreen', {boardId: boardId});
   }
-  // TODO: 페이지네이션, 정렬 기능 추가
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: 'rgb(255, 255, 255)',
-    justifyContent: 'center',
     marginTop: 34,
     marginLeft: 22,
   },

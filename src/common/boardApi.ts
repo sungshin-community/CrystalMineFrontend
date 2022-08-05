@@ -392,19 +392,9 @@ export const deleteComment = async (commentId: number) => {
   }
 };
 // 게시글 생성
-export const postWritePost = async (props: {
-  boardId: number;
-  title: string;
-  content: string;
-  images: string[];
-  isAnonymous: boolean;
-}) => {
-  console.log('api props 조회', props);
-
+export const postWritePost = async (props: any) => {
   try {
-    const response = await client.post<Response<PostWriteDto>>('/posts', {
-      ...props,
-    });
+    const response = await client.post<Response<PostWriteDto>>('/posts', {body: props});
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -420,25 +410,5 @@ export const getWritePostInfo = async (id: number) => {
     return response.data.data;
   } catch (error) {
     console.log(error);
-  }
-}
-// 게시글 생성 시 이미지 업로드
-export const uploadPostImages = async (image: any) => {
-  try {
-    const formData = new FormData();
-    const data = { uri: image.uri, name: 'photo.png', type: 'multipart/form-data' };
-    formData.append("postImages", data);
-
-    const response = await client.post<Response<string[]>>(
-      '/upload/postImages', formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }
-    )
-    return response.data
-  } catch (error) {
-    console.log('api 사진 업로드 실패', error);
   }
 }

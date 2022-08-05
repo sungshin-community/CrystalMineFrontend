@@ -25,13 +25,15 @@ function SearchResult({navigation, route}: Props) {
   useEffect(() => {
     async function loadRecentSearch() {
       try {
-        // TODO: 페이지네이션, 정렬 기능 추가
         const boardResult = await getBoardSearch(searchWord, 0, 'pinCount');
         const postResult = await getPostSearch(searchWord, 0, 'createdAt');
-        setBoardResultData(boardResult);
-        setPostResultData(postResult);
-        console.log('tab page', postResult);
-        
+        if (boardResult) {
+          setBoardResultData(boardResult);
+        }
+        if (postResult) {
+          setPostResultData(postResult);
+        }
+
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
@@ -100,7 +102,9 @@ function SearchResult({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        children={() => <PostSearchResult data={postResultData} />}
+        children={() => (
+          <PostSearchResult data={postResultData} searchWord={searchWord} />
+        )}
       />
       <Tab.Screen
         name="게시판 이름"
