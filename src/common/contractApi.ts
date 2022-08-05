@@ -23,3 +23,13 @@ export const getContractGuide = async () => {
     return [];
   }
 }
+
+// 게시판 생성 관련 약관 조회
+export const getContractCreateBoard = async () => {
+  try {
+    const response = await client.get<Response<Agreement[]>>('/contract/create-board');
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}

@@ -280,10 +280,10 @@ export function AgreementContainer({
       <TouchableOpacity
         onPress={(e: any) => setIsSpread(!isSpread)}
         style={{
-          marginLeft: 35,
           marginTop: 14,
           marginBottom: 5,
-          marginRight: 41,
+          marginLeft: 25,
+          marginRight: 40,
           flexDirection: 'row',
           alignItems: 'center',
           height: 24,
@@ -312,7 +312,7 @@ export function AgreementContainer({
           )}
         </TouchableOpacity>
 
-        <SmallText>{title}</SmallText>
+        <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: 252}} >{title}</SmallText>
         <View
           style={{
             flex: 1,
@@ -327,7 +327,8 @@ export function AgreementContainer({
       {isSpread && (
         <ScrollView
           style={{
-            height: Dimensions.get('window').height / 5,
+            maxHeight: Dimensions.get('window').height / 5,
+            height: 'auto',
             marginLeft: 40,
             marginRight: 40,
             backgroundColor: '#F6F6F6',
