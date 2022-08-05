@@ -67,25 +67,40 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
+
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
-      if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
-        Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.LONG);
-        navigation.goBack();
-      } else if (
-        boardDetail.code === 'BOARD_NOT_FOUND' ||
-        boardDetail.code === 'BOARD_ALREADY_DELETED'
-      ) {
-        Toast.show('삭제된 게시판입니다.', Toast.LONG);
-        navigation.goBack();
-      } else setBoardDetail(boardDetail);
+      if (route.params.boardId === 2) {
+        const hotBoardData = await getHotBoardPosts(0, sortBy);
+        if (hotBoardData) { setHotBoardPosts(hotBoardData); }
+        console.log(sortBy, hotBoardPosts);
+      } else {
+        const boardDetail = await getBoardDetail(
+          route.params.boardId,
+          0,
+          sortBy,
+        );
+        if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
+          Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.LONG);
+          navigation.goBack();
+        } else if (
+          boardDetail.code === 'BOARD_NOT_FOUND' ||
+          boardDetail.code === 'BOARD_ALREADY_DELETED'
+        ) {
+          Toast.show('삭제된 게시판입니다.', Toast.LONG);
+          navigation.goBack();
+        } else setBoardDetail(boardDetail);
+      }
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
-      const hotBoardData = await getHotBoardPosts(0, sortBy);
-      setHotBoardPosts(hotBoardData);
       setIsLoading(false);
+
+      if (route.params.boardId === 2 && hotBoardPosts.length === 0) {
+        setIsEmpty(true);
+      } else if (route.params.boardId !== 2 && boardDetail.length === 0) {
+        setIsEmpty(true);
+      } else setIsEmpty(false);
     }
     if (isFocused) init();
   }, [isFocused, sortBy]);
@@ -128,7 +143,9 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
-        {boardInfo?.id === 1 ? <BigPurplePin /> :
+        {boardInfo?.id === 1 ? (
+          <BigPurplePin />
+        ) : (
           <Pressable
             onPress={async () => {
               const result = await toggleBoardPin(route.params.boardId);
@@ -143,7 +160,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               )
             ) : boardInfo?.isPinned ? (
               boardInfo?.type === 'DEPARTMENT' ||
-                boardInfo?.type === 'PUBLIC' ? (
+              boardInfo?.type === 'PUBLIC' ? (
                 <BigPurplePin />
               ) : (
                 <BigOrangePin />
@@ -152,7 +169,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               <BigGrayPin />
             )}
           </Pressable>
-        }
+        )}
         <Text
           style={[
             fontMedium,
@@ -331,7 +348,69 @@ const PostListScreen = ({navigation, route}: Props) => {
             </TouchableOpacity>
           </View>
         )}
-        {isEmpty && (
+        {!isEmpty ? (
+          boardInfo?.id !== 2 ? (
+            <FlatList
+              style={{flex: 1, backgroundColor: '#FFFFFF'}}
+              data={boardDetail}
+              renderItem={({item, index}) => (
+                <Pressable
+                  onPress={async () => {
+                    navigation.navigate('PostScreen', {
+                      postId: item.postId,
+                    });
+                  }}>
+                  <PostItem post={item} />
+                </Pressable>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={fetchNextPage}
+              onEndReachedThreshold={0.8}
+            />
+          ) : (
+            <FlatList
+              style={{flex: 1, backgroundColor: '#FFFFFF'}}
+              data={hotBoardPosts}
+              renderItem={({item, index}) => (
+                <Pressable
+                  onPress={async () => {
+                    navigation.navigate('PostScreen', {
+                      postId: item.postId,
+                    });
+                  }}>
+                  <PostItem post={item} />
+                </Pressable>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefreshHotBoard}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefreshHotBoard}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={fetchNextPageHotBoard}
+              onEndReachedThreshold={0.8}
+            />
+          )
+        ) : (
           <SafeAreaView style={{flex: 1}}>
             <View
               style={{
@@ -352,68 +431,6 @@ const PostListScreen = ({navigation, route}: Props) => {
               </Text>
             </View>
           </SafeAreaView>
-        )}
-
-        {boardInfo?.id !== 2 ? (
-          <FlatList
-            style={{flex: 1, backgroundColor: '#FFFFFF'}}
-            data={boardDetail}
-            renderItem={({item, index}) => (
-              <Pressable
-                onPress={async () => {
-                  navigation.navigate('PostScreen', {
-                    postId: item.postId,
-                  });
-                }}>
-                <PostItem post={item} />
-              </Pressable>
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-            )}
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                colors={['#A055FF']} // for android
-                tintColor={'#A055FF'} // for ios
-              />
-            }
-            onEndReached={fetchNextPage}
-            onEndReachedThreshold={0.8}
-          />
-        ) : (
-          <FlatList
-            style={{flex: 1, backgroundColor: '#FFFFFF'}}
-            data={hotBoardPosts}
-            renderItem={({item, index}) => (
-              <Pressable
-                onPress={async () => {
-                  navigation.navigate('PostScreen', {
-                    postId: item.postId,
-                  });
-                }}>
-                <PostItem post={item} />
-              </Pressable>
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-            )}
-            refreshing={isRefreshing}
-            onRefresh={handleRefreshHotBoard}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefreshHotBoard}
-                colors={['#A055FF']} // for android
-                tintColor={'#A055FF'} // for ios
-              />
-            }
-            onEndReached={fetchNextPageHotBoard}
-            onEndReachedThreshold={0.8}
-          />
         )}
         {boardInfo?.id !== 2 && (
           <TouchableOpacity
