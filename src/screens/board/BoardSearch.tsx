@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import CancelButton from '../../../resources/icon/Cancel';
 import SearchInput from '../../components/SearchInput';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { fontBold, fontRegular } from '../../common/font';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {fontBold, fontRegular} from '../../common/font';
 import SearchCancelButton from '../../components/SearchCancelButton';
 
 type RootStackParamList = {
@@ -27,7 +27,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function BoardSearch({ navigation, route }: Props) {
+function BoardSearch({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
   const [wordList, setWordList] = useState<string[]>([]);
 
@@ -55,7 +55,7 @@ function BoardSearch({ navigation, route }: Props) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: (): React.ReactNode => (
+      headerTitle: (): React.ReactNode =>
         route.params ? (
           <SearchInput
             setSearchWord={setSearchWord}
@@ -66,8 +66,8 @@ function BoardSearch({ navigation, route }: Props) {
           <SearchInput
             setSearchWord={setSearchWord}
             startSearching={startSearching}
-          />)
-      ),
+          />
+        ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
           onPress={() => navigation.navigate('GlobalNavbar')}
@@ -126,27 +126,29 @@ function BoardSearch({ navigation, route }: Props) {
               <Text style={styles.delete}>전체 삭제</Text>
             </Pressable>
           </View>
-          {wordList.length === 0 ? (
-            <View style={{ alignItems: 'center' }}>
-              <Text style={[fontRegular, styles.noResult]}>
-                최근 검색어가 없습니다
-              </Text>
-            </View>
-          ) : (
-            wordList.map((word, index) => (
-              <View
-                key={index}
-                style={[styles.rowSpaceBetween, { marginVertical: 9 }]}>
-                <Text style={[fontRegular, styles.text]}>{word}</Text>
-                <Pressable
-                  style={{ marginRight: 5 }}
-                  onPress={() => deleteRecentWord(index)}
-                  hitSlop={5}>
-                  <CancelButton color='#87919B' />
-                </Pressable>
+          {wordList ? (
+            wordList.length === 0 ? (
+              <View style={{alignItems: 'center'}}>
+                <Text style={[fontRegular, styles.noResult]}>
+                  최근 검색어가 없습니다
+                </Text>
               </View>
-            ))
-          )}
+            ) : (
+              wordList.map((word, index) => (
+                <View
+                  key={index}
+                  style={[styles.rowSpaceBetween, {marginVertical: 9}]}>
+                  <Text style={[fontRegular, styles.text]}>{word}</Text>
+                  <Pressable
+                    style={{marginRight: 5}}
+                    onPress={() => deleteRecentWord(index)}
+                    hitSlop={5}>
+                    <CancelButton color="#87919B" />
+                  </Pressable>
+                </View>
+              ))
+            )
+          ) : null}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -163,8 +165,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  title: { fontSize: 17, marginBottom: 14 },
-  text: { fontSize: 15 },
+  title: {fontSize: 17, marginBottom: 14},
+  text: {fontSize: 15},
   delete: {
     fontSize: 13,
     fontFamily: 'SpoqaHanSansNeo-Regular',

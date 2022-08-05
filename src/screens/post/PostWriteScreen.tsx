@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -10,20 +10,28 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { fontMedium, fontRegular } from '../../common/font';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {fontMedium, fontRegular} from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
-import { RectangleChecked, RectangleUnchecked, Checked } from '../../../resources/icon/CheckBox';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {
+  RectangleChecked,
+  RectangleUnchecked,
+  Checked,
+} from '../../../resources/icon/CheckBox';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
-import { getWritePostInfo, postWritePost, uploadPostImages } from '../../common/boardApi';
+import {
+  getWritePostInfo,
+  postWritePost,
+  uploadPostImages,
+} from '../../common/boardApi';
 import ProfileImage from '../../../resources/icon/ProfileImage';
-import { PostWriteInfoDto } from '../../classes/PostDto';
-import { OrangeFlag } from '../../../resources/icon/OrangeFlag'
+import {PostWriteInfoDto} from '../../classes/PostDto';
+import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 
 type RootStackParamList = {
-  PostListScreen: { boardId: number };
+  PostListScreen: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -42,7 +50,8 @@ interface Direction {
   title: string;
 }
 
-function PostWriteScreen({ navigation, route }: Props) {
+function PostWriteScreen({navigation, route}: Props) {
+  const formData = new FormData();
   const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -65,9 +74,9 @@ function PostWriteScreen({ navigation, route }: Props) {
 ${item.title}
         
 ${item.content.map((_item, _index) => {
-                return `${item.id}-${_index + 1} ${_item}
+  return `${item.id}-${_index + 1} ${_item}
 `;
-              })}
+})}
 `;
             })
             .reduce((acc, cur) => acc + cur);
@@ -79,15 +88,16 @@ ${item.content.map((_item, _index) => {
   }, [route.params.boardId]);
 
   const onSubmitPress = async () => {
-    const result = await postWritePost({
+    let post = JSON.stringify({
       boardId: boardId,
       title: title,
       content: content,
-      images: images,
       isAnonymous: isShow,
     });
+    formData.append('post', post);
+    const result = await postWritePost(formData);
     if (result) {
-      navigation.navigate('PostListScreen', { boardId });
+      navigation.navigate('PostListScreen', {boardId});
       Toast.show('게시글이 등록되었습니다.', Toast.LONG);
     }
   };
@@ -107,8 +117,8 @@ ${item.content.map((_item, _index) => {
                       ? '#A055FF'
                       : '#d8b9ff'
                     : content
-                      ? '#A055FF'
-                      : '#d8b9ff',
+                    ? '#A055FF'
+                    : '#d8b9ff',
               },
             ]}>
             완료
@@ -119,66 +129,58 @@ ${item.content.map((_item, _index) => {
   }, [navigation, title, content]);
 
   const onSelectImage = () => {
-    //! 하나씩 선택해야하는 코드
     if (images.length < 10) {
-      setImages(item => [...item, {}])
+      setImages(item => [...item, {}]);
       launchImageLibrary(
-        { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
+        {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
         async res => {
           if (res.didCancel) {
             let notSelectImage = images.slice(0, images.length);
             return setImages(notSelectImage);
-          }
-          let response = await uploadPostImages(res.assets[0]);
-
-          if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
-            setImages([...images, response.data.urls[0]]);
+          } else {
+            res.assets.map(item =>
+              formData.append('images', {
+                uri: item.uri,
+                type: 'image/jpeg',
+                name: item.fileName,
+              }),
+            );
+            let uriArr = res.assets.map(item => item.uri);
+            setImages([...images, ...uriArr]);
           }
         },
       );
     }
-    //! 복수 선택 업로드 > 강제 종료 이슈 임시 주석 처리
-    // if (images.length < 10) {
-    //   launchImageLibrary(
-    //     { mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10 },
-    //     res => {
-    //       if (res.didCancel) {
-    //         return;
-    //       }
-    //       res.assets.map(async item => {
-    //         setImages(_item => [..._item, {}])
-    //         let response = await uploadPostImages(item);
-    //         if (response.code === 'UPLOAD_POST_IMAGES_SUCCESS') {
-    //           setImages([...images, response.data.urls[0]]);
-    //         }
-    //       })
-    //     },
-    //   );
-    // }
   };
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff' }}>
+    <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {isShow || (isInfo && !isInfo.profileImage) ? (
                 <ProfileImage />
               ) : (
                 <View style={styles.profileImage}>
-                  <Image source={{ uri: isInfo.profileImage }} />
+                  <Image source={{uri: isInfo.profileImage}} />
                 </View>
               )}
-              <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-                <Text style={{ fontSize: 16, paddingLeft: 8, paddingRight: 6, fontWeight: '500' }}>
+              <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    paddingLeft: 8,
+                    paddingRight: 6,
+                    fontWeight: '500',
+                  }}>
                   {isShow ? '수정' : isInfo.nickname}
                 </Text>
                 {isInfo && isInfo.isOwner && !isShow && <OrangeFlag />}
               </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ marginRight: 4 }}>익명</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{marginRight: 4}}>익명</Text>
               <Pressable onPress={() => setIsShow(!isShow)}>
                 {isShow ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
@@ -209,26 +211,25 @@ ${item.content.map((_item, _index) => {
             style={[fontRegular, styles.input]}
           />
         </View>
-        <View style={{ paddingHorizontal: 24 }}>
+        <View style={{paddingHorizontal: 24}}>
           <View style={styles.image}>
             <ImageIcon />
             <Text style={[fontMedium, styles.imageText]}>이미지</Text>
           </View>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {images.map((item, index) => (
-              <Image
-                key={index}
-                style={styles.imageBox}
-                source={{ uri: item }} />
+              <Image key={index} style={styles.imageBox} source={{uri: item}} />
             ))}
-            {images.length < 10 && <View style={[styles.imageSelectBox, styles.imageBox]}>
-              <Pressable onPress={onSelectImage} hitSlop={25}>
-                <PhotoIcon />
-                <Text style={[fontMedium, styles.count]}>
-                  {images.length}/10
-                </Text>
-              </Pressable>
-            </View>}
+            {images.length < 10 && (
+              <View style={[styles.imageSelectBox, styles.imageBox]}>
+                <Pressable onPress={onSelectImage} hitSlop={25}>
+                  <PhotoIcon />
+                  <Text style={[fontMedium, styles.count]}>
+                    {images.length}/10
+                  </Text>
+                </Pressable>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -237,7 +238,7 @@ ${item.content.map((_item, _index) => {
 }
 
 const styles = StyleSheet.create({
-  submit: { fontSize: 17, marginRight: 8 },
+  submit: {fontSize: 17, marginRight: 8},
   container: {
     backgroundColor: '#ffffff',
     flex: 1,
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  imageText: { fontSize: 14, color: '#444444', marginLeft: 8 },
+  imageText: {fontSize: 14, color: '#444444', marginLeft: 8},
   imageBox: {
     width: 70,
     height: 70,
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 50,
     backgroundColor: '#675',
-  }
+  },
 });
 
 export default PostWriteScreen;
