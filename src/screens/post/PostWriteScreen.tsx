@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Image,
   Keyboard,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -56,31 +57,16 @@ function PostWriteScreen({navigation, route}: Props) {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [images, setImages] = useState<string[]>([]); // 글 등록할 때 보낼 이미지 url 배열
-  const [direction, setDirection] = useState<string>('');
-  const [isInfo, setIsInfo] = useState<PostWriteInfoDto>({});
-  const [isShow, setIsShow] = useState<boolean>(true);
+  const [info, setInfo] = useState<PostWriteInfoDto>();
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
 
   useEffect(() => {
     const userInfo = async () => {
       if (route.params.boardId) {
         setBoardId(route.params.boardId);
         let result = await getWritePostInfo(route.params.boardId);
-
         if (result) {
-          setIsInfo(result);
-          const placeholder = result.directions
-            .map((item: Direction) => {
-              return `이용방향 ${item.id}.
-${item.title}
-        
-${item.content.map((_item, _index) => {
-  return `${item.id}-${_index + 1} ${_item}
-`;
-})}
-`;
-            })
-            .reduce((acc, cur) => acc + cur);
-          setDirection(placeholder);
+          setInfo(result);
         }
       }
     };
@@ -92,7 +78,7 @@ ${item.content.map((_item, _index) => {
       boardId: boardId,
       title: title,
       content: content,
-      isAnonymous: isShow,
+      isAnonymous: isAnonymous,
     });
     formData.append('post', post);
     const result = await postWritePost(formData);
@@ -112,7 +98,7 @@ ${item.content.map((_item, _index) => {
               fontRegular,
               {
                 color:
-                  isInfo && isInfo.hasTitle
+                  info && info?.hasTitle
                     ? title && content
                       ? '#A055FF'
                       : '#d8b9ff'
@@ -159,13 +145,10 @@ ${item.content.map((_item, _index) => {
         <View style={styles.header}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {isShow || (isInfo && !isInfo.profileImage) ? (
-                <ProfileImage />
-              ) : (
-                <View style={styles.profileImage}>
-                  <Image source={{uri: isInfo.profileImage}} />
-                </View>
-              )}
+              <Image
+                style={{width: 24, height: 24, borderRadius: 12}}
+                source={{uri: info?.profileImage}}
+              />
               <View style={{justifyContent: 'center', flexDirection: 'row'}}>
                 <Text
                   style={{
@@ -174,19 +157,20 @@ ${item.content.map((_item, _index) => {
                     paddingRight: 6,
                     fontWeight: '500',
                   }}>
-                  {isShow ? '수정' : isInfo.nickname}
+                  {isAnonymous ? '수정' : info?.nickname}
                 </Text>
-                {isInfo && isInfo.isOwner && !isShow && <OrangeFlag />}
+                {info?.isOwner && !isAnonymous && <OrangeFlag />}
               </View>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{marginRight: 4}}>익명</Text>
-              <Pressable onPress={() => setIsShow(!isShow)}>
-                {isShow ? <RectangleChecked /> : <RectangleUnchecked />}
+              <Pressable onPress={() => setIsAnonymous(!isAnonymous)}>
+                {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
             </View>
           </View>
-          {isInfo && isInfo.hasTitle && (
+          {info?.hasTitle && (
+            <>
             <TextInput
               placeholder="제목을 입력하세요."
               value={title}
@@ -194,12 +178,15 @@ ${item.content.map((_item, _index) => {
                 setTitle(value);
               }}
               style={[fontMedium, styles.title]}
-            />
+              />
+              <View style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}/>
+              </>
           )}
         </View>
+
         <View>
           <TextInput
-            placeholder={direction}
+            // placeholder={info?.direction.content}
             value={content}
             multiline={true}
             onChangeText={value => {
@@ -252,6 +239,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   input: {
     minHeight: 194,
@@ -285,12 +274,6 @@ const styles = StyleSheet.create({
   count: {
     fontSize: 8,
     color: '#d1d1d1',
-  },
-  profileImage: {
-    width: 24,
-    height: 24,
-    borderRadius: 50,
-    backgroundColor: '#675',
   },
 });
 
