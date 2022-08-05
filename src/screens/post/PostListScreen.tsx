@@ -109,7 +109,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   };
 
   const handleRefreshHotBoard = async () => {
-    const postList = await getHotBoardPosts( 0, sortBy);
+    const postList = await getHotBoardPosts(0, sortBy);
     setCurrentPage(0);
     setHotBoardPosts(postList);
   };
@@ -128,28 +128,31 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
-        <Pressable
-          onPress={async () => {
-            const result = await toggleBoardPin(route.params.boardId);
-            const boardInfo = await getBoardInfo(route.params.boardId);
-            setBoardInfo(boardInfo);
-          }}>
-          {boardInfo?.isOwner ? (
-            boardInfo?.isPinned ? (
-              <BigOrangeFlag />
+        {boardInfo?.id === 1 ? <BigPurplePin /> :
+          <Pressable
+            onPress={async () => {
+              const result = await toggleBoardPin(route.params.boardId);
+              const boardInfo = await getBoardInfo(route.params.boardId);
+              setBoardInfo(boardInfo);
+            }}>
+            {boardInfo?.isOwner ? (
+              boardInfo?.isPinned ? (
+                <BigOrangeFlag />
+              ) : (
+                <BigGrayFlag />
+              )
+            ) : boardInfo?.isPinned ? (
+              boardInfo?.type === 'DEPARTMENT' ||
+                boardInfo?.type === 'PUBLIC' ? (
+                <BigPurplePin />
+              ) : (
+                <BigOrangePin />
+              )
             ) : (
-              <BigGrayFlag />
-            )
-          ) : boardInfo?.isPinned ? (
-            boardInfo?.type === 1 || boardInfo?.type === 2 ? (
-              <BigPurplePin />
-            ) : (
-              <BigOrangePin />
-            )
-          ) : (
-            <BigGrayPin />
-          )}
-        </Pressable>
+              <BigGrayPin />
+            )}
+          </Pressable>
+        }
         <Text
           style={[
             fontMedium,
@@ -172,7 +175,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
         <>
-          {boardInfo?.type !== 1 && (
+          {boardInfo?.type !== 'PUBLIC' && (
             <SpinningThreeDots
               handleDefaultModeComponent={handleBoardSearchComponent}
               isMine={boardInfo?.isOwner}
@@ -180,7 +183,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               handleOptionModeIsNotMineComponent={handleBoardReportComponent}
             />
           )}
-          {boardInfo?.type === 1 && handleBoardSearchComponent}
+          {boardInfo?.type === 'PUBLIC' && handleBoardSearchComponent}
         </>
       ),
       headerTitleAlign: 'center',
