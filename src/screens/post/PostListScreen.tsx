@@ -21,6 +21,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   getBoardDetail,
   getBoardInfo,
+  getHotBoardPosts,
   reportBoard,
   toggleBoardPin,
 } from '../../common/boardApi';
@@ -48,13 +49,14 @@ type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
-  BoardSearch: {boardName: string}
+  BoardSearch: {boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
+  const [hotBoardPosts, setHotBoardPosts] = useState<ContentPreviewDto[]>([]);
   const isFocused = useIsFocused();
   const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
     boolean
@@ -69,7 +71,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     async function init() {
       setIsLoading(true);
       const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
-       if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
+      if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
         Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.LONG);
         navigation.goBack();
       } else if (
@@ -78,11 +80,12 @@ const PostListScreen = ({navigation, route}: Props) => {
       ) {
         Toast.show('삭제된 게시판입니다.', Toast.LONG);
         navigation.goBack();
-      } else  setBoardDetail(boardDetail);
+      } else setBoardDetail(boardDetail);
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
+      const hotBoardData = await getHotBoardPosts(0, sortBy);
+      setHotBoardPosts(hotBoardData);
       setIsLoading(false);
-      if(boardDetail?.length === 0) setIsEmpty(true)
     }
     if (isFocused) init();
   }, [isFocused, sortBy]);
@@ -100,6 +103,23 @@ const PostListScreen = ({navigation, route}: Props) => {
       sortBy,
     );
     setBoardDetail(boardDetail.concat(thisPagePostList));
+    if (thisPagePostList.length > 0) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handleRefreshHotBoard = async () => {
+    const postList = await getHotBoardPosts( 0, sortBy);
+    setCurrentPage(0);
+    setHotBoardPosts(postList);
+  };
+
+  const fetchNextPageHotBoard = async () => {
+    let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
+      currentPage + 1,
+      sortBy,
+    );
+    setHotBoardPosts(hotBoardPosts.concat(thisPagePostList));
     if (thisPagePostList.length > 0) {
       setCurrentPage(currentPage + 1);
     }
@@ -141,7 +161,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           ]}
           numberOfLines={1}
           ellipsizeMode="tail">
-          {boardInfo? boardInfo?.name : ''}
+          {boardInfo ? boardInfo?.name : ''}
         </Text>
       </>
     );
@@ -160,9 +180,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               handleOptionModeIsNotMineComponent={handleBoardReportComponent}
             />
           )}
-          {boardInfo?.type === 1 && (
-             handleBoardSearchComponent
-          )}
+          {boardInfo?.type === 1 && handleBoardSearchComponent}
         </>
       ),
       headerTitleAlign: 'center',
@@ -170,21 +188,32 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
   const searchBtn = () => {
-    navigation.navigate('BoardSearch', { boardName: boardInfo.name })
-  }
-
+    navigation.navigate('BoardSearch', {boardName: boardInfo.name});
+  };
   const handleBoardSearchComponent = (
     <TouchableHighlight
-      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-      underlayColor='#EEEEEE'
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      underlayColor="#EEEEEE"
       onPress={searchBtn}>
       <SearchIcon />
     </TouchableHighlight>
   );
   const handleBoardSettingComponent = (
     <TouchableHighlight
-      style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-      underlayColor='#EEEEEE'
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      underlayColor="#EEEEEE"
       onPress={() =>
         navigation.navigate('UpdateBoard', {boardId: route.params.boardId})
       }>
@@ -195,8 +224,14 @@ const PostListScreen = ({navigation, route}: Props) => {
     <>
       {boardInfo?.isReported ? (
         <TouchableHighlight
-          style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-          underlayColor='#EEEEEE'
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          underlayColor="#EEEEEE"
           onPress={() => {
             Toast.show('이미 신고한 게시판입니다.', Toast.SHORT);
           }}>
@@ -204,8 +239,14 @@ const PostListScreen = ({navigation, route}: Props) => {
         </TouchableHighlight>
       ) : (
         <TouchableHighlight
-          style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-          underlayColor='#EEEEEE'
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          underlayColor="#EEEEEE"
           onPress={() => {
             setReportCheckModalVisible(true);
             console.log(reportCheckModalVisible);
@@ -261,8 +302,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
-        {boardDetail?.length !== 0 &&
-          <View style={{ backgroundColor: '#fff'}}>
+        {!isEmpty && (
+          <View style={{backgroundColor: '#fff'}}>
             <TouchableOpacity
               onPress={() => {
                 if (sortBy === 'createdAt') {
@@ -285,8 +326,9 @@ const PostListScreen = ({navigation, route}: Props) => {
               }}>
               <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
             </TouchableOpacity>
-          </View>}
-        {isEmpty? (
+          </View>
+        )}
+        {isEmpty && (
           <SafeAreaView style={{flex: 1}}>
             <View
               style={{
@@ -307,16 +349,18 @@ const PostListScreen = ({navigation, route}: Props) => {
               </Text>
             </View>
           </SafeAreaView>
-        ) : (
+        )}
+
+        {boardInfo?.id !== 2 ? (
           <FlatList
             style={{flex: 1, backgroundColor: '#FFFFFF'}}
             data={boardDetail}
             renderItem={({item, index}) => (
               <Pressable
                 onPress={async () => {
-                    navigation.navigate('PostScreen', {
-                      postId: boardDetail[index].postId,
-                    });
+                  navigation.navigate('PostScreen', {
+                    postId: item.postId,
+                  });
                 }}>
                 <PostItem post={item} />
               </Pressable>
@@ -337,8 +381,38 @@ const PostListScreen = ({navigation, route}: Props) => {
             onEndReached={fetchNextPage}
             onEndReachedThreshold={0.8}
           />
+        ) : (
+          <FlatList
+            style={{flex: 1, backgroundColor: '#FFFFFF'}}
+            data={hotBoardPosts}
+            renderItem={({item, index}) => (
+              <Pressable
+                onPress={async () => {
+                  navigation.navigate('PostScreen', {
+                    postId: item.postId,
+                  });
+                }}>
+                <PostItem post={item} />
+              </Pressable>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+            )}
+            refreshing={isRefreshing}
+            onRefresh={handleRefreshHotBoard}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={handleRefreshHotBoard}
+                colors={['#A055FF']} // for android
+                tintColor={'#A055FF'} // for ios
+              />
+            }
+            onEndReached={fetchNextPageHotBoard}
+            onEndReachedThreshold={0.8}
+          />
         )}
-        {boardInfo?.id !== 1 &&
+        {boardInfo?.id !== 2 && (
           <TouchableOpacity
             activeOpacity={0.5}
             style={styles.touchableOpacityStyle}>
@@ -350,7 +424,8 @@ const PostListScreen = ({navigation, route}: Props) => {
               }
               style={styles.floatingButtonStyle}
             />
-          </TouchableOpacity>}
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

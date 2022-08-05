@@ -231,6 +231,22 @@ export async function getMyCommentList(page: number, sort: string = "createdAt")
     console.log("여기는 getMyCommentList 함수", e);
   }
 }
+// HOT 게시판 글 목록
+export const getHotBoardPosts = async (page: number, sort: string) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('sort', sort);
+    const response = await client.get<Response<BoardDetailDto>>(
+      `/boards/hot-board/posts?${params}`
+    );
+    return response.data.data.content;
+  } catch (e) {
+    console.log("여기는 getHotBoardPosts 함수", e.response.data);
+    return e.response.data;
+  }
+}
+
 //게시판 신고
 export const reportBoard = async (boardId: number, reasonId: number, detail?: string) => {
   try {

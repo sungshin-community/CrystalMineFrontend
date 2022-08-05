@@ -106,7 +106,6 @@ const HomeFragment = ({navigation}: Props) => {
       )}
     </>
   );
-
   useEffect(() => {
     async function getContents() {
       setIsLoading(true);
@@ -398,7 +397,7 @@ const HomeFragment = ({navigation}: Props) => {
             onPress={() => {
               {
                 user?.isAuthenticated
-                  ? navigation.navigate('PostListScreen', {boardId: 1})
+                  ? navigation.navigate('PostListScreen', {boardId: 2})
                   : // ? navigation.navigate('InformationUse') :
                     Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
