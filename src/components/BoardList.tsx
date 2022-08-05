@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
 import GrayFlag from '../../resources/icon/GrayFlag';
 import MyPostingIcon, {
   MyCommentIcon,
@@ -18,10 +18,16 @@ interface Props {
   onUpdate?: () => void;
   moveToBoard?: (boardId: number) => void;
   search?: boolean;
+  isInited: boolean;
 }
 
-export default function BoardList({ items, moveToBoard, search }: Props) {
+export default function BoardList({ items, moveToBoard, search, isInited }: Props) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   return (
+    !isInited ?
+    pinnedSkeletonComponent
+    :
     items != null && items.length > 0 ? items.map((item, index) => 
         <TouchableOpacity
           key={index}
@@ -78,9 +84,12 @@ export default function BoardList({ items, moveToBoard, search }: Props) {
   );
 }
 
-export function OfficialBoardList({ items, onUpdate, moveToBoard }: Props) {
+export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
+    !isInited ?
+    boardSkeletonComponent
+    :
     items != null && items.length > 0 ? items.map((item, index) => 
       <TouchableOpacity
         key={index}
@@ -161,7 +170,7 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard }: Props) {
   )
 }
 
-export function CustomBoardList({ items, onUpdate, moveToBoard }: Props) {
+export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Props) {
   const [value, setValue] = useState<boolean>(false);
   return (
     items != null && items.length > 0 ? items.map((item, index) => 
@@ -274,7 +283,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
         onPress={toMyPosting}
         style={{
           flexDirection: 'row',
-          height: 36,
+          height: 40,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -293,7 +302,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
         onPress={toMyCommentList}
         style={{
           flexDirection: 'row',
-          height: 36,
+          height: 40,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -312,7 +321,7 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
         onPress={toScrapedPosting}
         style={{
           flexDirection: 'row',
-          height: 36,
+          height: 40,
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
@@ -330,3 +339,108 @@ export function MenuList({ toMyPosting, toMyCommentList, toScrapedPosting }: Men
     </>
   );
 }
+const styles = StyleSheet.create({
+  pinnedSkeletonRow: {
+    flexDirection: 'row',
+    alignItems: 'center', 
+    height: 40, 
+    backgroundColor: '#F6F6F6'
+  },
+  skeletonPin: {
+    width: 14, 
+    height: 14, 
+    backgroundColor: '#E1E4EA', 
+    marginLeft: 22
+  },
+  skeletonPinBoardName: {
+    height: 14, 
+    backgroundColor: '#E1E4EA', 
+    marginLeft: 14
+  },
+  skeletonBoardName: {
+    height: 12, 
+    backgroundColor: '#E1E4EA', 
+    marginLeft: 14
+  },
+  skeletonDescriptionName: {
+    height: 10, 
+    backgroundColor: '#E1E4EA', 
+    marginLeft: 14,
+    marginTop: 12
+  },
+  skeletonRow: {
+    flexDirection: 'row',
+    paddingVertical: 11,
+    alignItems: 'center',
+    backgroundColor: '#F6F6F6',
+  }
+});
+
+
+const pinnedSkeletonComponent = <View>
+  <View style={styles.pinnedSkeletonRow}>
+    <View style={styles.skeletonPin}></View>
+    <View style={[styles.skeletonPinBoardName, {width: 87}]}></View>
+  </View>
+  <View style={{flexDirection: 'row', alignItems: 'center', height: 40, backgroundColor: '#F6F6F6'}}>
+    <View style={styles.skeletonPin}></View>
+    <View style={[styles.skeletonPinBoardName, {width: 124}]}></View>
+  </View>
+  <View style={{flexDirection: 'row', alignItems: 'center', height: 40, backgroundColor: '#F6F6F6'}}>
+    <View style={styles.skeletonPin}></View>
+    <View style={[styles.skeletonPinBoardName, {width: 103}]}></View>
+  </View>
+  <View style={{flexDirection: 'row', alignItems: 'center', height: 40, backgroundColor: '#F6F6F6'}}>
+    <View style={styles.skeletonPin}></View>
+    <View style={[styles.skeletonPinBoardName, {width: 87}]}></View>
+  </View>
+  <View style={{flexDirection: 'row', alignItems: 'center', height: 40, backgroundColor: '#F6F6F6'}}>
+    <View style={styles.skeletonPin}></View>
+    <View style={[styles.skeletonPinBoardName, {width: 116}]}></View>
+  </View>
+</View>
+
+const boardSkeletonComponent = <View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonPin}/>
+    <View style={{flex: 1}}>
+        <View style={[styles.skeletonBoardName, {width: 76}]}></View>
+        <View style={[styles.skeletonDescriptionName, {width: 176}]}></View>
+    </View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonPin}/>
+    <View style={{flex: 1}}>
+        <View style={[styles.skeletonBoardName, {width: 44}]}></View>
+        <View style={[styles.skeletonDescriptionName, {width: 206}]}></View>
+    </View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonPin}/>
+    <View style={{flex: 1}}>
+        <View style={[styles.skeletonBoardName, {width: 69}]}></View>
+        <View style={[styles.skeletonDescriptionName, {width: 209}]}></View>
+    </View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonPin}/>
+    <View style={{flex: 1}}>
+        <View style={[styles.skeletonBoardName, {width: 56}]}></View>
+        <View style={[styles.skeletonDescriptionName, {width: 168}]}></View>
+    </View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonPin}/>
+    <View style={{flex: 1}}>
+        <View style={[styles.skeletonBoardName, {width: 75}]}></View>
+        <View style={[styles.skeletonDescriptionName, {width: 201}]}></View>
+    </View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonPin}/>
+    <View style={{flex: 1}}>
+        <View style={[styles.skeletonBoardName, {width: 83}]}></View>
+        <View style={[styles.skeletonDescriptionName, {width: 165}]}></View>
+    </View>
+  </View>
+</View>

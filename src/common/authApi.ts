@@ -163,8 +163,10 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
 
 export const logout = async () => {
   try {
-    await AsyncStorage.setItem('accessToken', '');
-    return true;
+    const response = await client.get<AxiosResponse>(
+      '/auth/signout'
+    );
+    return response;
   } catch (e: any) {
     console.log('여기는 logout 함수', e.response);
     return false;
