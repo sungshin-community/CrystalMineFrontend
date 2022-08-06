@@ -34,6 +34,13 @@ export default function MyPostList({navigation, route}: Props) {
       const tempList = myPostList.map(p => p.postId === post.postId ? {...p, isChecked: !p.isChecked} : p);
       setMyPostList(tempList);
     } else {
+      if (post.isBoardDeleted) {
+        Toast.show("삭제된 게시판에 작성된 게시글입니다.", Toast.SHORT);
+        return;
+      } else if (post.isBoardBlinded) {
+        Toast.show("블라인드된 게시판에 작성된 게시글입니다.", Toast.SHORT);
+        return;
+      }
       navigation.navigate('PostScreen', {
         postId: post.postId
       });
