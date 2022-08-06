@@ -69,8 +69,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
           headerRight: () => (
             <TouchableHighlight
-              style={{marginRight: 11, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-              underlayColor='#EEEEEE'
+              style={{
+                marginRight: 11,
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              underlayColor="#EEEEEE"
               onPress={onSearchPress}>
               <SearchIcon />
             </TouchableHighlight>
@@ -97,8 +104,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
           headerRight: () => (
             <TouchableHighlight
-              style={{marginRight: 11, width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-              underlayColor='#EEEEEE'
+              style={{
+                marginRight: 11,
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              underlayColor="#EEEEEE"
               onPress={onSearchPress}>
               <SearchIcon />
             </TouchableHighlight>
@@ -115,7 +129,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
         options={{
           title: '쪽지',
           headerTitleAlign: 'center',
-           headerTitleStyle: {
+          headerTitleStyle: {
             fontSize: 19,
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
@@ -129,10 +143,19 @@ function GlobalNavbar({navigation}: ScreenProps) {
       <Tab.Screen
         name="Alert"
         component={AlertFragment}
+        listeners={({navigation}) => ({
+          tabPress: async e => {
+            e.preventDefault();
+            let isRegularMember: boolean = await checkRegularMember();
+            console.log('정회원 인증여부:', isRegularMember);
+            if (isRegularMember) navigation.navigate('Alert');
+            else Toast.show('접근 권한이 없습니다.', Toast.LONG);
+          },
+        })}
         options={{
           title: '알림',
           headerTitleAlign: 'center',
-           headerTitleStyle: {
+          headerTitleStyle: {
             fontSize: 19,
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
@@ -150,7 +173,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
-           headerTitleStyle: {
+          headerTitleStyle: {
             fontSize: 19,
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
