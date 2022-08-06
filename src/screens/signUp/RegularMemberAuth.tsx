@@ -46,7 +46,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 90;
+const RESEND_OTP_TIME_LIMIT = 120;
 
 type RootStackParamList = {
   Home: undefined;
@@ -90,6 +90,15 @@ export default function RegularMemberAuth({navigation}: Props) {
       }
     }, 1000);
   };
+
+  useEffect(() => {
+    const init = async() => {
+      let result: number = await checkAuthNumber(value);
+      console.log('tryCnt: ', tryCnt, 'result: ', result, "tryCnt-result: ", tryCnt-result)
+    }
+    init();
+   },[])
+
 
   //다시 시도하기 버튼 눌렀을 경우
   const onResendOtpButtonPress = async () => {
@@ -242,7 +251,7 @@ export default function RegularMemberAuth({navigation}: Props) {
         </TouchableWithoutFeedback>
       </View>
 
- {tryCnt <= 0 && (
+ {tryCnt === 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
@@ -261,7 +270,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           <PurpleFullButton
             text="인증 완료"
             onClick={async () => {
-              let result: number = await checkAuthNumber(value);
+              const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 navigation.navigate('GlobalNavbar');
               } else {
@@ -275,7 +284,7 @@ export default function RegularMemberAuth({navigation}: Props) {
             text="인증 완료"
             onClick={async () => {
               console.log(value)
-              let result: number = await checkAuthNumber(value);
+              const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else {
