@@ -323,9 +323,12 @@ function QuestionList({navigation, route}: Props) {
         />
       )}
       {!deleteMode &&
-        <FloatingWriteButton
+         <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.touchableOpacityStyle}>
+        <FloatingWriteButton style={styles.floatingButtonStyle}
           onPress={() => navigation.navigate('QuestionWriteScreen')}
-        />}
+        /></TouchableOpacity>}
     </SafeAreaView>
   );
 }
