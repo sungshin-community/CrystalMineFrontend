@@ -47,6 +47,7 @@ export const checkEmailConflict = async (studentId: string) => {
     const response = await client.get<AxiosResponse>(
       '/auth/check-username/' + studentId,
     );
+    console.log(response.data)
     if (response.status === 200) {
       return response.data.code;
     }

@@ -8,7 +8,6 @@ import Agreement, { AgreementAll, DirectionAgreement } from '../classes/Agreemen
 export const getSignUpContract = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/signup');
-    console.log(response.data.data)
     return response.data.data;
   } catch {
     return [];
@@ -19,7 +18,6 @@ export const getSignUpContract = async () => {
 export const getSignUpDirection = async () => {
   try {
     const response = await client.get<Response<Agreement[]>>('/contract/regular-member');
-    console.log(response.data.data)
     return response.data.data;
   } catch {
     return [];
