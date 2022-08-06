@@ -8,6 +8,7 @@ import {
   StyleSheet,
   View,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import CancelButton from '../../../resources/icon/Cancel';
 import SearchInput from '../../components/SearchInput';
@@ -152,7 +153,21 @@ function BoardSearch({navigation, route}: Props) {
               </View>
             ) : (
               wordList.map((word, index) => (
-                <View
+                <TouchableOpacity
+                  onPress={() => {
+                    if (route.params) {
+                      // route.params(게시판 이름)가 있는 경우 > 특정 게시판 탭 내 검색
+                      navigation.navigate('SearchResultInBoard', {
+                        searchWord: searchWord,
+                        boardName: route.params.boardName,
+                        boardId: route.params.boardId,
+                      });
+                    } else {
+                      navigation.navigate('SearchResult', {
+                        searchWord: searchWord,
+                      });
+                    }
+                  }}
                   key={index}
                   style={[styles.rowSpaceBetween, {marginVertical: 9}]}>
                   <Text style={[fontRegular, styles.text]}>{word}</Text>
@@ -162,7 +177,7 @@ function BoardSearch({navigation, route}: Props) {
                     hitSlop={5}>
                     <CancelButton color="#87919B" />
                   </Pressable>
-                </View>
+                </TouchableOpacity>
               ))
             )
           ) : null}
