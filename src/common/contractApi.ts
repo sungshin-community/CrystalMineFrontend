@@ -15,6 +15,17 @@ export const getSignUpContract = async () => {
   }
 }
 
+// 회원가입 관련 이용방향 조회
+export const getSignUpDirection = async () => {
+  try {
+    const response = await client.get<Response<Agreement[]>>('/contract/regular-member');
+    console.log(response.data.data)
+    return response.data.data;
+  } catch {
+    return [];
+  }
+}
+
 // 세가지 전문 조회
 export const getContractGuide = async () => {
   try {
