@@ -29,7 +29,6 @@ export const getPostSearchInBoard = async (searchWord: string, page: number, sor
     const response = await client.get<Response<SearchPost[]>>(
       `/search/1/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
     );
-    // console.log('api 특정 게시판에서 검색', searchWord, response.data.data);
     return response.data.data;
   } catch (error) {
     console.log('특정 게시판 내 게시글 검색 실패', error);
@@ -39,11 +38,32 @@ export const getPostSearchInBoard = async (searchWord: string, page: number, sor
 export const getMyPostSearch = async (searchWord: string, page: number, sort: string) => {
   try {
     const response = await client.get<Response<SearchPost[]>>(
-      `/search/1/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
+      `/search/myposts?keyword=${searchWord}&page=${page}&sort=${sort}`,
     );
-    // console.log('api 내가 쓴 글에서 검색', searchWord, response.data.data);
     return response.data.data;
   } catch (error) {
-    console.log('특정 게시판 내 게시글 검색 실패', error);
+    console.log('내가 쓴 게시글 검색 실패', error);
+  }
+}
+
+export const getMyCommentSearch = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchPost[]>>(
+      `/search/mycomments?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log('내가 쓴 댓글 검색 실패', error);
+  }
+}
+
+export const getScrapsSearch = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchPost[]>>(
+      `/search/scraps?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log('스크랩 검색 실패', error);
   }
 }

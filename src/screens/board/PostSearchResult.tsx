@@ -13,15 +13,30 @@ import {
 } from 'react-native';
 import {PostContent} from '../../classes/Search';
 import {fontRegular} from '../../common/font';
-import {getPostSearch, getPostSearchInBoard} from '../../common/SearchApi';
+import {
+  getMyCommentSearch,
+  getMyPostSearch,
+  getPostSearch,
+  getPostSearchInBoard,
+  getScrapsSearch,
+} from '../../common/SearchApi';
 import PostSearchItem from '../../components/PostSearchItem';
 
 interface Props {
   searchWord: string;
   isInBoard?: boolean; // 특정 게시판에서 검색하는 경우에는 true
+  myPost?: boolean; // 내가 작성한 글에서 검색하는 경우에는 true
+  myComment?: boolean;
+  isScraped?: boolean;
 }
 
-function PostSearchResult({searchWord, isInBoard}: Props) {
+function PostSearchResult({
+  searchWord,
+  isInBoard,
+  myPost,
+  myComment,
+  isScraped,
+}: Props) {
   const navigation = useNavigation();
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
@@ -32,9 +47,16 @@ function PostSearchResult({searchWord, isInBoard}: Props) {
       setIsLoading(true);
       try {
         let postResult;
-        if (isInBoard) {
+
+        if (myPost) {
+          postResult = await getMyPostSearch(searchWord, 0, 'createdAt');
+        } else if (myComment) {
+          postResult = await getMyCommentSearch(searchWord, 0, 'createdAt');
+        } else if (isScraped) {
+          postResult = await getScrapsSearch(searchWord, 0, 'createdAt');
+        } else if (isInBoard) {
           postResult = await getPostSearchInBoard(searchWord, 0, 'createdAt');
-        } else {
+        } else if (!myPost && !myComment && !isInBoard) {
           postResult = await getPostSearch(searchWord, 0, 'createdAt');
         }
 
@@ -97,8 +119,8 @@ function PostSearchResult({searchWord, isInBoard}: Props) {
             요청하신 검색어에 대한 검색 결과가 없습니다.
           </Text>
         ) : (
-          <ScrollView style={{backgroundColor: '#fff'}}>
-            <View style={{backgroundColor: '#fff'}}>
+          <ScrollView style={{backgroundColor: '#fff', width: '100%'}}>
+            <View style={{backgroundColor: '#fff', width: '100%'}}>
               <TouchableOpacity
                 onPress={() => {
                   if (sortBy === 'createdAt') {
