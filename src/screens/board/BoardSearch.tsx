@@ -22,10 +22,13 @@ type RootStackParamList = {
   SearchResultInBoard: {
     searchWord: any;
     boardName: any;
-    boardId: number;
+    boardId?: number;
   };
   GlobalNavbar: undefined;
   PostListScreen: {boardId: number};
+  MyPostList: undefined;
+  MyCommentList: undefined;
+  ScrapedPostList: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -45,8 +48,26 @@ function BoardSearch({navigation, route}: Props) {
       }
       setWordList(duplicateFilter);
 
-      if (route.params) {
-        // route.params(게시판 이름)가 있는 경우 > 특정 게시판 탭 내 검색
+      if (route.params.boardName === '내가 작성한 글') {
+        // 내가 쓴 글에서 검색
+        navigation.navigate('SearchResultInBoard', {
+          searchWord: searchWord,
+          boardName: '내가 작성한 글',
+        });
+      } else if (route.params.boardName === '내가 작성한 댓글') {
+        // 내가 쓴 댓글에서 검색
+        navigation.navigate('SearchResultInBoard', {
+          searchWord: searchWord,
+          boardName: '내가 작성한 댓글',
+        });
+      } else if (route.params.boardName === '내가 스크랩한 글') {
+        // 내가 스크랩한 글에서 검색
+        navigation.navigate('ScrapedPostList', {
+          searchWord: searchWord,
+          boardName: '내가 스크랩한 글',
+        });
+      } else if (route.params.boardId && route.params.boardName) {
+        // 특정 게시판 탭 내 검색
         navigation.navigate('SearchResultInBoard', {
           searchWord: searchWord,
           boardName: route.params.boardName,
@@ -78,10 +99,22 @@ function BoardSearch({navigation, route}: Props) {
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
           onPress={() => {
-            if (route.params) {
-              navigation.navigate('PostListScreen', {boardId: route.params.boardId})
+            if (route.params.boardName === '내가 작성한 글') {
+              // 내가 쓴 글에서 검색
+              navigation.navigate('MyPostList');
+            } else if (route.params.boardName === '내가 작성한 댓글') {
+              // 내가 쓴 댓글에서 검색
+              navigation.navigate('MyCommentList');
+            } else if (route.params.boardName === '내가 스크랩한 글') {
+              // 내가 쓴 댓글에서 검색
+              navigation.navigate('ScrapedPostList');
+            } else if (route.params.boardId && route.params.boardName) {
+              // 특정 게시판 탭 내 검색
+              navigation.navigate('PostListScreen', {
+                boardId: route.params.boardId,
+              });
             } else {
-              navigation.navigate('GlobalNavbar')
+              navigation.navigate('GlobalNavbar');
             }
           }}
         />

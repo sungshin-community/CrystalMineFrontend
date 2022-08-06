@@ -11,6 +11,9 @@ import TagSearchResult from '../board/TagSearchResult';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
+  MyPostList: undefined;
+  MyCommentList: undefined;
+  ScrapedPostList: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
@@ -56,11 +59,19 @@ function SearchResultInBoard({navigation, route}: Props) {
       ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
-          onPress={() =>
-            navigation.navigate('PostListScreen', {
-              boardId: route.params.boardId,
-            })
-          }
+          onPress={() => {
+            if (route.params.boardId) {
+              navigation.navigate('PostListScreen', {
+                boardId: route.params.boardId,
+              });
+            } else if (route.params.boardName === '내가 작성한 글') {
+              navigation.navigate('MyPostList');
+            } else if (route.params.boardName === '내가 작성한 댓글') {
+              navigation.navigate('MyCommentList');
+            } else if (route.params.boardName === '내가 스크랩한 글') {
+              navigation.navigate('ScrapedPostList');
+            }
+          }}
         />
       ),
     });
@@ -97,7 +108,15 @@ function SearchResultInBoard({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        children={() => <PostSearchResult isInBoard searchWord={searchWord} />}
+        children={() => (
+          <PostSearchResult
+            isInBoard={!!(route.params.boardName && route.params.boardId)}
+            myPost={route.params.boardName === '내가 작성한 글'}
+            myComment={route.params.boardName === '내가 작성한 댓글'}
+            isScraped={route.params.boardName === '내가 스크랩한 글'}
+            searchWord={searchWord}
+          />
+        )}
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>
