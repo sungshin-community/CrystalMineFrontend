@@ -96,6 +96,7 @@ export default function SignUpId({ navigation, route }: Props) {
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -168,6 +169,68 @@ export default function SignUpId({ navigation, route }: Props) {
       </View>
     </>
   );
+
+  const studentIdModalBody = (
+    <>
+      <View style={styles.paragraph}>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 학번으로 이루어진 성신 G-mail만을 아이디로 등록할 수 있도록 설계되어 있습니다. 
+          </Text>
+        </View>
+      </View>
+      <View style={styles.paragraph}>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            만약 성신 동문이 맞음에도 가입이 어려운 경우, 추가적인 인증을 거쳐 개별적으로 가입이 가능하니 아래 안내를 참고하시어 가입해주시기 바랍니다.
+          </Text>
+        </View>
+      </View>
+      <View style={styles.paragraph}>
+        <View style={styles.number}>
+          <Text style={[fontRegular, styles.blackText]}>01</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            아래의 수정광산 계정으로 02번의 내용을 준비하여 보내주시기 바랍니다.{'\n'}
+            수정광산 계정: contact@crystalmine.kr
+          </Text>
+        </View>
+      </View>
+      <View style={styles.paragraph}>
+        <View style={styles.number}>
+          <Text style={[fontRegular, styles.blackText]}>02</Text>
+        </View>
+        <View>
+          <Text style={[fontRegular, styles.blackText]}>
+            인증시 필요한 내용{'\n'}
+            a. 성신 G-mail 계정, 소속 학과{'\n'}
+            <Text style={[fontRegular, styles.greyText]}>
+              {"    "}(계정 생성을 하기 위해 필요)
+            </Text>
+          </Text>
+          <Text style={[fontRegular, styles.blackText]}>
+            인증시 필요한 내용{'\n'}
+            b. [성신여대 포탈 시스템]의 좌측 보라색 박스에 담긴 내용 캡쳐{'\n'}
+            <Text style={[fontRegular, styles.greyText]}>
+              {"    "}(성신인 인증을 위해 필요)
+            </Text>
+          </Text>
+          <Text style={[fontRegular, styles.blackText]}>
+            인증시 필요한 내용{'\n'}
+            c. [성신여대 포탈 시스템-통합정보시스템-학적관리-학적변동조회]의 상단에 위치한 [학생기초정보] 부분 캡쳐{'\n'}
+            <Text style={[fontRegular, styles.greyText]}>
+              {"    "}(성신인 인증을 위해 필요)
+            </Text>
+          </Text>
+          <Text style={[fontRegular, styles.greyText]}>
+              {"*   "}인증시, 개인정보(학번, 성명, 생년월일, 프로필 사진 등)은 가리고 보내주시기 바랍니다.
+            </Text>
+        </View>
+      </View>
+    </>
+  )
+
   return Platform.OS === 'ios' ? (
     <>
       {modalVisible && (
@@ -283,6 +346,16 @@ export default function SignUpId({ navigation, route }: Props) {
               <PurpleFullButton
                 text="다음"
                 onClick={async () => {
+                  let year: number = 0;
+                  year = +(studentId.substring(0, 4));
+                  if (isNaN(year)) {
+                    setAlertModalVisible(true);
+                    return;
+                  }
+                  if (studentId.length !== 8 || year < 1936 || year > 2022) {
+                    setAlertModalVisible(true);
+                    return;
+                  }
                   let result: string = await checkEmailConflict(studentId);
                   if (result === 'Request failed with status code 409') {
                     setIsDuplicate(true);
@@ -303,6 +376,16 @@ export default function SignUpId({ navigation, route }: Props) {
               <PurpleRoundButton
                 text="다음"
                 onClick={async () => {
+                  let year: number = 0;
+                  year = +(studentId.substring(0, 4));
+                  if (isNaN(year)) {
+                    setAlertModalVisible(true);
+                    return;
+                  }
+                  if (studentId.length !== 8 || year < 1936 || year > 2022) {
+                    setAlertModalVisible(true);
+                    return;
+                  }
                   let result: string = await checkEmailConflict(studentId);
                   if (result === 'Request failed with status code 409') {
                     setIsDuplicate(true);
@@ -327,6 +410,15 @@ export default function SignUpId({ navigation, route }: Props) {
               <DisabledPurpleRoundButton text="다음" />
             )}
           </View>
+          <ModalBottom
+            modalVisible={alertModalVisible}
+            setModalVisible={setAlertModalVisible}
+            title="잘못된 아이디 형식입니다"
+            content={studentIdModalBody}
+            isContentCenter={false}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => setModalVisible(!modalVisible)}
+          />
         </Container>
       </KeyboardAvoidingView>
     </>
@@ -440,6 +532,16 @@ export default function SignUpId({ navigation, route }: Props) {
             <PurpleFullButton
               text="다음"
               onClick={async () => {
+                let year: number = 0;
+                year = +(studentId.substring(0, 4));
+                if (isNaN(year)) {
+                  setAlertModalVisible(true);
+                  return;
+                }
+                if (studentId.length !== 8 || year < 1936 || year > 2022) {
+                  setAlertModalVisible(true);
+                  return;
+                }
                 let result: string = await checkEmailConflict(studentId);
                 if (result === 'Request failed with status code 409') {
                   setIsDuplicate(true);
@@ -460,6 +562,16 @@ export default function SignUpId({ navigation, route }: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
+                let year: number = 0;
+                year = +(studentId.substring(0, 4));
+                if (isNaN(year)) {
+                  setAlertModalVisible(true);
+                  return;
+                }
+                if (studentId.length !== 8 || year < 1936 || year > 2022) {
+                  setAlertModalVisible(true);
+                  return;
+                }
                 let result: string = await checkEmailConflict(studentId);
                 if (result === 'Request failed with status code 409') {
                   setIsDuplicate(true);
@@ -485,6 +597,15 @@ export default function SignUpId({ navigation, route }: Props) {
           )}
         </View>
       </Container>
+          <ModalBottom
+            modalVisible={alertModalVisible}
+            setModalVisible={setAlertModalVisible}
+            title="잘못된 아이디 형식입니다"
+            content={studentIdModalBody}
+            isContentCenter={false}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => setModalVisible(!modalVisible)}
+          />
     </>
   );
 }

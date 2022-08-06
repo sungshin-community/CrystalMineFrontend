@@ -281,7 +281,7 @@ export const reportBoard = async (
     );
     console.log('reportBoard 함수 성공', response.data);
     return response.data;
-  } catch (e) {
+  } catch (e: any) {
     console.log('reportBoard 함수 실패', e.response.data);
     return e.response.data;
   }
