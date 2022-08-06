@@ -14,6 +14,8 @@ export class MyPostContentDto {
   imageCount: number = 0;
   commentCount: number = 0;
   isChecked: boolean = false;
+  isBoardDeleted: boolean = false;
+  isBoardBlinded: boolean = false;
 }
 
 export default interface MyPostDto {

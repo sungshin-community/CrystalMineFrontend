@@ -10,7 +10,7 @@ import PostSearchResult from '../board/PostSearchResult';
 import TagSearchResult from '../board/TagSearchResult';
 
 type RootStackParamList = {
-  BoardSearch: undefined;
+  PostListScreen: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
@@ -18,20 +18,11 @@ const Tab = createMaterialTopTabNavigator();
 function SearchResultInBoard({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
   const [wordList, setWordList] = useState<string[]>([]);
-  const [postResultData, setPostResultData] = useState();
 
+  // 최근 검색어 불러오기
   useEffect(() => {
     async function loadRecentSearch() {
       try {
-        const postResult = await getPostSearchInBoard(
-          searchWord,
-          0,
-          'createdAt',
-        );
-        if (postResult) {
-          setPostResultData(postResult);
-        }
-
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
@@ -42,6 +33,7 @@ function SearchResultInBoard({navigation, route}: Props) {
     loadRecentSearch();
   }, []);
 
+  // SearchInput 컴포넌트에서 검색 버튼을 눌렀을 경우 실행되는 함수
   const startSearching = () => {
     if (searchWord.length > 1) {
       const newWordList = [searchWord].concat(wordList);
@@ -57,14 +49,18 @@ function SearchResultInBoard({navigation, route}: Props) {
     navigation.setOptions({
       headerTitle: (): React.ReactNode => (
         <SearchInput
-          setSearchWord={setSearchWord}
+          setSearchWord={setSearchWord} // SearchInput 컴포넌트에서 입력한 value 값(검색어)를 가져오는 props
           startSearching={startSearching}
           boardName={route.params.boardName}
         />
       ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
-          onPress={() => navigation.navigate('BoardSearch')}
+          onPress={() =>
+            navigation.navigate('PostListScreen', {
+              boardId: route.params.boardId,
+            })
+          }
         />
       ),
     });
@@ -101,9 +97,7 @@ function SearchResultInBoard({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        children={() => (
-          <PostSearchResult data={postResultData} searchWord={searchWord} />
-        )}
+        children={() => <PostSearchResult isInBoard searchWord={searchWord} />}
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>

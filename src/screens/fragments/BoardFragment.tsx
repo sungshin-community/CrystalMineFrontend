@@ -24,6 +24,7 @@ type RootStackParamList = {
   ScrapedPostList: undefined;
   PostListScreen: { boardId: number };
   TermAgreeCreateBoard: undefined;
+  WikiTab: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -66,7 +67,11 @@ export default function BoardFragment({navigation}: Props) {
   }
 
   const moveToBoard = (boardId: number) => {
-    navigation.navigate('PostListScreen', {boardId: boardId});
+    if (boardId === 5) {
+      navigation.navigate('WikiTab', {boardId: boardId});
+    } else {
+      navigation.navigate('PostListScreen', {boardId: boardId});
+    }
   }
 
   const moveToCreateBoard = () => {
@@ -116,7 +121,7 @@ export default function BoardFragment({navigation}: Props) {
           <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
           <BoardListContainer
             boardCategory="고정게시판"
-            component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} />}
+            component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
           />
           {/* <BoardListContainer
             boardCategory="공식게시판"
@@ -135,16 +140,16 @@ export default function BoardFragment({navigation}: Props) {
           </View>
           <OfficialBoardListContainer
             boardCategory="수정광장"
-            component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} />}
+            component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
           />
           <OfficialBoardListContainer
             defaultFolded={true}
             boardCategory="학과게시판"
-            component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} />}
+            component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
           />
           <CustomBoardListContainer
             boardCategory="수정게시판"
-            component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} />}
+            component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
             moveToCreateBoard={moveToCreateBoard}
           />
           <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>

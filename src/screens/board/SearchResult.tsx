@@ -8,32 +8,24 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SearchInput from '../../components/SearchInput';
 import SearchCancelButton from '../../components/SearchCancelButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getBoardSearch, getPostSearch} from '../../common/SearchApi';
 
 type RootStackParamList = {
-  BoardSearch: undefined;
+  GlobalNavbar: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
 
+// 홈(HomeFragment), 게시판(BoardFragment)에서 검색했을 때 검색 결과로 나오는 [게시글, 게시판 이름, 태그] 탭을 모은 화면
+// 게시글, 게시판 이름, 태그 컴포넌트는 하단 <Tab.Screen>의 children 프로퍼티를 통해 결과를 띄움
+// 피그마 03. 홈 > 홈 검색 & 04.게시판 > 게시판 탭 내 결과 조회 화면 참고
 function SearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
   const [wordList, setWordList] = useState<string[]>([]);
-  const [boardResultData, setBoardResultData] = useState();
-  const [postResultData, setPostResultData] = useState();
 
+  // 최근 검색어 불러오는 함수
   useEffect(() => {
     async function loadRecentSearch() {
       try {
-        const boardResult = await getBoardSearch(searchWord, 0, 'pinCount');
-        const postResult = await getPostSearch(searchWord, 0, 'createdAt');
-        if (boardResult) {
-          setBoardResultData(boardResult);
-        }
-        if (postResult) {
-          setPostResultData(postResult);
-        }
-
         const getRecentSearch = await AsyncStorage.getItem('recentSearch');
         const recentSearch = JSON.parse(getRecentSearch);
         setWordList(recentSearch);
@@ -44,6 +36,7 @@ function SearchResult({navigation, route}: Props) {
     loadRecentSearch();
   }, []);
 
+  // SearchInput 컴포넌트에서 검색 버튼을 눌렀을 경우 실행되는 함수
   const startSearching = () => {
     if (searchWord.length > 1) {
       const newWordList = [searchWord].concat(wordList);
@@ -59,13 +52,13 @@ function SearchResult({navigation, route}: Props) {
     navigation.setOptions({
       headerTitle: (): React.ReactNode => (
         <SearchInput
-          setSearchWord={setSearchWord}
+          setSearchWord={setSearchWord} // SearchInput 컴포넌트에서 입력한 value 값(검색어)를 가져오는 props
           startSearching={startSearching}
         />
       ),
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
-          onPress={() => navigation.navigate('BoardSearch')}
+          onPress={() => navigation.navigate('GlobalNavbar')}
         />
       ),
     });
@@ -102,13 +95,11 @@ function SearchResult({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        children={() => (
-          <PostSearchResult data={postResultData} searchWord={searchWord} />
-        )}
+        children={() => <PostSearchResult searchWord={searchWord} />}
       />
       <Tab.Screen
         name="게시판 이름"
-        children={() => <BoardSearchResult data={boardResultData} />}
+        children={() => <BoardSearchResult searchWord={searchWord} />}
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>

@@ -19,9 +19,10 @@ export const getPinnedBoardList = async () => {
     );
     officialResponse.data.data.forEach(b => (b.isOfficial = true));
     boardList = boardList.concat(officialResponse.data.data);
-    const customResponse = await client.get<Response<Board[]>>(
-      `/boards/pin?type=PUBLIC`,
-    );
+    const departmentResponse = await client.get<Response<Board[]>>(`/boards/pin?type=DEPARTMENT`);
+    departmentResponse.data.data.forEach(b => (b.isOfficial = true));
+    boardList = boardList.concat(departmentResponse.data.data);
+    const customResponse = await client.get<Response<Board[]>>(`/boards/pin?type=PUBLIC`);
     customResponse.data.data.forEach(b => (b.isOfficial = false));
     boardList = boardList.concat(customResponse.data.data);
     return boardList;

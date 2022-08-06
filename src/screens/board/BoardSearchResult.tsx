@@ -1,37 +1,73 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import { SearchBoard } from '../../classes/Search';
-import { fontRegular } from '../../common/font';
-import BoardList from '../../components/BoardList';
+import GrayFlag from '../../../resources/icon/GrayFlag';
+import OrangeFlag from '../../../resources/icon/OrangeFlag';
+import {GrayPin, OrangePin, PurplePin} from '../../../resources/icon/Pin';
+import {fontRegular} from '../../common/font';
+import {getBoardSearch} from '../../common/SearchApi';
 
-type RootStackParamList = {
-  PostListScreen: { boardId: number };
-};
-type Props = NativeStackScreenProps<RootStackParamList>;
+function BoardSearchResult({searchWord}: any) {
+  const navigation = useNavigation();
+  const [data, setData] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-function BoardSearchResult({ data }: any) {
-  const navigation = useNavigation()
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true)
+      try {
+        const boardResult = await getBoardSearch(searchWord, 0, 'pinCount');
+        if (boardResult) {
+          setData(boardResult);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('failed to load recent search', error);
+      }
+    };
+    getData();
+  }, []);
 
   const moveToBoard = (boardId: number) => {
     navigation.navigate('PostListScreen', {boardId: boardId});
+  };
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
+      </View>
+    );
   }
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      {data ? data.totalElements === 0 ? (
+      {data.totalElements === 0 ? (
         <SafeAreaView style={styles.noResult}>
           <Text style={[fontRegular, styles.noResultText]}>
             요청하신 검색어에 대한 검색 결과가 없습니다.
@@ -39,9 +75,61 @@ function BoardSearchResult({ data }: any) {
         </SafeAreaView>
       ) : (
         <SafeAreaView style={styles.result}>
-          <BoardList moveToBoard={moveToBoard} search items={data.content} />
+          {data.content.map((item: any, index: number) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => moveToBoard(item.id)}
+              style={{
+                paddingVertical: 9,
+                backgroundColor: '#fff',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                {!item.isPinned ? (
+                  item.isOwner ? (
+                    <GrayFlag style={{marginLeft: 23}} />
+                  ) : (
+                    <GrayPin style={{marginLeft: 20}} />
+                  )
+                ) : item.isOfficial ? (
+                  <PurplePin style={{marginLeft: 20}} />
+                ) : item.isOwner ? (
+                  <OrangeFlag style={{marginLeft: 23}} />
+                ) : (
+                  <OrangePin style={{marginLeft: 20}} />
+                )}
+                <Text
+                  style={{
+                    fontSize: 15,
+                    color: '#000000',
+                    marginLeft: 15,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                  }}>
+                  {item.name}
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={[
+                    fontRegular,
+                    {
+                      color: '#BDBDBD',
+                      marginLeft: 60,
+                      fontSize: 13,
+                      marginTop: 6,
+                      paddingRight: 20,
+                    },
+                  ]}>
+                  {item.introduction}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </SafeAreaView>
-      ) : null}
+      )}
     </KeyboardAvoidingView>
   );
 }

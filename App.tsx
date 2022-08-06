@@ -41,6 +41,7 @@ import MyPostList from './src/screens/board/MyPostList';
 import PostWriteScreen from './src/screens/post/PostWriteScreen';
 // myPage
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
+import DirectionAgreeMyPage from './src/screens/mypage/regularMemberAuth/DirectionAgreeMyPage';
 import CertifiedMember from './src/screens/mypage/regularMemberAuth/CertifiedMember';
 import ExpiredMember from './src/screens/mypage/regularMemberAuth/ExpiredMember';
 import UncertifiedMember from './src/screens/mypage/regularMemberAuth/UncertifiedMember';
@@ -50,7 +51,7 @@ import InputNewPassword from './src/screens/mypage/changePassword/InputNewPasswo
 import InputNewPasswordConfirm from './src/screens/mypage/changePassword/InputNewPasswordConfirm';
 import ChangeNickname from './src/screens/mypage/ChangeNickname';
 import ChangeMajor from './src/screens/mypage/ChangeMajor';
-import { DirectionAgreeScreen } from './src/screens/mypage/DirectionAgreeScreen';
+import {DirectionAgreeScreen} from './src/screens/mypage/DirectionAgreeScreen';
 import ListScreen from './src/screens/mypage/informationUse/ListScreen';
 import NoticeList from './src/screens/mypage/informationUse/NoticeList';
 import Notice from './src/screens/mypage/informationUse/Notice';
@@ -70,6 +71,7 @@ import QuitComplete from './src/screens/mypage/informationUse/quitMembership/Qui
 import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
 import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
+import WikiTab from './src/screens/board/WikiTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -675,6 +677,35 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="WikiTab"
+                component={WikiTab}
+                options={({navigation}) => ({
+                  title: '성신위키',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
               <Stack.Screen
@@ -684,7 +715,7 @@ const App = () => {
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
-                options={({ navigation }) => ({
+                options={({navigation}) => ({
                   title: '',
                   headerLeft: () => (
                     <TouchableHighlight
@@ -851,6 +882,35 @@ const App = () => {
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
               {/* 마이페이지 - 정회원 인증 */}
+              <Stack.Screen
+                name="DirectionAgreeMyPage"
+                component={DirectionAgreeMyPage}
+                options={({navigation}) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               <Stack.Screen
                 name="CertifiedMember"
                 component={CertifiedMember}
@@ -2033,6 +2093,35 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="WikiTab"
+                component={WikiTab}
+                options={({navigation}) => ({
+                  title: '성신위키',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               <Stack.Screen name="BoardSearch" component={BoardSearch} />
               <Stack.Screen name="SearchResult" component={SearchResult} />
               <Stack.Screen
@@ -2042,7 +2131,7 @@ const App = () => {
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
-                  options={({ navigation }) => ({
+                options={({navigation}) => ({
                   title: '',
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2209,6 +2298,35 @@ const App = () => {
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
               {/* 마이페이지 - 정회원 인증 */}
+              <Stack.Screen
+                name="DirectionAgreeMyPage"
+                component={DirectionAgreeMyPage}
+                options={({navigation}) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               <Stack.Screen
                 name="CertifiedMember"
                 component={CertifiedMember}
