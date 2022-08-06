@@ -65,7 +65,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
-
   useEffect(() => {
     async function init() {
       setIsLoading(true);
