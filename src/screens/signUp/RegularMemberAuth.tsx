@@ -77,6 +77,7 @@ export default function RegularMemberAuth({navigation}: Props) {
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
   const [errorMessageVisible, setErrorMessageVisible] =
     useState<boolean>(false);
+  const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -259,6 +260,12 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="확인"
           purpleButtonFunc={gotoHome}></ModalBottom>
       )}
+       {isCoolTime && <ModalBottom
+          modalVisible={isCoolTime}
+          setModalVisible={setIsCoolTime}
+          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={gotoHome}></ModalBottom>}
       <View
         style={{
           paddingBottom: isFocused ? 0 : 15,
@@ -273,10 +280,23 @@ export default function RegularMemberAuth({navigation}: Props) {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 navigation.navigate('GlobalNavbar');
-              } else {
+              } else if(result.data.attemptCount === (1 || 2 || 3 || 4 || 5)) {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
                 setValue('')
+              } else if(result.code === 'AUTH_COOL_TIME_LIMIT'){
+                {
+                  setIsCoolTime(true);
+                  navigation.navigate('Home')
+                }
+              } else {
+                if (value.length === 6) {
+                  <View style={styles.errorMessageContainer}>
+                    <Text style={styles.errorMessage}>
+                      {result.data.code}
+                    </Text>
+                  </View>
+                }
               }
             }}></PurpleFullButton>
         )}
@@ -288,10 +308,23 @@ export default function RegularMemberAuth({navigation}: Props) {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-              } else {
+              } else if(result.data.attemptCount === (1 || 2 || 3 || 4 || 5) ){
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
                 setValue('')
+              } else if(result.code === 'AUTH_COOL_TIME_LIMIT'){
+                {
+                  setIsCoolTime(true);
+                  navigation.navigate('Home')
+                }
+              } else {
+                if (value.length === 6) {
+                  <View style={styles.errorMessageContainer}>
+                    <Text style={styles.errorMessage}>
+                      {result.data.code}
+                    </Text>
+                  </View>
+                }
               }
             }}></PurpleRoundButton>
         )}

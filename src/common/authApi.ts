@@ -121,7 +121,7 @@ export const checkAuthNumber = async (code: string) => {
   try {
     let requestDto: VerificationRequestDto = {code: code};
     const accessToken = await AsyncStorage.getItem('accessToken');
-    const response = await client.post<AxiosResponse>(
+    const response = await client.post<Response<null>>(
       '/mail/regular-member-verification',
       requestDto,
       {
@@ -133,8 +133,8 @@ export const checkAuthNumber = async (code: string) => {
     console.log(response.data.data)
     return 0;
   } catch (e: any) {
-    console.log('여기는 checkAuthNumber 함수', e.response.data);
-    return 1;
+    console.log('여기는 checkAuthNumber 함수', e.response.data, e.response.data.data.attemptCount , e.response.data.code);
+    return e.response.data;
   }
 };
 
