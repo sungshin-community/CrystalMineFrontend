@@ -17,7 +17,6 @@ const AlertFragment = () => {
       setIsLoading(false)
     }
     init();
-    console.log('>',alerts)
   },[])
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -69,7 +68,7 @@ const AlertFragment = () => {
                 }}>
                 {isLoading
                   ? ''
-                  : '아직 알림이 없습니다.\n뭐라고 적을까'}
+                  : ''}
               </Text>
             </View>
         </SafeAreaView> :

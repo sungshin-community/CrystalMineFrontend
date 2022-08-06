@@ -32,7 +32,7 @@ import CustomButton, {
 import {ModalBottom} from '../../../components/ModalBottom';
 import {checkAuthNumber, sendEmail} from '../../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
@@ -61,8 +61,9 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
-    useState<boolean>(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
+    boolean
+  >(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -75,9 +76,10 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     setIsFocused(true);
   };
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] =
-    useState<boolean>(false);
-
+  const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
+    false,
+  );
+  const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
       clearInterval(resendOtpTimerInterval);
@@ -123,12 +125,12 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     };
   }, [resendButtonDisabledTime]);
   useEffect(() => {
-    const init = async() => {
+    const init = async () => {
       let result: number = await checkAuthNumber(value);
-      console.log('tryCnt: ', tryCnt, 'result: ', result, tryCnt-result)
-    }
+      console.log('tryCnt: ', tryCnt, 'result: ', result, tryCnt - result);
+    };
     init();
-   },[])
+  }, []);
   return (
     <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View style={{flex: 1}}>
@@ -194,15 +196,15 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                 zIndex: 999,
               }}
             /> */}
-              <ModalBottom
-                modalVisible={!modalVisible}
-                setModalVisible={setModalVisible}
-                content={`인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.`}
-                purpleButtonText="인증번호 재전송"
-                purpleButtonFunc={onResendOtpButtonPress}
-                whiteButtonText="인증 취소"
-                whiteButtonFunc={() => navigation.navigate('MyPageFragment')}
-              />
+            <ModalBottom
+              modalVisible={!modalVisible}
+              setModalVisible={setModalVisible}
+              content={`인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.`}
+              purpleButtonText="인증번호 재전송"
+              purpleButtonFunc={onResendOtpButtonPress}
+              whiteButtonText="인증 취소"
+              whiteButtonFunc={() => navigation.navigate('MyPageFragment')}
+            />
           </>
         )}
         {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
@@ -236,7 +238,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
         )}
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-        <TouchableWithoutFeedback onPress={async () => {
+        <TouchableWithoutFeedback
+          onPress={async () => {
             let result: boolean = await sendEmail();
             if (result) {
               console.log('이메일 재발송 성공');
@@ -256,6 +259,14 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           purpleButtonText="확인"
           purpleButtonFunc={gotoHome}></ModalBottom>
       )}
+      {isCoolTime && (
+        <ModalBottom
+          modalVisible={isCoolTime}
+          setModalVisible={setIsCoolTime}
+          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={gotoHome}></ModalBottom>
+      )}
       <View
         style={{
           paddingBottom: isFocused ? 0 : 15,
@@ -269,12 +280,22 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             onClick={async () => {
               let result: number = await checkAuthNumber(value);
               if (result === 0) {
-                Toast.show('정회원 인증을 성공적으로 완료하였습니다.', Toast.LONG)
+                Toast.show(
+                  '정회원 인증을 성공적으로 완료하였습니다.',
+                  Toast.LONG,
+                );
                 navigation.reset({routes: [{name: 'CertifiedMember'}]});
-              } else {
+              } else if (result.data.attemptCount === (1 || 2 || 3 || 4 || 5) ){
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
-                setValue('')
+                setValue('');
+              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                {
+                  setIsCoolTime(true);
+                  navigation.goBack();
+                }
+              } else {
+                if (value.length === 6) console.log('여기가 떠야지');
               }
             }}></PurpleFullButton>
         )}
@@ -282,15 +303,25 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           <PurpleRoundButton
             text="인증 완료"
             onClick={async () => {
-              console.log(value)
+              console.log(value);
               let result: number = await checkAuthNumber(value);
               if (result === 0) {
-                Toast.show('정회원 인증을 성공적으로 완료하였습니다.', Toast.LONG)
+                Toast.show(
+                  '정회원 인증을 성공적으로 완료하였습니다.',
+                  Toast.LONG,
+                );
                 navigation.reset({routes: [{name: 'CertifiedMember'}]});
-              } else {
+              } else if (result.data.attemptCount === (1 || 2 || 3 || 4 || 5)) {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
-                setValue('')
+                setValue('');
+              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                {
+                  setIsCoolTime(true);
+                  navigation.goBack();
+                }
+              } else {
+                if (value.length === 6) console.log('여기가 떠야지');
               }
             }}></PurpleRoundButton>
         )}
@@ -308,7 +339,7 @@ const styles = StyleSheet.create({
   codeFieldRoot: {
     marginTop: 40,
     width: '80%',
-    marginHorizontal: Dimensions.get('window').width/11
+    marginHorizontal: Dimensions.get('window').width / 11,
   },
   cellRoot: {
     width: 40,
@@ -371,6 +402,6 @@ const styles = StyleSheet.create({
     color: '#6E7882',
     fontSize: 15,
     marginTop: 26,
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
 });
