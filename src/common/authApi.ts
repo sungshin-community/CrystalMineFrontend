@@ -166,6 +166,8 @@ export const logout = async () => {
     const response = await client.get<AxiosResponse>(
       '/auth/signout'
     );
+    await AsyncStorage.setItem('accessToken', '');
+    await AsyncStorage.setItem('refreshToken', '');
     return response;
   } catch (e: any) {
     console.log('여기는 logout 함수', e.response);

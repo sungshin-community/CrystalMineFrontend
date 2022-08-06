@@ -74,7 +74,7 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
       >
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 14,
             color: '#6E7882',
             fontFamily: 'SpoqaHanSansNeo-Regular',
           }}>
