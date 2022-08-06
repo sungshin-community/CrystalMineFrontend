@@ -69,6 +69,7 @@ const HomeFragment = ({navigation}: Props) => {
   const numOfBoardTitle = 19; // 고정 게시판 내용
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isInited, setIsInited] = useState<boolean>(false);
 
   const blacklistModalContent = (
     <>
@@ -109,7 +110,9 @@ const HomeFragment = ({navigation}: Props) => {
   );
   useEffect(() => {
     async function getContents() {
-      setIsLoading(true);
+      if (!isInited) {
+        setIsLoading(true);
+      }
       const pinBoardData = await getPinBoardContents();
       const hotBoardData = await getHotBoardContents();
       const notification = await getUnreadNotification();
@@ -119,7 +122,10 @@ const HomeFragment = ({navigation}: Props) => {
         setHotBoardContents(hotBoardData);
       }
       setNoti(notification);
-      setIsLoading(false);
+      if (!isInited) {
+        setIsLoading(false);
+        setIsInited(true);
+      }
     }
     if (isFocused) {
       getContents();
@@ -341,7 +347,11 @@ const HomeFragment = ({navigation}: Props) => {
           </TouchableWithoutFeedback>
         </View>
         {/* 게시판 글 목록 */}
-        {user?.isAuthenticated ? (
+        {
+        !isInited ? 
+        // true?
+        skeletonComponent
+        : user?.isAuthenticated ? (
           pinBoardContents?.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -411,9 +421,11 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={styles.more}>더보기</Text>
           </TouchableWithoutFeedback>
         </View>
-        {user?.isAuthenticated ? (
+        {!isInited ?
+        skeletonComponent :
+        user?.isAuthenticated ? (
           hotBoardContents?.hotPosts.map((item, index) => (
-            <TouchableWithoutFeedback
+            <TouchableOpacity
               key={index}
               onPress={() => navigation.navigate('PostScreen', { postId: item.postId })}>
               <View style={styles.hotPostContainer}>
@@ -436,7 +448,7 @@ const HomeFragment = ({navigation}: Props) => {
                   <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           ))
         ) : (
           <View
@@ -559,4 +571,53 @@ const styles = StyleSheet.create({
     marginTop: 4,
     width: Dimensions.get('window').width - 160,
   },
+  skeletonRow: {
+    flexDirection: 'row',
+    height: 32
+  },
+  skeletonBoardName: {
+    width: 87,
+    height: 12,
+    backgroundColor: '#E1E4EA'
+  },
+  skeletonBoardContent: {
+    height: 12,
+    backgroundColor: '#E1E4EA',
+    marginLeft: 16
+  }
 });
+
+const skeletonComponent = <View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 136}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 170}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
+  </View>
+  <View style={styles.skeletonRow}>
+    <View style={styles.skeletonBoardName}></View>
+    <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+  </View>
+</View>
