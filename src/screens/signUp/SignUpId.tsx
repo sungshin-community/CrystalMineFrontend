@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -17,8 +17,8 @@ import {
   Pressable,
 } from 'react-native';
 
-import { NormalOneLineText, Description } from '../../components/Top';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NormalOneLineText, Description} from '../../components/Top';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {
   DisabledPurpleRoundButton,
@@ -26,10 +26,10 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import { ModalBottom } from '../../components/ModalBottom';
-import { checkEmailConflict, checkBlackList } from '../../common/authApi';
-import { SignUpQuestionMark } from '../../../resources/icon/QuestionMark';
-import { fontRegular } from '../../common/font';
+import {ModalBottom} from '../../components/ModalBottom';
+import {checkEmailConflict, checkBlackList} from '../../common/authApi';
+import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
+import {fontRegular} from '../../common/font';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  SignUpPassword: { userId: string; agreementIds: number[] };
+  SignUpPassword: {userId: string; agreementIds: number[]};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpId({ navigation, route }: Props) {
+export default function SignUpId({navigation, route}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
@@ -107,7 +107,7 @@ export default function SignUpId({ navigation, route }: Props) {
     Keyboard.dismiss();
   };
   const modalBody = (
-    <>
+    <View>
       <View style={styles.paragraph}>
         <View style={styles.number}>
           <Text style={[fontRegular, styles.blackText]}>01</Text>
@@ -153,8 +153,8 @@ export default function SignUpId({ navigation, route }: Props) {
           </Text>
         </View>
       </View>
-      <View style={[styles.paragraph, { marginTop: 8, marginBottom: 0 }]}>
-        <View style={{ marginLeft: 5, marginRight: 13, paddingTop: 3 }}>
+      <View style={[styles.paragraph, {marginTop: 8, marginBottom: 0}]}>
+        <View style={{marginLeft: 5, marginRight: 13, paddingTop: 3}}>
           <Text style={[fontRegular, styles.greyText]}>*</Text>
         </View>
         <View>
@@ -167,22 +167,26 @@ export default function SignUpId({ navigation, route }: Props) {
           </Text>
         </View>
       </View>
-    </>
+    </View>
   );
 
   const studentIdModalBody = (
-    <>
-      <View style={styles.paragraph}>
+    <View style={{width: Dimensions.get('window').width - 100}}>
+      <View style={[styles.paragraph]}>
         <View>
           <Text style={[fontRegular, styles.blackText]}>
-            수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 학번으로 이루어진 성신 G-mail만을 아이디로 등록할 수 있도록 설계되어 있습니다. 
+            수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 학번으로
+            이루어진 성신 G-mail만을 아이디로 등록할 수 있도록 설계되어
+            있습니다.
           </Text>
         </View>
       </View>
       <View style={styles.paragraph}>
         <View>
           <Text style={[fontRegular, styles.blackText]}>
-            만약 성신 동문이 맞음에도 가입이 어려운 경우, 추가적인 인증을 거쳐 개별적으로 가입이 가능하니 아래 안내를 참고하시어 가입해주시기 바랍니다.
+            만약 성신 동문이 맞음에도 가입이 어려운 경우, 추가적인 인증을 거쳐
+            개별적으로 가입이 가능하니 아래 안내를 참고하시어 가입해주시기
+            바랍니다.
           </Text>
         </View>
       </View>
@@ -192,7 +196,8 @@ export default function SignUpId({ navigation, route }: Props) {
         </View>
         <View>
           <Text style={[fontRegular, styles.blackText]}>
-            아래의 수정광산 계정으로 02번의 내용을 준비하여 보내주시기 바랍니다.{'\n'}
+            아래의 수정광산 계정으로 02번의 내용을 준비하여{'\n'}보내주시기 바랍니다.
+            {'\n'}
             수정광산 계정: contact@crystalmine.kr
           </Text>
         </View>
@@ -206,30 +211,32 @@ export default function SignUpId({ navigation, route }: Props) {
             인증시 필요한 내용{'\n'}
             a. 성신 G-mail 계정, 소속 학과{'\n'}
             <Text style={[fontRegular, styles.greyText]}>
-              {"    "}(계정 생성을 하기 위해 필요)
+              {'    '}(계정 생성을 하기 위해 필요)
             </Text>
           </Text>
           <Text style={[fontRegular, styles.blackText]}>
             인증시 필요한 내용{'\n'}
-            b. [성신여대 포탈 시스템]의 좌측 보라색 박스에 담긴 내용 캡쳐{'\n'}
+            b. [성신여대 포탈 시스템]의 좌측 보라색 박스에{'\n'} 담긴 내용 캡쳐{'\n'}
             <Text style={[fontRegular, styles.greyText]}>
-              {"    "}(성신인 인증을 위해 필요)
+              {'    '}(성신인 인증을 위해 필요)
             </Text>
           </Text>
           <Text style={[fontRegular, styles.blackText]}>
             인증시 필요한 내용{'\n'}
-            c. [성신여대 포탈 시스템-통합정보시스템-학적관리-학적변동조회]의 상단에 위치한 [학생기초정보] 부분 캡쳐{'\n'}
+            c. [성신여대 포탈 시스템-통합정보시스템-학적관리-학적변동조회]의
+            상단에 위치한 [학생기초정보] 부분 캡쳐{'\n'}
             <Text style={[fontRegular, styles.greyText]}>
-              {"    "}(성신인 인증을 위해 필요)
+              {'    '}(성신인 인증을 위해 필요)
             </Text>
           </Text>
           <Text style={[fontRegular, styles.greyText]}>
-              {"*   "}인증시, 개인정보(학번, 성명, 생년월일, 프로필 사진 등)은 가리고 보내주시기 바랍니다.
-            </Text>
+            {'*   '}인증시, 개인정보(학번, 성명, 생년월일, 프로필 사진 등)은
+            가리고 보내주시기 바랍니다.
+          </Text>
         </View>
       </View>
-    </>
-  )
+    </View>
+  );
 
   return Platform.OS === 'ios' ? (
     <>
@@ -249,7 +256,7 @@ export default function SignUpId({ navigation, route }: Props) {
       <KeyboardAvoidingView
         keyboardVerticalOffset={10}
         behavior={'padding'}
-        style={{ flex: 1 }}>
+        style={{flex: 1}}>
         <View
           style={{
             width: (Dimensions.get('window').width / 7) * 2,
@@ -261,25 +268,27 @@ export default function SignUpId({ navigation, route }: Props) {
           <ScrollView
             scrollEnabled={false}
             keyboardShouldPersistTaps="handled"
-            style={{ backgroundColor: '#fff' }}>
+            style={{backgroundColor: '#fff'}}>
             <TextContainer>
               <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Description style={{ marginRight: 5.5 }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Description style={{marginRight: 5.5}}>
                   학교에서 제공하는 성신 G-mail 계정을 사용합니다
                 </Description>
                 <Pressable onPress={() => setModalVisible(true)}>
                   <SignUpQuestionMark />
                 </Pressable>
-                <ModalBottom
-                  modalVisible={modalVisible}
-                  setModalVisible={setModalVisible}
-                  title={`학교 G-mail 계정 생성 방법`}
-                  content={modalBody}
-                  isContentCenter={false}
-                  purpleButtonText="확인"
-                  purpleButtonFunc={() => setModalVisible(!modalVisible)}
-                />
+                {modalVisible && (
+                  <ModalBottom
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    title={`학교 G-mail 계정 생성 방법`}
+                    content={modalBody}
+                    isContentCenter={false}
+                    purpleButtonText="확인"
+                    purpleButtonFunc={() => setModalVisible(!modalVisible)}
+                  />
+                )}
               </View>
             </TextContainer>
 
@@ -296,8 +305,8 @@ export default function SignUpId({ navigation, route }: Props) {
                       isDuplicate || isBlackList
                         ? '#ff0000'
                         : isFocused
-                          ? '#A055FF'
-                          : '#D7DCE6',
+                        ? '#A055FF'
+                        : '#D7DCE6',
                   },
                 ]}>
                 <TextInput
@@ -347,7 +356,7 @@ export default function SignUpId({ navigation, route }: Props) {
                 text="다음"
                 onClick={async () => {
                   let year: number = 0;
-                  year = +(studentId.substring(0, 4));
+                  year = +studentId.substring(0, 4);
                   if (isNaN(year)) {
                     setAlertModalVisible(true);
                     return;
@@ -377,7 +386,7 @@ export default function SignUpId({ navigation, route }: Props) {
                 text="다음"
                 onClick={async () => {
                   let year: number = 0;
-                  year = +(studentId.substring(0, 4));
+                  year = +studentId.substring(0, 4);
                   if (isNaN(year)) {
                     setAlertModalVisible(true);
                     return;
@@ -410,15 +419,17 @@ export default function SignUpId({ navigation, route }: Props) {
               <DisabledPurpleRoundButton text="다음" />
             )}
           </View>
-          <ModalBottom
-            modalVisible={alertModalVisible}
-            setModalVisible={setAlertModalVisible}
-            title="잘못된 아이디 형식입니다"
-            content={studentIdModalBody}
-            isContentCenter={false}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => setModalVisible(!modalVisible)}
-          />
+          {alertModalVisible && (
+            <ModalBottom
+              modalVisible={alertModalVisible}
+              setModalVisible={setAlertModalVisible}
+              title="잘못된 아이디 형식입니다"
+              content={studentIdModalBody}
+              isContentCenter={false}
+              purpleButtonText="확인"
+              purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
+            />
+          )}
         </Container>
       </KeyboardAvoidingView>
     </>
@@ -448,25 +459,27 @@ export default function SignUpId({ navigation, route }: Props) {
         <ScrollView
           scrollEnabled={false}
           keyboardShouldPersistTaps="handled"
-          style={{ backgroundColor: '#fff' }}>
+          style={{backgroundColor: '#fff'}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Description style={{ marginRight: 5.5 }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Description style={{marginRight: 5.5}}>
                 학교에서 제공하는 성신 G-mail 계정을 사용합니다
               </Description>
               <Pressable onPress={() => setModalVisible(true)}>
                 <SignUpQuestionMark />
               </Pressable>
-              <ModalBottom
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                title={`학교 G-mail 계정 생성 방법`}
-                content={modalBody}
-                isContentCenter={false}
-                purpleButtonText="확인"
-                purpleButtonFunc={() => setModalVisible(!modalVisible)}
-              />
+              {modalVisible && (
+                <ModalBottom
+                  modalVisible={modalVisible}
+                  setModalVisible={setModalVisible}
+                  title={`학교 G-mail 계정 생성 방법`}
+                  content={modalBody}
+                  isContentCenter={false}
+                  purpleButtonText="확인"
+                  purpleButtonFunc={() => setModalVisible(!modalVisible)}
+                />
+              )}
             </View>
           </TextContainer>
 
@@ -482,8 +495,8 @@ export default function SignUpId({ navigation, route }: Props) {
                     isDuplicate || isBlackList
                       ? '#ff0000'
                       : isFocused
-                        ? '#A055FF'
-                        : '#D7DCE6',
+                      ? '#A055FF'
+                      : '#D7DCE6',
                 },
               ]}>
               <TextInput
@@ -533,7 +546,7 @@ export default function SignUpId({ navigation, route }: Props) {
               text="다음"
               onClick={async () => {
                 let year: number = 0;
-                year = +(studentId.substring(0, 4));
+                year = +studentId.substring(0, 4);
                 if (isNaN(year)) {
                   setAlertModalVisible(true);
                   return;
@@ -563,7 +576,7 @@ export default function SignUpId({ navigation, route }: Props) {
               text="다음"
               onClick={async () => {
                 let year: number = 0;
-                year = +(studentId.substring(0, 4));
+                year = +studentId.substring(0, 4);
                 if (isNaN(year)) {
                   setAlertModalVisible(true);
                   return;
@@ -597,15 +610,17 @@ export default function SignUpId({ navigation, route }: Props) {
           )}
         </View>
       </Container>
-          <ModalBottom
-            modalVisible={alertModalVisible}
-            setModalVisible={setAlertModalVisible}
-            title="잘못된 아이디 형식입니다"
-            content={studentIdModalBody}
-            isContentCenter={false}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => setModalVisible(!modalVisible)}
-          />
+      {alertModalVisible && (
+        <ModalBottom
+          modalVisible={alertModalVisible}
+          setModalVisible={setAlertModalVisible}
+          title="잘못된 아이디 형식입니다"
+          content={studentIdModalBody}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
+        />
+      )}
     </>
   );
 }
