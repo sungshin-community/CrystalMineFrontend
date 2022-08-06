@@ -178,7 +178,7 @@ function QuestionList({navigation, route}: Props) {
     }
     setIsNextPageLoading(false);
   };
- console.log(questionList?.length)
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View

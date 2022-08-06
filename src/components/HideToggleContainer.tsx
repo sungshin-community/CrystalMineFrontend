@@ -358,14 +358,15 @@ export function DirectionContainer({
   useEffect(() => {
     setIsChecked(checked);
   }, [checked]);
+  console.log(title, content)
   return (
     <>
       <TouchableOpacity
         onPress={(e: any) => setIsSpread(!isSpread)}
         style={{
-          marginLeft: 35,
-          marginTop: 16,
-          marginRight: 41,
+          marginTop: 14,
+          marginLeft: 25,
+          marginRight: 40,
           flexDirection: 'row',
           alignItems: 'center',
           height: 24,
@@ -394,7 +395,7 @@ export function DirectionContainer({
           )}
         </TouchableOpacity>
 
-        <SmallText>{title}</SmallText>
+        <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: 252}}>{title}</SmallText>
         <View
           style={{
             flex: 1,
@@ -409,22 +410,19 @@ export function DirectionContainer({
       {isSpread && (
         <ScrollView
           style={{
-            height: Dimensions.get('window').height / 5,
+            maxHeight: Dimensions.get('window').height / 5,
+            height: 'auto',
             marginLeft: 40,
             marginRight: 40,
             backgroundColor: '#F6F6F6',
-            padding: 20,
-            marginTop: 8,
+            paddingHorizontal: 24,
           }}
           nestedScrollEnabled={true}>
-          <Text>
-            <Text style={{fontWeight: 'bold'}}>{title}</Text>
-            {'\n'}
-            {'\n'}
-            {content.map(c => (
-              <Text>{`⦁ ${c === null ? '' : c}\n`}</Text>
-            ))}
-          </Text>
+          <View style={{ paddingTop: 15, paddingBottom: 15}}>
+            <Markdown>
+              {content}
+            </Markdown>
+          </View>
         </ScrollView>
       )}
     </>
