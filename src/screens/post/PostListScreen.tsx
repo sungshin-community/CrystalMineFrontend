@@ -195,7 +195,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     });
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
-  const searchBtn = () => {
+  const toBoardSearch = () => {
     navigation.navigate('BoardSearch', {
       boardName: boardInfo.name,
       boardId: boardInfo.id,
@@ -211,7 +211,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         justifyContent: 'center',
       }}
       underlayColor="#EEEEEE"
-      onPress={searchBtn}>
+      onPress={toBoardSearch}>
       <SearchIcon />
     </TouchableHighlight>
   );
