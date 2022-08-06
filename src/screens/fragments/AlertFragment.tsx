@@ -99,7 +99,7 @@ const AlertFragment = () => {
       </View>
 
       {alerts?.length === 0 ? (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
           <View
             style={{
               flex: 1,
@@ -115,7 +115,6 @@ const AlertFragment = () => {
                 lineHeight: 22.5,
                 marginTop: 20,
               }}>
-              {isLoading ? '' : '아직 알림이 없습니다.\n뭐라고 적을까'}
             </Text>
           </View>
         </SafeAreaView>

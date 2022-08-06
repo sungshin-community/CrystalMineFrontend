@@ -47,6 +47,7 @@ export const checkEmailConflict = async (studentId: string) => {
     const response = await client.get<AxiosResponse>(
       '/auth/check-username/' + studentId,
     );
+    console.log(response.data)
     if (response.status === 200) {
       return response.data.code;
     }
@@ -64,8 +65,8 @@ export const checkNicknameConflict = async (nickname: string) => {
     if (response.status === 200) {
       return true;
     }
-  } catch (error) {
-    return false;
+  } catch (e) {
+    return e.response;
   }
   return false;
 };
@@ -92,7 +93,7 @@ export const register = async (signUpRequestDto: SignUpRequestDto) => {
     );
     return true;
   } catch (e) {
-    console.log('여기는 register 함수', e);
+    console.log('여기는 register 함수', e.response);
     return false;
   }
 };
