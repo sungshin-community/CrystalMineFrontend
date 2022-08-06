@@ -32,7 +32,9 @@ import CustomButton, {
 import {ModalBottom} from '../../components/ModalBottom';
 import {checkAuthNumber, sendEmail} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
+import Toast from 'react-native-simple-toast';
+import {useIsFocused} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -61,8 +63,9 @@ export default function RegularMemberAuth({navigation}: Props) {
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
-    useState<boolean>(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
+    boolean
+  >(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -71,35 +74,27 @@ export default function RegularMemberAuth({navigation}: Props) {
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const onFocus = () => {
-    setIsFocused(true);
-  };
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] =
-    useState<boolean>(false);
+  const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
+    false,
+  );
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
+  const isF = useIsFocused();
 
   const startResendOtpTimer = () => {
-    if (resendOtpTimerInterval) {
-      clearInterval(resendOtpTimerInterval);
-    }
-    resendOtpTimerInterval = setInterval(() => {
-      if (resendButtonDisabledTime <= 0) {
+    if (isF) {
+      if (resendOtpTimerInterval) {
         clearInterval(resendOtpTimerInterval);
-      } else {
-        setResendButtonDisabledTime(resendButtonDisabledTime - 1);
       }
-    }, 1000);
-  };
-
-  useEffect(() => {
-    const init = async() => {
-      let result: number = await checkAuthNumber(value);
-      console.log('tryCnt: ', tryCnt, 'result: ', result, "tryCnt-result: ", tryCnt-result)
+      resendOtpTimerInterval = setInterval(() => {
+        if (resendButtonDisabledTime <= 0) {
+          clearInterval(resendOtpTimerInterval);
+        } else {
+          setResendButtonDisabledTime(resendButtonDisabledTime - 1);
+        }
+      }, 1000);
     }
-    init();
-   },[])
-
+  };
 
   //다시 시도하기 버튼 눌렀을 경우
   const onResendOtpButtonPress = async () => {
@@ -107,6 +102,7 @@ export default function RegularMemberAuth({navigation}: Props) {
     setValue('');
     let result: boolean = await sendEmail();
     if (result) {
+      Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
       console.log('이메일 재발송 성공');
     } else {
       console.log('이메일 재발송 실패');
@@ -117,7 +113,7 @@ export default function RegularMemberAuth({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    navigation.navigate('GlobalNavbar');
+    navigation.navigate('Home');
   };
   const onFocusOut = () => {
     setIsFocused(false);
@@ -198,15 +194,15 @@ export default function RegularMemberAuth({navigation}: Props) {
                 zIndex: 999,
               }}
             /> */}
-               <ModalBottom
-                modalVisible={!modalVisible}
-                setModalVisible={setModalVisible}
-                content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
-                purpleButtonText="인증번호 재전송"
-                purpleButtonFunc={onResendOtpButtonPress}
-                whiteButtonText="인증 취소"
-                whiteButtonFunc={() => navigation.navigate('RegularMemberAuthSelect')}
-              />
+            <ModalBottom
+              modalVisible={!modalVisible}
+              setModalVisible={setModalVisible}
+              content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
+              purpleButtonText="인증번호 재전송"
+              purpleButtonFunc={onResendOtpButtonPress}
+              whiteButtonText="인증 취소"
+              whiteButtonFunc={() => navigation.navigate('GlobalNavbar')}
+            />
           </>
         )}
         {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
@@ -240,9 +236,11 @@ export default function RegularMemberAuth({navigation}: Props) {
         )}
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-        <TouchableWithoutFeedback onPress={async () => {
+        <TouchableWithoutFeedback
+          onPress={async () => {
             let result: boolean = await sendEmail();
             if (result) {
+              Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
               console.log('이메일 재발송 성공');
             } else {
               console.log('이메일 재발송 실패');
@@ -252,7 +250,7 @@ export default function RegularMemberAuth({navigation}: Props) {
         </TouchableWithoutFeedback>
       </View>
 
- {tryCnt === 0 && (
+      {tryCnt === 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
@@ -260,12 +258,14 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="확인"
           purpleButtonFunc={gotoHome}></ModalBottom>
       )}
-       {isCoolTime && <ModalBottom
+      {isCoolTime && (
+        <ModalBottom
           modalVisible={isCoolTime}
           setModalVisible={setIsCoolTime}
           content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>}
+          purpleButtonFunc={gotoHome}></ModalBottom>
+      )}
       <View
         style={{
           paddingBottom: isFocused ? 0 : 15,
@@ -279,23 +279,15 @@ export default function RegularMemberAuth({navigation}: Props) {
             onClick={async () => {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
+                Toast.show('정회원 인증에 성공하였습니다.', Toast.LONG);
                 navigation.navigate('GlobalNavbar');
-              } else if(result.data.attemptCount === (1 || 2 || 3 || 4 || 5)) {
-                setTryCnt(tryCnt - result);
+              } else if (typeof result.data.attemptCount === 'number') {
+                setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
-                setValue('')
-              } else if(result.code === 'AUTH_COOL_TIME_LIMIT'){
+              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.navigate('Home')
-                }
-              } else {
-                if (value.length === 6) {
-                  <View style={styles.errorMessageContainer}>
-                    <Text style={styles.errorMessage}>
-                      {result.data.code}
-                    </Text>
-                  </View>
+                  navigation.navigate('GlobalNavbar');
                 }
               }
             }}></PurpleFullButton>
@@ -304,26 +296,17 @@ export default function RegularMemberAuth({navigation}: Props) {
           <PurpleRoundButton
             text="인증 완료"
             onClick={async () => {
-              console.log(value)
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
-                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-              } else if(result.data.attemptCount === (1 || 2 || 3 || 4 || 5) ){
-                setTryCnt(tryCnt - result);
+                Toast.show('정회원 인증에 성공하였습니다.', Toast.LONG);
+                navigation.navigate('GlobalNavbar');
+              } else if (typeof result.data.attemptCount === 'number') {
+                setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
-                setValue('')
-              } else if(result.code === 'AUTH_COOL_TIME_LIMIT'){
+              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.navigate('Home')
-                }
-              } else {
-                if (value.length === 6) {
-                  <View style={styles.errorMessageContainer}>
-                    <Text style={styles.errorMessage}>
-                      {result.data.code}
-                    </Text>
-                  </View>
+                  navigation.navigate('GlobalNavbar');
                 }
               }
             }}></PurpleRoundButton>
@@ -342,7 +325,7 @@ const styles = StyleSheet.create({
   codeFieldRoot: {
     marginTop: 40,
     width: '80%',
-    marginHorizontal: Dimensions.get('window').width/11
+    marginHorizontal: Dimensions.get('window').width / 11,
   },
   cellRoot: {
     width: 40,
@@ -405,6 +388,6 @@ const styles = StyleSheet.create({
     color: '#6E7882',
     fontSize: 15,
     marginTop: 26,
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
 });

@@ -12,7 +12,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-
+import Toast from 'react-native-simple-toast';
 import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
@@ -28,12 +28,17 @@ import {
   Checked,
 } from '../../../resources/icon/CheckBox';
 import {DirectionContainer} from '../../components/HideToggleContainer';
-import Agreement, { DirectionAgreement } from '../../classes/Agreement';
-import {getAgreements, getDirectionAgreements, sendEmail} from '../../common/authApi';
-import { getContractGuide, getSignUpDirection } from '../../common/contractApi';
+import Agreement, {DirectionAgreement} from '../../classes/Agreement';
+import {
+  getAgreements,
+  getDirectionAgreements,
+  sendEmail,
+} from '../../common/authApi';
+import {getContractGuide, getSignUpDirection} from '../../common/contractApi';
+import {ModalBottom} from '../../components/ModalBottom';
 type RootStackParamList = {
   SplashHome: undefined;
-  SignUpId: { agreementIds: number[] };
+  SignUpId: {agreementIds: number[]};
   RegularMemberAuth: undefined;
 };
 
@@ -42,6 +47,7 @@ function DirectionAgree({navigation}: Props) {
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [agreements, setAgreements] = useState<DirectionAgreement[]>([]);
+  const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
   const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
     if (clickedComponent === 'wholeAgree') {
@@ -165,18 +171,28 @@ function DirectionAgree({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                  let result: boolean = await sendEmail();
-                  if (result) {
-                    navigation.navigate('RegularMemberAuth');
-                  } else {
-                    console.log('이메일 발송 실패');
-                  }
-                }}
+                let result: string = await sendEmail();
+                if (result === 'ok') {
+                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
+                  navigation.navigate('RegularMemberAuth');
+                } else {
+                  console.log('이메일 발송 실패');
+                  setIsCoolTime(true);
+                }
+              }}
             />
           ) : (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
+        {isCoolTime && (
+          <ModalBottom
+            modalVisible={isCoolTime}
+            setModalVisible={setIsCoolTime}
+            content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => navigation.goBack()}></ModalBottom>
+        )}
       </View>
     </>
   );

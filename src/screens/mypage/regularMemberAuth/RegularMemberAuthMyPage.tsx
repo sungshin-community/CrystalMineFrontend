@@ -34,6 +34,7 @@ import {checkAuthNumber, sendEmail} from '../../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
+import {useIsFocused} from '@react-navigation/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -72,25 +73,27 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const onFocus = () => {
-    setIsFocused(true);
-  };
+
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
   const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
     false,
   );
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
+  const isF = useIsFocused();
+
   const startResendOtpTimer = () => {
-    if (resendOtpTimerInterval) {
-      clearInterval(resendOtpTimerInterval);
-    }
-    resendOtpTimerInterval = setInterval(() => {
-      if (resendButtonDisabledTime <= 0) {
+    if (isF) {
+      if (resendOtpTimerInterval) {
         clearInterval(resendOtpTimerInterval);
-      } else {
-        setResendButtonDisabledTime(resendButtonDisabledTime - 1);
       }
-    }, 1000);
+      resendOtpTimerInterval = setInterval(() => {
+        if (resendButtonDisabledTime <= 0) {
+          clearInterval(resendOtpTimerInterval);
+        } else {
+          setResendButtonDisabledTime(resendButtonDisabledTime - 1);
+        }
+      }, 1000);
+    }
   };
 
   //다시 시도하기 버튼 눌렀을 경우
@@ -99,6 +102,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     setValue('');
     let result: boolean = await sendEmail();
     if (result) {
+      Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
       console.log('이메일 재발송 성공');
     } else {
       console.log('이메일 재발송 실패');
@@ -124,7 +128,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
       }
     };
   }, [resendButtonDisabledTime]);
- 
+
   return (
     <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View style={{flex: 1}}>
@@ -236,6 +240,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           onPress={async () => {
             let result: boolean = await sendEmail();
             if (result) {
+              Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
               console.log('이메일 재발송 성공');
             } else {
               console.log('이메일 재발송 실패');
@@ -272,23 +277,19 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           <PurpleFullButton
             text="인증 완료"
             onClick={async () => {
-              let result: number = await checkAuthNumber(value);
+              const result: number = await checkAuthNumber(value);
               if (result === 0) {
-                Toast.show(
-                  '정회원 인증을 성공적으로 완료하였습니다.',
-                  Toast.LONG,
-                );
+                Toast.show('정회원 인증에 성공하였습니다.', Toast.LONG);
                 navigation.navigate('MyPage');
-              } else if (typeof(result.data.attemptCount) === 'number' ){
+              } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
-                setValue('');
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.goBack();
+                  navigation.navigate('MyPage');
                 }
-              } 
+              }
             }}></PurpleFullButton>
         )}
         {value.length === 6 && !isFocused && (
@@ -303,16 +304,15 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   Toast.LONG,
                 );
                 navigation.navigate('MyPage');
-              } else if (typeof(result.data.attemptCount) === 'number') {
+              } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
-                setIsIncorrect(true);4
-                setValue('');
+                setIsIncorrect(true);
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.goBack();
+                  navigation.navigate('MyPage');
                 }
-              } 
+              }
             }}></PurpleRoundButton>
         )}
         {value.length < 6 && isFocused && (

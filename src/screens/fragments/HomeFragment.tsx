@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
 import {PurpleRoundButton} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
@@ -36,11 +35,7 @@ import {useIsFocused} from '@react-navigation/native';
 import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
-import {NoticeDto} from '../../classes/mypage/NoticeDto';
-import {PlatformOS} from '../../components/PlatformOS';
-import HappySuryong from '../../../resources/icon/custom/HappySuryong';
-import RemoveDataSuryong from '../../../resources/icon/custom/RemoveDataSuryong';
-import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
+
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};

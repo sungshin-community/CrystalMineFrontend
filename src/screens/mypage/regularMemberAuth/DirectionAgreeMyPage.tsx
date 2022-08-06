@@ -28,14 +28,22 @@ import {
   Checked,
 } from '../../../../resources/icon/CheckBox';
 import {DirectionContainer} from '../../../components/HideToggleContainer';
-import Agreement, { DirectionAgreement } from '../../../classes/Agreement';
-import {getAgreements, getDirectionAgreements, sendEmail} from '../../../common/authApi';
-import { getContractGuide, getSignUpDirection } from '../../../common/contractApi';
-import { ModalBottom } from '../../../components/ModalBottom';
+import Agreement, {DirectionAgreement} from '../../../classes/Agreement';
+import {
+  getAgreements,
+  getDirectionAgreements,
+  sendEmail,
+} from '../../../common/authApi';
+import {
+  getContractGuide,
+  getSignUpDirection,
+} from '../../../common/contractApi';
+import {ModalBottom} from '../../../components/ModalBottom';
 type RootStackParamList = {
   SplashHome: undefined;
-  SignUpId: { agreementIds: number[] };
+  SignUpId: {agreementIds: number[]};
   RegularMemberAuthMyPage: undefined;
+  MyPage: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -167,28 +175,28 @@ function DirectionAgreeMyPage({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                  let result: string = await sendEmail();
-                  if (result === 'ok') {
-                    navigation.navigate('RegularMemberAuthMyPage');
-                  } else {
-                    console.log('이메일 발송 실패');
-                    setIsCoolTime(true);
-                  }
-                }}
-              />
-              
+                let result: string = await sendEmail();
+                if (result === 'ok') {
+                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
+                  navigation.navigate('RegularMemberAuthMyPage');
+                } else {
+                  console.log('이메일 발송 실패');
+                  setIsCoolTime(true);
+                }
+              }}
+            />
           ) : (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
       </View>
-       {isCoolTime && (
+      {isCoolTime && (
         <ModalBottom
           modalVisible={isCoolTime}
           setModalVisible={setIsCoolTime}
           content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
-          purpleButtonFunc={()=>navigation.goBack()}></ModalBottom>
+          purpleButtonFunc={() => navigation.navigate('MyPage')}></ModalBottom>
       )}
     </>
   );

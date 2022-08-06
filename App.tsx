@@ -363,10 +363,24 @@ const App = () => {
               <Stack.Screen
                 name="DirectionAgree"
                 component={DirectionAgree}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               <Stack.Screen
                 name="RegularMemberAuthSelect"
@@ -379,10 +393,24 @@ const App = () => {
               <Stack.Screen
                 name="RegularMemberAuth"
                 component={RegularMemberAuth}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               {/* [F-2 로그인] */}
               <Stack.Screen
@@ -1795,10 +1823,24 @@ const App = () => {
               <Stack.Screen
                 name="RegularMemberAuth"
                 component={RegularMemberAuth}
-                options={{
+                options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                }}
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               {/* [F-2 로그인] */}
               <Stack.Screen
