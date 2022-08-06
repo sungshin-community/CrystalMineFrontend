@@ -14,6 +14,7 @@ import Toast from 'react-native-simple-toast';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
+  BoardSearch: {boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -117,8 +118,8 @@ export default function MyCommentList({navigation, route}: Props) {
     <TouchableHighlight
       style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
       underlayColor='#EEEEEE'
-      onPress={() => console.log('search icon click')}>
-      <SearchIcon />
+      onPress={() => navigation.navigate('BoardSearch', {boardName: '내가 작성한 댓글'})}>
+      <SearchIcon  />
     </TouchableHighlight>
   );
 
