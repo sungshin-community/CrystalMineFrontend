@@ -133,6 +133,8 @@ const HomeFragment = ({navigation}: Props) => {
       getUserInfo();
     }
   }, [isFocused]);
+
+  console.log(noti?.length)
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
@@ -144,7 +146,7 @@ const HomeFragment = ({navigation}: Props) => {
           style={{
             fontSize: 22,
             marginLeft: 40,
-            marginBottom: noti?.length !== 0 ? 26 : 0,
+            marginBottom: noti?.length && 26,
           }}>
           <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
             {user?.nickname}
