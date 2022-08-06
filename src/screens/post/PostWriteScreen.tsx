@@ -56,7 +56,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [images, setImages] = useState<string[]>([]); // 글 등록할 때 보낼 이미지 url 배열
+  const [images, setImages] = useState<any>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
 
@@ -74,6 +74,7 @@ function PostWriteScreen({navigation, route}: Props) {
   }, [route.params.boardId]);
 
   const onSubmitPress = async () => {
+    console.log(boardId,images)
     const result = await postWritePost(boardId, title, content, isAnonymous, images);
     if (result) {
       navigation.navigate('PostListScreen', {boardId});
@@ -107,7 +108,7 @@ function PostWriteScreen({navigation, route}: Props) {
     });
   }, [navigation, title, content]);
 
-   const onSelectImage = () => {
+  const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
       {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
@@ -178,6 +179,7 @@ function PostWriteScreen({navigation, route}: Props) {
               Keyboard.dismiss();
             }}
             style={[fontRegular, styles.input]}
+            autoCorrect={false}
           />
         </View>
         <View style={{paddingHorizontal: 24}}>
@@ -185,20 +187,23 @@ function PostWriteScreen({navigation, route}: Props) {
             <ImageIcon />
             <Text style={[fontMedium, styles.imageText]}>이미지</Text>
           </View>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {images.map((item, index) => (
-              <Image key={index} style={styles.imageBox} source={{uri: item}} />
-            ))}
-            {images.length < 10 && (
-              <View style={[styles.imageSelectBox, styles.imageBox]}>
-                <Pressable onPress={onSelectImage} hitSlop={25}>
-                  <PhotoIcon />
-                  <Text style={[fontMedium, styles.count]}>
-                    {images.length}/10
-                  </Text>
-                </Pressable>
-              </View>
-            )}
+           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            {images?.length !== 0 &&
+              images?.map((asset, index) => (
+                <Image
+                  key={index}
+                  style={styles.imageBox}
+                  source={{uri: asset.uri}}
+                />
+              ))}
+            <View style={[styles.imageSelectBox, styles.imageBox]}>
+              <Pressable onPress={onSelectImage} hitSlop={25}>
+                <PhotoIcon />
+                <Text style={[fontMedium, styles.count]}>
+                  {images?.length}/10
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </View>

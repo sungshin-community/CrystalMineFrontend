@@ -31,8 +31,8 @@ import NoReport, {Report} from '../../resources/icon/Report';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useEffect} from 'react';
 import {BackHandler} from 'react-native';
-import { fontMedium, fontRegular } from '../common/font';
-import { SmallOrangeFlag } from '../../resources/icon/SmallOrangeFlag';
+import {fontMedium, fontRegular} from '../common/font';
+import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 
 interface Props {
   post: any;
@@ -52,7 +52,9 @@ function Post({
   const navigation = useNavigation();
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
+    boolean
+  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
 
@@ -62,10 +64,12 @@ function Post({
     }
   };
   const imgUrlCoverting = (arr: string[]) => {
-    const array = arr.map(url => { return { url: url } })
-    return array
-  }
-  
+    const array = arr.map(url => {
+      return {url: url};
+    });
+    return array;
+  };
+
   const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
@@ -91,7 +95,7 @@ function Post({
               );
               // navigation.goBack();
               navigation.navigate('PostListScreen', {boardId: data.boardId});
-              console.log('게시글 삭제 성공')
+              console.log('게시글 삭제 성공');
             }
           }}
           whiteButtonText="취소"
@@ -107,7 +111,7 @@ function Post({
       </Pressable>
     </>
   );
-const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`
+  const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`;
   const handlePostReportComponent = (
     <>
       {reportCheckModalVisible && (
@@ -153,7 +157,7 @@ const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n�
       )}
     </>
   );
-console.log(data)
+  console.log(data);
   return (
     <>
       <View style={styles.postContainer}>
@@ -164,11 +168,19 @@ console.log(data)
               source={{uri: data?.profileImage}}
             />
             <View style={{justifyContent: 'center'}}>
-              <Text style={[fontRegular,{fontSize: 16, paddingLeft: 8, fontWeight: `500`}]}>
+              <Text
+                style={[
+                  fontRegular,
+                  {fontSize: 16, paddingLeft: 8, fontWeight: `500`},
+                ]}>
                 {data?.displayName}
               </Text>
             </View>
-             {data?.isAnonymous && !data?.isOwner ? <></> : <SmallOrangeFlag style={{ marginLeft: 5 }}/>}
+            {data?.isAnonymous && !data?.isOwner ? (
+              <></>
+            ) : (
+              <SmallOrangeFlag style={{marginLeft: 5}} />
+            )}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
@@ -179,15 +191,23 @@ console.log(data)
             />
           </View>
         </View>
-        {data?.hasTitle && <Text style={[fontMedium, { fontSize: 17, marginTop: 12 }]}>{data.title}</Text>}
+        {data?.hasTitle && (
+          <Text style={[fontMedium, {fontSize: 17, marginTop: 12}]}>
+            {data.title}
+          </Text>
+        )}
         <View style={styles.postBody}>
           <Text style={fontRegular}>{data?.content}</Text>
         </View>
-        <Text style={[fontRegular, {color: '#949494', fontSize: 12, marginTop: 12}]}>
+        <Text
+          style={[
+            fontRegular,
+            {color: '#949494', fontSize: 12, marginTop: 12},
+          ]}>
           {data?.createdAt}
         </Text>
-        <View style={{ flexDirection: 'row', marginTop: 16 }}>
-          {data?.thumbnails &&
+        {data?.thumbnails.length !== 0 && (
+          <View style={{flexDirection: 'row', marginTop: 16}}>
             <ScrollView horizontal={true}>
               {data?.thumbnails.map((url, index) => (
                 <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
@@ -198,7 +218,7 @@ console.log(data)
                       borderRadius: 10,
                       marginRight: 16,
                     }}
-                    source={{ uri: url }}
+                    source={{uri: url}}
                   />
                 </Pressable>
               ))}
@@ -206,14 +226,17 @@ console.log(data)
                 visible={isPhotoVisible}
                 transparent={true}
                 onRequestClose={closePhotoModal}>
-                {data && <ImageViewer
-                  imageUrls={imgUrlCoverting(data?.images)}
-                  onCancel={() => closePhotoModal()}
-                  enableSwipeDown
-                />}
+                {data && (
+                  <ImageViewer
+                    imageUrls={imgUrlCoverting(data?.images)}
+                    onCancel={() => closePhotoModal()}
+                    enableSwipeDown
+                  />
+                )}
               </Modal>
-            </ScrollView>}
+            </ScrollView>
           </View>
+        )}
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
           <Pressable

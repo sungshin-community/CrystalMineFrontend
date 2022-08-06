@@ -25,7 +25,7 @@ export const writeQuestion = async (
 ) => {
   try {
     const formData = new FormData();
-    images.map((image: any, index: number) => {
+    images?.map((image: any, index: number) => {
       const photo = {
         uri: image.uri,
         name: `${index}.jpg`,

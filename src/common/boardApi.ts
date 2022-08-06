@@ -459,6 +459,7 @@ export const postWritePost = async (
 ) => {
   try {
     const formData = new FormData();
+    console.log(images)
     images?.map((image: any, index: number) => {
       const photo = {
         uri: image.uri,
