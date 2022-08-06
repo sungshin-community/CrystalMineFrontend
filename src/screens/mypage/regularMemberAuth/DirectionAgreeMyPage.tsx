@@ -31,6 +31,7 @@ import {DirectionContainer} from '../../../components/HideToggleContainer';
 import Agreement, { DirectionAgreement } from '../../../classes/Agreement';
 import {getAgreements, getDirectionAgreements, sendEmail} from '../../../common/authApi';
 import { getContractGuide, getSignUpDirection } from '../../../common/contractApi';
+import { ModalBottom } from '../../../components/ModalBottom';
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: { agreementIds: number[] };
@@ -42,6 +43,7 @@ function DirectionAgreeMyPage({navigation}: Props) {
   const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
   const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [agreements, setAgreements] = useState<DirectionAgreement[]>([]);
+  const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
   const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
     if (clickedComponent === 'wholeAgree') {
@@ -165,21 +167,29 @@ function DirectionAgreeMyPage({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                  let result: boolean = await sendEmail();
-                  if (result) {
+                  let result: string = await sendEmail();
+                  if (result === 'ok') {
                     navigation.navigate('RegularMemberAuthMyPage');
                   } else {
                     console.log('이메일 발송 실패');
-                    Toast.show('이메일 발송 실패하였습니다.', Toast.LONG);
-
+                    setIsCoolTime(true);
                   }
                 }}
-            />
+              />
+              
           ) : (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
       </View>
+       {isCoolTime && (
+        <ModalBottom
+          modalVisible={isCoolTime}
+          setModalVisible={setIsCoolTime}
+          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={()=>navigation.goBack()}></ModalBottom>
+      )}
     </>
   );
 }

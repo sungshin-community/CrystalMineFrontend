@@ -51,7 +51,7 @@ const RESEND_OTP_TIME_LIMIT = 600;
 
 type RootStackParamList = {
   CertifiedMember: undefined;
-  MyPageFragment: undefined;
+  MyPage: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function RegularMemberAuthMyPage({navigation}: Props) {
@@ -109,7 +109,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    navigation.navigate('MyPageFragment');
+    navigation.navigate('MyPage');
   };
   const onFocusOut = () => {
     setIsFocused(false);
@@ -124,13 +124,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
       }
     };
   }, [resendButtonDisabledTime]);
-  useEffect(() => {
-    const init = async () => {
-      let result: number = await checkAuthNumber(value);
-      console.log('tryCnt: ', tryCnt, 'result: ', result, tryCnt - result);
-    };
-    init();
-  }, []);
+ 
   return (
     <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View style={{flex: 1}}>
@@ -203,7 +197,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               purpleButtonText="인증번호 재전송"
               purpleButtonFunc={onResendOtpButtonPress}
               whiteButtonText="인증 취소"
-              whiteButtonFunc={() => navigation.navigate('MyPageFragment')}
+              whiteButtonFunc={() => navigation.navigate('MyPage')}
             />
           </>
         )}
@@ -284,9 +278,9 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   '정회원 인증을 성공적으로 완료하였습니다.',
                   Toast.LONG,
                 );
-                navigation.reset({routes: [{name: 'CertifiedMember'}]});
-              } else if (result.data.attemptCount === (1 || 2 || 3 || 4 || 5) ){
-                setTryCnt(tryCnt - result);
+                navigation.navigate('MyPage');
+              } else if (typeof(result.data.attemptCount) === 'number' ){
+                setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
                 setValue('');
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
@@ -294,9 +288,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   setIsCoolTime(true);
                   navigation.goBack();
                 }
-              } else {
-                if (value.length === 6) console.log('여기가 떠야지');
-              }
+              } 
             }}></PurpleFullButton>
         )}
         {value.length === 6 && !isFocused && (
@@ -310,19 +302,17 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   '정회원 인증을 성공적으로 완료하였습니다.',
                   Toast.LONG,
                 );
-                navigation.reset({routes: [{name: 'CertifiedMember'}]});
-              } else if (result.data.attemptCount === (1 || 2 || 3 || 4 || 5)) {
-                setTryCnt(tryCnt - result);
-                setIsIncorrect(true);
+                navigation.navigate('MyPage');
+              } else if (typeof(result.data.attemptCount) === 'number') {
+                setTryCnt(5 - result.data.attemptCount);
+                setIsIncorrect(true);4
                 setValue('');
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
                   navigation.goBack();
                 }
-              } else {
-                if (value.length === 6) console.log('여기가 떠야지');
-              }
+              } 
             }}></PurpleRoundButton>
         )}
         {value.length < 6 && isFocused && (

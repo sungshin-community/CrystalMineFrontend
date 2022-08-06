@@ -358,7 +358,6 @@ export function DirectionContainer({
   useEffect(() => {
     setIsChecked(checked);
   }, [checked]);
-  console.log(title, content)
   return (
     <>
       <TouchableOpacity
