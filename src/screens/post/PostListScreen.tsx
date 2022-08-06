@@ -110,7 +110,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const fetchNextPage = async () => {
     if (route.params.boardId === 2) {
       let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
-        currentPage + 1
+        currentPage + 1,
       );
       if (thisPagePostList.length > 0) {
         setCurrentPage(currentPage + 1);
@@ -139,7 +139,10 @@ const PostListScreen = ({navigation, route}: Props) => {
               const result = await toggleBoardPin(route.params.boardId);
               const boardInfo = await getBoardInfo(route.params.boardId);
               setBoardInfo(boardInfo);
-            }}>
+              }}>
+              
+
+              
             {boardInfo?.isOwner ? (
               boardInfo?.isPinned ? (
                 <BigOrangeFlag />
@@ -147,11 +150,10 @@ const PostListScreen = ({navigation, route}: Props) => {
                 <BigGrayFlag />
               )
             ) : boardInfo?.isPinned ? (
-              boardInfo?.type === 'DEPARTMENT' ||
-              boardInfo?.type === 'PUBLIC' ? (
-                <BigPurplePin />
+              boardInfo?.type === 'PUBLIC' ||  boardInfo?.type === 'DEPARTMENT' ? (
+                 <BigOrangePin />
               ) : (
-                <BigOrangePin />
+               <BigPurplePin />
               )
             ) : (
               <BigGrayPin />
@@ -358,7 +360,9 @@ const PostListScreen = ({navigation, route}: Props) => {
                 }}>
                 {isLoading
                   ? ''
-                  : route.params.boardId === 2 ? '공감을 10개 이상 받은 게시글이 없습니다.' : '아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요.'}
+                  : route.params.boardId === 2
+                  ? '공감을 10개 이상 받은 게시글이 없습니다.'
+                  : '아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요.'}
               </Text>
             </View>
           </SafeAreaView>

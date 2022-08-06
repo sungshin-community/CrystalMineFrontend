@@ -186,32 +186,33 @@ console.log(data)
         <Text style={[fontRegular, {color: '#949494', fontSize: 12, marginTop: 12}]}>
           {data?.createdAt}
         </Text>
-          <View style={{ flexDirection: 'row', marginTop: 16 }}>
-          <ScrollView horizontal={true}>
-            {data?.thumbnails.map((url, index) => (
-              <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
-                <Image
-                  style={{
-                    width: 120,
-                    height: 120,
-                    borderRadius: 10,
-                    marginRight: 16,
-                  }}
-                  source={{ uri: url }}
-                />
-              </Pressable>
-            ))}
-            <Modal
-              visible={isPhotoVisible}
-              transparent={true}
-              onRequestClose={closePhotoModal}>
-              {data && <ImageViewer
-                imageUrls={imgUrlCoverting(data?.images)}
-                onCancel={() => closePhotoModal()}
-                enableSwipeDown
-              />}
-            </Modal>
-          </ScrollView>
+        <View style={{ flexDirection: 'row', marginTop: 16 }}>
+          {data?.thumbnails &&
+            <ScrollView horizontal={true}>
+              {data?.thumbnails.map((url, index) => (
+                <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
+                  <Image
+                    style={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: 10,
+                      marginRight: 16,
+                    }}
+                    source={{ uri: url }}
+                  />
+                </Pressable>
+              ))}
+              <Modal
+                visible={isPhotoVisible}
+                transparent={true}
+                onRequestClose={closePhotoModal}>
+                {data && <ImageViewer
+                  imageUrls={imgUrlCoverting(data?.images)}
+                  onCancel={() => closePhotoModal()}
+                  enableSwipeDown
+                />}
+              </Modal>
+            </ScrollView>}
           </View>
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>

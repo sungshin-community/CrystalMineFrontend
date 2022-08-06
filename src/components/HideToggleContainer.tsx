@@ -275,6 +275,7 @@ export function AgreementContainer({
   useEffect(() => {
     setIsChecked(checked);
   }, [checked]);
+
   return (
     <>
       <TouchableOpacity
