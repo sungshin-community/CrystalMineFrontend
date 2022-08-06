@@ -158,13 +158,13 @@ function BoardSearch({navigation, route}: Props) {
                     if (route.params) {
                       // route.params(게시판 이름)가 있는 경우 > 특정 게시판 탭 내 검색
                       navigation.navigate('SearchResultInBoard', {
-                        searchWord: searchWord,
+                        searchWord: word,
                         boardName: route.params.boardName,
                         boardId: route.params.boardId,
                       });
                     } else {
                       navigation.navigate('SearchResult', {
-                        searchWord: searchWord,
+                        searchWord: word,
                       });
                     }
                   }}
