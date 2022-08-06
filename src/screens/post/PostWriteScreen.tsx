@@ -169,7 +169,7 @@ function PostWriteScreen({navigation, route}: Props) {
 
         <View>
           <TextInput
-            // placeholder={info?.direction.content}
+            placeholder={info?.direction.content}
             value={content}
             multiline={true}
             onChangeText={value => {
