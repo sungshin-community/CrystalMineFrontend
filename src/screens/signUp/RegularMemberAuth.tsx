@@ -46,7 +46,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 120;
+const RESEND_OTP_TIME_LIMIT = 600;
 
 type RootStackParamList = {
   Home: undefined;
@@ -276,6 +276,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
+                setValue('')
               }
             }}></PurpleFullButton>
         )}
@@ -290,6 +291,7 @@ export default function RegularMemberAuth({navigation}: Props) {
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
+                setValue('')
               }
             }}></PurpleRoundButton>
         )}

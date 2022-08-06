@@ -134,7 +134,7 @@ export const checkAuthNumber = async (code: string) => {
     return 0;
   } catch (e: any) {
     console.log('여기는 checkAuthNumber 함수', e.response.data);
-    return e.response.data.data.attemptCount;
+    return 1;
   }
 };
 

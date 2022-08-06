@@ -91,7 +91,6 @@ const MyPageFragment = ({navigation}: Props) => {
       getUserInfo();
     }
   }, [navigation, isFocused]);
-
   return (
     <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
