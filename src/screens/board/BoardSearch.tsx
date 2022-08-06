@@ -100,23 +100,7 @@ function BoardSearch({navigation, route}: Props) {
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
           onPress={() => {
-            if (route.params.boardName === '내가 작성한 글') {
-              // 내가 쓴 글에서 검색
-              navigation.navigate('MyPostList');
-            } else if (route.params.boardName === '내가 작성한 댓글') {
-              // 내가 쓴 댓글에서 검색
-              navigation.navigate('MyCommentList');
-            } else if (route.params.boardName === '내가 스크랩한 글') {
-              // 내가 쓴 댓글에서 검색
-              navigation.navigate('ScrapedPostList');
-            } else if (route.params.boardId && route.params.boardName) {
-              // 특정 게시판 탭 내 검색
-              navigation.navigate('PostListScreen', {
-                boardId: route.params.boardId,
-              });
-            } else {
-              navigation.navigate('GlobalNavbar');
-            }
+            navigation.goBack();
           }}
         />
       ),
