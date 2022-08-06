@@ -74,14 +74,7 @@ function PostWriteScreen({navigation, route}: Props) {
   }, [route.params.boardId]);
 
   const onSubmitPress = async () => {
-    let post = JSON.stringify({
-      boardId: boardId,
-      title: title,
-      content: content,
-      isAnonymous: isAnonymous,
-    });
-    formData.append('post', post);
-    const result = await postWritePost(formData);
+    const result = await postWritePost(boardId, title, content, isAnonymous, images);
     if (result) {
       navigation.navigate('PostListScreen', {boardId});
       Toast.show('게시글이 등록되었습니다.', Toast.LONG);
@@ -114,29 +107,18 @@ function PostWriteScreen({navigation, route}: Props) {
     });
   }, [navigation, title, content]);
 
-  const onSelectImage = () => {
-    if (images.length < 10) {
-      setImages(item => [...item, {}]);
-      launchImageLibrary(
-        {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
-        async res => {
-          if (res.didCancel) {
-            let notSelectImage = images.slice(0, images.length);
-            return setImages(notSelectImage);
-          } else {
-            res.assets.map(item =>
-              formData.append('images', {
-                uri: item.uri,
-                type: 'image/jpeg',
-                name: item.fileName,
-              }),
-            );
-            let uriArr = res.assets.map(item => item.uri);
-            setImages([...images, ...uriArr]);
-          }
-        },
-      );
-    }
+   const onSelectImage = () => {
+    console.log('image press');
+    launchImageLibrary(
+      {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
+      res => {
+        if (res.didCancel) {
+          return;
+        }
+        console.log('image', res);
+        setImages(res.assets);
+      },
+    );
   };
 
   return (
@@ -147,7 +129,7 @@ function PostWriteScreen({navigation, route}: Props) {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
                 style={{width: 24, height: 24, borderRadius: 12}}
-                source={{uri: info?.profileImage}}
+                source={{uri: isAnonymous ? 'https://crystalmine.s3.ap-northeast-2.amazonaws.com/profileImages/default.png' :info?.profileImage}}
               />
               <View style={{justifyContent: 'center', flexDirection: 'row'}}>
                 <Text

@@ -243,6 +243,8 @@ function QuestionList({navigation, route}: Props) {
                   justifyContent: 'flex-end',
                   alignItems: 'center',
                   paddingRight: 27,
+                  backgroundColor: '#fff',
+                  paddingBottom: 10
                 }}>
                 <Text
                   style={{
@@ -259,7 +261,6 @@ function QuestionList({navigation, route}: Props) {
             )}
           </View>
           <FlatList
-            style={{marginTop: 10}}
             data={questionList}
             renderItem={({item, index}) => (
               <SpreadList
@@ -410,7 +411,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
           setIsSpread(!isSpread);
           getQuestionFunc(questionItem.id);
         }}>
-        <View style={styles.menuContainer}>
+        <View style={[styles.menuContainer]}>
           <View style={styles.menu}>
             <View
               style={[
@@ -499,7 +500,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 </ScrollView>
               </View>
             )}
-            <Text style={styles.date}>{data?.createdAt}</Text>
+            <Text style={[styles.date, { marginTop: 5 }]}>{data?.createdAt}</Text>
             {data?.answer && (
               <>
                 <View

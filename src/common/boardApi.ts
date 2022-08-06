@@ -481,7 +481,7 @@ export const postWritePost = async (
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
   }
 };
 // 게시글 생성 시 필요한 정보 조회

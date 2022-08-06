@@ -141,8 +141,6 @@ const PostListScreen = ({navigation, route}: Props) => {
               setBoardInfo(boardInfo);
               }}>
               
-
-              
             {boardInfo?.isOwner ? (
               boardInfo?.isPinned ? (
                 <BigOrangeFlag />
