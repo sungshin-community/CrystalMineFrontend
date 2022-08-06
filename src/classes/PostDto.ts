@@ -35,9 +35,8 @@ export interface PostWriteInfoDto {
   nickname: string;
   isOwner: boolean;
   hasTitle: boolean;
-  directions: {
-    id: number;
+  direction: {
     title: string;
-    content: string[];
-  }[];
+    content: string;
+  };
 }

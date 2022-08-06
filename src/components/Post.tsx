@@ -32,6 +32,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import {useEffect} from 'react';
 import {BackHandler} from 'react-native';
 import { fontMedium, fontRegular } from '../common/font';
+import { SmallOrangeFlag } from '../../resources/icon/SmallOrangeFlag';
 
 interface Props {
   post: any;
@@ -167,6 +168,7 @@ console.log(data)
                 {data?.displayName}
               </Text>
             </View>
+             {data?.isAnonymous && !data?.isOwner ? <></> : <SmallOrangeFlag style={{ marginLeft: 5 }}/>}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots

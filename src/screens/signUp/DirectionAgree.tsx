@@ -30,6 +30,7 @@ import {
 import {DirectionContainer} from '../../components/HideToggleContainer';
 import Agreement, { DirectionAgreement } from '../../classes/Agreement';
 import {getAgreements, getDirectionAgreements, sendEmail} from '../../common/authApi';
+import { getContractGuide, getSignUpDirection } from '../../common/contractApi';
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: { agreementIds: number[] };
@@ -62,7 +63,7 @@ function DirectionAgree({navigation}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getDirectionAgreements();
+      const agreementList = await getSignUpDirection();
       setAgreements(agreementList);
     }
     init();

@@ -47,7 +47,7 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 90;
+const RESEND_OTP_TIME_LIMIT = 600;
 
 type RootStackParamList = {
   CertifiedMember: undefined;
@@ -122,7 +122,13 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
       }
     };
   }, [resendButtonDisabledTime]);
-
+  useEffect(() => {
+    const init = async() => {
+      let result: number = await checkAuthNumber(value);
+      console.log('tryCnt: ', tryCnt, 'result: ', result, tryCnt-result)
+    }
+    init();
+   },[])
   return (
     <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
       <View style={{flex: 1}}>
@@ -242,7 +248,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
         </TouchableWithoutFeedback>
       </View>
 
-      {tryCnt <= 0 && (
+      {tryCnt === 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
@@ -268,6 +274,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
+                setValue('')
               }
             }}></PurpleFullButton>
         )}
@@ -283,6 +290,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               } else {
                 setTryCnt(tryCnt - result);
                 setIsIncorrect(true);
+                setValue('')
               }
             }}></PurpleRoundButton>
         )}

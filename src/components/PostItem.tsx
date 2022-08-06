@@ -5,6 +5,7 @@ import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
+import { SmallOrangeFlag } from '../../resources/icon/SmallOrangeFlag';
 import { ContentPreviewDto } from '../classes/BoardDetailDto';
 import { fontMedium } from '../common/font';
 
@@ -20,6 +21,7 @@ function PostItem({post}: Props) {
           <Image style={{ width: 24, height: 24, borderRadius: 12 }}
             source={{uri: post.profileImage}}/>
           <Text style={styles.name}>{post.displayName}</Text>
+          {post.isAnonymous && !post.isOwner ? <></> : <SmallOrangeFlag style={{ marginLeft: 5 }}/>}
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>

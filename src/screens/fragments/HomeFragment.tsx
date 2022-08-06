@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -133,8 +134,13 @@ const HomeFragment = ({navigation}: Props) => {
       getUserInfo();
     }
   }, [isFocused]);
+
+  console.log(noti?.length)
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      </View>
       <View
         style={{
           backgroundColor: '#F6F6F6',
@@ -144,7 +150,7 @@ const HomeFragment = ({navigation}: Props) => {
           style={{
             fontSize: 22,
             marginLeft: 40,
-            marginBottom: noti?.length !== 0 ? 26 : 0,
+            marginBottom: noti?.length && 26,
           }}>
           <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
             {user?.nickname}

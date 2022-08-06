@@ -29,16 +29,16 @@ export interface HomeNotification {
   type: string;
   title: string;
   content?: string;
-  blind?: BlindDto
-  deleteBlind?: UnblindDto
+  blind?: BlindDto;
+  deleteBlind?: DeleteBlindDto;
 }
 
-interface BlindDto {
+export interface BlindDto {
   message: string;
   reason: string;
   content: string;
 }
-interface UnblindDto {
+export interface DeleteBlindDto {
   message: string;
   content: string;
 }
