@@ -45,6 +45,9 @@ client.interceptors.response.use(
         const refreshToken = await AsyncStorage.getItem('refreshToken');
         const response = await reissueToken({accessToken: accessToken ? accessToken : '', refreshToken: refreshToken ? refreshToken : ''});
         const reissuedAccessToken = response.data.accessToken;
+        const reissuedRefreshToken = response.data.refreshToken;
+        await AsyncStorage.setItem('accessToken', reissuedAccessToken);
+        await AsyncStorage.setItem('refreshToken', reissuedRefreshToken);
         isRefreshing = false;
         client.defaults.headers.common.Authorization = reissuedAccessToken ? `Bearer ${reissuedAccessToken}` : '';
         onTokenRefreshed(reissuedAccessToken);
