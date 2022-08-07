@@ -184,52 +184,33 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
             onPress={() => moveToBoard(item.id)}
             style={{
               flexDirection: 'row',
-              paddingVertical: 11,
+              height: 61,
+              justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#F6F6F6',
             }}>
+              <TouchableOpacity 
+              onPress={async () => {
+                let result: boolean = await toggleBoardPin(item.id);
+                if (result) {
+                  onUpdate();
+                }
+              }}
+              style={{height: 61, justifyContent: 'center', 
+            marginLeft: 10,
+            width: 44}}>
             {!item.isPinned ? (
-              item.isOwner ? <GrayFlag style={{ marginLeft: 23 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = true;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }} /> : <GrayPin
-                style={{ marginLeft: 20 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = true;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }}
+              item.isOwner ? <GrayFlag style={{ marginLeft: 13 }}/> : <GrayPin
+                style={{ marginLeft: 10 }}
               />
             ) : (
-              item.isOwner ? <OrangeFlag style={{ marginLeft: 23 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = false;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }} /> : <OrangePin
-                style={{ marginLeft: 20 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = false;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }}
+              item.isOwner ? <OrangeFlag style={{ marginLeft: 13 }}
+                /> : <OrangePin
+                style={{ marginLeft: 10 }}
               />
             )}
-            <View style={{flex: 1, marginLeft: 15, marginRight: 15}}>
+            </TouchableOpacity>
+            <View style={{flex: 1, marginLeft: 5, marginRight: 15}}>
               <Text
                 style={{
                   fontSize: 14,
