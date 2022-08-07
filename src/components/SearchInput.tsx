@@ -25,7 +25,9 @@ function SearchInput({setSearchWord, startSearching, boardName}: Props) {
           boardName
             ? boardName.length <= 5
               ? `[${boardName}] 게시판에서 검색`
-              : `[${boardName.substring(0, 5)}...] 게시판에서 검색`
+              : `[${boardName
+                  .replace(/ /g, '')
+                  .substring(0, 5)}...] 게시판에서 검색`
             : '전체 게시판에서 검색'
         }
         placeholderTextColor="#898989"

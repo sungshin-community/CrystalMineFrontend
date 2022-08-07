@@ -173,6 +173,7 @@ function BoardSearch({navigation, route}: Props) {
             ) : (
               wordList.map((word, index) => (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => {
                     if (route.params) {
                       // route.params(게시판 이름)가 있는 경우 > 특정 게시판 탭 내 검색
@@ -187,7 +188,6 @@ function BoardSearch({navigation, route}: Props) {
                       });
                     }
                   }}
-                  // key={index}
                   style={[styles.rowSpaceBetween, {marginVertical: 9}]}>
                   <Text style={[fontRegular, styles.text]}>{word}</Text>
                   <Pressable
@@ -199,7 +199,13 @@ function BoardSearch({navigation, route}: Props) {
                 </TouchableOpacity>
               ))
             )
-          ) : null}
+          ) : (
+            <View style={{alignItems: 'center'}}>
+              <Text style={[fontRegular, styles.noResult]}>
+                최근 검색어가 없습니다
+              </Text>
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
