@@ -21,8 +21,7 @@ interface Props {
   isInited: boolean;
 }
 
-export default function BoardList({ items, moveToBoard, search, isInited }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export default function BoardList({ items, moveToBoard, search, isInited, onUpdate }: Props) {
 
   return (
     !isInited ?
@@ -40,13 +39,19 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-            {!item.isPinned ? (
-              item.isOwner ? <GrayFlag style={{ marginLeft: 23 }} /> : <GrayPin style={{ marginLeft: 20 }} />
-            ) : item.isOfficial ? (
+            <TouchableOpacity 
+              onPress={async () => {
+                let result: boolean = await toggleBoardPin(item.id);
+                if (result) {
+                  onUpdate();
+                }}
+            }>
+            {item.isOfficial ? (
               <PurplePin style={{ marginLeft: 20 }} />
             ) : (
               item.isOwner ? <OrangeFlag style={{ marginLeft: 23 }} /> : <OrangePin style={{ marginLeft: 20 }} />
             )}
+            </TouchableOpacity>
             <Text
               style={{
                 fontSize: 15,
