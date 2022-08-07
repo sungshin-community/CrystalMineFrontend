@@ -93,7 +93,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             let isRegularMember: boolean = await checkRegularMember();
             console.log('정회원 인증여부:', isRegularMember);
             if (isRegularMember) navigation.navigate('Board');
-            else Toast.show('접근 권한이 없습니다.', Toast.LONG);
+            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
         options={{
@@ -149,7 +149,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             let isRegularMember: boolean = await checkRegularMember();
             console.log('정회원 인증여부:', isRegularMember);
             if (isRegularMember) navigation.navigate('Alert');
-            else Toast.show('접근 권한이 없습니다.', Toast.LONG);
+            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
         options={{

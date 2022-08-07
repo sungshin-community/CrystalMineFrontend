@@ -102,7 +102,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     setValue('');
     let result: boolean = await sendEmail();
     if (result) {
-      Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
+      Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
       console.log('이메일 재발송 성공');
     } else {
       console.log('이메일 재발송 실패');
@@ -240,7 +240,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           onPress={async () => {
             let result: boolean = await sendEmail();
             if (result) {
-              Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
+              Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
               console.log('이메일 재발송 성공');
             } else {
               console.log('이메일 재발송 실패');
@@ -279,7 +279,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             onClick={async () => {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
-                Toast.show('정회원 인증에 성공하였습니다.', Toast.LONG);
+                Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
                 navigation.navigate('MyPage');
               } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
@@ -301,7 +301,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               if (result === 0) {
                 Toast.show(
                   '정회원 인증을 성공적으로 완료하였습니다.',
-                  Toast.LONG,
+                  Toast.SHORT,
                 );
                 navigation.navigate('MyPage');
               } else if (typeof result.data.attemptCount === 'number') {

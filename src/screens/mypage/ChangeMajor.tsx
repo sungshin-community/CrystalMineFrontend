@@ -168,13 +168,13 @@ export default function ChangeMajor({navigation}: Props) {
                 if (result === 'UPDATE_DEPARTMENT_SUCCESS') {
                   Toast.show(
                     '소속 학과가 성공적으로 변경되었습니다.',
-                    Toast.LONG,
+                    Toast.SHORT,
                   );
                   navigation.pop();
                 } else if (result === 'DEPARTMENT_NOT_FOUND') {
-                  Toast.show('학과 정보를 찾을 수 없습니다.', Toast.LONG);
+                  Toast.show('학과 정보를 찾을 수 없습니다.', Toast.SHORT);
                 } else {
-                  Toast.show('학과 변경에 실패하였습니다.', Toast.LONG);
+                  Toast.show('학과 변경에 실패하였습니다.', Toast.SHORT);
                 }
               }}
             />

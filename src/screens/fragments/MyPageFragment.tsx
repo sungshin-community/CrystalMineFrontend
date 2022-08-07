@@ -423,10 +423,10 @@ const MyPageFragment = ({navigation}: Props) => {
                 let response = await uploadProfileImage(res.assets[0]);
                 if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
                   setUser(response.data);
-                  Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+                  Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
                 }
                 else {
-                  Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.LONG);
+                  Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.SHORT);
                 }
               },
             );
@@ -436,7 +436,7 @@ const MyPageFragment = ({navigation}: Props) => {
             let response = await setDefaultProfileImage();
             setUser(response.data.data);
             setProfileModalVisible(false);
-            Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.LONG);
+            Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
           }}
         />
       </ScrollView>

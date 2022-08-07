@@ -179,13 +179,13 @@ function WikiTab({navigation, route}: Props) {
   //     setIsLoading(true);
   //     const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
   //      if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
-  //       Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.LONG);
+  //       Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
   //       navigation.goBack();
   //     } else if (
   //       boardDetail.code === 'BOARD_NOT_FOUND' ||
   //       boardDetail.code === 'BOARD_ALREADY_DELETED'
   //     ) {
-  //       Toast.show('삭제된 게시판입니다.', Toast.LONG);
+  //       Toast.show('삭제된 게시판입니다.', Toast.SHORT);
   //       navigation.goBack();
   //     } else  setBoardDetail(boardDetail);
   //     const boardInfo = await getBoardInfo(route.params.boardId);

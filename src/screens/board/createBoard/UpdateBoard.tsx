@@ -56,7 +56,7 @@ function UpdateBoard({navigation, route}: Props) {
     );
     // TODO: newHotable 불리언값 반대로 해야 적상 작동함. 확인 필요.
     if (result) {
-      Toast.show('게시판을 성공적으로 수정했습니다.', Toast.LONG);
+      Toast.show('게시판을 성공적으로 수정했습니다.', Toast.SHORT);
       navigation.navigate('PostListScreen', {boardId: result.id});
     }
   };

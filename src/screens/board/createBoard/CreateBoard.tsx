@@ -38,7 +38,7 @@ function CreateBoard({navigation}: Props) {
   const onSubmitPress = async () => {
     const result = await createBoard(boardName, boardIntroduction, hotable);
     if (result) {
-      Toast.show('게시판을 성공적으로 생성했습니다.', Toast.LONG);
+      Toast.show('게시판을 성공적으로 생성했습니다.', Toast.SHORT);
       navigation.pop();
       navigation.pop();
       navigation.navigate('PostListScreen', {boardId: result.id});
@@ -78,7 +78,7 @@ function CreateBoard({navigation}: Props) {
               if (value.length === 15)
                  Toast.show(
                 '게시판 이름, 설명의 글자 수를 확인해주세요.',
-                Toast.LONG,
+                Toast.SHORT,
               );
             }}
             maxLength={15}
@@ -103,7 +103,7 @@ function CreateBoard({navigation}: Props) {
                  if (value.length === 22)
                  Toast.show(
                 '게시판 이름, 설명의 글자 수를 확인해주세요.',
-                Toast.LONG,
+                Toast.SHORT,
               );
               }}
               maxLength={22}

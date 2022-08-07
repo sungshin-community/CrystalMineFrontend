@@ -213,7 +213,7 @@ export default function ScrapedPostList({navigation}: Props) {
             await cancelScrapedPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getScrapedPostList(currentPage);
             setMyPostList(postList);
-            Toast.show("스크랩한 게시글이 성공적으로 삭제되었습니다", Toast.LONG);
+            Toast.show("스크랩한 게시글이 성공적으로 삭제되었습니다", Toast.SHORT);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);

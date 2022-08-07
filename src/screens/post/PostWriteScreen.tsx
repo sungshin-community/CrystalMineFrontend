@@ -78,7 +78,7 @@ function PostWriteScreen({navigation, route}: Props) {
     const result = await postWritePost(boardId, title, content, isAnonymous, images);
     if (result) {
       navigation.navigate('PostListScreen', {boardId});
-      Toast.show('게시글이 등록되었습니다.', Toast.LONG);
+      Toast.show('게시글이 등록되었습니다.', Toast.SHORT);
     }
   };
 

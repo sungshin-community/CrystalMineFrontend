@@ -329,7 +329,7 @@ const HomeFragment = ({ navigation }: Props) => {
               {
                 user?.isAuthenticated
                   ? navigation.navigate('Board')
-                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                  : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
               }
             }}>
             <Text style={styles.more}>더보기</Text>
@@ -416,7 +416,7 @@ const HomeFragment = ({ navigation }: Props) => {
                 user?.isAuthenticated
                   ? navigation.navigate('PostListScreen', { boardId: 2 })
                   : // ? navigation.navigate('InformationUse') :
-                  Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                  Toast.show('접근 권한이 없습니다.', Toast.SHORT);
               }
             }}>
             <Text style={styles.more}>더보기</Text>

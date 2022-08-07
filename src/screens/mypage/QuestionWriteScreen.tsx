@@ -45,7 +45,7 @@ function RequestWriteScreen({navigation}: Props) {
     const result = await writeQuestion(title, content, imageResponse);
     if (result) {
       navigation.navigate('QuestionList');
-      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG);
+      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.SHORT);
     }
   };
 

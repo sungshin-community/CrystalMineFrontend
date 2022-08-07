@@ -312,7 +312,7 @@ function QuestionList({navigation, route}: Props) {
             );
             const qList = await getQuestionList(currentPage);
             setQuestionList(qList);
-            Toast.show('문의가 성공적으로 삭제되었습니다', Toast.LONG);
+            Toast.show('문의가 성공적으로 삭제되었습니다', Toast.SHORT);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);

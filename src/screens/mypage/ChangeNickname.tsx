@@ -144,14 +144,14 @@ export default function ChangeNickname({navigation}: Props) {
               onClick={async () => {
                 let result: string = await changeNickname(nickname);
                 if (result === 'UPDATE_NICKNAME_SUCCESS') {
-                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.LONG);
+                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.SHORT);
                   navigation.pop();
                 }
                 else if (result === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
                 }
                 else {
-                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.LONG);
+                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -163,14 +163,14 @@ export default function ChangeNickname({navigation}: Props) {
               onClick={async () => {
                 let result: string = await changeNickname(nickname);
                 if (result === 'UPDATE_NICKNAME_SUCCESS') {
-                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.LONG);
+                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.SHORT);
                   navigation.pop();
                 }
                 else if (result === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
                 }
                 else {
-                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.LONG);
+                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -252,14 +252,14 @@ export default function ChangeNickname({navigation}: Props) {
               onClick={async () => {
                 let result: string = await changeNickname(nickname);
                 if (result === 'UPDATE_NICKNAME_SUCCESS') {
-                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.LONG);
+                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.SHORT);
                   navigation.pop();
                 }
                 else if (result === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
                 }
                 else {
-                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.LONG);
+                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -271,14 +271,14 @@ export default function ChangeNickname({navigation}: Props) {
               onClick={async () => {
                 let result: string = await changeNickname(nickname);
                 if (result === 'UPDATE_NICKNAME_SUCCESS') {
-                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.LONG);
+                  Toast.show('닉네임이 성공적으로 변경되었습니다.', Toast.SHORT);
                   navigation.pop();
                 }
                 else if (result === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
                 }
                 else {
-                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.LONG);
+                  Toast.show('닉네임 변경에 실패하였습니다.', Toast.SHORT);
                 }
               }}
             />
