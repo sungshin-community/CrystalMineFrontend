@@ -14,6 +14,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
+var tabWidth = (Dimensions.get('window').width / 3 - 24) / 2; // 한 탭 당 가로 넓이
 
 // 홈(HomeFragment), 게시판(BoardFragment)에서 검색했을 때 검색 결과로 나오는 [게시글, 게시판 이름, 태그] 탭을 모은 화면
 // 게시글, 게시판 이름, 태그 컴포넌트는 하단 <Tab.Screen>의 children 프로퍼티를 통해 결과를 띄움
@@ -79,7 +80,7 @@ function SearchResult({navigation, route}: Props) {
           width: 24,
           bottom: -4,
           borderRadius: 10,
-          marginHorizontal: 53,
+          marginHorizontal: tabWidth,
         },
         tabBarShowLabel: true,
         tabBarLabelStyle: {

@@ -2,10 +2,11 @@ import React from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
+import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
 import {fontRegular} from '../../common/font';
 
 function TagSearchResult() {
@@ -13,12 +14,11 @@ function TagSearchResult() {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <SafeAreaView>
-        <Text style={[fontRegular, styles.text]}>
-          현재 개발 중인 기능입니다.{'\n'}
-          추후 기능 개발 후 사용하실 수 있습니다.
-        </Text>
-      </SafeAreaView>
+      <NotFoundSuryong />
+      <Text style={[fontRegular, styles.text]}>
+        현재 개발 중인 기능입니다.{'\n'}
+        추후 기능 개발 후 사용하실 수 있습니다.
+      </Text>
     </KeyboardAvoidingView>
   );
 }
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     lineHeight: 22.5,
     color: '#6E7882',
     textAlign: 'center',
-    paddingBottom: 150,
+    marginTop: 20,
+    paddingBottom: '30%',
   },
 });
 
