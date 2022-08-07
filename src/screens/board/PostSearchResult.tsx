@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -25,21 +26,24 @@ import PostSearchItem from '../../components/PostSearchItem';
 interface Props {
   searchWord: string;
   isInBoard?: boolean; // 특정 게시판에서 검색하는 경우에는 true
-  myPost?: boolean; // 내가 작성한 글에서 검색하는 경우에는 true
-  myComment?: boolean;
-  isScraped?: boolean;
+  boardName?: string;
+  // myPost?: boolean; // 내가 작성한 글에서 검색하는 경우에는 true
+  // myComment?: boolean;
+  // isScraped?: boolean;
 }
 
-function PostSearchResult({
-  searchWord,
-  isInBoard,
-  myPost,
-  myComment,
-  isScraped,
-}: Props) {
-  const navigation = useNavigation();
+type RootStackParamList = {
+  PostScreen: {boardId: number};
+};
+type NavigateProps = NativeStackScreenProps<RootStackParamList>;
+
+function PostSearchResult(
+  {searchWord, isInBoard, boardName}: Props,
+  {navigation}: NavigateProps,
+) {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
+  const [isTotal, setIsTotal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -48,20 +52,22 @@ function PostSearchResult({
       try {
         let postResult;
 
-        if (myPost) {
+        if (boardName === '내가 작성한 글') {
           postResult = await getMyPostSearch(searchWord, 0, 'createdAt');
-        } else if (myComment) {
+        } else if (boardName === '내가 작성한 댓글') {
           postResult = await getMyCommentSearch(searchWord, 0, 'createdAt');
-        } else if (isScraped) {
+        } else if (boardName === '내가 스크랩한 글') {
           postResult = await getScrapsSearch(searchWord, 0, 'createdAt');
         } else if (isInBoard) {
           postResult = await getPostSearchInBoard(searchWord, 0, 'createdAt');
-        } else if (!myPost && !myComment && !isInBoard) {
+        } else {
           postResult = await getPostSearch(searchWord, 0, 'createdAt');
         }
 
-        if (postResult) {
-          setIsData(postResult);
+        if (Object.keys(postResult).length > 0) {
+          console.log('first Rendering', postResult);
+          setIsData(postResult.content);
+          setIsTotal(postResult.totalElements);
           setIsLoading(false);
         }
       } catch (error) {
@@ -75,17 +81,34 @@ function PostSearchResult({
     navigation.navigate('PostScreen', {postId: postId});
   };
 
-  useEffect(() => {
-    const sortData = async () => {
-      setIsLoading(true);
-      let newData = await getPostSearch(searchWord, 0, sortBy);
-      if (newData) {
-        setIsData(newData);
-        setIsLoading(false);
-      }
-    };
-    sortData();
-  }, [sortBy]);
+  const sortBtn = async () => {
+    setIsLoading(true);
+
+    if (sortBy === 'createdAt') {
+      setSortBy('likeCount');
+    } else {
+      setSortBy('createdAt');
+    }
+
+    let newData;
+
+    if (boardName === '내가 작성한 글') {
+      newData = await getMyPostSearch(searchWord, 0, sortBy);
+    } else if (boardName === '내가 작성한 댓글') {
+      newData = await getMyCommentSearch(searchWord, 0, sortBy);
+    } else if (boardName === '내가 스크랩한 글') {
+      newData = await getScrapsSearch(searchWord, 0, sortBy);
+    } else if (isInBoard) {
+      newData = await getPostSearchInBoard(searchWord, 0, sortBy);
+    } else {
+      newData = await getPostSearch(searchWord, 0, sortBy);
+    }
+
+    if (Object.keys(newData).length > 0) {
+      setIsData(newData);
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -114,7 +137,7 @@ function PostSearchResult({
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.noResult}>
-        {isData.totalElements === 0 ? (
+        {isTotal === 0 || isData.length === 0 ? (
           <Text style={[fontRegular, styles.noResultText]}>
             요청하신 검색어에 대한 검색 결과가 없습니다.
           </Text>
@@ -122,13 +145,7 @@ function PostSearchResult({
           <ScrollView style={{backgroundColor: '#fff', width: '100%'}}>
             <View style={{backgroundColor: '#fff', width: '100%'}}>
               <TouchableOpacity
-                onPress={() => {
-                  if (sortBy === 'createdAt') {
-                    setSortBy('likeCount');
-                  } else {
-                    setSortBy('createdAt');
-                  }
-                }}
+                onPress={sortBtn}
                 style={{
                   marginLeft: 24,
                   marginBottom: 10,
@@ -143,8 +160,9 @@ function PostSearchResult({
                 }}>
                 <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
               </TouchableOpacity>
+              {console.log('JSX', isData)}
             </View>
-            {isData.content.map((item: PostContent, index: number) => (
+            {isData.map((item: PostContent, index: number) => (
               <PostSearchItem moveToPost={moveToPost} key={index} post={item} />
             ))}
           </ScrollView>

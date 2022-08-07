@@ -11,6 +11,7 @@ import {fontMedium} from '../common/font';
 interface Props {
   post: PostContent;
   moveToPost: (postId: number) => void;
+  key: number;
 }
 
 function PostSearchItem({post, moveToPost}: Props) {

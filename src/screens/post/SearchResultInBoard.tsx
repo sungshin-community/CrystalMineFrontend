@@ -111,9 +111,10 @@ function SearchResultInBoard({navigation, route}: Props) {
         children={() => (
           <PostSearchResult
             isInBoard={!!(route.params.boardName && route.params.boardId)}
-            myPost={route.params.boardName === '내가 작성한 글'}
-            myComment={route.params.boardName === '내가 작성한 댓글'}
-            isScraped={route.params.boardName === '내가 스크랩한 글'}
+            boardName={route.params.boardName}
+            // myPost={route.params.boardName === '내가 작성한 글'}
+            // myComment={route.params.boardName === '내가 작성한 댓글'}
+            // isScraped={route.params.boardName === '내가 스크랩한 글'}
             searchWord={searchWord}
           />
         )}
