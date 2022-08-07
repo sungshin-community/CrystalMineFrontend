@@ -92,9 +92,10 @@ function WikiTab({navigation, route}: Props) {
         justifyContent: 'center',
       }}
       underlayColor="#EEEEEE"
-      onPress={() =>
-        navigation.navigate('BoardSearch', {boardName: boardInfo.name})
-      }>
+      // onPress={() =>
+      //   navigation.navigate('BoardSearch', {boardName: boardInfo.name})
+      // }
+      >
       <SearchIcon />
     </TouchableHighlight>
   );
