@@ -62,7 +62,7 @@ export function BoardListContainer({boardCategory, component}: Props) {
         <Text
           style={{
             fontSize: 17,
-            fontFamily: 'SpoqaHanSansNeo',
+            fontFamily: 'SpoqaHanSansNeo-Regular',
             lineHeight: 20,
             flex: 1,
             fontWeight: 'bold',
@@ -129,7 +129,7 @@ export function CustomBoardListContainer({
         <Text
           style={{
             fontSize: 17,
-            fontFamily: 'SpoqaHanSansNeo',
+            fontFamily: 'SpoqaHanSansNeo-Regular',
             lineHeight: 20,
             flex: 1,
             fontWeight: 'bold',
