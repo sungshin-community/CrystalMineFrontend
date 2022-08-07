@@ -31,7 +31,7 @@ interface AgreementProps {
   checked: boolean;
   title: string;
   content: string;
-  onChange: (key: number, isChecked: boolean) => void;
+  onChange: (key: number) => void;
 }
 
 interface DirectionProps {
@@ -297,7 +297,7 @@ export function AgreementContainer({
             paddingLeft: 13,
           }}
           onPress={(e: any) => {
-            onChange(id, !isChecked);
+            onChange(id);
             setIsChecked(!isChecked);
           }}>
           {isChecked ? (
