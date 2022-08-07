@@ -89,9 +89,13 @@ export default function ScrapedPostList({navigation}: Props) {
   }, [myPostList]);
 
   useEffect(() => {
+    setIsLoading(true)
     async function init() {
       const postList = await getScrapedPostList(0);
+      console.log('postList', postList);
+      
       setMyPostList(postList);
+      setIsLoading(false)
     }
     init();
   }, []);

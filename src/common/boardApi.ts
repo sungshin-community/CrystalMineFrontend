@@ -176,7 +176,7 @@ export async function getMyPostList(
     const response = await client.get<Response<MyPostContentDto>>(
       `/posts?${params}`,
     );
-    console.log(response.data.data);
+    // console.log(response.data.data);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getMyPostList 함수', e);

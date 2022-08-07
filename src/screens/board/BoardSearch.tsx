@@ -49,31 +49,33 @@ function BoardSearch({navigation, route}: Props) {
       }
       setWordList(duplicateFilter);
 
-      if (route.params.boardName === '내가 작성한 글') {
-        // 내가 쓴 글에서 검색
-        navigation.navigate('SearchResultInBoard', {
-          searchWord: searchWord,
-          boardName: '내가 작성한 글',
-        });
-      } else if (route.params.boardName === '내가 작성한 댓글') {
-        // 내가 쓴 댓글에서 검색
-        navigation.navigate('SearchResultInBoard', {
-          searchWord: searchWord,
-          boardName: '내가 작성한 댓글',
-        });
-      } else if (route.params.boardName === '내가 스크랩한 글') {
-        // 내가 스크랩한 글에서 검색
-        navigation.navigate('ScrapedPostList', {
-          searchWord: searchWord,
-          boardName: '내가 스크랩한 글',
-        });
-      } else if (route.params.boardId && route.params.boardName) {
-        // 특정 게시판 탭 내 검색
-        navigation.navigate('SearchResultInBoard', {
-          searchWord: searchWord,
-          boardName: route.params.boardName,
-          boardId: route.params.boardId,
-        });
+      if (route.params) {
+        if (route.params.boardName === '내가 작성한 글') {
+          // 내가 쓴 글에서 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: '내가 작성한 글',
+          });
+        } else if (route.params.boardName === '내가 작성한 댓글') {
+          // 내가 쓴 댓글에서 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: '내가 작성한 댓글',
+          });
+        } else if (route.params.boardName === '내가 스크랩한 글') {
+          // 내가 스크랩한 글에서 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: '내가 스크랩한 글',
+          });
+        } else if (route.params.boardId && route.params.boardName) {
+          // 특정 게시판 탭 내 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: route.params.boardName,
+            boardId: route.params.boardId,
+          });
+        }
       } else {
         navigation.navigate('SearchResult', {
           searchWord: searchWord,
@@ -185,7 +187,7 @@ function BoardSearch({navigation, route}: Props) {
                       });
                     }
                   }}
-                  key={index}
+                  // key={index}
                   style={[styles.rowSpaceBetween, {marginVertical: 9}]}>
                   <Text style={[fontRegular, styles.text]}>{word}</Text>
                   <Pressable
