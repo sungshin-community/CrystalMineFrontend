@@ -278,8 +278,8 @@ export function AgreementContainer({
 
   return (
     <>
-      <TouchableOpacity
-        onPress={(e: any) => setIsSpread(!isSpread)}
+      <View
+        // onPress={(e: any) => setIsSpread(!isSpread)}
         style={{
           marginTop: 14,
           marginBottom: 5,
@@ -288,43 +288,49 @@ export function AgreementContainer({
           flexDirection: 'row',
           alignItems: 'center',
           height: 24,
-        }}>
-        <TouchableOpacity
-          style={{
-            height: 24,
-            alignItems: 'center',
-            flexDirection: 'row',
-            paddingLeft: 13,
-          }}
+      }}>
+        <TouchableOpacity 
+          style={{flexDirection: 'row'}}
           onPress={(e: any) => {
             onChange(id);
             setIsChecked(!isChecked);
+        }}>
+          <View
+            style={{
+              height: 24,
+              alignItems: 'center',
+              flexDirection: 'row',
+              paddingLeft: 13,
           }}>
-          {isChecked ? (
-            <Checked
-              style={{marginRight: 16}}
-              // onPress={(e: any) => onChange('firstTerm')}
-            />
-          ) : (
-            <Unchecked
-              style={{marginRight: 16}}
-              // onPress={(e: any) => onChange('firstTerm')}
-            />
-          )}
+            {isChecked ? (
+              <Checked
+                style={{marginRight: 16}}
+                // onPress={(e: any) => onChange('firstTerm')}
+              />
+            ) : (
+              <Unchecked
+                style={{marginRight: 16}}
+                // onPress={(e: any) => onChange('firstTerm')}
+              />
+            )}
+          </View>
+          <View style={{height: 24, justifyContent: 'center'}}>
+            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: 252}} >{title}</SmallText>
+          </View>
         </TouchableOpacity>
-
-        <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: 252}} >{title}</SmallText>
-        <View
+        <TouchableOpacity
+          onPress={() => setIsSpread(!isSpread)}
           style={{
             flex: 1,
             flexDirection: 'row-reverse',
             alignItems: 'center',
-            height: 16,
+            height: 24,
+            width: 40,
             marginLeft: 5,
           }}>
           {isSpread ? <FoldButton /> : <SpreadButton />}
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
       {isSpread && (
         <ScrollView
           style={{
