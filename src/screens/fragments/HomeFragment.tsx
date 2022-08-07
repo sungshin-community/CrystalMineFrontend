@@ -378,7 +378,7 @@ const HomeFragment = ({ navigation }: Props) => {
                           numberOfLines={1}
                           ellipsizeMode="tail"
                           style={styles.postSummary}>
-                          {item.recentPostContent}
+                          {item.recentPostContent ? item.recentPostContent: '아직 작성된 글이 없습니다!'}
                         </Text>
                       </View>
                       <View style={styles.postNewLabelContainer}>
