@@ -11,6 +11,7 @@ import TrashIcon from '../../../resources/icon/TrashIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import { ModalBottom } from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
+import SortIcon from '../../../resources/icon/SortIcon';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -187,10 +188,11 @@ export default function MyCommentList({navigation, route}: Props) {
               setSortBy('createdAt');
             }
           }}
-          style={{ marginLeft: 24, width: 66, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text>
+          style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{marginRight: 5}}>
             {sortBy === 'createdAt' ? "최신순" : "공감순"}
           </Text>
+          <SortIcon />
         </TouchableOpacity>}
         {deleteMode &&
         <TouchableOpacity
