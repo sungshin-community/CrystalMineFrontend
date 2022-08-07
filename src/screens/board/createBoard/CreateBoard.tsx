@@ -39,6 +39,8 @@ function CreateBoard({navigation}: Props) {
     const result = await createBoard(boardName, boardIntroduction, hotable);
     if (result) {
       Toast.show('게시판을 성공적으로 생성했습니다.', Toast.LONG);
+      navigation.pop();
+      navigation.pop();
       navigation.navigate('PostListScreen', {boardId: result.id});
     }
   };

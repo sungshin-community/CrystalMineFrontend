@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -13,15 +13,15 @@ import {
   Pressable,
   ActivityIndicator,
 } from 'react-native';
-import {fontBold, fontMedium, fontRegular} from '../../common/font';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {PurpleRoundButton} from '../../components/Button';
+import { fontBold, fontMedium, fontRegular } from '../../common/font';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { PurpleRoundButton } from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
-import {PinBoardDto, HotBoardDto, HomeNotification} from '../../classes/Home';
+import { PinBoardDto, HotBoardDto, HomeNotification } from '../../classes/Home';
 import {
   getAuthentication,
   getHotBoardContents,
@@ -30,17 +30,17 @@ import {
   getUnreadNotification,
   readNotification,
 } from '../../common/homeApi';
-import {ModalBottom} from '../../components/ModalBottom';
-import {useIsFocused} from '@react-navigation/native';
+import { ModalBottom } from '../../components/ModalBottom';
+import { useIsFocused } from '@react-navigation/native';
 import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
-import {Authentication} from '../../classes/Authentication';
+import { Authentication } from '../../classes/Authentication';
 
 
 type RootStackParamList = {
-  PostListScreen: {boardId: number};
+  PostListScreen: { boardId: number };
   MyPage: undefined;
-  PostScreen: {postId: number};
+  PostScreen: { postId: number };
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
   Board: undefined;
@@ -51,7 +51,7 @@ type notiItemDto = {
   notiItem: HomeNotification;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-const HomeFragment = ({navigation}: Props) => {
+const HomeFragment = ({ navigation }: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>();
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
   const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
@@ -70,7 +70,7 @@ const HomeFragment = ({navigation}: Props) => {
     <>
       {user?.blacklist && (
         <>
-          <Text style={[fontRegular, {fontSize: 13}]}>
+          <Text style={[fontRegular, { fontSize: 13 }]}>
             안녕하세요. {user?.nickname}님. {`\n`}
             해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
             제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을
@@ -81,20 +81,20 @@ const HomeFragment = ({navigation}: Props) => {
             {`\n`}
             {`\n`}
           </Text>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={[fontBold, { width: 88, marginRight: 7 }]}>
               이용 제한 계정
             </Text>
             <Text>{user?.blacklist.username}@sungshin.ac.kr</Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={[fontBold, { width: 88, marginRight: 7 }]}>
               이용 제한 날짜
             </Text>
             <Text>{user?.blacklist.createdAt}</Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={[fontBold, { width: 88, marginRight: 7 }]}>
               이용 제한 사유
             </Text>
             <Text>{user?.blacklist.reason}</Text>
@@ -136,11 +136,10 @@ const HomeFragment = ({navigation}: Props) => {
     }
   }, [isFocused]);
 
-  console.log(noti?.length)
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0 }}>
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{ zIndex: 100 }} />
       </View>
       <View
         style={{
@@ -153,7 +152,7 @@ const HomeFragment = ({navigation}: Props) => {
             marginLeft: 40,
             marginBottom: noti?.length && 26,
           }}>
-          <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+          <Text style={{ fontWeight: 'bold', color: '#A055FF' }}>
             {user?.nickname}
           </Text>
           {` 님, `}
@@ -214,27 +213,27 @@ const HomeFragment = ({navigation}: Props) => {
                               width: Dimensions.get('window').width - 100,
                             },
                           ]}>
-                         {item.blind?.message}
+                          {item.blind?.message}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text style={[fontBold, { width: 88, marginRight: 7 }]}>
                             블라인드 사유
                           </Text>
-                          <Text style={{width: 148}}>
+                          <Text style={{ width: 148 }}>
                             {item.blind?.reason}
                           </Text>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text style={[fontBold, { width: 88, marginRight: 7 }]}>
                             {item.type === 'BOARD_BLIND'
                               ? '게시판 이름'
                               : item.type === 'PIN_BOARD_BLIND'
-                              ? '게시판 이름'
-                              : item.type === 'POST_BLIND'
-                              ? '작성 내용'
-                              : item.type === 'COMMENT_BLIND'
-                              ? '작성 내용:'
-                              : ''}
+                                ? '게시판 이름'
+                                : item.type === 'POST_BLIND'
+                                  ? '작성 내용'
+                                  : item.type === 'COMMENT_BLIND'
+                                    ? '작성 내용:'
+                                    : ''}
                           </Text>
                           <Text
                             style={{
@@ -250,7 +249,7 @@ const HomeFragment = ({navigation}: Props) => {
                     console.log('블라인드 알림 확인');
                     setBlindModalVisible(true);
                   }
-                  else if(
+                  else if (
                     item.type === 'DELETE_BOARD_BLIND' ||
                     item.type === 'DELETE_POST_BLIND' ||
                     item.type === 'DELETE_COMMENT_BLIND'
@@ -265,19 +264,19 @@ const HomeFragment = ({navigation}: Props) => {
                               width: Dimensions.get('window').width - 100,
                             },
                           ]}>
-                         {item.deleteBlind?.message}
+                          {item.deleteBlind?.message}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-                             {item.type === 'DELETE_BOARD_BLIND'
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text style={[fontBold, { width: 88, marginRight: 7 }]}>
+                            {item.type === 'DELETE_BOARD_BLIND'
                               ? '게시판 이름'
                               : item.type === 'DELETE_POST_BLIND'
-                              ? '작성 내용'
-                              : item.type === 'DELETE_COMMENT_BLIND'
-                              ? '작성 내용'
-                              : ''}
+                                ? '작성 내용'
+                                : item.type === 'DELETE_COMMENT_BLIND'
+                                  ? '작성 내용'
+                                  : ''}
                           </Text>
-                          <Text ellipsizeMode={'tail'} numberOfLines={3} style={{width: Dimensions.get('window').width - 178} }>
+                          <Text ellipsizeMode={'tail'} numberOfLines={3} style={{ width: Dimensions.get('window').width - 178 }}>
                             {item.deleteBlind?.content}
                           </Text>
                         </View>
@@ -289,12 +288,12 @@ const HomeFragment = ({navigation}: Props) => {
                     setBlindModalVisible(true);
                   }
                 }}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   {item.type === 'WELCOME' && <CheckMark />}
                   {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
                   <View>
                     <Text style={styles.newsTitle}>{item.title}</Text>
-                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content :item.blind?.content ? item.blind?.content: item.deleteBlind?.content}</Text>
+                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content : item.blind?.content ? item.blind?.content : item.deleteBlind?.content}</Text>
                   </View>
                 </View>
                 <View>
@@ -343,55 +342,67 @@ const HomeFragment = ({navigation}: Props) => {
         </View>
         {/* 게시판 글 목록 */}
         {
-        !isInited ? 
-        // true?
-        skeletonComponent
-        : user?.isAuthenticated ? (
-          pinBoardContents?.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() =>
-                navigation.navigate('PostListScreen', {boardId: item.boardId})
-              }>
-              <View style={styles.pinBoardContainer}>
-                <View style={styles.postTitleSummaryContainer}>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.postTitleSummary}>
-                    {item.boardName.slice(0, numOfBoardTitle)}
+          !isInited ?
+            // true?
+            skeletonComponent
+            : user?.isAuthenticated ? (
+              pinBoardContents?.length === 0 ?
+                <View
+                  style={{
+                    backgroundColor: '#F7F7F7',
+                    paddingVertical: 27,
+                    borderRadius: 20,
+                  }}>
+                  <Text style={{ textAlign: 'center', fontSize: 15, color: '#6E7882' }}>
+                    고정된 게시판이 없습니다.
                   </Text>
                 </View>
-                <View style={styles.postSummaryContainer}>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.postSummary}>
-                    {item.recentPostContent}
-                  </Text>
-                </View>
-                <View style={styles.postNewLabelContainer}>
-                  {item.todayNewPost ? (
-                    <Text style={styles.postNewLabel}>N</Text>
-                  ) : (
-                    <></>
-                  )}
-                </View>
+                :
+                pinBoardContents?.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate('PostListScreen', { boardId: item.boardId })
+                    }>
+                    <View style={styles.pinBoardContainer}>
+                      <View style={styles.postTitleSummaryContainer}>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={styles.postTitleSummary}>
+                          {item.boardName.slice(0, numOfBoardTitle)}
+                        </Text>
+                      </View>
+                      <View style={styles.postSummaryContainer}>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={styles.postSummary}>
+                          {item.recentPostContent}
+                        </Text>
+                      </View>
+                      <View style={styles.postNewLabelContainer}>
+                        {item.todayNewPost ? (
+                          <Text style={styles.postNewLabel}>N</Text>
+                        ) : (
+                          <></>
+                        )}
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))
+            ) : (
+              <View
+                style={{
+                  backgroundColor: '#F7F7F7',
+                  paddingVertical: 27,
+                  borderRadius: 20,
+                }}>
+                <Text style={{ textAlign: 'center', fontSize: 15, color: '#6E7882' }}>
+                  정회원 인증 후 확인하실 수 있습니다.
+                </Text>
               </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <View
-            style={{
-              backgroundColor: '#F7F7F7',
-              paddingVertical: 27,
-              borderRadius: 20,
-            }}>
-            <Text style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-              정회원 인증 후 확인하실 수 있습니다.
-            </Text>
-          </View>
-        )}
+            )}
 
         {/* 게시판 글 목록 */}
         <View
@@ -408,55 +419,68 @@ const HomeFragment = ({navigation}: Props) => {
             onPress={() => {
               {
                 user?.isAuthenticated
-                  ? navigation.navigate('PostListScreen', {boardId: 2})
+                  ? navigation.navigate('PostListScreen', { boardId: 2 })
                   : // ? navigation.navigate('InformationUse') :
-                    Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                  Toast.show('접근 권한이 없습니다.', Toast.LONG);
               }
             }}>
             <Text style={styles.more}>더보기</Text>
           </TouchableWithoutFeedback>
         </View>
         {!isInited ?
-        skeletonComponent :
-        user?.isAuthenticated ? (
-          hotBoardContents?.hotPosts.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => navigation.navigate('PostScreen', { postId: item.postId })}>
-              <View style={styles.hotPostContainer}>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={[
-                    styles.postSummary,
-                    {
-                      width: Dimensions.get('window').width - 150,
-                      color: '#000',
-                    },
-                  ]}>
-                  {item.postContent.slice(0, 30)}
+          skeletonComponent :
+          user?.isAuthenticated ? (
+            hotBoardContents?.hotPosts.length === 0 ?
+              <View
+                style={{
+                  backgroundColor: '#F7F7F7',
+                  paddingVertical: 27,
+                  borderRadius: 20,
+                }}>
+                <Text style={{ textAlign: 'center', fontSize: 15, color: '#6E7882' }}>
+                  공감을 10개 이상 받은 게시글이 없습니다.
                 </Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <EmptyHeart />
-                  <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-                  <EmptyComment />
-                  <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
-                </View>
               </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <View
-            style={{
-              backgroundColor: '#F7F7F7',
-              paddingVertical: 27,
-              borderRadius: 20,
-            }}>
-            <Text style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-              정회원 인증 후 확인하실 수 있습니다.
-            </Text>
-          </View>
-        )}
+              :
+              hotBoardContents?.hotPosts.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => navigation.navigate('PostScreen', { postId: item.postId })}>
+                  <View style={styles.hotPostContainer}>
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={[
+                        styles.postSummary,
+                        {
+                          width: Dimensions.get('window').width - 150,
+                          color: '#000',
+                        },
+                      ]}>
+                      {item.postContent.slice(0, 30)}
+                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <EmptyHeart />
+                      <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+                      <EmptyComment />
+                      <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))
+          ) : (
+            <View
+              style={{
+                backgroundColor: '#F7F7F7',
+                paddingVertical: 27,
+                borderRadius: 20,
+              }}>
+              <Text style={{ textAlign: 'center', fontSize: 15, color: '#6E7882' }}>
+                정회원 인증 후 확인하실 수 있습니다.
+              </Text>
+            </View>
+          )}
+
       </View>
       {user?.blacklist && setBlacklistblindModalVisible(true)}
       {blacklistblindModalVisible && (
@@ -585,34 +609,34 @@ const styles = StyleSheet.create({
 const skeletonComponent = <View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 164 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 185 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 148 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 136}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 136 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 170}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 170 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 185 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 148 }]}></View>
   </View>
   <View style={styles.skeletonRow}>
     <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+    <View style={[styles.skeletonBoardContent, { width: 164 }]}></View>
   </View>
 </View>
