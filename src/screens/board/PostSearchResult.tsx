@@ -27,9 +27,6 @@ interface Props {
   searchWord: string;
   isInBoard?: boolean; // 특정 게시판에서 검색하는 경우에는 true
   boardName?: string;
-  // myPost?: boolean; // 내가 작성한 글에서 검색하는 경우에는 true
-  // myComment?: boolean;
-  // isScraped?: boolean;
 }
 
 type RootStackParamList = {
@@ -65,7 +62,6 @@ function PostSearchResult(
         }
 
         if (Object.keys(postResult).length > 0) {
-          console.log('first Rendering', postResult);
           setIsData(postResult.content);
           setIsTotal(postResult.totalElements);
           setIsLoading(false);
@@ -160,7 +156,6 @@ function PostSearchResult(
                 }}>
                 <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
               </TouchableOpacity>
-              {console.log('JSX', isData)}
             </View>
             {isData.map((item: PostContent, index: number) => (
               <PostSearchItem moveToPost={moveToPost} key={index} post={item} />

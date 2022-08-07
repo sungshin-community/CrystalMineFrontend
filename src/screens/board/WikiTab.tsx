@@ -31,6 +31,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const Tab = createMaterialTopTabNavigator();
+var tabWidth = (Dimensions.get('window').width / 4 - 24) / 2; // 한 탭 당 가로 넓이
 
 function WikiTab({navigation, route}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -154,7 +155,7 @@ function WikiTab({navigation, route}: Props) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: () => <HeaderIcon />,
+      headerTitle: '성신위키',
       headerRight: () => (
         <>
           {boardInfo?.type !== 1 && (
@@ -209,7 +210,7 @@ function WikiTab({navigation, route}: Props) {
           width: 24,
           bottom: -4,
           borderRadius: 10,
-          marginHorizontal: 35,
+          marginHorizontal: tabWidth,
         },
         tabBarShowLabel: true,
         tabBarLabelStyle: {
