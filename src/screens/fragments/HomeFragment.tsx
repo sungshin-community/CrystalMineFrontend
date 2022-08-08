@@ -108,15 +108,19 @@ const HomeFragment = ({ navigation }: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-      const pinBoardData = await getPinBoardContents();
-      const hotBoardData = await getHotBoardContents();
+      const userDto = await getAuthentication();
       const notification = await getUnreadNotification();
-
-      if (pinBoardData != null && hotBoardData != null) {
-        setPinBoardContents(pinBoardData);
-        setHotBoardContents(hotBoardData);
-      }
       setNoti(notification);
+      setUser(userDto);
+      if (userDto?.isAuthenticated) {
+        const pinBoardData = await getPinBoardContents();
+        const hotBoardData = await getHotBoardContents();
+
+        if (pinBoardData != null && hotBoardData != null) {
+          setPinBoardContents(pinBoardData);
+          setHotBoardContents(hotBoardData);
+        }
+      }
       if (!isInited) {
         setIsLoading(false);
         setIsInited(true);
@@ -126,15 +130,6 @@ const HomeFragment = ({ navigation }: Props) => {
       getContents();
     }
   }, [isFocused, modalBody]);
-  useEffect(() => {
-    async function getUserInfo() {
-      const userDto = await getAuthentication();
-      setUser(userDto);
-    }
-    if (isFocused) {
-      getUserInfo();
-    }
-  }, [isFocused]);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -378,7 +373,7 @@ const HomeFragment = ({ navigation }: Props) => {
                           numberOfLines={1}
                           ellipsizeMode="tail"
                           style={styles.postSummary}>
-                          {item.recentPostContent}
+                          {item.recentPostContent ? item.recentPostContent: '아직 작성된 글이 없습니다!'}
                         </Text>
                       </View>
                       <View style={styles.postNewLabelContainer}>

@@ -31,20 +31,31 @@ client.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.log("에러 발생! API:", error.config.url, "status:", error.status);
     const {config, response: { status }} = error;
     const originalRequest = config;
     if (originalRequest.url === '/auth/reissue-token') {
+      console.log("토큰 재발급 실패. SplashHome으로 감");
       // 리프레시 토큰마저 만료됐으면 로그인 화면으로 이동시키기
       await AsyncStorage.setItem('accessToken', '');
       return Promise.reject(error);
   }
     if (status === 401) {
+      console.log("401 에러 발생");
       if (!isRefreshing) {
+        console.log("토큰 재발급 로직 들어옴");
         isRefreshing = true;
         const accessToken = await AsyncStorage.getItem('accessToken');
         const refreshToken = await AsyncStorage.getItem('refreshToken');
         const response = await reissueToken({accessToken: accessToken ? accessToken : '', refreshToken: refreshToken ? refreshToken : ''});
         const reissuedAccessToken = response.data.accessToken;
+        const reissuedRefreshToken = response.data.refreshToken;
+        console.log("기존 accessToken:", accessToken);
+        console.log("기존 refreshToken:", refreshToken);
+        await AsyncStorage.setItem('accessToken', reissuedAccessToken);
+        await AsyncStorage.setItem('refreshToken', reissuedRefreshToken);
+        console.log("재발급된 accessToken:", reissuedAccessToken);
+        console.log("재발급된 refreshToken:", reissuedRefreshToken);
         isRefreshing = false;
         client.defaults.headers.common.Authorization = reissuedAccessToken ? `Bearer ${reissuedAccessToken}` : '';
         onTokenRefreshed(reissuedAccessToken);

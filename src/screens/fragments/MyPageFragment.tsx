@@ -118,7 +118,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   {user?.nickname}
                 </Text>
                 <Text style={{marginBottom: 11, color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
-                  {`${user?.username}@sungshin.ac.kr`}
+                  {user?.username}@sungshin.ac.kr
                 </Text>
               </View>
               <View style={{marginLeft: 19, marginTop: 12, flexDirection: 'row', alignItems: 'center'}}>

@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import SortIcon from '../../../resources/icon/SortIcon';
 import {PostContent} from '../../classes/Search';
 import {fontRegular} from '../../common/font';
 import {
@@ -146,7 +147,7 @@ function PostSearchResult(
                   marginLeft: 24,
                   marginBottom: 10,
                   marginTop: 16,
-                  width: 66,
+                  width: 83,
                   height: 24,
                   backgroundColor: '#f6f6f6',
                   borderRadius: 12,
@@ -154,7 +155,10 @@ function PostSearchResult(
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
+                <Text style={{marginRight: 5}}>
+                  {sortBy === 'createdAt' ? "최신순" : "공감순"}
+                </Text>
+                <SortIcon />
               </TouchableOpacity>
             </View>
             {isData.map((item: PostContent, index: number) => (
