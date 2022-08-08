@@ -36,6 +36,7 @@ import {fontMedium, fontRegular} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {
+  BigDarkPin,
   BigGrayPin,
   BigOrangePin,
   BigPurplePin,
@@ -133,7 +134,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     return (
       <>
         {boardInfo?.id === 1 ? (
-          <BigPurplePin />
+          <BigDarkPin />
         ) : (
           <Pressable
             onPress={async () => {
@@ -181,15 +182,14 @@ const PostListScreen = ({navigation, route}: Props) => {
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
         <>
-          {boardInfo?.type !== 'PUBLIC' && (
+          {boardInfo?.type !== 'OFFICIAL' ?
             <SpinningThreeDots
               handleDefaultModeComponent={handleBoardSearchComponent}
               isMine={boardInfo?.isOwner}
               handleOptionModeIsMineComponent={handleBoardSettingComponent}
               handleOptionModeIsNotMineComponent={handleBoardReportComponent}
             />
-          )}
-          {boardInfo?.type === 'PUBLIC' && handleBoardSearchComponent}
+         : handleBoardSearchComponent}
         </>
       ),
       headerTitleAlign: 'center',
