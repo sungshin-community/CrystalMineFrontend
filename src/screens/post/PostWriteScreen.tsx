@@ -9,6 +9,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Touchable,
+  TouchableHighlight,
   View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -30,6 +32,8 @@ import {
 import ProfileImage from '../../../resources/icon/ProfileImage';
 import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
+import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
+import {ModalBottom} from '../../components/ModalBottom';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -59,6 +63,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [images, setImages] = useState<any>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -74,8 +79,14 @@ function PostWriteScreen({navigation, route}: Props) {
   }, [route.params.boardId]);
 
   const onSubmitPress = async () => {
-    console.log(boardId,images)
-    const result = await postWritePost(boardId, title, content, isAnonymous, images);
+    console.log(boardId, images);
+    const result = await postWritePost(
+      boardId,
+      title,
+      content,
+      isAnonymous,
+      images,
+    );
     if (result) {
       navigation.navigate('PostListScreen', {boardId});
       Toast.show('게시글이 등록되었습니다.', Toast.LONG);
@@ -105,6 +116,23 @@ function PostWriteScreen({navigation, route}: Props) {
           </Text>
         </Pressable>
       ),
+      headerLeft: () => (
+        <TouchableHighlight
+          underlayColor="#EEEEEE"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            setGoBackWarning(true);
+            console.log('click')
+          }}>
+          <BackButtonIcon />
+        </TouchableHighlight>
+      ),
     });
   }, [navigation, title, content]);
 
@@ -130,7 +158,11 @@ function PostWriteScreen({navigation, route}: Props) {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
                 style={{width: 24, height: 24, borderRadius: 12}}
-                source={{uri: isAnonymous ? 'https://crystalmine.s3.ap-northeast-2.amazonaws.com/profileImages/default.png' :info?.profileImage}}
+                source={{
+                  uri: isAnonymous
+                    ? 'https://crystalmine.s3.ap-northeast-2.amazonaws.com/profileImages/default.png'
+                    : info?.profileImage,
+                }}
               />
               <View style={{justifyContent: 'center', flexDirection: 'row'}}>
                 <Text
@@ -154,16 +186,18 @@ function PostWriteScreen({navigation, route}: Props) {
           </View>
           {info?.hasTitle && (
             <>
-            <TextInput
-              placeholder="제목을 입력하세요."
-              value={title}
-              onChangeText={value => {
-                setTitle(value);
-              }}
-              style={[fontMedium, styles.title]}
+              <TextInput
+                placeholder="제목을 입력하세요."
+                value={title}
+                onChangeText={value => {
+                  setTitle(value);
+                }}
+                style={[fontMedium, styles.title]}
               />
-              <View style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}/>
-              </>
+              <View
+                style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
+              />
+            </>
           )}
         </View>
 
@@ -187,7 +221,7 @@ function PostWriteScreen({navigation, route}: Props) {
             <ImageIcon />
             <Text style={[fontMedium, styles.imageText]}>이미지</Text>
           </View>
-           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {images?.length !== 0 &&
               images?.map((asset, index) => (
                 <Image
@@ -207,6 +241,25 @@ function PostWriteScreen({navigation, route}: Props) {
           </View>
         </View>
       </View>
+       {
+    goBackWarning && (
+      <ModalBottom
+        modalVisible={goBackWarning}
+        setModalVisible={setGoBackWarning}
+        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isContentCenter={true}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+          navigation.goBack();
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+        }}
+      />
+    )
+  }
     </ScrollView>
   );
 }
