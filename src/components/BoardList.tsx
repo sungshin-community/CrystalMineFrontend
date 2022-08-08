@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import { FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import GrayFlag from '../../resources/icon/GrayFlag';
 import MyPostingIcon, {
   MyCommentIcon,
   ScrapPostingIcon,
 } from '../../resources/icon/MyPostingIcon';
 import OrangeFlag from '../../resources/icon/OrangeFlag';
-import { GrayPin, OrangePin, PurplePin } from '../../resources/icon/Pin';
+import { DarkPin, GrayPin, OrangePin, PurplePin } from '../../resources/icon/Pin';
 import PlusIcon from '../../resources/icon/PlusIcon';
 import Board from '../classes/Board';
 import { toggleBoardPin } from '../common/boardApi';
@@ -28,8 +28,8 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
     !isInited ?
     pinnedSkeletonComponent
     :
-    items != null && items.length > 0 ? items.map((item, index) => 
-        <TouchableOpacity
+      items != null && items.length > 0 ? items.map((item, index) =>
+        <Pressable
           key={index}
           onPress={() => moveToBoard(item.id)}
           style={{
@@ -42,7 +42,8 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
           }}>
             {!item.isPinned ? (
               item.isOwner ? <GrayFlag style={{ marginLeft: 23 }} /> : <GrayPin style={{ marginLeft: 20 }} />
-            ) : item.isOfficial ? (
+          ) : item.isOfficial ? (
+              item.id === 1 ? <DarkPin style={{ marginLeft: 20 }}/> :
               <PurplePin style={{ marginLeft: 20 }} />
             ) : (
               item.isOwner ? <OrangeFlag style={{ marginLeft: 23 }} /> : <OrangePin style={{ marginLeft: 20 }} />
@@ -62,7 +63,7 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
               <Text style={[fontRegular, { color: '#BDBDBD', marginLeft: 60, fontSize: 13, marginTop: 6, paddingRight: 20 }]}>{item.introduction}</Text>
             </View>
           )}
-        </TouchableOpacity>
+      </Pressable>
       )
      :
       <View
