@@ -10,6 +10,7 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
@@ -128,7 +129,7 @@ const MyPageFragment = ({navigation}: Props) => {
             </View>
           </View>
           {user && (user?.expireIn <= 0 || user?.expireIn === null )&&
-            <Pressable onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
+            <TouchableOpacity onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -158,7 +159,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </Pressable>}
+            </TouchableOpacity>}
           <View
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
