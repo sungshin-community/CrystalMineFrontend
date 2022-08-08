@@ -28,7 +28,7 @@ export default function BoardList({ items, moveToBoard, search, isInited, onUpda
     pinnedSkeletonComponent
     :
       items != null && items.length > 0 ? items.map((item, index) =>
-        <Pressable
+        <TouchableOpacity
           key={index}
           onPress={() => moveToBoard(item.id)}
           style={{
@@ -73,7 +73,7 @@ export default function BoardList({ items, moveToBoard, search, isInited, onUpda
               <Text style={[fontRegular, { color: '#BDBDBD', marginLeft: 60, fontSize: 13, marginTop: 6, paddingRight: 20 }]}>{item.introduction}</Text>
             </View>
           )}
-      </Pressable>
+      </TouchableOpacity>
       )
      :
       <View
