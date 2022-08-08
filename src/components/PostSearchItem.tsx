@@ -40,7 +40,7 @@ function PostSearchItem({post, moveToPost}: Props) {
           </Text>
         ) : null}
         <Text
-          numberOfLines={post.title ? 2 : 3}
+          numberOfLines={post.title ? 2 : 5}
           ellipsizeMode="tail"
           style={[styles.text, styles.content]}>
           {post.content}
