@@ -33,7 +33,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function CreateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
-  const [hotable, setHotable] = useState<boolean>(false);
+  const [hotable, setHotable] = useState<boolean>(true);
 
   const onSubmitPress = async () => {
     const result = await createBoard(boardName, boardIntroduction, hotable);
