@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, Pressable, TouchableHighlight} from 'react-native';
+import {Dimensions, Pressable, TouchableHighlight, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import PostSearchResult from './PostSearchResult';
-import FloatingWriteButton from '../../components/FloatingWriteButton';
 import {getBoardInfo, toggleBoardPin} from '../../common/boardApi';
-import {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
@@ -21,6 +18,7 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import Toast from 'react-native-simple-toast';
+import WikiList from './WikiList';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -34,37 +32,49 @@ const Tab = createMaterialTopTabNavigator();
 var tabWidth = (Dimensions.get('window').width / 4 - 24) / 2; // 한 탭 당 가로 넓이
 
 function WikiTab({navigation, route}: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] =
+    useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function init() {
+      const boardData = await getBoardInfo(route.params.boardId);
+      setBoardInfo(boardData);
+    }
+    init();
+  }, []);
 
   const HeaderIcon = () => {
     return (
       <>
-        <Pressable
-          onPress={async () => {
-            const result = await toggleBoardPin(route.params.boardId);
-            const boardInfo = await getBoardInfo(route.params.boardId);
-            setBoardInfo(boardInfo);
-          }}>
-          {boardInfo?.isOwner ? (
-            boardInfo?.isPinned ? (
-              <BigOrangeFlag />
+        {boardInfo?.id === 1 ? (
+          <BigPurplePin />
+        ) : (
+          <Pressable
+            onPress={async () => {
+              const result = await toggleBoardPin(route.params.boardId);
+              const boardInfo = await getBoardInfo(route.params.boardId);
+              setBoardInfo(boardInfo);
+              }}>
+              
+            {boardInfo?.isOwner ? (
+              boardInfo?.isPinned ? (
+                <BigOrangeFlag />
+              ) : (
+                <BigGrayFlag />
+              )
+            ) : boardInfo?.isPinned ? (
+              boardInfo?.type === 'PUBLIC' ||  boardInfo?.type === 'DEPARTMENT' ? (
+                 <BigOrangePin />
+              ) : (
+               <BigPurplePin />
+              )
             ) : (
-              <BigGrayFlag />
-            )
-          ) : boardInfo?.isPinned ? (
-            boardInfo?.type === 1 || boardInfo?.type === 2 ? (
-              <BigPurplePin />
-            ) : (
-              <BigOrangePin />
-            )
-          ) : (
-            <BigGrayPin />
-          )}
-        </Pressable>
+              <BigGrayPin />
+            )}
+          </Pressable>
+        )}
         <Text
           style={[
             fontMedium,
@@ -92,10 +102,9 @@ function WikiTab({navigation, route}: Props) {
         justifyContent: 'center',
       }}
       underlayColor="#EEEEEE"
-      // onPress={() =>
-      //   navigation.navigate('BoardSearch', {boardName: boardInfo.name})
-      // }
-      >
+      onPress={() =>
+        navigation.navigate('BoardSearch', {boardName: boardInfo.name})
+      }>
       <SearchIcon />
     </TouchableHighlight>
   );
@@ -111,7 +120,7 @@ function WikiTab({navigation, route}: Props) {
       }}
       underlayColor="#EEEEEE"
       onPress={() =>
-        navigation.navigate('UpdateBoard', {boardId: route.params.boardId})
+        navigation.navigate('UpdateBoard', {boardId: boardInfo.id})
       }>
       <SettingIcon />
     </TouchableHighlight>
@@ -146,7 +155,6 @@ function WikiTab({navigation, route}: Props) {
           underlayColor="#EEEEEE"
           onPress={() => {
             setReportCheckModalVisible(true);
-            console.log(reportCheckModalVisible);
           }}>
           <NoReport />
         </TouchableHighlight>
@@ -156,45 +164,18 @@ function WikiTab({navigation, route}: Props) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: '성신위키',
+      headerTitle: () => <HeaderIcon />,
       headerRight: () => (
-        <>
-          {boardInfo?.type !== 1 && (
-            <SpinningThreeDots
-              handleDefaultModeComponent={handleBoardSearchComponent}
-              isMine={boardInfo?.isOwner}
-              handleOptionModeIsMineComponent={handleBoardSettingComponent}
-              handleOptionModeIsNotMineComponent={handleBoardReportComponent}
-            />
-          )}
-          {boardInfo?.type === 1 && handleBoardSearchComponent}
-        </>
+        <SpinningThreeDots
+          handleDefaultModeComponent={handleBoardSearchComponent}
+          isMine={boardInfo?.isOwner}
+          handleOptionModeIsMineComponent={handleBoardSettingComponent}
+          handleOptionModeIsNotMineComponent={handleBoardReportComponent}
+        />
       ),
       headerTitleAlign: 'center',
     });
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
-
-  // useEffect(() => {
-  //   async function init() {
-  //     setIsLoading(true);
-  //     const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
-  //      if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
-  //       Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.LONG);
-  //       navigation.goBack();
-  //     } else if (
-  //       boardDetail.code === 'BOARD_NOT_FOUND' ||
-  //       boardDetail.code === 'BOARD_ALREADY_DELETED'
-  //     ) {
-  //       Toast.show('삭제된 게시판입니다.', Toast.LONG);
-  //       navigation.goBack();
-  //     } else  setBoardDetail(boardDetail);
-  //     const boardInfo = await getBoardInfo(route.params.boardId);
-  //     setBoardInfo(boardInfo);
-  //     setIsLoading(false);
-  //     if(boardDetail?.length === 0) setIsEmpty(true)
-  //   }
-  //   if (isFocused) init();
-  // }, [isFocused, sortBy]);
 
   return (
     <Tab.Navigator
@@ -227,19 +208,19 @@ function WikiTab({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="교내 위키"
-        children={() => <PostSearchResult data={[]} />}
+        children={() => <WikiList boardId={boardInfo?.id + 1} />}
       />
       <Tab.Screen
         name="교외 위키"
-        children={() => <PostSearchResult data={[]} />}
+        children={() => <WikiList boardId={boardInfo?.id + 2} />}
       />
       <Tab.Screen
         name="상권 위키"
-        children={() => <PostSearchResult data={[]} />}
+        children={() => <WikiList boardId={boardInfo?.id + 3} />}
       />
       <Tab.Screen
         name="페미 위키"
-        children={() => <PostSearchResult data={[]} />}
+        children={() => <WikiList boardId={boardInfo?.id + 4} />}
       />
     </Tab.Navigator>
   );

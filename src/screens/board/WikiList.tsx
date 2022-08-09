@@ -12,43 +12,58 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import BoardDetailDto from '../../classes/BoardDetailDto';
+import Response from '../../classes/Response';
 import {PostContent} from '../../classes/Search';
+import { getBoardInfo } from '../../common/boardApi';
+import client from '../../common/client';
 import {fontRegular} from '../../common/font';
 import {getPostSearch} from '../../common/SearchApi';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostSearchItem from '../../components/PostSearchItem';
 
-function WikiList({data}: any) {
+function WikiList({boardId}: any) {
   const navigation = useNavigation();
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const getBoardDetail = async (
+    boardId: number,
+    page: number,
+    sort: string,
+  ) => {
+    try {
+      const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('sort', sort);
+      const response = await client.get<Response<BoardDetailDto>>(
+        `/boards/${boardId}/posts?${params}`,
+      );
+      return response.data.data;
+    } catch (e: any) {
+      console.log('WIkiList.tsx', e.response.data);
+      return e.response.data;
+    }
+  };
+
   useEffect(() => {
     setIsLoading(true);
-    if (data) {
-      setIsData(data);
-      setIsLoading(false);
-    }
-  }, []);
+    const getData = async () => {
+      let boardData = await getBoardDetail(boardId, 0, sortBy);
+      if (boardData) {
+        setIsData(boardData);
+        setIsLoading(false);
+      }
+    };
+    getData();
+  }, [boardId, sortBy]);
 
   const moveToPost = (postId: number) => {
     navigation.navigate('PostScreen', {postId: postId});
   };
 
-  useEffect(() => {
-    const sortData = async () => {
-      setIsLoading(true);
-      // let newData = await getPostSearch(searchWord, 0, sortBy);
-      // if (newData) {
-      //   setIsData(newData);
-      //   setIsLoading(false);
-      // }
-    };
-    sortData();
-  }, [sortBy]);
-
-  if (isData.length <= 0) {
+  if (isLoading) {
     return (
       <View
         style={{
@@ -76,11 +91,16 @@ function WikiList({data}: any) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <SafeAreaView style={styles.noResult}>
         {isData.totalElements === 0 ? (
-          <Text style={[fontRegular, styles.noResultText]}>
-            요청하신 검색어에 대한 검색 결과가 없습니다.
-          </Text>
+          <>
+            <Text style={[fontRegular, styles.noResultText]}>
+              아직 작성된 게시글이 없습니다.
+            </Text>
+            <Text style={[fontRegular, styles.noResultText]}>
+              첫 글을 작성해주세요.
+            </Text>
+          </>
         ) : (
-          <ScrollView style={{backgroundColor: '#fff'}}>
+          <ScrollView style={{backgroundColor: '#fff', width: '100%'}}>
             <View style={{backgroundColor: '#fff'}}>
               <TouchableOpacity
                 onPress={() => {
@@ -107,9 +127,20 @@ function WikiList({data}: any) {
             </View>
             {isData.content.map((item: PostContent, index: number) => (
               <PostSearchItem moveToPost={moveToPost} key={index} post={item} />
-            ))}
+              ))}
           </ScrollView>
         )}
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.touchableOpacityStyle}>
+          <FloatingWriteButton
+            onPress={() =>
+              navigation.navigate('PostWriteScreen', {
+                boardId: boardId,
+              })
+            }
+          />
+        </TouchableOpacity>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -132,6 +163,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     color: '#6E7882',
+  },
+  touchableOpacityStyle: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
   },
 });
 

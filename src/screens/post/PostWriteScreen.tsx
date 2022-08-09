@@ -33,6 +33,7 @@ import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
+  WikiTab: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -77,7 +78,11 @@ function PostWriteScreen({navigation, route}: Props) {
     console.log(boardId,images)
     const result = await postWritePost(boardId, title, content, isAnonymous, images);
     if (result) {
-      navigation.navigate('PostListScreen', {boardId});
+      if (boardId >= 5 && boardId < 10) {
+        navigation.navigate('WikiTab');
+      } else {
+        navigation.navigate('PostListScreen', {boardId});
+      }
       Toast.show('게시글이 등록되었습니다.', Toast.LONG);
     }
   };
