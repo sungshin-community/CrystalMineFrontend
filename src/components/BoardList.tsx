@@ -123,7 +123,7 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
             marginLeft: 10,
             width: 44
           }}>
-            {!item.isPinned ? (
+            {item.id === 1 ? <DarkPin style={{marginLeft: 10}} /> : !item.isPinned ? (
               <GrayPin
                 style={{ marginLeft: 10 }}
                 
