@@ -34,6 +34,21 @@ export const ModalBottom = ({
 }: Props) => {
   return (
     <>
+       {modalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 100,
+            elevation: 1,
+          }}
+        />
+      ) : null}
       <View style={[styles.centeredView]}>
         <Modal
           animationType="slide"
