@@ -110,30 +110,7 @@ export default function ChangeMajor({navigation}: Props) {
 
   return (
     <>
-      {modalVisible ? (
-        <View
-          style={{
-            position: 'absolute',
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 1,
-            elevation: 1,
-          }}
-        />
-      ) : null}
-      <Container>
-        <NormalOneLineText style={{marginBottom: 7}}>
-          소속 학과를 선택해주세요
-        </NormalOneLineText>
-        <Pressable onPress={() => setModalVisible(true)}>
-          <Description style={{textDecorationLine: 'underline'}}>
-            소속 학과가 선택지에 없나요?
-          </Description>
-        </Pressable>
+      {modalVisible && (
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -144,6 +121,16 @@ export default function ChangeMajor({navigation}: Props) {
           purpleButtonText="확인"
           purpleButtonFunc={() => setModalVisible(!modalVisible)}
         />
+      )}
+      <Container>
+        <NormalOneLineText style={{marginBottom: 7}}>
+          소속 학과를 선택해주세요
+        </NormalOneLineText>
+        <Pressable onPress={() => setModalVisible(true)}>
+          <Description style={{textDecorationLine: 'underline'}}>
+            소속 학과가 선택지에 없나요?
+          </Description>
+        </Pressable>
       </Container>
       <View style={{flex: 1}}>
         <RadioContainer>

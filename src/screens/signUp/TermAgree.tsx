@@ -132,7 +132,7 @@ function TermAgree({navigation}: Props) {
                   약관 전체 동의
                 </Text>
               </TouchableOpacity>
-              {agreements.map((a, index) => <AgreementContainer id={index} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
+              {agreements.map((a, index) => <AgreementContainer key={index} id={index} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
             </View>
           </View>
         </ScrollView>

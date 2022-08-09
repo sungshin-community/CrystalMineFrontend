@@ -6,6 +6,9 @@ import {
   Pressable,
   View,
   ScrollView,
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
@@ -18,6 +21,9 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 function UsageRestrictions({navigation}: Props) {
   const [list, setList] = useState<UsageRestrictionsDto[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     async function getList() {
@@ -26,44 +32,114 @@ function UsageRestrictions({navigation}: Props) {
     }
     getList();
   }, []);
+
+  const handleRefresh = async () => {
+      const postList = await getUsageRestrictions(0);
+      setList(postList);
+  };
+
+  const fetchNextPage = async () => {
+      let thisPagePostList: UsageRestrictionsDto[] = await getUsageRestrictions(
+        currentPage + 1,
+      );
+      setList(list?.concat(thisPagePostList));
+      if (thisPagePostList.length > 0) {
+        setCurrentPage(currentPage + 1);
+      }
+  };
+
   return (
-    <ScrollView>
-      {list?.map((item, index) => (
-        <View key={index}>
-          <View style={styles.menuContainer}>
-            <View style={[styles.menu]}>
-              <Text style={[fontRegular, styles.boardName]}>
-                {item.boardTitle}
-              </Text>
-              <View style={styles.menuIcon}>
-                <Text style={[fontRegular, styles.blindDate]}>
-                  {item.blindedAt}
-                </Text>
-              </View>
-            </View>
-            <View style={[styles.menu, {marginTop: 5}]}>
-              <Text style={[fontBold, styles.blindTitle]}>
-                {item.type === 1 ? '게시글 블라인드' : '댓글 블라인드'}
-              </Text>
-              <View style={styles.menuIcon}>
-                <Text style={[fontRegular, styles.points]}>
-                  -{item.point} points
-                </Text>
-              </View>
-            </View>
-            <Text style={[fontRegular, styles.blindReason]}>
-              블라인드 사유 : {item.reason}
-            </Text>
-          </View>
-          <View
-            style={{
-              borderBottomColor: '#F0F0F0',
-              borderBottomWidth: 1,
-            }}
+    <>
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}>
+          <ActivityIndicator
+            size="large"
+            color={'#A055FF'}
+            animating={isLoading}
+            style={{zIndex: 100}}
           />
         </View>
-      ))}
-    </ScrollView>
+      {list?.length === 0 ? (
+        <SafeAreaView style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: '#6E7882',
+                fontSize: 15,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+                textAlign: 'center',
+                lineHeight: 22.5,
+                marginTop: 20,
+              }}>
+              {isLoading
+                ? ''
+                : '회원님께 해당되는\n이용 제한 내역이 없습니다.'}
+            </Text>
+          </View>
+        </SafeAreaView>
+      ) : (
+        <FlatList
+          style={{ flex: 1, backgroundColor: '#E5E5E5' }}
+          data={list}
+          renderItem={({ item, index }) => (
+            <View key={index}>
+              <View style={styles.menuContainer}>
+                <View style={[styles.menu]}>
+                  <Text style={[fontRegular, styles.boardName]}>
+                    {item.boardTitle}
+                  </Text>
+                  <View style={styles.menuIcon}>
+                    <Text style={[fontRegular, styles.blindDate]}>
+                      {item.blindedAt}
+                    </Text>
+                  </View>
+                </View>
+                <View style={[styles.menu, { marginTop: 5 }]}>
+                  <Text style={[fontBold, styles.blindTitle]}>
+                    {item.type === 1 ? '게시글 블라인드' : '댓글 블라인드'}
+                  </Text>
+                  <View style={styles.menuIcon}>
+                    <Text style={[fontRegular, styles.points]}>
+                      -{item.point} points
+                    </Text>
+                  </View>
+                </View>
+                <Text style={[fontRegular, styles.blindReason]}>
+                  블라인드 사유 : {item.reason}
+                </Text>
+              </View>
+            </View>
+          )}
+          ItemSeparatorComponent={() => (
+            <View style={{ height: 1, backgroundColor: '#F0F0F0' }}></View>
+          )}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              colors={['#A055FF']} // for android
+              tintColor={'#A055FF'} // for ios
+            />
+          }
+          onEndReached={fetchNextPage}
+          onEndReachedThreshold={0.8} />
+      )}
+    </>
   );
 }
 
