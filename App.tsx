@@ -72,7 +72,6 @@ import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
 import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
 import WikiTab from './src/screens/board/WikiTab';
-import { View } from 'react-native-animatable';
 
 const Stack = createNativeStackNavigator();
 
