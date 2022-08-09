@@ -40,14 +40,14 @@ function UpdateBoard({navigation, route}: Props) {
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
     }
-    init()
+    init();
   }, []);
-  
+
   useEffect(() => {
     setNewBoardIntroduction(boardInfo?.introduction);
     setNewHotable(boardInfo?.hotable);
-  },[boardInfo])
-  
+  }, [boardInfo]);
+
   const onSubmitPress = async () => {
     const result = await updateBoard(
       route.params.boardId,
@@ -72,8 +72,7 @@ function UpdateBoard({navigation, route}: Props) {
               styles.submit,
               fontRegular,
               {
-                color:
-                  newBoardIntroduction ? '#A055FF' : '#87919B',
+                color: newBoardIntroduction ? '#A055FF' : '#87919B',
               },
             ]}>
             완료
@@ -124,12 +123,13 @@ function UpdateBoard({navigation, route}: Props) {
             alignItems: 'center',
           }}>
           <Pressable
+            style={{flexDirection: 'row'}}
             onPress={() => {
               setNewHotable(!newHotable);
             }}>
             {newHotable ? <RectangleChecked /> : <RectangleUnchecked />}
+            <Text style={[{marginLeft: 5}]}>HOT 게시판 전송 허용</Text>
           </Pressable>
-          <Text style={[{marginLeft: 5}]}>핫게시판 전송 허용</Text>
         </View>
       </View>
     </>
