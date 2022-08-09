@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  SignUpPassword: {userId: string; agreementIds: number[]};
+  SignUpPassword: { userId: string; agreementIds: number[] };
+  MailVerificationMethodGuide: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -164,74 +165,6 @@ export default function SignUpId({navigation, route}: Props) {
             도와드릴 수 없음을 알려드리며, 관련 문의는{'\n'}
             학교 시스템실로 문의 부탁드립니다.{'\n'}
             (02-920-7520, 7514)
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-
-  const studentIdModalBody = (
-    <View style={{width: Dimensions.get('window').width - 100}}>
-      <View style={[styles.paragraph]}>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 학번으로
-            이루어진 성신 G-mail만을 아이디로 등록할 수 있도록 설계되어
-            있습니다.
-          </Text>
-        </View>
-      </View>
-      <View style={styles.paragraph}>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            만약 성신 동문이 맞음에도 가입이 어려운 경우, 추가적인 인증을 거쳐
-            개별적으로 가입이 가능하니 아래 안내를 참고하시어 가입해주시기
-            바랍니다.
-          </Text>
-        </View>
-      </View>
-      <View style={styles.paragraph}>
-        <View style={styles.number}>
-          <Text style={[fontRegular, styles.blackText]}>01</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            아래의 수정광산 계정으로 02번의 내용을 준비하여{'\n'}보내주시기 바랍니다.
-            {'\n'}
-            수정광산 계정: contact@crystalmine.kr
-          </Text>
-        </View>
-      </View>
-      <View style={styles.paragraph}>
-        <View style={styles.number}>
-          <Text style={[fontRegular, styles.blackText]}>02</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            인증시 필요한 내용{'\n'}
-            a. 성신 G-mail 계정, 소속 학과{'\n'}
-            <Text style={[fontRegular, styles.greyText]}>
-              {'    '}(계정 생성을 하기 위해 필요)
-            </Text>
-          </Text>
-          <Text style={[fontRegular, styles.blackText]}>
-            인증시 필요한 내용{'\n'}
-            b. [성신여대 포탈 시스템]의 좌측 보라색 박스에{'\n'} 담긴 내용 캡쳐{'\n'}
-            <Text style={[fontRegular, styles.greyText]}>
-              {'    '}(성신인 인증을 위해 필요)
-            </Text>
-          </Text>
-          <Text style={[fontRegular, styles.blackText]}>
-            인증시 필요한 내용{'\n'}
-            c. [성신여대 포탈 시스템-통합정보시스템-학적관리-학적변동조회]의
-            상단에 위치한 [학생기초정보] 부분 캡쳐{'\n'}
-            <Text style={[fontRegular, styles.greyText]}>
-              {'    '}(성신인 인증을 위해 필요)
-            </Text>
-          </Text>
-          <Text style={[fontRegular, styles.greyText]}>
-            {'*   '}인증시, 개인정보(학번, 성명, 생년월일, 프로필 사진 등)은
-            가리고 보내주시기 바랍니다.
           </Text>
         </View>
       </View>
@@ -419,15 +352,18 @@ export default function SignUpId({navigation, route}: Props) {
               <DisabledPurpleRoundButton text="다음" />
             )}
           </View>
-          {alertModalVisible && (
+           {alertModalVisible && (
             <ModalBottom
-              modalVisible={alertModalVisible}
-              setModalVisible={setAlertModalVisible}
-              title="잘못된 아이디 형식입니다"
-              content={studentIdModalBody}
-              isContentCenter={false}
-              purpleButtonText="확인"
-              purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
+            modalVisible={alertModalVisible}
+            setModalVisible={setAlertModalVisible}
+            title="잘못된 아이디 형식입니다"
+            content={`수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 8자리 학번으로 이루어진 성신 G-mail 만을 아이디로 등록할 수 있도록 설계되어 있습니다. \n\n만약 성신 동문이 맞음에도 가입이 어려운 경우, 
+메일 발송을 통해 별도로 인증을 거쳐 가입이 가능하니 아래 안내되는 방법을 참고하시어 가입해 주시기 바랍니다.`}
+            isContentCenter={false}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
+            whiteButtonText="메일 인증 방법 보기"
+            whiteButtonFunc={() => { navigation.navigate('MailVerificationMethodGuide'); setAlertModalVisible(!alertModalVisible); } }
             />
           )}
         </Container>
@@ -610,17 +546,20 @@ export default function SignUpId({navigation, route}: Props) {
           )}
         </View>
       </Container>
-      {alertModalVisible && (
-        <ModalBottom
-          modalVisible={alertModalVisible}
-          setModalVisible={setAlertModalVisible}
-          title="잘못된 아이디 형식입니다"
-          content={studentIdModalBody}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
-        />
-      )}
+       {alertModalVisible && (
+            <ModalBottom
+            modalVisible={alertModalVisible}
+            setModalVisible={setAlertModalVisible}
+            title="잘못된 아이디 형식입니다"
+            content={`수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 8자리 학번으로 이루어진 성신 G-mail 만을 아이디로 등록할 수 있도록 설계되어 있습니다. \n\n만약 성신 동문이 맞음에도 가입이 어려운 경우, 
+메일 발송을 통해 별도로 인증을 거쳐 가입이 가능하니 아래 안내되는 방법을 참고하시어 가입해 주시기 바랍니다.`}
+            isContentCenter={false}
+            purpleButtonText="확인"
+            purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
+            whiteButtonText="메일 인증 방법 보기"
+            whiteButtonFunc={() => { navigation.navigate('MailVerificationMethodGuide'); setAlertModalVisible(!alertModalVisible); } }
+            />
+          )}
     </>
   );
 }
