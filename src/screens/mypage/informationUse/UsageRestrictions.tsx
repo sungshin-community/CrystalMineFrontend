@@ -33,7 +33,6 @@ function UsageRestrictions({navigation}: Props) {
     getList();
   }, []);
 
-
   const handleRefresh = async () => {
       const postList = await getUsageRestrictions(0);
       setList(postList);
@@ -47,8 +46,8 @@ function UsageRestrictions({navigation}: Props) {
       if (thisPagePostList.length > 0) {
         setCurrentPage(currentPage + 1);
       }
-    
   };
+
   return (
     <>
         <View
@@ -93,7 +92,7 @@ function UsageRestrictions({navigation}: Props) {
         </SafeAreaView>
       ) : (
         <FlatList
-          style={{ flex: 1, backgroundColor: '#FFFFFF' }}
+          style={{ flex: 1, backgroundColor: '#E5E5E5' }}
           data={list}
           renderItem={({ item, index }) => (
             <View key={index}>
