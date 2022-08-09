@@ -10,6 +10,7 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
@@ -98,7 +99,7 @@ const MyPageFragment = ({navigation}: Props) => {
       </View>
       <ScrollView>
         <View>
-          <View
+          {!isInited ? skeletonComponent : <View
             style={{
               height: 160,
               flexDirection: 'row',
@@ -126,9 +127,9 @@ const MyPageFragment = ({navigation}: Props) => {
                 <Text style={{marginLeft: 8, fontSize: 17, color: '#A055FF', fontFamily: 'SpoqaHanSansNeo-Bold'}}>{user?.point}</Text>
               </View>
             </View>
-          </View>
+          </View>}
           {user && (user?.expireIn <= 0 || user?.expireIn === null )&&
-            <Pressable onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
+            <TouchableOpacity onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -158,7 +159,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </View>
               </View>
-            </Pressable>}
+            </TouchableOpacity>}
           <View
             style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>보안 및 인증</Text>
@@ -443,5 +444,26 @@ const MyPageFragment = ({navigation}: Props) => {
     </SafeAreaView>
   );
 };
+
+const skeletonComponent = <View
+style={{
+  height: 160,
+  flexDirection: 'row',
+  backgroundColor: '#FFFFFF',
+  paddingLeft: 35,
+  paddingTop: 20,
+}}
+>
+<DefaultProfile />
+<View style={{height: 80}}>
+  <View style={{marginLeft: 18, marginRight: 24, borderBottomColor: '#EEEEEE', borderBottomWidth: 1, height: 80 }}>
+    <View style={{height: 15, width: 72, backgroundColor: '#E1E4EA', marginTop: 2}}></View>
+    <View style={{height: 20, width: 137, backgroundColor: '#E1E4EA', marginTop: 8}}></View>
+    <View style={{height: 15, width: 186, backgroundColor: '#E1E4EA', marginTop: 8}}></View>
+  </View>
+  <View style={{marginLeft: 19, marginTop: 12, height: 20, width: 100, flexDirection: 'row', alignItems: 'center', backgroundColor: '#E1E4EA'}}>
+  </View>
+</View>
+</View>;
 
 export default MyPageFragment;
