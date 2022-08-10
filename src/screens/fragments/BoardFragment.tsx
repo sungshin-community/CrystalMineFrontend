@@ -44,6 +44,11 @@ export default function BoardFragment({navigation}: Props) {
     setPinnedBoardList(pinnedBoardList);
   }
 
+  const updatePinnedBoardList = async () => {
+    const pinnedBoardList = await getPinnedBoardList();
+    setPinnedBoardList(pinnedBoardList);
+  }
+
   const updateCustomBoardList = async () => {
     const customBoardList = await getCustomBoardList();
     const pinnedBoardList = await getPinnedBoardList();
@@ -121,7 +126,7 @@ export default function BoardFragment({navigation}: Props) {
           <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
           <BoardListContainer
             boardCategory="고정게시판"
-            component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+            component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} isInited={isInited} onUpdate={updatePinnedBoardList} />}
           />
           {/* <BoardListContainer
             boardCategory="공식게시판"

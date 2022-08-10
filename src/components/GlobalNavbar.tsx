@@ -143,15 +143,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
       <Tab.Screen
         name="Alert"
         component={AlertFragment}
-        listeners={({navigation}) => ({
-          tabPress: async e => {
-            e.preventDefault();
-            let isRegularMember: boolean = await checkRegularMember();
-            console.log('정회원 인증여부:', isRegularMember);
-            if (isRegularMember) navigation.navigate('Alert');
-            else Toast.show('접근 권한이 없습니다.', Toast.LONG);
-          },
-        })}
         options={{
           title: '알림',
           headerTitleAlign: 'center',

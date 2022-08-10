@@ -36,7 +36,6 @@ import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
 
-
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPage: undefined;
@@ -108,15 +107,19 @@ const HomeFragment = ({navigation}: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-      const pinBoardData = await getPinBoardContents();
-      const hotBoardData = await getHotBoardContents();
+      const userDto = await getAuthentication();
       const notification = await getUnreadNotification();
-
-      if (pinBoardData != null && hotBoardData != null) {
-        setPinBoardContents(pinBoardData);
-        setHotBoardContents(hotBoardData);
-      }
       setNoti(notification);
+      setUser(userDto);
+      if (userDto?.isAuthenticated) {
+        const pinBoardData = await getPinBoardContents();
+        const hotBoardData = await getHotBoardContents();
+
+        if (pinBoardData != null && hotBoardData != null) {
+          setPinBoardContents(pinBoardData);
+          setHotBoardContents(hotBoardData);
+        }
+      }
       if (!isInited) {
         setIsLoading(false);
         setIsInited(true);
@@ -126,359 +129,418 @@ const HomeFragment = ({navigation}: Props) => {
       getContents();
     }
   }, [isFocused, modalBody]);
-  useEffect(() => {
-    async function getUserInfo() {
-      const userDto = await getAuthentication();
-      setUser(userDto);
-    }
-    if (isFocused) {
-      getUserInfo();
-    }
-  }, [isFocused]);
 
-  console.log(noti?.length)
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
-      </View>
+    <>
       <View
         style={{
-          backgroundColor: '#F6F6F6',
-          paddingVertical: 32,
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
         }}>
-        <Text
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
+      </View>
+      <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+        <View
           style={{
-            fontSize: 22,
-            marginLeft: 40,
-            marginBottom: noti?.length && 26,
+            backgroundColor: '#F6F6F6',
+            paddingVertical: 32,
           }}>
-          <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
-            {user?.nickname}
+          <Text
+            style={{
+              fontSize: 22,
+              marginLeft: 40,
+              marginBottom: noti?.length && 26,
+            }}>
+            <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+              {user?.nickname}
+            </Text>
+            {` 님, `}
+            {user && user?.nickname.length > 8 ? <Text>{`\n`}</Text> : <></>}
+            {`안녕하세요!`}
           </Text>
-          {` 님, `}
-          {user && user?.nickname.length > 8 ? <Text>{`\n`}</Text> : <></>}
-          {`안녕하세요!`}
-        </Text>
 
-        <View
-          style={{
-            borderRadius: 20,
-          }}>
           <View
             style={{
               borderRadius: 20,
-              marginHorizontal: 24,
-              paddingHorizontal: 18,
-              backgroundColor: '#fff',
             }}>
-            {noti?.map((item, index) => (
-              <Pressable
-                key={index}
-                style={[
-                  {
-                    borderTopWidth: index === 0 ? 0 : 1,
-                    borderTopColor: '#F6F6F6',
-                    backgroundColor: 'yellow',
-                  },
-                  styles.newsContainer,
-                ]}
-                onPress={async () => {
-                  if (item.type === 'WELCOME') {
-                    // const result = await readNotification(item.id);
-                    console.log('알람 확인 후 마이페이지로 이동');
-                    navigation.navigate('MyPage');
-                  } else if (
-                    item.type === 'BEFORE_EXPIRE' ||
-                    item.type === 'EXPIRE' ||
-                    item.type === 'NOT_AUTHENTICATED'
-                  ) {
-                    if (user?.isAuthenticated) {
-                      // const result = await readNotification(item.id);
-                      console.log('알람 확인 후 정회원인증으로 이동');
-                      navigation.navigate('RegularMemberAuthMyPage');
-                    } else navigation.navigate('RegularMemberAuthMyPage');
-                  } else if (
-                    item.type === 'BOARD_BLIND' ||
-                    item.type === 'PIN_BOARD_BLIND' ||
-                    item.type === 'POST_BLIND' ||
-                    item.type === 'COMMENT_BLIND'
-                  ) {
-                    const itemContent = (
-                      <View>
-                        <Text
-                          style={[
-                            fontRegular,
-                            {
-                              marginBottom: 15,
-                              width: Dimensions.get('window').width - 100,
-                            },
-                          ]}>
-                         {item.blind?.message}
-                        </Text>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-                            블라인드 사유
-                          </Text>
-                          <Text style={{width: 148}}>
-                            {item.blind?.reason}
-                          </Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-                            {item.type === 'BOARD_BLIND'
-                              ? '게시판 이름'
-                              : item.type === 'PIN_BOARD_BLIND'
-                              ? '게시판 이름'
-                              : item.type === 'POST_BLIND'
-                              ? '작성 내용'
-                              : item.type === 'COMMENT_BLIND'
-                              ? '작성 내용:'
-                              : ''}
-                          </Text>
-                          <Text
-                            style={{
-                              width: Dimensions.get('window').width - 178,
-                            }}>
-                            {item.blind?.content}
-                          </Text>
-                        </View>
-                      </View>
-                    );
-                    setModalBody(itemContent);
-                    // const result = await readNotification(item.id);
-                    console.log('블라인드 알림 확인');
-                    setBlindModalVisible(true);
-                  }
-                  else if(
-                    item.type === 'DELETE_BOARD_BLIND' ||
-                    item.type === 'DELETE_POST_BLIND' ||
-                    item.type === 'DELETE_COMMENT_BLIND'
-                  ) {
-                    const itemContent = (
-                      <View>
-                        <Text
-                          style={[
-                            fontRegular,
-                            {
-                              marginBottom: 15,
-                              width: Dimensions.get('window').width - 100,
-                            },
-                          ]}>
-                         {item.deleteBlind?.message}
-                        </Text>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-                             {item.type === 'DELETE_BOARD_BLIND'
-                              ? '게시판 이름'
-                              : item.type === 'DELETE_POST_BLIND'
-                              ? '작성 내용'
-                              : item.type === 'DELETE_COMMENT_BLIND'
-                              ? '작성 내용'
-                              : ''}
-                          </Text>
-                          <Text ellipsizeMode={'tail'} numberOfLines={3} style={{width: Dimensions.get('window').width - 178} }>
-                            {item.deleteBlind?.content}
-                          </Text>
-                        </View>
-                      </View>
-                    );
-                    setModalBody(itemContent);
-                    // const result = await readNotification(item.id);
-                    console.log('블라인드 알림 확인');
-                    setBlindModalVisible(true);
-                  }
-                }}>
-                <View style={{flexDirection: 'row'}}>
-                  {item.type === 'WELCOME' && <CheckMark />}
-                  {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
-                  <View>
-                    <Text style={styles.newsTitle}>{item.title}</Text>
-                    <Text ellipsizeMode={'tail'} numberOfLines={1} style={styles.newsMore}>{item.content ? item.content :item.blind?.content ? item.blind?.content: item.deleteBlind?.content}</Text>
-                  </View>
-                </View>
-                <View>
-                  <RightArrowBold />
-                </View>
-              </Pressable>
-            ))}
-
-            {blindModalVisible && (
-              <ModalBottom
-                modalVisible={blindModalVisible}
-                setModalVisible={setBlindModalVisible}
-                title="블라인드 안내"
-                content={modalBody}
-                isContentCenter={false}
-                purpleButtonText="수정광산 이용 방향 보기"
-                purpleButtonFunc={() => {
-                  setBlindModalVisible(!blindModalVisible);
-                  navigation.navigate('DirectionAgreeScreen');
-                }}
-                whiteButtonText="확인"
-                whiteButtonFunc={() => {
-                  setBlindModalVisible(!blindModalVisible);
-                }}
-              />
-            )}
-          </View>
-        </View>
-      </View>
-      <View
-        style={{
-          padding: 24,
-        }}>
-        <View style={styles.rowContainer}>
-          <Text style={styles.boardTitle}>고정 게시판</Text>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              {
-                user?.isAuthenticated
-                  ? navigation.navigate('Board')
-                  : Toast.show('접근 권한이 없습니다.', Toast.LONG);
-              }
-            }}>
-            <Text style={styles.more}>더보기</Text>
-          </TouchableWithoutFeedback>
-        </View>
-        {/* 게시판 글 목록 */}
-        {
-        !isInited ? 
-        // true?
-        skeletonComponent
-        : user?.isAuthenticated ? (
-          pinBoardContents?.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() =>
-                navigation.navigate('PostListScreen', {boardId: item.boardId})
-              }>
-              <View style={styles.pinBoardContainer}>
-                <View style={styles.postTitleSummaryContainer}>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.postTitleSummary}>
-                    {item.boardName.slice(0, numOfBoardTitle)}
-                  </Text>
-                </View>
-                <View style={styles.postSummaryContainer}>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.postSummary}>
-                    {item.recentPostContent}
-                  </Text>
-                </View>
-                <View style={styles.postNewLabelContainer}>
-                  {item.todayNewPost ? (
-                    <Text style={styles.postNewLabel}>N</Text>
-                  ) : (
-                    <></>
-                  )}
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <View
-            style={{
-              backgroundColor: '#F7F7F7',
-              paddingVertical: 27,
-              borderRadius: 20,
-            }}>
-            <Text style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-              정회원 인증 후 확인하실 수 있습니다.
-            </Text>
-          </View>
-        )}
-
-        {/* 게시판 글 목록 */}
-        <View
-          style={{
-            borderBottomColor: '#F0F0F0',
-            borderBottomWidth: 1,
-            marginBottom: 24,
-            marginTop: 24,
-          }}
-        />
-        <View style={styles.rowContainer}>
-          <Text style={styles.boardTitle}>HOT 게시글</Text>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              {
-                user?.isAuthenticated
-                  ? navigation.navigate('PostListScreen', {boardId: 2})
-                  : // ? navigation.navigate('InformationUse') :
-                    Toast.show('접근 권한이 없습니다.', Toast.LONG);
-              }
-            }}>
-            <Text style={styles.more}>더보기</Text>
-          </TouchableWithoutFeedback>
-        </View>
-        {!isInited ?
-        skeletonComponent :
-        user?.isAuthenticated ? (
-          hotBoardContents?.hotPosts.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => navigation.navigate('PostScreen', { postId: item.postId })}>
-              <View style={styles.hotPostContainer}>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
+            <View
+              style={{
+                borderRadius: 20,
+                marginHorizontal: 24,
+                paddingHorizontal: 18,
+                backgroundColor: '#fff',
+              }}>
+              {noti?.map((item, index) => (
+                <Pressable
+                  key={index}
                   style={[
-                    styles.postSummary,
                     {
-                      width: Dimensions.get('window').width - 150,
-                      color: '#000',
+                      borderTopWidth: index === 0 ? 0 : 1,
+                      borderTopColor: '#F6F6F6',
+                      backgroundColor: 'yellow',
                     },
-                  ]}>
-                  {item.postContent.slice(0, 30)}
+                    styles.newsContainer,
+                  ]}
+                  onPress={async () => {
+                    if (item.type === 'WELCOME') {
+                      // const result = await readNotification(item.id);
+                      console.log('알람 확인 후 마이페이지로 이동');
+                      navigation.navigate('MyPage');
+                    } else if (
+                      item.type === 'BEFORE_EXPIRE' ||
+                      item.type === 'EXPIRE' ||
+                      item.type === 'NOT_AUTHENTICATED'
+                    ) {
+                      if (user?.isAuthenticated) {
+                        // const result = await readNotification(item.id);
+                        console.log('알람 확인 후 정회원인증으로 이동');
+                        navigation.navigate('RegularMemberAuthMyPage');
+                      } else navigation.navigate('RegularMemberAuthMyPage');
+                    } else if (
+                      item.type === 'BOARD_BLIND' ||
+                      item.type === 'PIN_BOARD_BLIND' ||
+                      item.type === 'POST_BLIND' ||
+                      item.type === 'COMMENT_BLIND'
+                    ) {
+                      const itemContent = (
+                        <View>
+                          <Text
+                            style={[
+                              fontRegular,
+                              {
+                                marginBottom: 15,
+                                width: Dimensions.get('window').width - 100,
+                              },
+                            ]}>
+                            {item.blind?.message}
+                          </Text>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              style={[fontBold, {width: 88, marginRight: 7}]}>
+                              블라인드 사유
+                            </Text>
+                            <Text style={{width: 148}}>
+                              {item.blind?.reason}
+                            </Text>
+                          </View>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              style={[fontBold, {width: 88, marginRight: 7}]}>
+                              {item.type === 'BOARD_BLIND'
+                                ? '게시판 이름'
+                                : item.type === 'PIN_BOARD_BLIND'
+                                ? '게시판 이름'
+                                : item.type === 'POST_BLIND'
+                                ? '작성 내용'
+                                : item.type === 'COMMENT_BLIND'
+                                ? '작성 내용:'
+                                : ''}
+                            </Text>
+                            <Text
+                              style={{
+                                width: Dimensions.get('window').width - 178,
+                              }}>
+                              {item.blind?.content}
+                            </Text>
+                          </View>
+                        </View>
+                      );
+                      setModalBody(itemContent);
+                      // const result = await readNotification(item.id);
+                      console.log('블라인드 알림 확인');
+                      setBlindModalVisible(true);
+                    } else if (
+                      item.type === 'DELETE_BOARD_BLIND' ||
+                      item.type === 'DELETE_POST_BLIND' ||
+                      item.type === 'DELETE_COMMENT_BLIND'
+                    ) {
+                      const itemContent = (
+                        <View>
+                          <Text
+                            style={[
+                              fontRegular,
+                              {
+                                marginBottom: 15,
+                                width: Dimensions.get('window').width - 100,
+                              },
+                            ]}>
+                            {item.deleteBlind?.message}
+                          </Text>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              style={[fontBold, {width: 88, marginRight: 7}]}>
+                              {item.type === 'DELETE_BOARD_BLIND'
+                                ? '게시판 이름'
+                                : item.type === 'DELETE_POST_BLIND'
+                                ? '작성 내용'
+                                : item.type === 'DELETE_COMMENT_BLIND'
+                                ? '작성 내용'
+                                : ''}
+                            </Text>
+                            <Text
+                              ellipsizeMode={'tail'}
+                              numberOfLines={3}
+                              style={{
+                                width: Dimensions.get('window').width - 178,
+                              }}>
+                              {item.deleteBlind?.content}
+                            </Text>
+                          </View>
+                        </View>
+                      );
+                      setModalBody(itemContent);
+                      // const result = await readNotification(item.id);
+                      console.log('블라인드 알림 확인');
+                      setBlindModalVisible(true);
+                    }
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    {item.type === 'WELCOME' && <CheckMark />}
+                    {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
+                    <View>
+                      <Text style={styles.newsTitle}>{item.title}</Text>
+                      <Text
+                        ellipsizeMode={'tail'}
+                        numberOfLines={1}
+                        style={styles.newsMore}>
+                        {item.content
+                          ? item.content
+                          : item.blind?.content
+                          ? item.blind?.content
+                          : item.deleteBlind?.content}
+                      </Text>
+                    </View>
+                  </View>
+                  <View>
+                    <RightArrowBold />
+                  </View>
+                </Pressable>
+              ))}
+
+              {blindModalVisible && (
+                <ModalBottom
+                  modalVisible={blindModalVisible}
+                  setModalVisible={setBlindModalVisible}
+                  title="블라인드 안내"
+                  content={modalBody}
+                  isContentCenter={false}
+                  purpleButtonText="수정광산 이용 방향 보기"
+                  purpleButtonFunc={() => {
+                    setBlindModalVisible(!blindModalVisible);
+                    navigation.navigate('DirectionAgreeScreen');
+                  }}
+                  whiteButtonText="확인"
+                  whiteButtonFunc={() => {
+                    setBlindModalVisible(!blindModalVisible);
+                  }}
+                />
+              )}
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            padding: 24,
+          }}>
+          <View style={styles.rowContainer}>
+            <Text style={styles.boardTitle}>고정 게시판</Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                {
+                  user?.isAuthenticated
+                    ? navigation.navigate('Board')
+                    : Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                }
+              }}>
+              <Text style={styles.more}>더보기</Text>
+            </TouchableWithoutFeedback>
+          </View>
+          {/* 게시판 글 목록 */}
+          {!isInited ? (
+            // true?
+            skeletonComponent
+          ) : user?.isAuthenticated ? (
+            pinBoardContents?.length === 0 ? (
+              <View
+                style={{
+                  backgroundColor: '#F7F7F7',
+                  paddingVertical: 27,
+                  borderRadius: 20,
+                }}>
+                <Text
+                  style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
+                  고정된 게시판이 없습니다.
                 </Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <EmptyHeart />
-                  <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-                  <EmptyComment />
-                  <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
-                </View>
               </View>
-            </TouchableOpacity>
-          ))
-        ) : (
+            ) : (
+              pinBoardContents?.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('PostListScreen', {
+                      boardId: item.boardId,
+                    })
+                  }>
+                  <View style={styles.pinBoardContainer}>
+                    <View style={styles.postTitleSummaryContainer}>
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={styles.postTitleSummary}>
+                        {item.boardName.slice(0, numOfBoardTitle)}
+                      </Text>
+                    </View>
+                    <View style={styles.postSummaryContainer}>
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={styles.postSummary}>
+                        {item.recentPostContent
+                          ? item.recentPostContent
+                          : '아직 작성된 글이 없습니다!'}
+                      </Text>
+                    </View>
+                    <View style={styles.postNewLabelContainer}>
+                      {item.todayNewPost ? (
+                        <Text style={styles.postNewLabel}>N</Text>
+                      ) : (
+                        <></>
+                      )}
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))
+            )
+          ) : (
+            <View
+              style={{
+                backgroundColor: '#F7F7F7',
+                paddingVertical: 27,
+                borderRadius: 20,
+              }}>
+              <Text
+                style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
+                정회원 인증 후 확인하실 수 있습니다.
+              </Text>
+            </View>
+          )}
+
+          {/* 게시판 글 목록 */}
           <View
             style={{
-              backgroundColor: '#F7F7F7',
-              paddingVertical: 27,
-              borderRadius: 20,
-            }}>
-            <Text style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-              정회원 인증 후 확인하실 수 있습니다.
-            </Text>
+              borderBottomColor: '#F0F0F0',
+              borderBottomWidth: 1,
+              marginBottom: 24,
+              marginTop: 24,
+            }}
+          />
+          <View style={styles.rowContainer}>
+            <Text style={styles.boardTitle}>HOT 게시글</Text>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                {
+                  user?.isAuthenticated
+                    ? navigation.navigate('PostListScreen', {boardId: 2})
+                    : // ? navigation.navigate('InformationUse') :
+                      Toast.show('접근 권한이 없습니다.', Toast.LONG);
+                }
+              }}>
+              <Text style={styles.more}>더보기</Text>
+            </TouchableWithoutFeedback>
           </View>
+          {!isInited ? (
+            skeletonComponent
+          ) : user?.isAuthenticated ? (
+            hotBoardContents?.hotPosts.length === 0 ? (
+              <View
+                style={{
+                  backgroundColor: '#F7F7F7',
+                  paddingVertical: 27,
+                  borderRadius: 20,
+                }}>
+                <Text
+                  style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
+                  공감을 10개 이상 받은 게시글이 없습니다.
+                </Text>
+              </View>
+            ) : (
+              hotBoardContents?.hotPosts.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('PostScreen', {postId: item.postId})
+                  }>
+                  <View style={styles.hotPostContainer}>
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={[
+                        styles.postSummary,
+                        {
+                          width: Dimensions.get('window').width - 150,
+                          color: '#000',
+                        },
+                      ]}>
+                      {item.postContent.slice(0, 30)}
+                    </Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <EmptyHeart />
+                      <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+                      <EmptyComment />
+                      <Text style={styles.HOTpostComment}>
+                        {item.commentCount}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))
+            )
+          ) : (
+            <View
+              style={{
+                backgroundColor: '#F7F7F7',
+                paddingVertical: 27,
+                borderRadius: 20,
+              }}>
+              <Text
+                style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
+                정회원 인증 후 확인하실 수 있습니다.
+              </Text>
+            </View>
+          )}
+        </View>
+        {user?.blacklist && setBlacklistblindModalVisible(true)}
+        {blacklistblindModalVisible && (
+          <ModalBottom
+            modalVisible={blacklistblindModalVisible}
+            setModalVisible={setBlacklistblindModalVisible}
+            title={'서비스 이용 제한 안내'}
+            content={blacklistModalContent}
+            isContentCenter={false}
+            purpleButtonText="서비스 이용 방향 보기"
+            purpleButtonFunc={() => {
+              setBlacklistblindModalVisible(!blacklistblindModalVisible);
+              navigation.navigate('InformationUse');
+            }}
+            whiteButtonText="확인"
+            whiteButtonFunc={() =>
+              // TODO: 앱 종료
+              setBlacklistblindModalVisible(!blacklistblindModalVisible)
+            }
+          />
         )}
-      </View>
-      {user?.blacklist && setBlacklistblindModalVisible(true)}
-      {blacklistblindModalVisible && (
-        <ModalBottom
-          modalVisible={blacklistblindModalVisible}
-          setModalVisible={setBlacklistblindModalVisible}
-          title={'서비스 이용 제한 안내'}
-          content={blacklistModalContent}
-          isContentCenter={false}
-          purpleButtonText="서비스 이용 방향 보기"
-          purpleButtonFunc={() => {
-            setBlacklistblindModalVisible(!blacklistblindModalVisible);
-            navigation.navigate('InformationUse');
-          }}
-          whiteButtonText="확인"
-          whiteButtonFunc={() =>
-            // TODO: 앱 종료
-            setBlacklistblindModalVisible(!blacklistblindModalVisible)
-          }
-        />
-      )}
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -568,51 +630,53 @@ const styles = StyleSheet.create({
   },
   skeletonRow: {
     flexDirection: 'row',
-    height: 32
+    height: 32,
   },
   skeletonBoardName: {
     width: 87,
     height: 12,
-    backgroundColor: '#E1E4EA'
+    backgroundColor: '#E1E4EA',
   },
   skeletonBoardContent: {
     height: 12,
     backgroundColor: '#E1E4EA',
-    marginLeft: 16
-  }
+    marginLeft: 16,
+  },
 });
 
-const skeletonComponent = <View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+const skeletonComponent = (
+  <View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 136}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 170}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
+    </View>
+    <View style={styles.skeletonRow}>
+      <View style={styles.skeletonBoardName}></View>
+      <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
+    </View>
   </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
-  </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
-  </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 136}]}></View>
-  </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 170}]}></View>
-  </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 185}]}></View>
-  </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 148}]}></View>
-  </View>
-  <View style={styles.skeletonRow}>
-    <View style={styles.skeletonBoardName}></View>
-    <View style={[styles.skeletonBoardContent, {width: 164}]}></View>
-  </View>
-</View>
+);

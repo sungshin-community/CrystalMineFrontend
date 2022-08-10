@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, Pressable, View, Image, ScrollView, Modal} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Pressable, View, Image, ScrollView, Modal, Dimensions} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import {NoticeDto} from '../../../classes/mypage/NoticeDto';
@@ -30,7 +30,7 @@ function Notice({navigation, route}: Props) {
     }
   };
   return (
-    <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
+    <ScrollView style={{backgroundColor: '#E5E5E5'}}>
       <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={[fontMedium, styles.title]}>{data?.title}</Text>
@@ -79,7 +79,7 @@ function Notice({navigation, route}: Props) {
                 </ScrollView>
         </View>}
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     color: '#222222',
+    width: Dimensions.get('window').width - 70,
   },
 });
 

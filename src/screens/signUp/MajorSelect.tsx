@@ -114,21 +114,18 @@ export default function MajorSelect({navigation, route}: Props) {
 
   return (
     <>
-      {modalVisible ? (
-        <View
-          style={{
-            position: 'absolute',
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 1,
-            elevation: 1,
-          }}
+      {modalVisible && (
+        <ModalBottom
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          title={`소속 학과가 학과 리스트에 없을 경우,
+아래 내용을 따라 이용 부탁드립니다.`}
+          content={modalBody}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => setModalVisible(!modalVisible)}
         />
-      ) : null}
+      )}
       <View
         style={{
           width: (Dimensions.get('window').width / 7) * 6,
@@ -140,21 +137,11 @@ export default function MajorSelect({navigation, route}: Props) {
         <NormalOneLineText style={{marginBottom: 7}}>
           소속 학과를 선택해주세요
         </NormalOneLineText>
-        <Pressable onPress={()=>setModalVisible(true) }>
+        <Pressable onPress={() => setModalVisible(true)}>
           <Description style={{textDecorationLine: 'underline'}}>
-              소속 학과가 선택지에 없나요?
+            소속 학과가 선택지에 없나요?
           </Description>
-          </Pressable>
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          title={`소속 학과가 학과 리스트에 없을 경우,
-아래 내용을 따라 이용 부탁드립니다.`}
-          content={modalBody}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => setModalVisible(!modalVisible)}
-        />
+        </Pressable>
       </Container>
       <View style={{flex: 1}}>
         <RadioContainer>

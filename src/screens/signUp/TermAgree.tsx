@@ -38,29 +38,10 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function TermAgree({navigation}: Props) {
-  const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
-  const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
-  const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
-  const [secondTermSpread, setSecondTermSpread] = useState<boolean>(false);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
 
-  const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
-    if (clickedComponent === 'firstTerm') {
-      setFirstTermSpread(!firstTermSpread);
-    } else if (clickedComponent === 'secondTerm') {
-      setSecondTermSpread(!secondTermSpread);
-    } else if (clickedComponent === 'wholeAgree') {
-      setFirstTermChecked(true);
-      setSecondTermChecked(true);
-    } else if (clickedComponent === 'wholeDisagree') {
-      setFirstTermChecked(false);
-      setSecondTermChecked(false);
-    }
-  };
-
-  const handleChange = (id: number, checked: boolean) => {
-    console.log("hangleChange 호출됨. key는", id);
-    const agreementList = agreements.map(a => a.id === id ? {...a, checked: checked} : a);
+  const handleChange = (id: number) => {
+    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
     setAgreements(agreementList);
   };
 
@@ -69,9 +50,6 @@ function TermAgree({navigation}: Props) {
       const agreementList = await getSignUpContract();
       agreementList.map(a => a.checked = false);
       setAgreements(agreementList);
-      for(let i = 0; i < 2; i++) {
-        console.log(agreements[i].title, agreements[i].checked, agreements[i].id);
-      }
     }
     init();
   }, []);
@@ -85,8 +63,6 @@ function TermAgree({navigation}: Props) {
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
-      backgroundColor:
-        firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc',
       color: '#FFFFFF',
       width: 343,
       height: 56,
@@ -139,12 +115,12 @@ function TermAgree({navigation}: Props) {
                     agreements.length > 0 && agreements.filter(a => a.checked).length == agreements.length ?
                     <RoundChecked
                       style={styles.wholeAgreeCheckBox}
-                      onPress={(e: any) => onClick(e, 'wholeAgree')}
+                      // onPress={(e: any) => onClick(e, 'wholeAgree')}
                     />
                     :
                     <RoundUnchecked
                       style={styles.wholeAgreeCheckBox}
-                      onPress={(e: any) => onClick(e, 'wholeAgree')}
+                      // onPress={(e: any) => onClick(e, 'wholeAgree')}
                     />
                   }
                 <Text
@@ -156,7 +132,7 @@ function TermAgree({navigation}: Props) {
                   약관 전체 동의
                 </Text>
               </TouchableOpacity>
-              {agreements.map((a, index) => <AgreementContainer id={index} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
+              {agreements.map((a, index) => <AgreementContainer key={index} id={index} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
             </View>
           </View>
         </ScrollView>

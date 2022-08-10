@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import { FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, View, Text, TouchableWithoutFeedback, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import GrayFlag from '../../resources/icon/GrayFlag';
 import MyPostingIcon, {
   MyCommentIcon,
   ScrapPostingIcon,
 } from '../../resources/icon/MyPostingIcon';
 import OrangeFlag from '../../resources/icon/OrangeFlag';
-import { GrayPin, OrangePin, PurplePin } from '../../resources/icon/Pin';
+import { DarkPin, GrayPin, OrangePin, PurplePin } from '../../resources/icon/Pin';
 import PlusIcon from '../../resources/icon/PlusIcon';
 import Board from '../classes/Board';
 import { toggleBoardPin } from '../common/boardApi';
@@ -21,37 +21,48 @@ interface Props {
   isInited: boolean;
 }
 
-export default function BoardList({ items, moveToBoard, search, isInited }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export default function BoardList({ items, moveToBoard, search, isInited, onUpdate }: Props) {
 
   return (
     !isInited ?
     pinnedSkeletonComponent
     :
-    items != null && items.length > 0 ? items.map((item, index) => 
+      items != null && items.length > 0 ? items.map((item, index) =>
         <TouchableOpacity
           key={index}
           onPress={() => moveToBoard(item.id)}
           style={{
-            paddingVertical: 9,
+            height: 42,
+            justifyContent: 'center',
             backgroundColor: `${search ? '#fff' : '#F6F6F6'}`,
           }}>
           <View style={{
             flexDirection: 'row',
             alignItems: 'center',
+            height: 42,
           }}>
-            {!item.isPinned ? (
-              item.isOwner ? <GrayFlag style={{ marginLeft: 23 }} /> : <GrayPin style={{ marginLeft: 20 }} />
-            ) : item.isOfficial ? (
-              <PurplePin style={{ marginLeft: 20 }} />
-            ) : (
-              item.isOwner ? <OrangeFlag style={{ marginLeft: 23 }} /> : <OrangePin style={{ marginLeft: 20 }} />
-            )}
+            <Pressable
+              style={{ height: 42, justifyContent: 'center', marginLeft: 7, alignItems: 'center',
+              width: 42
+            }}
+              onPress={async () => {
+                let result: boolean = await toggleBoardPin(item.id);
+                if (result) {
+                  onUpdate();
+                }}
+            }>
+              {item.isOfficial ? (
+                item.id === 1 ? <DarkPin style={{ marginLeft: 13 }} />: 
+                <PurplePin style={{ marginLeft: 13 }} />
+              ) : (
+                item.isOwner ? <OrangeFlag style={{ marginLeft: 13 }} /> : <OrangePin style={{ marginLeft: 13 }} />
+              )}
+            </Pressable>
             <Text
               style={{
                 fontSize: 15,
                 color: '#000000',
-                marginLeft: 15,
+                marginLeft: 10,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
               }}>
               {item.name}
@@ -62,7 +73,7 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
               <Text style={[fontRegular, { color: '#BDBDBD', marginLeft: 60, fontSize: 13, marginTop: 6, paddingRight: 20 }]}>{item.introduction}</Text>
             </View>
           )}
-        </TouchableOpacity>
+      </TouchableOpacity>
       )
      :
       <View
@@ -85,7 +96,7 @@ export default function BoardList({ items, moveToBoard, search, isInited }: Prop
 }
 
 export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Props) {
-  const [value, setValue] = useState<boolean>(false);
+
   return (
     !isInited ?
     boardSkeletonComponent
@@ -96,41 +107,38 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
         onPress={() => moveToBoard(item.id)}
         style={{
           flexDirection: 'row',
-          paddingVertical: 11,
+          height: 61,
+          justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#F6F6F6',
         }}>
-        {!item.isPinned ? (
-          <GrayPin
-            style={{ marginLeft: 20 }}
+          <Pressable
             onPress={async () => {
               let result: boolean = await toggleBoardPin(item.id);
               if (result) {
-                item.isPinned = true;
-                setValue(!value);
                 onUpdate();
               }
             }}
-          />
-        ) : (
-          <PurplePin
-            style={{ marginLeft: 20 }}
-            onPress={async () => {
-              let result: boolean = await toggleBoardPin(item.id);
-              if (result) {
-                item.isPinned = false;
-                setValue(!value);
-                onUpdate();
-              }
-            }}
-          />
-        )}
-        <View style={{flex: 1}}>
+            style={{height: 61, justifyContent: 'center', 
+            marginLeft: 10,
+            width: 44
+          }}>
+            {item.id === 1 ? <DarkPin style={{marginLeft: 10}} /> : !item.isPinned ? (
+              <GrayPin
+                style={{ marginLeft: 10 }}
+                
+              />
+            ) : (
+              <PurplePin
+                style={{ marginLeft: 10 }}
+              />
+            )}
+        </Pressable>
+        <View style={{flex: 1, marginLeft: 5, marginRight: 15}}>
           <Text
             style={{
               fontSize: 14,
               color: '#000000',
-              marginLeft: 15,
               fontFamily: 'SpoqaHanSansNeo-Regular',
             }}>
             {item.name}
@@ -141,8 +149,6 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
             style={{
               fontSize: 14,
               color: '#9F9F9F',
-              marginLeft: 15,
-              marginRight: 15,
               fontFamily: 'SpoqaHanSansNeo-Regular',
             }}>
             {item.introduction}
@@ -179,57 +185,37 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
             onPress={() => moveToBoard(item.id)}
             style={{
               flexDirection: 'row',
-              paddingVertical: 11,
+              height: 61,
+              justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#F6F6F6',
             }}>
-            {!item.isPinned ? (
-              item.isOwner ? <GrayFlag style={{ marginLeft: 23 }}
+              <Pressable 
                 onPress={async () => {
                   let result: boolean = await toggleBoardPin(item.id);
                   if (result) {
-                    item.isPinned = true;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }} /> : <GrayPin
-                style={{ marginLeft: 20 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = true;
-                    setValue(!value);
                     onUpdate();
                   }
                 }}
-              />
-            ) : (
-              item.isOwner ? <OrangeFlag style={{ marginLeft: 23 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = false;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }} /> : <OrangePin
-                style={{ marginLeft: 20 }}
-                onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
-                    item.isPinned = false;
-                    setValue(!value);
-                    onUpdate();
-                  }
-                }}
-              />
-            )}
-            <View style={{flex: 1}}>
+                style={{height: 61, justifyContent: 'center', 
+              marginLeft: 10,
+              width: 44}}>
+              {!item.isPinned ? (
+                item.isOwner ? <GrayFlag style={{ marginLeft: 13 }}/> : <GrayPin
+                  style={{ marginLeft: 10 }}
+                />
+              ) : (
+                item.isOwner ? <OrangeFlag style={{ marginLeft: 13 }}
+                  /> : <OrangePin
+                  style={{ marginLeft: 10 }}
+                />
+              )}
+            </Pressable>
+            <View style={{flex: 1, marginLeft: 5, marginRight: 15}}>
               <Text
                 style={{
                   fontSize: 14,
                   color: '#000000',
-                  marginLeft: 15,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}>
                 {item.name}
@@ -240,8 +226,6 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
                 style={{
                   fontSize: 14,
                   color: '#9F9F9F',
-                  marginLeft: 15,
-                  marginRight: 15,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}>
                 {item.introduction}

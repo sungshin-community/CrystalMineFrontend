@@ -33,12 +33,14 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function CreateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
-  const [hotable, setHotable] = useState<boolean>(false);
+  const [hotable, setHotable] = useState<boolean>(true);
 
   const onSubmitPress = async () => {
     const result = await createBoard(boardName, boardIntroduction, hotable);
     if (result) {
       Toast.show('게시판을 성공적으로 생성했습니다.', Toast.LONG);
+      navigation.pop();
+      navigation.pop();
       navigation.navigate('PostListScreen', {boardId: result.id});
     }
   };
@@ -47,7 +49,7 @@ function CreateBoard({navigation}: Props) {
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (boardName && boardIntroduction)  onSubmitPress();
+            if (boardName && boardIntroduction) onSubmitPress();
           }}>
           <Text
             style={[
@@ -74,10 +76,10 @@ function CreateBoard({navigation}: Props) {
             onChangeText={value => {
               setBoardName(value);
               if (value.length === 15)
-                 Toast.show(
-                '게시판 이름, 설명의 글자 수를 확인해주세요.',
-                Toast.LONG,
-              );
+                Toast.show(
+                  '게시판 이름, 설명의 글자 수를 확인해주세요.',
+                  Toast.LONG,
+                );
             }}
             maxLength={15}
             style={{fontSize: 15, paddingVertical: 20}}
@@ -98,11 +100,11 @@ function CreateBoard({navigation}: Props) {
               autoCorrect={false}
               onChangeText={value => {
                 setBoardIntroduction(value);
-                 if (value.length === 22)
-                 Toast.show(
-                '게시판 이름, 설명의 글자 수를 확인해주세요.',
-                Toast.LONG,
-              );
+                if (value.length === 22)
+                  Toast.show(
+                    '게시판 이름, 설명의 글자 수를 확인해주세요.',
+                    Toast.LONG,
+                  );
               }}
               maxLength={22}
               onBlur={() => {
@@ -121,10 +123,11 @@ function CreateBoard({navigation}: Props) {
           <Pressable
             onPress={() => {
               setHotable(!hotable);
-            }}>
+            }}
+            style={{flexDirection: 'row'}}>
             {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
+            <Text style={[{marginLeft: 5}]}>HOT 게시판 전송 허용</Text>
           </Pressable>
-          <Text style={[{marginLeft: 5}]}>HOT 게시판 전송 허용</Text>
         </View>
       </View>
     </>

@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import Response from '../../classes/Response';
+import SortIcon from '../../../resources/icon/SortIcon';
 import {PostContent} from '../../classes/Search';
 import {getBoardInfo, getHotBoardPosts} from '../../common/boardApi';
 import client from '../../common/client';
@@ -135,7 +136,7 @@ function WikiList({boardId}: any) {
                   marginLeft: 24,
                   marginBottom: 10,
                   marginTop: 16,
-                  width: 66,
+                  width: 83,
                   height: 24,
                   backgroundColor: '#f6f6f6',
                   borderRadius: 12,
@@ -143,7 +144,10 @@ function WikiList({boardId}: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
+                <Text style={{marginRight: 5}}>
+                  {sortBy === 'createdAt' ? "최신순" : "공감순"}
+                </Text>
+                <SortIcon />
               </TouchableOpacity>
             </View>
             <FlatList

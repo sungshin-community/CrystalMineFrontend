@@ -36,6 +36,7 @@ import {fontMedium, fontRegular} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {
+  BigDarkPin,
   BigGrayPin,
   BigOrangePin,
   BigPurplePin,
@@ -45,6 +46,7 @@ import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
+import SortIcon from '../../../resources/icon/SortIcon';
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
@@ -132,7 +134,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     return (
       <>
         {boardInfo?.id === 1 ? (
-          <BigPurplePin />
+          <BigDarkPin />
         ) : (
           <Pressable
             onPress={async () => {
@@ -180,15 +182,14 @@ const PostListScreen = ({navigation, route}: Props) => {
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
         <>
-          {boardInfo?.type !== 'PUBLIC' && (
+          {boardInfo?.type !== 'OFFICIAL' ?
             <SpinningThreeDots
               handleDefaultModeComponent={handleBoardSearchComponent}
               isMine={boardInfo?.isOwner}
               handleOptionModeIsMineComponent={handleBoardSettingComponent}
               handleOptionModeIsNotMineComponent={handleBoardReportComponent}
             />
-          )}
-          {boardInfo?.type === 'PUBLIC' && handleBoardSearchComponent}
+         : handleBoardSearchComponent}
         </>
       ),
       headerTitleAlign: 'center',
@@ -327,7 +328,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 marginLeft: 24,
                 marginBottom: 10,
                 marginTop: 16,
-                width: 66,
+                width: 83,
                 height: 24,
                 backgroundColor: '#f6f6f6',
                 borderRadius: 12,
@@ -335,7 +336,10 @@ const PostListScreen = ({navigation, route}: Props) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
+              <Text style={{marginRight: 5}}>
+                {sortBy === 'createdAt' ? "최신순" : "공감순"}
+              </Text>
+              <SortIcon />
             </TouchableOpacity>
           </View>
         )}

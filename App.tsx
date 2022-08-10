@@ -17,6 +17,7 @@ import ResetPasswordInputNewPassword from './src/screens/signIn/ResetPasswordInp
 import ResetPasswordInputNewPasswordConfirm from './src/screens/signIn/ResetPasswordInputNewPasswordConfirm';
 // signUp
 import SignUpId from './src/screens/signUp/SignUpId';
+import { MailVerificationMethodGuide } from './src/screens/signUp/MailVerificationMethodGuide';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
@@ -195,6 +196,29 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() => navigation.popToTop()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MailVerificationMethodGuide"
+                component={MailVerificationMethodGuide}
+                options={({navigation}) => ({
+                  title: '메일 인증 방법 안내',
+                  animation: 'slide_from_right',
+                  headerTitleAlign: 'center',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.goBack()}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -774,22 +798,6 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                  headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
-                  ),
                 })}
               />
               <Stack.Screen
@@ -1631,6 +1639,29 @@ const App = () => {
                 })}
               />
               <Stack.Screen
+                name="MailVerificationMethodGuide"
+                component={MailVerificationMethodGuide}
+                options={({navigation}) => ({
+                  title: '메일 인증 방법 안내',
+                  animation: 'slide_from_right',
+                  headerTitleAlign: 'center',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.goBack()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
                 name="SignUpPassword"
                 component={SignUpPassword}
                 options={({navigation}) => ({
@@ -2204,22 +2235,6 @@ const App = () => {
                     fontSize: 19,
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                  headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
-                  ),
                 })}
               />
               <Stack.Screen

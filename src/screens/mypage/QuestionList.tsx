@@ -282,8 +282,8 @@ function QuestionList({navigation, route}: Props) {
                 tintColor={'#A055FF'} // for ios
               />
             }
-            // onEndReached={fetchNextPage}
-            // onEndReachedThreshold={0.8}
+            onEndReached={fetchNextPage}
+            onEndReachedThreshold={0.8}
           />
           <View>
             {isNextPageLoading && (
