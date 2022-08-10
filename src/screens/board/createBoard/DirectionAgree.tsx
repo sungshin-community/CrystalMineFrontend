@@ -38,31 +38,10 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function TermAgreeCreateBoard({navigation}: Props) {
-  const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
-  const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
-  const [firstTermSpread, setFirstTermSpread] = useState<boolean>(false);
-  const [secondTermSpread, setSecondTermSpread] = useState<boolean>(false);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
 
-  const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
-    if (clickedComponent === 'firstTerm') {
-      setFirstTermSpread(!firstTermSpread);
-    } else if (clickedComponent === 'secondTerm') {
-      setSecondTermSpread(!secondTermSpread);
-    } else if (clickedComponent === 'wholeAgree') {
-      setFirstTermChecked(true);
-      setSecondTermChecked(true);
-    } else if (clickedComponent === 'wholeDisagree') {
-      setFirstTermChecked(false);
-      setSecondTermChecked(false);
-    }
-  };
-
-  const handleChange = (id: number, checked: boolean) => {
-    console.log('hangleChange 호출됨. key는', id);
-    const agreementList = agreements.map(a =>
-      a.id === id ? {...a, checked: checked} : a,
-    );
+  const handleChange = (id: number) => {
+    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
     setAgreements(agreementList);
   };
 
@@ -84,8 +63,6 @@ function TermAgreeCreateBoard({navigation}: Props) {
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
-      backgroundColor:
-        firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc',
       color: '#FFFFFF',
       width: 343,
       height: 56,
@@ -133,12 +110,10 @@ function TermAgreeCreateBoard({navigation}: Props) {
                   agreements.length ? (
                   <RoundChecked
                     style={styles.wholeAgreeCheckBox}
-                    onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 ) : (
                   <RoundUnchecked
                     style={styles.wholeAgreeCheckBox}
-                    onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 )}
                 <Text
