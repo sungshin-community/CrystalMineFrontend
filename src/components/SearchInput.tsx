@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextInput,
   StyleSheet,
@@ -13,10 +13,24 @@ interface Props {
   setSearchWord: (value: any) => void;
   startSearching: () => void;
   boardName?: string;
+  searchWord: string;
 }
 
 // 검색할 때 상단에 나오는 Input 컴포넌트
-function SearchInput({setSearchWord, startSearching, boardName}: Props) {
+function SearchInput({setSearchWord, startSearching, boardName, searchWord}: Props) {
+  const [word, setWord] = useState('');
+
+  useEffect(() => {
+    if (searchWord) {
+      setWord(searchWord);
+    }
+  }, [searchWord]);
+
+  const handleInput = (value: string) => {
+    setSearchWord(value);
+    setWord(value);
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -33,12 +47,13 @@ function SearchInput({setSearchWord, startSearching, boardName}: Props) {
         }
         placeholderTextColor="#898989"
         returnKeyType="search"
-        onChangeText={(word: any) => setSearchWord(word)}
+        onChangeText={(value: any) => handleInput(value)}
         autoCorrect={false}
         autoCapitalize="none"
         onSubmitEditing={startSearching}
         keyboardType="default"
         enablesReturnKeyAutomatically
+        value={word}
       />
       <Pressable style={styles.icon} onPress={startSearching}>
         <SearchIcon />
