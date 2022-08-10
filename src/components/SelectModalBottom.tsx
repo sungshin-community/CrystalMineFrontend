@@ -129,7 +129,7 @@ export const SelectModalBottom = ({
                   ) {
                     Toast.show(
                       '신고하신 내용이 정상적으로 접수되었습니다.',
-                      Toast.LONG,
+                      Toast.SHORT,
                     );
                     setModalVisible(false);
                   } else if (
@@ -141,7 +141,7 @@ export const SelectModalBottom = ({
                     setModalVisible(false);
                     Toast.show(
                       '보유 포인트가 부족하여 신고가 불가능합니다.',
-                      Toast.LONG,
+                      Toast.SHORT,
                     );
                   } else if (
                     result.code ===
@@ -151,12 +151,12 @@ export const SelectModalBottom = ({
                   ) {
                     Toast.show(
                       '기타 사유에 대한 내용이 필요합니다',
-                      Toast.LONG,
+                      Toast.SHORT,
                     );
                     setModalVisible(true);
                   } else {
                     //TODO: 나머지 에러날 경우 에러화면으로 이동
-                    Toast.show(result.detail, Toast.LONG);
+                    Toast.show(result.detail, Toast.SHORT);
                     setModalVisible(false);
                   }
                 }}>

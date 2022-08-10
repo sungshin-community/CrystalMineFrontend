@@ -177,7 +177,7 @@ function DirectionAgreeMyPage({navigation}: Props) {
               onClick={async () => {
                 let result: string = await sendEmail();
                 if (result === 'ok') {
-                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.LONG);
+                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate('RegularMemberAuthMyPage');
                 } else {
                   console.log('이메일 발송 실패');

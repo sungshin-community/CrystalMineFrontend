@@ -69,7 +69,7 @@ const Comment = ({
             setModalVisible(false);
             Toast.show(
               '작성하신 댓글이 성공적으로 삭제되었습니다.',
-              Toast.LONG,
+              Toast.SHORT,
             );
           }}
           whiteButtonText="취소"
@@ -278,7 +278,7 @@ export const Recomment = ({
             setModalVisible(false);
             Toast.show(
               '작성하신 댓글이 성공적으로 삭제되었습니다.',
-              Toast.LONG,
+              Toast.SHORT,
             );
           }}
           whiteButtonText="취소"

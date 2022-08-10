@@ -46,7 +46,7 @@ function RequestWriteScreen({navigation}: Props) {
     const result = await writeQuestion(title, content, imageResponse);
     if (result) {
       navigation.navigate('QuestionList');
-      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.LONG);
+      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.SHORT);
     }
   };
 
@@ -96,7 +96,7 @@ function RequestWriteScreen({navigation}: Props) {
               if (value.length === 23)
                 Toast.show(
                   '문의 제목은 23글자까지만 입력 가능합니다.',
-                  Toast.LONG,
+                  Toast.SHORT,
                 );
             }}
             maxLength={23}
@@ -113,7 +113,7 @@ function RequestWriteScreen({navigation}: Props) {
               if (value.length === 500)
                 Toast.show(
                   '문의 내용은 500글자까지만 입력 가능합니다.',
-                  Toast.LONG,
+                  Toast.SHORT,
                 );
             }}
             maxLength={500}

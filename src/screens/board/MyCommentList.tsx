@@ -243,7 +243,7 @@ export default function MyCommentList({navigation, route}: Props) {
             await deleteMyComments(myCommentList.filter(c => c.isChecked).map(c => c.id));
             const commentList = await getMyCommentList(currentPage, sortBy);
             setMyCommentList(commentList);
-            Toast.show("댓글이 성공적으로 삭제되었습니다", Toast.LONG);
+            Toast.show("댓글이 성공적으로 삭제되었습니다", Toast.SHORT);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);

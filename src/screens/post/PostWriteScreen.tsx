@@ -94,7 +94,7 @@ function PostWriteScreen({navigation, route}: Props) {
       } else {
         navigation.navigate('PostListScreen', {boardId});
       }
-      Toast.show('게시글이 등록되었습니다.', Toast.LONG);
+      Toast.show('게시글이 등록되었습니다.', Toast.SHORT);
     }
   };
 
@@ -133,7 +133,7 @@ function PostWriteScreen({navigation, route}: Props) {
           }}
           onPress={() => {
             setGoBackWarning(true);
-            console.log('click')
+            console.log('click');
           }}>
           <BackButtonIcon />
         </TouchableHighlight>
@@ -196,7 +196,13 @@ function PostWriteScreen({navigation, route}: Props) {
                 value={title}
                 onChangeText={value => {
                   setTitle(value);
+                  if (value.length === 20)
+                    Toast.show(
+                      '게시글 제목은 20글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
                 }}
+                maxLength={23}
                 style={[fontMedium, styles.title]}
               />
               <View
@@ -214,7 +220,13 @@ function PostWriteScreen({navigation, route}: Props) {
             multiline={true}
             onChangeText={value => {
               setContent(value);
+              if (value.length === 1000)
+                Toast.show(
+                  '게시글 내용은 1000글자까지만 입력 가능합니다.',
+                  Toast.SHORT,
+                );
             }}
+            maxLength={1000}
             onBlur={() => {
               Keyboard.dismiss();
             }}
@@ -247,25 +259,23 @@ function PostWriteScreen({navigation, route}: Props) {
           </View>
         </View>
       </View>
-       {
-    goBackWarning && (
-      <ModalBottom
-        modalVisible={goBackWarning}
-        setModalVisible={setGoBackWarning}
-        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
-        isContentCenter={true}
-        purpleButtonText="확인"
-        purpleButtonFunc={() => {
-          setGoBackWarning(!goBackWarning);
-          navigation.goBack();
-        }}
-        whiteButtonText="취소"
-        whiteButtonFunc={() => {
-          setGoBackWarning(!goBackWarning);
-        }}
-      />
-    )
-  }
+      {goBackWarning && (
+        <ModalBottom
+          modalVisible={goBackWarning}
+          setModalVisible={setGoBackWarning}
+          content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+          isContentCenter={true}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
+            setGoBackWarning(!goBackWarning);
+            navigation.goBack();
+          }}
+          whiteButtonText="취소"
+          whiteButtonFunc={() => {
+            setGoBackWarning(!goBackWarning);
+          }}
+        />
+      )}
     </ScrollView>
   );
 }

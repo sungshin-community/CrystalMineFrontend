@@ -91,7 +91,7 @@ function Post({
               setDeleteModalVisible(false);
               Toast.show(
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
-                Toast.LONG,
+                Toast.SHORT,
               );
               // navigation.goBack();
               navigation.navigate('PostListScreen', {boardId: data.boardId});

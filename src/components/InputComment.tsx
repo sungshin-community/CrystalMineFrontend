@@ -78,7 +78,7 @@ function InputComment({
             if (value.length === 500)
                Toast.show(
                 '댓글 내용은 500글자까지만 입력 가능합니다.',
-                Toast.LONG,)
+                Toast.SHORT,)
           }}
           value={content}
           autoCorrect={false}
