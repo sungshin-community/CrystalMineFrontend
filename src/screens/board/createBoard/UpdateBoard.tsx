@@ -86,11 +86,14 @@ function UpdateBoard({navigation, route}: Props) {
     <>
       <View style={styles.container}>
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
-          <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
+            <LockIcon style={{ marginLeft: 11 }}/>
+          </View>
           <TextInput
             value={boardInfo?.name}
             editable={false}
-            style={{fontSize: 13, paddingVertical: 20, color: '#6E7882'}}
+            style={[fontRegular,{fontSize: 15, paddingVertical: 20, color: '#E2E2E2'}]}
           />
           <View
             style={{
@@ -107,11 +110,16 @@ function UpdateBoard({navigation, route}: Props) {
               value={newBoardIntroduction}
               onChangeText={value => {
                 setNewBoardIntroduction(value);
+                 if (value.length === 22)
+                  Toast.show(
+                    '게시판 설명은 22글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
               }}
               onBlur={() => {
                 Keyboard.dismiss();
               }}
-              style={[styles.input]}
+              style={[fontRegular, styles.input]}
               maxLength={22}
             />
           </View>
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     textAlignVertical: 'top',
-    fontSize: 13,
+    fontSize: 15,
   },
   option: {
     marginTop: 19,
@@ -158,3 +166,20 @@ const styles = StyleSheet.create({
 });
 
 export default UpdateBoard;
+
+import Svg, {SvgProps, Path} from 'react-native-svg';
+
+const LockIcon = (props: SvgProps) => (
+   <Svg
+    width={12}
+    height={17}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path
+      d="M10.5 6h-.75V4.5C9.75 2.43 8.07.75 6 .75 3.93.75 2.25 2.43 2.25 4.5V6H1.5C.675 6 0 6.675 0 7.5V15c0 .825.675 1.5 1.5 1.5h9c.825 0 1.5-.675 1.5-1.5V7.5c0-.825-.675-1.5-1.5-1.5ZM6 12.75c-.825 0-1.5-.675-1.5-1.5s.675-1.5 1.5-1.5 1.5.675 1.5 1.5-.675 1.5-1.5 1.5ZM8.325 6h-4.65V4.5A2.327 2.327 0 0 1 6 2.175 2.327 2.327 0 0 1 8.325 4.5V6Z"
+      fill="#222"
+    />
+  </Svg>
+);
