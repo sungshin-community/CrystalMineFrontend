@@ -1,18 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, Pressable, TouchableHighlight, View} from 'react-native';
+import {Dimensions, Pressable, Text, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getBoardInfo, toggleBoardPin} from '../../common/boardApi';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
-import {
-  BigGrayPin,
-  BigOrangePin,
-  BigPurplePin,
-} from '../../../resources/icon/Pin';
+import {BigGrayPin, BigPurplePin} from '../../../resources/icon/Pin';
 import {fontMedium} from '../../common/font';
-import {Text} from 'react-native-svg';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import SettingIcon from '../../../resources/icon/SettingIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
@@ -77,7 +72,6 @@ function WikiTab({navigation, route}: Props) {
           ]}
           numberOfLines={1}
           ellipsizeMode="tail">
-          {console.log('WikiTab 84', boardInfo?.name)}
           {boardInfo?.name ? boardInfo.name : ''}
         </Text>
       </>
@@ -158,7 +152,6 @@ function WikiTab({navigation, route}: Props) {
   );
 
   useEffect(() => {
-    console.log('WikiTab 165', boardInfo);
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
