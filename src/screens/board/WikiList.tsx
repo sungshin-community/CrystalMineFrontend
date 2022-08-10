@@ -181,17 +181,14 @@ function WikiList({boardId}: any) {
             />
           </View>
         )}
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.touchableOpacityStyle}>
-          <FloatingWriteButton
-            onPress={() =>
-              navigation.navigate('PostWriteScreen', {
-                boardId: boardId,
-              })
-            }
-          />
-        </TouchableOpacity>
+       
+        <FloatingWriteButton
+          onPress={() =>
+            navigation.navigate('PostWriteScreen', {
+              boardId: boardId,
+            })
+          }
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

@@ -28,8 +28,9 @@ var tabWidth = (Dimensions.get('window').width / 4 - 24) / 2; // 한 탭 당 가
 
 function WikiTab({navigation, route}: Props) {
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [reportCheckModalVisible, setReportCheckModalVisible] =
-    useState<boolean>(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
+    boolean
+  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
@@ -98,75 +99,16 @@ function WikiTab({navigation, route}: Props) {
     </TouchableHighlight>
   );
 
-  const handleBoardSettingComponent = (
-    <TouchableHighlight
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-      underlayColor="#EEEEEE"
-      onPress={() =>
-        navigation.navigate('UpdateBoard', {boardId: boardInfo.id})
-      }>
-      <SettingIcon />
-    </TouchableHighlight>
-  );
-
-  const handleBoardReportComponent = (
-    <>
-      {boardInfo?.isReported ? (
-        <TouchableHighlight
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          underlayColor="#EEEEEE"
-          onPress={() => {
-            Toast.show('이미 신고한 게시판입니다.', Toast.SHORT);
-          }}>
-          <Report />
-        </TouchableHighlight>
-      ) : (
-        <TouchableHighlight
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          underlayColor="#EEEEEE"
-          onPress={() => {
-            setReportCheckModalVisible(true);
-          }}>
-          <NoReport />
-        </TouchableHighlight>
-      )}
-    </>
-  );
-
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
-      headerRight: () => (
-        <SpinningThreeDots
-          handleDefaultModeComponent={handleBoardSearchComponent}
-          isMine={boardInfo?.isOwner}
-          handleOptionModeIsMineComponent={handleBoardSettingComponent}
-          handleOptionModeIsNotMineComponent={handleBoardReportComponent}
-        />
-      ),
+      headerRight: () => handleBoardSearchComponent,
       headerTitleAlign: 'center',
     });
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
   return (
+    <>
     <Tab.Navigator
       initialRouteName="WikiTab"
       screenOptions={{
@@ -212,6 +154,7 @@ function WikiTab({navigation, route}: Props) {
         children={() => <WikiList boardId={boardInfo?.id + 4} />}
       />
     </Tab.Navigator>
+    </>
   );
 }
 
