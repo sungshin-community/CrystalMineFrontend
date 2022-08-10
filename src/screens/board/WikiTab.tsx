@@ -61,11 +61,7 @@ function WikiTab({navigation, route}: Props) {
               <BigGrayFlag />
             )
           ) : boardInfo?.isPinned ? (
-            boardInfo?.type === 'PUBLIC' || boardInfo?.type === 'DEPARTMENT' ? (
-              <BigOrangePin />
-            ) : (
-              <BigPurplePin />
-            )
+            <BigPurplePin />
           ) : (
             <BigGrayPin />
           )}
