@@ -243,6 +243,7 @@ export default function SignUpId({navigation, route}: Props) {
                   },
                 ]}>
                 <TextInput
+                  autoFocus={true}
                   style={{
                     width: '65%',
                     fontSize: 21,
@@ -436,6 +437,7 @@ export default function SignUpId({navigation, route}: Props) {
                 },
               ]}>
               <TextInput
+                autoFocus={true}
                 style={{
                   width: '65%',
                   fontSize: 21,

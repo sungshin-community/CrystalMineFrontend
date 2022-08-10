@@ -116,6 +116,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '90%',
                 fontSize: 21,
@@ -220,6 +221,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '90%',
                 fontSize: 21,

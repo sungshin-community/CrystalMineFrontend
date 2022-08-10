@@ -103,6 +103,7 @@ export default function SignUpNickname({navigation, route}: Props) {
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
@@ -217,6 +218,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
