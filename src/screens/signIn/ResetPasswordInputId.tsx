@@ -147,6 +147,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                     fontSize: 21,
                     fontFamily: 'SpoqaHanSansNeo-Regular',
                     paddingBottom: 7,
+                    color: '#222222'
                   }}
                   onFocus={(e: any) => {
                     onIdFocus();
@@ -283,6 +284,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
+                  color: '#222222'
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();

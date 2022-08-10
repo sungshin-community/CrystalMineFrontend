@@ -100,6 +100,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   width: '90%',
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
+                  color: '#222222'
                 }}
                 onFocus={(e: any) => {
                   onPasswordFocus();
@@ -211,6 +212,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   fontSize: 21,
                   width: '90%',
+                  color: '#222222'
                 }}
                 onFocus={(e: any) => {
                   onPasswordFocus();
