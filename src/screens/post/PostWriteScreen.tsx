@@ -37,6 +37,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
+  WikiTab: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -88,7 +89,11 @@ function PostWriteScreen({navigation, route}: Props) {
       images,
     );
     if (result) {
-      navigation.navigate('PostListScreen', {boardId});
+      if (boardId >= 5 && boardId < 10) {
+        navigation.navigate('WikiTab');
+      } else {
+        navigation.navigate('PostListScreen', {boardId});
+      }
       Toast.show('게시글이 등록되었습니다.', Toast.LONG);
     }
   };

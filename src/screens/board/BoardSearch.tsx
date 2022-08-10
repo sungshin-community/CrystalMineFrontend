@@ -30,6 +30,7 @@ type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
   ScrapedPostList: undefined;
+  WikiTab: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -102,7 +103,11 @@ function BoardSearch({navigation, route}: Props) {
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
           onPress={() => {
-            navigation.goBack();
+            if (route.params.boardId === 5) {
+              navigation.navigate('WikiTab');
+            } else {
+              navigation.goBack();
+            }
           }}
         />
       ),
