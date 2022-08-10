@@ -4,6 +4,7 @@ import {
   Image,
   Keyboard,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -84,7 +85,7 @@ function RequestWriteScreen({navigation}: Props) {
   };
 
   return (
-    <>
+    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TextInput
@@ -92,8 +93,15 @@ function RequestWriteScreen({navigation}: Props) {
             value={title}
             onChangeText={value => {
               setTitle(value);
+              if (value.length === 23)
+                Toast.show(
+                  '문의 제목은 23글자까지만 입력 가능합니다.',
+                  Toast.LONG,
+                );
             }}
-            style={[fontMedium, styles.title]}></TextInput>
+            maxLength={23}
+            style={[fontMedium, styles.title]}
+          />
         </View>
         <View>
           <TextInput
@@ -102,7 +110,13 @@ function RequestWriteScreen({navigation}: Props) {
             multiline={true}
             onChangeText={value => {
               setContent(value);
+              if (value.length === 500)
+                Toast.show(
+                  '문의 내용은 500글자까지만 입력 가능합니다.',
+                  Toast.LONG,
+                );
             }}
+            maxLength={500}
             onBlur={() => {
               Keyboard.dismiss();
               console.log('키보드다른데클릭');
@@ -146,7 +160,7 @@ function RequestWriteScreen({navigation}: Props) {
             setModalVisible(false);
           }}></ModalBottom>
       )}
-    </>
+    </ScrollView>
   );
 }
 
