@@ -39,7 +39,7 @@ interface DirectionProps {
   checked: boolean;
   title: string;
   content: string[];
-  onChange: (key: number, isChecked: boolean) => void;
+  onChange: (key: number) => void;
 }
 
 export function BoardListContainer({boardCategory, component}: Props) {
@@ -385,18 +385,16 @@ export function DirectionContainer({
             paddingLeft: 13,
           }}
           onPress={(e: any) => {
-            onChange(id, !isChecked);
+            onChange(id);
             setIsChecked(!isChecked);
           }}>
           {isChecked ? (
             <Checked
               style={{marginRight: 16}}
-              // onPress={(e: any) => onChange('firstTerm')}
             />
           ) : (
             <Unchecked
               style={{marginRight: 16}}
-              // onPress={(e: any) => onChange('firstTerm')}
             />
           )}
         </TouchableOpacity>
