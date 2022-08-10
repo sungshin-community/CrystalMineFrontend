@@ -26,6 +26,7 @@ import {getPostSearch} from '../../common/SearchApi';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import PostSearchItem from '../../components/PostSearchItem';
+import {useIsFocused} from '@react-navigation/native';
 
 function WikiList({boardId}: any) {
   const navigation = useNavigation();
@@ -35,6 +36,7 @@ function WikiList({boardId}: any) {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
+  const isFocused = useIsFocused();
 
   const getBoardDetail = async (
     boardId: number,
@@ -64,8 +66,9 @@ function WikiList({boardId}: any) {
         setIsLoading(false);
       }
     };
-    getData();
-  }, [boardId, sortBy]);
+    if(isFocused)
+      getData();
+  }, [boardId, sortBy, isFocused]);
 
   const handleRefresh = async () => {
     const postList = await getBoardDetail(boardId, 0, sortBy);
