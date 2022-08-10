@@ -244,7 +244,7 @@ function QuestionList({navigation, route}: Props) {
                   alignItems: 'center',
                   paddingRight: 27,
                   backgroundColor: '#fff',
-                  paddingBottom: 10
+                  paddingBottom: 10,
                 }}>
                 <Text
                   style={{
@@ -322,13 +322,11 @@ function QuestionList({navigation, route}: Props) {
           }}
         />
       )}
-      {!deleteMode &&
-         <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.touchableOpacityStyle}>
-        <FloatingWriteButton style={styles.floatingButtonStyle}
+      {!deleteMode && (
+        <FloatingWriteButton
           onPress={() => navigation.navigate('QuestionWriteScreen')}
-        /></TouchableOpacity>}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -503,7 +501,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 </ScrollView>
               </View>
             )}
-            <Text style={[styles.date, { marginTop: 5 }]}>{data?.createdAt}</Text>
+            <Text style={[styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
             {data?.answer && (
               <>
                 <View

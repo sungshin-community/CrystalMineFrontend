@@ -141,8 +141,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               const result = await toggleBoardPin(route.params.boardId);
               const boardInfo = await getBoardInfo(route.params.boardId);
               setBoardInfo(boardInfo);
-              }}>
-              
+            }}>
             {boardInfo?.isOwner ? (
               boardInfo?.isPinned ? (
                 <BigOrangeFlag />
@@ -150,10 +149,11 @@ const PostListScreen = ({navigation, route}: Props) => {
                 <BigGrayFlag />
               )
             ) : boardInfo?.isPinned ? (
-              boardInfo?.type === 'PUBLIC' ||  boardInfo?.type === 'DEPARTMENT' ? (
-                 <BigOrangePin />
+              boardInfo?.type === 'PUBLIC' ||
+              boardInfo?.type === 'DEPARTMENT' ? (
+                <BigOrangePin />
               ) : (
-               <BigPurplePin />
+                <BigPurplePin />
               )
             ) : (
               <BigGrayPin />
@@ -182,14 +182,16 @@ const PostListScreen = ({navigation, route}: Props) => {
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
         <>
-          {boardInfo?.type !== 'OFFICIAL' ?
+          {boardInfo?.type !== 'OFFICIAL' ? (
             <SpinningThreeDots
               handleDefaultModeComponent={handleBoardSearchComponent}
               isMine={boardInfo?.isOwner}
               handleOptionModeIsMineComponent={handleBoardSettingComponent}
               handleOptionModeIsNotMineComponent={handleBoardReportComponent}
             />
-         : handleBoardSearchComponent}
+          ) : (
+            handleBoardSearchComponent
+          )}
         </>
       ),
       headerTitleAlign: 'center',
@@ -337,7 +339,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 justifyContent: 'center',
               }}>
               <Text style={{marginRight: 5}}>
-                {sortBy === 'createdAt' ? "최신순" : "공감순"}
+                {sortBy === 'createdAt' ? '최신순' : '공감순'}
               </Text>
               <SortIcon />
             </TouchableOpacity>
@@ -400,18 +402,13 @@ const PostListScreen = ({navigation, route}: Props) => {
           />
         )}
         {boardInfo?.id !== 2 && (
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.touchableOpacityStyle}>
-            <FloatingWriteButton
-              onPress={() =>
-                navigation.navigate('PostWriteScreen', {
-                  boardId: route.params.boardId,
-                })
-              }
-              style={styles.floatingButtonStyle}
-            />
-          </TouchableOpacity>
+          <FloatingWriteButton
+            onPress={() =>
+              navigation.navigate('PostWriteScreen', {
+                boardId: route.params.boardId,
+              })
+            }
+          />
         )}
       </View>
     </>
