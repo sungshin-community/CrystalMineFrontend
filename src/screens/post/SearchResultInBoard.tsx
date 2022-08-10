@@ -65,6 +65,7 @@ function SearchResultInBoard({navigation, route}: Props) {
           setSearchWord={setSearchWord} // SearchInput 컴포넌트에서 입력한 value 값(검색어)를 가져오는 props
           startSearching={startSearching}
           boardName={route.params.boardName}
+          searchWord={searchWord}
         />
       ),
       headerRight: (): React.ReactNode => (
