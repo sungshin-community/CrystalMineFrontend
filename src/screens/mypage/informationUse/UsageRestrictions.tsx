@@ -109,7 +109,7 @@ function UsageRestrictions({navigation}: Props) {
                 </View>
                 <View style={[styles.menu, { marginTop: 5 }]}>
                   <Text style={[fontBold, styles.blindTitle]}>
-                    {item.type === 1 ? '게시글 블라인드' : '댓글 블라인드'}
+                    {item.type === 'POST' ? '게시글 블라인드' : '댓글 블라인드'}
                   </Text>
                   <View style={styles.menuIcon}>
                     <Text style={[fontRegular, styles.points]}>

@@ -1,6 +1,6 @@
 export default interface UsageRestrictionsDto {
   blindedAt: string;
-  type: number;
+  type: string;
   reason: string;
   boardTitle: string;
   point: number;
