@@ -50,7 +50,7 @@ function WikiList({boardId}: any) {
       );
       return response.data.data;
     } catch (e: any) {
-      console.log('WIkiList.tsx', e.response.data);
+      console.log('WIkiList.tsx 53번째 줄', e.response.data);
       return e.response.data;
     }
   };
@@ -145,7 +145,7 @@ function WikiList({boardId}: any) {
                   justifyContent: 'center',
                 }}>
                 <Text style={{marginRight: 5}}>
-                  {sortBy === 'createdAt' ? "최신순" : "공감순"}
+                  {sortBy === 'createdAt' ? '최신순' : '공감순'}
                 </Text>
                 <SortIcon />
               </TouchableOpacity>
