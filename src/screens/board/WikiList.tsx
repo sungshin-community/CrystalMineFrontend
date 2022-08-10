@@ -3,8 +3,11 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  FlatList,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -12,14 +15,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BoardDetailDto from '../../classes/BoardDetailDto';
+import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import Response from '../../classes/Response';
 import {PostContent} from '../../classes/Search';
-import { getBoardInfo } from '../../common/boardApi';
+import {getBoardInfo, getHotBoardPosts} from '../../common/boardApi';
 import client from '../../common/client';
 import {fontRegular} from '../../common/font';
 import {getPostSearch} from '../../common/SearchApi';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
+import PostItem from '../../components/PostItem';
 import PostSearchItem from '../../components/PostSearchItem';
 
 function WikiList({boardId}: any) {
@@ -27,6 +31,9 @@ function WikiList({boardId}: any) {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
 
   const getBoardDetail = async (
     boardId: number,
@@ -59,8 +66,22 @@ function WikiList({boardId}: any) {
     getData();
   }, [boardId, sortBy]);
 
-  const moveToPost = (postId: number) => {
-    navigation.navigate('PostScreen', {postId: postId});
+  const handleRefresh = async () => {
+    const postList = await getBoardDetail(boardId, 0, sortBy);
+    setCurrentPage(0);
+    setBoardDetail(postList);
+  };
+
+  const fetchNextPage = async () => {
+    let thisPagePostList: ContentPreviewDto[] = await getBoardDetail(
+      boardId,
+      currentPage + 1,
+      sortBy,
+    );
+    setBoardDetail(boardDetail.concat(thisPagePostList));
+    if (thisPagePostList.length > 0) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   if (isLoading) {
@@ -100,7 +121,7 @@ function WikiList({boardId}: any) {
             </Text>
           </>
         ) : (
-          <ScrollView style={{backgroundColor: '#fff', width: '100%'}}>
+          <View style={{backgroundColor: '#fff', flex: 1, width: '100%'}}>
             <View style={{backgroundColor: '#fff'}}>
               <TouchableOpacity
                 onPress={() => {
@@ -125,10 +146,36 @@ function WikiList({boardId}: any) {
                 <Text>{sortBy === 'createdAt' ? '최신순' : '공감순'}</Text>
               </TouchableOpacity>
             </View>
-            {isData.content.map((item: PostContent, index: number) => (
-              <PostSearchItem moveToPost={moveToPost} key={index} post={item} />
-              ))}
-          </ScrollView>
+            <FlatList
+              style={{flex: 1, backgroundColor: '#FFFFFF', width: '100%'}}
+              data={isData.content}
+              renderItem={({item}) => (
+                <Pressable
+                  onPress={async () => {
+                    navigation.navigate('PostScreen', {
+                      postId: item.postId,
+                    });
+                  }}>
+                  <PostItem post={item} />
+                </Pressable>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={fetchNextPage}
+              onEndReachedThreshold={0.8}
+            />
+          </View>
         )}
         <TouchableOpacity
           activeOpacity={0.5}

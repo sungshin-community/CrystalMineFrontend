@@ -14,6 +14,16 @@ type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
   ScrapedPostList: undefined;
+  SearchResult: {
+    searchWord: any;
+  };
+  SearchResultInBoard: {
+    searchWord: any;
+    boardName: any;
+    boardId?: number;
+  };
+  GlobalNavbar: undefined;
+  WikiTab: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
@@ -45,6 +55,39 @@ function SearchResultInBoard({navigation, route}: Props) {
         duplicateFilter.pop();
       }
       setWordList(duplicateFilter);
+
+      if (route.params) {
+        if (route.params.boardName === '내가 작성한 글') {
+          // 내가 쓴 글에서 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: '내가 작성한 글',
+          });
+        } else if (route.params.boardName === '내가 작성한 댓글') {
+          // 내가 쓴 댓글에서 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: '내가 작성한 댓글',
+          });
+        } else if (route.params.boardName === '내가 스크랩한 글') {
+          // 내가 스크랩한 글에서 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: '내가 스크랩한 글',
+          });
+        } else if (route.params.boardId && route.params.boardName) {
+          // 특정 게시판 탭 내 검색
+          navigation.navigate('SearchResultInBoard', {
+            searchWord: searchWord,
+            boardName: route.params.boardName,
+            boardId: route.params.boardId,
+          });
+        }
+      } else {
+        navigation.navigate('SearchResult', {
+          searchWord: searchWord,
+        });
+      }
     }
   };
 
@@ -60,16 +103,18 @@ function SearchResultInBoard({navigation, route}: Props) {
       headerRight: (): React.ReactNode => (
         <SearchCancelButton
           onPress={() => {
-            if (route.params.boardId) {
-              navigation.navigate('PostListScreen', {
-                boardId: route.params.boardId,
-              });
+            if (route.params.boardId === 5) {
+              navigation.navigate('WikiTab');
             } else if (route.params.boardName === '내가 작성한 글') {
               navigation.navigate('MyPostList');
             } else if (route.params.boardName === '내가 작성한 댓글') {
               navigation.navigate('MyCommentList');
             } else if (route.params.boardName === '내가 스크랩한 글') {
               navigation.navigate('ScrapedPostList');
+            } else {
+              navigation.navigate('PostListScreen', {
+                boardId: route.params.boardId,
+              });
             }
           }}
         />

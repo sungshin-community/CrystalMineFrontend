@@ -24,7 +24,7 @@ type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
-  BoardSearch: {boardName: string};
+  BoardSearch: {boardName: string; boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -48,44 +48,40 @@ function WikiTab({navigation, route}: Props) {
   const HeaderIcon = () => {
     return (
       <>
-        {boardInfo?.id === 1 ? (
-          <BigPurplePin />
-        ) : (
-          <Pressable
-            onPress={async () => {
-              const result = await toggleBoardPin(route.params.boardId);
-              const boardInfo = await getBoardInfo(route.params.boardId);
-              setBoardInfo(boardInfo);
-              }}>
-              
-            {boardInfo?.isOwner ? (
-              boardInfo?.isPinned ? (
-                <BigOrangeFlag />
-              ) : (
-                <BigGrayFlag />
-              )
-            ) : boardInfo?.isPinned ? (
-              boardInfo?.type === 'PUBLIC' ||  boardInfo?.type === 'DEPARTMENT' ? (
-                 <BigOrangePin />
-              ) : (
-               <BigPurplePin />
-              )
+        <Pressable
+          onPress={async () => {
+            await toggleBoardPin(route.params.boardId);
+            const boardUpdate = await getBoardInfo(route.params.boardId);
+            setBoardInfo(boardUpdate);
+          }}>
+          {boardInfo?.isOwner ? (
+            boardInfo?.isPinned ? (
+              <BigOrangeFlag />
             ) : (
-              <BigGrayPin />
-            )}
-          </Pressable>
-        )}
+              <BigGrayFlag />
+            )
+          ) : boardInfo?.isPinned ? (
+            boardInfo?.type === 'PUBLIC' || boardInfo?.type === 'DEPARTMENT' ? (
+              <BigOrangePin />
+            ) : (
+              <BigPurplePin />
+            )
+          ) : (
+            <BigGrayPin />
+          )}
+        </Pressable>
         <Text
-          style={[
-            fontMedium,
-            {
-              marginLeft: 8,
-              fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
-              maxWidth: 180,
-            },
-          ]}
-          numberOfLines={1}
-          ellipsizeMode="tail">
+        // style={[
+        //   fontMedium,
+        //   {
+        //     marginLeft: 8,
+        //     fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
+        //     maxWidth: 180,
+        //   },
+        // ]}
+        // numberOfLines={1}
+        // ellipsizeMode="tail"
+        >
           {boardInfo ? boardInfo?.name : ''}
         </Text>
       </>
@@ -103,7 +99,10 @@ function WikiTab({navigation, route}: Props) {
       }}
       underlayColor="#EEEEEE"
       onPress={() =>
-        navigation.navigate('BoardSearch', {boardName: boardInfo.name})
+        navigation.navigate('BoardSearch', {
+          boardName: boardInfo.name,
+          boardId: boardInfo.id,
+        })
       }>
       <SearchIcon />
     </TouchableHighlight>
