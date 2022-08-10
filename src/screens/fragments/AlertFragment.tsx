@@ -20,7 +20,7 @@ import {useEffect} from 'react';
 import {getAlerts} from '../../common/alertApi';
 import {useState} from 'react';
 import AlertDto, {Alert} from '../../classes/AlertDto';
-import { ModalBottom } from '../../components/ModalBottom';
+import {ModalBottom} from '../../components/ModalBottom';
 
 const AlertFragment = () => {
   const [alerts, setAlerts] = useState<Alert[]>();
@@ -30,6 +30,7 @@ const AlertFragment = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const isFocused = useIsFocused();
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
+  const [noticeModalVisible, setNoticeModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -56,7 +57,18 @@ const AlertFragment = () => {
     }
     setIsNextPageLoading(false);
   };
-
+  const noticeBody = (
+    <View>
+      <View style={{alignItems: 'center', marginBottom: 25}}>
+        <NoCommentSuryong />
+      </View>
+      <View>
+        <Text>
+          {`게시글과 댓글에 관련한 알림은 아직 개발 중입니다.\n추후 기능 개발 후 사용하실 수 있습니다.`}
+        </Text>
+      </View>
+    </View>
+  );
   return (
     <>
       {blindModalVisible ? (
@@ -99,7 +111,9 @@ const AlertFragment = () => {
           backgroundColor: '#F5F5F5',
         }}>
         <AlertWorkIcon />
-        <View style={{marginLeft: 16}}>
+        <Pressable
+          style={{marginLeft: 16}}
+          onPress={() => setNoticeModalVisible(true)}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
             게시글 알림 기능은{' '}
             <Text style={{color: '#A055FF'}}>아직 개발 중</Text>이에요!
@@ -117,7 +131,7 @@ const AlertFragment = () => {
             ]}>
             게시글과 댓글에 관련한 알림은 아직 개발 중입니다.
           </Text>
-        </View>
+        </Pressable>
       </View>
 
       {alerts?.length === 0 ? (
@@ -136,15 +150,22 @@ const AlertFragment = () => {
                 textAlign: 'center',
                 lineHeight: 22.5,
                 marginTop: 20,
-              }}>
-            </Text>
+              }}></Text>
           </View>
         </SafeAreaView>
       ) : (
         <FlatList
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           data={alerts}
-            renderItem={({ item }) => <AlertItem data={item} blindModalVisible={blindModalVisible} setBlindModalVisible={setBlindModalVisible}/>}
+          renderItem={({item}) => (
+            <AlertItem
+              data={item}
+              blindModalVisible={blindModalVisible}
+              setBlindModalVisible={setBlindModalVisible}
+              noticeModalVisible={noticeModalVisible}
+              setNoticeModalVisible={setNoticeModalVisible}
+            />
+          )}
           ItemSeparatorComponent={() => (
             <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
           )}
@@ -162,6 +183,19 @@ const AlertFragment = () => {
           onEndReachedThreshold={0.8}
         />
       )}
+      {noticeBody && noticeModalVisible && (
+        <ModalBottom
+          modalVisible={noticeModalVisible}
+          setModalVisible={setNoticeModalVisible}
+          title="게시글 알림 개발 지연 안내"
+          content={noticeBody}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
+            setNoticeModalVisible(!noticeModalVisible);
+          }}
+        />
+      )}
     </>
   );
 };
@@ -169,9 +203,12 @@ const AlertFragment = () => {
 export default AlertFragment;
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { AlertCheckIcon, AlertWorkIcon } from '../../../resources/icon/AlertItemIcon';
+import {
+  AlertCheckIcon,
+  AlertWorkIcon,
+} from '../../../resources/icon/AlertItemIcon';
 import CheckMark from '../../../resources/icon/CheckMark';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 interface AlertProps {
   data: Alert;
@@ -179,10 +216,14 @@ interface AlertProps {
   setBlindModalVisible: any;
 }
 
-const AlertItem = ({data, blindModalVisible, setBlindModalVisible}: AlertProps) => {
+const AlertItem = ({
+  data,
+  blindModalVisible,
+  setBlindModalVisible,
+}: AlertProps) => {
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const navigation = useNavigation();
-  
+
   return (
     <>
       <Pressable
@@ -192,111 +233,111 @@ const AlertItem = ({data, blindModalVisible, setBlindModalVisible}: AlertProps) 
           paddingVertical: 16,
           backgroundColor: data.isRead ? '#F6F2FF' : '#fff',
         }}
-        onPress={ async() => {
-            if (data.type === 'WELCOME') {
-              // const result = await readNotification(data.id);
-              console.log('알람 확인 후 마이페이지로 이동');
-              navigation.navigate('MyPage');
-            } else if (
-              data.type === 'BEFORE_EXPIRE' ||
-              data.type === 'EXPIRE' ||
-              data.type === 'NOT_AUTHENTICATED'
-            ) {
-              // const result = await readNotification(item.id);
-              console.log('알람 확인 후 정회원인증으로 이동');
-              navigation.navigate('RegularMemberAuthMyPage');
-            } else if (
-              data.type === 'BOARD_BLIND' ||
-              data.type === 'PIN_BOARD_BLIND' ||
-              data.type === 'POST_BLIND' ||
-              data.type === 'COMMENT_BLIND'
-            ) {
-              const itemContent = (
-                <View>
-                  <Text
-                    style={[
-                      fontRegular,
-                      {
-                        marginBottom: 15,
-                        width: Dimensions.get('window').width - 100,
-                      },
-                    ]}>
-                    {data.blind?.message}
+        onPress={async () => {
+          if (data.type === 'WELCOME') {
+            // const result = await readNotification(data.id);
+            console.log('알람 확인 후 마이페이지로 이동');
+            navigation.navigate('MyPage');
+          } else if (
+            data.type === 'BEFORE_EXPIRE' ||
+            data.type === 'EXPIRE' ||
+            data.type === 'NOT_AUTHENTICATED'
+          ) {
+            // const result = await readNotification(item.id);
+            console.log('알람 확인 후 정회원인증으로 이동');
+            navigation.navigate('RegularMemberAuthMyPage');
+          } else if (
+            data.type === 'BOARD_BLIND' ||
+            data.type === 'PIN_BOARD_BLIND' ||
+            data.type === 'POST_BLIND' ||
+            data.type === 'COMMENT_BLIND'
+          ) {
+            const itemContent = (
+              <View>
+                <Text
+                  style={[
+                    fontRegular,
+                    {
+                      marginBottom: 15,
+                      width: Dimensions.get('window').width - 100,
+                    },
+                  ]}>
+                  {data.blind?.message}
+                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={[fontBold, {width: 93, marginRight: 7}]}>
+                    블라인드 사유
                   </Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[fontBold, {width: 93, marginRight: 7}]}>
-                      블라인드 사유
-                    </Text>
-                    <Text style={{width: 143}}>{data.blind?.reason}</Text>
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[fontBold, {width: 93, marginRight: 7}]}>
-                      {data.type === 'BOARD_BLIND'
-                        ? '게시판 이름'
-                        : data.type === 'PIN_BOARD_BLIND'
-                        ? '게시판 이름'
-                        : data.type === 'POST_BLIND'
-                        ? '작성 내용'
-                        : data.type === 'COMMENT_BLIND'
-                        ? '작성 내용:'
-                        : ''}
-                    </Text>
-                    <Text
-                      style={{
-                        width: Dimensions.get('window').width - 183,
-                      }}>
-                      {data.blind?.content}
-                    </Text>
-                  </View>
+                  <Text style={{width: 143}}>{data.blind?.reason}</Text>
                 </View>
-              );
-              setModalBody(itemContent);
-              // const result = await readNotification(item.id);
-              console.log('블라인드 알림 확인');
-              setBlindModalVisible(true);
-            } else if (
-              data.type === 'DELETE_BOARD_BLIND' ||
-              data.type === 'DELETE_POST_BLIND' ||
-              data.type === 'DELETE_COMMENT_BLIND'
-            ) {
-              const itemContent = (
-                <View>
-                  <Text
-                    style={[
-                      fontRegular,
-                      {
-                        marginBottom: 15,
-                        width: Dimensions.get('window').width - 100,
-                      },
-                    ]}>
-                    {data.deleteBlind?.message}
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={[fontBold, {width: 93, marginRight: 7}]}>
+                    {data.type === 'BOARD_BLIND'
+                      ? '게시판 이름'
+                      : data.type === 'PIN_BOARD_BLIND'
+                      ? '게시판 이름'
+                      : data.type === 'POST_BLIND'
+                      ? '작성 내용'
+                      : data.type === 'COMMENT_BLIND'
+                      ? '작성 내용:'
+                      : ''}
                   </Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={[fontBold, {width: 88, marginRight: 7}]}>
-                      {data.type === 'DELETE_BOARD_BLIND'
-                        ? '게시판 이름'
-                        : data.type === 'DELETE_POST_BLIND'
-                        ? '작성 내용'
-                        : data.type === 'DELETE_COMMENT_BLIND'
-                        ? '작성 내용'
-                        : ''}
-                    </Text>
-                    <Text
-                      ellipsizeMode={'tail'}
-                      numberOfLines={3}
-                      style={{width: Dimensions.get('window').width - 178}}>
-                      {data.deleteBlind?.content}
-                    </Text>
-                  </View>
+                  <Text
+                    style={{
+                      width: Dimensions.get('window').width - 183,
+                    }}>
+                    {data.blind?.content}
+                  </Text>
                 </View>
-              );
-              setModalBody(itemContent);
-              // const result = await readNotification(item.id);
-              console.log('블라인드 알림 확인');
-              setBlindModalVisible(true);
-          };
+              </View>
+            );
+            setModalBody(itemContent);
+            // const result = await readNotification(item.id);
+            console.log('블라인드 알림 확인');
+            setBlindModalVisible(true);
+          } else if (
+            data.type === 'DELETE_BOARD_BLIND' ||
+            data.type === 'DELETE_POST_BLIND' ||
+            data.type === 'DELETE_COMMENT_BLIND'
+          ) {
+            const itemContent = (
+              <View>
+                <Text
+                  style={[
+                    fontRegular,
+                    {
+                      marginBottom: 15,
+                      width: Dimensions.get('window').width - 100,
+                    },
+                  ]}>
+                  {data.deleteBlind?.message}
+                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                    {data.type === 'DELETE_BOARD_BLIND'
+                      ? '게시판 이름'
+                      : data.type === 'DELETE_POST_BLIND'
+                      ? '작성 내용'
+                      : data.type === 'DELETE_COMMENT_BLIND'
+                      ? '작성 내용'
+                      : ''}
+                  </Text>
+                  <Text
+                    ellipsizeMode={'tail'}
+                    numberOfLines={3}
+                    style={{width: Dimensions.get('window').width - 178}}>
+                    {data.deleteBlind?.content}
+                  </Text>
+                </View>
+              </View>
+            );
+            setModalBody(itemContent);
+            // const result = await readNotification(item.id);
+            console.log('블라인드 알림 확인');
+            setBlindModalVisible(true);
+          }
         }}>
-        {data.type === 'WELCOME' ? <CheckMark/>: <AlertCheckIcon />}
+        {data.type === 'WELCOME' ? <CheckMark /> : <AlertCheckIcon />}
         <View style={{marginLeft: 16}}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
             {data.title}
@@ -346,5 +387,3 @@ const AlertItem = ({data, blindModalVisible, setBlindModalVisible}: AlertProps) 
     </>
   );
 };
-
-
