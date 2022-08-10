@@ -93,7 +93,7 @@ function UpdateBoard({navigation, route}: Props) {
           <TextInput
             value={boardInfo?.name}
             editable={false}
-            style={[fontRegular,{fontSize: 15, paddingVertical: 20, color: '#E2E2E2'}]}
+            style={[fontRegular,{fontSize: 15, paddingVertical: 20, color: '#87919B'}]}
           />
           <View
             style={{
@@ -107,6 +107,7 @@ function UpdateBoard({navigation, route}: Props) {
             <TextInput
               textAlignVertical="top"
               placeholder="게시판 설명을 입력해주세요."
+              placeholderTextColor="#87919B"
               value={newBoardIntroduction}
               onChangeText={value => {
                 setNewBoardIntroduction(value);
