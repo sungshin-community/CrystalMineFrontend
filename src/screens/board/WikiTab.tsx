@@ -71,18 +71,18 @@ function WikiTab({navigation, route}: Props) {
           )}
         </Pressable>
         <Text
-        // style={[
-        //   fontMedium,
-        //   {
-        //     marginLeft: 8,
-        //     fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
-        //     maxWidth: 180,
-        //   },
-        // ]}
-        // numberOfLines={1}
-        // ellipsizeMode="tail"
-        >
-          {boardInfo ? boardInfo?.name : ''}
+          style={[
+            fontMedium,
+            {
+              marginLeft: 8,
+              fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
+              maxWidth: 180,
+            },
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {console.log('WikiTab 84', boardInfo?.name)}
+          {boardInfo?.name ? boardInfo.name : ''}
         </Text>
       </>
     );
@@ -162,6 +162,7 @@ function WikiTab({navigation, route}: Props) {
   );
 
   useEffect(() => {
+    console.log('WikiTab 165', boardInfo);
     navigation.setOptions({
       headerTitle: () => <HeaderIcon />,
       headerRight: () => (
