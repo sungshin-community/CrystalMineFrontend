@@ -15,6 +15,12 @@ import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMark
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {PlatformOS} from '../../components/PlatformOS';
 import {useIsFocused} from '@react-navigation/native';
+import Svg, {SvgProps, Circle, Path} from 'react-native-svg';
+import {useEffect} from 'react';
+import {getAlerts} from '../../common/alertApi';
+import {useState} from 'react';
+import AlertDto, {Alert} from '../../classes/AlertDto';
+import { ModalBottom } from '../../components/ModalBottom';
 
 const AlertFragment = () => {
   const [alerts, setAlerts] = useState<Alert[]>();
@@ -23,6 +29,7 @@ const AlertFragment = () => {
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const isFocused = useIsFocused();
+  const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -52,6 +59,21 @@ const AlertFragment = () => {
 
   return (
     <>
+      {blindModalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 100,
+            elevation: 1,
+          }}
+        />
+      ) : null}
       <View
         style={{
           position: 'absolute',
@@ -122,7 +144,7 @@ const AlertFragment = () => {
         <FlatList
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           data={alerts}
-          renderItem={({item}) => <AlertItem data={item} />}
+            renderItem={({ item }) => <AlertItem data={item} blindModalVisible={blindModalVisible} setBlindModalVisible={setBlindModalVisible}/>}
           ItemSeparatorComponent={() => (
             <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
           )}
@@ -147,25 +169,20 @@ const AlertFragment = () => {
 export default AlertFragment;
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { AlertCheckIcon, AlertWorkIcon } from '../../../resources/icon/AlertItemIcon';
+import CheckMark from '../../../resources/icon/CheckMark';
+import { useNavigation } from '@react-navigation/native';
 
 interface AlertProps {
   data: Alert;
+  blindModalVisible: boolean;
+  setBlindModalVisible: any;
 }
-type RootStackParamList = {
-  PostListScreen: {boardId: number};
-  MyPage: undefined;
-  PostScreen: {postId: number};
-  RegularMemberAuthMyPage: undefined;
-  TermsOfService: undefined;
-  Board: undefined;
-  InformationUse: undefined;
-  DirectionAgreeScreen: undefined;
-};
-type Props = NativeStackScreenProps<RootStackParamList>;
 
-const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
-  const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
+const AlertItem = ({data, blindModalVisible, setBlindModalVisible}: AlertProps) => {
   const [modalBody, setModalBody] = useState<JSX.Element>();
+  const navigation = useNavigation();
+  
   return (
     <>
       <Pressable
@@ -175,8 +192,7 @@ const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
           paddingVertical: 16,
           backgroundColor: data.isRead ? '#F6F2FF' : '#fff',
         }}
-        onPress={() => {
-          async () => {
+        onPress={ async() => {
             if (data.type === 'WELCOME') {
               // const result = await readNotification(data.id);
               console.log('알람 확인 후 마이페이지로 이동');
@@ -208,13 +224,13 @@ const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
                     {data.blind?.message}
                   </Text>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                    <Text style={[fontBold, {width: 93, marginRight: 7}]}>
                       블라인드 사유
                     </Text>
-                    <Text style={{width: 148}}>{data.blind?.reason}</Text>
+                    <Text style={{width: 143}}>{data.blind?.reason}</Text>
                   </View>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={[fontBold, {width: 88, marginRight: 7}]}>
+                    <Text style={[fontBold, {width: 93, marginRight: 7}]}>
                       {data.type === 'BOARD_BLIND'
                         ? '게시판 이름'
                         : data.type === 'PIN_BOARD_BLIND'
@@ -227,7 +243,7 @@ const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
                     </Text>
                     <Text
                       style={{
-                        width: Dimensions.get('window').width - 178,
+                        width: Dimensions.get('window').width - 183,
                       }}>
                       {data.blind?.content}
                     </Text>
@@ -278,10 +294,9 @@ const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
               // const result = await readNotification(item.id);
               console.log('블라인드 알림 확인');
               setBlindModalVisible(true);
-            }
           };
         }}>
-        <AlertCheckIcon />
+        {data.type === 'WELCOME' ? <CheckMark/>: <AlertCheckIcon />}
         <View style={{marginLeft: 16}}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
             {data.title}
@@ -309,7 +324,7 @@ const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
         </View>
       </Pressable>
 
-      {blindModalVisible && (
+      {modalBody && blindModalVisible && (
         <ModalBottom
           modalVisible={blindModalVisible}
           setModalVisible={setBlindModalVisible}
@@ -325,48 +340,11 @@ const AlertItem = ({data}: AlertProps, {navigation}: Props) => {
           whiteButtonFunc={() => {
             setBlindModalVisible(!blindModalVisible);
           }}
+          setDim={false}
         />
       )}
     </>
   );
 };
 
-import Svg, {SvgProps, Circle, Path} from 'react-native-svg';
-import {useEffect} from 'react';
-import {getAlerts} from '../../common/alertApi';
-import {useState} from 'react';
-import AlertDto, {Alert} from '../../classes/AlertDto';
-import {ModalBottom} from '../../components/ModalBottom';
 
-export const AlertWorkIcon = (props: SvgProps) => (
-  <Svg
-    width={36}
-    height={36}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}>
-    <Circle cx={18} cy={18} r={18} fill="#878787" />
-    <Path
-      d="m27.808 24.417-8.341-8.342c.825-2.108.366-4.583-1.375-6.325-1.834-1.833-4.584-2.2-6.784-1.192L15.25 12.5l-2.75 2.75-4.033-3.942c-1.1 2.2-.642 4.95 1.191 6.784 1.742 1.741 4.217 2.2 6.325 1.375l8.342 8.341a.886.886 0 0 0 1.283 0l2.109-2.108c.458-.367.458-1.008.091-1.283Z"
-      fill="#fff"
-    />
-  </Svg>
-);
-
-const AlertCheckIcon = (props: SvgProps) => (
-  <Svg
-    width={36}
-    height={36}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}>
-    <Circle cx={18} cy={18} r={18} fill="#FFA767" />
-    <Path
-      d="M9 18.84 14.4 25 27 11"
-      stroke="#fff"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </Svg>
-);

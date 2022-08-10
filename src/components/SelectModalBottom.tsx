@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
-  Platform
+  Platform,
 } from 'react-native';
 import {Checked} from '../../resources/icon/CheckBox';
 import RadioButtonUnChecked, {
@@ -61,6 +61,21 @@ export const SelectModalBottom = ({
   }, []);
   return (
     <>
+      {modalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 100,
+            elevation: 1,
+          }}
+        />
+      ) : null}
       <View style={[styles.centeredView]}>
         <Modal
           animationType="slide"
@@ -106,14 +121,22 @@ export const SelectModalBottom = ({
                     isCheckedReportNum,
                     detail,
                   );
-                  if (result.code === ('CREATE_BOARD_REPORT_SUCCESS' || 'CREATE_POST_REPORT_SUCCESS' || 'CREATE_COMMENT_REPORT_SUCCESS')) {
+                  if (
+                    result.code ===
+                    ('CREATE_BOARD_REPORT_SUCCESS' ||
+                      'CREATE_POST_REPORT_SUCCESS' ||
+                      'CREATE_COMMENT_REPORT_SUCCESS')
+                  ) {
                     Toast.show(
                       '신고하신 내용이 정상적으로 접수되었습니다.',
                       Toast.LONG,
                     );
                     setModalVisible(false);
                   } else if (
-                    result.code === ('BOARD_REPORT_FAIL_POINT_NOT_ENOUGH'|| 'POST_REPORT_FAIL_POINT_NOT_ENOUGH' || 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH')
+                    result.code ===
+                    ('BOARD_REPORT_FAIL_POINT_NOT_ENOUGH' ||
+                      'POST_REPORT_FAIL_POINT_NOT_ENOUGH' ||
+                      'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH')
                   ) {
                     setModalVisible(false);
                     Toast.show(
@@ -121,7 +144,10 @@ export const SelectModalBottom = ({
                       Toast.LONG,
                     );
                   } else if (
-                    result.code === ('BOARD_REPORT_FAIL_REASON_DETAIL_NECESSARY' || 'POST_REPORT_FAIL_REASON_DETAIL_NECESSARY' ||'COMMENT_REPORT_FAIL_REASON_DETAIL_NECESSARY')
+                    result.code ===
+                    ('BOARD_REPORT_FAIL_REASON_DETAIL_NECESSARY' ||
+                      'POST_REPORT_FAIL_REASON_DETAIL_NECESSARY' ||
+                      'COMMENT_REPORT_FAIL_REASON_DETAIL_NECESSARY')
                   ) {
                     Toast.show(
                       '기타 사유에 대한 내용이 필요합니다',
@@ -232,7 +258,7 @@ export const ReportItem = ({
                 fontSize: 13,
                 borderRadius: 10,
                 padding: 0,
-                paddingVertical: Platform.OS == 'ios' ? 5: 0
+                paddingVertical: Platform.OS == 'ios' ? 5 : 0,
               }}
             />
           </View>

@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { fontBold, fontMedium, fontRegular } from '../common/font';
+import {fontBold, fontMedium, fontRegular} from '../common/font';
 
 interface Props {
   modalVisible: boolean;
@@ -20,6 +20,7 @@ interface Props {
   purpleButtonFunc: any;
   whiteButtonText?: string;
   whiteButtonFunc?: any;
+  setDim?: boolean;
 }
 export const ModalBottom = ({
   modalVisible,
@@ -31,10 +32,11 @@ export const ModalBottom = ({
   purpleButtonFunc,
   whiteButtonText,
   whiteButtonFunc,
+  setDim = true,
 }: Props) => {
   return (
     <>
-       {modalVisible ? (
+      {setDim && modalVisible ? (
         <View
           style={{
             position: 'absolute',
@@ -53,7 +55,6 @@ export const ModalBottom = ({
         <Modal
           animationType="slide"
           transparent={true}
-          
           visible={modalVisible}
           onRequestClose={() => {
             setModalVisible(!modalVisible);
@@ -65,19 +66,27 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
-                {title && (
+                {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
+                {content && (
                   <Text
-                    style={[fontBold,
-                      styles.title,
+                    style={[
+                      fontRegular,
+                      {
+                        textAlign: isContentCenter ? 'center' : 'left',
+                        fontSize: 15,
+                      },
                     ]}>
-                    {title}
+                    {content}
                   </Text>
                 )}
-                {content && <Text style={[fontRegular, {textAlign: isContentCenter ? 'center' : 'left', fontSize: 15}]}>{content}</Text>}
               </View>
               <TouchableOpacity
-                style={[styles.button, styles.buttonClose, {marginTop: content ? 20 : 0}]}
-                onPress={()=>purpleButtonFunc()}>
+                style={[
+                  styles.button,
+                  styles.buttonClose,
+                  {marginTop: content ? 20 : 0},
+                ]}
+                onPress={() => purpleButtonFunc()}>
                 <Text style={styles.textStyle}>{purpleButtonText}</Text>
               </TouchableOpacity>
               {whiteButtonText && (
