@@ -27,7 +27,7 @@ import {
   Unchecked,
   Checked,
 } from '../../../../resources/icon/CheckBox';
-import {DirectionContainer} from '../../../components/HideToggleContainer';
+import {AgreementContainer, DirectionContainer} from '../../../components/HideToggleContainer';
 import Agreement, {DirectionAgreement} from '../../../classes/Agreement';
 import {
   getAgreements,
@@ -137,7 +137,7 @@ function DirectionAgreeMyPage({navigation}: Props) {
                 </Text>
               </TouchableOpacity>
               {agreements.map((a, index) => (
-                <DirectionContainer
+                <AgreementContainer
                   key={index}
                   id={index}
                   title={a.title}
