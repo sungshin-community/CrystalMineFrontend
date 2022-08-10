@@ -226,16 +226,16 @@ const HomeFragment = ({navigation}: Props) => {
                           </Text>
                           <View style={{flexDirection: 'row'}}>
                             <Text
-                              style={[fontBold, {width: 88, marginRight: 7}]}>
+                              style={[fontBold, {width: 93, marginRight: 7}]}>
                               블라인드 사유
                             </Text>
-                            <Text style={{width: 148}}>
+                            <Text style={{width: 143}}>
                               {item.blind?.reason}
                             </Text>
                           </View>
                           <View style={{flexDirection: 'row'}}>
                             <Text
-                              style={[fontBold, {width: 88, marginRight: 7}]}>
+                              style={[fontBold, {width: 93, marginRight: 7}]}>
                               {item.type === 'BOARD_BLIND'
                                 ? '게시판 이름'
                                 : item.type === 'PIN_BOARD_BLIND'
@@ -248,7 +248,7 @@ const HomeFragment = ({navigation}: Props) => {
                             </Text>
                             <Text
                               style={{
-                                width: Dimensions.get('window').width - 178,
+                                width: Dimensions.get('window').width - 183,
                               }}>
                               {item.blind?.content}
                             </Text>
@@ -326,25 +326,6 @@ const HomeFragment = ({navigation}: Props) => {
                   </View>
                 </Pressable>
               ))}
-
-              {blindModalVisible && (
-                <ModalBottom
-                  modalVisible={blindModalVisible}
-                  setModalVisible={setBlindModalVisible}
-                  title="블라인드 안내"
-                  content={modalBody}
-                  isContentCenter={false}
-                  purpleButtonText="수정광산 이용 방향 보기"
-                  purpleButtonFunc={() => {
-                    setBlindModalVisible(!blindModalVisible);
-                    navigation.navigate('DirectionAgreeScreen');
-                  }}
-                  whiteButtonText="확인"
-                  whiteButtonFunc={() => {
-                    setBlindModalVisible(!blindModalVisible);
-                  }}
-                />
-              )}
             </View>
           </View>
         </View>
@@ -537,6 +518,24 @@ const HomeFragment = ({navigation}: Props) => {
               // TODO: 앱 종료
               setBlacklistblindModalVisible(!blacklistblindModalVisible)
             }
+          />
+        )}
+        {blindModalVisible && (
+          <ModalBottom
+            modalVisible={blindModalVisible}
+            setModalVisible={setBlindModalVisible}
+            title="블라인드 안내"
+            content={modalBody}
+            isContentCenter={false}
+            purpleButtonText="수정광산 이용 방향 보기"
+            purpleButtonFunc={() => {
+              setBlindModalVisible(!blindModalVisible);
+              navigation.navigate('DirectionAgreeScreen');
+            }}
+            whiteButtonText="확인"
+            whiteButtonFunc={() => {
+              setBlindModalVisible(!blindModalVisible);
+            }}
           />
         )}
       </ScrollView>
