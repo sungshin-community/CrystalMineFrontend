@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
+  Dimensions,
   Image,
   Keyboard,
   Platform,
@@ -38,6 +39,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   WikiTab: undefined;
+  DirectionAgreeScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -212,28 +214,45 @@ function PostWriteScreen({navigation, route}: Props) {
           )}
         </View>
 
-        <View>
-          <TextInput
-            placeholder={info?.direction.content}
-            placeholderTextColor="#D5DBE1"
-            value={content}
-            multiline={true}
-            onChangeText={value => {
-              setContent(value);
-              if (value.length === 1000)
-                Toast.show(
-                  '게시글 내용은 1000글자까지만 입력 가능합니다.',
-                  Toast.SHORT,
-                );
-            }}
-            maxLength={1000}
-            onBlur={() => {
-              Keyboard.dismiss();
-            }}
-            style={[fontRegular, styles.input]}
-            autoCorrect={false}
-          />
-        </View>
+        <TextInput
+          placeholder={info?.direction.content}
+          placeholderTextColor="#D5DBE1"
+          value={content}
+          multiline={true}
+          onChangeText={value => {
+            setContent(value);
+            if (value.length === 1000)
+              Toast.show(
+                '게시글 내용은 1000글자까지만 입력 가능합니다.',
+                Toast.SHORT,
+              );
+          }}
+          maxLength={1000}
+          onBlur={() => {
+            Keyboard.dismiss();
+          }}
+          style={[fontRegular, styles.input]}
+          autoCorrect={false}
+        />
+        <Pressable
+          onPress={() => navigation.navigate('DirectionAgreeScreen')}
+          style={{
+            borderRadius: 50,
+            borderColor: '#D6D6D6',
+            borderWidth: 1,
+            width: 'auto',
+            alignSelf: 'center',
+          }}>
+          <Text
+            style={{
+              color: '#6E7882',
+              textAlign: 'center',
+              paddingHorizontal: 12,
+              paddingVertical: 4,
+            }}>
+            수정광산 이용 방향 전문 보기
+          </Text>
+        </Pressable>
         <View style={{paddingHorizontal: 24}}>
           <View style={styles.image}>
             <ImageIcon />
@@ -281,7 +300,7 @@ function PostWriteScreen({navigation, route}: Props) {
 }
 
 const styles = StyleSheet.create({
-  submit: {fontSize: 17, marginRight: 8},
+  submit: { fontSize: 17, marginRight: 8 },
   container: {
     backgroundColor: '#ffffff',
     flex: 1,
@@ -299,11 +318,10 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   input: {
-    minHeight: 194,
+    minHeight: Dimensions.get('window').height - 330,
     fontSize: 15,
     paddingTop: 14,
     paddingBottom: 14,
-    lineHeight: 21,
     paddingHorizontal: 24,
     textAlignVertical: 'top',
   },
