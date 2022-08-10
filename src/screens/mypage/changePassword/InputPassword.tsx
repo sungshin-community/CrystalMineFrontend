@@ -103,6 +103,7 @@ export default function InputPassword({navigation, route}: Props) {
                 : '#D7DCE6',
           }}>
           <TextInput
+            autoFocus={true}
             style={{
               width: '90%',
               fontSize: 21,

@@ -123,6 +123,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '93%',
                 fontSize: 21,
@@ -217,6 +218,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '93%',
                 fontSize: 21,

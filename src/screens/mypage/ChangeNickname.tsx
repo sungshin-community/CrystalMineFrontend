@@ -99,6 +99,7 @@ export default function ChangeNickname({navigation}: Props) {
               marginTop: 52
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
@@ -207,6 +208,7 @@ export default function ChangeNickname({navigation}: Props) {
               marginTop: 52
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,

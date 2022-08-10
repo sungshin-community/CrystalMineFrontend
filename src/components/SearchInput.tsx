@@ -20,6 +20,7 @@ function SearchInput({setSearchWord, startSearching, boardName}: Props) {
   return (
     <View style={styles.container}>
       <TextInput
+        autoFocus={true}
         style={styles.input}
         placeholder={
           boardName

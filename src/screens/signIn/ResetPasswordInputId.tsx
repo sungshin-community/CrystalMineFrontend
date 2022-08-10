@@ -141,6 +141,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   },
                 ]}>
                 <TextInput
+                  autoFocus={true}
                   style={{
                     width: '65%',
                     fontSize: 21,
@@ -276,6 +277,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 },
               ]}>
               <TextInput
+                autoFocus={true}
                 style={{
                   width: '65%',
                   fontSize: 21,
