@@ -12,6 +12,7 @@ import {
   TextInput,
   Touchable,
   TouchableHighlight,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -185,12 +186,10 @@ function PostWriteScreen({navigation, route}: Props) {
                 {info?.isOwner && !isAnonymous && <OrangeFlag />}
               </View>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Pressable style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => setIsAnonymous(!isAnonymous)}>
               <Text style={{marginRight: 4}}>익명</Text>
-              <Pressable onPress={() => setIsAnonymous(!isAnonymous)}>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-              </Pressable>
-            </View>
+            </Pressable>
           </View>
           {info?.hasTitle && (
             <>
