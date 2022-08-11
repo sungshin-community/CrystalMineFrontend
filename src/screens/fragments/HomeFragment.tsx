@@ -108,16 +108,20 @@ const HomeFragment = ({navigation}: Props) => {
         setIsLoading(true);
       }
       const userDto = await getAuthentication();
-      const notification = await getUnreadNotification();
-      setNoti(notification);
-      setUser(userDto);
-      if (userDto?.isAuthenticated) {
-        const pinBoardData = await getPinBoardContents();
-        const hotBoardData = await getHotBoardContents();
+      if (userDto) setUser(userDto);
+      console.log(user)
+      if (!user?.blacklist) {
+        const notification = await getUnreadNotification();
+        setNoti(notification);
 
-        if (pinBoardData != null && hotBoardData != null) {
-          setPinBoardContents(pinBoardData);
-          setHotBoardContents(hotBoardData);
+        if (userDto?.isAuthenticated) {
+          const pinBoardData = await getPinBoardContents();
+          const hotBoardData = await getHotBoardContents();
+
+          if (pinBoardData != null && hotBoardData != null) {
+            setPinBoardContents(pinBoardData);
+            setHotBoardContents(hotBoardData);
+          }
         }
       }
       if (!isInited) {
@@ -367,11 +371,16 @@ const HomeFragment = ({navigation}: Props) => {
               pinBoardContents?.map((item, index) => (
                 <TouchableOpacity
                   key={index}
-                  onPress={() =>
+                  onPress={() => {
+                    if (item.boardId === (5 || 6 || 7 || 8 || 9)) {
+                      console.log(item.boardId)
+                      navigation.navigate('WikiTab', { boardId: item.boardId });
+                    }
+                    else
                     navigation.navigate('PostListScreen', {
                       boardId: item.boardId,
                     })
-                  }>
+                  }}>
                   <View style={styles.pinBoardContainer}>
                     <View style={styles.postTitleSummaryContainer}>
                       <Text

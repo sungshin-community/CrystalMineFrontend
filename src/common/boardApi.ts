@@ -459,7 +459,7 @@ export const postWritePost = async (
 ) => {
   try {
     const formData = new FormData();
-    console.log(images)
+    console.log('boardId: ', boardId, 'title', title, 'content', content, 'isAnonymous', isAnonymous, 'images', images)
     images?.map((image: any, index: number) => {
       const photo = {
         uri: image.uri,

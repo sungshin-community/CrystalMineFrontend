@@ -139,19 +139,19 @@ function WikiTab({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="교내 위키"
-        children={() => <WikiList boardId={boardInfo?.id + 1} />}
+        children={() => <WikiList boardId={6} />}
       />
       <Tab.Screen
         name="교외 위키"
-        children={() => <WikiList boardId={boardInfo?.id + 2} />}
+        children={() => <WikiList boardId={7} />}
       />
       <Tab.Screen
         name="상권 위키"
-        children={() => <WikiList boardId={boardInfo?.id + 3} />}
+        children={() => <WikiList boardId={8} />}
       />
       <Tab.Screen
         name="페미 위키"
-        children={() => <WikiList boardId={boardInfo?.id + 4} />}
+        children={() => <WikiList boardId={9} />}
       />
     </Tab.Navigator>
     </>
