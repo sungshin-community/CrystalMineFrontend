@@ -12,6 +12,7 @@ import {
   Pressable,
   TextInput,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
@@ -50,6 +51,7 @@ const PostScreen = ({navigation, route}: Props) => {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const commentInputRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
@@ -73,7 +75,7 @@ const PostScreen = ({navigation, route}: Props) => {
           [
           {post && post?.boardName.length <= 5
             ? post?.boardName
-            : post?.boardName.substr(0, 5).concat('...')}
+            : post?.boardName.substring(0, 5).concat('...')}
           ]의 게시글
         </Text>
       </View>
@@ -171,6 +173,8 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      const index = comments?.findIndex(c => c.id === parentId);
+      flatListRef.current?.scrollToIndex({index: index, animated: true, viewPosition: 0});
     },
     [],
   );
@@ -218,7 +222,36 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostDelete={handlePostDelete}
             handlePostReport={handlePostReport}></Post>
           <View style={{flex: 1}}>
-            {comments?.map((comment, index) => (
+          <FlatList
+            style={{flex: 1}}
+            ref={flatListRef}
+            data={comments}
+            renderItem={({item, index}) => <View key={index}>
+            <Comment
+              comment={item}
+              setParentId={setParentId}
+              handleCommentLike={handleCommentLike}
+              isRecomment={isRecomment}
+              setIsRecomment={setIsRecomment}
+              handleCommentDelete={handleCommentDelete}
+              handleCommentReport={handleCommentReport}
+              handleFocus={focusCommentInput}
+            />
+            {item.recomments &&
+              item.recomments.map((recomment, index) => (
+                <Recomment
+                  key={index}
+                  recomment={recomment}
+                  handleCommentLike={handleCommentLike}
+                  handleCommentDelete={handleCommentDelete}
+                  handleCommentReport={handleCommentReport}
+                />
+                //recomment 데이터 생긴 후 확인 필요
+              ))}
+          </View>}
+            ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
+          />
+            {/* {comments?.map((comment, index) => (
               <View key={index}>
                 <Comment
                   comment={comment}
@@ -242,7 +275,7 @@ const PostScreen = ({navigation, route}: Props) => {
                     //recomment 데이터 생긴 후 확인 필요
                   ))}
               </View>
-            ))}
+            ))} */}
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>

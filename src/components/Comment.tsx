@@ -31,7 +31,6 @@ interface Props {
   handleCommentLike?: any;
   isRecomment: boolean;
   setIsRecomment?: any;
-  inputRef: any;
   handleCommentDelete: any;
   handleCommentReport?: any;
   handleFocus: () => void;
@@ -42,7 +41,6 @@ const Comment = ({
   handleCommentLike,
   isRecomment,
   setIsRecomment,
-  inputRef,
   handleCommentDelete,
   handleCommentReport,
   handleFocus
@@ -213,7 +211,6 @@ const Comment = ({
                     setParentId(data.id);
                     setIsRecomment(!isRecomment);
                     setIsRecommentState(!isRecommentState);
-                    // inputRef.current.focus();
                   }}>
                   <PostComment />
                 </Pressable>
