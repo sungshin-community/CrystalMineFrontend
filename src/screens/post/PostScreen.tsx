@@ -13,6 +13,7 @@ import {
   TextInput,
   Dimensions,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
@@ -49,6 +50,7 @@ const PostScreen = ({navigation, route}: Props) => {
   const [parentId, setParentId] = useState<number>();
   const [newComment, setNewComment] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const commentInputRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const flatListRef = useRef<FlatList>(null);
@@ -85,6 +87,7 @@ const PostScreen = ({navigation, route}: Props) => {
   // 초기화
   useEffect(() => {
     async function init() {
+      setIsLoading(true);
       const postData = await getPosts(route.params.postId);
       if (postData.code === 'BOARD_ALREADY_BLIND') {
         Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
@@ -98,6 +101,7 @@ const PostScreen = ({navigation, route}: Props) => {
       } else setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      setIsLoading(false);
     }
     init();
   }, []);
@@ -137,6 +141,7 @@ const PostScreen = ({navigation, route}: Props) => {
   // 댓글 생성
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
+      setIsLoading(true);
       const result = await addComment(postId, newComment, isAnonymous);
       if (result) {
         console.log('댓글 추가 성공');
@@ -146,6 +151,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      setIsLoading(false);
       scrollViewRef.current?.scrollToEnd({animated: true})
     },
     [],
@@ -158,6 +164,7 @@ const PostScreen = ({navigation, route}: Props) => {
       newComment: string,
       isAnonymous: boolean,
     ) => {
+      setIsLoading(true);
       const result = await addRecomment(
         postId,
         parentId,
@@ -173,6 +180,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      setIsLoading(false);
       const index = comments?.findIndex(c => c.id === parentId);
       flatListRef.current?.scrollToIndex({index: index, animated: true, viewPosition: 0});
     },
@@ -214,6 +222,9 @@ const PostScreen = ({navigation, route}: Props) => {
         keyboardVerticalOffset={60}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
+        <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+          <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+        </View>
         <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}} ref={scrollViewRef}>
           <Post
             post={post}
