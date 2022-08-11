@@ -48,6 +48,7 @@ const PostScreen = ({navigation, route}: Props) => {
   const [parentId, setParentId] = useState<number>();
   const [newComment, setNewComment] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const commentInputRef = useRef<TextInput>(null);
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
@@ -171,6 +172,10 @@ const PostScreen = ({navigation, route}: Props) => {
     },
     [],
   );
+  // 댓글창 포커스
+  const focusCommentInput = () => {
+    commentInputRef.current?.focus();
+  }
   // 댓글, 대댓글 공감
   const handleCommentLike = async (commentId: number) => {
     const result = await setCommentLike(commentId);
@@ -221,6 +226,7 @@ const PostScreen = ({navigation, route}: Props) => {
                   setIsRecomment={setIsRecomment}
                   handleCommentDelete={handleCommentDelete}
                   handleCommentReport={handleCommentReport}
+                  handleFocus={focusCommentInput}
                 />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
@@ -264,6 +270,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 {flexDirection: 'row', justifyContent: 'space-between'},
               ]}>
               <TextInput
+                ref={commentInputRef}
                 placeholder="댓글을 입력해 주세요."
                 placeholderTextColor="#87919B"
                 multiline={true}

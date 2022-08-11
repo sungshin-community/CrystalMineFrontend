@@ -34,6 +34,7 @@ interface Props {
   inputRef: any;
   handleCommentDelete: any;
   handleCommentReport?: any;
+  handleFocus: () => void;
 }
 const Comment = ({
   comment,
@@ -44,6 +45,7 @@ const Comment = ({
   inputRef,
   handleCommentDelete,
   handleCommentReport,
+  handleFocus
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
@@ -207,6 +209,7 @@ const Comment = ({
                 <Pressable
                   hitSlop={{top: 15, left: 15, right: 15, bottom: 15}}
                   onPress={() => {
+                    handleFocus();
                     setParentId(data.id);
                     setIsRecomment(!isRecomment);
                     setIsRecommentState(!isRecommentState);
