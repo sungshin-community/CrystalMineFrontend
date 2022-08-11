@@ -49,6 +49,7 @@ const PostScreen = ({navigation, route}: Props) => {
   const [newComment, setNewComment] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const commentInputRef = useRef<TextInput>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
@@ -143,6 +144,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      scrollViewRef.current?.scrollToEnd({animated: true})
     },
     [],
   );
@@ -208,7 +210,7 @@ const PostScreen = ({navigation, route}: Props) => {
         keyboardVerticalOffset={60}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
-        <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+        <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}} ref={scrollViewRef}>
           <Post
             post={post}
             handlePostLike={handlePostLike}
