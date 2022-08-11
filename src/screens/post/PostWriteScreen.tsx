@@ -12,6 +12,7 @@ import {
   TextInput,
   Touchable,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -158,7 +159,7 @@ function PostWriteScreen({navigation, route}: Props) {
   };
 
   return (
-    <ScrollView style={{backgroundColor: '#fff'}}>
+    <ScrollView style={{ backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -213,7 +214,6 @@ function PostWriteScreen({navigation, route}: Props) {
             </>
           )}
         </View>
-
         <TextInput
           placeholder={info?.direction.content}
           placeholderTextColor="#D5DBE1"
@@ -233,7 +233,7 @@ function PostWriteScreen({navigation, route}: Props) {
           }}
           style={[fontRegular, styles.input]}
           autoCorrect={false}
-        />
+          />
         <Pressable
           onPress={() => navigation.navigate('DirectionAgreeScreen')}
           style={{
@@ -300,7 +300,7 @@ function PostWriteScreen({navigation, route}: Props) {
 }
 
 const styles = StyleSheet.create({
-  submit: { fontSize: 17, marginRight: 8 },
+  submit: {fontSize: 17, marginRight: 8},
   container: {
     backgroundColor: '#ffffff',
     flex: 1,
