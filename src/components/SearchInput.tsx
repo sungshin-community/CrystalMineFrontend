@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     paddingLeft: 57,
     fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 15,
+    color: '#222222'
   },
   icon: {
     position: 'absolute',
