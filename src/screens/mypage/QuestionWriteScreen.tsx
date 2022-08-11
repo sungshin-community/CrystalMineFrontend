@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
+    color: '#222222'
   },
   input: {
     backgroundColor: '#FBFBFB',
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     paddingHorizontal: 24,
     textAlignVertical: 'top',
+    color: '#222222'
   },
   image: {
     marginTop: 19,
