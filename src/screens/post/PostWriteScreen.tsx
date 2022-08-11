@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingTop: 15,
     paddingBottom: 15,
+    color: '#222222'
   },
   input: {
     minHeight: Dimensions.get('window').height - 330,
@@ -324,6 +325,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     paddingHorizontal: 24,
     textAlignVertical: 'top',
+    color: '#222222'
   },
   image: {
     marginTop: 19,
