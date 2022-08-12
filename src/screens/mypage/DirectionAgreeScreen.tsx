@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
+  View
 } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { AgreementAll, DirectionAgreement } from '../../classes/Agreement';
@@ -18,10 +19,11 @@ export const DirectionAgreeScreen = () => {
   }, [])
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingVertical: 20 }}>
+    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingTop: 20}}>
       <Markdown>
         {data?.direction.content ? data?.direction.content : ""}
       </Markdown>
+      <View style={{paddingVertical: 30}}/>
     </ScrollView>
     );
 }
