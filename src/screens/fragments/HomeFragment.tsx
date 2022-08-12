@@ -398,7 +398,7 @@ const HomeFragment = ({navigation}: Props) => {
                       <Text
                         numberOfLines={1}
                         ellipsizeMode="tail"
-                        style={styles.postSummary}>
+                        style={[styles.postSummary, {color: item.recentPostContent ?'#6E7882': '#CBD0D8'}]}>
                         {item.recentPostContent
                           ? item.recentPostContent
                           : '아직 작성된 글이 없습니다!'}
@@ -593,7 +593,6 @@ const styles = StyleSheet.create({
     maxWidth: 180,
   },
   postSummary: {
-    color: '#6E7882',
     fontSize: 13,
   },
   postNewLabel: {
