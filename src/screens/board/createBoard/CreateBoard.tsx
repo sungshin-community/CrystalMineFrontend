@@ -37,12 +37,16 @@ function CreateBoard({navigation}: Props) {
 
   const onSubmitPress = async () => {
     const result = await createBoard(boardName, boardIntroduction, hotable);
-    if (result) {
+    if (result.data.code === 'CREATE_BOARD_SUCCESS') {
       Toast.show('게시판을 성공적으로 생성했습니다.', Toast.SHORT);
       navigation.pop();
       navigation.pop();
-      navigation.navigate('PostListScreen', {boardId: result.id});
+      navigation.navigate('PostListScreen', { boardId: result.data.data.id });
     }
+    else if(result.data.code === 'BOARD_NAME_DUPLICATION')
+      Toast.show('이미 존재하는 게시판 이름입니다. ', Toast.SHORT);
+    else 
+      Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
   };
   useEffect(() => {
     navigation.setOptions({

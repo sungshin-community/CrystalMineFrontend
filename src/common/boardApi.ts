@@ -139,10 +139,10 @@ export const createBoard = async (
       hotable: hotable,
     });
     console.log('createBoard 함수 성공', response.data);
-    return response.data.data;
+    return response;
   } catch (e) {
     console.log('createBoard 함수 실패', e.response.data);
-    return e.response.data.status;
+    return e.response;
   }
 };
 
