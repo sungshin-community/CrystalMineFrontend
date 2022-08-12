@@ -209,6 +209,9 @@ import {
 } from '../../../resources/icon/AlertItemIcon';
 import CheckMark from '../../../resources/icon/CheckMark';
 import {useNavigation} from '@react-navigation/native';
+import AlertBlindIcon from '../../../resources/icon/AlertBlindIcon';
+import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
+import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 
 interface AlertProps {
   data: Alert;
@@ -337,7 +340,19 @@ const AlertItem = ({
             setBlindModalVisible(true);
           }
         }}>
-        {data.type === 'WELCOME' ? <CheckMark /> : <AlertCheckIcon />}
+        {data.type === 'WELCOME' && <CheckMark />}
+        {(data.type === 'BEFORE_EXPIRE' ||
+          data.type === 'EXPIRE' ||
+          data.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
+        {(data.type === 'BOARD_BLIND' ||
+          data.type === 'PIN_BOARD_BLIND' ||
+          data.type === 'POST_BLIND' ||
+          data.type === 'COMMENT_BLIND') && <AlertBlindIcon />}
+        {(data.type === 'DELETE_BOARD_BLIND' ||
+          data.type === 'DELETE_POST_BLIND' ||
+          data.type === 'DELETE_COMMENT_BLIND') && <AlertBlindIcon />}
+        {data.type === 'COMMENT' && <AlertCommentIcon />}
+        {data.type === 'HOT_POST' && <AlertHotPostIcon />}
         <View style={{marginLeft: 16}}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
             {data.title}
