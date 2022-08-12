@@ -93,7 +93,7 @@ function PostWriteScreen({navigation, route}: Props) {
     );
     if (result) {
       if (boardId >= 5 && boardId < 10) {
-        navigation.navigate('WikiTab');
+        navigation.navigate('WikiTab', {boardId: boardId});
       } else {
         navigation.navigate('PostListScreen', {boardId});
       }
@@ -159,7 +159,7 @@ function PostWriteScreen({navigation, route}: Props) {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff' }}>
+    <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -233,7 +233,7 @@ function PostWriteScreen({navigation, route}: Props) {
           }}
           style={[fontRegular, styles.input]}
           autoCorrect={false}
-          />
+        />
         <Pressable
           onPress={() => navigation.navigate('DirectionAgreeScreen')}
           style={{

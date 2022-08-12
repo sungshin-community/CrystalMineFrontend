@@ -103,12 +103,21 @@ function WikiTab({navigation, route}: Props) {
       headerTitleAlign: 'center',
     });
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
-
   return (
     <>
       <Tab.Navigator
-        initialRouteName="WikiTab"
-        screenOptions={({route}) => ({
+        initialRouteName={
+          route.params.boardId === 6
+            ? '교내 위키'
+            : route.params.boardId === 7
+            ? '교외 위키'
+            : route.params.boardId === 8
+            ? '상권 위키'
+            : route.params.boardId === 9
+            ? '페미 위키'
+            : ''
+        }
+        screenOptions={() => ({
           tabBarStyle: {
             shadowColor: '#000',
             shadowOffset: {width: 0, height: 5},

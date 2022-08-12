@@ -379,7 +379,6 @@ const HomeFragment = ({navigation}: Props) => {
                       item.boardId === 8 ||
                       item.boardId === 9
                     ) {
-                      console.log(item.boardId);
                       navigation.navigate('WikiTab', {boardId: item.boardId});
                     } else
                       navigation.navigate('PostListScreen', {
