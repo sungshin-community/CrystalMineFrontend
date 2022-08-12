@@ -67,13 +67,10 @@ function WikiTab({navigation, route}: Props) {
             fontMedium,
             {
               marginLeft: 8,
-              fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
-              maxWidth: 180,
+              fontSize: 19,
             },
-          ]}
-          numberOfLines={1}
-          ellipsizeMode="tail">
-          {boardInfo?.name ? boardInfo.name : ''}
+          ]}>
+          성신 위키
         </Text>
       </>
     );
@@ -109,51 +106,51 @@ function WikiTab({navigation, route}: Props) {
 
   return (
     <>
-    <Tab.Navigator
-      initialRouteName="WikiTab"
-      screenOptions={{
-        tabBarStyle: {
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 5},
-          shadowRadius: 20,
-        },
-        tabBarIndicatorStyle: {
-          backgroundColor: '#A055FF',
-          height: 8,
-          width: 24,
-          bottom: -4,
-          borderRadius: 10,
-          marginHorizontal: tabWidth,
-        },
-        tabBarShowLabel: true,
-        tabBarLabelStyle: {
-          fontFamily: 'SpoqaHanSansNeo-Regular',
-          fontSize: 14,
-          marginTop: 14,
-          marginBottom: 6,
-        },
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#717171',
-      }}
-      keyboardDismissMode="on-drag"
-      initialLayout={{width: Dimensions.get('window').width}}>
-      <Tab.Screen
-        name="교내 위키"
-        children={() => <WikiList boardId={6} />}
-      />
-      <Tab.Screen
-        name="교외 위키"
-        children={() => <WikiList boardId={7} />}
-      />
-      <Tab.Screen
-        name="상권 위키"
-        children={() => <WikiList boardId={8} />}
-      />
-      <Tab.Screen
-        name="페미 위키"
-        children={() => <WikiList boardId={9} />}
-      />
-    </Tab.Navigator>
+      <Tab.Navigator
+        initialRouteName="WikiTab"
+        screenOptions={({route}) => ({
+          tabBarStyle: {
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 5},
+            shadowRadius: 20,
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: '#A055FF',
+            height: 8,
+            width: 24,
+            bottom: -4,
+            borderRadius: 10,
+            marginHorizontal: tabWidth,
+          },
+          tabBarShowLabel: true,
+          tabBarLabelStyle: {
+            fontFamily: 'SpoqaHanSansNeo-Regular',
+            fontSize: 14,
+            marginTop: 14,
+            marginBottom: 6,
+          },
+          tabBarActiveTintColor: '#000',
+          tabBarInactiveTintColor: '#717171',
+        })}
+        keyboardDismissMode="on-drag"
+        initialLayout={{width: Dimensions.get('window').width}}>
+        <Tab.Screen
+          name="교내 위키"
+          children={() => <WikiList boardId={6} />}
+        />
+        <Tab.Screen
+          name="교외 위키"
+          children={() => <WikiList boardId={7} />}
+        />
+        <Tab.Screen
+          name="상권 위키"
+          children={() => <WikiList boardId={8} />}
+        />
+        <Tab.Screen
+          name="페미 위키"
+          children={() => <WikiList boardId={9} />}
+        />
+      </Tab.Navigator>
     </>
   );
 }

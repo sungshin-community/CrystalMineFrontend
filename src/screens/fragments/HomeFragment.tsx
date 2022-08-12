@@ -109,7 +109,7 @@ const HomeFragment = ({navigation}: Props) => {
       }
       const userDto = await getAuthentication();
       if (userDto) setUser(userDto);
-      console.log(user)
+      console.log(user);
       if (!user?.blacklist) {
         const notification = await getUnreadNotification();
         setNoti(notification);
@@ -372,14 +372,19 @@ const HomeFragment = ({navigation}: Props) => {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    if (item.boardId === (5 || 6 || 7 || 8 || 9)) {
-                      console.log(item.boardId)
-                      navigation.navigate('WikiTab', { boardId: item.boardId });
-                    }
-                    else
-                    navigation.navigate('PostListScreen', {
-                      boardId: item.boardId,
-                    })
+                    if (
+                      item.boardId === 5 ||
+                      item.boardId === 6 ||
+                      item.boardId === 7 ||
+                      item.boardId === 8 ||
+                      item.boardId === 9
+                    ) {
+                      console.log(item.boardId);
+                      navigation.navigate('WikiTab', {boardId: item.boardId});
+                    } else
+                      navigation.navigate('PostListScreen', {
+                        boardId: item.boardId,
+                      });
                   }}>
                   <View style={styles.pinBoardContainer}>
                     <View style={styles.postTitleSummaryContainer}>
