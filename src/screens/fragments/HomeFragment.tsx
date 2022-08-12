@@ -275,6 +275,11 @@ const HomeFragment = ({navigation}: Props) => {
                         console.log('블라인드 알림 확인');
                         setBlindModalVisible(true);
                       }
+                      else if(item.type === 'BOARD_BLIND' && !item.blind) Toast.show('삭제된 게시판입니다.',Toast.SHORT);
+                      else if(item.type === 'PIN_BOARD_BLIND' && !item.blind) Toast.show('삭제된 게시판입니다.',Toast.SHORT);
+                      else if(item.type === 'POST_BLIND' && !item.blind) Toast.show('삭제된 게시글입니다.',Toast.SHORT);
+                      else if(item.type === 'COMMENT_BLIND' && !item.blind) Toast.show('삭제된 댓글입니다.',Toast.SHORT);
+                      else Toast.show('알 수 없는 오류가 발생하였습니다.',Toast.SHORT);
                     } else if (
                       item.type === 'DELETE_BOARD_BLIND' ||
                       item.type === 'DELETE_POST_BLIND' ||
@@ -325,6 +330,10 @@ const HomeFragment = ({navigation}: Props) => {
                         console.log('블라인드 알림 확인');
                         setBlindModalVisible(true);
                       }
+                      else if(item.type === 'DELETE_BOARD_BLIND' && !item.deleteBlind) Toast.show('삭제된 게시판입니다.',Toast.SHORT);
+                      else if(item.type === 'DELETE_POST_BLIND' && !item.deleteBlind) Toast.show('삭제된 게시글입니다.',Toast.SHORT);
+                      else if(item.type === 'DELETE_COMMENT_BLIND' && !item.deleteBlind) Toast.show('삭제된 댓글입니다.',Toast.SHORT);
+                      else Toast.show('알 수 없는 오류가 발생하였습니다.',Toast.SHORT);
                     }
                   }}>
                   <View style={{flexDirection: 'row'}}>
