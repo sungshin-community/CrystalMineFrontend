@@ -30,6 +30,9 @@ import PostScreen from './src/screens/post/PostScreen';
 
 import GlobalNavbar from './src/components/GlobalNavbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// search
+import TotalSearch from './src/screens/search/TotalSearch';
+import TotalSearchResult from './src/screens/search/TotalSearchResult';
 // board
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
@@ -642,6 +645,20 @@ const App = () => {
                 name="GlobalNavbar"
                 component={GlobalNavbar}
                 options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="TotalSearch"
+                component={TotalSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="TotalSearchResult"
+                component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen
@@ -2079,6 +2096,20 @@ const App = () => {
                 name="GlobalNavbar"
                 component={GlobalNavbar}
                 options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="TotalSearch"
+                component={TotalSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="TotalSearchResult"
+                component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen

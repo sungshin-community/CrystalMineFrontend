@@ -13,14 +13,41 @@ export const getBoardSearch = async (searchWord: string, page: number, sort: str
   }
 };
 
-export const getPostSearch = async (searchWord: string, page: number, sort: string) => {
+export const searchBoards = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchBoard[]>>(
+      `/search/boards?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data.data;
+  } catch (error: any) {
+    console.log('게시판 검색 실패', error);
+    return error.response.data;
+  }
+};
+
+export const getPostSearch = async (searchWord: string, page: number = 0, sort: string = 'createdAt') => {
   try {
     const response = await client.get<Response<SearchPost[]>>(
       `/search/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
     );
+    console.log(response.data.data)
     return response.data.data;
   } catch (error) {
     console.log('게시글 검색 실패', error);
+  }
+};
+
+export const searchPosts = async (searchWord: string, page: number, sort: string) => {
+  console.log("여기는 검색 API. 검색어는", searchWord)
+  try {
+    const response = await client.get<Response<SearchPost[]>>(
+      `/search/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    console.log(response.data.data)
+    return response.data;
+  } catch (error: any) {
+    console.log('게시글 검색 실패', error);
+    return error.response.data;
   }
 };
 
