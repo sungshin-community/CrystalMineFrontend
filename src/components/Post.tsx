@@ -170,7 +170,7 @@ function Post({
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={[
-                  fontRegular,
+                  fontMedium,
                   {fontSize: 16, paddingLeft: 8, fontWeight: `500`},
                 ]}>
                 {data?.displayName}

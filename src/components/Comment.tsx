@@ -24,6 +24,7 @@ import {ModalBottom} from '../components/ModalBottom';
 import {SelectModalBottom} from './SelectModalBottom';
 import Toast from 'react-native-simple-toast';
 import NoReport, {Report} from '../../resources/icon/Report';
+import {fontMedium} from '../common/font';
 
 interface Props {
   comment?: any;
@@ -43,7 +44,7 @@ const Comment = ({
   setIsRecomment,
   handleCommentDelete,
   handleCommentReport,
-  handleFocus
+  handleFocus,
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
@@ -155,12 +156,14 @@ const Comment = ({
             />
             <View style={{justifyContent: 'center'}}>
               <Text
-                style={{
-                  fontSize: 16,
-                  paddingLeft: 8,
-                  fontWeight: `500`,
-                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                }}>
+                style={[
+                  fontMedium,
+                  {
+                    fontSize: 16,
+                    paddingLeft: 8,
+                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                  },
+                ]}>
                 {data?.displayName}
               </Text>
             </View>
@@ -361,12 +364,14 @@ export const Recomment = ({
             />
             <View style={{justifyContent: 'center'}}>
               <Text
-                style={{
-                  fontSize: 16,
-                  paddingLeft: 8,
-                  fontWeight: `500`,
-                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                }}>
+                style={[
+                  fontMedium,
+                  {
+                    fontSize: 16,
+                    paddingLeft: 8,
+                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                  },
+                ]}>
                 {data.displayName}
               </Text>
             </View>
