@@ -103,11 +103,13 @@ export default function SignUpNickname({navigation, route}: Props) {
               borderColor: isFocused ? '#A055FF' : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
+                color: '#222222'
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -217,11 +219,13 @@ export default function SignUpNickname({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
+                color: '#222222'
               }}
               onFocus={(e: any) => {
                 onInputFocus();

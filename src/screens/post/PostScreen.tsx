@@ -12,6 +12,8 @@ import {
   Pressable,
   TextInput,
   Dimensions,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
@@ -48,6 +50,10 @@ const PostScreen = ({navigation, route}: Props) => {
   const [parentId, setParentId] = useState<number>();
   const [newComment, setNewComment] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const commentInputRef = useRef<TextInput>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
@@ -71,7 +77,7 @@ const PostScreen = ({navigation, route}: Props) => {
           [
           {post && post?.boardName.length <= 5
             ? post?.boardName
-            : post?.boardName.substr(0, 5).concat('...')}
+            : post?.boardName.substring(0, 5).concat('...')}
           ]의 게시글
         </Text>
       </View>
@@ -81,6 +87,7 @@ const PostScreen = ({navigation, route}: Props) => {
   // 초기화
   useEffect(() => {
     async function init() {
+      setIsLoading(true);
       const postData = await getPosts(route.params.postId);
       if (postData.code === 'BOARD_ALREADY_BLIND') {
         Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
@@ -94,6 +101,7 @@ const PostScreen = ({navigation, route}: Props) => {
       } else setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      setIsLoading(false);
     }
     init();
   }, []);
@@ -133,6 +141,7 @@ const PostScreen = ({navigation, route}: Props) => {
   // 댓글 생성
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
+      setIsLoading(true);
       const result = await addComment(postId, newComment, isAnonymous);
       if (result) {
         console.log('댓글 추가 성공');
@@ -142,6 +151,8 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      setIsLoading(false);
+      scrollViewRef.current?.scrollToEnd({animated: true})
     },
     [],
   );
@@ -153,6 +164,7 @@ const PostScreen = ({navigation, route}: Props) => {
       newComment: string,
       isAnonymous: boolean,
     ) => {
+      setIsLoading(true);
       const result = await addRecomment(
         postId,
         parentId,
@@ -168,9 +180,16 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
+      setIsLoading(false);
+      const index = comments?.findIndex(c => c.id === parentId);
+      flatListRef.current?.scrollToIndex({index: index, animated: true, viewPosition: 0});
     },
     [],
   );
+  // 댓글창 포커스
+  const focusCommentInput = () => {
+    commentInputRef.current?.focus();
+  }
   // 댓글, 대댓글 공감
   const handleCommentLike = async (commentId: number) => {
     const result = await setCommentLike(commentId);
@@ -203,7 +222,10 @@ const PostScreen = ({navigation, route}: Props) => {
         keyboardVerticalOffset={60}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
-        <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+        <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+          <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+        </View>
+        <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}} ref={scrollViewRef}>
           <Post
             post={post}
             handlePostLike={handlePostLike}
@@ -211,7 +233,36 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostDelete={handlePostDelete}
             handlePostReport={handlePostReport}></Post>
           <View style={{flex: 1}}>
-            {comments?.map((comment, index) => (
+          <FlatList
+            style={{flex: 1}}
+            ref={flatListRef}
+            data={comments}
+            renderItem={({item, index}) => <View key={index}>
+            <Comment
+              comment={item}
+              setParentId={setParentId}
+              handleCommentLike={handleCommentLike}
+              isRecomment={isRecomment}
+              setIsRecomment={setIsRecomment}
+              handleCommentDelete={handleCommentDelete}
+              handleCommentReport={handleCommentReport}
+              handleFocus={focusCommentInput}
+            />
+            {item.recomments &&
+              item.recomments.map((recomment, index) => (
+                <Recomment
+                  key={index}
+                  recomment={recomment}
+                  handleCommentLike={handleCommentLike}
+                  handleCommentDelete={handleCommentDelete}
+                  handleCommentReport={handleCommentReport}
+                />
+                //recomment 데이터 생긴 후 확인 필요
+              ))}
+          </View>}
+            ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
+          />
+            {/* {comments?.map((comment, index) => (
               <View key={index}>
                 <Comment
                   comment={comment}
@@ -221,6 +272,7 @@ const PostScreen = ({navigation, route}: Props) => {
                   setIsRecomment={setIsRecomment}
                   handleCommentDelete={handleCommentDelete}
                   handleCommentReport={handleCommentReport}
+                  handleFocus={focusCommentInput}
                 />
                 {comment.recomments &&
                   comment.recomments.map((recomment, index) => (
@@ -234,7 +286,7 @@ const PostScreen = ({navigation, route}: Props) => {
                     //recomment 데이터 생긴 후 확인 필요
                   ))}
               </View>
-            ))}
+            ))} */}
           </View>
         </ScrollView>
         <View style={{backgroundColor: '#fff'}}>
@@ -264,6 +316,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 {flexDirection: 'row', justifyContent: 'space-between'},
               ]}>
               <TextInput
+                ref={commentInputRef}
                 placeholder="댓글을 입력해 주세요."
                 placeholderTextColor="#87919B"
                 multiline={true}
@@ -321,5 +374,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS == 'ios' ? 13 : 0,
     minHeight: 44,
     maxHeight: 230,
+    color: '#222222'
   },
 });

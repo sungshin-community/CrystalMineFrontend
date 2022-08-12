@@ -94,11 +94,13 @@ export default function SignInPassword({navigation, route}: Props) {
                 {borderColor: isPasswordFocused ? (isPasswordCorrect ? '#A055FF' : '#E64646') : '#D7DCE6'},
               ]}>
               <TextInput
+                autoFocus={true}
                 style={{
                   fontSize: 21,
                   width: '90%',
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
+                  color: '#222222'
                 }}
                 onFocus={(e: any) => {
                   onPasswordFocus();
@@ -205,10 +207,12 @@ export default function SignInPassword({navigation, route}: Props) {
                 {borderColor: isPasswordFocused ? (isPasswordCorrect ? '#A055FF' : '#E64646') : '#D7DCE6'},
               ]}>
               <TextInput
+                autoFocus={true}
                 style={{
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   fontSize: 21,
                   width: '90%',
+                  color: '#222222'
                 }}
                 onFocus={(e: any) => {
                   onPasswordFocus();

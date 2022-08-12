@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -13,6 +14,8 @@ import {
 import GrayFlag from '../../../resources/icon/GrayFlag';
 import OrangeFlag from '../../../resources/icon/OrangeFlag';
 import {GrayPin, OrangePin, PurplePin} from '../../../resources/icon/Pin';
+import Board from '../../classes/Board';
+import {getBoardInfo, toggleBoardPin} from '../../common/boardApi';
 import {fontRegular} from '../../common/font';
 import {getBoardSearch} from '../../common/SearchApi';
 
@@ -20,10 +23,11 @@ function BoardSearchResult({searchWord}: any) {
   const navigation = useNavigation();
   const [data, setData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [boardInfo, setBoardInfo] = useState<Board>();
 
   useEffect(() => {
     const getData = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         const boardResult = await getBoardSearch(searchWord, 0, 'pinCount');
         if (boardResult) {
@@ -31,11 +35,27 @@ function BoardSearchResult({searchWord}: any) {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error('failed to load recent search', error);
+        console.error('특정 게시판 내 검색 실패', error);
       }
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true);
+      try {
+        const boardResult = await getBoardSearch(searchWord, 0, 'pinCount');
+        if (boardResult) {
+          setData(boardResult);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('특정 게시판 내 검색 실패', error);
+      }
+    };
+    getData();
+  }, [boardInfo]);
 
   const moveToBoard = (boardId: number) => {
     navigation.navigate('PostListScreen', {boardId: boardId});
@@ -88,19 +108,26 @@ function BoardSearchResult({searchWord}: any) {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                {!item.isPinned ? (
-                  item.isOwner ? (
-                    <GrayFlag style={{marginLeft: 23}} />
+                <Pressable
+                  onPress={async () => {
+                    await toggleBoardPin(item.id);
+                    const boardUpdate = await getBoardInfo(item.id);
+                    setBoardInfo(boardUpdate);
+                  }}>
+                  {!item.isPinned ? (
+                    item.isOwner ? (
+                      <GrayFlag style={{marginLeft: 23}} />
+                    ) : (
+                      <GrayPin style={{marginLeft: 20}} />
+                    )
+                  ) : item.isOfficial ? (
+                    <PurplePin style={{marginLeft: 20}} />
+                  ) : item.isOwner ? (
+                    <OrangeFlag style={{marginLeft: 23}} />
                   ) : (
-                    <GrayPin style={{marginLeft: 20}} />
-                  )
-                ) : item.isOfficial ? (
-                  <PurplePin style={{marginLeft: 20}} />
-                ) : item.isOwner ? (
-                  <OrangeFlag style={{marginLeft: 23}} />
-                ) : (
-                  <OrangePin style={{marginLeft: 20}} />
-                )}
+                    <OrangePin style={{marginLeft: 20}} />
+                  )}
+                </Pressable>
                 <Text
                   style={{
                     fontSize: 15,

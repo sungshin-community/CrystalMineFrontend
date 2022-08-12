@@ -31,7 +31,7 @@ interface Props {
 }
 
 type RootStackParamList = {
-  PostScreen: {boardId: number};
+  PostScreen: {postId: number};
 };
 type NavigateProps = NativeStackScreenProps<RootStackParamList>;
 
@@ -78,6 +78,30 @@ function PostSearchResult(
     navigation.navigate('PostScreen', {postId: postId});
   };
 
+  useEffect(() => {
+    const sortData = async () => {
+      let newData;
+
+      if (boardName === '내가 작성한 글') {
+        newData = await getMyPostSearch(searchWord, 0, sortBy);
+      } else if (boardName === '내가 작성한 댓글') {
+        newData = await getMyCommentSearch(searchWord, 0, sortBy);
+      } else if (boardName === '내가 스크랩한 글') {
+        newData = await getScrapsSearch(searchWord, 0, sortBy);
+      } else if (isInBoard) {
+        newData = await getPostSearchInBoard(searchWord, 0, sortBy);
+      } else {
+        newData = await getPostSearch(searchWord, 0, sortBy);
+      }
+
+      if (Object.keys(newData).length > 0) {
+        setIsData(newData.content);
+        setIsLoading(false);
+      }
+    };
+    sortData();
+  }, [sortBy]);
+
   const sortBtn = async () => {
     setIsLoading(true);
 
@@ -85,25 +109,6 @@ function PostSearchResult(
       setSortBy('likeCount');
     } else {
       setSortBy('createdAt');
-    }
-
-    let newData;
-
-    if (boardName === '내가 작성한 글') {
-      newData = await getMyPostSearch(searchWord, 0, sortBy);
-    } else if (boardName === '내가 작성한 댓글') {
-      newData = await getMyCommentSearch(searchWord, 0, sortBy);
-    } else if (boardName === '내가 스크랩한 글') {
-      newData = await getScrapsSearch(searchWord, 0, sortBy);
-    } else if (isInBoard) {
-      newData = await getPostSearchInBoard(searchWord, 0, sortBy);
-    } else {
-      newData = await getPostSearch(searchWord, 0, sortBy);
-    }
-
-    if (Object.keys(newData).length > 0) {
-      setIsData(newData);
-      setIsLoading(false);
     }
   };
 
@@ -133,12 +138,14 @@ function PostSearchResult(
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <SafeAreaView style={styles.noResult}>
-        {isTotal === 0 || isData.length === 0 ? (
+      {isTotal === 0 || isData.length === 0 ? (
+        <SafeAreaView style={styles.noResult}>
           <Text style={[fontRegular, styles.noResultText]}>
             요청하신 검색어에 대한 검색 결과가 없습니다.
           </Text>
-        ) : (
+        </SafeAreaView>
+      ) : (
+        <SafeAreaView style={[styles.noResult, {backgroundColor: '#fff'}]}>
           <ScrollView style={{backgroundColor: '#fff', width: '100%'}}>
             <View style={{backgroundColor: '#fff', width: '100%'}}>
               <TouchableOpacity
@@ -156,7 +163,7 @@ function PostSearchResult(
                   justifyContent: 'center',
                 }}>
                 <Text style={{marginRight: 5}}>
-                  {sortBy === 'createdAt' ? "최신순" : "공감순"}
+                  {sortBy === 'createdAt' ? '최신순' : '공감순'}
                 </Text>
                 <SortIcon />
               </TouchableOpacity>
@@ -165,8 +172,8 @@ function PostSearchResult(
               <PostSearchItem moveToPost={moveToPost} key={index} post={item} />
             ))}
           </ScrollView>
-        )}
-      </SafeAreaView>
+        </SafeAreaView>
+      )}
     </KeyboardAvoidingView>
   );
 }

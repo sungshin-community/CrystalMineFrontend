@@ -41,7 +41,7 @@ function BoardSearch({navigation, route}: Props) {
 
   // SearchInput 컴포넌트에서 검색 버튼을 눌렀을 경우 실행되는 함수
   const startSearching = () => {
-    if (searchWord.length > 1) {
+    if (searchWord.length > 1 && searchWord.replace(/ /g, '') !== '') {
       const newWordList = [searchWord].concat(wordList);
       const duplicateFilter = [...new Set(newWordList)]; // 최근 검색어 중복 체크
       if (duplicateFilter.length === 6) {
@@ -93,11 +93,13 @@ function BoardSearch({navigation, route}: Props) {
             setSearchWord={setSearchWord}
             startSearching={startSearching}
             boardName={route.params.boardName}
+            searchWord={searchWord}
           />
         ) : (
           <SearchInput
             setSearchWord={setSearchWord}
             startSearching={startSearching}
+            searchWord={searchWord}
           />
         ),
       headerRight: (): React.ReactNode => (

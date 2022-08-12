@@ -46,7 +46,13 @@ export default function BoardFragment({navigation}: Props) {
 
   const updatePinnedBoardList = async () => {
     const pinnedBoardList = await getPinnedBoardList();
+    const customBoardList = await getCustomBoardList();
+    const officialBoardList = await getOfficialBoardList();
+    const departmentBoards = await getDepartmentBoardList();
     setPinnedBoardList(pinnedBoardList);
+    setCustomBoardList(customBoardList);
+    setOfficialBoardList(officialBoardList);
+    setDepartmentBoardList(departmentBoards);
   }
 
   const updateCustomBoardList = async () => {

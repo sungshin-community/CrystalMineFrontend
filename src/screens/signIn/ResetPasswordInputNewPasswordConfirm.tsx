@@ -123,11 +123,13 @@ export default function ResetPasswordInputNewPasswordConfirm({
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '93%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
+                color: '#222222'
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -217,11 +219,13 @@ export default function ResetPasswordInputNewPasswordConfirm({
                 : '#D7DCE6',
             }}>
             <TextInput
+              autoFocus={true}
               style={{
                 width: '93%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
+                color: '#222222'
               }}
               onFocus={(e: any) => {
                 onInputFocus();

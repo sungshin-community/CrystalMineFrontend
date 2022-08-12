@@ -31,7 +31,7 @@ client.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("에러 발생! API:", error.config.url, "status:", error.status);
+    console.log("에러 발생! API:", error.config.url, "status:", error.response.status);
     const {config, response: { status }} = error;
     const originalRequest = config;
     if (originalRequest.url === '/auth/reissue-token') {

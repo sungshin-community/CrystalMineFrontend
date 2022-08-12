@@ -27,7 +27,7 @@ import {
   Unchecked,
   Checked,
 } from '../../../../resources/icon/CheckBox';
-import {DirectionContainer} from '../../../components/HideToggleContainer';
+import {AgreementContainer, DirectionContainer} from '../../../components/HideToggleContainer';
 import Agreement, {DirectionAgreement} from '../../../classes/Agreement';
 import {
   getAgreements,
@@ -48,26 +48,12 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function DirectionAgreeMyPage({navigation}: Props) {
-  const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
-  const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
   const [agreements, setAgreements] = useState<DirectionAgreement[]>([]);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
-  const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
-    if (clickedComponent === 'wholeAgree') {
-      setFirstTermChecked(true);
-      setSecondTermChecked(true);
-    } else if (clickedComponent === 'wholeDisagree') {
-      setFirstTermChecked(false);
-      setSecondTermChecked(false);
-    }
-  };
 
-  const handleChange = (id: number, checked: boolean) => {
-    console.log('hangleChange 호출됨. key는', id);
-    const agreementList = agreements.map(a =>
-      a.id === id ? {...a, checked: checked} : a,
-    );
+  const handleChange = (id: number) => {
+    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
     setAgreements(agreementList);
   };
 
@@ -88,8 +74,6 @@ function DirectionAgreeMyPage({navigation}: Props) {
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
-      backgroundColor:
-        firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc',
       color: '#FFFFFF',
       width: 343,
       height: 56,
@@ -137,12 +121,10 @@ function DirectionAgreeMyPage({navigation}: Props) {
                   agreements.length ? (
                   <RoundChecked
                     style={styles.wholeAgreeCheckBox}
-                    onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 ) : (
                   <RoundUnchecked
                     style={styles.wholeAgreeCheckBox}
-                    onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 )}
                 <Text
@@ -155,7 +137,7 @@ function DirectionAgreeMyPage({navigation}: Props) {
                 </Text>
               </TouchableOpacity>
               {agreements.map((a, index) => (
-                <DirectionContainer
+                <AgreementContainer
                   key={index}
                   id={index}
                   title={a.title}

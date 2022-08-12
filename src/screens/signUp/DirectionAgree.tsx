@@ -27,7 +27,7 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import {DirectionContainer} from '../../components/HideToggleContainer';
+import {AgreementContainer, DirectionContainer} from '../../components/HideToggleContainer';
 import Agreement, {DirectionAgreement} from '../../classes/Agreement';
 import {
   getAgreements,
@@ -59,11 +59,8 @@ function DirectionAgree({navigation}: Props) {
     }
   };
 
-  const handleChange = (id: number, checked: boolean) => {
-    console.log('hangleChange 호출됨. key는', id);
-    const agreementList = agreements.map(a =>
-      a.id === id ? {...a, checked: checked} : a,
-    );
+  const handleChange = (id: number) => {
+    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
     setAgreements(agreementList);
   };
 
@@ -151,7 +148,7 @@ function DirectionAgree({navigation}: Props) {
                 </Text>
               </TouchableOpacity>
               {agreements.map((a, index) => (
-                <DirectionContainer
+                <AgreementContainer
                   key={index}
                   id={a.id}
                   title={a.title}

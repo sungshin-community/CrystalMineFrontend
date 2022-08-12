@@ -375,14 +375,14 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{flex: 1, backgroundColor: '#FFFFFF'}}
             data={boardDetail}
             renderItem={({item, index}) => (
-              <Pressable
+              <TouchableOpacity
                 onPress={async () => {
                   navigation.navigate('PostScreen', {
                     postId: item.postId,
                   });
                 }}>
                 <PostItem post={item} />
-              </Pressable>
+              </TouchableOpacity>
             )}
             ItemSeparatorComponent={() => (
               <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>

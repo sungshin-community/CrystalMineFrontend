@@ -91,6 +91,7 @@ export default function QuitPassword({navigation}: Props) {
                 width: '90%',
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
+                color: '#222222'
               }}
               onFocus={() => {
                 onPasswordFocus();
@@ -214,6 +215,7 @@ export default function QuitPassword({navigation}: Props) {
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   fontSize: 21,
                   width: '90%',
+                  color: '#222222'
                 }}
                 onFocus={() => {
                   onPasswordFocus();
