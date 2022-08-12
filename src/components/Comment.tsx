@@ -179,6 +179,8 @@ const Comment = ({
                 }
               />
             )
+          ) : data.isBlind ? (
+            <></>
           ) : (
             <SpinningThreeDots
               isMine={data.isOfReader}
@@ -187,10 +189,13 @@ const Comment = ({
             />
           )}
         </View>
-        <Text style={{color: data.isDeleted ? '#6E7882' : '#000'}}>
+        <Text
+          style={{color: data.isDeleted || data.isBlind ? '#6E7882' : '#000'}}>
           {data?.content}
         </Text>
-        {!data.isDeleted && (
+        {data.isDeleted || data.isBlind ? (
+          <></>
+        ) : (
           <>
             <View
               style={{
@@ -387,6 +392,8 @@ export const Recomment = ({
                 }
               />
             )
+          ) : data.isBlind ? (
+            <></>
           ) : (
             <SpinningThreeDots
               isMine={data.isOfReader}
@@ -396,10 +403,15 @@ export const Recomment = ({
           )}
         </View>
         <View style={{marginLeft: 20}}>
-          <Text style={{color: data.isDeleted ? '#6E7882' : '#000'}}>
+          <Text
+            style={{
+              color: data.isDeleted || data.isBlind ? '#6E7882' : '#000',
+            }}>
             {data?.content}
           </Text>
-          {!data.isDeleted && (
+          {data.isDeleted || data.isBlind ? (
+            <></>
+          ) : (
             <>
               <View
                 style={{

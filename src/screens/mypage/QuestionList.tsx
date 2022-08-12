@@ -349,6 +349,7 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 15,
     color: '#222222',
+    width: Dimensions.get('window').width - 150
   },
   status: {
     width: 67,
@@ -428,7 +429,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 {questionItem.status ? '답변 완료' : '답변 대기'}
               </Text>
             </View>
-            <Text style={[fontMedium, styles.menuText]}>
+            <Text ellipsizeMode={'tail'} numberOfLines={1} style={[fontMedium, styles.menuText]}>
               {questionItem.title}
             </Text>
             <View style={styles.menuIcon}>
@@ -464,10 +465,10 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
               paddingHorizontal: 24,
               paddingVertical: 16,
             }}>
-            <Text style={[fontBold, {fontSize: 15, marginBottom: 10}]}>
+            <Text style={[fontMedium, {fontSize: 15, marginBottom: 10}]}>
               {data?.title}
             </Text>
-            <Text style={{marginBottom: 10}}>{data?.content}</Text>
+            <Text style={[fontRegular, {marginBottom: 10}]}>{data?.content}</Text>
             {data?.images.length !== 0 && (
               <View style={{flexDirection: 'row', marginTop: 16}}>
                 <ScrollView horizontal={true}>

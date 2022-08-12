@@ -85,70 +85,72 @@ function RequestWriteScreen({navigation}: Props) {
   };
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TextInput
-            placeholder="제목을 입력하세요."
-            value={title}
-            onChangeText={value => {
-              setTitle(value);
-              if (value.length === 23)
-                Toast.show(
-                  '문의 제목은 23글자까지만 입력 가능합니다.',
-                  Toast.SHORT,
-                );
-            }}
-            maxLength={23}
-            style={[fontMedium, styles.title]}
-          />
-        </View>
-        <View>
-          <TextInput
-            placeholder="내용을 입력하세요."
-            value={content}
-            multiline={true}
-            onChangeText={value => {
-              setContent(value);
-              if (value.length === 500)
-                Toast.show(
-                  '문의 내용은 500글자까지만 입력 가능합니다.',
-                  Toast.SHORT,
-                );
-            }}
-            maxLength={500}
-            onBlur={() => {
-              Keyboard.dismiss();
-              console.log('키보드다른데클릭');
-            }}
-            style={[fontRegular, styles.input]}
-          />
-        </View>
-        <View style={{paddingHorizontal: 24}}>
-          <View style={styles.image}>
-            <ImageIcon />
-            <Text style={[fontMedium, styles.imageText]}>이미지</Text>
+    <>
+      <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TextInput
+              placeholder="제목을 입력하세요."
+              value={title}
+              onChangeText={value => {
+                setTitle(value);
+                if (value.length === 23)
+                  Toast.show(
+                    '문의 제목은 23글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
+              }}
+              maxLength={23}
+              style={[fontMedium, styles.title]}
+            />
           </View>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {imageResponse.length !== 0 &&
-              imageResponse.map((asset, index) => (
-                <Image
-                  key={index}
-                  style={styles.imageBox}
-                  source={{uri: asset.uri}}
-                />
-              ))}
-            <View style={[styles.imageSelectBox, styles.imageBox]}>
-              <Pressable onPress={onSelectImage} hitSlop={25}>
-                <PhotoIcon />
-                <Text style={[fontMedium, styles.count]}>
-                  {imageResponse.length}/10
-                </Text>
-              </Pressable>
+          <View>
+            <TextInput
+              placeholder="내용을 입력하세요."
+              value={content}
+              multiline={true}
+              onChangeText={value => {
+                setContent(value);
+                if (value.length === 500)
+                  Toast.show(
+                    '문의 내용은 500글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
+              }}
+              maxLength={500}
+              onBlur={() => {
+                Keyboard.dismiss();
+                console.log('키보드다른데클릭');
+              }}
+              style={[fontRegular, styles.input]}
+            />
+          </View>
+          <View style={{paddingHorizontal: 24}}>
+            <View style={styles.image}>
+              <ImageIcon />
+              <Text style={[fontMedium, styles.imageText]}>이미지</Text>
+            </View>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {imageResponse.length !== 0 &&
+                imageResponse.map((asset, index) => (
+                  <Image
+                    key={index}
+                    style={styles.imageBox}
+                    source={{uri: asset.uri}}
+                  />
+                ))}
+              <View style={[styles.imageSelectBox, styles.imageBox]}>
+                <Pressable onPress={onSelectImage} hitSlop={25}>
+                  <PhotoIcon />
+                  <Text style={[fontMedium, styles.count]}>
+                    {imageResponse.length}/10
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
       {modalVisible && (
         <ModalBottom
           modalVisible={modalVisible}
@@ -160,7 +162,7 @@ function RequestWriteScreen({navigation}: Props) {
             setModalVisible(false);
           }}></ModalBottom>
       )}
-    </ScrollView>
+    </>
   );
 }
 
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    color: '#222222'
+    color: '#222222',
   },
   input: {
     backgroundColor: '#FBFBFB',
@@ -190,7 +192,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     paddingHorizontal: 24,
     textAlignVertical: 'top',
-    color: '#222222'
+    color: '#222222',
   },
   image: {
     marginTop: 19,
