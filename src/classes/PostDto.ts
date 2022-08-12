@@ -32,6 +32,7 @@ export interface PostWriteDto {
 export interface PostWriteInfoDto {
   boardName: string;
   profileImage: string;
+  defaultProfileImage: string;
   nickname: string;
   isOwner: boolean;
   hasTitle: boolean;

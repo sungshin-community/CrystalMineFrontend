@@ -169,7 +169,7 @@ function PostWriteScreen({navigation, route}: Props) {
                 style={{width: 24, height: 24, borderRadius: 12}}
                 source={{
                   uri: isAnonymous
-                    ? 'https://crystalmine.s3.ap-northeast-2.amazonaws.com/profileImages/default.png'
+                    ? info?.defaultProfileImage
                     : info?.profileImage,
                 }}
               />
