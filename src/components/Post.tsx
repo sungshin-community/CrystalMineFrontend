@@ -176,11 +176,7 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-            {data?.isAnonymous && !data?.isOwner ? (
-              <></>
-            ) : (
-              <SmallOrangeFlag style={{marginLeft: 5}} />
-            )}
+            {data?.isAnonymous ? <></> :  data?.isOwner ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <></>}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
