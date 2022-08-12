@@ -162,8 +162,6 @@ const AlertFragment = () => {
               data={item}
               blindModalVisible={blindModalVisible}
               setBlindModalVisible={setBlindModalVisible}
-              noticeModalVisible={noticeModalVisible}
-              setNoticeModalVisible={setNoticeModalVisible}
             />
           )}
           ItemSeparatorComponent={() => (

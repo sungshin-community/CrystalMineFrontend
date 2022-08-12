@@ -35,6 +35,10 @@ import {useIsFocused} from '@react-navigation/native';
 import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
+import {AlertCheckIcon} from '../../../resources/icon/AlertItemIcon';
+import AlertBlindIcon from '../../../resources/icon/AlertBlindIcon';
+import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
+import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -259,10 +263,18 @@ const HomeFragment = ({navigation}: Props) => {
                           </View>
                         </View>
                       );
-                      setModalBody(itemContent);
-                      // const result = await readNotification(item.id);
-                      console.log('블라인드 알림 확인');
-                      setBlindModalVisible(true);
+                      if (
+                        (item.type === 'BOARD_BLIND' ||
+                          item.type === 'PIN_BOARD_BLIND' ||
+                          item.type === 'POST_BLIND' ||
+                          item.type === 'COMMENT_BLIND') &&
+                        item.blind
+                      ) {
+                        setModalBody(itemContent);
+                        // const result = await readNotification(item.id);
+                        console.log('블라인드 알림 확인');
+                        setBlindModalVisible(true);
+                      }
                     } else if (
                       item.type === 'DELETE_BOARD_BLIND' ||
                       item.type === 'DELETE_POST_BLIND' ||
@@ -302,15 +314,35 @@ const HomeFragment = ({navigation}: Props) => {
                           </View>
                         </View>
                       );
-                      setModalBody(itemContent);
-                      // const result = await readNotification(item.id);
-                      console.log('블라인드 알림 확인');
-                      setBlindModalVisible(true);
+                      if (
+                        (item.type === 'DELETE_BOARD_BLIND' ||
+                          item.type === 'DELETE_POST_BLIND' ||
+                          item.type === 'DELETE_COMMENT_BLIND') &&
+                        item.deleteBlind
+                      ) {
+                        setModalBody(itemContent);
+                        // const result = await readNotification(item.id);
+                        console.log('블라인드 알림 확인');
+                        setBlindModalVisible(true);
+                      }
                     }
                   }}>
                   <View style={{flexDirection: 'row'}}>
                     {item.type === 'WELCOME' && <CheckMark />}
-                    {item.type !== 'WELCOME' && <NewsExclamationMarkIcon />}
+                    {(item.type === 'BEFORE_EXPIRE' ||
+                      item.type === 'EXPIRE' ||
+                      item.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
+                    {(item.type === 'BOARD_BLIND' ||
+                      item.type === 'PIN_BOARD_BLIND' ||
+                      item.type === 'POST_BLIND' ||
+                      item.type === 'COMMENT_BLIND') && <AlertBlindIcon />}
+                    {(item.type === 'DELETE_BOARD_BLIND' ||
+                      item.type === 'DELETE_POST_BLIND' ||
+                      item.type === 'DELETE_COMMENT_BLIND') && (
+                      <AlertBlindIcon />
+                    )}
+                    {item.type === 'COMMENT' && <AlertCommentIcon />}
+                    {item.type === 'HOT_POST' && <AlertHotPostIcon />}
                     <View>
                       <Text style={styles.newsTitle}>{item.title}</Text>
                       <Text
@@ -398,7 +430,14 @@ const HomeFragment = ({navigation}: Props) => {
                       <Text
                         numberOfLines={1}
                         ellipsizeMode="tail"
-                        style={[styles.postSummary, {color: item.recentPostContent ?'#6E7882': '#CBD0D8'}]}>
+                        style={[
+                          styles.postSummary,
+                          {
+                            color: item.recentPostContent
+                              ? '#6E7882'
+                              : '#CBD0D8',
+                          },
+                        ]}>
                         {item.recentPostContent
                           ? item.recentPostContent
                           : '아직 작성된 글이 없습니다!'}
