@@ -131,10 +131,10 @@ export const getScrapsSearch = async (searchWord: string, page: number, sort: st
   }
 }
 
-export const searchScrapedPosts = async (searchWord: string, page: number, sort: string) => {
+export const searchScrapedPosts = async (searchWord: string, page: number) => {
   try {
     const response = await client.get<Response<SearchPost>>(
-      `/search/scraps?keyword=${searchWord}&page=${page}&sort=${sort}`,
+      `/search/scraps?keyword=${searchWord}&page=${page}&sort=createdAt`,
     );
     return response.data;
   } catch (error: any) {
