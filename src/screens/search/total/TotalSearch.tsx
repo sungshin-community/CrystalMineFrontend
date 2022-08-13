@@ -41,7 +41,6 @@ function TotalSearch({navigation, route}: Props) {
   const saveRecentSearchWords = async (text: string) => {
     if (text && text.trim().length > 0) {
       const jsonRecentSearchWords = await AsyncStorage.getItem('recentTotalSearch');
-      console.log("여기는 saveRecentSearchWords 함수. 최근검색어는", jsonRecentSearchWords);
       let recentSearchWordList: string[] = [];
       if (jsonRecentSearchWords) {
         recentSearchWordList = JSON.parse(jsonRecentSearchWords);
@@ -50,8 +49,6 @@ function TotalSearch({navigation, route}: Props) {
       if (index >= 0) {
         // 있으면 삭제
         recentSearchWordList.splice(index, 1);
-      } else {
-        console.log("없음");
       }
       recentSearchWordList.unshift(text);
       if (recentSearchWordList.length > 5) {
@@ -78,6 +75,11 @@ function TotalSearch({navigation, route}: Props) {
       }
       await AsyncStorage.setItem('recentTotalSearch', JSON.stringify(recentSearchWordList));
       setRecentSearchWords(recentSearchWordList);
+  }
+
+  const deleteAllRecentSearchWords = async () => {
+    await AsyncStorage.setItem('recentTotalSearch', '');
+    setRecentSearchWords([])
   }
 
   const search = async (text: string) => {
@@ -120,13 +122,14 @@ function TotalSearch({navigation, route}: Props) {
   return (
     <>
       <View style={{paddingHorizontal: 40, backgroundColor: '#FFFFFF', flex: 1}}>
-        <Pressable
-          onPress={async () => {await AsyncStorage.setItem('recentTotalSearch', ''); setRecentSearchWords([])}}
+        <View
           style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center'}}
         >
           <Text style={[styles.title, fontBold]}>최근 검색어</Text>
-          <Text style={[fontRegular, {color: '#A055FF', textDecorationLine: 'underline'}]}>전체 삭제</Text>
-        </Pressable>
+          <Pressable onPress={() => {deleteAllRecentSearchWords()}}>
+            <Text style={[fontRegular, {color: '#A055FF', textDecorationLine: 'underline'}]}>전체 삭제</Text>
+          </Pressable>
+        </View>
         <View style={{flex: 1, marginTop: 14}}>
           {
             recentSearchWords?.map((text, index) => (
