@@ -22,17 +22,17 @@ type RootStackParamList = {
     boardId?: number;
   };
   PostListScreen: {boardId: number};
-  PostSearchResult: {searchWord: string, boardId: number, boardName: string};
+  MyPostSearchResult: {searchWord: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function PostSearch({navigation, route}: Props) {
+function MyPostSearch({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>('');
   const [recentSearchWords, setRecentSearchWords] = useState<string[]>([]);
 
   const getRecentSearchWords = async () => {
     try {
-      const jsonRecentSearchWords = await AsyncStorage.getItem('recentPostSearch');
+      const jsonRecentSearchWords = await AsyncStorage.getItem('recentMyPostSearch');
       if (jsonRecentSearchWords) {
         const recentSearchWords = JSON.parse(jsonRecentSearchWords);
         setRecentSearchWords(recentSearchWords);
@@ -49,7 +49,7 @@ function PostSearch({navigation, route}: Props) {
       console.log("tempArray:", tempArray);
       setRecentSearchWords(tempArray);
       if (true) {
-        await AsyncStorage.setItem('recentPostSearch', JSON.stringify(tempArray));
+        await AsyncStorage.setItem('recentMyPostSearch', JSON.stringify(tempArray));
       }
     } catch (error) {
       console.error('최근 검색어 가져오기 실패', error);
@@ -57,8 +57,7 @@ function PostSearch({navigation, route}: Props) {
   }
 
   const search = async (text: string) => {
-    console.log("게시판 id는", route.params.boardId);
-    navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
+    navigation.navigate('MyPostSearchResult', {searchWord: text});
     await saveRecentSearchWords(text);
   }
 
@@ -69,7 +68,7 @@ function PostSearch({navigation, route}: Props) {
         <TextInput
           autoFocus={true}
           style={styles.input}
-          placeholder={`[${route.params.boardName}] 게시판에서 검색`}
+          placeholder='내가 작성한 글에서 검색'
           placeholderTextColor="#898989"
           returnKeyType="search"
           autoCorrect={false}
@@ -102,7 +101,7 @@ function PostSearch({navigation, route}: Props) {
               <TouchableOpacity
                 style={{height: 36, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
                 key={index}
-                onPress={() => navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId})}
+                onPress={() => navigation.navigate('MyPostSearchResult', {searchWord: text})}
               >
                 <Text style={[fontRegular, {fontSize: 15}]}>{text}</Text>
                 <TouchableHighlight
@@ -121,7 +120,7 @@ function PostSearch({navigation, route}: Props) {
   )
 }
 
-export default PostSearch;
+export default MyPostSearch;
 
 const styles = StyleSheet.create({
   container: {

@@ -85,6 +85,18 @@ export const getMyPostSearch = async (searchWord: string, page: number, sort: st
   }
 }
 
+export const searchMyPosts = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchPost>>(
+      `/search/myposts?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('내가 쓴 게시글 검색 실패', error);
+    return error.response.data;
+  }
+}
+
 export const getMyCommentSearch = async (searchWord: string, page: number, sort: string) => {
   try {
     const response = await client.get<Response<SearchPost[]>>(

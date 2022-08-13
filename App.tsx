@@ -78,6 +78,8 @@ import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
 import WikiTab from './src/screens/board/WikiTab';
 import PostSearch from './src/screens/search/PostSearch';
 import PostSearchResult from './src/screens/search/PostSearchResult';
+import MyPostSearch from './src/screens/search/MyPostSearch';
+import MyPostSearchResult from './src/screens/search/MyPostSearchResult';
 
 const Stack = createNativeStackNavigator();
 
@@ -672,6 +674,20 @@ const App = () => {
               <Stack.Screen
                 name="PostSearchResult"
                 component={PostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearch"
+                component={MyPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearchResult"
+                component={MyPostSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}
@@ -2137,6 +2153,20 @@ const App = () => {
               <Stack.Screen
                 name="PostSearchResult"
                 component={PostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearch"
+                component={MyPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearchResult"
+                component={MyPostSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}

@@ -1,4 +1,5 @@
 import Board from "./Board";
+import { MyPostContentDto } from "./board/MyPostDto";
 
 export interface BoardContent {
   id: number;
@@ -51,19 +52,5 @@ export interface PostContent {
 }
 
 export interface SearchPost {
-  content: PostContent[];
-  pageable: string;
-  totalPages: number;
-  totalElements: number;
-  last: boolean;
-  numberOfElements: number;
-  first: boolean;
-  size: number;
-  number: number;
-  sort: {
-    unsorted: boolean;
-    sorted: boolean;
-    empty: boolean;
-  };
-  empty: boolean;
+  content: MyPostContentDto[];
 }

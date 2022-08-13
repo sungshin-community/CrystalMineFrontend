@@ -8,6 +8,7 @@ import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
+import MyPostList from './MyPostList';
 
 type RootStackParamList = {
   SearchResult: {
@@ -28,7 +29,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const Tab = createMaterialTopTabNavigator();
 let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 
-function PostSearchResult({navigation, route}: Props) {
+function MyPostSearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ function PostSearchResult({navigation, route}: Props) {
           returnKeyType="search"
           autoCorrect={false}
           autoCapitalize="none"
-          onSubmitEditing={(e) => {console.log(e.nativeEvent.text); setSearchWord(e.nativeEvent.text)}}
+          onSubmitEditing={(e) => {setSearchWord(e.nativeEvent.text)}}
           keyboardType="default"
           enablesReturnKeyAutomatically
           defaultValue={route.params.searchWord}
@@ -88,7 +89,7 @@ function PostSearchResult({navigation, route}: Props) {
       </View>
     </View> :
     <Tab.Navigator
-      initialRouteName="BoardSearch"
+      initialRouteName="게시글"
       screenOptions={{
         tabBarStyle: {
           shadowColor: '#000',
@@ -117,8 +118,7 @@ function PostSearchResult({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        component={() => <PostList searchWord={searchWord} boardId={route.params.boardId} boardName={route.params.boardName} />}
-        initialParams={{searchWord: searchWord}}
+        component={() => <MyPostList searchWord={searchWord} />}
         
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
@@ -128,7 +128,7 @@ function PostSearchResult({navigation, route}: Props) {
   );
 }
 
-export default PostSearchResult;
+export default MyPostSearchResult;
 
 const styles = StyleSheet.create({
   container: {
