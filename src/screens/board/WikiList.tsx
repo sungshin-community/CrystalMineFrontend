@@ -22,7 +22,6 @@ import {PostContent} from '../../classes/Search';
 import {getBoardInfo, getHotBoardPosts} from '../../common/boardApi';
 import client from '../../common/client';
 import {fontRegular} from '../../common/font';
-import {getPostSearch} from '../../common/SearchApi';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
 import PostSearchItem from '../../components/PostSearchItem';
