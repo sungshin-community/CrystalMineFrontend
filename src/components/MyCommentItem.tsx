@@ -14,10 +14,10 @@ interface Props {
 
 export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) {
   return (
-    <TouchableOpacity activeOpacity={deleteMode ? 1 : 0.5}
+    <TouchableOpacity
       onPress={() => moveToPost(comment)}
       style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
-      <View style={{opacity: deleteMode && !comment.isChecked ? 0.5 : 1}}>
+      <View>
       <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
         <SmallBoard style={{marginLeft: 11}} />
         <Text style={{color: '#87919B', marginLeft: 8}}>{comment.boardName}</Text>
