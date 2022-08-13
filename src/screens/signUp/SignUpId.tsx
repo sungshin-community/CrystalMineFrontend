@@ -187,7 +187,7 @@ export default function SignUpId({navigation, route}: Props) {
         />
       )}
       <KeyboardAvoidingView
-        keyboardVerticalOffset={10}
+        keyboardVerticalOffset={0}
         behavior={'padding'}
         style={{flex: 1}}>
         <View
@@ -282,7 +282,7 @@ export default function SignUpId({navigation, route}: Props) {
           </ScrollView>
           <View
             style={{
-              bottom: isFocused ? 80 : 0,
+              bottom: isFocused ? 0 : 80,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
