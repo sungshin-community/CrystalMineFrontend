@@ -1,6 +1,6 @@
 import Response from '../classes/Response';
 import client from './client';
-import {SearchBoard, SearchPost} from '../classes/Search';
+import {BoardSearchResult, SearchBoard, SearchPost} from '../classes/Search';
 
 export const getBoardSearch = async (searchWord: string, page: number, sort: string) => {
   try {
@@ -15,10 +15,10 @@ export const getBoardSearch = async (searchWord: string, page: number, sort: str
 
 export const searchBoards = async (searchWord: string, page: number, sort: string) => {
   try {
-    const response = await client.get<Response<SearchBoard[]>>(
+    const response = await client.get<Response<BoardSearchResult>>(
       `/search/boards?keyword=${searchWord}&page=${page}&sort=${sort}`,
     );
-    return response.data.data;
+    return response.data;
   } catch (error: any) {
     console.log('게시판 검색 실패', error);
     return error.response.data;

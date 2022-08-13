@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, TouchableHighlightBase, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MyPostItem from '../../components/MyPostItem';
-import { deleteMyPosts, getMyPostList } from '../../common/boardApi';
 import { MyPostContentDto } from '../../classes/board/MyPostDto';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import SearchIcon from '../../../resources/icon/SearchIcon';
@@ -62,14 +61,15 @@ export default function PostSearchResult({searchWord}: Props) {
 
 
   const handleRefresh = async () => {
-    const postList = await getMyPostList(0, sortBy);
+    const postList = await searchPosts(searchWord, 0, sortBy);
     setCurrentPage(0);
     setMyPostList(postList);
   }
 
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    let thisPagePostList: MyPostContentDto[] = await getMyPostList(currentPage + 1, sortBy);
+    const response = await searchPosts(searchWord, currentPage + 1, sortBy);
+    let thisPagePostList: MyPostContentDto[] = response.data.content;
     setMyPostList(myPostList.concat(thisPagePostList));
     if (thisPagePostList.length > 0) {
       setCurrentPage(currentPage + 1);

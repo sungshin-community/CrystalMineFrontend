@@ -1,3 +1,5 @@
+import Board from "./Board";
+
 export interface BoardContent {
   id: number;
   name: string;
@@ -22,6 +24,10 @@ export interface SearchBoard {
     empty: boolean;
   };
   empty: boolean;
+}
+
+export interface BoardSearchResult {
+  content: Board[];
 }
 
 export interface PostContent {

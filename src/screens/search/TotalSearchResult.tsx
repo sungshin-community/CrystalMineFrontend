@@ -8,6 +8,7 @@ import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostSearchResult from './PostSearchResult';
+import BoardSearchResult from './BoardSearchResult';
 
 type RootStackParamList = {
   SearchResult: {
@@ -122,8 +123,8 @@ function TotalSearchResult({navigation, route}: Props) {
         
       />
       <Tab.Screen
-        name="게시판 이름"
-        children={() => <View><Text>게시판 이름 탭</Text></View>}
+        name="게시판"
+        children={() => <BoardSearchResult searchWord={searchWord} />}
       />
       <Tab.Screen name="태그" component={TagSearchResult} />
     </Tab.Navigator>
