@@ -59,7 +59,7 @@ function PostSearch({navigation, route}: Props) {
 
   const search = async (text: string) => {
     await saveSearchWord(text);
-    if (route.params.boardId === 5) {
+    if (route.params.boardId >= 5 && route.params.boardId <= 9) {
       navigation.navigate('WikiSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
     } else {
       navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
