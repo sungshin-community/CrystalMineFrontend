@@ -13,7 +13,7 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import Toast from 'react-native-simple-toast';
-import WikiList from './WikiList';
+import PostListScreen from '../post/PostListScreen';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -143,19 +143,23 @@ function WikiTab({navigation, route}: Props) {
         initialLayout={{width: Dimensions.get('window').width}}>
         <Tab.Screen
           name="교내 위키"
-          children={() => <WikiList boardId={6} />}
+          component={PostListScreen}
+          initialParams={{boardId: 6}}
         />
         <Tab.Screen
           name="교외 위키"
-          children={() => <WikiList boardId={7} />}
+          component={PostListScreen}
+          initialParams={{boardId: 7}}
         />
         <Tab.Screen
           name="상권 위키"
-          children={() => <WikiList boardId={8} />}
+          component={PostListScreen}
+          initialParams={{boardId: 8}}
         />
         <Tab.Screen
           name="페미 위키"
-          children={() => <WikiList boardId={9} />}
+          component={PostListScreen}
+          initialParams={{boardId: 8}}
         />
       </Tab.Navigator>
     </>
