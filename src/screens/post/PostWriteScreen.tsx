@@ -97,7 +97,11 @@ function PostWriteScreen({navigation, route}: Props) {
     Keyboard.dismiss();
   };
   const onSubmitPress = async () => {
-    console.log(boardId, images);
+    console.log('api 함수 호출 전: ' ,boardId,
+      title,
+      content,
+      isAnonymous,
+      images,);
     const result = await postWritePost(
       boardId,
       title,
@@ -218,7 +222,7 @@ function PostWriteScreen({navigation, route}: Props) {
               </View>
               <Pressable
                 style={{flexDirection: 'row', alignItems: 'center'}}
-                onPress={() => setIsAnonymous(!isAnonymous)}>
+                onPress={() => { setIsAnonymous(!isAnonymous); console.log('익명체크 후: ', isAnonymous)}}>
                 <Text style={{marginRight: 4}}>익명</Text>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
