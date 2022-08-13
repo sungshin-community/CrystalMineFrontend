@@ -31,6 +31,7 @@ let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 
 function PostSearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
+  const boardName = route.params.boardName ? route.params.boardName : '';
 
   const search = (text: string) => {
     setSearchWord(text);
@@ -44,7 +45,7 @@ function PostSearchResult({navigation, route}: Props) {
         <TextInput
           autoFocus={false}
           style={styles.input}
-          placeholder={`[${route.params.boardName}] 게시판에서 검색`}
+          placeholder={`[${boardName.length <= 5 ? boardName : boardName.substring(0, 5) + "..."}] 게시판에서 검색`}
           placeholderTextColor="#898989"
           returnKeyType="search"
           autoCorrect={false}

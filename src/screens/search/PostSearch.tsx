@@ -32,15 +32,17 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function PostSearch({navigation, route}: Props) {
   const [recentSearchWords, setRecentSearchWords] = useState<string[]>([]);
   const isFocused = useIsFocused();
+  const boardName = route.params.boardName ? route.params.boardName : '';
+  const boardId = route.params.boardId;
 
   const getRecentSearchWords = async () => {
-    const searchWords = await loadRecentSearchWord('recentPostSearch' + route.params.boardId);
+    const searchWords = await loadRecentSearchWord('recentPostSearch' + boardId);
     setRecentSearchWords(searchWords);
   }
 
   const saveSearchWord = async (text: string) => {
     if (text && text.trim().length > 0) {
-      const searchWords = await saveRecentSearchWord(text.trim(), 'recentPostSearch' + route.params.boardId);
+      const searchWords = await saveRecentSearchWord(text.trim(), 'recentPostSearch' + boardId);
       setRecentSearchWords(searchWords);
     } else {
       Toast.show('공백은 검색이 불가능합니다.', Toast.SHORT);
@@ -48,21 +50,21 @@ function PostSearch({navigation, route}: Props) {
   }
 
   const deleteSearchWord = async (text: string) => {
-    const searchWords = await deleteRecentSearchWord(text, 'recentPostSearch' + route.params.boardId);
+    const searchWords = await deleteRecentSearchWord(text, 'recentPostSearch' + boardId);
     setRecentSearchWords(searchWords);
   }
 
   const deleteAllSearchWords = async () => {
-    deleteAllRecentSearchWords('recentPostSearch' + route.params.boardId);
+    deleteAllRecentSearchWords('recentPostSearch' + boardId);
     setRecentSearchWords([]);
   }
 
   const search = async (text: string) => {
     await saveSearchWord(text);
-    if (route.params.boardId >= 5 && route.params.boardId <= 9) {
-      navigation.navigate('WikiSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
+    if (boardId >= 5 && boardId <= 9) {
+      navigation.navigate('WikiSearchResult', {searchWord: text, boardId: boardId, boardName: boardName});
     } else {
-      navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
+      navigation.navigate('PostSearchResult', {searchWord: text, boardId: boardId, boardName: boardName});
     }
   }
 
@@ -77,7 +79,7 @@ function PostSearch({navigation, route}: Props) {
         <TextInput
           autoFocus={true}
           style={styles.input}
-          placeholder={`[${route.params.boardName}] 게시판에서 검색`}
+          placeholder={`[${boardName.length <= 5 ? boardName : boardName.substring(0, 5) + "..."}] 게시판에서 검색`}
           placeholderTextColor="#898989"
           returnKeyType="search"
           autoCorrect={false}

@@ -19,6 +19,7 @@ import OrangeFlag from '../../../../resources/icon/OrangeFlag';
 import { SearchBoard } from '../../../classes/Search';
 import { fontRegular } from '../../../common/font';
 import Board from '../../../classes/Board';
+import GrayFlag from '../../../../resources/icon/GrayFlag';
 
 interface Props {
   searchWord: string;
@@ -138,14 +139,16 @@ export default function BoardSearchResult({searchWord}: Props) {
             marginLeft: 10,
             width: 44}}>
             {!item.isPinned ? (
-              item.isOwner ? <GrayPin style={{ marginLeft: 13 }}/> : <GrayPin
+              item.isOwner ? <GrayFlag style={{ marginLeft: 13 }}/> : <GrayPin
                 style={{ marginLeft: 10 }}
               />
             ) : (
-              item.isOwner ? <OrangeFlag style={{ marginLeft: 13 }}
-                /> : <OrangePin
-                style={{ marginLeft: 10 }}
-              />
+              item.type === "PUBLIC" ? 
+                (item.isOwner ? <OrangeFlag style={{ marginLeft: 13 }}
+                  /> : <OrangePin
+                  style={{ marginLeft: 10 }}
+                />) :
+                <PurplePin style={{ marginLeft: 10 }} />
             )}
           </Pressable>
           <View style={{flex: 1, marginLeft: 5, marginRight: 15}}>
