@@ -9,7 +9,6 @@ import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
 import { saveRecentSearchWord } from '../../common/util';
-import WikiList from '../board/WikiList';
 
 type RootStackParamList = {
   SearchResult: {
