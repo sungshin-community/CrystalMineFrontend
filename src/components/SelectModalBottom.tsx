@@ -158,6 +158,16 @@ export const SelectModalBottom = ({
                       Toast.SHORT,
                     );
                   } else if (
+                    result.code === 'BOARD_REPORT_DUPLICATION' ||
+                    result.code === 'POST_REPORT_DUPLICATION' ||
+                    result.code === 'COMMENT_REPORT_DUPLICATION'
+                  ) {
+                    setModalVisible(false);
+                    Toast.show(
+                      '이미 신고한 게시글입니다.',
+                      Toast.SHORT,
+                    );
+                  } else if (
                     result.code === 'REPORT_FAIL_REASON_DETAIL_NECESSARY'
                   ) {
                     Toast.show(
