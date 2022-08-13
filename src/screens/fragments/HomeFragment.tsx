@@ -139,7 +139,7 @@ const HomeFragment = ({navigation}: Props) => {
     if (isFocused) {
       getContents();
     }
-  }, [isFocused, modalBody]);
+  }, [isFocused, modalBody, blindModalVisible]);
 
   return (
     <>
@@ -220,7 +220,6 @@ const HomeFragment = ({navigation}: Props) => {
                         navigation.navigate('UncertifiedMember');
                       // const result = await readNotification(item.id);
                       // 알람 확인 못 해야함.
-                      navigation.navigate('RegularMemberAuthMyPage');
                     } else if (
                       item.type === 'BOARD_BLIND' ||
                       item.type === 'PIN_BOARD_BLIND' ||
