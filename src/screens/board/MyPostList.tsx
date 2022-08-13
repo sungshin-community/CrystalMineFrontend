@@ -16,6 +16,7 @@ import SortIcon from '../../../resources/icon/SortIcon';
 type RootStackParamList = {
   PostScreen: {postId: number};
   BoardSearch: {boardName: string};
+  MyPostSearch: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -113,7 +114,8 @@ export default function MyPostList({navigation, route}: Props) {
     <TouchableHighlight
       style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
       underlayColor='#EEEEEE'
-      onPress={() => navigation.navigate('BoardSearch', {boardName: '내가 작성한 글'})}>
+      onPress={() => {navigation.navigate('MyPostSearch')}}
+    >
       <SearchIcon />
     </TouchableHighlight>
   );
@@ -209,7 +211,6 @@ export default function MyPostList({navigation, route}: Props) {
           </TouchableOpacity>}
         </View>
         <FlatList
-          style={{marginTop: 10}}
           data={myPostList}
           renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
           ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}

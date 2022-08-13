@@ -104,7 +104,8 @@ export default function ScrapedPostList({navigation}: Props) {
     <TouchableHighlight
       style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
       underlayColor='#EEEEEE'
-      onPress={() => navigation.navigate('BoardSearch', {boardName: '내가 스크랩한 글'})}>
+      onPress={() => {navigation.navigate('ScrapedPostSearch')}}
+    >
       <SearchIcon />
     </TouchableHighlight>
   );
@@ -164,7 +165,7 @@ export default function ScrapedPostList({navigation}: Props) {
         </Text>
       </View> :
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, height: 46}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16}}>
           {deleteMode &&
           <TouchableOpacity
             onPress={() => {

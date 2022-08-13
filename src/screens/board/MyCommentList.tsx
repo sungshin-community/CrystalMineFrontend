@@ -16,6 +16,7 @@ import SortIcon from '../../../resources/icon/SortIcon';
 type RootStackParamList = {
   PostScreen: {postId: number};
   BoardSearch: {boardName: string};
+  MyCommentSearch: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -119,7 +120,8 @@ export default function MyCommentList({navigation, route}: Props) {
     <TouchableHighlight
       style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
       underlayColor='#EEEEEE'
-      onPress={() => navigation.navigate('BoardSearch', {boardName: '내가 작성한 댓글'})}>
+      onPress={() => {navigation.navigate('MyCommentSearch')}}
+    >
       <SearchIcon  />
     </TouchableHighlight>
   );
@@ -213,7 +215,6 @@ export default function MyCommentList({navigation, route}: Props) {
         </TouchableOpacity>}
       </View>
       <FlatList
-        style={{marginTop: 10}}
         data={myCommentList}
         renderItem={({item}) => <MyCommentItem comment={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
         ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}

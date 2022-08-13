@@ -17,11 +17,10 @@ interface Props {
   items: Board[];
   onUpdate?: () => void;
   moveToBoard?: (boardId: number) => void;
-  search?: boolean;
   isInited: boolean;
 }
 
-export default function BoardList({ items, moveToBoard, search, isInited, onUpdate }: Props) {
+export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Props) {
 
   return (
     !isInited ?
@@ -34,7 +33,7 @@ export default function BoardList({ items, moveToBoard, search, isInited, onUpda
           style={{
             height: 42,
             justifyContent: 'center',
-            backgroundColor: `${search ? '#fff' : '#F6F6F6'}`,
+            backgroundColor: '#F6F6F6'
           }}>
           <View style={{
             flexDirection: 'row',
@@ -68,11 +67,6 @@ export default function BoardList({ items, moveToBoard, search, isInited, onUpda
               {item.name}
             </Text>
           </View>
-          {search && (
-            <View>
-              <Text style={[fontRegular, { color: '#BDBDBD', marginLeft: 60, fontSize: 13, marginTop: 6, paddingRight: 20 }]}>{item.introduction}</Text>
-            </View>
-          )}
       </TouchableOpacity>
       )
      :

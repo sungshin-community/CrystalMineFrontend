@@ -30,6 +30,9 @@ import PostScreen from './src/screens/post/PostScreen';
 
 import GlobalNavbar from './src/components/GlobalNavbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// search
+import TotalSearch from './src/screens/search/total/TotalSearch';
+import TotalSearchResult from './src/screens/search/total/TotalSearchResult';
 // board
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
@@ -73,6 +76,15 @@ import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
 import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
 import WikiTab from './src/screens/board/WikiTab';
+import PostSearch from './src/screens/search/PostSearch';
+import PostSearchResult from './src/screens/search/PostSearchResult';
+import MyPostSearch from './src/screens/search/MyPostSearch';
+import MyPostSearchResult from './src/screens/search/MyPostSearchResult';
+import MyCommentSearch from './src/screens/search/MyCommentSearch';
+import MyCommentSearchResult from './src/screens/search/MyCommentSearchResult';
+import ScrapedPostSearch from './src/screens/search/ScrapedPostSearch';
+import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResult';
+import WikiSearchResult from './src/screens/search/WikiSearchResult';
 
 const Stack = createNativeStackNavigator();
 
@@ -642,6 +654,83 @@ const App = () => {
                 name="GlobalNavbar"
                 component={GlobalNavbar}
                 options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="TotalSearch"
+                component={TotalSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="TotalSearchResult"
+                component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearch"
+                component={PostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearchResult"
+                component={PostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearch"
+                component={MyPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearchResult"
+                component={MyPostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyCommentSearch"
+                component={MyCommentSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyCommentSearchResult"
+                component={MyCommentSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearch"
+                component={ScrapedPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearchResult"
+                component={ScrapedPostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="WikiSearchResult"
+                component={WikiSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen
@@ -2079,6 +2168,83 @@ const App = () => {
                 name="GlobalNavbar"
                 component={GlobalNavbar}
                 options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="TotalSearch"
+                component={TotalSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="TotalSearchResult"
+                component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearch"
+                component={PostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearchResult"
+                component={PostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearch"
+                component={MyPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyPostSearchResult"
+                component={MyPostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyCommentSearch"
+                component={MyCommentSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="MyCommentSearchResult"
+                component={MyCommentSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearch"
+                component={ScrapedPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearchResult"
+                component={ScrapedPostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="WikiSearchResult"
+                component={WikiSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
               />
               {/* [F-7] 게시판 */}
               <Stack.Screen
