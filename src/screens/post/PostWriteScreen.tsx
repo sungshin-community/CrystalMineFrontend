@@ -186,9 +186,11 @@ function PostWriteScreen({navigation, route}: Props) {
                 {info?.isOwner && !isAnonymous && <OrangeFlag />}
               </View>
             </View>
-            <Pressable style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => setIsAnonymous(!isAnonymous)}>
+            <Pressable
+              style={{flexDirection: 'row', alignItems: 'center'}}
+              onPress={() => setIsAnonymous(!isAnonymous)}>
               <Text style={{marginRight: 4}}>익명</Text>
-                {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+              {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
             </Pressable>
           </View>
           {info?.hasTitle && (
@@ -213,26 +215,28 @@ function PostWriteScreen({navigation, route}: Props) {
             </>
           )}
         </View>
-        <TextInput
-          placeholder={info?.direction.content}
-          placeholderTextColor="#D5DBE1"
-          value={content}
-          multiline={true}
-          onChangeText={value => {
-            setContent(value);
-            if (value.length === 1000)
-              Toast.show(
-                '게시글 내용은 1000글자까지만 입력 가능합니다.',
-                Toast.SHORT,
-              );
-          }}
-          maxLength={1000}
-          onBlur={() => {
-            Keyboard.dismiss();
-          }}
-          style={[fontRegular, styles.input]}
-          autoCorrect={false}
-        />
+        {info?.direction.content && (
+          <TextInput
+            placeholder={info?.direction.content}
+            placeholderTextColor="#D5DBE1"
+            value={content}
+            multiline={true}
+            onChangeText={value => {
+              setContent(value);
+              if (value.length === 1000)
+                Toast.show(
+                  '게시글 내용은 1000글자까지만 입력 가능합니다.',
+                  Toast.SHORT,
+                );
+            }}
+            maxLength={1000}
+            onBlur={() => {
+              Keyboard.dismiss();
+            }}
+            style={[fontRegular, styles.input]}
+            autoCorrect={false}
+          />
+        )}
         <Pressable
           onPress={() => navigation.navigate('DirectionAgreeScreen')}
           style={{
@@ -315,7 +319,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingTop: 15,
     paddingBottom: 15,
-    color: '#222222'
+    color: '#222222',
   },
   input: {
     minHeight: Dimensions.get('window').height - 330,
@@ -324,7 +328,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     paddingHorizontal: 24,
     textAlignVertical: 'top',
-    color: '#222222'
+    color: '#222222',
   },
   image: {
     marginTop: 19,
