@@ -121,9 +121,11 @@ export const getReportReason = async () => {
     const response = await client.get<Response<Board>>(
       `/contract/report-reasons`,
     );
-    return response.data.data;
+    console.log(response.data)
+    return response.data;
   } catch (e) {
-    console.log('여기는 getReportReason 함수', e);
+    console.log('여기는 getReportReason 함수', e.responde.data);
+    return e.response.data;
   }
 };
 

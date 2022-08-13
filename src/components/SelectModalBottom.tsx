@@ -34,6 +34,7 @@ interface Props {
   reportFunc?: any;
   whiteButtonText?: string;
   whiteButtonFunc?: any;
+  setDim: boolean;
 }
 export const SelectModalBottom = ({
   modalVisible,
@@ -46,6 +47,7 @@ export const SelectModalBottom = ({
   reportFunc,
   whiteButtonText,
   whiteButtonFunc,
+  setDim = true,
 }: Props) => {
   const [reason, setReason] = useState<Reason[]>([]);
   const [isCheckedReportNum, setIsCheckedReportNum] = useState<number>(1);
@@ -55,13 +57,13 @@ export const SelectModalBottom = ({
   useEffect(() => {
     async function init() {
       const result = await getReportReason();
-      setReason(result);
+      setReason(result.data);
     }
     init();
   }, []);
   return (
     <>
-      {modalVisible ? (
+      {setDim && modalVisible ? (
         <View
           style={{
             position: 'absolute',
@@ -90,20 +92,21 @@ export const SelectModalBottom = ({
           />
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <View style={{alignItems: 'center'}}>
+              <View>
                 {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
                 <Text
                   style={[
-                    {
-                      color: '#CCCCCC',
-                      textAlign: 'center',
-                      fontSize: 12,
-                      marginBottom: 20,
-                    },
                     fontRegular,
+                    {color: '#444444', fontSize: 13, marginBottom: 7},
                   ]}>
-                  신고 사유에 대한 자세한 내용은 {`\n`} 마이페이지 > 수정광산
-                  이용방향을 참고하여 주세요.
+                  {`• 신고 후에는 내용을 수정할 수 없습니다.`}
+                </Text>
+                <Text
+                  style={[
+                    fontRegular,
+                    {color: '#444444', fontSize: 13, marginBottom: 20},
+                  ]}>
+                  {`• 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
                 </Text>
               </View>
               <ReportItem
@@ -113,6 +116,19 @@ export const SelectModalBottom = ({
                 detail={detail}
                 setDetail={setDetail}
               />
+              <Text
+                style={[
+                  {
+                    color: '#CCCCCC',
+                    fontSize: 12,
+                    marginBottom: 10,
+                    marginTop: 20,
+                  },
+                  fontRegular,
+                ]}>
+                신고 사유에 대한 자세한 내용은 {`\n`} 마이페이지 > 수정광산
+                이용방향을 참고하여 주세요.
+              </Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose, {marginTop: 28}]}
                 onPress={async () => {
@@ -122,10 +138,9 @@ export const SelectModalBottom = ({
                     detail,
                   );
                   if (
-                    result.code ===
-                    ('CREATE_BOARD_REPORT_SUCCESS' ||
-                      'CREATE_POST_REPORT_SUCCESS' ||
-                      'CREATE_COMMENT_REPORT_SUCCESS')
+                    result.code === 'CREATE_BOARD_REPORT_SUCCESS' ||
+                    result.code === 'CREATE_POST_REPORT_SUCCESS' ||
+                    result.code === 'CREATE_COMMENT_REPORT_SUCCESS'
                   ) {
                     Toast.show(
                       '신고하신 내용이 정상적으로 접수되었습니다.',
@@ -133,10 +148,9 @@ export const SelectModalBottom = ({
                     );
                     setModalVisible(false);
                   } else if (
-                    result.code ===
-                    ('BOARD_REPORT_FAIL_POINT_NOT_ENOUGH' ||
-                      'POST_REPORT_FAIL_POINT_NOT_ENOUGH' ||
-                      'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH')
+                    result.code === 'BOARD_REPORT_FAIL_POINT_NOT_ENOUGH' ||
+                    result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH' ||
+                    result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH'
                   ) {
                     setModalVisible(false);
                     Toast.show(
@@ -144,10 +158,7 @@ export const SelectModalBottom = ({
                       Toast.SHORT,
                     );
                   } else if (
-                    result.code ===
-                    ('BOARD_REPORT_FAIL_REASON_DETAIL_NECESSARY' ||
-                      'POST_REPORT_FAIL_REASON_DETAIL_NECESSARY' ||
-                      'COMMENT_REPORT_FAIL_REASON_DETAIL_NECESSARY')
+                    result.code === 'REPORT_FAIL_REASON_DETAIL_NECESSARY'
                   ) {
                     Toast.show(
                       '기타 사유에 대한 내용이 필요합니다',
@@ -155,8 +166,7 @@ export const SelectModalBottom = ({
                     );
                     setModalVisible(true);
                   } else {
-                    //TODO: 나머지 에러날 경우 에러화면으로 이동
-                    Toast.show(result.detail, Toast.SHORT);
+                    Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                     setModalVisible(false);
                   }
                 }}>
@@ -194,6 +204,7 @@ export const ReportItem = ({
   setDetail,
   inputRef,
 }: ReportItemProps) => {
+  const numofETC = 10; // 기타 사유 id
   return (
     <>
       {list.slice(0, list.length - 1).map(item => (
@@ -224,20 +235,20 @@ export const ReportItem = ({
         }}>
         <Pressable
           onPress={() => {
-            setIsCheckedReportNum(list.length);
+            setIsCheckedReportNum(numofETC);
             setDetail(null);
           }}>
-          {isCheckedReportNum === list.length ? (
+          {isCheckedReportNum === numofETC ? (
             <RadioButtonChecked style={{marginRight: 10}} />
           ) : (
             <RadioButtonUnChecked style={{marginRight: 10}} />
           )}
         </Pressable>
         <Text>기타</Text>
-        {isCheckedReportNum !== list.length ? (
+        {isCheckedReportNum !== numofETC ? (
           <View
             style={{
-              width: 240,
+              width: 220,
               marginLeft: 5,
               height: 24,
               backgroundColor: '#F6F6F6',
@@ -252,12 +263,13 @@ export const ReportItem = ({
                 setDetail(value);
               }}
               maxLength={50}
-              editable={isCheckedReportNum === list.length ? true : false}
+              editable={isCheckedReportNum === numofETC ? true : false}
               style={{
                 backgroundColor: '#F6F6F6',
                 fontSize: 13,
                 borderRadius: 10,
                 padding: 0,
+                width: 220,
                 paddingVertical: Platform.OS == 'ios' ? 5 : 0,
               }}
             />
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     paddingVertical: 24,
-    paddingHorizontal: 24,
+    paddingHorizontal: 27,
     // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {

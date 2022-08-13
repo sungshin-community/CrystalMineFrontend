@@ -52,9 +52,6 @@ function Post({
   const navigation = useNavigation();
   const data: PostDto = post;
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
 
@@ -114,20 +111,6 @@ function Post({
   const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`;
   const handlePostReportComponent = (
     <>
-      {reportCheckModalVisible && (
-        <ModalBottom
-          modalVisible={reportCheckModalVisible}
-          setModalVisible={setReportCheckModalVisible}
-          title="게시글 신고"
-          content={content}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setReportCheckModalVisible(false);
-            setReportModalVisible(true);
-          }}
-        />
-      )}
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}
@@ -138,6 +121,7 @@ function Post({
           reportFunc={handlePostReport}
           whiteButtonText="취소"
           whiteButtonFunc={() => setReportModalVisible(false)}
+          setDim={false}
         />
       )}
       {data?.isReported ? (
@@ -150,7 +134,7 @@ function Post({
       ) : (
         <Pressable
           onPress={() => {
-            setReportCheckModalVisible(true);
+            setReportModalVisible(true);
           }}>
           <NoReport style={{marginRight: 14}} />
         </Pressable>
@@ -160,6 +144,20 @@ function Post({
   console.log(data);
   return (
     <>
+      {reportModalVisible || deleteModalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            width: 1000000,
+            height: 1000000,
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 100,
+            elevation: 1,
+          }}
+        />
+      ) : null}
       <View style={styles.postContainer}>
         <View style={styles.postHeader}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
