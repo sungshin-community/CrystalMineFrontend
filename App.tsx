@@ -552,7 +552,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
+                        navigation.navigate('SplashHome')
                       }>
                       <BackButtonIcon />
                     </TouchableHighlight>
@@ -2066,7 +2066,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
+                        navigation.navigate('SplashHome')
                       }>
                       <BackButtonIcon />
                     </TouchableHighlight>
