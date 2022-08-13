@@ -54,6 +54,9 @@ const PostScreen = ({navigation, route}: Props) => {
   const commentInputRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const flatListRef = useRef<FlatList>(null);
+  const [componentModalVisible, setComponentModalVisible] = useState<boolean>(
+    false,
+  );
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
@@ -104,7 +107,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setIsLoading(false);
     }
     init();
-  }, []);
+  }, [componentModalVisible]);
   // 게시글 공감
   const handlePostLike = async (postId: number) => {
     const result = await setPostLike(postId);
@@ -152,7 +155,7 @@ const PostScreen = ({navigation, route}: Props) => {
       const commentData = await getComments(route.params.postId, 0);
       setComments(commentData);
       setIsLoading(false);
-      scrollViewRef.current?.scrollToEnd({animated: true})
+      scrollViewRef.current?.scrollToEnd({animated: true});
     },
     [],
   );
@@ -182,14 +185,18 @@ const PostScreen = ({navigation, route}: Props) => {
       setComments(commentData);
       setIsLoading(false);
       const index = comments?.findIndex(c => c.id === parentId);
-      flatListRef.current?.scrollToIndex({index: index, animated: true, viewPosition: 0});
+      flatListRef.current?.scrollToIndex({
+        index: index,
+        animated: true,
+        viewPosition: 0,
+      });
     },
     [],
   );
   // 댓글창 포커스
   const focusCommentInput = () => {
     commentInputRef.current?.focus();
-  }
+  };
   // 댓글, 대댓글 공감
   const handleCommentLike = async (commentId: number) => {
     const result = await setCommentLike(commentId);
@@ -218,50 +225,91 @@ const PostScreen = ({navigation, route}: Props) => {
   };
   return (
     <>
+      {componentModalVisible ? (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 100,
+            elevation: 1,
+          }}
+        />
+      ) : null}
       <KeyboardAvoidingView
         keyboardVerticalOffset={60}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
-        <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-          <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}>
+          <ActivityIndicator
+            size="large"
+            color={'#A055FF'}
+            animating={isLoading}
+            style={{zIndex: 100}}
+          />
         </View>
-        <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}} ref={scrollViewRef}>
+        <ScrollView
+          style={{flex: 1, backgroundColor: '#FFFFFF'}}
+          ref={scrollViewRef}>
           <Post
             post={post}
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
             handlePostDelete={handlePostDelete}
-            handlePostReport={handlePostReport}></Post>
+            handlePostReport={handlePostReport}
+            componentModalVisible={componentModalVisible}
+            setComponentModalVisible={setComponentModalVisible}></Post>
           <View style={{flex: 1}}>
-          <FlatList
-            style={{flex: 1}}
-            ref={flatListRef}
-            data={comments}
-            renderItem={({item, index}) => <View key={index}>
-            <Comment
-              comment={item}
-              setParentId={setParentId}
-              handleCommentLike={handleCommentLike}
-              isRecomment={isRecomment}
-              setIsRecomment={setIsRecomment}
-              handleCommentDelete={handleCommentDelete}
-              handleCommentReport={handleCommentReport}
-              handleFocus={focusCommentInput}
+            <FlatList
+              style={{flex: 1}}
+              ref={flatListRef}
+              data={comments}
+              renderItem={({item, index}) => (
+                <View key={index}>
+                  <Comment
+                    comment={item}
+                    setParentId={setParentId}
+                    handleCommentLike={handleCommentLike}
+                    isRecomment={isRecomment}
+                    setIsRecomment={setIsRecomment}
+                    handleCommentDelete={handleCommentDelete}
+                    handleCommentReport={handleCommentReport}
+                    handleFocus={focusCommentInput}
+                    componentModalVisible={componentModalVisible}
+                    setComponentModalVisible={setComponentModalVisible}
+                  />
+                  {item.recomments &&
+                    item.recomments.map((recomment, index) => (
+                      <Recomment
+                        key={index}
+                        recomment={recomment}
+                        handleCommentLike={handleCommentLike}
+                        handleCommentDelete={handleCommentDelete}
+                        handleCommentReport={handleCommentReport}
+                        componentModalVisible={componentModalVisible}
+                        setComponentModalVisible={setComponentModalVisible}
+                      />
+                      //recomment 데이터 생긴 후 확인 필요
+                    ))}
+                </View>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
             />
-            {item.recomments &&
-              item.recomments.map((recomment, index) => (
-                <Recomment
-                  key={index}
-                  recomment={recomment}
-                  handleCommentLike={handleCommentLike}
-                  handleCommentDelete={handleCommentDelete}
-                  handleCommentReport={handleCommentReport}
-                />
-                //recomment 데이터 생긴 후 확인 필요
-              ))}
-          </View>}
-            ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
-          />
             {/* {comments?.map((comment, index) => (
               <View key={index}>
                 <Comment
@@ -374,6 +422,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS == 'ios' ? 13 : 0,
     minHeight: 44,
     maxHeight: 230,
-    color: '#222222'
+    color: '#222222',
   },
 });

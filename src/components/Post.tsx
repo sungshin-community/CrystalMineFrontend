@@ -40,6 +40,8 @@ interface Props {
   handlePostScrap: any;
   handlePostDelete?: any;
   handlePostReport?: any;
+  componentModalVisible?: boolean;
+  setComponentModalVisible?: any;
 }
 
 function Post({
@@ -48,12 +50,14 @@ function Post({
   handlePostScrap,
   handlePostDelete,
   handlePostReport,
+  componentModalVisible,
+  setComponentModalVisible,
 }: Props) {
   const navigation = useNavigation();
   const data: PostDto = post;
+  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
-  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
 
   const closePhotoModal = () => {
     if (isPhotoVisible) {
@@ -97,12 +101,13 @@ function Post({
           }}
           whiteButtonText="취소"
           whiteButtonFunc={() => setDeleteModalVisible(false)}
+          setDim={false}
         />
       )}
       <Pressable
         onPress={() => {
           setDeleteModalVisible(true);
-          console.log(deleteModalVisible);
+          setComponentModalVisible(deleteModalVisible);
         }}>
         <TrashIcon style={{marginRight: 12}} />
       </Pressable>
@@ -134,6 +139,7 @@ function Post({
         <Pressable
           onPress={() => {
             setReportModalVisible(true);
+            setComponentModalVisible(reportModalVisible);
           }}>
           <NoReport style={{marginRight: 14}} />
         </Pressable>
@@ -142,20 +148,6 @@ function Post({
   );
   return (
     <>
-      {reportModalVisible || deleteModalVisible ? (
-        <View
-          style={{
-            position: 'absolute',
-            width: 1000000,
-            height: 1000000,
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 100,
-            elevation: 1,
-          }}
-        />
-      ) : null}
       <View style={styles.postContainer}>
         <View style={styles.postHeader}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -172,7 +164,13 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-            {data?.isAnonymous ? <></> :  data?.isOwner ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <></>}
+            {data?.isAnonymous ? (
+              <></>
+            ) : data?.isOwner ? (
+              <SmallOrangeFlag style={{marginLeft: 5}} />
+            ) : (
+              <></>
+            )}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
