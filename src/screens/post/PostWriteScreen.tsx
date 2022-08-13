@@ -39,6 +39,7 @@ import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import {ModalBottom} from '../../components/ModalBottom';
+import {ImageDeleteButton} from '../../components/ImageDeleteButton';
 const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
@@ -160,7 +161,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
-      {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
+      {mediaType: 'photo', maxWidth: 1024, maxHeight: 1024, selectionLimit: 10},
       res => {
         if (res.didCancel) {
           return;
@@ -169,6 +170,11 @@ function PostWriteScreen({navigation, route}: Props) {
         setImages(res.assets);
       },
     );
+  };
+
+  const deleteImage = (imageUri: string) => {
+    setImages(images.filter(item => item.uri !== imageUri));
+    console.log('>>>',images);
   };
 
   useEffect(() => {
@@ -287,24 +293,31 @@ function PostWriteScreen({navigation, route}: Props) {
               <ImageIcon />
               <Text style={[fontMedium, styles.imageText]}>이미지</Text>
             </View>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-              {images?.length !== 0 &&
-                images?.map((asset, index) => (
-                  <Image
-                    key={index}
-                    style={styles.imageBox}
-                    source={{uri: asset.uri}}
-                  />
-                ))}
-              <View style={[styles.imageSelectBox, styles.imageBox]}>
-                <Pressable onPress={onSelectImage} hitSlop={25}>
-                  <PhotoIcon />
-                  <Text style={[fontMedium, styles.count]}>
-                    {images?.length}/10
-                  </Text>
-                </Pressable>
+            <ScrollView horizontal={true}>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {images?.length !== 0 &&
+                  images?.map((asset, index) => (
+                    <ImageDeleteButton
+                      key={index}
+                      imageUri={asset.uri}
+                      deleteImage={deleteImage}
+                    />
+                  ))}
+                <View
+                  style={[
+                    styles.imageSelectBox,
+                    styles.imageBox,
+                    {marginTop: 5},
+                  ]}>
+                  <Pressable onPress={onSelectImage} hitSlop={25}>
+                    <PhotoIcon />
+                    <Text style={[fontMedium, styles.count]}>
+                      {images?.length}/10
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
