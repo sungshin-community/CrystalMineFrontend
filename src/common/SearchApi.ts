@@ -1,6 +1,6 @@
 import Response from '../classes/Response';
 import client from './client';
-import {BoardSearchResult, SearchBoard, SearchPost} from '../classes/Search';
+import {BoardSearchResult, SearchBoard, SearchComment, SearchPost} from '../classes/Search';
 
 export const getBoardSearch = async (searchWord: string, page: number, sort: string) => {
   try {
@@ -105,6 +105,18 @@ export const getMyCommentSearch = async (searchWord: string, page: number, sort:
     return response.data.data;
   } catch (error) {
     console.log('내가 쓴 댓글 검색 실패', error);
+  }
+}
+
+export const searchMyComments = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchComment>>(
+      `/search/mycomments?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('내가 쓴 댓글 검색 실패', error);
+    return error.response.data;
   }
 }
 

@@ -1,5 +1,6 @@
 import Board from "./Board";
 import { MyPostContentDto } from "./board/MyPostDto";
+import MyCommentDto from "./MyCommentDto";
 
 export interface BoardContent {
   id: number;
@@ -53,4 +54,8 @@ export interface PostContent {
 
 export interface SearchPost {
   content: MyPostContentDto[];
+}
+
+export interface SearchComment {
+  content: MyCommentDto[];
 }

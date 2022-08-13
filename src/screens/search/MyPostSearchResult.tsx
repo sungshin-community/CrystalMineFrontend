@@ -43,7 +43,7 @@ function MyPostSearchResult({navigation, route}: Props) {
         <TextInput
           autoFocus={true}
           style={styles.input}
-          placeholder='[] 게시판에서 검색'
+          placeholder='내가 작성한 글에서 검색'
           placeholderTextColor="#898989"
           returnKeyType="search"
           autoCorrect={false}
