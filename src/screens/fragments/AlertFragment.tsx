@@ -35,7 +35,7 @@ const AlertFragment = () => {
   useEffect(() => {
     const init = async () => {
       setIsLoading(true);
-      const result = await getAlerts(0);
+      const result = await getAlerts();
       if (result) setAlerts(result);
       setIsLoading(false);
     };
@@ -43,7 +43,7 @@ const AlertFragment = () => {
   }, [isFocused, blindModalVisible, noticeModalVisible]);
 
   const handleRefresh = async () => {
-    const result = await getAlerts(0);
+    const result = await getAlerts();
     setCurrentPage(0);
     setAlerts(result);
   };
@@ -57,6 +57,7 @@ const AlertFragment = () => {
     }
     setIsNextPageLoading(false);
   };
+
   const noticeBody = (
     <View>
       <View style={{alignItems: 'center', marginBottom: 25}}>
@@ -177,8 +178,8 @@ const AlertFragment = () => {
               tintColor={'#A055FF'} // for ios
             />
           }
-          onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.8}
+          // onEndReached={fetchNextPage}
+          // onEndReachedThreshold={0.8}
         />
       )}
       {noticeBody && noticeModalVisible && (
@@ -219,20 +220,19 @@ interface AlertProps {
   setBlindModalVisible: any;
 }
 
-type RootStackParamList = {
-  MyPage: undefined;
-  CertifiedMember: undefined;
-  ExpiredMember: undefined;
-  UncertifiedMember: undefined;
-};
-type Props = NativeStackScreenProps<RootStackParamList>;
+// type RootStackParamList = {
+//   MyPage: undefined;
+//   CertifiedMember: undefined;
+//   ExpiredMember: undefined;
+//   UncertifiedMember: undefined;
+// };
+// type Props = NativeStackScreenProps<RootStackParamList>;
 
 const AlertItem = (
   {data, blindModalVisible, setBlindModalVisible}: AlertProps,
-  {navigation}: Props,
 ) => {
   const [modalBody, setModalBody] = useState<JSX.Element>();
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -393,6 +393,7 @@ const AlertItem = (
           data.type === 'DELETE_POST_BLIND' ||
           data.type === 'DELETE_COMMENT_BLIND') && <AlertBlindIcon />}
         {data.type === 'COMMENT' && <AlertCommentIcon />}
+        {data.type === 'RECOMMENT' && <AlertCommentIcon />}
         {data.type === 'HOT_POST' && <AlertHotPostIcon />}
         <View style={{marginLeft: 16}}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
