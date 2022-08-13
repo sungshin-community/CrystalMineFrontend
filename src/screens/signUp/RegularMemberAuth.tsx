@@ -105,11 +105,12 @@ export default function RegularMemberAuth({navigation}: Props) {
       Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
       console.log('이메일 재발송 성공');
     } else {
+      Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
       console.log('이메일 재발송 실패');
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
-    setTryCnt(tryCnt - 1);
+    setTryCnt(5);
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
@@ -237,15 +238,7 @@ export default function RegularMemberAuth({navigation}: Props) {
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
         <TouchableWithoutFeedback
-          onPress={async () => {
-            let result: boolean = await sendEmail();
-            if (result) {
-              Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
-              console.log('이메일 재발송 성공');
-            } else {
-              console.log('이메일 재발송 실패');
-            }
-          }}>
+          onPress={async () => onResendOtpButtonPress()}>
           <Text style={styles.resent}>인증번호 재전송</Text>
         </TouchableWithoutFeedback>
       </View>

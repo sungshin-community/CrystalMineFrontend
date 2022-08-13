@@ -549,7 +549,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
+                        navigation.navigate('SplashHome')
                       }>
                       <BackButtonIcon />
                     </TouchableHighlight>
@@ -1130,7 +1130,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.popToTop()}>
+                      onPress={() => navigation.navigate('MyPage')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2057,7 +2057,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
+                        navigation.navigate('SplashHome')
                       }>
                       <BackButtonIcon />
                     </TouchableHighlight>
@@ -2638,7 +2638,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      onPress={() => navigation.navigate('MyPage')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),

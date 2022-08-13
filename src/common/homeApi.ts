@@ -63,10 +63,10 @@ export async function getUnreadNotification() {
 export async function readNotification(notificationId: number = 0) {
   try {
     const response = await client.patch<Response<null>>(
-      `/notification/${notificationId}`
+      `/notifications/${notificationId}`
     );
-    return response.data.data;
+    return response.data;
   } catch (e) {
-    console.log("여기는 readNotification 함수", e.response);
+    console.log("여기는 readNotification 함수", e.response.data);
   }
 }

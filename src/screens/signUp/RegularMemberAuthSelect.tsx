@@ -53,7 +53,8 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const modalBody = (
     <Text>
-      나중에 정회원 인증하기를 선택하실 경우 {'\n'}[마이페이지-정회원인증]에서 인증을 다시 진행할 수 있습니다.
+      나중에 정회원 인증하기를 선택하실 경우 {'\n'}[마이페이지-정회원인증]에서
+      인증을 다시 진행할 수 있습니다.
     </Text>
   );
   return (
@@ -83,8 +84,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             style={{
               paddingHorizontal: Dimensions.get('window').width / 4,
               paddingVertical: Dimensions.get('window').height / 8,
-            }}>
-          </View>
+            }}></View>
         </Animatable.View>
       </Container>
       <View style={styles.buttonContainer}>
@@ -93,9 +93,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="지금 인증하기"
-                onClick={() => 
-                  navigation.navigate('DirectionAgree')
-                }
+                onClick={() => navigation.navigate('DirectionAgree')}
               />
             </View>
             <WhiteRoundButton
@@ -105,20 +103,22 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
                 setModalVisible(!modalVisible);
               }}
             />
-            <ModalBottom
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              content={modalBody}
-              isContentCenter={false}
-              purpleButtonText="확인"
-              purpleButtonFunc={() => {
-                setModalVisible(!modalVisible);
-                navigation.navigate('GlobalNavbar');
-              }}
-            />
           </ButtonCenter>
         </Animatable.View>
       </View>
+      {modalVisible && (
+        <ModalBottom
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          content={modalBody}
+          isContentCenter={false}
+          purpleButtonText="확인"
+          purpleButtonFunc={() => {
+            setModalVisible(!modalVisible);
+            navigation.navigate('GlobalNavbar');
+          }}
+        />
+      )}
     </>
   );
 }

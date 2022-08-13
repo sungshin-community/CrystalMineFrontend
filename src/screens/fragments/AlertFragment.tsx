@@ -35,15 +35,15 @@ const AlertFragment = () => {
   useEffect(() => {
     const init = async () => {
       setIsLoading(true);
-      const result = await getAlerts(0);
+      const result = await getAlerts();
       if (result) setAlerts(result);
       setIsLoading(false);
     };
     if (isFocused) init();
-  }, [isFocused]);
+  }, [isFocused, blindModalVisible, noticeModalVisible]);
 
   const handleRefresh = async () => {
-    const result = await getAlerts(0);
+    const result = await getAlerts();
     setCurrentPage(0);
     setAlerts(result);
   };
@@ -57,6 +57,7 @@ const AlertFragment = () => {
     }
     setIsNextPageLoading(false);
   };
+
   const noticeBody = (
     <View>
       <View style={{alignItems: 'center', marginBottom: 25}}>
@@ -177,8 +178,8 @@ const AlertFragment = () => {
               tintColor={'#A055FF'} // for ios
             />
           }
-          onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.8}
+          // onEndReached={fetchNextPage}
+          // onEndReachedThreshold={0.8}
         />
       )}
       {noticeBody && noticeModalVisible && (
@@ -210,6 +211,8 @@ import {useNavigation} from '@react-navigation/native';
 import AlertBlindIcon from '../../../resources/icon/AlertBlindIcon';
 import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
+import {readNotification} from '../../common/homeApi';
+import Toast from 'react-native-simple-toast';
 
 interface AlertProps {
   data: Alert;
@@ -217,11 +220,17 @@ interface AlertProps {
   setBlindModalVisible: any;
 }
 
-const AlertItem = ({
-  data,
-  blindModalVisible,
-  setBlindModalVisible,
-}: AlertProps) => {
+// type RootStackParamList = {
+//   MyPage: undefined;
+//   CertifiedMember: undefined;
+//   ExpiredMember: undefined;
+//   UncertifiedMember: undefined;
+// };
+// type Props = NativeStackScreenProps<RootStackParamList>;
+
+const AlertItem = (
+  {data, blindModalVisible, setBlindModalVisible}: AlertProps,
+) => {
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const navigation = useNavigation();
 
@@ -236,7 +245,7 @@ const AlertItem = ({
         }}
         onPress={async () => {
           if (data.type === 'WELCOME') {
-            // const result = await readNotification(data.id);
+            const result = await readNotification(data.id);
             console.log('알람 확인 후 마이페이지로 이동');
             navigation.navigate('MyPage');
           } else if (
@@ -244,9 +253,14 @@ const AlertItem = ({
             data.type === 'EXPIRE' ||
             data.type === 'NOT_AUTHENTICATED'
           ) {
-            // const result = await readNotification(item.id);
-            console.log('알람 확인 후 정회원인증으로 이동');
-            navigation.navigate('RegularMemberAuthMyPage');
+            if (data.type === 'BEFORE_EXPIRE')
+              navigation.navigate('CertifiedMember');
+            else if (data.type === 'EXPIRE')
+              navigation.navigate('ExpiredMember');
+            else if (data.type === 'NOT_AUTHENTICATED')
+              navigation.navigate('UncertifiedMember');
+            // const result = await readNotification(data.id);
+            // 알람 확인 못 해야함.
           } else if (
             data.type === 'BOARD_BLIND' ||
             data.type === 'PIN_BOARD_BLIND' ||
@@ -292,10 +306,26 @@ const AlertItem = ({
                 </View>
               </View>
             );
-            setModalBody(itemContent);
-            // const result = await readNotification(item.id);
-            console.log('블라인드 알림 확인');
-            setBlindModalVisible(true);
+            if (
+              (data.type === 'BOARD_BLIND' ||
+                data.type === 'PIN_BOARD_BLIND' ||
+                data.type === 'POST_BLIND' ||
+                data.type === 'COMMENT_BLIND') &&
+              data.blind
+            ) {
+              setModalBody(itemContent);
+              const result = await readNotification(data.id);
+              console.log('블라인드 알림 확인');
+              setBlindModalVisible(true);
+            } else if (data.type === 'BOARD_BLIND' && !data.blind)
+              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+            else if (data.type === 'PIN_BOARD_BLIND' && !data.blind)
+              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+            else if (data.type === 'POST_BLIND' && !data.blind)
+              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+            else if (data.type === 'COMMENT_BLIND' && !data.blind)
+              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+            else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
           } else if (
             data.type === 'DELETE_BOARD_BLIND' ||
             data.type === 'DELETE_POST_BLIND' ||
@@ -332,10 +362,23 @@ const AlertItem = ({
                 </View>
               </View>
             );
-            setModalBody(itemContent);
-            // const result = await readNotification(item.id);
-            console.log('블라인드 알림 확인');
-            setBlindModalVisible(true);
+            if (
+              (data.type === 'DELETE_BOARD_BLIND' ||
+                data.type === 'DELETE_POST_BLIND' ||
+                data.type === 'DELETE_COMMENT_BLIND') &&
+              data.deleteBlind
+            ) {
+              setModalBody(itemContent);
+              const result = await readNotification(data.id);
+              console.log('블라인드 알림 확인');
+              setBlindModalVisible(true);
+            } else if (data.type === 'DELETE_BOARD_BLIND' && !data.deleteBlind)
+              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+            else if (data.type === 'DELETE_POST_BLIND' && !data.deleteBlind)
+              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+            else if (data.type === 'DELETE_COMMENT_BLIND' && !data.deleteBlind)
+              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+            else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
           }
         }}>
         {data.type === 'WELCOME' && <CheckMark />}
@@ -350,6 +393,7 @@ const AlertItem = ({
           data.type === 'DELETE_POST_BLIND' ||
           data.type === 'DELETE_COMMENT_BLIND') && <AlertBlindIcon />}
         {data.type === 'COMMENT' && <AlertCommentIcon />}
+        {data.type === 'RECOMMENT' && <AlertCommentIcon />}
         {data.type === 'HOT_POST' && <AlertHotPostIcon />}
         <View style={{marginLeft: 16}}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>

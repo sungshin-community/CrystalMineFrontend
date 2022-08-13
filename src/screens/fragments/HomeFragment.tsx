@@ -49,6 +49,9 @@ type RootStackParamList = {
   Board: undefined;
   InformationUse: undefined;
   DirectionAgreeScreen: undefined;
+  ExpiredMember: undefined;
+  CertifiedMember: undefined;
+  UncertifiedMember: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -136,7 +139,7 @@ const HomeFragment = ({navigation}: Props) => {
     if (isFocused) {
       getContents();
     }
-  }, [isFocused, modalBody]);
+  }, [isFocused, modalBody, blindModalVisible]);
 
   return (
     <>
@@ -201,7 +204,7 @@ const HomeFragment = ({navigation}: Props) => {
                   ]}
                   onPress={async () => {
                     if (item.type === 'WELCOME') {
-                      // const result = await readNotification(item.id);
+                      const result = await readNotification(item.id);
                       console.log('알람 확인 후 마이페이지로 이동');
                       navigation.navigate('MyPage');
                     } else if (
@@ -209,11 +212,14 @@ const HomeFragment = ({navigation}: Props) => {
                       item.type === 'EXPIRE' ||
                       item.type === 'NOT_AUTHENTICATED'
                     ) {
-                      if (user?.isAuthenticated) {
-                        // const result = await readNotification(item.id);
-                        console.log('알람 확인 후 정회원인증으로 이동');
-                        navigation.navigate('RegularMemberAuthMyPage');
-                      } else navigation.navigate('RegularMemberAuthMyPage');
+                      if (item.type === 'BEFORE_EXPIRE')
+                        navigation.navigate('CertifiedMember');
+                      else if (item.type === 'EXPIRE')
+                        navigation.navigate('ExpiredMember');
+                      else if (item.type === 'NOT_AUTHENTICATED')
+                        navigation.navigate('UncertifiedMember');
+                      // const result = await readNotification(item.id);
+                      // 알람 확인 못 해야함.
                     } else if (
                       item.type === 'BOARD_BLIND' ||
                       item.type === 'PIN_BOARD_BLIND' ||
@@ -271,15 +277,22 @@ const HomeFragment = ({navigation}: Props) => {
                         item.blind
                       ) {
                         setModalBody(itemContent);
-                        // const result = await readNotification(item.id);
+                        const result = await readNotification(item.id);
                         console.log('블라인드 알림 확인');
                         setBlindModalVisible(true);
-                      }
-                      else if(item.type === 'BOARD_BLIND' && !item.blind) Toast.show('삭제된 게시판입니다.',Toast.SHORT);
-                      else if(item.type === 'PIN_BOARD_BLIND' && !item.blind) Toast.show('삭제된 게시판입니다.',Toast.SHORT);
-                      else if(item.type === 'POST_BLIND' && !item.blind) Toast.show('삭제된 게시글입니다.',Toast.SHORT);
-                      else if(item.type === 'COMMENT_BLIND' && !item.blind) Toast.show('삭제된 댓글입니다.',Toast.SHORT);
-                      else Toast.show('알 수 없는 오류가 발생하였습니다.',Toast.SHORT);
+                      } else if (item.type === 'BOARD_BLIND' && !item.blind)
+                        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                      else if (item.type === 'PIN_BOARD_BLIND' && !item.blind)
+                        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                      else if (item.type === 'POST_BLIND' && !item.blind)
+                        Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                      else if (item.type === 'COMMENT_BLIND' && !item.blind)
+                        Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                      else
+                        Toast.show(
+                          '알 수 없는 오류가 발생하였습니다.',
+                          Toast.SHORT,
+                        );
                     } else if (
                       item.type === 'DELETE_BOARD_BLIND' ||
                       item.type === 'DELETE_POST_BLIND' ||
@@ -326,14 +339,29 @@ const HomeFragment = ({navigation}: Props) => {
                         item.deleteBlind
                       ) {
                         setModalBody(itemContent);
-                        // const result = await readNotification(item.id);
+                        const result = await readNotification(item.id);
                         console.log('블라인드 알림 확인');
                         setBlindModalVisible(true);
-                      }
-                      else if(item.type === 'DELETE_BOARD_BLIND' && !item.deleteBlind) Toast.show('삭제된 게시판입니다.',Toast.SHORT);
-                      else if(item.type === 'DELETE_POST_BLIND' && !item.deleteBlind) Toast.show('삭제된 게시글입니다.',Toast.SHORT);
-                      else if(item.type === 'DELETE_COMMENT_BLIND' && !item.deleteBlind) Toast.show('삭제된 댓글입니다.',Toast.SHORT);
-                      else Toast.show('알 수 없는 오류가 발생하였습니다.',Toast.SHORT);
+                      } else if (
+                        item.type === 'DELETE_BOARD_BLIND' &&
+                        !item.deleteBlind
+                      )
+                        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                      else if (
+                        item.type === 'DELETE_POST_BLIND' &&
+                        !item.deleteBlind
+                      )
+                        Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                      else if (
+                        item.type === 'DELETE_COMMENT_BLIND' &&
+                        !item.deleteBlind
+                      )
+                        Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                      else
+                        Toast.show(
+                          '알 수 없는 오류가 발생하였습니다.',
+                          Toast.SHORT,
+                        );
                     }
                   }}>
                   <View style={{flexDirection: 'row'}}>

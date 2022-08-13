@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
@@ -15,6 +16,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  NativeModules,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontMedium, fontRegular} from '../../common/font';
@@ -37,6 +39,8 @@ import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import {ModalBottom} from '../../components/ModalBottom';
+import {ImageDeleteButton} from '../../components/ImageDeleteButton';
+const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -69,6 +73,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
+  const [isFocus, setIsFocus] = useState<boolean>(false);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -83,8 +88,20 @@ function PostWriteScreen({navigation, route}: Props) {
     userInfo();
   }, [route.params.boardId]);
 
+  const onFocus = () => {
+    setIsFocus(true);
+  };
+
+  const onFocusOut = () => {
+    setIsFocus(false);
+    Keyboard.dismiss();
+  };
   const onSubmitPress = async () => {
-    console.log(boardId, images);
+    console.log('api 함수 호출 전: ' ,boardId,
+      title,
+      content,
+      isAnonymous,
+      images,);
     const result = await postWritePost(
       boardId,
       title,
@@ -148,7 +165,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
-      {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
+      {mediaType: 'photo', maxWidth: 1024, maxHeight: 1024, selectionLimit: 10},
       res => {
         if (res.didCancel) {
           return;
@@ -159,124 +176,155 @@ function PostWriteScreen({navigation, route}: Props) {
     );
   };
 
+  const deleteImage = (imageUri: string) => {
+    setImages(images.filter(item => item.uri !== imageUri));
+    console.log('>>>',images);
+  };
+
+  useEffect(() => {
+    Platform.OS == 'ios'
+      ? StatusBarManager.getHeight((statusBarFrameData: any) => {
+          setStatusBarHeight(statusBarFrameData.height);
+        })
+      : null;
+  }, []);
+
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+
   return (
-    <ScrollView style={{backgroundColor: '#fff'}}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                style={{width: 24, height: 24, borderRadius: 12}}
-                source={{
-                  uri: isAnonymous
-                    ? info?.defaultProfileImage
-                    : info?.profileImage,
-                }}
-              />
-              <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    paddingLeft: 8,
-                    paddingRight: 6,
-                    fontWeight: '500',
-                  }}>
-                  {isAnonymous ? '수정' : info?.nickname}
-                </Text>
-                {info?.isOwner && !isAnonymous && <OrangeFlag />}
+    <>
+      <ScrollView style={{backgroundColor: '#fff'}}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image
+                  style={{width: 24, height: 24, borderRadius: 12}}
+                  source={{
+                    uri: isAnonymous
+                      ? info?.defaultProfileImage
+                      : info?.profileImage,
+                  }}
+                />
+                <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      paddingLeft: 8,
+                      paddingRight: 6,
+                      fontWeight: '500',
+                    }}>
+                    {isAnonymous ? '수정' : info?.nickname}
+                  </Text>
+                  {info?.isOwner && !isAnonymous && <OrangeFlag />}
+                </View>
               </View>
-            </View>
-            <Pressable style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => setIsAnonymous(!isAnonymous)}>
-              <Text style={{marginRight: 4}}>익명</Text>
+              <Pressable
+                style={{flexDirection: 'row', alignItems: 'center'}}
+                onPress={() => { setIsAnonymous(!isAnonymous); console.log('익명체크 후: ', isAnonymous)}}>
+                <Text style={{marginRight: 4}}>익명</Text>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-            </Pressable>
+              </Pressable>
+            </View>
+            {info?.hasTitle && (
+              <>
+                <TextInput
+                  placeholder="제목을 입력하세요."
+                  value={title}
+                  onChangeText={value => {
+                    setTitle(value);
+                    if (value.length === 20)
+                      Toast.show(
+                        '게시글 제목은 20글자까지만 입력 가능합니다.',
+                        Toast.SHORT,
+                      );
+                  }}
+                  maxLength={23}
+                  style={[fontMedium, styles.title]}
+                />
+                <View
+                  style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
+                />
+              </>
+            )}
           </View>
-          {info?.hasTitle && (
-            <>
+          <ScrollView>
+            {info?.direction.content && (
               <TextInput
-                placeholder="제목을 입력하세요."
-                value={title}
+                placeholder={info?.direction.content}
+                placeholderTextColor="#D5DBE1"
+                value={content}
+                multiline={true}
                 onChangeText={value => {
-                  setTitle(value);
-                  if (value.length === 20)
+                  setContent(value);
+                  if (value.length === 1000)
                     Toast.show(
-                      '게시글 제목은 20글자까지만 입력 가능합니다.',
+                      '게시글 내용은 1000글자까지만 입력 가능합니다.',
                       Toast.SHORT,
                     );
                 }}
-                maxLength={23}
-                style={[fontMedium, styles.title]}
+                maxLength={1000}
+                onBlur={() => {
+                  Keyboard.dismiss();
+                }}
+                style={[fontRegular, styles.input]}
+                autoCorrect={false}
               />
-              <View
-                style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
-              />
-            </>
-          )}
-        </View>
-        <TextInput
-          placeholder={info?.direction.content}
-          placeholderTextColor="#D5DBE1"
-          value={content}
-          multiline={true}
-          onChangeText={value => {
-            setContent(value);
-            if (value.length === 1000)
-              Toast.show(
-                '게시글 내용은 1000글자까지만 입력 가능합니다.',
-                Toast.SHORT,
-              );
-          }}
-          maxLength={1000}
-          onBlur={() => {
-            Keyboard.dismiss();
-          }}
-          style={[fontRegular, styles.input]}
-          autoCorrect={false}
-        />
-        <Pressable
-          onPress={() => navigation.navigate('DirectionAgreeScreen')}
-          style={{
-            borderRadius: 50,
-            borderColor: '#D6D6D6',
-            borderWidth: 1,
-            width: 'auto',
-            alignSelf: 'center',
-          }}>
-          <Text
+            )}
+          </ScrollView>
+          <Pressable
+            onPress={() => navigation.navigate('DirectionAgreeScreen')}
             style={{
-              color: '#6E7882',
-              textAlign: 'center',
-              paddingHorizontal: 12,
-              paddingVertical: 4,
+              borderRadius: 50,
+              borderColor: '#D6D6D6',
+              borderWidth: 1,
+              width: 'auto',
+              alignSelf: 'center',
             }}>
-            수정광산 이용 방향 전문 보기
-          </Text>
-        </Pressable>
-        <View style={{paddingHorizontal: 24}}>
-          <View style={styles.image}>
-            <ImageIcon />
-            <Text style={[fontMedium, styles.imageText]}>이미지</Text>
-          </View>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {images?.length !== 0 &&
-              images?.map((asset, index) => (
-                <Image
-                  key={index}
-                  style={styles.imageBox}
-                  source={{uri: asset.uri}}
-                />
-              ))}
-            <View style={[styles.imageSelectBox, styles.imageBox]}>
-              <Pressable onPress={onSelectImage} hitSlop={25}>
-                <PhotoIcon />
-                <Text style={[fontMedium, styles.count]}>
-                  {images?.length}/10
-                </Text>
-              </Pressable>
+            <Text
+              style={{
+                color: '#6E7882',
+                textAlign: 'center',
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+              }}>
+              수정광산 이용 방향 전문 보기
+            </Text>
+          </Pressable>
+          <View style={{paddingHorizontal: 24}}>
+            <View style={styles.image}>
+              <ImageIcon />
+              <Text style={[fontMedium, styles.imageText]}>이미지</Text>
             </View>
+            <ScrollView horizontal={true}>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {images?.length !== 0 &&
+                  images?.map((asset, index) => (
+                    <ImageDeleteButton
+                      key={index}
+                      imageUri={asset.uri}
+                      deleteImage={deleteImage}
+                    />
+                  ))}
+                <View
+                  style={[
+                    styles.imageSelectBox,
+                    styles.imageBox,
+                    {marginTop: 5},
+                  ]}>
+                  <Pressable onPress={onSelectImage} hitSlop={25}>
+                    <PhotoIcon />
+                    <Text style={[fontMedium, styles.count]}>
+                      {images?.length}/10
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+            </ScrollView>
           </View>
         </View>
-      </View>
+      </ScrollView>
       {goBackWarning && (
         <ModalBottom
           modalVisible={goBackWarning}
@@ -294,7 +342,7 @@ function PostWriteScreen({navigation, route}: Props) {
           }}
         />
       )}
-    </ScrollView>
+    </>
   );
 }
 
@@ -315,16 +363,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingTop: 15,
     paddingBottom: 15,
-    color: '#222222'
+    color: '#222222',
   },
   input: {
-    minHeight: Dimensions.get('window').height - 330,
+    // height: Dimensions.get('window').height - 600,
+    height: 200,
     fontSize: 15,
     paddingTop: 14,
     paddingBottom: 14,
     paddingHorizontal: 24,
     textAlignVertical: 'top',
-    color: '#222222'
+    color: '#222222',
   },
   image: {
     marginTop: 19,

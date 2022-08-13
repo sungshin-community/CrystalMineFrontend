@@ -40,6 +40,8 @@ interface Props {
   handlePostScrap: any;
   handlePostDelete?: any;
   handlePostReport?: any;
+  componentModalVisible?: boolean;
+  setComponentModalVisible?: any;
 }
 
 function Post({
@@ -48,15 +50,14 @@ function Post({
   handlePostScrap,
   handlePostDelete,
   handlePostReport,
+  componentModalVisible,
+  setComponentModalVisible,
 }: Props) {
   const navigation = useNavigation();
   const data: PostDto = post;
-  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
-  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
 
   const closePhotoModal = () => {
     if (isPhotoVisible) {
@@ -100,34 +101,20 @@ function Post({
           }}
           whiteButtonText="취소"
           whiteButtonFunc={() => setDeleteModalVisible(false)}
+          setDim={false}
         />
       )}
       <Pressable
         onPress={() => {
           setDeleteModalVisible(true);
-          console.log(deleteModalVisible);
+          setComponentModalVisible(deleteModalVisible);
         }}>
         <TrashIcon style={{marginRight: 12}} />
       </Pressable>
     </>
   );
-  const content = `•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`;
   const handlePostReportComponent = (
     <>
-      {reportCheckModalVisible && (
-        <ModalBottom
-          modalVisible={reportCheckModalVisible}
-          setModalVisible={setReportCheckModalVisible}
-          title="게시글 신고"
-          content={content}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setReportCheckModalVisible(false);
-            setReportModalVisible(true);
-          }}
-        />
-      )}
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}
@@ -138,6 +125,7 @@ function Post({
           reportFunc={handlePostReport}
           whiteButtonText="취소"
           whiteButtonFunc={() => setReportModalVisible(false)}
+          setDim={false}
         />
       )}
       {data?.isReported ? (
@@ -150,14 +138,14 @@ function Post({
       ) : (
         <Pressable
           onPress={() => {
-            setReportCheckModalVisible(true);
+            setReportModalVisible(true);
+            setComponentModalVisible(reportModalVisible);
           }}>
           <NoReport style={{marginRight: 14}} />
         </Pressable>
       )}
     </>
   );
-  console.log(data);
   return (
     <>
       <View style={styles.postContainer}>
@@ -176,7 +164,13 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-            {data?.isAnonymous ? <></> :  data?.isOwner ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <></>}
+            {data?.isAnonymous ? (
+              <></>
+            ) : data?.isOwner ? (
+              <SmallOrangeFlag style={{marginLeft: 5}} />
+            ) : (
+              <></>
+            )}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots

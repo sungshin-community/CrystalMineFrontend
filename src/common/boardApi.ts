@@ -121,9 +121,11 @@ export const getReportReason = async () => {
     const response = await client.get<Response<Board>>(
       `/contract/report-reasons`,
     );
-    return response.data.data;
+    console.log(response.data)
+    return response.data;
   } catch (e) {
-    console.log('여기는 getReportReason 함수', e);
+    console.log('여기는 getReportReason 함수', e.responde.data);
+    return e.response.data;
   }
 };
 
@@ -459,7 +461,7 @@ export const postWritePost = async (
 ) => {
   try {
     const formData = new FormData();
-    console.log('boardId: ', boardId, 'title', title, 'content', content, 'isAnonymous', isAnonymous, 'images', images)
+    console.log('api 함수 호출 전: boardId: ', boardId, 'title', title, 'content', content, 'isAnonymous', isAnonymous, 'images', images)
     images?.map((image: any, index: number) => {
       const photo = {
         uri: image.uri,
