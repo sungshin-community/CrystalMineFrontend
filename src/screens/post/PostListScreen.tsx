@@ -196,7 +196,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       ),
       headerTitleAlign: 'center',
     });
-  }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
+  }, [navigation, boardInfo, reportModalVisible]);
 
   const toBoardSearch = () => {
     navigation.navigate('BoardSearch', {
@@ -262,8 +262,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           }}
           underlayColor="#EEEEEE"
           onPress={() => {
-            setReportCheckModalVisible(true);
-            console.log(reportCheckModalVisible);
+            setReportModalVisible(true);
           }}>
           <NoReport />
         </TouchableHighlight>
@@ -272,20 +271,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   );
   return (
     <>
-      {reportCheckModalVisible && (
-        <ModalBottom
-          modalVisible={reportCheckModalVisible}
-          setModalVisible={setReportCheckModalVisible}
-          title={`게시판 신고`}
-          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setReportCheckModalVisible(false);
-            setReportModalVisible(true);
-          }}
-        />
-      )}
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}

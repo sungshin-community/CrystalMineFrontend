@@ -34,7 +34,7 @@ interface Props {
   reportFunc?: any;
   whiteButtonText?: string;
   whiteButtonFunc?: any;
-  setDim: boolean;
+  setDim?: boolean;
 }
 export const SelectModalBottom = ({
   modalVisible,
