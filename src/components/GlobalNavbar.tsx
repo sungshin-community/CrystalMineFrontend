@@ -33,8 +33,13 @@ type RootStackParamList = {
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
 function GlobalNavbar({navigation}: ScreenProps) {
-  const onSearchPress = () => {
-    navigation.navigate('TotalSearch');
+  const onSearchPress = async () => {
+    let isRegularMember: boolean = await checkRegularMember();
+    if (isRegularMember) {
+      navigation.navigate('TotalSearch');
+    } else {
+      Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+    }
   };
 
   return (
