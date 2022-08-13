@@ -79,7 +79,7 @@ export default function BoardSearchResult({searchWord}: Props) {
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
         <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>
-      {boardList.length === 0 ? 
+      {boardList && boardList.length === 0 ? 
       <View
         style={{
           flex: 1,
