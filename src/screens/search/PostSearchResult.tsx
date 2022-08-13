@@ -1,146 +1,160 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, TouchableHighlightBase, TouchableHighlight} from 'react-native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {Dimensions, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MyPostItem from '../../components/MyPostItem';
-import { MyPostContentDto } from '../../classes/board/MyPostDto';
-import SpinningThreeDots from '../../components/SpinningThreeDots';
+import { View } from 'react-native-animatable';
 import SearchIcon from '../../../resources/icon/SearchIcon';
-import TrashIcon from '../../../resources/icon/TrashIcon';
+import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
-import { ModalBottom } from '../../components/ModalBottom';
-import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
-import Toast from 'react-native-simple-toast';
-import SortIcon from '../../../resources/icon/SortIcon';
-import { searchPosts } from '../../common/SearchApi';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { fontBold, fontRegular } from '../../common/font';
+import BoardSearchResult from './total/BoardSearchResult';
+import PostList from './PostList';
 
-interface Props {
-  searchWord: string;
-}
 type RootStackParamList = {
-  PostScreen: {postId: number};
-  BoardSearch: {boardName: string};
-  TotalSearchResult: {searchWord: string};
-  PostSearchResult: {searchWord: string}
+  SearchResult: {
+    searchWord: any;
+  };
+  SearchResultInBoard: {
+    searchWord: any;
+    boardName: any;
+    boardId?: number;
+  };
+  GlobalNavbar: undefined;
+  PostListScreen: {boardId: number};
+  MyPostList: undefined;
+  MyCommentList: undefined;
+  ScrapedPostList: undefined;
 };
-type NavigateProps = NativeStackScreenProps<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList>;
+const Tab = createMaterialTopTabNavigator();
+let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 
-export default function PostSearchResult({searchWord}: Props) {
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [myPostList, setMyPostList] = useState<MyPostContentDto[]>([]);
-  const [sortBy, setSortBy] = useState<string>('createdAt');
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
-  const navigation = useNavigation();
-  const route = useRoute();
-
-  const moveToPost = (post: MyPostContentDto) => {
-    if (post.isBoardDeleted) {
-      Toast.show("삭제된 게시판에 작성된 게시글입니다.", Toast.SHORT);
-      return;
-    } else if (post.isBoardBlinded) {
-      Toast.show("블라인드된 게시판에 작성된 게시글입니다.", Toast.SHORT);
-      return;
-    }
-    navigation.navigate('PostScreen', {
-      postId: post.postId
-    });
-  }
+function PostSearchResult({navigation, route}: Props) {
+  const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
 
   useEffect(() => {
-    async function init() {
-      setIsLoading(true);
-      const response = await searchPosts(searchWord, 0, sortBy);
-      setCurrentPage(0);
-      setMyPostList(response.data.content);
-      setIsLoading(false);
-    }
-    init();
-  }, [sortBy, searchWord]);
 
+  }, []);
 
-  const handleRefresh = async () => {
-    const postList = await searchPosts(searchWord, 0, sortBy);
-    setCurrentPage(0);
-    setMyPostList(postList);
-  }
-
-  const fetchNextPage = async () => {
-    setIsNextPageLoading(true);
-    const response = await searchPosts(searchWord, currentPage + 1, sortBy);
-    let thisPagePostList: MyPostContentDto[] = response.data.content;
-    setMyPostList(myPostList.concat(thisPagePostList));
-    if (thisPagePostList.length > 0) {
-      setCurrentPage(currentPage + 1);
-    }
-    setIsNextPageLoading(false);
-  }
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: (): React.ReactNode => (
+        <View style={styles.container}>
+        <TextInput
+          autoFocus={true}
+          style={styles.input}
+          placeholder='[] 게시판에서 검색'
+          placeholderTextColor="#898989"
+          returnKeyType="search"
+          autoCorrect={false}
+          autoCapitalize="none"
+          onSubmitEditing={(e) => {console.log(e.nativeEvent.text); setSearchWord(e.nativeEvent.text)}}
+          keyboardType="default"
+          enablesReturnKeyAutomatically
+          defaultValue={route.params.searchWord}
+        />
+        <View style={styles.icon}>
+          <SearchIcon />
+        </View>
+      </View>
+      ),
+      headerRight: (): React.ReactNode => (
+        <TouchableHighlight style={{width: 50, borderRadius: 20, alignItems: 'center', height: 40, justifyContent: 'center'}} underlayColor='#EEEEEE' onPress={() => {navigation.goBack()}}>
+          <Text style={{fontSize: 17}}>닫기</Text>
+        </TouchableHighlight>
+      ),
+    });
+  }, []);
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1}}>
-      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+    <>
+    {
+      false ? <View style={{paddingHorizontal: 40, backgroundColor: '#FFFFFF', flex: 1}}>
+      <Text style={[styles.title, fontBold]}>최근 검색어</Text>
+      <View style={{flex: 1, marginTop: 14}}>
+        {
+          ['네모 좋아', '산업디자인과', '수정유랑단', '크리스탈'].map(text => (
+            <TouchableOpacity style={{height: 36, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Text style={[fontRegular, {fontSize: 15}]}>{text}</Text>
+              <TouchableHighlight
+                onPress={() => {console.log("눌림")}}
+                underlayColor='#EEEEEE'
+                style={{height: 36, width: 36, justifyContent: 'center', alignItems: 'center', borderRadius: 18}}
+              >
+                <CancelButton color="#87919B" />
+              </TouchableHighlight>
+            </TouchableOpacity>
+          ))
+        }
       </View>
-      {myPostList.length === 0 ? 
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#F6F6F6'
-        }}>
-        <Text
-          style={{
-            color: '#6E7882',
-            fontSize: 15,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            textAlign: 'center',
-            lineHeight: 22.5,
-            marginTop: 20,
-          }}>
-          {isLoading ? "" : "요청하신 검색어에 대한 결과가 없습니다."}
-        </Text>
-      </View> :
-      <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, height: 46}}>
-          <TouchableOpacity
-            onPress={() => {
-              if (sortBy === 'createdAt') {
-                setSortBy('likeCount');
-              } else {
-                setSortBy('createdAt');
-              }
-            }}
-            style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{marginRight: 5}}>
-              {sortBy === 'createdAt' ? "최신순" : "공감순"}
-            </Text>
-            <SortIcon />
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={myPostList}
-          renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={false} />}
-          ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
-          refreshing={isRefreshing}
-          onRefresh={handleRefresh}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              colors={['#A055FF']} // for android
-              tintColor={'#A055FF'} // for ios
-            />
-          }
-          onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.6}
-        />
-        <View>
-          {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}
-        </View>
-      </View>}
-    </SafeAreaView>
+    </View> :
+    <Tab.Navigator
+      initialRouteName="BoardSearch"
+      screenOptions={{
+        tabBarStyle: {
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 5},
+          shadowRadius: 20,
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: '#A055FF',
+          height: 8,
+          width: 24,
+          bottom: -4,
+          borderRadius: 10,
+          marginHorizontal: tabWidth,
+        },
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontFamily: 'SpoqaHanSansNeo-Regular',
+          fontSize: 14,
+          marginTop: 14,
+          marginBottom: 6,
+        },
+        tabBarActiveTintColor: '#000',
+        tabBarInactiveTintColor: '#717171',
+      }}
+      keyboardDismissMode="on-drag"
+      initialLayout={{width: Dimensions.get('window').width}}>
+      <Tab.Screen
+        name="게시글"
+        component={() => <PostList searchWord={searchWord} />}
+        initialParams={{searchWord: searchWord}}
+        
+      />
+      <Tab.Screen name="태그" component={TagSearchResult} />
+    </Tab.Navigator>
+}
+    </>
   );
 }
 
+export default PostSearchResult;
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+    alignItems: 'center',
+    paddingLeft: 5,
+  },
+  input: {
+    backgroundColor: '#EFEFEF',
+    width: Dimensions.get('window').width - 100,
+    height: 44,
+    borderRadius: 20,
+    paddingLeft: 57,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 15,
+    color: '#222222'
+  },
+  icon: {
+    position: 'absolute',
+    top: 10,
+    left: 24,
+  },
+  title: {
+    color: '#222222',
+    fontSize: 17,
+    marginTop: 20
+  },
+});

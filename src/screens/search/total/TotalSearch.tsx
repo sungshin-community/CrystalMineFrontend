@@ -11,9 +11,9 @@ import {
   TouchableHighlight
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import SearchIcon from '../../../resources/icon/SearchIcon';
-import {fontBold, fontRegular} from '../../common/font';
-import CancelButton from '../../../resources/icon/Cancel';
+import SearchIcon from '../../../../resources/icon/SearchIcon';
+import {fontBold, fontRegular} from '../../../common/font';
+import CancelButton from '../../../../resources/icon/Cancel';
 
 type RootStackParamList = {
   SearchResultInBoard: {

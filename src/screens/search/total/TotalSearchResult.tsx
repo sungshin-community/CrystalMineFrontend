@@ -3,10 +3,10 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {Dimensions, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import { View } from 'react-native-animatable';
-import SearchIcon from '../../../resources/icon/SearchIcon';
-import TagSearchResult from '../board/TagSearchResult';
-import CancelButton from '../../../resources/icon/Cancel';
-import { fontBold, fontRegular } from '../../common/font';
+import SearchIcon from '../../../../resources/icon/SearchIcon';
+import TagSearchResult from '../../board/TagSearchResult';
+import CancelButton from '../../../../resources/icon/Cancel';
+import { fontBold, fontRegular } from '../../../common/font';
 import PostSearchResult from './PostSearchResult';
 import BoardSearchResult from './BoardSearchResult';
 

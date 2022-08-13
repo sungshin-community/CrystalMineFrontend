@@ -31,8 +31,8 @@ import PostScreen from './src/screens/post/PostScreen';
 import GlobalNavbar from './src/components/GlobalNavbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // search
-import TotalSearch from './src/screens/search/TotalSearch';
-import TotalSearchResult from './src/screens/search/TotalSearchResult';
+import TotalSearch from './src/screens/search/total/TotalSearch';
+import TotalSearchResult from './src/screens/search/total/TotalSearchResult';
 // board
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
@@ -76,6 +76,8 @@ import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
 import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
 import WikiTab from './src/screens/board/WikiTab';
+import PostSearch from './src/screens/search/PostSearch';
+import PostSearchResult from './src/screens/search/PostSearchResult';
 
 const Stack = createNativeStackNavigator();
 
@@ -656,6 +658,20 @@ const App = () => {
               <Stack.Screen
                 name="TotalSearchResult"
                 component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearch"
+                component={PostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearchResult"
+                component={PostSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}
@@ -2107,6 +2123,20 @@ const App = () => {
               <Stack.Screen
                 name="TotalSearchResult"
                 component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearch"
+                component={PostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="PostSearchResult"
+                component={PostSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}

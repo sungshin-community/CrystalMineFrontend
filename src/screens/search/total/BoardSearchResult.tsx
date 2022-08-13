@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, TouchableHighlightBase, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MyPostItem from '../../components/MyPostItem';
-import { deleteMyPosts, toggleBoardPin } from '../../common/boardApi';
-import { MyPostContentDto } from '../../classes/board/MyPostDto';
-import SpinningThreeDots from '../../components/SpinningThreeDots';
-import SearchIcon from '../../../resources/icon/SearchIcon';
-import TrashIcon from '../../../resources/icon/TrashIcon';
-import CancelButton from '../../../resources/icon/Cancel';
-import { ModalBottom } from '../../components/ModalBottom';
-import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
+import MyPostItem from '../../../components/MyPostItem';
+import { deleteMyPosts, toggleBoardPin } from '../../../common/boardApi';
+import { MyPostContentDto } from '../../../classes/board/MyPostDto';
+import SpinningThreeDots from '../../../components/SpinningThreeDots';
+import SearchIcon from '../../../../resources/icon/SearchIcon';
+import TrashIcon from '../../../../resources/icon/TrashIcon';
+import CancelButton from '../../../../resources/icon/Cancel';
+import { ModalBottom } from '../../../components/ModalBottom';
+import { RectangleChecked, RectangleUnchecked } from '../../../../resources/icon/CheckBox';
 import Toast from 'react-native-simple-toast';
-import SortIcon from '../../../resources/icon/SortIcon';
-import { searchBoards, searchPosts } from '../../common/SearchApi';
+import SortIcon from '../../../../resources/icon/SortIcon';
+import { searchBoards, searchPosts } from '../../../common/SearchApi';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { DarkPin, GrayPin, OrangePin, PurplePin } from '../../../resources/icon/Pin';
-import OrangeFlag from '../../../resources/icon/OrangeFlag';
-import { SearchBoard } from '../../classes/Search';
-import { fontRegular } from '../../common/font';
-import Board from '../../classes/Board';
+import { DarkPin, GrayPin, OrangePin, PurplePin } from '../../../../resources/icon/Pin';
+import OrangeFlag from '../../../../resources/icon/OrangeFlag';
+import { SearchBoard } from '../../../classes/Search';
+import { fontRegular } from '../../../common/font';
+import Board from '../../../classes/Board';
 
 interface Props {
   searchWord: string;
@@ -111,7 +111,7 @@ export default function BoardSearchResult({searchWord}: Props) {
             }}
             style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{marginRight: 5}}>
-              {sortBy === 'createdAt' ? "최신순" : "좋아요순"}
+              {sortBy === 'createdAt' ? "최신순" : "고정순"}
             </Text>
             <SortIcon />
           </TouchableOpacity>
