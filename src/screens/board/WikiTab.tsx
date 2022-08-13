@@ -20,6 +20,7 @@ type RootStackParamList = {
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
+  PostSearch: {boardId: number, boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -87,10 +88,7 @@ function WikiTab({navigation, route}: Props) {
       }}
       underlayColor="#EEEEEE"
       onPress={() =>
-        navigation.navigate('BoardSearch', {
-          boardName: boardInfo.name,
-          boardId: boardInfo.id,
-        })
+        navigation.navigate('PostSearch', {boardId: boardInfo?.id, boardName: boardInfo?.name})
       }>
       <SearchIcon />
     </TouchableHighlight>

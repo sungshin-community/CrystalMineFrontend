@@ -120,7 +120,6 @@ export default function MyCommentList({navigation, route}: Props) {
     <TouchableHighlight
       style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
       underlayColor='#EEEEEE'
-      // onPress={() => navigation.navigate('BoardSearch', {boardName: '내가 작성한 댓글'})}
       onPress={() => {navigation.navigate('MyCommentSearch')}}
     >
       <SearchIcon  />

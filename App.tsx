@@ -84,6 +84,7 @@ import MyCommentSearch from './src/screens/search/MyCommentSearch';
 import MyCommentSearchResult from './src/screens/search/MyCommentSearchResult';
 import ScrapedPostSearch from './src/screens/search/ScrapedPostSearch';
 import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResult';
+import WikiSearchResult from './src/screens/search/WikiSearchResult';
 
 const Stack = createNativeStackNavigator();
 
@@ -720,6 +721,13 @@ const App = () => {
               <Stack.Screen
                 name="ScrapedPostSearchResult"
                 component={ScrapedPostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="WikiSearchResult"
+                component={WikiSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}
@@ -2227,6 +2235,13 @@ const App = () => {
               <Stack.Screen
                 name="ScrapedPostSearchResult"
                 component={ScrapedPostSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="WikiSearchResult"
+                component={WikiSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}

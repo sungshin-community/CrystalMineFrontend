@@ -200,10 +200,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
 
   const toBoardSearch = () => {
-    // navigation.navigate('BoardSearch', {
-    //   boardName: boardInfo.name,
-    //   boardId: boardInfo.id,
-    // });
     navigation.navigate('PostSearch', {boardId: boardInfo?.id, boardName: boardInfo?.name});
   };
   const handleBoardSearchComponent = (

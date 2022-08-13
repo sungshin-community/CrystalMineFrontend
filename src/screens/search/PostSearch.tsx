@@ -25,6 +25,7 @@ type RootStackParamList = {
   };
   PostListScreen: {boardId: number};
   PostSearchResult: {searchWord: string, boardId: number, boardName: string};
+  WikiSearchResult: {searchWord: string, boardId: number, boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -58,8 +59,11 @@ function PostSearch({navigation, route}: Props) {
 
   const search = async (text: string) => {
     await saveSearchWord(text);
-    navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
-
+    if (route.params.boardId === 5) {
+      navigation.navigate('WikiSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
+    } else {
+      navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
+    }
   }
 
   useEffect(() => {
