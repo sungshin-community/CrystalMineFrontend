@@ -105,7 +105,7 @@ function TotalSearch({navigation, route}: Props) {
           </Pressable>
         </View>
         <View style={{flex: 1, marginTop: 14}}>
-          {
+          {recentSearchWords && recentSearchWords.length > 0 ? 
             recentSearchWords?.map((text, index) => (
               <TouchableOpacity
                 style={{height: 36, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
@@ -122,6 +122,12 @@ function TotalSearch({navigation, route}: Props) {
                 </TouchableHighlight>
               </TouchableOpacity>
             ))
+            :
+            <View style={{alignItems: 'center'}}>
+              <Text style={[fontRegular, styles.noResult]}>
+                최근 검색어가 없습니다
+              </Text>
+            </View>
           }
         </View>
       </View>
@@ -155,5 +161,10 @@ const styles = StyleSheet.create({
   title: {
     color: '#222222',
     fontSize: 17,
+  },
+  noResult: {
+    fontSize: 15,
+    color: '#87919B',
+    marginTop: 66,
   },
 });
