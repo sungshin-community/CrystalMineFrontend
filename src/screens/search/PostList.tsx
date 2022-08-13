@@ -11,11 +11,14 @@ import { ModalBottom } from '../../components/ModalBottom';
 import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
 import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../resources/icon/SortIcon';
-import { searchPosts } from '../../common/SearchApi';
+import { searchPosts, searchPostsInBoard } from '../../common/SearchApi';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { PostContent } from '../../classes/Search';
 
 interface Props {
   searchWord: string;
+  boardId: number;
+  boardName: string;
 }
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -25,9 +28,9 @@ type RootStackParamList = {
 };
 type NavigateProps = NativeStackScreenProps<RootStackParamList>;
 
-export default function PostList({searchWord}: Props) {
+export default function PostList({searchWord, boardId, boardName}: Props) {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [myPostList, setMyPostList] = useState<MyPostContentDto[]>([]);
+  const [myPostList, setMyPostList] = useState<PostContent[]>([]);
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -35,14 +38,7 @@ export default function PostList({searchWord}: Props) {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const moveToPost = (post: MyPostContentDto) => {
-    if (post.isBoardDeleted) {
-      Toast.show("삭제된 게시판에 작성된 게시글입니다.", Toast.SHORT);
-      return;
-    } else if (post.isBoardBlinded) {
-      Toast.show("블라인드된 게시판에 작성된 게시글입니다.", Toast.SHORT);
-      return;
-    }
+  const moveToPost = (post: PostContent) => {
     navigation.navigate('PostScreen', {
       postId: post.postId
     });
@@ -51,7 +47,7 @@ export default function PostList({searchWord}: Props) {
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      const response = await searchPosts(searchWord, 0, sortBy);
+      const response = await searchPostsInBoard(boardId, searchWord, 0, sortBy);
       setCurrentPage(0);
       setMyPostList(response.data.content);
       setIsLoading(false);
@@ -61,15 +57,16 @@ export default function PostList({searchWord}: Props) {
 
 
   const handleRefresh = async () => {
-    const postList = await searchPosts(searchWord, 0, sortBy);
+    const response = await searchPostsInBoard(boardId, searchWord, 0, sortBy);
+    let postList = response.data.content;
     setCurrentPage(0);
     setMyPostList(postList);
   }
 
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    const response = await searchPosts(searchWord, currentPage + 1, sortBy);
-    let thisPagePostList: MyPostContentDto[] = response.data.content;
+    const response = await searchPostsInBoard(boardId, searchWord, currentPage + 1, sortBy);
+    let thisPagePostList: PostContent[] = response.data.content;
     setMyPostList(myPostList.concat(thisPagePostList));
     if (thisPagePostList.length > 0) {
       setCurrentPage(currentPage + 1);

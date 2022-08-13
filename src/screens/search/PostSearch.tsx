@@ -22,8 +22,7 @@ type RootStackParamList = {
     boardId?: number;
   };
   PostListScreen: {boardId: number};
-  TotalSearchResult: {searchWord: string};
-  PostSearchResult: {searchWord: string};
+  PostSearchResult: {searchWord: string, boardId: number, boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -58,7 +57,8 @@ function PostSearch({navigation, route}: Props) {
   }
 
   const search = async (text: string) => {
-    navigation.navigate('PostSearchResult', {searchWord: text});
+    console.log("게시판 id는", route.params.boardId);
+    navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId, boardName: route.params.boardName});
     await saveRecentSearchWords(text);
   }
 
@@ -102,7 +102,7 @@ function PostSearch({navigation, route}: Props) {
               <TouchableOpacity
                 style={{height: 36, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
                 key={index}
-                onPress={() => navigation.navigate('TotalSearchResult', {searchWord: text})}
+                onPress={() => navigation.navigate('PostSearchResult', {searchWord: text, boardId: route.params.boardId})}
               >
                 <Text style={[fontRegular, {fontSize: 15}]}>{text}</Text>
                 <TouchableHighlight

@@ -62,6 +62,18 @@ export const getPostSearchInBoard = async (searchWord: string, page: number, sor
   }
 }
 
+export const searchPostsInBoard = async (boardId: number, searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchPost>>(
+      `/search/${boardId}/posts?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('특정 게시판 내 게시글 검색 실패', error.response);
+    return error.response.data;
+  }
+}
+
 export const getMyPostSearch = async (searchWord: string, page: number, sort: string) => {
   try {
     const response = await client.get<Response<SearchPost[]>>(

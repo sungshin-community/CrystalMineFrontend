@@ -7,7 +7,6 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
-import BoardSearchResult from './total/BoardSearchResult';
 import PostList from './PostList';
 
 type RootStackParamList = {
@@ -118,7 +117,7 @@ function PostSearchResult({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
         name="게시글"
-        component={() => <PostList searchWord={searchWord} />}
+        component={() => <PostList searchWord={searchWord} boardId={route.params.boardId} />}
         initialParams={{searchWord: searchWord}}
         
       />
