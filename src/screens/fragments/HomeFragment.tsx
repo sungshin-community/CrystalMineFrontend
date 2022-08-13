@@ -204,7 +204,7 @@ const HomeFragment = ({navigation}: Props) => {
                   ]}
                   onPress={async () => {
                     if (item.type === 'WELCOME') {
-                      // const result = await readNotification(item.id);
+                      const result = await readNotification(item.id);
                       console.log('알람 확인 후 마이페이지로 이동');
                       navigation.navigate('MyPage');
                     } else if (
@@ -219,7 +219,7 @@ const HomeFragment = ({navigation}: Props) => {
                       else if (item.type === 'NOT_AUTHENTICATED')
                         navigation.navigate('UncertifiedMember');
                       // const result = await readNotification(item.id);
-                      console.log('알람 확인 후 정회원인증으로 이동');
+                      // 알람 확인 못 해야함.
                       navigation.navigate('RegularMemberAuthMyPage');
                     } else if (
                       item.type === 'BOARD_BLIND' ||
@@ -278,7 +278,7 @@ const HomeFragment = ({navigation}: Props) => {
                         item.blind
                       ) {
                         setModalBody(itemContent);
-                        // const result = await readNotification(item.id);
+                        const result = await readNotification(item.id);
                         console.log('블라인드 알림 확인');
                         setBlindModalVisible(true);
                       } else if (item.type === 'BOARD_BLIND' && !item.blind)
@@ -340,7 +340,7 @@ const HomeFragment = ({navigation}: Props) => {
                         item.deleteBlind
                       ) {
                         setModalBody(itemContent);
-                        // const result = await readNotification(item.id);
+                        const result = await readNotification(item.id);
                         console.log('블라인드 알림 확인');
                         setBlindModalVisible(true);
                       } else if (
