@@ -130,3 +130,15 @@ export const getScrapsSearch = async (searchWord: string, page: number, sort: st
     console.log('스크랩 검색 실패', error);
   }
 }
+
+export const searchScrapedPosts = async (searchWord: string, page: number, sort: string) => {
+  try {
+    const response = await client.get<Response<SearchPost>>(
+      `/search/scraps?keyword=${searchWord}&page=${page}&sort=${sort}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('스크랩 검색 실패', error);
+    return error.response.data;
+  }
+}

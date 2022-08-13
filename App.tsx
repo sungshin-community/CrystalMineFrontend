@@ -82,6 +82,8 @@ import MyPostSearch from './src/screens/search/MyPostSearch';
 import MyPostSearchResult from './src/screens/search/MyPostSearchResult';
 import MyCommentSearch from './src/screens/search/MyCommentSearch';
 import MyCommentSearchResult from './src/screens/search/MyCommentSearchResult';
+import ScrapedPostSearch from './src/screens/search/ScrapedPostSearch';
+import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResult';
 
 const Stack = createNativeStackNavigator();
 
@@ -704,6 +706,20 @@ const App = () => {
               <Stack.Screen
                 name="MyCommentSearchResult"
                 component={MyCommentSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearch"
+                component={ScrapedPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearchResult"
+                component={ScrapedPostSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}
@@ -2197,6 +2213,20 @@ const App = () => {
               <Stack.Screen
                 name="MyCommentSearchResult"
                 component={MyCommentSearchResult}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearch"
+                component={ScrapedPostSearch}
+                options={({navigation}) => ({
+                  title: ''
+                })}
+              />
+              <Stack.Screen
+                name="ScrapedPostSearchResult"
+                component={ScrapedPostSearchResult}
                 options={({navigation}) => ({
                   title: ''
                 })}
