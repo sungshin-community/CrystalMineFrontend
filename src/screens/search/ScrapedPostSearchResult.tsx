@@ -10,6 +10,7 @@ import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
 import MyPostList from './MyPostList';
 import ScrapedPostList from './ScrapedPostList';
+import { saveRecentSearchWord } from '../../common/util';
 
 type RootStackParamList = {
   SearchResult: {
@@ -33,9 +34,10 @@ let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 function ScrapedPostSearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
 
-  useEffect(() => {
-
-  }, []);
+  const search = (text: string) => {
+    setSearchWord(text);
+    saveRecentSearchWord(text, 'recentScrapedPostSearch');
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -49,7 +51,7 @@ function ScrapedPostSearchResult({navigation, route}: Props) {
           returnKeyType="search"
           autoCorrect={false}
           autoCapitalize="none"
-          onSubmitEditing={(e) => {setSearchWord(e.nativeEvent.text)}}
+          onSubmitEditing={(e) => {search(e.nativeEvent.text)}}
           keyboardType="default"
           enablesReturnKeyAutomatically
           defaultValue={route.params.searchWord}

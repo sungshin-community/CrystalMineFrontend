@@ -14,6 +14,8 @@ import SortIcon from '../../../resources/icon/SortIcon';
 import { searchPosts, searchPostsInBoard } from '../../common/SearchApi';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { PostContent } from '../../classes/Search';
+import PostItem from '../../components/PostItem';
+import { ContentPreviewDto } from '../../classes/BoardDetailDto';
 
 interface Props {
   searchWord: string;
@@ -30,7 +32,7 @@ type NavigateProps = NativeStackScreenProps<RootStackParamList>;
 
 export default function PostList({searchWord, boardId, boardName}: Props) {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [myPostList, setMyPostList] = useState<PostContent[]>([]);
+  const [myPostList, setMyPostList] = useState<ContentPreviewDto[]>([]);
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,11 +40,6 @@ export default function PostList({searchWord, boardId, boardName}: Props) {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const moveToPost = (post: PostContent) => {
-    navigation.navigate('PostScreen', {
-      postId: post.postId
-    });
-  }
 
   useEffect(() => {
     async function init() {
@@ -66,7 +63,7 @@ export default function PostList({searchWord, boardId, boardName}: Props) {
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
     const response = await searchPostsInBoard(boardId, searchWord, currentPage + 1, sortBy);
-    let thisPagePostList: PostContent[] = response.data.content;
+    let thisPagePostList: ContentPreviewDto[] = response.data.content;
     setMyPostList(myPostList.concat(thisPagePostList));
     if (thisPagePostList.length > 0) {
       setCurrentPage(currentPage + 1);
@@ -118,7 +115,14 @@ export default function PostList({searchWord, boardId, boardName}: Props) {
         </View>
         <FlatList
           data={myPostList}
-          renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={false} />}
+          renderItem={({item}) => <TouchableOpacity
+          onPress={async () => {
+            navigation.navigate('PostScreen', {
+              postId: item.postId,
+            });
+          }}>
+          <PostItem post={item} />
+        </TouchableOpacity>}
           ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}

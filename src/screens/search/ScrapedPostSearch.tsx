@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {
   Text,
@@ -15,6 +14,8 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import {fontBold, fontRegular} from '../../common/font';
 import CancelButton from '../../../resources/icon/Cancel';
 import Toast from 'react-native-simple-toast';
+import { deleteAllRecentSearchWords, deleteRecentSearchWord, loadRecentSearchWord, saveRecentSearchWord } from '../../common/util';
+import { useIsFocused } from '@react-navigation/native';
 
 type RootStackParamList = {
   SearchResultInBoard: {
@@ -29,67 +30,40 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 function ScrapedPostSearch({navigation, route}: Props) {
   const [recentSearchWords, setRecentSearchWords] = useState<string[]>([]);
+  const isFocused = useIsFocused();
 
   const getRecentSearchWords = async () => {
-    try {
-      const jsonRecentSearchWords = await AsyncStorage.getItem('recentScrapedPostSearch');
-      if (jsonRecentSearchWords) {
-        const recentSearchWords = JSON.parse(jsonRecentSearchWords);
-        setRecentSearchWords(recentSearchWords);
-      }
-    } catch (error) {
-      console.error('최근 검색어 가져오기 실패', error);
-    }
+    const searchWords = await loadRecentSearchWord('recentScrapedPostSearch');
+    setRecentSearchWords(searchWords);
   }
 
-  const saveRecentSearchWords = async (text: string) => {
+  const saveSearchWord = async (text: string) => {
     if (text && text.trim().length > 0) {
-      const jsonRecentSearchWords = await AsyncStorage.getItem('recentScrapedPostSearch');
-      let recentSearchWordList: string[] = [];
-      if (jsonRecentSearchWords) {
-        recentSearchWordList = JSON.parse(jsonRecentSearchWords);
-      }
-      const index = recentSearchWordList.findIndex(word => word === text);
-      if (index >= 0) {
-        // 있으면 삭제
-        recentSearchWordList.splice(index, 1);
-      }
-      recentSearchWordList.unshift(text);
-      if (recentSearchWordList.length > 5) {
-        // 5개 넘으면 삭제
-        recentSearchWordList.pop();
-      }
-      console.log(recentSearchWordList);
-      await AsyncStorage.setItem('recentScrapedPostSearch', JSON.stringify(recentSearchWordList));
-      setRecentSearchWords(recentSearchWordList);
+      const searchWords = await saveRecentSearchWord(text.trim(), 'recentScrapedPostSearch');
+      setRecentSearchWords(searchWords);
     } else {
       Toast.show('공백은 검색이 불가능합니다.', Toast.SHORT);
     }
   }
 
-  const deleteRecentSearchWord = async (text: string) => {
-    const jsonRecentSearchWords = await AsyncStorage.getItem('recentScrapedPostSearch');
-      let recentSearchWordList: string[] = [];
-      if (jsonRecentSearchWords) {
-        recentSearchWordList = JSON.parse(jsonRecentSearchWords);
-      }
-      const index = recentSearchWordList.findIndex(word => word === text);
-        if (index >= 0) {
-          recentSearchWordList.splice(index, 1);
-      }
-      await AsyncStorage.setItem('recentScrapedPostSearch', JSON.stringify(recentSearchWordList));
-      setRecentSearchWords(recentSearchWordList);
+  const deleteSearchWord = async (text: string) => {
+    const searchWords = await deleteRecentSearchWord(text, 'recentScrapedPostSearch');
+    setRecentSearchWords(searchWords);
   }
 
-  const deleteAllRecentSearchWords = async () => {
-    await AsyncStorage.setItem('recentScrapedPostSearch', '');
+  const deleteAllSearchWords = async () => {
+    deleteAllRecentSearchWords('recentScrapedPostSearch');
     setRecentSearchWords([])
   }
 
   const search = async (text: string) => {
+    await saveSearchWord(text);
     navigation.navigate('ScrapedPostSearchResult', {searchWord: text});
-    await saveRecentSearchWords(text);
   }
+
+  useEffect(() => {
+    getRecentSearchWords();
+  }, [isFocused]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -124,7 +98,7 @@ function ScrapedPostSearch({navigation, route}: Props) {
         <View
           style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center'}}>
           <Text style={[styles.title, fontBold]}>최근 검색어</Text>
-          <Pressable onPress={() => {deleteAllRecentSearchWords()}}>
+          <Pressable onPress={() => {deleteAllSearchWords()}}>
             <Text style={[fontRegular, {color: '#A055FF', textDecorationLine: 'underline'}]}>전체 삭제</Text>
           </Pressable>
         </View>
@@ -138,7 +112,7 @@ function ScrapedPostSearch({navigation, route}: Props) {
               >
                 <Text style={[fontRegular, {fontSize: 15}]}>{text}</Text>
                 <TouchableHighlight
-                  onPress={() => {deleteRecentSearchWord(text)}}
+                  onPress={() => {deleteSearchWord(text)}}
                   underlayColor='#EEEEEE'
                   style={{height: 36, width: 36, justifyContent: 'center', alignItems: 'center', borderRadius: 18}}
                 >

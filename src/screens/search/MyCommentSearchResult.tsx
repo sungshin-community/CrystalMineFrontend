@@ -7,6 +7,7 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../resources/icon/SortIcon';
 import { searchMyComments } from '../../common/SearchApi';
+import { saveRecentSearchWord } from '../../common/util';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -22,7 +23,11 @@ export default function MyCommentSearchResult({navigation, route}: Props) {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
+
+  const search = (text: string) => {
+    setSearchWord(text);
+    saveRecentSearchWord(text, 'recentMyCommentSearch');
+  }
 
   const moveToPost = (comment: MyCommentDto) => {
     if (comment.isPostDeleted) {
@@ -55,7 +60,7 @@ export default function MyCommentSearchResult({navigation, route}: Props) {
           returnKeyType="search"
           autoCorrect={false}
           autoCapitalize="none"
-          onSubmitEditing={(e) => {setSearchWord(e.nativeEvent.text)}}
+          onSubmitEditing={(e) => {search(e.nativeEvent.text)}}
           keyboardType="default"
           enablesReturnKeyAutomatically
           defaultValue={route.params.searchWord}
@@ -83,14 +88,13 @@ export default function MyCommentSearchResult({navigation, route}: Props) {
       setIsLoading(false);
     }
     init();
-  }, [sortBy]);
+  }, [sortBy, searchWord]);
 
   const handleRefresh = async () => {
     const response = await searchMyComments(searchWord, 0, sortBy);
     let commentList: MyCommentDto[] = response.data.content;
     setCurrentPage(0);
     setMyCommentList(commentList);
-    setIsCheckedAll(false);
   }
 
   const fetchNextPage = async () => {

@@ -7,8 +7,8 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
-import PostList from './PostList';
 import MyPostList from './MyPostList';
+import { saveRecentSearchWord } from '../../common/util';
 
 type RootStackParamList = {
   SearchResult: {
@@ -31,10 +31,11 @@ let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 
 function MyPostSearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
-
-  useEffect(() => {
-
-  }, []);
+  
+  const search = (text: string) => {
+    setSearchWord(text);
+    saveRecentSearchWord(text, 'recentMyPostSearch');
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -48,7 +49,7 @@ function MyPostSearchResult({navigation, route}: Props) {
           returnKeyType="search"
           autoCorrect={false}
           autoCapitalize="none"
-          onSubmitEditing={(e) => {setSearchWord(e.nativeEvent.text)}}
+          onSubmitEditing={(e) => {search(e.nativeEvent.text)}}
           keyboardType="default"
           enablesReturnKeyAutomatically
           defaultValue={route.params.searchWord}

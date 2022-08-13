@@ -134,7 +134,7 @@ export default function PostSearchResult({searchWord}: Props) {
             />
           }
           onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.6}
+          onEndReachedThreshold={0.8}
         />
         <View>
           {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}

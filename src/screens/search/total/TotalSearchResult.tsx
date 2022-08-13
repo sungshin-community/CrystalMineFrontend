@@ -9,6 +9,7 @@ import CancelButton from '../../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../../common/font';
 import PostSearchResult from './PostSearchResult';
 import BoardSearchResult from './BoardSearchResult';
+import { saveRecentSearchWord } from '../../../common/util';
 
 type RootStackParamList = {
   SearchResult: {
@@ -31,10 +32,11 @@ let tabWidth = (Dimensions.get('window').width / 3 - 24) / 2;
 
 function TotalSearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
-
-  useEffect(() => {
-
-  }, []);
+  
+  const search = (text: string) => {
+    setSearchWord(text);
+    saveRecentSearchWord(text, 'recentTotalSearch');
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -48,7 +50,7 @@ function TotalSearchResult({navigation, route}: Props) {
           returnKeyType="search"
           autoCorrect={false}
           autoCapitalize="none"
-          onSubmitEditing={(e) => {console.log(e.nativeEvent.text); setSearchWord(e.nativeEvent.text)}}
+          onSubmitEditing={(e) => {search(e.nativeEvent.text)}}
           keyboardType="default"
           enablesReturnKeyAutomatically
           defaultValue={route.params.searchWord}

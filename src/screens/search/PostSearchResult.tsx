@@ -8,6 +8,7 @@ import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
+import { saveRecentSearchWord } from '../../common/util';
 
 type RootStackParamList = {
   SearchResult: {
@@ -31,23 +32,24 @@ let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 function PostSearchResult({navigation, route}: Props) {
   const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
 
-  useEffect(() => {
-
-  }, []);
+  const search = (text: string) => {
+    setSearchWord(text);
+    saveRecentSearchWord(text, 'recentPostSearch' + route.params.boardId);
+  }
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={true}
+          autoFocus={false}
           style={styles.input}
-          placeholder='[] 게시판에서 검색'
+          placeholder={`[${route.params.boardName}] 게시판에서 검색`}
           placeholderTextColor="#898989"
           returnKeyType="search"
           autoCorrect={false}
           autoCapitalize="none"
-          onSubmitEditing={(e) => {console.log(e.nativeEvent.text); setSearchWord(e.nativeEvent.text)}}
+          onSubmitEditing={(e) => {search(e.nativeEvent.text)}}
           keyboardType="default"
           enablesReturnKeyAutomatically
           defaultValue={route.params.searchWord}
