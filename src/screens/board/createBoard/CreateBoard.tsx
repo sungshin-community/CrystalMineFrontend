@@ -76,6 +76,7 @@ function CreateBoard({navigation}: Props) {
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
           <TextInput
             placeholder="게시판 이름은 공백포함 15글자까지 입력 가능합니다."
+            placeholderTextColor='#D5DBE1'
             value={boardName}
             autoCorrect={false}
             onChangeText={value => {
@@ -101,6 +102,7 @@ function CreateBoard({navigation}: Props) {
             <TextInput
               textAlignVertical="top"
               placeholder="게시판 설명은 공백포함 22글자까지 입력 가능합니다."
+              placeholderTextColor='#D5DBE1'
               value={boardIntroduction}
               autoCorrect={false}
               onChangeText={value => {

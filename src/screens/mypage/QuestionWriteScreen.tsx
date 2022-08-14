@@ -91,6 +91,7 @@ function RequestWriteScreen({navigation}: Props) {
           <View style={styles.header}>
             <TextInput
               placeholder="제목을 입력하세요."
+              placeholderTextColor='#D5DBE1'
               value={title}
               onChangeText={value => {
                 setTitle(value);
@@ -107,6 +108,7 @@ function RequestWriteScreen({navigation}: Props) {
           <View>
             <TextInput
               placeholder="내용을 입력하세요."
+              placeholderTextColor='#D5DBE1'
               value={content}
               multiline={true}
               onChangeText={value => {

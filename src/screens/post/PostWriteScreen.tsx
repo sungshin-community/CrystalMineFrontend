@@ -195,6 +195,7 @@ function PostWriteScreen({navigation, route}: Props) {
             <>
               <TextInput
                 placeholder="제목을 입력하세요."
+                placeholderTextColor='#D5DBE1'
                 value={title}
                 onChangeText={value => {
                   setTitle(value);
