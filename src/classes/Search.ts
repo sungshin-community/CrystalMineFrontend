@@ -1,3 +1,7 @@
+import Board from "./Board";
+import { MyPostContentDto } from "./board/MyPostDto";
+import MyCommentDto from "./MyCommentDto";
+
 export interface BoardContent {
   id: number;
   name: string;
@@ -24,6 +28,10 @@ export interface SearchBoard {
   empty: boolean;
 }
 
+export interface BoardSearchResult {
+  content: Board[];
+}
+
 export interface PostContent {
   postId: number;
   boardName: string;
@@ -45,19 +53,9 @@ export interface PostContent {
 }
 
 export interface SearchPost {
-  content: PostContent[];
-  pageable: string;
-  totalPages: number;
-  totalElements: number;
-  last: boolean;
-  numberOfElements: number;
-  first: boolean;
-  size: number;
-  number: number;
-  sort: {
-    unsorted: boolean;
-    sorted: boolean;
-    empty: boolean;
-  };
-  empty: boolean;
+  content: MyPostContentDto[];
+}
+
+export interface SearchComment {
+  content: MyCommentDto[];
 }

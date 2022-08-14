@@ -28,7 +28,11 @@ import PostItem from '../../components/PostItem';
 import PostSearchItem from '../../components/PostSearchItem';
 import {useIsFocused} from '@react-navigation/native';
 
-function WikiList({boardId}: number) {
+interface Props {
+  boardId: number;
+}
+
+function WikiList({boardId}: Props) {
   const navigation = useNavigation();
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isData, setIsData] = useState<any>([]);

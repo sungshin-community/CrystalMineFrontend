@@ -28,12 +28,13 @@ interface Props {
 }
 type RootStackParamList = {
   BoardSearch: undefined;
+  TotalSearch: undefined;
 };
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
 function GlobalNavbar({navigation}: ScreenProps) {
   const onSearchPress = () => {
-    navigation.navigate('BoardSearch');
+    navigation.navigate('TotalSearch');
   };
 
   return (

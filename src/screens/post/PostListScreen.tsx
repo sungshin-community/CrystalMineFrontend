@@ -52,6 +52,7 @@ type RootStackParamList = {
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
+  PostSearch: {boardId: number, boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -199,10 +200,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [navigation, boardInfo, reportModalVisible]);
 
   const toBoardSearch = () => {
-    navigation.navigate('BoardSearch', {
-      boardName: boardInfo.name,
-      boardId: boardInfo.id,
-    });
+    navigation.navigate('PostSearch', {boardId: boardInfo?.id, boardName: boardInfo?.name});
   };
   const handleBoardSearchComponent = (
     <TouchableHighlight
