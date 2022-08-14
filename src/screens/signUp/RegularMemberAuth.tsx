@@ -105,12 +105,11 @@ export default function RegularMemberAuth({navigation}: Props) {
       Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
       console.log('이메일 재발송 성공');
     } else {
-      Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
       console.log('이메일 재발송 실패');
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
-    setTryCnt(5);
+    setTryCnt(tryCnt - 1);
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
@@ -238,7 +237,15 @@ export default function RegularMemberAuth({navigation}: Props) {
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
         <TouchableWithoutFeedback
-          onPress={async () => onResendOtpButtonPress()}>
+          onPress={async () => {
+            let result: boolean = await sendEmail();
+            if (result) {
+              Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+              console.log('이메일 재발송 성공');
+            } else {
+              console.log('이메일 재발송 실패');
+            }
+          }}>
           <Text style={styles.resent}>인증번호 재전송</Text>
         </TouchableWithoutFeedback>
       </View>
@@ -273,14 +280,20 @@ export default function RegularMemberAuth({navigation}: Props) {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                navigation.navigate('GlobalNavbar');
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'GlobarNavbar' }],
+                });
               } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.navigate('GlobalNavbar');
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'GlobarNavbar' }],
+                  });
                 }
               }
             }}></PurpleFullButton>
@@ -295,11 +308,13 @@ export default function RegularMemberAuth({navigation}: Props) {
                 navigation.navigate('GlobalNavbar');
               } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
-                setIsIncorrect(true);
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.navigate('GlobalNavbar');
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'GlobarNavbar' }],
+                  });
                 }
               }
             }}></PurpleRoundButton>

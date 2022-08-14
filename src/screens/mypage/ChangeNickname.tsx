@@ -140,7 +140,7 @@ export default function ChangeNickname({navigation}: Props) {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {nickname.length > 1 && isFocused && (
+          {nickname.length >= 1 && isFocused && (
             <PurpleFullButton
               text="변경하기"
               onClick={async () => {
@@ -159,7 +159,7 @@ export default function ChangeNickname({navigation}: Props) {
             />
           )}
 
-          {nickname.length > 1 && !isFocused && (
+          {nickname.length >= 1 && !isFocused && (
             <PurpleRoundButton
               text="변경하기"
               onClick={async () => {
@@ -178,11 +178,11 @@ export default function ChangeNickname({navigation}: Props) {
             />
           )}
 
-          {nickname.length < 2 && isFocused && (
+          {nickname.length < 1 && isFocused && (
             <DisabledPurpleFullButton text="다음" />
           )}
 
-          {nickname.length < 2 && !isFocused && (
+          {nickname.length < 1 && !isFocused && (
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
