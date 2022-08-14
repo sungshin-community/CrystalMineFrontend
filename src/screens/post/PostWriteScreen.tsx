@@ -27,12 +27,11 @@ import {
   RectangleUnchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {
   getWritePostInfo,
   postWritePost,
-  uploadPostImages,
 } from '../../common/boardApi';
 import ProfileImage from '../../../resources/icon/ProfileImage';
 import {PostWriteInfoDto} from '../../classes/PostDto';
@@ -165,13 +164,18 @@ function PostWriteScreen({navigation, route}: Props) {
   const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
-      {mediaType: 'photo', maxWidth: 1024, maxHeight: 1024, selectionLimit: 10},
+      {mediaType: 'photo', maxWidth: 10000, maxHeight: 10000, selectionLimit: 10},
       res => {
         if (res.didCancel) {
           return;
         }
-        console.log('image', res);
-        setImages([...images, ...res.assets]);
+        let tempImages: Asset[] = [...images, ...res.assets];
+        if (tempImages.length > 10) {
+          Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
+          setImages(tempImages?.slice(0, 10));
+        } else {
+          setImages(tempImages);
+        }
       },
     );
   };
