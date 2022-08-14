@@ -128,8 +128,8 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>}
-          {user && (user?.expireIn <= 0 || user?.expireIn === null )&&
-            <TouchableOpacity onPress={() => { if (user.expireIn <= 0) navigation.navigate('ExpiredMember'); else navigation.navigate('UncertifiedMember'); }}>
+          {user && (user?.expireIn <= 0 || !user?.expireIn)&&
+            <TouchableOpacity onPress={() => {if(!user.expireIn) navigation.navigate('UncertifiedMember');else if (user.expireIn <= 0) navigation.navigate('ExpiredMember');}}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -167,12 +167,12 @@ const MyPageFragment = ({navigation}: Props) => {
               underlayColor='#EEEEEE'
               onPress={() => {
                 if (user) {
-                    if (user?.expireIn <= 0) {
-                      navigation.navigate('ExpiredMember');
+                    if (!user?.expireIn) {
+                      navigation.navigate('UncertifiedMember');
                     } else if (user?.expireIn > 0) {
                       navigation.navigate('CertifiedMember');
                     } else {
-                      navigation.navigate('UncertifiedMember');
+                      navigation.navigate('ExpiredMember');
                     }
                 }
               }}>
