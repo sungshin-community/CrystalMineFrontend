@@ -141,24 +141,16 @@ export const checkAuthNumber = async (code: string) => {
 
 export const login = async (signInRequestDto: SignInRequestDto) => {
   try {
-    const response = await client.post<Response<SignUpResponseDto>>(
-      '/auth/signin',
-      signInRequestDto,
-    );
+    const response = await client.post<Response<SignUpResponseDto>>('/auth/signin', signInRequestDto);
     console.log('>>>>>>>>', response.data.data);
-    await AsyncStorage.setItem(
-      'accessToken',
-      response.data.data.tokenDto.accessToken,
-    );
-    await AsyncStorage.setItem(
-      'refreshToken',
-      response.data.data.tokenDto.refreshToken,
-    );
+    await AsyncStorage.setItem('accessToken', response.data.data.tokenDto.accessToken,);
+    await AsyncStorage.setItem('refreshToken', response.data.data.tokenDto.refreshToken);
     await AsyncStorage.setItem('uuid', response.data.data.uuid);
-    return true;
+    return response;
   } catch (e: any) {
-    console.log('여기는 login 함수', e.response.data);
-    return false;
+    console.log('e.response.data는', e.response.data);
+    console.log('e.response.status는', e.response.status);
+    return e.response;
   }
 };
 
