@@ -53,7 +53,6 @@ export default function MyCommentSearchResult({navigation, route}: Props) {
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={true}
           style={styles.input}
           placeholder='내가 작성한 댓글에서 검색'
           placeholderTextColor="#898989"

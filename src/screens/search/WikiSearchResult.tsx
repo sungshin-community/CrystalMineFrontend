@@ -42,7 +42,6 @@ function WikiSearchResult({navigation, route}: Props) {
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={false}
           style={styles.input}
           placeholder={`[성신위키] 게시판에서 검색`}
           placeholderTextColor="#898989"
