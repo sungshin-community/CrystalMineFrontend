@@ -8,7 +8,7 @@ import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
-import { saveRecentSearchWord } from '../../common/util';
+import { saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
 
 type RootStackParamList = {
   SearchResult: {

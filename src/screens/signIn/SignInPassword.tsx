@@ -22,6 +22,7 @@ import {login} from '../../common/authApi';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+import { getHundredsDigit } from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -158,11 +159,8 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              let result: boolean = await login({
-                username: route.params.userId,
-                password: password,
-              });
-              if (result) {
+              const response = await login({username: route.params.userId, password: password});
+              if (getHundredsDigit(response.status) === 2) {
                 navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else {
                 setIsPasswordCorrect(false)
@@ -261,11 +259,8 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              let result: boolean = await login({
-                username: route.params.userId,
-                password: password,
-              });
-              if (result) {
+              const response = await login({username: route.params.userId, password: password});
+              if (getHundredsDigit(response.status) === 2) {
                 navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else {
                 setIsPasswordCorrect(false);

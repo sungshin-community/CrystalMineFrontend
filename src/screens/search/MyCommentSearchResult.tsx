@@ -7,7 +7,7 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../resources/icon/SortIcon';
 import { searchMyComments } from '../../common/SearchApi';
-import { saveRecentSearchWord } from '../../common/util';
+import { saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
 
 type RootStackParamList = {
   PostScreen: {postId: number};

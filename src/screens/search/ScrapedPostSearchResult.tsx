@@ -10,7 +10,7 @@ import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
 import MyPostList from './MyPostList';
 import ScrapedPostList from './ScrapedPostList';
-import { saveRecentSearchWord } from '../../common/util';
+import { saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
 
 type RootStackParamList = {
   SearchResult: {

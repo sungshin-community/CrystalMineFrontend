@@ -15,7 +15,7 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import {fontBold, fontRegular} from '../../common/font';
 import CancelButton from '../../../resources/icon/Cancel';
 import Toast from 'react-native-simple-toast';
-import { deleteAllRecentSearchWords, deleteRecentSearchWord, loadRecentSearchWord, saveRecentSearchWord } from '../../common/util';
+import { deleteAllRecentSearchWords, deleteRecentSearchWord, loadRecentSearchWord, saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
 import { useIsFocused } from '@react-navigation/native';
 
 type RootStackParamList = {
