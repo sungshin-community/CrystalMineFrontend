@@ -113,7 +113,7 @@ export default function RegularMemberAuth({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    navigation.navigate('Home');
+    navigation.reset({routes: [{name: 'GlobalNavbar'}]});
   };
   const onFocusOut = () => {
     setIsFocused(false);
@@ -280,20 +280,14 @@ export default function RegularMemberAuth({navigation}: Props) {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'GlobarNavbar' }],
-                });
+                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                 {
                   setIsCoolTime(true);
-                  navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'GlobarNavbar' }],
-                  });
+                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                 }
               }
             }}></PurpleFullButton>
@@ -305,17 +299,13 @@ export default function RegularMemberAuth({navigation}: Props) {
               const result: number = await checkAuthNumber(value);
               if (result === 0) {
                 Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                navigation.navigate('GlobalNavbar');
+                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
               } else if (typeof result.data.attemptCount === 'number') {
                 setTryCnt(5 - result.data.attemptCount);
+                setIsIncorrect(true);
               } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                {
                   setIsCoolTime(true);
-                  navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'GlobarNavbar' }],
-                  });
-                }
+                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});             
               }
             }}></PurpleRoundButton>
         )}

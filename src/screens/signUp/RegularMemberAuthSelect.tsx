@@ -115,7 +115,7 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
           purpleButtonText="확인"
           purpleButtonFunc={() => {
             setModalVisible(!modalVisible);
-            navigation.navigate('GlobalNavbar');
+            navigation.reset({routes: [{name: 'GlobalNavbar'}]});
           }}
         />
       )}

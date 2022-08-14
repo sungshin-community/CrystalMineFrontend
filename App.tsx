@@ -400,7 +400,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -430,7 +430,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1837,7 +1837,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1867,7 +1867,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
