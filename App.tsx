@@ -24,6 +24,7 @@ import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
+import { CreateMailGuide } from './src/screens/signUp/CreateMailGuide';
 import DirectionAgree from './src/screens/signUp/DirectionAgree';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import PostScreen from './src/screens/post/PostScreen';
@@ -425,6 +426,28 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                 }}
+              />
+              <Stack.Screen
+                name="CreateMailGuide"
+                component={CreateMailGuide}
+                options={({navigation}) => ({
+                  title: '수정광산 아이디 등록 방법',
+                  headerTitleAlign: 'center',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.goBack()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               <Stack.Screen
                 name="RegularMemberAuth"
@@ -1939,6 +1962,28 @@ const App = () => {
                   title: '',
                   animation: 'slide_from_right',
                 }}
+              />
+              <Stack.Screen
+                name="CreateMailGuide"
+                component={CreateMailGuide}
+                options={({navigation}) => ({
+                  title: '수정광산 아이디 등록 방법',
+                  headerTitleAlign: 'center',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.goBack()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               <Stack.Screen
                 name="RegularMemberAuth"
