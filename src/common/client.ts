@@ -11,6 +11,7 @@ let refreshSubscribers: any[] = [];
 
 const onTokenRefreshed = (accessToken: string) => {
   refreshSubscribers.map(callback => callback(accessToken));
+  refreshSubscribers = [];
 }
 
 const addRefreshSubscriber = (callback: any) => {
@@ -42,7 +43,7 @@ client.interceptors.response.use(
   }
     if (status === 401) {
       console.log("401 에러 발생");
-      if (!isRefreshing) {
+      // if (!isRefreshing) {
         console.log("토큰 재발급 로직 들어옴");
         isRefreshing = true;
         const accessToken = await AsyncStorage.getItem('accessToken');
@@ -58,15 +59,15 @@ client.interceptors.response.use(
         console.log("재발급된 refreshToken:", reissuedRefreshToken);
         isRefreshing = false;
         client.defaults.headers.common.Authorization = reissuedAccessToken ? `Bearer ${reissuedAccessToken}` : '';
-        onTokenRefreshed(reissuedAccessToken);
-      }
-      const retryOriginalRequest = new Promise((resolve) => {
-        addRefreshSubscriber((accessToken: string) => {
-          originalRequest.headers.Authorization = "Bearer " + accessToken;
-          return resolve(client(originalRequest));
-        });
-      });
-      return retryOriginalRequest;
+        // onTokenRefreshed(reissuedAccessToken);
+      // }
+      // const retryOriginalRequest = new Promise((resolve) => {
+      //   addRefreshSubscriber((accessToken: string) => {
+      //     originalRequest.headers.Authorization = "Bearer " + accessToken;
+      //     return resolve(client(originalRequest));
+      //   });
+      // });
+      return client(originalRequest);
     }
     return Promise.reject(error);
   });
