@@ -171,7 +171,7 @@ function PostWriteScreen({navigation, route}: Props) {
           return;
         }
         console.log('image', res);
-        setImages(res.assets);
+        setImages([...images, ...res.assets]);
       },
     );
   };
