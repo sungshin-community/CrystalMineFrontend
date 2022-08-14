@@ -164,12 +164,14 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
 
 export const logout = async () => {
   try {
+    const refreshToken = await AsyncStorage.getItem('refreshToken')
     const response = await client.get<AxiosResponse>(
-      '/auth/signout'
+      `/auth/signout?refresh-token=${refreshToken}`
     );
     await AsyncStorage.setItem('accessToken', '');
     await AsyncStorage.setItem('refreshToken', '');
-    return response;
+    console.log('여기는 로그아웃 함수', response.data);
+    return response.data;
   } catch (e: any) {
     console.log('여기는 logout 함수', e.response);
     return false;
