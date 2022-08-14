@@ -30,9 +30,13 @@ import CustomButton, {
   DisabledPurpleFullButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {sendResetPasswordEmail, checkResetPasswordAuthNumber} from '../../common/authApi';
+import {
+  sendResetPasswordEmail,
+  checkResetPasswordAuthNumber,
+} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -46,23 +50,27 @@ const Container = styled.SafeAreaView`
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 90;
+const RESEND_OTP_TIME_LIMIT = 600;
 
 type RootStackParamList = {
   SplashHome: undefined;
   ResetPasswordInputNewPassword: {userId: string};
-  ResetPasswordInputRegularMemberAuthNumber: { userId: string };
+  ResetPasswordInputRegularMemberAuthNumber: {userId: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function ResetPasswordInputRegularMemberAuthNumber({navigation, route}: Props) {
+export default function ResetPasswordInputRegularMemberAuthNumber({
+  navigation,
+  route,
+}: Props) {
   let resendOtpTimerInterval: any;
 
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
-    useState<boolean>(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
+    boolean
+  >(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -75,8 +83,10 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
     setIsFocused(true);
   };
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] =
-    useState<boolean>(false);
+  const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
+    false,
+  );
+  const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
@@ -95,15 +105,19 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
   const onResendOtpButtonPress = async () => {
     //인증번호 발송 API
     setValue('');
-    let result: boolean = await sendResetPasswordEmail({ username: route.params.userId });
+    let result: boolean = await sendResetPasswordEmail({
+      username: route.params.userId,
+    });
     if (result) {
+      Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
       console.log('비밀번호 재설정 이메일 재발송 성공');
     } else {
+      Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
       console.log('비밀번호 재설정 이메일 재발송 실패');
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
-    setTryCnt(tryCnt - 1);
+    setTryCnt(5);
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
@@ -188,15 +202,15 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
                 zIndex: 999,
               }}
             /> */}
-              <ModalBottom
-                modalVisible={!modalVisible}
-                setModalVisible={setModalVisible}
-                content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
-                purpleButtonText="인증번호 재전송"
-                purpleButtonFunc={onResendOtpButtonPress}
-                whiteButtonText="인증 취소"
-                whiteButtonFunc={() => navigation.navigate('SplashHome')}
-              />
+            <ModalBottom
+              modalVisible={!modalVisible}
+              setModalVisible={setModalVisible}
+              content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
+              purpleButtonText="인증번호 재전송"
+              purpleButtonFunc={onResendOtpButtonPress}
+              whiteButtonText="인증 취소"
+              whiteButtonFunc={() => navigation.navigate('SplashHome')}
+            />
           </>
         )}
         {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
@@ -230,23 +244,24 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
         )}
 
         <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-        <TouchableWithoutFeedback onPress={async () => {
-          let result: boolean = await sendResetPasswordEmail({ username: route.params.userId});
-            if (result) {
-              console.log('이메일 재발송 성공');
-            } else {
-              console.log('이메일 재발송 실패');
-            }
-          }}>
+        <TouchableWithoutFeedback onPress={() => onResendOtpButtonPress()}>
           <Text style={styles.resent}>인증번호 재전송</Text>
         </TouchableWithoutFeedback>
       </View>
 
-      {tryCnt <= 0 && (
+      {tryCnt === 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
           content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={gotoHome}></ModalBottom>
+      )}
+      {isCoolTime && (
+        <ModalBottom
+          modalVisible={isCoolTime}
+          setModalVisible={setIsCoolTime}
+          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
           purpleButtonFunc={gotoHome}></ModalBottom>
       )}
@@ -261,14 +276,24 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
           <PurpleFullButton
             text="인증 완료"
             onClick={async () => {
-              let result: number = await checkResetPasswordAuthNumber({username: route.params.userId, code: value});
+              let result: number = await checkResetPasswordAuthNumber({
+                username: route.params.userId,
+                code: value,
+              });
               if (result === 0) {
-                  navigation.navigate('ResetPasswordInputNewPassword', {
-                    userId: route.params.userId,
-                  });
-              } else {
-                setTryCnt(tryCnt - 1);
+                Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
+
+                navigation.navigate('ResetPasswordInputNewPassword', {
+                  userId: route.params.userId,
+                });
+              } else if (typeof result.data.attemptCount === 'number') {
+                setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
+              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                {
+                  setIsCoolTime(true);
+                  navigation.navigate('SplashHome');
+                }
               }
             }}></PurpleFullButton>
         )}
@@ -276,15 +301,25 @@ export default function ResetPasswordInputRegularMemberAuthNumber({navigation, r
           <PurpleRoundButton
             text="인증 완료"
             onClick={async () => {
-              console.log(value)
-              let result: number = await checkResetPasswordAuthNumber({username: route.params.userId, code: value});
+              console.log(value);
+              let result: number = await checkResetPasswordAuthNumber({
+                username: route.params.userId,
+                code: value,
+              });
               if (result === 0) {
-                  navigation.navigate('ResetPasswordInputNewPassword', {
-                    userId: route.params.userId,
-                  });
-              } else {
-                setTryCnt(tryCnt - 1);
+                Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
+
+                navigation.navigate('ResetPasswordInputNewPassword', {
+                  userId: route.params.userId,
+                });
+              } else if (typeof result.data.attemptCount === 'number') {
+                setTryCnt(5 - result.data.attemptCount);
                 setIsIncorrect(true);
+              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                {
+                  setIsCoolTime(true);
+                  navigation.navigate('SplashHome');
+                }
               }
             }}></PurpleRoundButton>
         )}
@@ -302,7 +337,7 @@ const styles = StyleSheet.create({
   codeFieldRoot: {
     marginTop: 40,
     width: '80%',
-    marginHorizontal: Dimensions.get('window').width/11
+    marginHorizontal: Dimensions.get('window').width / 11,
   },
   cellRoot: {
     width: 40,
@@ -365,6 +400,6 @@ const styles = StyleSheet.create({
     color: '#6E7882',
     fontSize: 15,
     marginTop: 26,
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
 });

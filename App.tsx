@@ -37,10 +37,8 @@ import TotalSearchResult from './src/screens/search/total/TotalSearchResult';
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
 import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
-import BoardSearch from './src/screens/board/BoardSearch';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
-import SearchResult from './src/screens/board/SearchResult';
 import MyPostList from './src/screens/board/MyPostList';
 import PostWriteScreen from './src/screens/post/PostWriteScreen';
 // myPage
@@ -74,7 +72,6 @@ import QuitPassword from './src/screens/mypage/informationUse/quitMembership/Qui
 import QuitComplete from './src/screens/mypage/informationUse/quitMembership/QuitComplete';
 import ScrapedPostList from './src/screens/board/ScrapedPostList';
 import MyCommentList from './src/screens/board/MyCommentList';
-import SearchResultInBoard from './src/screens/post/SearchResultInBoard';
 import WikiTab from './src/screens/board/WikiTab';
 import PostSearch from './src/screens/search/PostSearch';
 import PostSearchResult from './src/screens/search/PostSearchResult';
@@ -552,7 +549,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
+                        navigation.navigate('SplashHome')
                       }>
                       <BackButtonIcon />
                     </TouchableHighlight>
@@ -847,12 +844,6 @@ const App = () => {
                   ),
                 })}
               />
-              <Stack.Screen name="BoardSearch" component={BoardSearch} />
-              <Stack.Screen name="SearchResult" component={SearchResult} />
-              <Stack.Screen
-                name="SearchResultInBoard"
-                component={SearchResultInBoard}
-              />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
@@ -1139,7 +1130,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.popToTop()}>
+                      onPress={() => navigation.navigate('MyPage')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2066,7 +2057,7 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
+                        navigation.navigate('SplashHome')
                       }>
                       <BackButtonIcon />
                     </TouchableHighlight>
@@ -2361,12 +2352,6 @@ const App = () => {
                   ),
                 })}
               />
-              <Stack.Screen name="BoardSearch" component={BoardSearch} />
-              <Stack.Screen name="SearchResult" component={SearchResult} />
-              <Stack.Screen
-                name="SearchResultInBoard"
-                component={SearchResultInBoard}
-              />
               <Stack.Screen
                 name="PostListScreen"
                 component={PostListScreen}
@@ -2653,7 +2638,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('GlobalNavbar')}>
+                      onPress={() => navigation.navigate('MyPage')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),

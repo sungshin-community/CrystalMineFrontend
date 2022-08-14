@@ -9,7 +9,6 @@ import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
 import { saveRecentSearchWord } from '../../common/util';
-import WikiList from '../board/WikiList';
 
 type RootStackParamList = {
   SearchResult: {
@@ -120,19 +119,19 @@ function WikiSearchResult({navigation, route}: Props) {
       initialLayout={{width: Dimensions.get('window').width}}>
       <Tab.Screen
           name="교내 위키"
-          children={() => <WikiList boardId={6} />}
+          children={() => <PostList searchWord={searchWord} boardId={6} boardName={route.params.boardId} />}
         />
         <Tab.Screen
           name="교외 위키"
-          children={() => <WikiList boardId={7} />}
+          children={() => <PostList searchWord={searchWord} boardId={7} boardName={route.params.boardId} />}
         />
         <Tab.Screen
           name="상권 위키"
-          children={() => <WikiList boardId={8} />}
+          children={() => <PostList searchWord={searchWord} boardId={8} boardName={route.params.boardId} />}
         />
         <Tab.Screen
           name="페미 위키"
-          children={() => <WikiList boardId={9} />}
+          children={() => <PostList searchWord={searchWord} boardId={9} boardName={route.params.boardId} />}
         />
     </Tab.Navigator>
 }

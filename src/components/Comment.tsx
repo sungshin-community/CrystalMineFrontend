@@ -35,6 +35,8 @@ interface Props {
   handleCommentDelete: any;
   handleCommentReport?: any;
   handleFocus: () => void;
+  componentModalVisible?: boolean;
+  setComponentModalVisible?: any;
 }
 const Comment = ({
   comment,
@@ -45,13 +47,12 @@ const Comment = ({
   handleCommentDelete,
   handleCommentReport,
   handleFocus,
+  componentModalVisible,
+  setComponentModalVisible,
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
   const data: CommentDto = comment;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
@@ -75,12 +76,13 @@ const Comment = ({
           }}
           whiteButtonText="취소"
           whiteButtonFunc={() => setModalVisible(false)}
+          setDim={false}
         />
       )}
       <Pressable
         onPress={() => {
           setModalVisible(true);
-          console.log(modalVisible);
+          setComponentModalVisible(modalVisible);
         }}>
         <TrashIcon style={{marginRight: 12}} />
       </Pressable>
@@ -88,20 +90,6 @@ const Comment = ({
   );
   const handleCommentReportComponent = (
     <>
-      {reportCheckModalVisible && (
-        <ModalBottom
-          modalVisible={reportCheckModalVisible}
-          setModalVisible={setReportCheckModalVisible}
-          title={`댓글 신고`}
-          isContentCenter={false}
-          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setReportCheckModalVisible(false);
-            setReportModalVisible(true);
-          }}
-        />
-      )}
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}
@@ -112,6 +100,7 @@ const Comment = ({
           reportFunc={handleCommentReport}
           whiteButtonText="취소"
           whiteButtonFunc={() => setReportModalVisible(false)}
+          setDim={false}
         />
       )}
       {data?.isReported ? (
@@ -124,7 +113,8 @@ const Comment = ({
       ) : (
         <Pressable
           onPress={() => {
-            setReportCheckModalVisible(true);
+            setReportModalVisible(true);
+            setComponentModalVisible(reportModalVisible);
           }}>
           <NoReport style={{marginRight: 14}} />
         </Pressable>
@@ -257,6 +247,8 @@ interface RecommentProps {
   handleCommentLike?: any;
   handleCommentDelete: any;
   handleCommentReport?: any;
+  componentModalVisible?: boolean;
+  setComponentModalVisible?: any;
 }
 
 export const Recomment = ({
@@ -264,13 +256,12 @@ export const Recomment = ({
   handleCommentLike,
   handleCommentDelete,
   handleCommentReport,
+  componentModalVisible,
+  setComponentModalVisible,
 }: RecommentProps) => {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
   const [isLiked, setIsLiked] = useState<boolean>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const data: RecommentDto = recomment;
   const handleCommentDeleteComponent = (
@@ -291,12 +282,13 @@ export const Recomment = ({
           }}
           whiteButtonText="취소"
           whiteButtonFunc={() => setModalVisible(false)}
+          setDim={false}
         />
       )}
       <Pressable
         onPress={() => {
           setModalVisible(true);
-          console.log(modalVisible);
+          setComponentModalVisible(modalVisible);
         }}>
         <TrashIcon style={{marginRight: 12}} />
       </Pressable>
@@ -304,20 +296,6 @@ export const Recomment = ({
   );
   const handleCommentReportComponent = (
     <>
-      {reportCheckModalVisible && (
-        <ModalBottom
-          modalVisible={reportCheckModalVisible}
-          setModalVisible={setReportCheckModalVisible}
-          title={`댓글 신고`}
-          content={`•  신고 후에는 내용을 수정할 수 없습니다.\n•  무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setReportCheckModalVisible(false);
-            setReportModalVisible(true);
-          }}
-        />
-      )}
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}
@@ -328,6 +306,7 @@ export const Recomment = ({
           reportFunc={handleCommentReport}
           whiteButtonText="취소"
           whiteButtonFunc={() => setReportModalVisible(false)}
+          setDim={false}
         />
       )}
       {data?.isReported ? (
@@ -340,7 +319,8 @@ export const Recomment = ({
       ) : (
         <Pressable
           onPress={() => {
-            setReportCheckModalVisible(true);
+            setReportModalVisible(true);
+            setComponentModalVisible(reportModalVisible);
           }}>
           <NoReport style={{marginRight: 14}} />
         </Pressable>

@@ -206,8 +206,8 @@ export const sendResetPasswordEmail = async (resetPasswordRequestDto: ResetPassw
     );
     return 'SEND_RESET_PASSWORD_MAIL_SUCCESS';
   } catch (e) {
-    console.log('여기는 비밀번호 재설정 이메일 전송 함수', e.response.data.code);
-    return e.response.data.code;
+    console.log('여기는 비밀번호 재설정 이메일 전송 함수', e.response.data);
+    return e.response.data;
   }
 };
 
@@ -223,7 +223,7 @@ export const checkResetPasswordAuthNumber = async (resetPasswordVerificationRequ
       '여기는 비번재설정 인증번호 확인 함수',
       e.response.data
     );
-    return e.response.data.data.attemptCount;
+    return e.response.data;
   }
 };
 export const checkNewPassword = async (resetPasswordRequestDto: SignInRequestDto) => {

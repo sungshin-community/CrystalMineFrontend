@@ -28,7 +28,6 @@ type NavigateProps = NativeStackScreenProps<RootStackParamList>;
 export default function ScrapedPostList({searchWord}: Props) {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [myPostList, setMyPostList] = useState<MyPostContentDto[]>([]);
-  const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
@@ -51,17 +50,17 @@ export default function ScrapedPostList({searchWord}: Props) {
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      const response = await searchScrapedPosts(searchWord, 0, sortBy);
+      const response = await searchScrapedPosts(searchWord, 0);
       setCurrentPage(0);
       setMyPostList(response.data.content);
       setIsLoading(false);
     }
     init();
-  }, [sortBy, searchWord]);
+  }, [searchWord]);
 
 
   const handleRefresh = async () => {
-    const response = await searchScrapedPosts(searchWord, 0, sortBy);
+    const response = await searchScrapedPosts(searchWord, 0);
     let postList: MyPostContentDto[] = response.data.content;
     setCurrentPage(0);
     setMyPostList(postList);
@@ -69,7 +68,7 @@ export default function ScrapedPostList({searchWord}: Props) {
 
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    const response = await searchScrapedPosts(searchWord, currentPage + 1, sortBy);
+    const response = await searchScrapedPosts(searchWord, currentPage + 1);
     let thisPagePostList: MyPostContentDto[] = response.data.content;
     setMyPostList(myPostList.concat(thisPagePostList));
     if (thisPagePostList.length > 0) {
@@ -104,22 +103,6 @@ export default function ScrapedPostList({searchWord}: Props) {
         </Text>
       </View> :
       <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, height: 46}}>
-          <TouchableOpacity
-            onPress={() => {
-              if (sortBy === 'createdAt') {
-                setSortBy('likeCount');
-              } else {
-                setSortBy('createdAt');
-              }
-            }}
-            style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{marginRight: 5}}>
-              {sortBy === 'createdAt' ? "최신순" : "공감순"}
-            </Text>
-            <SortIcon />
-          </TouchableOpacity>
-        </View>
         <FlatList
           data={myPostList}
           renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={false} />}
