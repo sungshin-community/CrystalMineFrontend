@@ -26,7 +26,6 @@ import {
   toggleBoardPin,
 } from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {getPosts} from '../../common/boardApi';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
@@ -59,7 +58,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const isFocused = useIsFocused();
   const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
     boolean
   >(false);
@@ -95,8 +93,8 @@ const PostListScreen = ({navigation, route}: Props) => {
       setBoardInfo(boardInfo);
       setIsLoading(false);
     }
-    if (isFocused) init();
-  }, [isFocused, sortBy]);
+    init();
+  }, [sortBy]);
 
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
