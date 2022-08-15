@@ -26,7 +26,6 @@ import {
   toggleBoardPin,
 } from '../../common/boardApi';
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {getPosts} from '../../common/boardApi';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
@@ -59,7 +58,6 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const isFocused = useIsFocused();
   const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
     boolean
   >(false);
@@ -68,6 +66,8 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
+  const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
+
   useEffect(() => {
     async function init() {
       setIsLoading(true);
@@ -95,14 +95,14 @@ const PostListScreen = ({navigation, route}: Props) => {
       setBoardInfo(boardInfo);
       setIsLoading(false);
     }
-    if (isFocused) init();
-  }, [isFocused, sortBy]);
+    init();
+  }, [sortBy]);
 
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
       setCurrentPage(0);
-      setHotBoardPosts(postList);
+      setBoardDetail(postList);
     } else {
       const postList = await getBoardDetail(route.params.boardId, 0, sortBy);
       setCurrentPage(0);
@@ -111,10 +111,12 @@ const PostListScreen = ({navigation, route}: Props) => {
   };
 
   const fetchNextPage = async () => {
+    setIsNextPageLoading(true);
     if (route.params.boardId === 2) {
       let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
         currentPage + 1,
       );
+      setBoardDetail(boardDetail.concat(thisPagePostList));
       if (thisPagePostList.length > 0) {
         setCurrentPage(currentPage + 1);
       }
@@ -129,6 +131,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         setCurrentPage(currentPage + 1);
       }
     }
+    setIsNextPageLoading(false);
   };
 
   const HeaderIcon = () => {
@@ -354,6 +357,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </SafeAreaView>
         ) : (
+          <>
           <FlatList
             style={{flex: 1, backgroundColor: '#FFFFFF'}}
             data={boardDetail}
@@ -383,6 +387,10 @@ const PostListScreen = ({navigation, route}: Props) => {
             onEndReached={fetchNextPage}
             onEndReachedThreshold={0.8}
           />
+          <View style={{backgroundColor: '#FFFFFF'}}>
+          {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}
+        </View>
+          </>
         )}
         {boardInfo?.id !== 2 && (
           <FloatingWriteButton
