@@ -10,7 +10,7 @@ import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
 import MyPostList from './MyPostList';
 import ScrapedPostList from './ScrapedPostList';
-import { saveRecentSearchWord } from '../../common/util';
+import { saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
 
 type RootStackParamList = {
   SearchResult: {
@@ -44,7 +44,6 @@ function ScrapedPostSearchResult({navigation, route}: Props) {
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={true}
           style={styles.input}
           placeholder='내가 스크랩한 글에서 검색'
           placeholderTextColor="#898989"

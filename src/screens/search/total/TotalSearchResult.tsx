@@ -9,7 +9,7 @@ import CancelButton from '../../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../../common/font';
 import PostSearchResult from './PostSearchResult';
 import BoardSearchResult from './BoardSearchResult';
-import { saveRecentSearchWord } from '../../../common/util';
+import { saveRecentSearchWord } from '../../../common/util/recentSearchWordsUtil';
 
 type RootStackParamList = {
   SearchResult: {
@@ -43,7 +43,6 @@ function TotalSearchResult({navigation, route}: Props) {
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={true}
           style={styles.input}
           placeholder='전체 게시판에서 검색'
           placeholderTextColor="#898989"

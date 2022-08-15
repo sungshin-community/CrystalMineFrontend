@@ -62,7 +62,7 @@ export default function MyPostList({navigation, route}: Props) {
             onPress={() => {if (myPostList.filter(p => p.isChecked).length > 0) {setDeleteModalVisible(true)}}}
             hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
           >
-            <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3}}>삭제</Text>
+            <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3, fontSize: 17}}>삭제</Text>
           </TouchableOpacity>
           <TouchableHighlight
             style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}

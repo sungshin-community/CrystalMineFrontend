@@ -8,7 +8,7 @@ import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
 import { fontBold, fontRegular } from '../../common/font';
 import PostList from './PostList';
-import { saveRecentSearchWord } from '../../common/util';
+import { saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
 
 type RootStackParamList = {
   SearchResult: {
@@ -43,7 +43,6 @@ function PostSearchResult({navigation, route}: Props) {
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={false}
           style={styles.input}
           placeholder={`[${boardName.length <= 5 ? boardName : boardName.substring(0, 5) + "..."}] 게시판에서 검색`}
           placeholderTextColor="#898989"

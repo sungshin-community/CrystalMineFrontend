@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Keyboard,
@@ -34,9 +35,12 @@ function CreateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
   const [hotable, setHotable] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitPress = async () => {
+    setIsLoading(true);
     const result = await createBoard(boardName, boardIntroduction, hotable);
+    setIsLoading(false);
     if (result.code === 'CREATE_BOARD_SUCCESS') {
       Toast.show('게시판을 성공적으로 생성했습니다.', Toast.SHORT);
       navigation.pop();
@@ -71,11 +75,15 @@ function CreateBoard({navigation}: Props) {
 
   return (
     <>
+      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      </View>
       <View style={styles.container}>
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
           <TextInput
             placeholder="게시판 이름은 공백포함 15글자까지 입력 가능합니다."
+            placeholderTextColor='#D5DBE1'
             value={boardName}
             autoCorrect={false}
             onChangeText={value => {
@@ -101,6 +109,7 @@ function CreateBoard({navigation}: Props) {
             <TextInput
               textAlignVertical="top"
               placeholder="게시판 설명은 공백포함 22글자까지 입력 가능합니다."
+              placeholderTextColor='#D5DBE1'
               value={boardIntroduction}
               autoCorrect={false}
               onChangeText={value => {

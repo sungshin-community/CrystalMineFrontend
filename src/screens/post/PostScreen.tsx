@@ -262,6 +262,7 @@ const PostScreen = ({navigation, route}: Props) => {
           />
         </View>
         <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
           <Post

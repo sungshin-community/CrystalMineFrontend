@@ -44,20 +44,8 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function DirectionAgree({navigation}: Props) {
-  const [firstTermChecked, setFirstTermChecked] = useState<boolean>(false);
-  const [secondTermChecked, setSecondTermChecked] = useState<boolean>(false);
-  const [agreements, setAgreements] = useState<DirectionAgreement[]>([]);
+  const [agreements, setAgreements] = useState<Agreement[]>([]);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
-
-  const onClick = (e: GestureResponderEvent, clickedComponent: string) => {
-    if (clickedComponent === 'wholeAgree') {
-      setFirstTermChecked(true);
-      setSecondTermChecked(true);
-    } else if (clickedComponent === 'wholeDisagree') {
-      setFirstTermChecked(false);
-      setSecondTermChecked(false);
-    }
-  };
 
   const handleChange = (id: number) => {
     const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
@@ -67,6 +55,7 @@ function DirectionAgree({navigation}: Props) {
   useEffect(() => {
     async function init() {
       const agreementList = await getSignUpDirection();
+      agreementList.map(a => (a.checked = false));
       setAgreements(agreementList);
     }
     init();
@@ -81,8 +70,6 @@ function DirectionAgree({navigation}: Props) {
   let styles = StyleSheet.create({
     text: {color: '#FFFFFF', fontFamily: 'SpoqaHanSansNeo-Regular'},
     nextButton: {
-      backgroundColor:
-        firstTermChecked && secondTermChecked ? '#A055FF' : '#e5d2fc',
       color: '#FFFFFF',
       width: 343,
       height: 56,
@@ -130,12 +117,10 @@ function DirectionAgree({navigation}: Props) {
                   agreements.length ? (
                   <RoundChecked
                     style={styles.wholeAgreeCheckBox}
-                    onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 ) : (
                   <RoundUnchecked
                     style={styles.wholeAgreeCheckBox}
-                    onPress={(e: any) => onClick(e, 'wholeAgree')}
                   />
                 )}
                 <Text
@@ -150,7 +135,7 @@ function DirectionAgree({navigation}: Props) {
               {agreements.map((a, index) => (
                 <AgreementContainer
                   key={index}
-                  id={a.id}
+                  id={index}
                   title={a.title}
                   content={a.content}
                   checked={a.checked}

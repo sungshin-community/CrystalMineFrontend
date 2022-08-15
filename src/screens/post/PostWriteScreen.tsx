@@ -17,6 +17,7 @@ import {
   TouchableWithoutFeedback,
   View,
   NativeModules,
+  ActivityIndicator,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontMedium, fontRegular} from '../../common/font';
@@ -27,12 +28,11 @@ import {
   RectangleUnchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {
   getWritePostInfo,
   postWritePost,
-  uploadPostImages,
 } from '../../common/boardApi';
 import ProfileImage from '../../../resources/icon/ProfileImage';
 import {PostWriteInfoDto} from '../../classes/PostDto';
@@ -74,6 +74,8 @@ function PostWriteScreen({navigation, route}: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  let anonymous: boolean = true;
 
   useEffect(() => {
     const userInfo = async () => {
@@ -97,6 +99,7 @@ function PostWriteScreen({navigation, route}: Props) {
     Keyboard.dismiss();
   };
   const onSubmitPress = async () => {
+    setIsLoading(true);
     console.log('api 함수 호출 전: ' ,boardId,
       title,
       content,
@@ -106,10 +109,11 @@ function PostWriteScreen({navigation, route}: Props) {
       boardId,
       title,
       content,
-      isAnonymous,
+      anonymous,
       images,
     );
     if (result) {
+      setIsLoading(false);
       if (boardId >= 5 && boardId < 10) {
         navigation.navigate('WikiTab', {boardId: boardId});
       } else {
@@ -165,13 +169,18 @@ function PostWriteScreen({navigation, route}: Props) {
   const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
-      {mediaType: 'photo', maxWidth: 1024, maxHeight: 1024, selectionLimit: 10},
+      {mediaType: 'photo', maxWidth: 10000, maxHeight: 10000, selectionLimit: 10},
       res => {
         if (res.didCancel) {
           return;
         }
-        console.log('image', res);
-        setImages(res.assets);
+        let tempImages: Asset[] = [...images, ...res.assets];
+        if (tempImages.length > 10) {
+          Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
+          setImages(tempImages?.slice(0, 10));
+        } else {
+          setImages(tempImages);
+        }
       },
     );
   };
@@ -193,7 +202,10 @@ function PostWriteScreen({navigation, route}: Props) {
 
   return (
     <>
-      <ScrollView style={{backgroundColor: '#fff'}}>
+      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
+        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      </View>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{backgroundColor: '#fff'}}>
         <View style={styles.container}>
           <View style={styles.header}>
             <View
@@ -222,7 +234,7 @@ function PostWriteScreen({navigation, route}: Props) {
               </View>
               <Pressable
                 style={{flexDirection: 'row', alignItems: 'center'}}
-                onPress={() => { setIsAnonymous(!isAnonymous); console.log('익명체크 후: ', isAnonymous)}}>
+                onPress={() => {setIsAnonymous(current => !current); anonymous = !anonymous;}}>
                 <Text style={{marginRight: 4}}>익명</Text>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
