@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityIndicator, Platform, Text, TouchableOpacity, View } from "react-native";
 import CameraRoll from "@react-native-community/cameraroll";
 import RNFetchBlob from "rn-fetch-blob";
+import Toast from 'react-native-simple-toast';
 
 interface Props {
   imageUrls: string[];
@@ -43,10 +44,11 @@ const ImageViewerScreen = () => {
               },
         
             }).fetch("GET", url).then(res => {
-              console.log(res, 'end downloaded')
+              Toast.show('사진이 저장되었습니다.', Toast.SHORT);
             });
           } else {
             CameraRoll.saveToCameraRoll(url);
+            Toast.show('사진이 저장되었습니다.', Toast.SHORT);
           }
       }}
         // footerContainerStyle
