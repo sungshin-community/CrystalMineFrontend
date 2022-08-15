@@ -86,7 +86,7 @@ function UpdateBoard({navigation, route}: Props) {
     <>
       <View style={styles.container}>
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
             <LockIcon style={{ marginLeft: 11 }}/>
           </View>
