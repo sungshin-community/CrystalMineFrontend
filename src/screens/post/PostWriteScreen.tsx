@@ -75,6 +75,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  let anonymous: boolean = true;
 
   useEffect(() => {
     const userInfo = async () => {
@@ -108,7 +109,7 @@ function PostWriteScreen({navigation, route}: Props) {
       boardId,
       title,
       content,
-      isAnonymous,
+      anonymous,
       images,
     );
     if (result) {
@@ -233,7 +234,7 @@ function PostWriteScreen({navigation, route}: Props) {
               </View>
               <Pressable
                 style={{flexDirection: 'row', alignItems: 'center'}}
-                onPress={() => { setIsAnonymous(!isAnonymous); console.log('익명체크 후: ', isAnonymous)}}>
+                onPress={() => {setIsAnonymous(current => !current); anonymous = !anonymous;}}>
                 <Text style={{marginRight: 4}}>익명</Text>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
