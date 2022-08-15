@@ -343,7 +343,7 @@ const PostScreen = ({navigation, route}: Props) => {
             style={{
               flexDirection: 'row',
               paddingVertical: 5,
-              paddingBottom: Platform.OS === 'ios' ? 40 : 10,
+              paddingBottom: Platform.OS === 'ios' ? 35 : 5,
             }}>
             <View
               style={{
