@@ -32,7 +32,8 @@ const FloatingWriteButton = ({ onPress }: any) => {
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={onPress}
-      style={styles.touchableOpacityStyle}>
+      style={styles.touchableOpacityStyle}
+      hitSlop={{top: 20, bottom: 20, right: 20, left: 20}}>
       <View style={styles.floatingButtonStyle}>
         <Text>
         <StyledFloatingButton/></Text>

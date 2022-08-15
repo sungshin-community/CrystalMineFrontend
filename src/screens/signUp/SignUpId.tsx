@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
 type RootStackParamList = {
   SignUpPassword: { userId: string; agreementIds: number[] };
   MailVerificationMethodGuide: undefined;
+  CreateMailGuide: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -107,85 +108,9 @@ export default function SignUpId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
-  const modalBody = (
-    <View>
-      <View style={styles.paragraph}>
-        <View style={styles.number}>
-          <Text style={[fontRegular, styles.blackText]}>01</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            학교 포탈에 접속합니다.
-          </Text>
-          <Text style={[styles.greyText, fontRegular]}>
-            http://portal.sungshin.ac.kr
-          </Text>
-        </View>
-      </View>
-      <View style={styles.paragraph}>
-        <View style={styles.number}>
-          <Text style={[fontRegular, styles.blackText]}>02</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            포탈페이지 최하단에 [G메일신청] 버튼을{'\n'}클릭합니다.
-          </Text>
-        </View>
-      </View>
-      <View style={styles.paragraph}>
-        <View style={styles.number}>
-          <Text style={[fontRegular, styles.blackText]}>03</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            신청 내용을 확인하신 후 신청을 진행합니다.
-          </Text>
-        </View>
-      </View>
-      <View style={styles.paragraph}>
-        <View style={styles.number}>
-          <Text style={[fontRegular, styles.blackText]}>04</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.blackText]}>
-            신청 후 평균 7일 이내로 생성되며, 신청 결과는
-            {'\n'}포탈의 해당 페이지에서 확인하실 수 있습니다.
-            {'\n'}
-          </Text>
-        </View>
-      </View>
-      <View style={[styles.paragraph, {marginTop: 8, marginBottom: 0}]}>
-        <View style={{marginLeft: 5, marginRight: 13, paddingTop: 3}}>
-          <Text style={[fontRegular, styles.greyText]}>*</Text>
-        </View>
-        <View>
-          <Text style={[fontRegular, styles.greyText]}>
-            학교 계정 생성 및 관리에 대한 문의는{'\n'}
-            수정광산에서 처리하는 부분이 아니기 때문에{'\n'}
-            도와드릴 수 없음을 알려드리며, 관련 문의는{'\n'}
-            학교 시스템실로 문의 부탁드립니다.{'\n'}
-            (02-920-7520, 7514)
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
 
   return Platform.OS === 'ios' ? (
     <>
-      {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
-          }}
-        />
-      )}
       <KeyboardAvoidingView
         keyboardVerticalOffset={0}
         behavior={'padding'}
@@ -206,22 +131,11 @@ export default function SignUpId({navigation, route}: Props) {
               <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Description style={{marginRight: 5.5}}>
-                  학교에서 제공하는 성신 G-mail 계정을 사용합니다
+                 학번으로 이루어진 성신 G-mail 계정을 사용합니다.
                 </Description>
-                <Pressable onPress={() => setModalVisible(true)}>
+                <Pressable onPress={() => navigation.navigate('CreateMailGuide')}>
                   <SignUpQuestionMark />
                 </Pressable>
-                {modalVisible && (
-                  <ModalBottom
-                    modalVisible={modalVisible}
-                    setModalVisible={setModalVisible}
-                    title={`학교 G-mail 계정 생성 방법`}
-                    content={modalBody}
-                    isContentCenter={false}
-                    purpleButtonText="확인"
-                    purpleButtonFunc={() => setModalVisible(!modalVisible)}
-                  />
-                )}
               </View>
             </TextContainer>
 
@@ -354,20 +268,6 @@ export default function SignUpId({navigation, route}: Props) {
               <DisabledPurpleRoundButton text="다음" />
             )}
           </View>
-           {alertModalVisible && (
-            <ModalBottom
-            modalVisible={alertModalVisible}
-            setModalVisible={setAlertModalVisible}
-            title="잘못된 아이디 형식입니다"
-            content={`수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 8자리 학번으로 이루어진 성신 G-mail 만을 아이디로 등록할 수 있도록 설계되어 있습니다. \n\n만약 성신 동문이 맞음에도 가입이 어려운 경우, 
-메일 발송을 통해 별도로 인증을 거쳐 가입이 가능하니 아래 안내되는 방법을 참고하시어 가입해 주시기 바랍니다.`}
-            isContentCenter={false}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
-            whiteButtonText="메일 인증 방법 보기"
-            whiteButtonFunc={() => { navigation.navigate('MailVerificationMethodGuide'); setAlertModalVisible(!alertModalVisible); } }
-            />
-          )}
         </Container>
       </KeyboardAvoidingView>
     </>
@@ -402,22 +302,11 @@ export default function SignUpId({navigation, route}: Props) {
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Description style={{marginRight: 5.5}}>
-                학교에서 제공하는 성신 G-mail 계정을 사용합니다
+               학번으로 이루어진 성신 G-mail 계정을 사용합니다.
               </Description>
-              <Pressable onPress={() => setModalVisible(true)}>
+              <Pressable onPress={() => navigation.navigate('CreateMailGuide')}>
                 <SignUpQuestionMark />
               </Pressable>
-              {modalVisible && (
-                <ModalBottom
-                  modalVisible={modalVisible}
-                  setModalVisible={setModalVisible}
-                  title={`학교 G-mail 계정 생성 방법`}
-                  content={modalBody}
-                  isContentCenter={false}
-                  purpleButtonText="확인"
-                  purpleButtonFunc={() => setModalVisible(!modalVisible)}
-                />
-              )}
             </View>
           </TextContainer>
 
@@ -550,20 +439,6 @@ export default function SignUpId({navigation, route}: Props) {
           )}
         </View>
       </Container>
-       {alertModalVisible && (
-            <ModalBottom
-            modalVisible={alertModalVisible}
-            setModalVisible={setAlertModalVisible}
-            title="잘못된 아이디 형식입니다"
-            content={`수정광산은 성신 동문이 아닌 외부인 유입을 방지하기 위해 8자리 학번으로 이루어진 성신 G-mail 만을 아이디로 등록할 수 있도록 설계되어 있습니다. \n\n만약 성신 동문이 맞음에도 가입이 어려운 경우, 
-메일 발송을 통해 별도로 인증을 거쳐 가입이 가능하니 아래 안내되는 방법을 참고하시어 가입해 주시기 바랍니다.`}
-            isContentCenter={false}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => setAlertModalVisible(!alertModalVisible)}
-            whiteButtonText="메일 인증 방법 보기"
-            whiteButtonFunc={() => { navigation.navigate('MailVerificationMethodGuide'); setAlertModalVisible(!alertModalVisible); } }
-            />
-          )}
     </>
   );
 }
