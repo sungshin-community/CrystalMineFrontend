@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     color: '#222222',
+    flex: 1
   },
   input: {
     backgroundColor: '#FBFBFB',
