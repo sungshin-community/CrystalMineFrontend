@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import ImageViewer from "react-native-image-zoom-viewer";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Platform, Text, TouchableOpacity, View } from "react-native";
+import CameraRoll from "@react-native-community/cameraroll";
+import RNFetchBlob from "rn-fetch-blob";
 
 interface Props {
   imageUrls: string[];
@@ -12,19 +14,50 @@ interface Props {
 const ImageViewerScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  
   return (
     <>
       <ImageViewer
         index={route.params.index}
         imageUrls={route.params.imageUrls}
         onCancel={() => {}}
+        onSave={(url) => {console.log(url);
+          if (Platform.OS === 'android') {
+            let newImgUri = url.lastIndexOf('/');
+            let imageName = url.substring(newImgUri);
+
+            let dirs = RNFetchBlob.fs.dirs;
+            let path = dirs.PictureDir + '/수정광산/' + imageName;
+
+            RNFetchBlob.config({
+              fileCache: true,
+              appendExt: 'png',
+              indicator: true,
+              IOSBackgroundTask: true,
+              path: path,
+              addAndroidDownloads: {
+                useDownloadManager: true,
+                notification: true,
+                path: path,
+                description: 'Image'
+              },
+        
+            }).fetch("GET", url).then(res => {
+              console.log(res, 'end downloaded')
+            });
+          } else {
+            CameraRoll.saveToCameraRoll(url);
+          }
+      }}
+        // footerContainerStyle
         loadingRender={() => (
         <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
           <ActivityIndicator size='large' color={'#A055FF'} animating={true} style={{zIndex: 100}} />
         </View>)}
         enableSwipeDown={true}
-        enablePreload={true}
         onSwipeDown={() => navigation.goBack()}
+        // menus={({cancel, saveToLocal}) => <TouchableOpacity onPress={() => {console.log("눌림")}} style={{backgroundColor: '#ff0000', height: 100, width: 100}}></TouchableOpacity>}
+        menuContext={{ saveToLocal: '갤러리에 저장', cancel: '취소' }}
       />
     </>
   )
