@@ -197,7 +197,7 @@ function Post({
         </Text>
         {data?.thumbnails.length !== 0 && (
           <View style={{flexDirection: 'row', marginTop: 16}}>
-            <ScrollView horizontal={true}>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
               {data?.thumbnails.map((url, index) => (
                 <Pressable key={index} onPress={() => navigation.navigate('ImageViewerScreen', {imageUrls: imgUrlCoverting(data.images), index: index})}>
                   <Image
