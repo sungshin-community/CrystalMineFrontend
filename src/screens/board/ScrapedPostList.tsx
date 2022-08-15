@@ -185,6 +185,7 @@ export default function ScrapedPostList({navigation}: Props) {
           </TouchableOpacity>}
         </View>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={myPostList}
         renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
         ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}

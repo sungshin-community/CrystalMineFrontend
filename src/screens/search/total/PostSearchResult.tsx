@@ -120,6 +120,7 @@ export default function PostSearchResult({searchWord}: Props) {
           </TouchableOpacity>
         </View>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={myPostList}
           renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={false} />}
           ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}

@@ -91,6 +91,7 @@ function NoticeList({navigation}: Props) {
         </SafeAreaView>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={{flex: 1, backgroundColor: '#E5E5E5'}}
           data={list}
           renderItem={({item, index}) => (

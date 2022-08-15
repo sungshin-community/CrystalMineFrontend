@@ -262,6 +262,7 @@ const PostScreen = ({navigation, route}: Props) => {
           />
         </View>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
@@ -275,6 +276,7 @@ const PostScreen = ({navigation, route}: Props) => {
             setComponentModalVisible={setComponentModalVisible}></Post>
           <View style={{flex: 1}}>
             <FlatList
+              showsVerticalScrollIndicator={false}
               style={{flex: 1}}
               ref={flatListRef}
               data={comments}

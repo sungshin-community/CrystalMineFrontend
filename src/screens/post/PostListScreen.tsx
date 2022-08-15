@@ -359,6 +359,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         ) : (
           <>
           <FlatList
+            showsVerticalScrollIndicator={false}
             style={{flex: 1, backgroundColor: '#FFFFFF'}}
             data={boardDetail}
             renderItem={({item, index}) => (

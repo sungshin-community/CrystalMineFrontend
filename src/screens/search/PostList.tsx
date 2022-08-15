@@ -114,6 +114,7 @@ export default function PostList({searchWord, boardId, boardName}: Props) {
           </TouchableOpacity>
         </View>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={myPostList}
           renderItem={({item}) => <TouchableOpacity
           onPress={async () => {
