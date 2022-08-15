@@ -43,7 +43,6 @@ function TotalSearchResult({navigation, route}: Props) {
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
         <TextInput
-          autoFocus={true}
           style={styles.input}
           placeholder='전체 게시판에서 검색'
           placeholderTextColor="#898989"
