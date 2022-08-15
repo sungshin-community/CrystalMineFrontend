@@ -57,12 +57,13 @@ const PostScreen = ({navigation, route}: Props) => {
   const [componentModalVisible, setComponentModalVisible] = useState<boolean>(
     false,
   );
+  let anonymous: boolean = true;
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
     if (isRecomment)
-      addRecommentFunc(route.params.postId, parentId, newComment, isAnonymous);
-    else addCommentFunc(route.params.postId, newComment, isAnonymous);
+      addRecommentFunc(route.params.postId, parentId, newComment, anonymous);
+    else addCommentFunc(route.params.postId, newComment, anonymous);
   }, [newComment]);
 
   useEffect(() => {
@@ -357,7 +358,7 @@ const PostScreen = ({navigation, route}: Props) => {
               <Text style={{marginRight: 5}}>익명</Text>
               <Pressable
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => setIsAnonymous(!isAnonymous)}>
+                onPress={() => {setIsAnonymous(isAnonymous => !isAnonymous); anonymous = !anonymous;}}>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
             </View>
