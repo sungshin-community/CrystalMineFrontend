@@ -50,7 +50,6 @@ function Post({
   handlePostScrap,
   handlePostDelete,
   handlePostReport,
-  componentModalVisible,
   setComponentModalVisible,
 }: Props) {
   const navigation = useNavigation();
@@ -200,7 +199,7 @@ function Post({
           <View style={{flexDirection: 'row', marginTop: 16}}>
             <ScrollView horizontal={true}>
               {data?.thumbnails.map((url, index) => (
-                <Pressable key={index} onPress={() => setIsPhotoVisible(true)}>
+                <Pressable key={index} onPress={() => navigation.navigate('ImageViewerScreen', {imageUrls: imgUrlCoverting(data.images), index: index})}>
                   <Image
                     style={{
                       width: 120,
@@ -212,18 +211,6 @@ function Post({
                   />
                 </Pressable>
               ))}
-              <Modal
-                visible={isPhotoVisible}
-                transparent={true}
-                onRequestClose={closePhotoModal}>
-                {data && (
-                  <ImageViewer
-                    imageUrls={imgUrlCoverting(data?.images)}
-                    onCancel={() => closePhotoModal()}
-                    enableSwipeDown
-                  />
-                )}
-              </Modal>
             </ScrollView>
           </View>
         )}

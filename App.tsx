@@ -82,6 +82,7 @@ import MyCommentSearchResult from './src/screens/search/MyCommentSearchResult';
 import ScrapedPostSearch from './src/screens/search/ScrapedPostSearch';
 import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResult';
 import WikiSearchResult from './src/screens/search/WikiSearchResult';
+import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -994,6 +995,14 @@ const App = () => {
                     </TouchableHighlight>
                   ),
                 })}
+              />
+              <Stack.Screen
+                name="ImageViewerScreen"
+                component={ImageViewerScreen}
+                options={{
+                  headerShown: false,
+                  animation: 'fade'
+                }}
               />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
@@ -2502,6 +2511,14 @@ const App = () => {
                     </TouchableHighlight>
                   ),
                 })}
+              />
+              <Stack.Screen
+                name="ImageViewerScreen"
+                component={ImageViewerScreen}
+                options={{
+                  headerShown: false,
+                  animation: 'fade'
+                }}
               />
               {/* [F-5] 마이페이지 */}
               <Stack.Screen name="MyPageFragment" component={MyPageFragment} />
