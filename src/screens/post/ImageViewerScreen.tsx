@@ -59,7 +59,7 @@ const ImageViewerScreen = () => {
         enableSwipeDown={true}
         onSwipeDown={() => navigation.goBack()}
         // menus={({cancel, saveToLocal}) => <TouchableOpacity onPress={() => {console.log("눌림")}} style={{backgroundColor: '#ff0000', height: 100, width: 100}}></TouchableOpacity>}
-        menuContext={{ saveToLocal: '갤러리에 저장', cancel: '취소' }}
+        menuContext={{ saveToLocal: '이미지 저장', cancel: '취소' }}
       />
     </>
   )
