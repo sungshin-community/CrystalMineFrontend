@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Markdown, {renderRules} from 'react-native-markdown-display';
 import {
@@ -63,25 +63,28 @@ function InformationUse() {
       <Tab.Screen
         name={`수정광산\n이용 방향`}
         children={() => (
-          <View style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
-            <Markdown>{agreements ? agreements?.direction.content: ''}</Markdown>
-          </View>
+          <ScrollView style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <Markdown>{agreements ? agreements?.direction.content : ''}</Markdown>
+            <View style={{paddingVertical: 30}}/>
+          </ScrollView>
         )}
       />
       <Tab.Screen
         name={`서비스\n이용약관`}
         children={() => (
-          <View style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
-            <Markdown>{agreements ? agreements?.agreement.content: ''}</Markdown>
-          </View>
+          <ScrollView style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <Markdown>{agreements ? agreements?.agreement.content : ''}</Markdown>
+            <View style={{paddingVertical: 30}}/>
+          </ScrollView>
         )}
       />
       <Tab.Screen
         name={`개인정보\n처리방침`}
         children={() => (
-          <View style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
-              <Markdown>{agreements ? agreements?.policy.content: ''}</Markdown>
-          </View>
+          <ScrollView style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <Markdown>{agreements ? agreements?.policy.content : ''}</Markdown>
+            <View style={{paddingVertical: 30}}/>
+          </ScrollView>
         )}
       />
       {/* <Tab.Screen name="태그" component={TagSearchResult} /> */}

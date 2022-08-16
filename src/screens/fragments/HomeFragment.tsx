@@ -41,6 +41,7 @@ import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 import WaterMark from '../../components/WaterMark';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import { logout } from '../../common/authApi';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -609,9 +610,11 @@ const HomeFragment = ({navigation}: Props) => {
             setBlacklistblindModalVisible(!blacklistblindModalVisible);
             navigation.navigate('InformationUse');
           }}
-          whiteButtonText="확인 후 앱 종료"
-          whiteButtonFunc={() =>
+          whiteButtonText="확인 후 로그아웃"
+          whiteButtonFunc={async () => {
+            const result = await logout();
             navigation.navigate('SplashHome')
+          }
           }
         />
       )}
