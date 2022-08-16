@@ -609,10 +609,9 @@ const HomeFragment = ({navigation}: Props) => {
             setBlacklistblindModalVisible(!blacklistblindModalVisible);
             navigation.navigate('InformationUse');
           }}
-          whiteButtonText="확인"
+          whiteButtonText="확인 후 로그아웃"
           whiteButtonFunc={() =>
-            // TODO: 앱 종료
-            setBlacklistblindModalVisible(!blacklistblindModalVisible)
+            navigation.navigate('SplashHome')
           }
         />
       )}
@@ -628,9 +627,9 @@ const HomeFragment = ({navigation}: Props) => {
             setBlindModalVisible(!blindModalVisible);
             navigation.navigate('DirectionAgreeScreen');
           }}
-          whiteButtonText="확인 후 로그아웃"
+          whiteButtonText="확인"
           whiteButtonFunc={() => {
-            navigation.navigate('SplashHome');
+            setBlindModalVisible(!blindModalVisible);
           }}
         />
       )}
