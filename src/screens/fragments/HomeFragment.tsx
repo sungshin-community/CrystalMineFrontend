@@ -609,7 +609,7 @@ const HomeFragment = ({navigation}: Props) => {
             setBlacklistblindModalVisible(!blacklistblindModalVisible);
             navigation.navigate('InformationUse');
           }}
-          whiteButtonText="확인 후 로그아웃"
+          whiteButtonText="확인 후 앱 종료"
           whiteButtonFunc={() =>
             navigation.navigate('SplashHome')
           }
