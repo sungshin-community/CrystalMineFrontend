@@ -150,7 +150,7 @@ const Comment = ({
                 style={[
                   fontMedium,
                   {
-                    fontSize: 16,
+                    fontSize: 15,
                     paddingLeft: 8,
                     color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                   },
@@ -353,7 +353,7 @@ export const Recomment = ({
                 style={[
                   fontMedium,
                   {
-                    fontSize: 16,
+                    fontSize: 15,
                     paddingLeft: 8,
                     color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                   },
