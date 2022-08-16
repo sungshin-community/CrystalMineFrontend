@@ -14,7 +14,7 @@ export const getAlerts = async() => {
       `/notifications`
     );
     return response.data.data;
-  } catch (e) {
+  } catch (e: any) {
     console.log("여기는 getAlerts 함수", e.response.data);
   }
 }

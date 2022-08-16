@@ -24,7 +24,8 @@ import {ModalBottom} from '../components/ModalBottom';
 import {SelectModalBottom} from './SelectModalBottom';
 import Toast from 'react-native-simple-toast';
 import NoReport, {Report} from '../../resources/icon/Report';
-import {fontMedium} from '../common/font';
+import {fontMedium, fontRegular} from '../common/font';
+import Autolink from 'react-native-autolink';
 
 interface Props {
   comment?: any;
@@ -149,7 +150,7 @@ const Comment = ({
                 style={[
                   fontMedium,
                   {
-                    fontSize: 16,
+                    fontSize: 15,
                     paddingLeft: 8,
                     color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                   },
@@ -180,8 +181,8 @@ const Comment = ({
           )}
         </View>
         <Text
-          style={{color: data.isDeleted || data.isBlind ? '#6E7882' : '#000'}}>
-          {data?.content}
+          style={[{color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222', fontSize: 14}, fontRegular]}>
+            <Autolink text={data ? (data.content ? data.content : "") : ""} />
         </Text>
         {data.isDeleted || data.isBlind ? (
           <></>
@@ -195,7 +196,7 @@ const Comment = ({
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Pressable
-                  hitSlop={{top: 15, left: 15, bottom: 15, right: 15}}
+                  hitSlop={15}
                   onPress={() => {
                     handleCommentLike(data.id);
                   }}>
@@ -203,7 +204,7 @@ const Comment = ({
                 </Pressable>
                 <Text style={styles.postLike}>{data?.likeCount}</Text>
                 <Pressable
-                  hitSlop={{top: 15, left: 15, right: 15, bottom: 15}}
+                  hitSlop={15}
                   onPress={() => {
                     handleFocus();
                     setParentId(data.id);
@@ -352,7 +353,7 @@ export const Recomment = ({
                 style={[
                   fontMedium,
                   {
-                    fontSize: 16,
+                    fontSize: 15,
                     paddingLeft: 8,
                     color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                   },
@@ -384,10 +385,10 @@ export const Recomment = ({
         </View>
         <View style={{marginLeft: 20}}>
           <Text
-            style={{
-              color: data.isDeleted || data.isBlind ? '#6E7882' : '#000',
-            }}>
-            {data?.content}
+            style={[{
+              color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222', fontSize: 14
+            }, fontRegular]}>
+            <Autolink text={data ? (data.content ? data.content : "") : ""} />
           </Text>
           {data.isDeleted || data.isBlind ? (
             <></>

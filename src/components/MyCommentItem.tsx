@@ -5,6 +5,7 @@ import { RectangleChecked, RectangleUnchecked } from '../../resources/icon/Check
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import MyCommentDto from '../classes/MyCommentDto';
+import { fontRegular } from '../common/font';
 
 interface Props {
   comment: MyCommentDto;
@@ -39,7 +40,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{comment.createdAt}</Text>
       </View>
-      <Text numberOfLines={3} ellipsizeMode="tail" style={[styles.text, styles.content]}>{comment.content}</Text>
+      <Text numberOfLines={3} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{comment.content}</Text>
       <View style={styles.icon}>
         {comment.isLiked ? <PostLike /> : <PostUnlike />}
         <Text style={[styles.textSmall, styles.iconCount]}>
@@ -47,7 +48,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
         </Text>
       </View>
       <Text
-        style={{color: "#A0A8B0", fontSize: 13, marginBottom: 16, marginLeft: 10, marginRight: 10}}
+        style={[{color: "#A0A8B0", fontSize: 13, marginBottom: 16, marginLeft: 10, marginRight: 10}, fontRegular]}
         numberOfLines={1}
         ellipsizeMode="tail"
       >{(comment.isPostDeleted ? '' : '게시글 내용: ') + comment.postContent}</Text>
@@ -77,8 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   text: {
-    fontSize: 15,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 14
   },
   textSmall: {
     fontSize: 13,
