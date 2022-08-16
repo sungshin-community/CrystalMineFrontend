@@ -95,6 +95,8 @@ function Post({
                 Toast.SHORT,
               );
               // navigation.goBack();
+              navigation.pop();
+              navigation.pop();
               navigation.navigate('PostListScreen', {boardId: data.boardId});
               console.log('게시글 삭제 성공');
             }
