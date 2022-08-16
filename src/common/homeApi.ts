@@ -10,9 +10,11 @@ export const getAuthentication = async() => {
     const response = await client.get<Response<Authentication>>(
       `/user/access`
     );
-    return response.data.data;
+
+    return response;
   } catch (e) {
     console.log("여기는 getAuthentication 함수", e);
+    return e.response;
   }
 }
 

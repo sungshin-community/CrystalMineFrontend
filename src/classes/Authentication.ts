@@ -2,7 +2,7 @@ export interface Authentication {
   id: string;
   nickname: string;
   isAuthenticated: boolean;
-  blacklist: Blacklist;
+  blacklist?: Blacklist;
 }
 export interface Blacklist {
   id: number;

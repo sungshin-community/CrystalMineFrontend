@@ -6,6 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
 // screens
+import ErrorScreen from './src/screens/errorScreen/ErrorScreen';
 // signIn
 import SplashHome from './src/screens/SplashHome';
 import TermAgree from './src/screens/signUp/TermAgree';
@@ -17,14 +18,14 @@ import ResetPasswordInputNewPassword from './src/screens/signIn/ResetPasswordInp
 import ResetPasswordInputNewPasswordConfirm from './src/screens/signIn/ResetPasswordInputNewPasswordConfirm';
 // signUp
 import SignUpId from './src/screens/signUp/SignUpId';
-import { MailVerificationMethodGuide } from './src/screens/signUp/MailVerificationMethodGuide';
+import {MailVerificationMethodGuide} from './src/screens/signUp/MailVerificationMethodGuide';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
 import MajorSelect from './src/screens/signUp/MajorSelect';
 import SignUpComplete from './src/screens/signUp/SignUpComplete';
 import RegularMemberAuthSelect from './src/screens/signUp/RegularMemberAuthSelect';
-import { CreateMailGuide } from './src/screens/signUp/CreateMailGuide';
+import {CreateMailGuide} from './src/screens/signUp/CreateMailGuide';
 import DirectionAgree from './src/screens/signUp/DirectionAgree';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import PostScreen from './src/screens/post/PostScreen';
@@ -135,6 +136,27 @@ const App = () => {
                 name="SplashHome"
                 component={SplashHome}
                 options={{title: ''}}
+              />
+              <Stack.Screen
+                name="ErrorScreen"
+                component={ErrorScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.pop()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               {/* [F-1 회원가입] */}
               <Stack.Screen
@@ -412,7 +434,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'GlobalNavbar'}]})
+                      }>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -464,7 +488,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'GlobalNavbar'}]})
+                      }>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -573,9 +599,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() =>
-                        navigation.navigate('SplashHome')
-                      }>
+                      onPress={() => navigation.navigate('SplashHome')}>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -681,77 +705,77 @@ const App = () => {
                 name="TotalSearch"
                 component={TotalSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="TotalSearchResult"
                 component={TotalSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="PostSearch"
                 component={PostSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="PostSearchResult"
                 component={PostSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyPostSearch"
                 component={MyPostSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyPostSearchResult"
                 component={MyPostSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyCommentSearch"
                 component={MyCommentSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyCommentSearchResult"
                 component={MyCommentSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="ScrapedPostSearch"
                 component={ScrapedPostSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="ScrapedPostSearchResult"
                 component={ScrapedPostSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="WikiSearchResult"
                 component={WikiSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               {/* [F-7] 게시판 */}
@@ -1025,7 +1049,7 @@ const App = () => {
                 component={ImageViewerScreen}
                 options={{
                   headerShown: false,
-                  animation: 'fade'
+                  animation: 'fade',
                 }}
               />
               {/* [F-5] 마이페이지 */}
@@ -1670,10 +1694,31 @@ const App = () => {
               }}
               initialRouteName="GlobalNavbar">
               <Stack.Screen
+                name="ErrorScreen"
+                component={ErrorScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.pop()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
                 name="SplashHome"
                 component={SplashHome}
                 options={{title: ''}}
-                />
+              />
               {/* [F-1 회원가입] */}
               <Stack.Screen
                 name="TermAgree"
@@ -1950,7 +1995,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'GlobalNavbar'}]})
+                      }>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2002,7 +2049,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'GlobalNavbar'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'GlobalNavbar'}]})
+                      }>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2111,9 +2160,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() =>
-                        navigation.navigate('SplashHome')
-                      }>
+                      onPress={() => navigation.navigate('SplashHome')}>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2219,77 +2266,77 @@ const App = () => {
                 name="TotalSearch"
                 component={TotalSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="TotalSearchResult"
                 component={TotalSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="PostSearch"
                 component={PostSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="PostSearchResult"
                 component={PostSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyPostSearch"
                 component={MyPostSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyPostSearchResult"
                 component={MyPostSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyCommentSearch"
                 component={MyCommentSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="MyCommentSearchResult"
                 component={MyCommentSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="ScrapedPostSearch"
                 component={ScrapedPostSearch}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="ScrapedPostSearchResult"
                 component={ScrapedPostSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               <Stack.Screen
                 name="WikiSearchResult"
                 component={WikiSearchResult}
                 options={({navigation}) => ({
-                  title: ''
+                  title: '',
                 })}
               />
               {/* [F-7] 게시판 */}
@@ -2563,7 +2610,7 @@ const App = () => {
                 component={ImageViewerScreen}
                 options={{
                   headerShown: false,
-                  animation: 'fade'
+                  animation: 'fade',
                 }}
               />
               {/* [F-5] 마이페이지 */}

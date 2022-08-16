@@ -40,6 +40,7 @@ import AlertBlindIcon from '../../../resources/icon/AlertBlindIcon';
 import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 import WaterMark from '../../components/WaterMark';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -53,13 +54,15 @@ type RootStackParamList = {
   ExpiredMember: undefined;
   CertifiedMember: undefined;
   UncertifiedMember: undefined;
+  ErrorScreen: undefined;
+  SplashHome: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
-  const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>();
+  const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>([]);
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
   const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
     boolean
@@ -76,15 +79,15 @@ const HomeFragment = ({navigation}: Props) => {
   const blacklistModalContent = (
     <>
       {user?.blacklist && (
-        <>
-          <Text style={[fontRegular, {fontSize: 13}]}>
+        <View style={{width: Dimensions.get('window').width - 100}}>
+          <Text style={[fontRegular, {fontSize: 13, color: '#222'}]}>
             안녕하세요. {user?.nickname}님. {`\n`}
             해당 계정은 수정광산 서비스 운영정책 위반으로 서비스의 이용이
             제한되었음을 알려드립니다. 운영정책 위반에 대한 상세 내용은 하단을
             참고 부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
             불가능합니다. {`\n`}
             이용 제한 처리일로 부터 7일 후, 서비스에서 자동으로 로그아웃 되며
-            학교 G-mail 계정으로도 관련 내용을 보내드리고 있으니 확인 바랍니다.
+            아래 이용 제한 계정으로도 관련 내용을 보내드리고 있으니 확인 바랍니다.
             {`\n`}
             {`\n`}
           </Text>
@@ -92,7 +95,7 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 계정
             </Text>
-            <Text>{user?.blacklist.username}@sungshin.ac.kr</Text>
+            <Text>{user?.blacklist.username}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
@@ -106,7 +109,7 @@ const HomeFragment = ({navigation}: Props) => {
             </Text>
             <Text>{user?.blacklist.reason}</Text>
           </View>
-        </>
+        </View>
       )}
     </>
   );
@@ -115,14 +118,12 @@ const HomeFragment = ({navigation}: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-      const userDto = await getAuthentication();
-      if (userDto) setUser(userDto);
-      console.log(user);
-      if (!user?.blacklist) {
-        const notification = await getUnreadNotification();
-        setNoti(notification);
-
-        if (userDto?.isAuthenticated) {
+      const response = await getAuthentication();
+      setUser(response.data.data);
+      const notification = await getUnreadNotification();
+      setNoti(notification);
+      if (!response.data.data?.blacklist) {
+        if (response.data.data.isAuthenticated) {
           const pinBoardData = await getPinBoardContents();
           const hotBoardData = await getHotBoardContents();
 
@@ -131,6 +132,10 @@ const HomeFragment = ({navigation}: Props) => {
             setHotBoardContents(hotBoardData);
           }
         }
+      } else {
+        // 이용제한
+        console.log('blacklist');
+        setBlacklistblindModalVisible(true);
       }
       if (!isInited) {
         setIsLoading(false);
@@ -523,7 +528,7 @@ const HomeFragment = ({navigation}: Props) => {
                 {
                   user?.isAuthenticated
                     ? navigation.navigate('PostListScreen', {boardId: 2})
-                    : // ? navigation.navigate('InformationUse') :
+                    : //  ? navigation.navigate('ErrorScreen') :
                       Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                 }
               }}>
@@ -591,45 +596,44 @@ const HomeFragment = ({navigation}: Props) => {
             </View>
           )}
         </View>
-        {user?.blacklist && setBlacklistblindModalVisible(true)}
-        {blacklistblindModalVisible && (
-          <ModalBottom
-            modalVisible={blacklistblindModalVisible}
-            setModalVisible={setBlacklistblindModalVisible}
-            title={'서비스 이용 제한 안내'}
-            content={blacklistModalContent}
-            isContentCenter={false}
-            purpleButtonText="서비스 이용 방향 보기"
-            purpleButtonFunc={() => {
-              setBlacklistblindModalVisible(!blacklistblindModalVisible);
-              navigation.navigate('InformationUse');
-            }}
-            whiteButtonText="확인"
-            whiteButtonFunc={() =>
-              // TODO: 앱 종료
-              setBlacklistblindModalVisible(!blacklistblindModalVisible)
-            }
-          />
-        )}
-        {blindModalVisible && (
-          <ModalBottom
-            modalVisible={blindModalVisible}
-            setModalVisible={setBlindModalVisible}
-            title="블라인드 안내"
-            content={modalBody}
-            isContentCenter={false}
-            purpleButtonText="수정광산 이용 방향 보기"
-            purpleButtonFunc={() => {
-              setBlindModalVisible(!blindModalVisible);
-              navigation.navigate('DirectionAgreeScreen');
-            }}
-            whiteButtonText="확인"
-            whiteButtonFunc={() => {
-              setBlindModalVisible(!blindModalVisible);
-            }}
-          />
-        )}
       </ScrollView>
+      {blacklistblindModalVisible && (
+        <ModalBottom
+          modalVisible={blacklistblindModalVisible}
+          setModalVisible={setBlacklistblindModalVisible}
+          title={'서비스 이용 제한 안내'}
+          content={blacklistModalContent}
+          isContentCenter={false}
+          purpleButtonText="서비스 이용 방향 보기"
+          purpleButtonFunc={() => {
+            setBlacklistblindModalVisible(!blacklistblindModalVisible);
+            navigation.navigate('InformationUse');
+          }}
+          whiteButtonText="확인"
+          whiteButtonFunc={() =>
+            // TODO: 앱 종료
+            setBlacklistblindModalVisible(!blacklistblindModalVisible)
+          }
+        />
+      )}
+      {blindModalVisible && (
+        <ModalBottom
+          modalVisible={blindModalVisible}
+          setModalVisible={setBlindModalVisible}
+          title="블라인드 안내"
+          content={modalBody}
+          isContentCenter={false}
+          purpleButtonText="수정광산 이용 방향 보기"
+          purpleButtonFunc={() => {
+            setBlindModalVisible(!blindModalVisible);
+            navigation.navigate('DirectionAgreeScreen');
+          }}
+          whiteButtonText="확인 후 로그아웃"
+          whiteButtonFunc={() => {
+            navigation.navigate('SplashHome');
+          }}
+        />
+      )}
     </>
   );
 };

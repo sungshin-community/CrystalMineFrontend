@@ -49,6 +49,7 @@ type RootStackParamList = {
   ResetPasswordInputId: undefined;
   SignInPassword: {userId: string};
   GlobalNavbar: undefined;
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInPassword({navigation, route}: Props) {
@@ -161,8 +162,12 @@ export default function SignInPassword({navigation, route}: Props) {
             onClick={async () => {
               const response = await login({username: route.params.userId, password: password});
               if (getHundredsDigit(response.status) === 2) {
-                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-              } else {
+                navigation.reset({ routes: [{ name: 'GlobalNavbar' }] });
+              }
+              else if (getHundredsDigit(response.status) === 5) {
+                navigation.navigate('ErrorScreen');
+              }
+              else {
                 setIsPasswordCorrect(false)
               }
             }}
