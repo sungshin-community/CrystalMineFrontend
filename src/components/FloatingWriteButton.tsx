@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     right: 50,
     bottom: 50,
+    zIndex: 9999
   },
 
   floatingButtonStyle: {
