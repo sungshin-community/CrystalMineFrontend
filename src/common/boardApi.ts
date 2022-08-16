@@ -352,12 +352,12 @@ export const deletePosts = async (postId: number) => {
 };
 
 // 댓글
-export const getComments = async (postId: number, page: number) => {
+export const getComments = async (postId: number/*, page: number*/) => {
   try {
-    const params = new URLSearchParams();
-    params.append('page', page.toString());
+    // const params = new URLSearchParams();
+    // params.append('page', page.toString());
     const response = await client.get<AxiosResponse>(
-      `/posts/${postId}/comments?${params}`,
+      `/posts/${postId}/comments`,
     );
     return response.data.data.content;
   } catch (e) {
