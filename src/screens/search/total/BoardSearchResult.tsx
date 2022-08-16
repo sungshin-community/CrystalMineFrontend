@@ -118,6 +118,7 @@ export default function BoardSearchResult({searchWord}: Props) {
           </TouchableOpacity>
         </View>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={boardList}
           renderItem={({item}) => <TouchableOpacity
           onPress={() => moveToBoard(item)}

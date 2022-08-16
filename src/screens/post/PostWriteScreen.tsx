@@ -66,7 +66,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);

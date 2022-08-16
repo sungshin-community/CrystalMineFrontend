@@ -156,6 +156,7 @@ const AlertFragment = () => {
         </SafeAreaView>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           data={alerts}
           renderItem={({item}) => (

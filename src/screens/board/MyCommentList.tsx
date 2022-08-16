@@ -215,6 +215,7 @@ export default function MyCommentList({navigation, route}: Props) {
         </TouchableOpacity>}
       </View>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={myCommentList}
         renderItem={({item}) => <MyCommentItem comment={item} moveToPost={moveToPost} deleteMode={deleteMode} />}
         ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}

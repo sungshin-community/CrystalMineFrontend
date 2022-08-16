@@ -104,6 +104,7 @@ export default function ScrapedPostList({searchWord}: Props) {
       </View> :
       <View style={{flex: 1}}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={myPostList}
           renderItem={({item}) => <MyPostItem post={item} moveToPost={moveToPost} deleteMode={false} />}
           ItemSeparatorComponent={() => <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>}

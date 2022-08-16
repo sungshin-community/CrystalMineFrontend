@@ -261,6 +261,7 @@ function QuestionList({navigation, route}: Props) {
             )}
           </View>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={questionList}
             renderItem={({item, index}) => (
               <SpreadList

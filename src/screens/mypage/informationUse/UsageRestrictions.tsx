@@ -92,6 +92,7 @@ function UsageRestrictions({navigation}: Props) {
         </SafeAreaView>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={{ flex: 1, backgroundColor: '#F6F6F6' }}
           data={list}
           renderItem={({ item, index }) => (
