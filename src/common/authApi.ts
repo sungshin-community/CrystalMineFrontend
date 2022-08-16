@@ -162,6 +162,8 @@ export const logout = async () => {
     );
     await AsyncStorage.setItem('accessToken', '');
     await AsyncStorage.setItem('refreshToken', '');
+    await AsyncStorage.setItem('uuid', '');
+    console.log('uuid', AsyncStorage.getItem('uuid'))
     console.log('여기는 로그아웃 함수', response.data);
     return response.data;
   } catch (e: any) {

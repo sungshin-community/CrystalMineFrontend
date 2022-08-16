@@ -33,6 +33,7 @@ import {useEffect} from 'react';
 import {BackHandler} from 'react-native';
 import {fontMedium, fontRegular} from '../common/font';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
+import Markdown from 'react-native-markdown-display';
 
 interface Props {
   post: any;

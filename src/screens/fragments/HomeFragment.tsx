@@ -39,6 +39,7 @@ import {AlertCheckIcon} from '../../../resources/icon/AlertItemIcon';
 import AlertBlindIcon from '../../../resources/icon/AlertBlindIcon';
 import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
+import WaterMark from '../../components/WaterMark';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -143,6 +144,7 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
+      <WaterMark />
       <View
         style={{
           position: 'absolute',

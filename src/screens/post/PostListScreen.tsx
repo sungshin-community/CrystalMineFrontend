@@ -153,8 +153,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 <BigGrayFlag />
               )
             ) : boardInfo?.isPinned ? (
-              boardInfo?.type === 'PUBLIC' ||
-              boardInfo?.type === 'DEPARTMENT' ? (
+              boardInfo?.type === 'PUBLIC' ? (
                 <BigOrangePin />
               ) : (
                 <BigPurplePin />

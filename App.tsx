@@ -121,6 +121,7 @@ const App = () => {
 
   return (
     <>
+      {/* <WaterMark /> */}
       {isLoaded && (
         <NavigationContainer>
           {!isLoggedIn ? (
@@ -1672,7 +1673,7 @@ const App = () => {
                 name="SplashHome"
                 component={SplashHome}
                 options={{title: ''}}
-              />
+                />
               {/* [F-1 회원가입] */}
               <Stack.Screen
                 name="TermAgree"
@@ -3226,7 +3227,6 @@ const App = () => {
           )}
         </NavigationContainer>
       )}
-      <WaterMark />
     </>
   );
 };
