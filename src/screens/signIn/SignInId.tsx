@@ -118,7 +118,7 @@ export default function SignInId({navigation}: Props) {
 
       <View
         style={{
-          paddingBottom: isIdFocused ? 80 : 34,
+          paddingBottom: isIdFocused ? 0 : 0,
           backgroundColor: '#FFFFFF',
           justifyContent: 'center',
           alignItems: 'center',

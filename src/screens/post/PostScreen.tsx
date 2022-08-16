@@ -153,7 +153,7 @@ const PostScreen = ({navigation, route}: Props) => {
       const postData = await getPosts(route.params.postId);
       setPost(postData);
       const commentData = await getComments(route.params.postId, 0);
-      setComments(commentData);
+      await setComments(commentData);
       setIsLoading(false);
       scrollViewRef.current?.scrollToEnd({animated: true});
     },
@@ -343,7 +343,7 @@ const PostScreen = ({navigation, route}: Props) => {
             style={{
               flexDirection: 'row',
               paddingVertical: 5,
-              paddingBottom: Platform.OS === 'ios' ? 40 : 10,
+              paddingBottom: Platform.OS === 'ios' ? 35 : 5,
             }}>
             <View
               style={{
