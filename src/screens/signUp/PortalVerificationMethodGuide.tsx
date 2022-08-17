@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
 import {fontMedium, fontRegular} from '../../common/font';
 
-export const MailVerificationMethodGuide = () => {
+export const PortalVerificationMethodGuide = () => {
   return (
     <ScrollView>
       <View

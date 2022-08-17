@@ -46,10 +46,11 @@ type RootStackParamList = {
   DirectionAgree: undefined;
   RegularMemberAuth: undefined;
   GlobalNavbar: undefined;
+  PortalVerificationMethodGuide: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function RegularMemberAuthSelect({navigation}: Props) {
+export default function RegularMemberAuthSelect({navigation, route}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const modalBody = (
     <Text>
@@ -93,7 +94,17 @@ export default function RegularMemberAuthSelect({navigation}: Props) {
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="지금 인증하기"
-                onClick={() => navigation.navigate('DirectionAgree')}
+                onClick={() => {
+                  const thisYear = new Date().getFullYear()
+                  const studentId = route.params.studentId;
+                  let year: number = 0;
+                  year = + studentId.substring(0, 4);
+                  if (studentId.length !== 8 || year < 1936 || year > thisYear) 
+                    navigation.navigate('PortalVerificationMethodGuide')
+                    else
+                    navigation.navigate('DirectionAgree')
+                }
+              }               
               />
             </View>
             <WhiteRoundButton

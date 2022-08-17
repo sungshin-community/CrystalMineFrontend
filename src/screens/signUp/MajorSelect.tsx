@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  SignUpComplete: undefined;
+  SignUpComplete: {studentId: number};
   MajorSelect: {
     userId: string;
     password: string;
@@ -171,7 +171,7 @@ export default function MajorSelect({navigation, route}: Props) {
                 });
                 console.log(result);
                 if (result) {
-                  navigation.reset({routes: [{name: 'SignUpComplete'}]});
+                  navigation.reset({ routes: [{ name: 'SignUpComplete', params: { studentId: route.params.userId }}]});
                 } else {
                   console.log('회원가입 실패');
                 }

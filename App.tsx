@@ -18,7 +18,7 @@ import ResetPasswordInputNewPassword from './src/screens/signIn/ResetPasswordInp
 import ResetPasswordInputNewPasswordConfirm from './src/screens/signIn/ResetPasswordInputNewPasswordConfirm';
 // signUp
 import SignUpId from './src/screens/signUp/SignUpId';
-import {MailVerificationMethodGuide} from './src/screens/signUp/MailVerificationMethodGuide';
+import {PortalVerificationMethodGuide} from './src/screens/signUp/PortalVerificationMethodGuide';
 import SignUpPassword from './src/screens/signUp/SignUpPassword';
 import SignUpPasswordConfirm from './src/screens/signUp/SignUpPasswordConfirm';
 import SignUpNickname from './src/screens/signUp/SignUpNickname';
@@ -236,8 +236,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="MailVerificationMethodGuide"
-                component={MailVerificationMethodGuide}
+                name="PortalVerificationMethodGuide"
+                component={PortalVerificationMethodGuide}
                 options={({navigation}) => ({
                   title: '메일 인증 방법 안내',
                   animation: 'slide_from_right',
@@ -1797,8 +1797,8 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="MailVerificationMethodGuide"
-                component={MailVerificationMethodGuide}
+                name="PortalVerificationMethodGuide"
+                component={PortalVerificationMethodGuide}
                 options={({navigation}) => ({
                   title: '메일 인증 방법 안내',
                   animation: 'slide_from_right',

@@ -27,11 +27,11 @@ const ButtonContainer = styled.View`
 `;
 
 type RootStackParamList = {
-  RegularMemberAuthSelect: undefined;
+  RegularMemberAuthSelect: { studentId: number };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function SignUpComplete({navigation}: Props) {
+export default function SignUpComplete({navigation, route}: Props) {
   return (
     <>
       <Container>
@@ -68,7 +68,7 @@ export default function SignUpComplete({navigation}: Props) {
         <Animatable.View animation="fadeIn" delay={2100}>
           <PurpleRoundButton
             text="다음"
-            onClick={() => navigation.navigate('RegularMemberAuthSelect')}
+            onClick={() => navigation.navigate('RegularMemberAuthSelect', {studentId: route.params.studentId})}
           />
         </Animatable.View>
       </ButtonContainer>

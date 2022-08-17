@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
 });
 type RootStackParamList = {
-  SignUpPassword: { userId: string; agreementIds: number[] };
+  SignUpPassword: {userId: string; agreementIds: number[]};
   MailVerificationMethodGuide: undefined;
   CreateMailGuide: undefined;
 };
@@ -131,9 +131,10 @@ export default function SignUpId({navigation, route}: Props) {
               <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Description style={{marginRight: 5.5}}>
-                 학번으로 이루어진 성신 G-mail 계정을 사용합니다.
+                  학번으로 이루어진 성신 G-mail 계정을 사용합니다.
                 </Description>
-                <Pressable onPress={() => navigation.navigate('CreateMailGuide')}>
+                <Pressable
+                  onPress={() => navigation.navigate('CreateMailGuide')}>
                   <SignUpQuestionMark />
                 </Pressable>
               </View>
@@ -163,7 +164,7 @@ export default function SignUpId({navigation, route}: Props) {
                     fontSize: 21,
                     fontFamily: 'SpoqaHanSansNeo-Regular',
                     paddingBottom: 7,
-                    color: '#222222'
+                    color: '#222222',
                   }}
                   onFocus={(e: any) => {
                     onIdFocus();
@@ -176,7 +177,7 @@ export default function SignUpId({navigation, route}: Props) {
                     setIsDuplicate(false);
                   }}
                   placeholder="아이디"
-                  keyboardType="ascii-capable"
+                  keyboardType="number-pad"
                   selectionColor="#A055FF"
                   value={studentId}
                 />
@@ -302,7 +303,7 @@ export default function SignUpId({navigation, route}: Props) {
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Description style={{marginRight: 5.5}}>
-               학번으로 이루어진 성신 G-mail 계정을 사용합니다.
+                학번으로 이루어진 성신 G-mail 계정을 사용합니다.
               </Description>
               <Pressable onPress={() => navigation.navigate('CreateMailGuide')}>
                 <SignUpQuestionMark />
@@ -333,7 +334,7 @@ export default function SignUpId({navigation, route}: Props) {
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
-                  color: '#222222'
+                  color: '#222222',
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -346,7 +347,7 @@ export default function SignUpId({navigation, route}: Props) {
                   setIsDuplicate(false);
                 }}
                 placeholder="아이디"
-                keyboardType="ascii-capable"
+                keyboardType="number-pad"
                 selectionColor="#A055FF"
                 value={studentId}
               />
