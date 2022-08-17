@@ -109,12 +109,12 @@ export default function SignUpId({navigation, route}: Props) {
     Keyboard.dismiss();
   };
 
-  return Platform.OS === 'ios' ? (
+  return (
     <>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={0}
+        keyboardVerticalOffset={57}
         behavior={'padding'}
-        style={{flex: 1}}>
+        style={{flex: 1, backgroundColor: '#fff'}}>
         <View
           style={{
             width: (Dimensions.get('window').width / 7) * 2,
@@ -122,183 +122,11 @@ export default function SignUpId({navigation, route}: Props) {
             backgroundColor: '#A055FF',
           }}
         />
-        <Container>
-          <ScrollView
+        {/* <ScrollView
             scrollEnabled={false}
             keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: '#fff'}}>
-            <TextContainer>
-              <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Description style={{marginRight: 5.5}}>
-                  학번으로 이루어진 성신 G-mail 계정을 사용합니다.
-                </Description>
-                <Pressable
-                  onPress={() => navigation.navigate('CreateMailGuide')}>
-                  <SignUpQuestionMark />
-                </Pressable>
-              </View>
-            </TextContainer>
-
-            <View
-              style={{
-                paddingRight: 24,
-                paddingLeft: 24,
-              }}>
-              <View
-                style={[
-                  styles.inputContainer,
-                  {
-                    borderColor:
-                      isDuplicate || isBlackList
-                        ? '#ff0000'
-                        : isFocused
-                        ? '#A055FF'
-                        : '#D7DCE6',
-                  },
-                ]}>
-                <TextInput
-                  autoFocus={true}
-                  style={{
-                    width: '65%',
-                    fontSize: 21,
-                    fontFamily: 'SpoqaHanSansNeo-Regular',
-                    paddingBottom: 7,
-                    color: '#222222',
-                  }}
-                  onFocus={(e: any) => {
-                    onIdFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onIdFocusOut();
-                  }}
-                  onChangeText={(value: string) => {
-                    setStudentId(value);
-                    setIsDuplicate(false);
-                  }}
-                  placeholder="아이디"
-                  keyboardType="number-pad"
-                  selectionColor="#A055FF"
-                  value={studentId}
-                />
-                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
-              </View>
-              {isDuplicate && (
-                <Text style={styles.errorMessage}>
-                  이미 가입되어 있는 계정입니다.
-                </Text>
-              )}
-              {isBlackList && (
-                <Text style={styles.errorMessage}>
-                  가입이 불가능하거나 접근할 수 없는 계정입니다.
-                </Text>
-              )}
-            </View>
-          </ScrollView>
-          <View
-            style={{
-              bottom: isFocused ? 0 : 80,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {studentId.length > 0 && isFocused && (
-              <PurpleFullButton
-                text="다음"
-                onClick={async () => {
-                  let year: number = 0;
-                  year = +studentId.substring(0, 4);
-                  if (isNaN(year)) {
-                    setAlertModalVisible(true);
-                    return;
-                  }
-                  if (studentId.length !== 8 || year < 1936 || year > 2022) {
-                    setAlertModalVisible(true);
-                    return;
-                  }
-                  let result: string = await checkEmailConflict(studentId);
-                  if (result === 'Request failed with status code 409') {
-                    setIsDuplicate(true);
-                    return;
-                  } else if (result === 'Request failed with status code 403') {
-                    setIsBlackList(true);
-                    return;
-                  }
-                  navigation.navigate('SignUpPassword', {
-                    userId: studentId,
-                    agreementIds: route.params.agreementIds,
-                  });
-                }}
-              />
-            )}
-
-            {studentId.length > 0 && !isFocused && (
-              <PurpleRoundButton
-                text="다음"
-                onClick={async () => {
-                  let year: number = 0;
-                  year = +studentId.substring(0, 4);
-                  if (isNaN(year)) {
-                    setAlertModalVisible(true);
-                    return;
-                  }
-                  if (studentId.length !== 8 || year < 1936 || year > 2022) {
-                    setAlertModalVisible(true);
-                    return;
-                  }
-                  let result: string = await checkEmailConflict(studentId);
-                  if (result === 'Request failed with status code 409') {
-                    setIsDuplicate(true);
-                    return;
-                  } else if (result === 'Request failed with status code 403') {
-                    setIsBlackList(true);
-                    return;
-                  }
-                  navigation.navigate('SignUpPassword', {
-                    userId: studentId,
-                    agreementIds: route.params.agreementIds,
-                  });
-                }}
-              />
-            )}
-
-            {studentId.length === 0 && isFocused && (
-              <DisabledPurpleFullButton text="다음" />
-            )}
-
-            {studentId.length === 0 && !isFocused && (
-              <DisabledPurpleRoundButton text="다음" />
-            )}
-          </View>
-        </Container>
-      </KeyboardAvoidingView>
-    </>
-  ) : (
-    <>
-      {modalVisible && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
-          }}
-        />
-      )}
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 2,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
-      <Container>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff'}}>
+            style={{backgroundColor: 'yellow'}}> */}
+        <Pressable onPress={() => Keyboard.dismiss()} style={{flex: !isFocused ? 1 : isFocused && Platform.OS === 'android' ? 0 :  1}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -313,7 +141,8 @@ export default function SignUpId({navigation, route}: Props) {
 
           <View
             style={{
-              paddingHorizontal: 24,
+              paddingRight: 24,
+              paddingLeft: 24,
             }}>
             <View
               style={[
@@ -360,16 +189,18 @@ export default function SignUpId({navigation, route}: Props) {
             )}
             {isBlackList && (
               <Text style={styles.errorMessage}>
-                가입이 불가능한 계정입니다.
+                가입이 불가능하거나 접근할 수 없는 계정입니다.
               </Text>
             )}
           </View>
-        </ScrollView>
+          {/* </ScrollView> */}
+        </Pressable>
+
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
-            justifyContent: 'center',
+            marginBottom: 34,
             alignItems: 'center',
+            bottom: isFocused && Platform.OS === 'android' ? -200 : 0,
           }}>
           {studentId.length > 0 && isFocused && (
             <PurpleFullButton
@@ -439,7 +270,7 @@ export default function SignUpId({navigation, route}: Props) {
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
-      </Container>
+      </KeyboardAvoidingView>
     </>
   );
 }
