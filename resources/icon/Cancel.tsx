@@ -16,4 +16,17 @@ const CancelButton = (props: any) => (
   </Svg>
 );
 
+export const WhiteCancelButton = (props: any) => (
+  <Svg
+    width={18}
+    height={18}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path d="m1 1 15.72 16M17 1 1.28 17" stroke="#fff" strokeWidth={2} />
+  </Svg>
+);
+
+
 export default CancelButton;
