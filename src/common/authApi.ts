@@ -47,15 +47,14 @@ export const checkEmailConflict = async (studentId: string) => {
     const response = await client.get<AxiosResponse>(
       '/auth/check-username/' + studentId,
     );
-    console.log(response.data)
-    if (response.status === 200) {
-      return response.data.code;
-    }
-  } catch (error) {
-    return error.message;
+    console.log('여기는 checkEmailConflict ', response.data)
+    return response;
   }
-  return false;
-};
+  catch (e) {
+    console.log('여기는 checkEmailConflict ', e.response.data)
+    return e.response;
+  }
+}
 
 export const checkNicknameConflict = async (nickname: string) => {
   try {

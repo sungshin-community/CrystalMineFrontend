@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -15,11 +15,11 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Pressable,
+  NativeModules,
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -30,6 +30,9 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {checkEmailConflict, checkBlackList} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+const {StatusBarManager} = NativeModules;
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -89,6 +92,7 @@ type RootStackParamList = {
   SignUpPassword: {userId: string; agreementIds: number[]};
   MailVerificationMethodGuide: undefined;
   CreateMailGuide: undefined;
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -97,8 +101,7 @@ export default function SignUpId({navigation, route}: Props) {
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -109,12 +112,21 @@ export default function SignUpId({navigation, route}: Props) {
     Keyboard.dismiss();
   };
 
+  useEffect(() => {
+    Platform.OS == 'ios'
+      ? StatusBarManager.getHeight((statusBarFrameData: any) => {
+          setStatusBarHeight(statusBarFrameData.height);
+        })
+      : null;
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={57}
+      {/* <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 57 : 47}
         behavior={'padding'}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+        style={{flex: 1, backgroundColor: '#fff'}}> */}
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
         <View
           style={{
             width: (Dimensions.get('window').width / 7) * 2,
@@ -122,11 +134,7 @@ export default function SignUpId({navigation, route}: Props) {
             backgroundColor: '#A055FF',
           }}
         />
-        {/* <ScrollView
-            scrollEnabled={false}
-            keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: 'yellow'}}> */}
-        <Pressable onPress={() => Keyboard.dismiss()} style={{flex: !isFocused ? 1 : isFocused && Platform.OS === 'android' ? 0 :  1}}>
+        <Pressable onPress={() => Keyboard.dismiss()} style={{flex: 1}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -182,52 +190,45 @@ export default function SignUpId({navigation, route}: Props) {
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
-            {isDuplicate && (
-              <Text style={styles.errorMessage}>
-                이미 가입되어 있는 계정입니다.
-              </Text>
-            )}
-            {isBlackList && (
-              <Text style={styles.errorMessage}>
-                가입이 불가능하거나 접근할 수 없는 계정입니다.
-              </Text>
-            )}
+            <Text style={styles.errorMessage}>
+              {isDuplicate
+                ? '이미 가입되어 있는 계정입니다.'
+                : isBlackList
+                ? '가입이 불가능하거나 접근할 수 없는 계정입니다.'
+                : ''}
+            </Text>
           </View>
-          {/* </ScrollView> */}
         </Pressable>
 
         <View
           style={{
-            marginBottom: 34,
+            marginBottom: isFocused
+              ? Platform.OS === 'ios'
+                ? 255 + statusBarHeight
+                : 240
+              : 34,
             alignItems: 'center',
-            bottom: isFocused && Platform.OS === 'android' ? -200 : 0,
           }}>
           {studentId.length > 0 && isFocused && (
             <PurpleFullButton
               text="다음"
               onClick={async () => {
-                let year: number = 0;
-                year = +studentId.substring(0, 4);
-                if (isNaN(year)) {
-                  setAlertModalVisible(true);
-                  return;
-                }
-                if (studentId.length !== 8 || year < 1936 || year > 2022) {
-                  setAlertModalVisible(true);
-                  return;
-                }
-                let result: string = await checkEmailConflict(studentId);
-                if (result === 'Request failed with status code 409') {
+                let result = await checkEmailConflict(studentId);
+                if (getHundredsDigit(result.status) === 2) {
+                  navigation.navigate('SignUpPassword', {
+                    userId: studentId,
+                    agreementIds: route.params.agreementIds,
+                  });
+                } else if (result.data.code === 'EMAIL_DUPLICATION') {
                   setIsDuplicate(true);
-                  return;
-                } else if (result === 'Request failed with status code 403') {
+                } else if (
+                  result.data.code === 'BLACKLIST_MEMBER' ||
+                  result.data.code === 'HOLDING_WITHDRAWAL'
+                ) {
                   setIsBlackList(true);
-                  return;
+                } else {
+                  navigation.navigate('ErrorScreen');
                 }
-                navigation.navigate('SignUpPassword', {
-                  userId: studentId,
-                  agreementIds: route.params.agreementIds,
-                });
               }}
             />
           )}
@@ -236,28 +237,22 @@ export default function SignUpId({navigation, route}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                let year: number = 0;
-                year = +studentId.substring(0, 4);
-                if (isNaN(year)) {
-                  setAlertModalVisible(true);
-                  return;
-                }
-                if (studentId.length !== 8 || year < 1936 || year > 2022) {
-                  setAlertModalVisible(true);
-                  return;
-                }
-                let result: string = await checkEmailConflict(studentId);
-                if (result === 'Request failed with status code 409') {
+                let result = await checkEmailConflict(studentId);
+                if (getHundredsDigit(result.status) === 2) {
+                  navigation.navigate('SignUpPassword', {
+                    userId: studentId,
+                    agreementIds: route.params.agreementIds,
+                  });
+                } else if (result.data.code === 'EMAIL_DUPLICATION') {
                   setIsDuplicate(true);
-                  return;
-                } else if (result === 'Request failed with status code 403') {
+                } else if (
+                  result.data.code === 'BLACKLIST_MEMBER' ||
+                  result.data.code === 'HOLDING_WITHDRAWAL'
+                ) {
                   setIsBlackList(true);
-                  return;
+                } else {
+                  navigation.navigate('ErrorScreen');
                 }
-                navigation.navigate('SignUpPassword', {
-                  userId: studentId,
-                  agreementIds: route.params.agreementIds,
-                });
               }}
             />
           )}
@@ -270,7 +265,8 @@ export default function SignUpId({navigation, route}: Props) {
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
-      </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
+      </View>
     </>
   );
 }
