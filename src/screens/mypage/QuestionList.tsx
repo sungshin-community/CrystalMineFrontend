@@ -44,9 +44,11 @@ import {ModalBottom} from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
 import PostItem from '../../components/PostItem';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import {useNavigation} from '@react-navigation/native';
 
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
+  // ImageViewerScreen: {imageUrls: any, index: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 function QuestionList({navigation, route}: Props) {
@@ -180,155 +182,155 @@ function QuestionList({navigation, route}: Props) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          position: 'absolute',
-          alignItems: 'center',
-          justifyContent: 'center',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        }}>
-        <ActivityIndicator
-          size="large"
-          color={'#A055FF'}
-          animating={isLoading}
-          style={{zIndex: 100}}
-        />
-      </View>
-      {questionList?.length === 0 ? (
+    <>
+      <SafeAreaView style={{flex: 1}}>
         <View
           style={{
-            flex: 1,
-            justifyContent: 'center',
+            position: 'absolute',
             alignItems: 'center',
-            backgroundColor: '#F6F6F6',
+            justifyContent: 'center',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
           }}>
-          <Text
-            style={{
-              color: '#6E7882',
-              fontSize: 15,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-              textAlign: 'center',
-              lineHeight: 22.5,
-              marginTop: 20,
-            }}>
-            {isLoading
-              ? ''
-              : '아직 작성된 문의사항이 없습니다.\n첫 문의사항을 작성해주세요.'}
-          </Text>
+          <ActivityIndicator
+            size="large"
+            color={'#A055FF'}
+            animating={isLoading}
+            style={{zIndex: 100}}
+          />
         </View>
-      ) : (
-        <View style={{flex: 1}}>
+        {questionList?.length === 0 ? (
           <View
             style={{
-              flexDirection: 'row',
+              flex: 1,
+              justifyContent: 'center',
               alignItems: 'center',
+              backgroundColor: '#F6F6F6',
             }}>
-            {deleteMode && (
-              <TouchableOpacity
-                onPress={() => {
-                  setIsCheckedAll(!isCheckedAll);
-                  const tempList = questionList?.map(p => ({
-                    ...p,
-                    isChecked: !isCheckedAll,
-                  }));
-                  setQuestionList(tempList);
-                }}
-                style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  paddingRight: 27,
-                  backgroundColor: '#fff',
-                  paddingBottom: 10,
-                }}>
-                <Text
+            <Text
+              style={{
+                color: '#6E7882',
+                fontSize: 15,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+                textAlign: 'center',
+                lineHeight: 22.5,
+                marginTop: 20,
+              }}>
+              {isLoading
+                ? ''
+                : '아직 작성된 문의사항이 없습니다.\n첫 문의사항을 작성해주세요.'}
+            </Text>
+          </View>
+        ) : (
+          <View style={{flex: 1}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              {deleteMode && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsCheckedAll(!isCheckedAll);
+                    const tempList = questionList?.map(p => ({
+                      ...p,
+                      isChecked: !isCheckedAll,
+                    }));
+                    setQuestionList(tempList);
+                  }}
                   style={{
-                    marginRight: 9,
-                    fontSize: 13,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    paddingRight: 27,
+                    backgroundColor: '#fff',
+                    paddingBottom: 10,
                   }}>
-                  {`${questionList?.filter(c => c.isChecked).length}/${
-                    questionList?.length
-                  }`}
-                </Text>
-                {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
-              </TouchableOpacity>
-            )}
+                  <Text
+                    style={{
+                      marginRight: 9,
+                      fontSize: 13,
+                      fontFamily: 'SpoqaHanSansNeo-Medium',
+                    }}>
+                    {`${questionList?.filter(c => c.isChecked).length}/${
+                      questionList?.length
+                    }`}
+                  </Text>
+                  {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
+                </TouchableOpacity>
+              )}
+            </View>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={questionList}
+              renderItem={({item, index}) => (
+                <SpreadList
+                  key={index}
+                  questionItem={item}
+                  deleteMode={deleteMode}
+                  moveToPost={moveToPost}></SpreadList>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={fetchNextPage}
+              onEndReachedThreshold={0.8}
+            />
+            <View>
+              {isNextPageLoading && (
+                <ActivityIndicator
+                  size="large"
+                  color={'#A055FF'}
+                  animating={isNextPageLoading}
+                  style={{zIndex: 100}}
+                />
+              )}
+            </View>
           </View>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={questionList}
-            renderItem={({item, index}) => (
-              <SpreadList
-                key={index}
-                questionItem={item}
-                deleteMode={deleteMode}
-                moveToPost={moveToPost}></SpreadList>
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-            )}
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                colors={['#A055FF']} // for android
-                tintColor={'#A055FF'} // for ios
-              />
-            }
-            onEndReached={fetchNextPage}
-            onEndReachedThreshold={0.8}
+        )}
+        {!deleteMode && (
+          <FloatingWriteButton
+            onPress={() => navigation.navigate('QuestionWriteScreen')}
           />
-          <View>
-            {isNextPageLoading && (
-              <ActivityIndicator
-                size="large"
-                color={'#A055FF'}
-                animating={isNextPageLoading}
-                style={{zIndex: 100}}
-              />
-            )}
-          </View>
-        </View>
-      )}
-      {deleteModalVisible && (
-        <ModalBottom
-          modalVisible={deleteModalVisible}
-          setModalVisible={setDeleteModalVisible}
-          content="선택하신 문의를 삭제하시겠습니까?"
-          purpleButtonText="삭제"
-          whiteButtonText="취소"
-          purpleButtonFunc={async () => {
-            setIsLoading(true);
-            console.log(questionList);
-            await deleteQuestions(
-              questionList.filter(p => p.isChecked).map(p => p.id),
-            );
-            const qList = await getQuestionList(currentPage);
-            setQuestionList(qList);
-            Toast.show('문의가 성공적으로 삭제되었습니다', Toast.SHORT);
-            setIsLoading(false);
-            setDeleteMode(false);
-            setDeleteModalVisible(false);
-          }}
-          whiteButtonFunc={() => {
-            setDeleteModalVisible(false);
-          }}
-        />
-      )}
-      {!deleteMode && (
-        <FloatingWriteButton
-          onPress={() => navigation.navigate('QuestionWriteScreen')}
-        />
-      )}
-    </SafeAreaView>
+        )}
+      </SafeAreaView>
+      <ModalBottom
+        modalVisible={deleteModalVisible}
+        setModalVisible={setDeleteModalVisible}
+        content="선택하신 문의를 삭제하시겠습니까?"
+        purpleButtonText="삭제"
+        whiteButtonText="취소"
+        purpleButtonFunc={async () => {
+          setIsLoading(true);
+          console.log(questionList);
+          await deleteQuestions(
+            questionList.filter(p => p.isChecked).map(p => p.id),
+          );
+          const qList = await getQuestionList(currentPage);
+          setQuestionList(qList);
+          Toast.show('문의가 성공적으로 삭제되었습니다', Toast.SHORT);
+          setIsLoading(false);
+          setDeleteMode(false);
+          setDeleteModalVisible(false);
+        }}
+        whiteButtonFunc={() => {
+          setDeleteModalVisible(false);
+        }}
+      />
+    </>
   );
 }
 
@@ -350,7 +352,7 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 15,
     color: '#222222',
-    width: Dimensions.get('window').width - 150
+    width: Dimensions.get('window').width - 150,
   },
   status: {
     width: 67,
@@ -398,7 +400,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
       setIsPhotoVisible(false);
     }
   };
-  console.log(data);
+  const navigation = useNavigation();
 
   const imgUrlCoverting = (arr: string[]) => {
     const array = arr.map(url => {
@@ -430,7 +432,10 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 {questionItem.status ? '답변 완료' : '답변 대기'}
               </Text>
             </View>
-            <Text ellipsizeMode={'tail'} numberOfLines={1} style={[fontMedium, styles.menuText]}>
+            <Text
+              ellipsizeMode={'tail'}
+              numberOfLines={1}
+              style={[fontMedium, styles.menuText]}>
               {questionItem.title}
             </Text>
             <View style={styles.menuIcon}>
@@ -469,14 +474,25 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
             <Text style={[fontMedium, {fontSize: 15, marginBottom: 10}]}>
               {data?.title}
             </Text>
-            <Text style={[fontRegular, {marginBottom: 10}]}>{data?.content}</Text>
+            <Text style={[fontRegular, {marginBottom: 10}]}>
+              {data?.content}
+            </Text>
+            <Text style={[styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
+
             {data?.images.length !== 0 && (
               <View style={{flexDirection: 'row', marginTop: 16}}>
-                <ScrollView horizontal={true}>
+                <ScrollView
+                  showsHorizontalScrollIndicator={false}
+                  horizontal={true}>
                   {data?.thumbnails.map((url, index) => (
                     <Pressable
                       key={index}
-                      onPress={() => setIsPhotoVisible(true)}>
+                      onPress={() =>
+                        navigation.navigate('ImageViewerScreen', {
+                          imageUrls: imgUrlCoverting(data.images),
+                          index: index,
+                        })
+                      }>
                       <Image
                         style={{
                           width: 70,
@@ -488,22 +504,9 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                       />
                     </Pressable>
                   ))}
-                  <Modal
-                    visible={isPhotoVisible}
-                    transparent={true}
-                    onRequestClose={closePhotoModal}>
-                    {data && (
-                      <ImageViewer
-                        imageUrls={imgUrlCoverting(data?.images)}
-                        onCancel={() => closePhotoModal()}
-                        enableSwipeDown
-                      />
-                    )}
-                  </Modal>
                 </ScrollView>
               </View>
             )}
-            <Text style={[styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
             {data?.answer && (
               <>
                 <View
@@ -525,6 +528,39 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 <Text style={[styles.date, {marginLeft: 30}]}>
                   {data?.answer.createdAt}
                 </Text>
+                {data?.images.length !== 0 && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 16,
+                      marginLeft: 30,
+                    }}>
+                    <ScrollView
+                      showsHorizontalScrollIndicator={false}
+                      horizontal={true}>
+                      {data?.thumbnails.map((url, index) => (
+                        <Pressable
+                          key={index}
+                          onPress={() =>
+                            navigation.navigate('ImageViewerScreen', {
+                              imageUrls: imgUrlCoverting(data.images),
+                              index: index,
+                            })
+                          }>
+                          <Image
+                            style={{
+                              width: 70,
+                              height: 70,
+                              borderRadius: 10,
+                              marginRight: 8,
+                            }}
+                            source={{uri: url}}
+                          />
+                        </Pressable>
+                      ))}
+                    </ScrollView>
+                  </View>
+                )}
               </>
             )}
           </ScrollView>
