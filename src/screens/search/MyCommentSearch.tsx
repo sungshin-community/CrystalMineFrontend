@@ -70,7 +70,7 @@ function MyCommentSearch({navigation, route}: Props) {
       headerTitle: (): React.ReactNode =>
       <View style={styles.container}>
         <TextInput
-          autoFocus={true}
+          // autoFocus={true}
           style={styles.input}
           placeholder='내가 작성한 댓글에서 검색'
           placeholderTextColor="#898989"
@@ -136,14 +136,13 @@ export default MyCommentSearch;
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
     alignItems: 'center',
     paddingLeft: 5,
   },
   input: {
     backgroundColor: '#EFEFEF',
     width: Dimensions.get('window').width - 100,
-    height: 44,
+    height: 40,
     borderRadius: 20,
     paddingLeft: 57,
     fontFamily: 'SpoqaHanSansNeo-Regular',
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: 10,
+    top: 9,
     left: 24,
   },
   title: {

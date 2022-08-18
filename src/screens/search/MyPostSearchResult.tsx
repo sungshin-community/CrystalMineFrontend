@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#EFEFEF',
     width: Dimensions.get('window').width - 100,
-    height: 44,
+    height: 40,
     borderRadius: 20,
     paddingLeft: 57,
     fontFamily: 'SpoqaHanSansNeo-Regular',
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: 10,
+    top: 9,
     left: 24,
   },
   title: {
