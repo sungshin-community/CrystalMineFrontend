@@ -183,7 +183,7 @@ function QuestionList({navigation, route}: Props) {
 
   return (
     <>
-      <SafeAreaView style={{flex: 1}}>
+      <View style={{flex: 1}}>
         <View
           style={{
             position: 'absolute',
@@ -306,7 +306,7 @@ function QuestionList({navigation, route}: Props) {
             onPress={() => navigation.navigate('QuestionWriteScreen')}
           />
         )}
-      </SafeAreaView>
+      </View>
       <ModalBottom
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}

@@ -17,9 +17,10 @@ import {fontMedium, fontRegular} from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
 import {writeQuestion} from '../../common/myPageApi';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {ModalBottom} from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
+import {ImageDelete} from '../../components/ImageDelete';
 
 type RootStackParamList = {
   QuestionList: undefined;
@@ -70,18 +71,33 @@ function RequestWriteScreen({navigation}: Props) {
     });
   }, [navigation, title, content]);
 
-  const onSelectImage = () => {
+   const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
-      {mediaType: 'photo', maxWidth: 512, maxHeight: 512, selectionLimit: 10},
+      {
+        mediaType: 'photo',
+        maxWidth: 10000,
+        maxHeight: 10000,
+        selectionLimit: 10,
+      },
       res => {
         if (res.didCancel) {
           return;
         }
-        console.log('image', res);
-        setImageResponse(res.assets);
+        let tempImages: Asset[] = [...imageResponse, ...res.assets];
+        if (tempImages.length > 10) {
+          Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
+          setImageResponse(tempImages?.slice(0, 10));
+        } else {
+          setImageResponse(tempImages);
+        }
       },
     );
+  };
+
+  const deleteImage = (imageUri: string) => {
+    setImageResponse(imageResponse.filter(item => item.uri !== imageUri));
+    console.log('>>>', imageResponse);
   };
 
   return (
@@ -91,7 +107,7 @@ function RequestWriteScreen({navigation}: Props) {
           <View style={styles.header}>
             <TextInput
               placeholder="제목을 입력하세요."
-              placeholderTextColor='#D5DBE1'
+              placeholderTextColor="#D5DBE1"
               value={title}
               onChangeText={value => {
                 setTitle(value);
@@ -108,7 +124,7 @@ function RequestWriteScreen({navigation}: Props) {
           <View>
             <TextInput
               placeholder="내용을 입력하세요."
-              placeholderTextColor='#D5DBE1'
+              placeholderTextColor="#D5DBE1"
               value={content}
               multiline={true}
               onChangeText={value => {
@@ -132,24 +148,31 @@ function RequestWriteScreen({navigation}: Props) {
               <ImageIcon />
               <Text style={[fontMedium, styles.imageText]}>이미지</Text>
             </View>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-              {imageResponse.length !== 0 &&
-                imageResponse.map((asset, index) => (
-                  <Image
-                    key={index}
-                    style={styles.imageBox}
-                    source={{uri: asset.uri}}
-                  />
-                ))}
-              <View style={[styles.imageSelectBox, styles.imageBox]}>
-                <Pressable onPress={onSelectImage} hitSlop={25}>
-                  <PhotoIcon />
-                  <Text style={[fontMedium, styles.count]}>
-                    {imageResponse.length}/10
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
+           <ScrollView horizontal={true}>
+                <View style={{flexDirection: 'row'}}>
+                  {imageResponse?.length !== 0 &&
+                    imageResponse?.map((asset, index) => (
+                      <ImageDelete
+                        key={index}
+                        imageUri={asset.uri}
+                        deleteImage={deleteImage}
+                      />
+                    ))}
+                  <View
+                    style={[
+                      styles.imageSelectBox,
+                      styles.imageBox,
+                      {marginTop: 5},
+                    ]}>
+                    <Pressable onPress={onSelectImage} hitSlop={25}>
+                      <PhotoIcon />
+                      <Text style={[fontMedium, styles.count]}>
+                        {imageResponse?.length}/10
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </ScrollView>
           </View>
         </View>
       </ScrollView>
@@ -184,7 +207,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     color: '#222222',
-    flex: 1
+    flex: 1,
   },
   input: {
     backgroundColor: '#FBFBFB',

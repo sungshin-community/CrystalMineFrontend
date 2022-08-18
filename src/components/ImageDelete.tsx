@@ -4,7 +4,7 @@ interface Props {
   imageUri: string;
   deleteImage: any;
 }
-export const ImageDeleteButton = ({imageUri, deleteImage}: Props) => {
+export const ImageDelete = ({imageUri, deleteImage}: Props) => {
   return (
     <View style={{width: 75, height: 70, marginRight: 5, marginTop: 5}}>
       <Image source={{uri: imageUri}} style={styles.imageBox} />

@@ -36,7 +36,7 @@ import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import {ModalBottom} from '../../components/ModalBottom';
-import {ImageDeleteButton} from '../../components/ImageDeleteButton';
+import {ImageDelete} from '../../components/ImageDelete';
 const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
@@ -360,7 +360,7 @@ function PostWriteScreen({navigation, route}: Props) {
                 <View style={{flexDirection: 'row'}}>
                   {images?.length !== 0 &&
                     images?.map((asset, index) => (
-                      <ImageDeleteButton
+                      <ImageDelete
                         key={index}
                         imageUri={asset.uri}
                         deleteImage={deleteImage}
