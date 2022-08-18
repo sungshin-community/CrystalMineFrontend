@@ -175,6 +175,7 @@ export default function SignUpId({navigation, route}: Props) {
                   Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
               }}
               placeholder="아이디"
+              placeholderTextColor='#A0AAB4'
               keyboardType="number-pad"
               selectionColor="#A055FF"
               value={studentId}

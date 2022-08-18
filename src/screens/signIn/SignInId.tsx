@@ -76,14 +76,10 @@ export default function SignInId({navigation}: Props) {
         keyboardVerticalOffset={90}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1, backgroundColor: '#fff'}}>
-        <ScrollView style={{ flex: 1, paddingHorizontal: 24 }}>
-          <NormalOneLineText style={{marginTop: 25}}>
-            로그인
-          </NormalOneLineText>
+        <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
+          <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
-            <Text style={{marginTop: 47, color: '#A055FF'}}>
-              아이디
-            </Text>
+            <Text style={{marginTop: 47, color: '#A055FF'}}>아이디</Text>
             <View style={{marginTop: 12}}>
               <MiddleInputContainerStyle
                 style={{borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'}}>
@@ -111,6 +107,7 @@ export default function SignInId({navigation}: Props) {
                       );
                   }}
                   placeholder="아이디"
+                  placeholderTextColor="#A0AAB4"
                   keyboardType="number-pad"
                   value={studentId}
                   maxLength={40}

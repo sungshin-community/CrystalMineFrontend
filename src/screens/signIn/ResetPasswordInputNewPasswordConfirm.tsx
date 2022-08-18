@@ -26,6 +26,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 import {resetPassword} from '../../common/authApi';
 import {ModalBottom} from '../../components/ModalBottom';
+import Toast from 'react-native-simple-toast';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -55,6 +57,7 @@ type RootStackParamList = {
     userId: string;
     previousPassword: string;
   };
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -89,20 +92,124 @@ export default function ResetPasswordInputNewPasswordConfirm({
   };
 
   const resetPasswordConfirm = async () => {
-    let result: number = await resetPassword({
+    let result = await resetPassword({
       username: route.params.userId,
       password: route.params.previousPassword,
     });
-    if (result === 0) {
+    if (result.status === 401) {
+      navigation.navigate('SplashHome');
+    } else if (getHundredsDigit(result.status) === 2) {
       setModalVisible(true);
-    } 
+    } else navigation.navigate('ErrorScreen');
   };
 
   return Platform.OS === 'ios' ? (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={10}
-      behavior={'padding'}
-      style={{flex: 1}}>
+    <>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={10}
+        behavior={'padding'}
+        style={{flex: 1}}>
+        <Container>
+          <ScrollView
+            scrollEnabled={false}
+            keyboardShouldPersistTaps="handled"
+            style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+            <TextContainer>
+              <TwoLineTitle
+                firstLineText="새 비밀번호를"
+                secondLineText="한번 더 입력해주세요"
+              />
+            </TextContainer>
+            <MiddleInputContainerStyle
+              style={{
+                borderColor: isWrong
+                  ? '#ff0000'
+                  : isFocused
+                  ? '#A055FF'
+                  : '#D7DCE6',
+              }}>
+              <TextInput
+                autoFocus={true}
+                style={{
+                  width: '93%',
+                  fontSize: 21,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  paddingBottom: 7,
+                  color: '#222222',
+                }}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
+                onChangeText={(value: string) => {
+                  if (value.length > 0) {
+                    setIsWrong(true);
+                  }
+                  validatePassword(value);
+                  if (value.length === 25)
+                    Toast.show(
+                      '비밀번호는 25글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
+                }}
+                maxLength={25}
+                placeholder="비밀번호"
+                placeholderTextColor="#A0AAB4"
+                keyboardType="default"
+                secureTextEntry={!showPassword}
+                autoCapitalize="none"
+                returnKeyType="done"
+                selectionColor="#A055FF"
+              />
+              {showPassword ? (
+                <PasswordShow onPress={letShowPassword} />
+              ) : (
+                <PasswordNotShow onPress={letShowPassword} />
+              )}
+            </MiddleInputContainerStyle>
+            {isWrong && !isEqual && (
+              <CautionText text="비밀번호를 정확하게 입력해 주세요." />
+            )}
+          </ScrollView>
+          <View
+            style={{
+              bottom: isFocused ? 80 : 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {isEqual && isFocused && (
+              <PurpleFullButton
+                text="비밀번호 재설정"
+                onClick={() => resetPasswordConfirm()}
+              />
+            )}
+            {isEqual && !isFocused && (
+              <PurpleRoundButton
+                text="비밀번호 재설정"
+                onClick={() => resetPasswordConfirm()}
+              />
+            )}
+            {!isEqual && isFocused && (
+              <DisabledPurpleFullButton text="비밀번호 재설정" />
+            )}
+            {!isEqual && !isFocused && (
+              <DisabledPurpleRoundButton text="비밀번호 재설정" />
+            )}
+          </View>
+        </Container>
+      </KeyboardAvoidingView>
+      <ModalBottom
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        content={`비밀번호가 성공적으로 변경 되었습니다.\n이전 화면으로 이동합니다.`}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => navigation.navigate('SplashHome')}
+      />
+    </>
+  ) : (
+    <>
       <Container>
         <ScrollView
           scrollEnabled={false}
@@ -129,7 +236,7 @@ export default function ResetPasswordInputNewPasswordConfirm({
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -142,6 +249,11 @@ export default function ResetPasswordInputNewPasswordConfirm({
                   setIsWrong(true);
                 }
                 validatePassword(value);
+                if (value.length === 25)
+                  Toast.show(
+                    '비밀번호는 25글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
               }}
               maxLength={25}
               placeholder="비밀번호"
@@ -161,102 +273,6 @@ export default function ResetPasswordInputNewPasswordConfirm({
           {isWrong && !isEqual && (
             <CautionText text="비밀번호를 정확하게 입력해 주세요." />
           )}
-         
-        </ScrollView>
-        <View
-          style={{
-            bottom: isFocused ? 80 : 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {isEqual && isFocused && (
-            <PurpleFullButton
-              text="비밀번호 재설정"
-              onClick={resetPasswordConfirm}
-            />
-          )}
-          {isEqual && !isFocused && (
-            <PurpleRoundButton
-              text="비밀번호 재설정"
-              onClick={resetPasswordConfirm}
-            />
-          )}
-          {!isEqual && isFocused && (
-            <DisabledPurpleFullButton text="비밀번호 재설정" />
-          )}
-          {!isEqual && !isFocused && (
-            <DisabledPurpleRoundButton text="비밀번호 재설정" />
-          )}
-          <ModalBottom
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            content={`비밀번호가 성공적으로 변경 되었습니다.\n이전 화면으로 이동합니다.`}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => navigation.navigate('SplashHome')}
-          />
-        </View>
-      </Container>
-    </KeyboardAvoidingView>
-  ) : (
-    <>
-      <Container>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff', marginHorizontal: 24}}>
-          <TextContainer>
-            <TwoLineTitle
-              firstLineText="새 비밀번호를"
-              secondLineText="한번 더 입력해주세요"
-            />
-          </TextContainer>
-          <MiddleInputContainerStyle
-            style={{
-              borderColor: isWrong 
-                ? '#ff0000'
-                : isFocused
-                ? '#A055FF'
-                : '#D7DCE6',
-            }}>
-            <TextInput
-              autoFocus={true}
-              style={{
-                width: '93%',
-                fontSize: 21,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                paddingBottom: 7,
-                color: '#222222'
-              }}
-              onFocus={(e: any) => {
-                onInputFocus();
-              }}
-              onBlur={(e: any) => {
-                onInputFocusOut();
-              }}
-              onChangeText={(value: string) => {
-                if (value.length > 0) {
-                  setIsWrong(true);
-                }
-                validatePassword(value);
-              }}
-              maxLength={25}
-              placeholder="비밀번호"
-              placeholderTextColor="#A0AAB4"
-              keyboardType="default"
-              secureTextEntry={!showPassword}
-              autoCapitalize="none"
-              returnKeyType="done"
-              selectionColor="#A055FF"
-            />
-            {showPassword ? (
-              <PasswordShow onPress={letShowPassword} />
-            ) : (
-              <PasswordNotShow onPress={letShowPassword} />
-            )}
-          </MiddleInputContainerStyle>
-          {isWrong && !isEqual && (
-            <CautionText text="비밀번호를 정확하게 입력해 주세요." />
-            )}
         </ScrollView>
         <View
           style={{
@@ -264,16 +280,16 @@ export default function ResetPasswordInputNewPasswordConfirm({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-           {isEqual && isFocused && (
+          {isEqual && isFocused && (
             <PurpleFullButton
               text="비밀번호 재설정"
-              onClick={resetPasswordConfirm}
+              onClick={() => resetPasswordConfirm()}
             />
           )}
           {isEqual && !isFocused && (
             <PurpleRoundButton
               text="비밀번호 재설정"
-              onClick={resetPasswordConfirm}
+              onClick={() => resetPasswordConfirm()}
             />
           )}
           {!isEqual && isFocused && (
@@ -282,16 +298,15 @@ export default function ResetPasswordInputNewPasswordConfirm({
           {!isEqual && !isFocused && (
             <DisabledPurpleRoundButton text="비밀번호 재설정" />
           )}
-          <ModalBottom
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            content={`비밀번호가 성공적으로 변경 되었습니다. 
-            이전 화면으로 이동합니다.`}
-            purpleButtonText="확인"
-            purpleButtonFunc={() => navigation.navigate('SplashHome')}
-          />
         </View>
       </Container>
+      <ModalBottom
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        content={`비밀번호가 성공적으로 변경 되었습니다.\n이전 화면으로 이동합니다.`}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => navigation.navigate('SplashHome')}
+      />
     </>
   );
 }

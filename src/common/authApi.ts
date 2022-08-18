@@ -225,9 +225,10 @@ export const sendResetPasswordEmail = async (
       '/mail/reset-password',
       resetPasswordRequestDto,
     );
+    console.log('여기는 sendResetPasswordEmail', response.data);
     return response;
   } catch (e) {
-    console.log('여기는 비밀번호 재설정 이메일 전송 함수', e.response.data);
+    console.log('여기는 sendResetPasswordEmail', e.response.data);
     return e.response;
   }
 };
@@ -240,10 +241,10 @@ export const checkResetPasswordAuthNumber = async (
       '/mail/reset-password-verification',
       resetPasswordVerificationRequestDto,
     );
-    return 0;
+    return response;
   } catch (e) {
-    console.log('여기는 비번재설정 인증번호 확인 함수', e.response.data);
-    return e.response.data;
+    console.log('여기는 checkResetPasswordAuthNumber 함수', e.response.data);
+    return e.response;
   }
 };
 export const checkNewPassword = async (
@@ -254,11 +255,11 @@ export const checkNewPassword = async (
       '/auth/check-password',
       resetPasswordRequestDto,
     );
-    console.log('여긴 비번 중복 확인 함수', response.data.status);
-    return 0;
+    console.log('여긴 checkNewPassword 함수', response.data.status);
+    return response;
   } catch (e) {
-    console.log('여긴 비번 중복 확인 함수', e.response.data.status);
-    return e.response.data.status;
+    console.log('여긴 checkNewPassword 함수', e.response.data.status);
+    return e.response;
   }
 };
 export const resetPassword = async (
@@ -269,11 +270,11 @@ export const resetPassword = async (
       '/auth/reset-password',
       resetPasswordRequestDto,
     );
-    console.log('여긴 비번재설정 함수', response.data.status);
-    return 0;
+    console.log('여긴 resetPassword 함수', response.data.status);
+    return response;
   } catch (e) {
-    console.log('여긴 비번재설정 함수', e.response.data.status);
-    return e.response.data.status;
+    console.log('여긴 resetPassword 함수', e.response.data.status);
+    return e.response;
   }
 };
 

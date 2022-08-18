@@ -57,7 +57,9 @@ export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isPasswordInCorrect, setIsPasswordInCorrect] = useState<boolean>(false);
+  const [isPasswordInCorrect, setIsPasswordInCorrect] = useState<boolean>(
+    false,
+  );
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
 
@@ -81,14 +83,12 @@ export default function SignInPassword({navigation, route}: Props) {
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
-          <NormalOneLineText style={{marginTop: 25}}>
-            로그인
-          </NormalOneLineText>
+          <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
             <Text
               style={{
                 marginTop: 36,
-                color: isPasswordInCorrect ?  '#E64646': '#A055FF',
+                color: isPasswordInCorrect ? '#E64646' : '#A055FF',
               }}>
               비밀번호
             </Text>
@@ -136,6 +136,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   }}
                   maxLength={25}
                   placeholder="비밀번호"
+                  placeholderTextColor="#A0AAB4"
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   returnKeyType="done"

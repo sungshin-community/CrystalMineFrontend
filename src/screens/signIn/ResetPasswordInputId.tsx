@@ -37,13 +37,15 @@ if (Platform.OS === 'android') {
   StatusBar.setBarStyle('dark-content');
 }
 
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
+const MiddleInputContainerStyle = styled.View`
+  border-bottom-width: 2px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const TextContainer = styled.View`
-  margin: 55px 24px 52px 24px;
+  margin: 55px 0px 52px 0px;
 `;
 
 const styles = StyleSheet.create({
@@ -108,178 +110,13 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
-  return Platform.OS === 'ios' ? (
+  return (
     <>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={10}
-        behavior={'padding'}
-        style={{flex: 1}}>
-        <Container>
-          <ScrollView
-            scrollEnabled={false}
-            keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: '#fff'}}>
-            <TextContainer>
-              <NormalOneLineText>비밀번호 재설정</NormalOneLineText>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Description style={{marginRight: 5.5}}>
-                  수정광산에 가입하신 성신 G-mail 계정을 입력해 주세요.
-                </Description>
-              </View>
-            </TextContainer>
-
-            <View
-              style={{
-                paddingRight: 24,
-                paddingLeft: 24,
-              }}>
-              <View
-                style={[
-                  styles.inputContainer,
-                  {
-                    borderColor:
-                      isNotExisted || isBlackList
-                        ? '#E64646'
-                        : isFocused
-                        ? '#A055FF'
-                        : '#D7DCE6',
-                  },
-                ]}>
-                <TextInput
-                  autoFocus={true}
-                  style={{
-                    width: '65%',
-                    fontSize: 21,
-                    fontFamily: 'SpoqaHanSansNeo-Regular',
-                    paddingBottom: 7,
-                    color: '#222222',
-                  }}
-                  onFocus={(e: any) => {
-                    onIdFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onIdFocusOut();
-                  }}
-                  onChangeText={(value: string) => {
-                    setStudentId(value);
-                    setIsNotExisted(false);
-                    if (value.length === 40)
-                      Toast.show(
-                        '학번을 정확하게 입력하여 주세요.',
-                        Toast.SHORT,
-                      );
-                  }}
-                  placeholder="아이디"
-                  keyboardType="ascii-capable"
-                  selectionColor="#A055FF"
-                  value={studentId}
-                  maxLength={40}
-                />
-                <Text style={styles.suffix}>@sungshin.ac.kr</Text>
-              </View>
-              <Text style={styles.errorMessage}>
-                {isNotExisted
-                  ? '아이디를 정확하게 입력해 주세요.'
-                  : isBlackList
-                  ? '접근이 불가능한 계정입니다.'
-                  : ''}
-              </Text>
-            </View>
-          </ScrollView>
-          <View
-            style={{
-              bottom: isFocused ? 80 : 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {studentId.length > 0 && isFocused && (
-              <PurpleFullButton
-                text="다음"
-                onClick={async () => {
-                  let check = await sendResetPasswordEmail({
-                    username: studentId,
-                  });
-                  if (check.status === 401) {
-                    navigation.navigate('SplashHome');
-                  } else if (getHundredsDigit(check.status) === 2) {
-                    Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
-                    navigation.navigate(
-                      'ResetPasswordInputRegularMemberAuthNumber',
-                      {
-                        userId: studentId,
-                      },
-                    );
-                  } else if (check.data.code === 'ACCOUNT_NOT_FOUND') {
-                    setIsNotExisted(true);
-                  } else if (check.data.code === 'BLACKLIST_MEMBER') {
-                    setIsBlackList(true);
-                  } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
-                    setIsCoolTime(true);
-                    navigation.navigate('SplashHome');
-                  } else {
-                    navigation.navigate('ErrorScreen');
-                  }
-                }}
-              />
-            )}
-
-            {studentId.length > 0 && !isFocused && (
-              <PurpleRoundButton
-                text="다음"
-                onClick={async () => {
-                  let check = await sendResetPasswordEmail({
-                    username: studentId,
-                  });
-                  if (check.status === 401) {
-                    navigation.navigate('SplashHome');
-                  } else if (getHundredsDigit(check.status) === 2) {
-                    Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
-                    navigation.navigate(
-                      'ResetPasswordInputRegularMemberAuthNumber',
-                      {
-                        userId: studentId,
-                      },
-                    );
-                  } else if (check.data.code === 'ACCOUNT_NOT_FOUND') {
-                    setIsNotExisted(true);
-                  } else if (check.data.code === 'BLACKLIST_MEMBER') {
-                    setIsBlackList(true);
-                  } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
-                    setIsCoolTime(true);
-                    navigation.navigate('SplashHome');
-                  } else {
-                    navigation.navigate('ErrorScreen');
-                  }
-                }}
-              />
-            )}
-
-            {studentId.length === 0 && isFocused && (
-              <DisabledPurpleFullButton text="다음" />
-            )}
-
-            {studentId.length === 0 && !isFocused && (
-              <DisabledPurpleRoundButton text="다음" />
-            )}
-          </View>
-        </Container>
-      </KeyboardAvoidingView>
-      {isCoolTime && (
-        <ModalBottom
-          modalVisible={isCoolTime}
-          setModalVisible={setIsCoolTime}
-          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
-          purpleButtonText="확인"
-          purpleButtonFunc={navigation.navigate('SplashHome')}></ModalBottom>
-      )}
-    </>
-  ) : (
-    <>
-      <Container>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff'}}>
+        keyboardVerticalOffset={90}
+        behavior={Platform.select({ios: 'padding'})}
+        style={{flex: 1, backgroundColor: '#fff'}}>
+        <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>비밀번호 재설정</NormalOneLineText>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -288,52 +125,45 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               </Description>
             </View>
           </TextContainer>
-
-          <View
+          <MiddleInputContainerStyle
             style={{
-              paddingHorizontal: 24,
+              borderColor:
+                isNotExisted || isBlackList
+                  ? '#E64646'
+                  : isFocused
+                  ? '#A055FF'
+                  : '#D7DCE6',
             }}>
-            <View
-              style={[
-                styles.inputContainer,
-                {
-                  borderColor:
-                    isNotExisted || isBlackList
-                      ? '#E64646'
-                      : isFocused
-                      ? '#A055FF'
-                      : '#D7DCE6',
-                },
-              ]}>
-              <TextInput
-                autoFocus={true}
-                style={{
-                  width: '65%',
-                  fontSize: 21,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                  paddingBottom: 7,
-                  color: '#222222',
-                }}
-                onFocus={(e: any) => {
-                  onIdFocus();
-                }}
-                onBlur={(e: any) => {
-                  onIdFocusOut();
-                }}
-                onChangeText={(value: string) => {
-                  setStudentId(value);
-                  setIsNotExisted(false);
-                  if (value.length === 40)
-                    Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
-                }}
-                placeholder="아이디"
-                keyboardType="ascii-capable"
-                selectionColor="#A055FF"
-                value={studentId}
-                maxLength={40}
-              />
-              <Text style={styles.suffix}>@sungshin.ac.kr</Text>
-            </View>
+            <TextInput
+              autoFocus={Platform.OS === 'ios' ? false : true}
+              style={{
+                width: '65%',
+                fontSize: 21,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 7,
+                color: '#222222',
+              }}
+              onFocus={(e: any) => {
+                onIdFocus();
+              }}
+              onBlur={(e: any) => {
+                onIdFocusOut();
+              }}
+              onChangeText={(value: string) => {
+                setStudentId(value);
+                setIsNotExisted(false);
+                if (value.length === 40)
+                  Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
+              }}
+              placeholder="아이디"
+              placeholderTextColor='#A0AAB4'
+              keyboardType="ascii-capable"
+              selectionColor="#A055FF"
+              value={studentId}
+              maxLength={40}
+            />
+            <Text style={styles.suffix}>@sungshin.ac.kr</Text>
+          </MiddleInputContainerStyle>
             <Text style={styles.errorMessage}>
               {isNotExisted
                 ? '아이디를 정확하게 입력해 주세요.'
@@ -341,8 +171,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 ? '접근이 불가능한 계정입니다.'
                 : ''}
             </Text>
-          </View>
         </ScrollView>
+
         <View
           style={{
             bottom: isFocused ? 0 : 34,
@@ -419,7 +249,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
             <DisabledPurpleRoundButton text="다음" />
           )}
         </View>
-      </Container>
+      </KeyboardAvoidingView>
       {isCoolTime && (
         <ModalBottom
           modalVisible={isCoolTime}

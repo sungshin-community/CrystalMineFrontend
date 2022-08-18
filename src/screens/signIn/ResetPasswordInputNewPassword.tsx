@@ -25,6 +25,8 @@ import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 import {checkNewPassword} from '../../common/authApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -54,6 +56,8 @@ type RootStackParamList = {
     previousPassword: string;
   };
   ResetPasswordInputNewPassword: {userId: string};
+  SplashHome: undefined;
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -129,7 +133,7 @@ export default function ResetPasswordInputNewPassword({
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -146,6 +150,11 @@ export default function ResetPasswordInputNewPassword({
                 }
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
+                if (value.length === 25)
+                  Toast.show(
+                    '비밀번호는 25글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
               }}
               maxLength={25}
               placeholder="비밀번호"
@@ -181,17 +190,21 @@ export default function ResetPasswordInputNewPassword({
             <PurpleFullButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await checkNewPassword({
+                let result = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
-                if (result === 0) {
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                     userId: route.params.userId,
                     previousPassword: password,
                   });
-                } else {
+                } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                   setIsChangeable(false);
+                } else {
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />
@@ -200,17 +213,21 @@ export default function ResetPasswordInputNewPassword({
             <PurpleRoundButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await checkNewPassword({
+                let result = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
-                if (result === 0) {
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                     userId: route.params.userId,
                     previousPassword: password,
                   });
-                } else {
+                } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                   setIsChangeable(false);
+                } else {
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />
@@ -253,7 +270,7 @@ export default function ResetPasswordInputNewPassword({
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -270,6 +287,11 @@ export default function ResetPasswordInputNewPassword({
                 }
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
+                if (value.length === 25)
+                  Toast.show(
+                    '비밀번호는 25글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
               }}
               maxLength={25}
               placeholder="비밀번호"
@@ -304,17 +326,21 @@ export default function ResetPasswordInputNewPassword({
             <PurpleFullButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await checkNewPassword({
+                let result = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
-                if (result === 0) {
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                     userId: route.params.userId,
                     previousPassword: password,
                   });
-                } else {
+                } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                   setIsChangeable(false);
+                } else {
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />
@@ -323,17 +349,21 @@ export default function ResetPasswordInputNewPassword({
             <PurpleRoundButton
               text="비밀번호 재설정"
               onClick={async () => {
-                let result: number = await checkNewPassword({
+                let result = await checkNewPassword({
                   username: route.params.userId,
                   password: password,
                 });
-                if (result === 0) {
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('ResetPasswordInputNewPasswordConfirm', {
                     userId: route.params.userId,
                     previousPassword: password,
                   });
-                } else {
+                } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                   setIsChangeable(false);
+                } else {
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />

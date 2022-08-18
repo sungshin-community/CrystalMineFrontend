@@ -130,126 +130,158 @@ export default function RegularMemberAuth({navigation}: Props) {
   }, [resendButtonDisabledTime]);
 
   return (
-    <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
-      <View style={{flex: 1}}>
-        <View style={{marginTop: 37, marginLeft: 24}}>
-          <TwoLineTitle
-            firstLineText="성신 G-mail 로 전송된"
-            secondLineText="인증번호를 입력해주세요"
+    <>
+      <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
+        <View style={{flex: 1}}>
+          <View style={{marginTop: 37, marginLeft: 24}}>
+            <TwoLineTitle
+              firstLineText="성신 G-mail 로 전송된"
+              secondLineText="인증번호를 입력해주세요"
+            />
+          </View>
+          <CodeField
+            ref={ref}
+            {...props}
+            value={value}
+            onChangeText={value => {
+              setValue(value);
+              if (value.length !== 6) setIsIncorrect(false);
+            }}
+            cellCount={CELL_COUNT}
+            rootStyle={styles.codeFieldRoot}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({index, symbol, isFocused}) => (
+              <View
+                onLayout={getCellOnLayoutHandler(index)}
+                key={index}
+                style={[
+                  styles.cellRoot,
+                  isFocused && styles.focusCell,
+                  IsIncorrect && styles.focusCellIncorrect,
+                  value.length !== 6 && styles.cellRoot,
+                  value.length !== 6 && isFocused && styles.focusCell,
+                ]}>
+                <Text style={styles.cellText}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              </View>
+            )}
           />
-        </View>
-        <CodeField
-          ref={ref}
-          {...props}
-          value={value}
-          onChangeText={value => {
-            setValue(value);
-            if (value.length !== 6) setIsIncorrect(false);
-          }}
-          cellCount={CELL_COUNT}
-          rootStyle={styles.codeFieldRoot}
-          keyboardType="number-pad"
-          textContentType="oneTimeCode"
-          renderCell={({index, symbol, isFocused}) => (
-            <View
-              onLayout={getCellOnLayoutHandler(index)}
-              key={index}
-              style={[
-                styles.cellRoot,
-                isFocused && styles.focusCell,
-                IsIncorrect && styles.focusCellIncorrect,
-                value.length !== 6 && styles.cellRoot,
-                value.length !== 6 && isFocused && styles.focusCell,
-              ]}>
-              <Text style={styles.cellText}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            </View>
-          )}
-        />
-        {IsIncorrect && value.length == 6 ? (
           <View style={styles.errorMessageContainer}>
             <Text style={styles.errorMessage}>
-              인증번호를 정확하게 입력해 주세요
+              {IsIncorrect && value.length == 6
+                ? '인증번호를 정확하게 입력해 주세요.'
+                : ''}
             </Text>
           </View>
-        ) : (
-          <View style={styles.errorMessageContainer}>
-            <Text style={styles.errorMessage}></Text>
-          </View>
-        )}
-
-        {resendButtonDisabledTime > 0 ? (
-          <></>
-        ) : (
-          <>
-            {/* <View
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                top: 0,
-                left: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                zIndex: 999,
-              }}
-            /> */}
-            <ModalBottom
-              modalVisible={!modalVisible}
-              setModalVisible={setModalVisible}
-              content={`인증번호 입력 시간이 초과되어,\n 인증번호를 재전송합니다.`}
-              purpleButtonText="인증번호 재전송"
-              purpleButtonFunc={onResendOtpButtonPress}
-              whiteButtonText="인증 취소"
-              whiteButtonFunc={() => navigation.navigate('GlobalNavbar')}
-            />
-          </>
-        )}
-        {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
-          parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
+          {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
+            parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
+              <View style={styles.timerContainer}>
+                <Text style={styles.timerText}>
+                  0{parseInt(String(resendButtonDisabledTime / 60))}:
+                  {parseInt(String(resendButtonDisabledTime % 60))}
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.timerContainer}>
+                <Text style={styles.timerText}>
+                  {parseInt(String(resendButtonDisabledTime / 60))}:0
+                  {parseInt(String(resendButtonDisabledTime % 60))}
+                </Text>
+              </View>
+            )
+          ) : parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
             <View style={styles.timerContainer}>
               <Text style={styles.timerText}>
-                0{parseInt(String(resendButtonDisabledTime / 60))}:
-                {parseInt(String(resendButtonDisabledTime % 60))}
+                00:{parseInt(String(resendButtonDisabledTime % 60))}
               </Text>
             </View>
           ) : (
             <View style={styles.timerContainer}>
               <Text style={styles.timerText}>
-                {parseInt(String(resendButtonDisabledTime / 60))}:0
-                {parseInt(String(resendButtonDisabledTime % 60))}
+                00:0{parseInt(String(resendButtonDisabledTime % 60))}
               </Text>
             </View>
-          )
-        ) : parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerText}>
-              00:{parseInt(String(resendButtonDisabledTime % 60))}
-            </Text>
-          </View>
-        ) : (
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerText}>
-              00:0{parseInt(String(resendButtonDisabledTime % 60))}
-            </Text>
-          </View>
-        )}
+          )}
 
-        <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-        <TouchableWithoutFeedback
-          onPress={async () => {
-            let result: boolean = await sendEmail();
-            if (result) {
-              Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
-              console.log('이메일 재발송 성공');
-            } else {
-              console.log('이메일 재발송 실패');
-            }
+          <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
+          <TouchableWithoutFeedback
+            onPress={async () => {
+              let result: boolean = await sendEmail();
+              if (result) {
+                Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+                console.log('이메일 재발송 성공');
+              } else {
+                console.log('이메일 재발송 실패');
+              }
+            }}>
+            <Text style={styles.resent}>인증번호 재전송</Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View
+          style={{
+            paddingBottom: isFocused ? 0 : 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#FFFFFF',
           }}>
-          <Text style={styles.resent}>인증번호 재전송</Text>
-        </TouchableWithoutFeedback>
-      </View>
-
+          {value.length === 6 && isFocused && (
+            <PurpleFullButton
+              text="인증 완료"
+              onClick={async () => {
+                const result: number = await checkAuthNumber(value);
+                if (result === 0) {
+                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                } else if (typeof result.data.attemptCount === 'number') {
+                  setTryCnt(5 - result.data.attemptCount);
+                  setIsIncorrect(true);
+                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                  {
+                    setIsCoolTime(true);
+                    navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                  }
+                }
+              }}></PurpleFullButton>
+          )}
+          {value.length === 6 && !isFocused && (
+            <PurpleRoundButton
+              text="인증 완료"
+              onClick={async () => {
+                const result: number = await checkAuthNumber(value);
+                if (result === 0) {
+                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                } else if (typeof result.data.attemptCount === 'number') {
+                  setTryCnt(5 - result.data.attemptCount);
+                  setIsIncorrect(true);
+                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setIsCoolTime(true);
+                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                }
+              }}></PurpleRoundButton>
+          )}
+          {value.length < 6 && isFocused && (
+            <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
+          )}
+          {value.length < 6 && !isFocused && (
+            <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
+          )}
+        </View>
+      </SafeAreaView>
+      {resendButtonDisabledTime === 0 && (
+        <ModalBottom
+          modalVisible={!modalVisible}
+          setModalVisible={setModalVisible}
+          content={`인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.`}
+          purpleButtonText="인증번호 재전송"
+          purpleButtonFunc={onResendOtpButtonPress}
+          whiteButtonText="인증 취소"
+          whiteButtonFunc={() => navigation.navigate('GlobalNavbar')}
+        />
+      )}
       {tryCnt === 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
@@ -266,57 +298,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="확인"
           purpleButtonFunc={gotoHome}></ModalBottom>
       )}
-      <View
-        style={{
-          paddingBottom: isFocused ? 0 : 15,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#FFFFFF',
-        }}>
-        {value.length === 6 && isFocused && (
-          <PurpleFullButton
-            text="인증 완료"
-            onClick={async () => {
-              const result: number = await checkAuthNumber(value);
-              if (result === 0) {
-                Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-              } else if (typeof result.data.attemptCount === 'number') {
-                setTryCnt(5 - result.data.attemptCount);
-                setIsIncorrect(true);
-              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                {
-                  setIsCoolTime(true);
-                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-                }
-              }
-            }}></PurpleFullButton>
-        )}
-        {value.length === 6 && !isFocused && (
-          <PurpleRoundButton
-            text="인증 완료"
-            onClick={async () => {
-              const result: number = await checkAuthNumber(value);
-              if (result === 0) {
-                Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-              } else if (typeof result.data.attemptCount === 'number') {
-                setTryCnt(5 - result.data.attemptCount);
-                setIsIncorrect(true);
-              } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                  setIsCoolTime(true);
-                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});             
-              }
-            }}></PurpleRoundButton>
-        )}
-        {value.length < 6 && isFocused && (
-          <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
-        )}
-        {value.length < 6 && !isFocused && (
-          <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
-        )}
-      </View>
-    </SafeAreaView>
+    </>
   );
 }
 const styles = StyleSheet.create({
