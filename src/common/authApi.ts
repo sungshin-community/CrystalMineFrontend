@@ -79,6 +79,7 @@ export const getMajorList = async () => {
   const response = await client.get<Response<Major[]>>('/auth/departments');
   return response.data.data;
 };
+
 export const register = async (signUpRequestDto: SignUpRequestDto) => {
   console.log(signUpRequestDto);
   try {
@@ -95,10 +96,10 @@ export const register = async (signUpRequestDto: SignUpRequestDto) => {
       'refreshToken',
       response.data.data.tokenDto.refreshToken,
     );
-    return true;
+    return response;
   } catch (e) {
     console.log('여기는 register 함수', e.response);
-    return false;
+    return e.response;
   }
 };
 

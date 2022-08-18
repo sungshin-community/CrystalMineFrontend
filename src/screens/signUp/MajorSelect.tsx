@@ -20,6 +20,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, register} from '../../common/authApi';
 import Major from '../../classes/Major';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -63,12 +64,8 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   SignUpComplete: {studentId: number};
-  MajorSelect: {
-    userId: string;
-    password: string;
-    nickname: string;
-    agreementIds: number[];
-  };
+  SplashHome: undefined;
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -88,7 +85,6 @@ export default function MajorSelect({navigation, route}: Props) {
   const selectMajor = (major: Major) => {
     setSelectedMajorId(major.id);
   };
-
   const modalBody = (
     <>
       <View style={styles.paragraph}>
@@ -167,13 +163,20 @@ export default function MajorSelect({navigation, route}: Props) {
                   password: route.params.password,
                   nickname: route.params.nickname,
                   departmentId: selectedMajorId,
-                  agreementIds: route.params.agreementIds,
                 });
-                console.log(result);
-                if (result) {
-                  navigation.reset({ routes: [{ name: 'SignUpComplete', params: { studentId: route.params.userId }}]});
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
+                  navigation.reset({
+                    routes: [
+                      {
+                        name: 'SignUpComplete',
+                        params: {studentId: route.params.userId},
+                      },
+                    ],
+                  });
                 } else {
-                  console.log('회원가입 실패');
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />
