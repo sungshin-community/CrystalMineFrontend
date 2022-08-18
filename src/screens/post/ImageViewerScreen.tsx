@@ -9,6 +9,7 @@ import Toast from 'react-native-simple-toast';
 import { WhiteCancelButton } from "../../../resources/icon/Cancel";
 import DownloadIcon from "../../../resources/icon/DownloadIcon";
 import { fontMedium } from "../../common/font";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Props {
   imageUrls: {url: string}[];
@@ -70,12 +71,13 @@ const ImageViewerScreen = () => {
               top: 0,
               flexDirection: 'row',
               width: '100%',
-              height: 70,
+              height: Platform.OS === 'ios' ? 100 : 70,
               backgroundColor: 'rgba(0, 0, 0, 0.3)',
               zIndex: 10,
               alignItems: 'center',
               justifyContent: 'space-between',
-              paddingHorizontal: 28
+              paddingHorizontal: 28,
+              paddingTop: Platform.OS === 'ios' ?  50 : 0
             }}
           >
             <Pressable hitSlop={20} onPress={() => navigation.goBack()}>
@@ -98,7 +100,7 @@ const ImageViewerScreen = () => {
         enableSwipeDown={true}
         onSwipeDown={() => navigation.goBack()}
         onClick={() => setIsHeaderVisible(!isHeaderVisible)}
-      />
+        />
     </>
   )
 }
