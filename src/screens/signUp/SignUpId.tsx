@@ -178,7 +178,7 @@ export default function SignUpId({navigation, route}: Props) {
                     setIsDuplicate(false);
                     if (value.length === 40)
                       Toast.show(
-                        '아이디는 40글자까지만 입력 가능합니다.',
+                        '학번을 정확하게 입력하여 주세요.',
                         Toast.SHORT,
                       );
                   }}
@@ -330,7 +330,7 @@ export default function SignUpId({navigation, route}: Props) {
                   setIsDuplicate(false);
                   if (value.length === 40)
                     Toast.show(
-                      '아이디는 40글자까지만 입력 가능합니다.',
+                      '학번을 정확하게 입력하여 주세요.',
                       Toast.SHORT,
                     );
                 }}
