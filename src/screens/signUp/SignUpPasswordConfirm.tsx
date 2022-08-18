@@ -48,8 +48,12 @@ const MiddleInputContainerStyle = styled.View`
 `;
 
 type RootStackParamList = {
-  SignUpNickname: {userId: string; password: string; agreementIds: number[];};
-  SignUpPasswordConfirm: {userId: string; previousPassword: string; agreementIds: number[];};
+  SignUpNickname: {userId: string; password: string; agreementIds: number[]};
+  SignUpPasswordConfirm: {
+    userId: string;
+    previousPassword: string;
+    agreementIds: number[];
+  };
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -79,113 +83,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
     setShowPassword(!showPassword);
   };
 
-  return Platform.OS === 'ios' ? (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={10}
-      behavior={'padding'}
-      style={{flex: 1}}>
-      <View
-        style={{
-          width: (Dimensions.get('window').width / 7) * 4,
-          height: 4,
-          backgroundColor: '#A055FF',
-        }}
-      />
-      <Container>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff', marginHorizontal: 24}}>
-          <TextContainer>
-            <TwoLineTitle
-              firstLineText="비밀번호를"
-              secondLineText="한번 더 입력해주세요"
-            />
-          </TextContainer>
-          <MiddleInputContainerStyle
-            style={{
-              borderColor: isWrong
-                ? '#ff0000'
-                : isFocused
-                ? '#A055FF'
-                : '#D7DCE6',
-            }}>
-            <TextInput
-              // autoFocus={true}
-              style={{
-                width: '93%',
-                fontSize: 21,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                paddingBottom: 7,
-                color: '#222222'
-              }}
-              onFocus={(e: any) => {
-                onInputFocus();
-              }}
-              onBlur={(e: any) => {
-                onInputFocusOut();
-              }}
-              onChangeText={(value: string) => {
-                if (value.length > 0) {
-                  setIsWrong(true);
-                }
-                validatePassword(value);
-              }}
-              maxLength={25}
-              placeholder="비밀번호"
-              placeholderTextColor="#A0AAB4"
-              keyboardType="default"
-              secureTextEntry={!showPassword}
-              autoCapitalize="none"
-              returnKeyType="done"
-              selectionColor="#A055FF"
-            />
-            {showPassword ? (
-              <PasswordShow onPress={letShowPassword} />
-            ) : (
-              <PasswordNotShow onPress={letShowPassword} />
-            )}
-          </MiddleInputContainerStyle>
-          {isWrong && !isEqual && (
-            <CautionText text="비밀번호를 정확하게 입력해 주세요." />
-          )}
-        </ScrollView>
-        <View
-          style={{
-            bottom: isFocused ? 80 : 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {isEqual && isFocused && (
-            <PurpleFullButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SignUpNickname', {
-                  userId: route.params.userId,
-                  password: route.params.previousPassword,
-                  agreementIds: route.params.agreementIds
-                })
-              }
-            />
-          )}
-          {isEqual && !isFocused && (
-            <PurpleRoundButton
-              text="다음"
-              onClick={() =>
-                navigation.navigate('SignUpNickname', {
-                  userId: route.params.userId,
-                  password: route.params.previousPassword,
-                  agreementIds: route.params.agreementIds
-                })
-              }
-            />
-          )}
-          {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
-          {!isEqual && !isFocused && <DisabledPurpleRoundButton text="다음" />}
-        </View>
-      </Container>
-    </KeyboardAvoidingView>
-  ) : (
+  return (
     <>
       <View
         style={{
@@ -194,11 +92,11 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           backgroundColor: '#A055FF',
         }}
       />
-      <Container>
-        <ScrollView
-          scrollEnabled={false}
-          keyboardShouldPersistTaps="handled"
-          style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={90}
+        behavior={Platform.select({ios: 'padding'})}
+        style={{flex: 1, backgroundColor: '#fff'}}>
+        <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <TwoLineTitle
               firstLineText="비밀번호를"
@@ -214,13 +112,13 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={true}
+              autoFocus={Platform.OS === 'ios' ? false : true}
               style={{
                 width: '93%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -266,7 +164,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 navigation.navigate('SignUpNickname', {
                   userId: route.params.userId,
                   password: route.params.previousPassword,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 })
               }
             />
@@ -278,7 +176,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 navigation.navigate('SignUpNickname', {
                   userId: route.params.userId,
                   password: route.params.previousPassword,
-                  agreementIds: route.params.agreementIds
+                  agreementIds: route.params.agreementIds,
                 })
               }
             />
@@ -286,7 +184,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           {!isEqual && isFocused && <DisabledPurpleFullButton text="다음" />}
           {!isEqual && !isFocused && <DisabledPurpleRoundButton text="다음" />}
         </View>
-      </Container>
+      </KeyboardAvoidingView>
     </>
   );
 }
