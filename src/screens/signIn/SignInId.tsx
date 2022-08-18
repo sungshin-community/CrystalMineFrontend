@@ -65,7 +65,7 @@ export default function SignInId({navigation}: Props) {
 
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={10}
+      keyboardVerticalOffset={90}
       behavior={'padding'}
       style={{flex: 1}}>
       <ScrollView
@@ -124,7 +124,7 @@ export default function SignInId({navigation}: Props) {
 
       <View
         style={{
-          paddingBottom: isIdFocused ? 0 : 0,
+          paddingBottom: isIdFocused ? 0 : 34,
           backgroundColor: '#FFFFFF',
           justifyContent: 'center',
           alignItems: 'center',

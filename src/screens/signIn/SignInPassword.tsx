@@ -76,7 +76,7 @@ export default function SignInPassword({navigation, route}: Props) {
 
   return Platform.OS === 'ios' ? (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={10}
+      keyboardVerticalOffset={90}
       behavior={'padding'}
       style={{flex: 1}}>
       <ScrollView

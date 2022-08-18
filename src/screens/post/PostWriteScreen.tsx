@@ -41,7 +41,7 @@ const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
-  WikiTab: undefined;
+  WikiTab: {boardId: number};
   DirectionAgreeScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -116,9 +116,13 @@ function PostWriteScreen({navigation, route}: Props) {
     if (result) {
       setIsLoading(false);
       if (boardId >= 5 && boardId < 10) {
+        navigation.pop();
+        navigation.pop();
         navigation.navigate('WikiTab', {boardId: boardId});
       } else {
-        navigation.navigate('PostListScreen', {boardId});
+        navigation.pop();
+        navigation.pop();
+        navigation.navigate('PostListScreen', {boardId: boardId});
       }
       Toast.show('게시글이 등록되었습니다.', Toast.SHORT);
     }

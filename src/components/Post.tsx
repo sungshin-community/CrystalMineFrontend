@@ -33,7 +33,7 @@ import {useEffect} from 'react';
 import {BackHandler} from 'react-native';
 import {fontMedium, fontRegular} from '../common/font';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
-import Markdown from 'react-native-markdown-display';
+import Autolink from 'react-native-autolink';
 
 interface Props {
   post: any;
@@ -95,6 +95,8 @@ function Post({
                 Toast.SHORT,
               );
               // navigation.goBack();
+              navigation.pop();
+              navigation.pop();
               navigation.navigate('PostListScreen', {boardId: data.boardId});
               console.log('게시글 삭제 성공');
             }
@@ -187,7 +189,11 @@ function Post({
           </Text>
         )}
         <View style={styles.postBody}>
-          <Text style={fontRegular}>{data?.content}</Text>
+          <Text style={[fontRegular, {fontSize: 14, color: '#222222'}]}>
+            <Autolink
+              text={data ? (data.content ? data.content : "") : ""}
+            />
+          </Text>
         </View>
         <Text
           style={[

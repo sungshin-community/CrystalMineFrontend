@@ -7,6 +7,7 @@ import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import { MyPostContentDto } from '../classes/board/MyPostDto';
+import { fontRegular } from '../common/font';
 
 interface Props {
   post: MyPostContentDto;
@@ -20,7 +21,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
       <View>
         <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
           <SmallBoard style={{marginLeft: 11}} />
-          <Text style={{color: '#87919B', marginLeft: 8}}>{post.boardName}</Text>
+          <Text style={[{color: '#87919B', marginLeft: 8, fontSize: 14}, fontRegular]}>{post.boardName}</Text>
           {deleteMode && (
             <View style={{flexDirection: 'row',
                 flex: 1,
@@ -40,7 +41,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
       {post.hasTitle && <Text style={styles.titleText}>{post.title}</Text>}
-      <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content]}>{post.content}</Text>
+      <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
       <View style={styles.icon}>
         {post.isLiked ? <PostLike /> : <PostUnlike />}
         <Text style={[styles.textSmall, styles.iconCount]}>
@@ -81,8 +82,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   text: {
-    fontSize: 15,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 14
   },
   textSmall: {
     fontSize: 13,

@@ -201,7 +201,7 @@ export default function SignUpId({navigation, route}: Props) {
           </ScrollView>
           <View
             style={{
-              bottom: isFocused ? 0 : 14,
+              bottom: isFocused ? 0 : 10,
               justifyContent: 'center',
               alignItems: 'center',
             }}>

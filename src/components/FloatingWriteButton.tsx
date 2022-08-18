@@ -17,7 +17,6 @@ const StyledFloatingButton = (props: any) => (
     width="80"
     height="80"
     viewBox="0 0 80 80"
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}>
     <Circle cx="40" cy="37" r="30" fill="#A055FF" />
@@ -30,6 +29,7 @@ const StyledFloatingButton = (props: any) => (
 const FloatingWriteButton = ({ onPress }: any) => {
   return (
     <TouchableOpacity
+      hitSlop={{top: 20, right: 20, left: 20, bottom: 20}}
       activeOpacity={0.5}
       onPress={onPress}
       style={styles.touchableOpacityStyle}
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     right: 50,
     bottom: 50,
+    zIndex: 9999
   },
 
   floatingButtonStyle: {

@@ -12,6 +12,7 @@ import { ModalBottom } from '../../components/ModalBottom';
 import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
 import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../resources/icon/SortIcon';
+import { fontRegular } from '../../common/font';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -165,14 +166,14 @@ export default function MyPostList({navigation, route}: Props) {
           backgroundColor: '#F6F6F6'
         }}>
         <Text
-          style={{
+          style={[{
             color: '#6E7882',
             fontSize: 15,
             fontFamily: 'SpoqaHanSansNeo-Regular',
             textAlign: 'center',
             lineHeight: 22.5,
             marginTop: 20,
-          }}>
+          }, fontRegular]}>
           {isLoading ? "" : "아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요."}
         </Text>
       </View> :

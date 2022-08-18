@@ -8,7 +8,7 @@ export const ImageDeleteButton = ({imageUri, deleteImage}: Props) => {
   return (
     <View style={{width: 75, height: 70, marginRight: 5, marginTop: 5}}>
       <Image source={{uri: imageUri}} style={styles.imageBox} />
-      <Pressable onPress={() => deleteImage(imageUri)} style={{ zIndex: 10, position: 'absolute', right: 0, top: -5 }}>
+      <Pressable onPress={() => deleteImage(imageUri)} style={{ zIndex: 10, position: 'absolute', right: 0, top: -5 }} hitSlop={20}>
         <DeleteImageIcon/>
       </Pressable>
     </View>

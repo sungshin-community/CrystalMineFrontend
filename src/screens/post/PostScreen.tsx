@@ -57,12 +57,13 @@ const PostScreen = ({navigation, route}: Props) => {
   const [componentModalVisible, setComponentModalVisible] = useState<boolean>(
     false,
   );
+  let anonymous: boolean = true;
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
     if (isRecomment)
-      addRecommentFunc(route.params.postId, parentId, newComment, isAnonymous);
-    else addCommentFunc(route.params.postId, newComment, isAnonymous);
+      addRecommentFunc(route.params.postId, parentId, newComment, anonymous);
+    else addCommentFunc(route.params.postId, newComment, anonymous);
   }, [newComment]);
 
   useEffect(() => {
@@ -102,7 +103,7 @@ const PostScreen = ({navigation, route}: Props) => {
         Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.SHORT);
         navigation.goBack();
       } else setPost(postData);
-      const commentData = await getComments(route.params.postId, 0);
+      const commentData = await getComments(route.params.postId);
       setComments(commentData);
       setIsLoading(false);
     }
@@ -113,16 +114,16 @@ const PostScreen = ({navigation, route}: Props) => {
     const result = await setPostLike(postId);
     const postData = await getPosts(route.params.postId);
     setPost(postData);
-    const commentData = await getComments(route.params.postId, 0);
-    setComments(commentData);
+    // const commentData = await getComments(route.params.postId);
+    // setComments(commentData);
   };
   // 게시글 스크랩
   const handlePostScrap = async (postId: number) => {
     const result = await setPostScrap(postId);
     const postData = await getPosts(route.params.postId);
     setPost(postData);
-    const commentData = await getComments(route.params.postId, 0);
-    setComments(commentData);
+    // const commentData = await getComments(route.params.postId);
+    // setComments(commentData);
   };
   // 게시글 삭제
   const handlePostDelete = async (postId: number) => {
@@ -152,8 +153,8 @@ const PostScreen = ({navigation, route}: Props) => {
       setNewComment('');
       const postData = await getPosts(route.params.postId);
       setPost(postData);
-      const commentData = await getComments(route.params.postId, 0);
-      await setComments(commentData);
+      const commentData = await getComments(route.params.postId);
+      setComments(commentData);
       setIsLoading(false);
       scrollViewRef.current?.scrollToEnd({animated: true});
     },
@@ -181,7 +182,7 @@ const PostScreen = ({navigation, route}: Props) => {
       setNewComment('');
       const postData = await getPosts(route.params.postId);
       setPost(postData);
-      const commentData = await getComments(route.params.postId, 0);
+      const commentData = await getComments(route.params.postId);
       setComments(commentData);
       setIsLoading(false);
       const index = comments?.findIndex(c => c.id === parentId);
@@ -202,7 +203,7 @@ const PostScreen = ({navigation, route}: Props) => {
     const result = await setCommentLike(commentId);
     const postData = await getPosts(route.params.postId);
     setPost(postData);
-    const commentData = await getComments(route.params.postId, 0);
+    const commentData = await getComments(route.params.postId);
     setComments(commentData);
   };
   // 댓글, 대댓글 삭제
@@ -210,7 +211,7 @@ const PostScreen = ({navigation, route}: Props) => {
     const result = await deleteComment(commentId);
     const postData = await getPosts(route.params.postId);
     setPost(postData);
-    const commentData = await getComments(route.params.postId, 0);
+    const commentData = await getComments(route.params.postId);
     setComments(commentData);
   };
   // 댓글, 대댓글 신고
@@ -220,7 +221,8 @@ const PostScreen = ({navigation, route}: Props) => {
     detail?: string,
   ) => {
     const result = await reportComment(recommentId, reasonId, detail);
-    const commentData = await getComments(route.params.postId, 0);
+    const commentData = await getComments(route.params.postId);
+    setComments(commentData);
     return result;
   };
   return (
@@ -357,7 +359,7 @@ const PostScreen = ({navigation, route}: Props) => {
               <Text style={{marginRight: 5}}>익명</Text>
               <Pressable
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => setIsAnonymous(!isAnonymous)}>
+                onPress={() => {setIsAnonymous(isAnonymous => !isAnonymous); anonymous = !anonymous;}}>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
             </View>

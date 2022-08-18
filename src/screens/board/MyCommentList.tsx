@@ -12,6 +12,7 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import { ModalBottom } from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../resources/icon/SortIcon';
+import { fontMedium, fontRegular } from '../../common/font';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -208,7 +209,7 @@ export default function MyCommentList({navigation, route}: Props) {
             justifyContent: 'flex-end',
             alignItems: 'center',
             paddingRight: 27}}>
-          <Text style={{marginRight: 9, fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Medium'}}>
+          <Text style={[{marginRight: 9, fontSize: 13}, fontMedium]}>
               {`${myCommentList.filter(c => c.isChecked).length}/${myCommentList.length}`}
             </Text>
           {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
