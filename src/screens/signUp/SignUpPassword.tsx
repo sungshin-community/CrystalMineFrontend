@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-
+import Toast from 'react-native-simple-toast';
 import {
   StatusBar,
   View,
@@ -71,8 +71,7 @@ export default function SignUpPassword({navigation, route}: Props) {
   };
 
   const validatePassword = (password: string) => {
-    let regExp =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
     if (regExp.test(password)) {
       setIsValidate(true);
       setIsWrong(false);
@@ -123,7 +122,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -135,6 +134,11 @@ export default function SignUpPassword({navigation, route}: Props) {
                 value.length > 0 ? setIsWrong(true) : setIsWrong(false);
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
+                if (value.length === 25)
+                  Toast.show(
+                    '비밀번호는 25글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
               }}
               maxLength={25}
               placeholder="비밀번호"
@@ -229,7 +233,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -241,6 +245,11 @@ export default function SignUpPassword({navigation, route}: Props) {
                 value.length > 0 ? setIsWrong(true) : setIsWrong(false);
                 setPassword(value.replace(/\s/g, ''));
                 validatePassword(value);
+                if (value.length === 25)
+                  Toast.show(
+                    '비밀번호는 25글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
               }}
               maxLength={25}
               placeholder="비밀번호"

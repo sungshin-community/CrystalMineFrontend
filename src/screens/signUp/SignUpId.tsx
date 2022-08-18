@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-
 import {
   View,
   TextInput,
@@ -19,7 +18,6 @@ import {
 
 import {NormalOneLineText, Description} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -27,10 +25,12 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {checkEmailConflict, checkBlackList} from '../../common/authApi';
+import {checkEmailConflict} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -176,11 +176,17 @@ export default function SignUpId({navigation, route}: Props) {
                   onChangeText={(value: string) => {
                     setStudentId(value);
                     setIsDuplicate(false);
+                    if (value.length === 40)
+                      Toast.show(
+                        '아이디는 40글자까지만 입력 가능합니다.',
+                        Toast.SHORT,
+                      );
                   }}
                   placeholder="아이디"
                   keyboardType="number-pad"
                   selectionColor="#A055FF"
                   value={studentId}
+                  maxLength={40}
                 />
                 <Text style={styles.suffix}>@sungshin.ac.kr</Text>
               </View>
@@ -322,11 +328,17 @@ export default function SignUpId({navigation, route}: Props) {
                 onChangeText={(value: string) => {
                   setStudentId(value);
                   setIsDuplicate(false);
+                  if (value.length === 40)
+                    Toast.show(
+                      '아이디는 40글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
                 }}
                 placeholder="아이디"
                 keyboardType="number-pad"
                 selectionColor="#A055FF"
                 value={studentId}
+                maxLength={40}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
