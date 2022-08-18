@@ -55,29 +55,34 @@ export default function CertifiedMember({navigation}: Props) {
   };
   letThreeLetter(dDay);
 
-  const expireInComponent = (<View style={{flexDirection: 'row'}}>
-            {dDay.map((day, index) => (
-              <View style={styles.expirationDate} key={index}>
-                <TextInput
-                  key={index}
-                  style={{fontSize: 45, textAlign: 'center', color: '#222222', paddingBottom: 0 }}
-                  editable={false}>
-                  {day}
-                </TextInput>
-              </View>
-            ))}
-            <Text style={[styles.title, fontMedium]}>일 남았습니다.</Text>
-  </View>)
-  
+  const expireInComponent = (
+    <View style={{flexDirection: 'row'}}>
+      {dDay.map((day, index) => (
+        <View style={styles.expirationDate} key={index}>
+          <TextInput
+            key={index}
+            style={{
+              fontSize: 45,
+              textAlign: 'center',
+              color: '#222222',
+              paddingBottom: 0,
+            }}
+            editable={false}>
+            {day}
+          </TextInput>
+        </View>
+      ))}
+      <Text style={[styles.title, fontMedium]}>일 남았습니다.</Text>
+    </View>
+  );
+
   return (
     <>
       <Container>
-       
-          <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
-        
-         {expireInComponent}
-       <View
-          style={{marginTop: 90}}>
+        <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
+
+        {expireInComponent}
+        <View style={{marginTop: 90}}>
           <Description
             style={[
               styles.textDescription,
@@ -92,18 +97,23 @@ export default function CertifiedMember({navigation}: Props) {
         </View>
       </Container>
       <View style={styles.buttonContainer}>
-          <ButtonCenter>
-            <View style={{margin: 16}}>
-              {expireIn > 7 ? (
-                <DisabledPurpleRoundButton text="미리 인증하기" />
-              ) : (
-                <PurpleRoundButton
-                  text="미리 인증하기"
-                  onClick={() => navigation.navigate('DirectionAgreeMyPage', { studentId: user?.username})}
-                />
-              )}
-            </View>
-          </ButtonCenter>
+        <ButtonCenter>
+          <View style={{margin: 16}}>
+            {expireIn > 7 ? (
+              <DisabledPurpleRoundButton text="미리 인증하기" />
+            ) : (
+              <PurpleRoundButton
+                text="미리 인증하기"
+                onClick={() => {
+                  if (user?.username)
+                    navigation.navigate('DirectionAgreeMyPage', {
+                      studentId: user?.username,
+                    });
+                }}
+              />
+            )}
+          </View>
+        </ButtonCenter>
       </View>
     </>
   );
