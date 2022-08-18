@@ -39,11 +39,14 @@ import {
   RectangleUnchecked,
 } from '../../../resources/icon/CheckBox';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
-
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-const PostScreen = ({navigation, route}: Props) => {
+const PostScreen = ({ navigation, route }: Props) => {
+  console.reportErrorsAsExceptions = false;
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
