@@ -110,7 +110,7 @@ export default function ResetPasswordInputNewPassword({
           <TextContainer>
             <NormalOneLineText>새 비밀번호를 입력해주세요.</NormalOneLineText>
             <Description>
-              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
+              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요.
             </Description>
           </TextContainer>
           <MiddleInputContainerStyle
@@ -234,7 +234,7 @@ export default function ResetPasswordInputNewPassword({
           <TextContainer>
             <NormalOneLineText>새 비밀번호를 입력해주세요.</NormalOneLineText>
             <Description>
-              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요
+              영문, 숫자, 특수문자 필수 포함 10자 이상으로 구성해주세요.
             </Description>
           </TextContainer>
           <MiddleInputContainerStyle

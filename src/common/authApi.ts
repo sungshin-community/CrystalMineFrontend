@@ -225,10 +225,10 @@ export const sendResetPasswordEmail = async (
       '/mail/reset-password',
       resetPasswordRequestDto,
     );
-    return 'SEND_RESET_PASSWORD_MAIL_SUCCESS';
+    return response;
   } catch (e) {
     console.log('여기는 비밀번호 재설정 이메일 전송 함수', e.response.data);
-    return e.response.data;
+    return e.response;
   }
 };
 

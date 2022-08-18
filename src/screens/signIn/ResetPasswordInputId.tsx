@@ -29,6 +29,8 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {sendResetPasswordEmail} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -87,6 +89,7 @@ const styles = StyleSheet.create({
 type RootStackParamList = {
   ResetPasswordInputRegularMemberAuthNumber: {userId: string};
   SplashHome: undefined;
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -160,36 +163,29 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   onChangeText={(value: string) => {
                     setStudentId(value);
                     setIsNotExisted(false);
+                    if (value.length === 40)
+                      Toast.show(
+                        '학번을 정확하게 입력하여 주세요.',
+                        Toast.SHORT,
+                      );
                   }}
                   placeholder="아이디"
                   keyboardType="ascii-capable"
                   selectionColor="#A055FF"
                   value={studentId}
+                  maxLength={40}
                 />
                 <Text style={styles.suffix}>@sungshin.ac.kr</Text>
               </View>
-              {isNotExisted && (
-                <Text style={styles.errorMessage}>
-                  아이디를 정확하게 입력해 주세요.
-                </Text>
-              )}
-              {isBlackList && (
-                <Text style={styles.errorMessage}>
-                  접근이 불가능한 계정입니다.
-                </Text>
-              )}
+              <Text style={styles.errorMessage}>
+                {isNotExisted
+                  ? '아이디를 정확하게 입력해 주세요.'
+                  : isBlackList
+                  ? '접근이 불가능한 계정입니다.'
+                  : ''}
+              </Text>
             </View>
           </ScrollView>
-          {isCoolTime && (
-            <ModalBottom
-              modalVisible={isCoolTime}
-              setModalVisible={setIsCoolTime}
-              content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
-              purpleButtonText="확인"
-              purpleButtonFunc={navigation.navigate(
-                'SplashHome',
-              )}></ModalBottom>
-          )}
           <View
             style={{
               bottom: isFocused ? 80 : 0,
@@ -200,10 +196,12 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               <PurpleFullButton
                 text="다음"
                 onClick={async () => {
-                  let check: string = await sendResetPasswordEmail({
+                  let check = await sendResetPasswordEmail({
                     username: studentId,
                   });
-                  if (check === 'SEND_RESET_PASSWORD_MAIL_SUCCESS') {
+                  if (check.status === 401) {
+                    navigation.navigate('SplashHome');
+                  } else if (getHundredsDigit(check.status) === 2) {
                     Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                     navigation.navigate(
                       'ResetPasswordInputRegularMemberAuthNumber',
@@ -211,16 +209,15 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                         userId: studentId,
                       },
                     );
-                  } else if (check.code === 'ACCOUNT_NOT_FOUND') {
+                  } else if (check.data.code === 'ACCOUNT_NOT_FOUND') {
                     setIsNotExisted(true);
-                  } else if (check.code === 'BLACKLIST_MEMBER') {
+                  } else if (check.data.code === 'BLACKLIST_MEMBER') {
                     setIsBlackList(true);
-                  } else if (check.code === 'AUTH_COOL_TIME_LIMIT') {
+                  } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                     setIsCoolTime(true);
                     navigation.navigate('SplashHome');
                   } else {
-                    Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
-                    console.log('비밀번호 재설정 이메일 발송 실패', check);
+                    navigation.navigate('ErrorScreen');
                   }
                 }}
               />
@@ -230,10 +227,12 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               <PurpleRoundButton
                 text="다음"
                 onClick={async () => {
-                  let check: string = await sendResetPasswordEmail({
+                  let check = await sendResetPasswordEmail({
                     username: studentId,
                   });
-                  if (check === 'SEND_RESET_PASSWORD_MAIL_SUCCESS') {
+                  if (check.status === 401) {
+                    navigation.navigate('SplashHome');
+                  } else if (getHundredsDigit(check.status) === 2) {
                     Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                     navigation.navigate(
                       'ResetPasswordInputRegularMemberAuthNumber',
@@ -241,16 +240,15 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                         userId: studentId,
                       },
                     );
-                  } else if (check.code === 'ACCOUNT_NOT_FOUND') {
+                  } else if (check.data.code === 'ACCOUNT_NOT_FOUND') {
                     setIsNotExisted(true);
-                  } else if (check.code === 'BLACKLIST_MEMBER') {
+                  } else if (check.data.code === 'BLACKLIST_MEMBER') {
                     setIsBlackList(true);
-                  } else if (check.code === 'AUTH_COOL_TIME_LIMIT') {
+                  } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                     setIsCoolTime(true);
                     navigation.navigate('SplashHome');
                   } else {
-                    Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
-                    console.log('비밀번호 재설정 이메일 발송 실패', check);
+                    navigation.navigate('ErrorScreen');
                   }
                 }}
               />
@@ -266,6 +264,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
           </View>
         </Container>
       </KeyboardAvoidingView>
+      {isCoolTime && (
+        <ModalBottom
+          modalVisible={isCoolTime}
+          setModalVisible={setIsCoolTime}
+          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={navigation.navigate('SplashHome')}></ModalBottom>
+      )}
     </>
   ) : (
     <>
@@ -317,24 +323,24 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 onChangeText={(value: string) => {
                   setStudentId(value);
                   setIsNotExisted(false);
+                  if (value.length === 40)
+                    Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
                 }}
                 placeholder="아이디"
                 keyboardType="ascii-capable"
                 selectionColor="#A055FF"
                 value={studentId}
+                maxLength={40}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
-            {isNotExisted && (
-              <Text style={styles.errorMessage}>
-                아이디를 정확하게 입력해 주세요.
-              </Text>
-            )}
-            {isBlackList && (
-              <Text style={styles.errorMessage}>
-                접근이 불가능한 계정입니다.
-              </Text>
-            )}
+            <Text style={styles.errorMessage}>
+              {isNotExisted
+                ? '아이디를 정확하게 입력해 주세요.'
+                : isBlackList
+                ? '접근이 불가능한 계정입니다.'
+                : ''}
+            </Text>
           </View>
         </ScrollView>
         <View
@@ -347,22 +353,28 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
             <PurpleFullButton
               text="다음"
               onClick={async () => {
-                let check: string = await sendResetPasswordEmail({
+                let check = await sendResetPasswordEmail({
                   username: studentId,
                 });
-                if (check === 'SEND_RESET_PASSWORD_MAIL_SUCCESS') {
+                if (check.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(check.status) === 2) {
+                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate(
                     'ResetPasswordInputRegularMemberAuthNumber',
                     {
                       userId: studentId,
                     },
                   );
-                } else if (check === 'ACCOUNT_NOT_FOUND') {
+                } else if (check.data.code === 'ACCOUNT_NOT_FOUND') {
                   setIsNotExisted(true);
-                } else if (check === 'BLACKLIST_MEMBER') {
+                } else if (check.data.code === 'BLACKLIST_MEMBER') {
                   setIsBlackList(true);
+                } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setIsCoolTime(true);
+                  navigation.navigate('SplashHome');
                 } else {
-                  console.log('비밀번호 재설정 이메일 발송 실패');
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />
@@ -372,22 +384,28 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                let check: string = await sendResetPasswordEmail({
+                let check = await sendResetPasswordEmail({
                   username: studentId,
                 });
-                if (check === 'SEND_RESET_PASSWORD_MAIL_SUCCESS') {
+                if (check.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(check.status) === 2) {
+                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate(
                     'ResetPasswordInputRegularMemberAuthNumber',
                     {
                       userId: studentId,
                     },
                   );
-                } else if (check === 'ACCOUNT_NOT_FOUND') {
+                } else if (check.data.code === 'ACCOUNT_NOT_FOUND') {
                   setIsNotExisted(true);
-                } else if (check === 'BLACKLIST_MEMBER') {
+                } else if (check.data.code === 'BLACKLIST_MEMBER') {
                   setIsBlackList(true);
+                } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setIsCoolTime(true);
+                  navigation.navigate('SplashHome');
                 } else {
-                  console.log('비밀번호 재설정 이메일 발송 실패');
+                  navigation.navigate('ErrorScreen');
                 }
               }}
             />
@@ -402,6 +420,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
           )}
         </View>
       </Container>
+      {isCoolTime && (
+        <ModalBottom
+          modalVisible={isCoolTime}
+          setModalVisible={setIsCoolTime}
+          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          purpleButtonText="확인"
+          purpleButtonFunc={navigation.navigate('SplashHome')}></ModalBottom>
+      )}
     </>
   );
 }
