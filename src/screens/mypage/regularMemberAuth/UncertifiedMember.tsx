@@ -83,7 +83,7 @@ export default function UncertifiedMember({navigation}: Props) {
             정회원 인증 필요{'\n'}
           </Description>
           <Description style={styles.textDescription}>
-            {user?.email || '포탈로 인증하고 오셔야해유'}
+            {user?.email || 'auth@crystalmine.kr로 \n포탈 시스템 인증 내용을 보내주세요.'}
           </Description>
         </Animatable.Text>
       </Container>
