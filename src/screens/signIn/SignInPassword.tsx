@@ -18,11 +18,11 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {login} from '../../common/authApi';
-
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -132,6 +132,11 @@ export default function SignInPassword({navigation, route}: Props) {
                   } else {
                     setIsValidate(false);
                   }
+                  if (value.length === 25)
+                    Toast.show(
+                      '비밀번호는 25글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
                 }}
                 maxLength={25}
                 placeholder="비밀번호"
@@ -264,6 +269,11 @@ export default function SignInPassword({navigation, route}: Props) {
                   } else {
                     setIsValidate(false);
                   }
+                  if (value.length === 25)
+                    Toast.show(
+                      '비밀번호는 25글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
                 }}
                 maxLength={25}
                 placeholder="비밀번호"

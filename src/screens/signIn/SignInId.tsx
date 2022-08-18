@@ -10,7 +10,6 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-
 import {Description, NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -19,6 +18,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -102,10 +102,16 @@ export default function SignInId({navigation}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setStudentId(value);
+                  if (value.length === 40)
+                    Toast.show(
+                      '아이디는 40글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
                 }}
                 placeholder="아이디"
                 keyboardType="number-pad"
                 value={studentId}
+                maxLength={40}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
@@ -190,10 +196,16 @@ export default function SignInId({navigation}: Props) {
                 }}
                 onChangeText={(value: string) => {
                   setStudentId(value);
+                  if (value.length === 40)
+                    Toast.show(
+                      '아이디는 40글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
                 }}
                 placeholder="아이디"
                 keyboardType="number-pad"
                 value={studentId}
+                maxLength={40}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
             </View>
