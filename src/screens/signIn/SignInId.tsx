@@ -86,7 +86,7 @@ export default function SignInId({navigation}: Props) {
                 {borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'},
               ]}>
               <TextInput
-                autoFocus={true}
+                // autoFocus={true}
                 style={{
                   width: '60%',
                   fontSize: 21,

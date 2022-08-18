@@ -24,6 +24,7 @@ import {
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict} from '../../common/authApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -61,6 +62,8 @@ type RootStackParamList = {
     agreementIds: number[];
   };
   SignUpNickname: {userId: string; password: string; agreementIds: number[]};
+  SplashHome: undefined;
+  ErrorScreen: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -100,16 +103,20 @@ export default function SignUpNickname({navigation, route}: Props) {
           </TextContainer>
           <MiddleInputContainerStyle
             style={{
-              borderColor: isFocused ? '#A055FF' : '#D7DCE6',
+              borderColor: isDuplicate
+                ? '#ff0000'
+                : isFocused
+                ? '#A055FF'
+                : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={true}
+              // autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -148,17 +155,19 @@ export default function SignUpNickname({navigation, route}: Props) {
             <PurpleFullButton
               text="다음"
               onClick={async () => {
-                let result: boolean = await checkNicknameConflict(nickname);
-                if (!result) {
+                let result = await checkNicknameConflict(nickname);
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
+                  navigation.navigate('MajorSelect', {
+                    userId: route.params.userId,
+                    password: route.params.password,
+                    nickname: nickname,
+                    agreementIds: route.params.agreementIds,
+                  });
+                } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                  return;
-                }
-                navigation.navigate('MajorSelect', {
-                  userId: route.params.userId,
-                  password: route.params.password,
-                  nickname: nickname,
-                  agreementIds: route.params.agreementIds,
-                });
+                } else navigation.navigate('ErrorScreen');
               }}
             />
           )}
@@ -167,17 +176,19 @@ export default function SignUpNickname({navigation, route}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                let result: boolean = await checkNicknameConflict(nickname);
-                if (!result) {
+                let result = await checkNicknameConflict(nickname);
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
+                  navigation.navigate('MajorSelect', {
+                    userId: route.params.userId,
+                    password: route.params.password,
+                    nickname: nickname,
+                    agreementIds: route.params.agreementIds,
+                  });
+                } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                  return;
-                }
-                navigation.navigate('MajorSelect', {
-                  userId: route.params.userId,
-                  password: route.params.password,
-                  nickname: nickname,
-                  agreementIds: route.params.agreementIds,
-                });
+                } else navigation.navigate('ErrorScreen');
               }}
             />
           )}
@@ -225,7 +236,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                 fontSize: 21,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 paddingBottom: 7,
-                color: '#222222'
+                color: '#222222',
               }}
               onFocus={(e: any) => {
                 onInputFocus();
@@ -248,11 +259,9 @@ export default function SignUpNickname({navigation, route}: Props) {
               maxLength={10}
             />
           </MiddleInputContainerStyle>
-          {isDuplicate && (
-            <Text style={styles.errorMessage}>
-              사용할 수 없는 닉네임입니다.
-            </Text>
-          )}
+          <Text style={styles.errorMessage}>
+            {isDuplicate && '사용할 수 없는 닉네임입니다.'}
+          </Text>
         </ScrollView>
         <View
           style={{
@@ -264,17 +273,19 @@ export default function SignUpNickname({navigation, route}: Props) {
             <PurpleFullButton
               text="다음"
               onClick={async () => {
-                let result: boolean = await checkNicknameConflict(nickname);
-                if (!result) {
+                let result = await checkNicknameConflict(nickname);
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
+                  navigation.navigate('MajorSelect', {
+                    userId: route.params.userId,
+                    password: route.params.password,
+                    nickname: nickname,
+                    agreementIds: route.params.agreementIds,
+                  });
+                } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                  return;
-                }
-                navigation.navigate('MajorSelect', {
-                  userId: route.params.userId,
-                  password: route.params.password,
-                  nickname: nickname,
-                  agreementIds: route.params.agreementIds,
-                });
+                } else navigation.navigate('ErrorScreen');
               }}
             />
           )}
@@ -283,17 +294,19 @@ export default function SignUpNickname({navigation, route}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                let result: boolean = await checkNicknameConflict(nickname);
-                if (!result) {
+                let result = await checkNicknameConflict(nickname);
+                if (result.status === 401) {
+                  navigation.navigate('SplashHome');
+                } else if (getHundredsDigit(result.status) === 2) {
+                  navigation.navigate('MajorSelect', {
+                    userId: route.params.userId,
+                    password: route.params.password,
+                    nickname: nickname,
+                    agreementIds: route.params.agreementIds,
+                  });
+                } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                  return;
-                }
-                navigation.navigate('MajorSelect', {
-                  userId: route.params.userId,
-                  password: route.params.password,
-                  nickname: nickname,
-                  agreementIds: route.params.agreementIds,
-                });
+                } else navigation.navigate('ErrorScreen');
               }}
             />
           )}

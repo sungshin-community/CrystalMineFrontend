@@ -178,7 +178,7 @@ export default function SignUpId({navigation, route}: Props) {
                     setIsDuplicate(false);
                   }}
                   placeholder="아이디"
-                  keyboardType="ascii-capable"
+                  keyboardType="number-pad"
                   selectionColor="#A055FF"
                   value={studentId}
                 />
@@ -324,7 +324,7 @@ export default function SignUpId({navigation, route}: Props) {
                   setIsDuplicate(false);
                 }}
                 placeholder="아이디"
-                keyboardType="ascii-capable"
+                keyboardType="number-pad"
                 selectionColor="#A055FF"
                 value={studentId}
               />
