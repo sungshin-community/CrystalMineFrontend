@@ -27,7 +27,10 @@ import {
   Unchecked,
   Checked,
 } from '../../../resources/icon/CheckBox';
-import {AgreementContainer, DirectionContainer} from '../../components/HideToggleContainer';
+import {
+  AgreementContainer,
+  DirectionContainer,
+} from '../../components/HideToggleContainer';
 import Agreement, {DirectionAgreement} from '../../classes/Agreement';
 import {
   getAgreements,
@@ -36,19 +39,24 @@ import {
 } from '../../common/authApi';
 import {getContractGuide, getSignUpDirection} from '../../common/contractApi';
 import {ModalBottom} from '../../components/ModalBottom';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: {agreementIds: number[]};
   RegularMemberAuth: undefined;
+  PortalVerificationMethodGuide: undefined;
+  ErrorScreen: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-function DirectionAgree({navigation}: Props) {
+function DirectionAgree({navigation, route}: Props) {
   const [agreements, setAgreements] = useState<Agreement[]>([]);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
   const handleChange = (id: number) => {
-    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
+    const agreementList = agreements.map((a, index) =>
+      index === id ? {...a, checked: !a.checked} : a,
+    );
     setAgreements(agreementList);
   };
 
@@ -115,13 +123,9 @@ function DirectionAgree({navigation}: Props) {
                 {agreements.length > 0 &&
                 agreements.filter(a => a.checked).length ==
                   agreements.length ? (
-                  <RoundChecked
-                    style={styles.wholeAgreeCheckBox}
-                  />
+                  <RoundChecked style={styles.wholeAgreeCheckBox} />
                 ) : (
-                  <RoundUnchecked
-                    style={styles.wholeAgreeCheckBox}
-                  />
+                  <RoundUnchecked style={styles.wholeAgreeCheckBox} />
                 )}
                 <Text
                   style={{
@@ -153,13 +157,27 @@ function DirectionAgree({navigation}: Props) {
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
-                let result: string = await sendEmail();
-                if (result === 'ok') {
-                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
-                  navigation.navigate('RegularMemberAuth');
+                const thisYear = new Date().getFullYear();
+                const studentId = route.params.studentId;
+                let year: number = 0;
+                year = +studentId.substring(0, 4);
+                if (
+                  studentId.length === 8 &&
+                  year >= 2008 &&
+                  year <= thisYear
+                ) {
+                  let result = await sendEmail();
+                  if (getHundredsDigit(result.status) === 2) {
+                    Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+                    navigation.navigate('RegularMemberAuth');
+                  } else if (result.status === 401)
+                    navigation.navigate('SplashHome');
+                  else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                    console.log('이메일 발송 실패');
+                    setIsCoolTime(true);
+                  } else navigation.navigate('ErrorScreen');
                 } else {
-                  console.log('이메일 발송 실패');
-                  setIsCoolTime(true);
+                  navigation.navigate('PortalVerificationMethodGuide');
                 }
               }}
             />

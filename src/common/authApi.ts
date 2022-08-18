@@ -109,11 +109,11 @@ export const sendEmail = async () => {
         },
       },
     );
-    console.log(response.data);
-    return 'ok';
+    console.log('여기는 sendEmail 함수', response.data);
+    return response;
   } catch (e) {
-    console.log('여기는 sendEmail 함수', e.response.data.code);
-    return e.response.data.code;
+    console.log('여기는 sendEmail 함수', e.response.data);
+    return e.response;
   }
 };
 

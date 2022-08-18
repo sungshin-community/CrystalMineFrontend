@@ -24,6 +24,7 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
+import RemoveDataSuryeong from '../../../resources/icon/custom/RemoveDataSuryong';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -116,7 +117,7 @@ export default function SignUpPassword({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={true}
+              // autoFocus={true}
               style={{
                 width: '90%',
                 fontSize: 21,
