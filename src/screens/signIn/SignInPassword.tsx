@@ -22,7 +22,7 @@ import {login} from '../../common/authApi';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
-import { getHundredsDigit } from '../../common/util/statusUtil';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -50,6 +50,7 @@ type RootStackParamList = {
   SignInPassword: {userId: string};
   GlobalNavbar: undefined;
   ErrorScreen: undefined;
+  SplashHome: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInPassword({navigation, route}: Props) {
@@ -58,6 +59,7 @@ export default function SignInPassword({navigation, route}: Props) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(true);
   const [isValidate, setIsValidate] = useState<boolean>(false);
+  const [isBlackList, setIsBlackList] = useState<boolean>(false);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -86,23 +88,34 @@ export default function SignInPassword({navigation, route}: Props) {
         </NormalOneLineText>
 
         <View>
-        <Text style={{marginLeft: 24, marginTop: 36, color: isPasswordCorrect ? '#A055FF' : '#E64646'}}>
+          <Text
+            style={{
+              marginLeft: 24,
+              marginTop: 36,
+              color: isPasswordCorrect ? '#A055FF' : '#E64646',
+            }}>
             비밀번호
           </Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
                 styles.inputContainer,
-                {borderColor: isPasswordFocused ? (isPasswordCorrect ? '#A055FF' : '#E64646') : '#D7DCE6'},
+                {
+                  borderColor: isPasswordFocused
+                    ? isPasswordCorrect
+                      ? '#A055FF'
+                      : '#E64646'
+                    : '#D7DCE6',
+                },
               ]}>
               <TextInput
-                autoFocus={true}
+                // autoFocus={true}
                 style={{
                   fontSize: 21,
                   width: '90%',
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
-                  color: '#222222'
+                  color: '#222222',
                 }}
                 onFocus={(e: any) => {
                   onPasswordFocus();
@@ -134,9 +147,13 @@ export default function SignInPassword({navigation, route}: Props) {
                 <PasswordNotShow onPress={letShowPassword} />
               )}
             </View>
-            {!isPasswordCorrect && <Text style={styles.errorMessage}>
-                아이디 및 비밀번호를 정확하게 입력해주세요.
-              </Text>}
+            <Text style={styles.errorMessage}>
+              {isPasswordCorrect
+                ? '아이디 및 비밀번호를 정확하게 입력해주세요.'
+                : isBlackList
+                ? '접근이 불가능한 계정입니다.'
+                : ''}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -160,34 +177,38 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              const response = await login({username: route.params.userId, password: password});
-              if (getHundredsDigit(response.status) === 2) {
-                navigation.reset({ routes: [{ name: 'GlobalNavbar' }] });
-              }
-              else if (getHundredsDigit(response.status) === 5) {
-                navigation.navigate('ErrorScreen');
-              }
-              else {
-                setIsPasswordCorrect(false)
-              }
+              const response = await login({
+                username: route.params.userId,
+                password: password,
+              });
+              if (response.status === 401) {
+                navigation.navigate('SplashHome');
+              } else if (getHundredsDigit(response.status) === 2) {
+                navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+              } else if (response.data.code === 'INVALID_EMAIL_PASSWORD') {
+                setIsPasswordCorrect(false);
+              } else if (response.data.code == 'BLACKLIST_MEMBER') {
+                setIsBlackList(true);
+              } else navigation.navigate('ErrorScreen');
             }}
           />
         )}
 
         {!isValidate && <DisabledPurpleRoundButton text="다음" />}
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('ResetPasswordInputId')}>
-        <Text
-          style={{
-            paddingBottom: 20,
-            marginTop: 21,
-            fontSize: 13,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            color: '#87929B',
-            textDecorationLine: 'underline',
-          }}>
-          비밀번호를 잊으셨나요?
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('ResetPasswordInputId')}>
+          <Text
+            style={{
+              paddingBottom: 20,
+              marginTop: 21,
+              fontSize: 13,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              color: '#87929B',
+              textDecorationLine: 'underline',
+            }}>
+            비밀번호를 잊으셨나요?
           </Text>
-          </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
       </View>
     </KeyboardAvoidingView>
   ) : (
@@ -200,14 +221,25 @@ export default function SignInPassword({navigation, route}: Props) {
           로그인
         </NormalOneLineText>
         <View>
-          <Text style={{marginLeft: 24, marginTop: 36, color: isPasswordCorrect ? '#A055FF' : '#E64646'}}>
+          <Text
+            style={{
+              marginLeft: 24,
+              marginTop: 36,
+              color: isPasswordCorrect ? '#A055FF' : '#E64646',
+            }}>
             비밀번호
           </Text>
           <View style={{paddingRight: 24, paddingLeft: 24, marginTop: 12}}>
             <View
               style={[
                 styles.inputContainer,
-                {borderColor: isPasswordFocused ? (isPasswordCorrect ? '#A055FF' : '#E64646') : '#D7DCE6'},
+                {
+                  borderColor: isPasswordFocused
+                    ? isPasswordCorrect
+                      ? '#A055FF'
+                      : '#E64646'
+                    : '#D7DCE6',
+                },
               ]}>
               <TextInput
                 autoFocus={true}
@@ -215,7 +247,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   fontSize: 21,
                   width: '90%',
-                  color: '#222222'
+                  color: '#222222',
                 }}
                 onFocus={(e: any) => {
                   onPasswordFocus();
@@ -247,9 +279,13 @@ export default function SignInPassword({navigation, route}: Props) {
                 <PasswordNotShow onPress={letShowPassword} />
               )}
             </View>
-            {!isPasswordCorrect && <Text style={styles.errorMessage}>
-                아이디 및 비밀번호를 정확하게 입력해주세요.
-              </Text>}
+            <Text style={styles.errorMessage}>
+              {isPasswordCorrect
+                ? '아이디 및 비밀번호를 정확하게 입력해주세요.'
+                : isBlackList
+                ? '접근이 불가능한 계정입니다.'
+                : ''}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -264,18 +300,26 @@ export default function SignInPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              const response = await login({username: route.params.userId, password: password});
-              if (getHundredsDigit(response.status) === 2) {
+              const response = await login({
+                username: route.params.userId,
+                password: password,
+              });
+              if (response.status === 401) {
+                navigation.navigate('SplashHome');
+              } else if (getHundredsDigit(response.status) === 2) {
                 navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-              } else {
+              } else if (response.data.code === 'INVALID_EMAIL_PASSWORD') {
                 setIsPasswordCorrect(false);
-              }
+              } else if (response.data.code == 'BLACKLIST_MEMBER') {
+                setIsBlackList(true);
+              } else navigation.navigate('ErrorScreen');
             }}
           />
         )}
 
-          {!isValidate && <DisabledPurpleRoundButton text="다음" />}
-          <TouchableWithoutFeedback onPress={() => navigation.navigate('ResetPasswordInputId')}>
+        {!isValidate && <DisabledPurpleRoundButton text="다음" />}
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('ResetPasswordInputId')}>
           <Text
             style={{
               marginTop: 21,
@@ -286,7 +330,7 @@ export default function SignInPassword({navigation, route}: Props) {
             }}>
             비밀번호를 잊으셨나요?
           </Text>
-          </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
       </View>
     </>
   );

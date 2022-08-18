@@ -92,7 +92,7 @@ export default function SignInId({navigation}: Props) {
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
-                  color: '#222222'
+                  color: '#222222',
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -104,7 +104,7 @@ export default function SignInId({navigation}: Props) {
                   setStudentId(value);
                 }}
                 placeholder="아이디"
-                keyboardType="ascii-capable"
+                keyboardType="number-pad"
                 value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
@@ -180,7 +180,7 @@ export default function SignInId({navigation}: Props) {
                   fontSize: 21,
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                   paddingBottom: 7,
-                  color: '#222222'
+                  color: '#222222',
                 }}
                 onFocus={(e: any) => {
                   onIdFocus();
@@ -192,7 +192,7 @@ export default function SignInId({navigation}: Props) {
                   setStudentId(value);
                 }}
                 placeholder="아이디"
-                keyboardType="ascii-capable"
+                keyboardType="number-pad"
                 value={studentId}
               />
               <Text style={styles.suffix}>@sungshin.ac.kr</Text>
