@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  DirectionAgreeMyPage: undefined;
+  DirectionAgreeMyPage: { studentId: number };
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -93,7 +93,7 @@ export default function ExpiredMember({ navigation }: Props) {
               <PurpleRoundButton
                 text="인증하기"
                 onClick={() => 
-                  navigation.navigate('DirectionAgreeMyPage')
+                  navigation.navigate('DirectionAgreeMyPage', {studentId: user?.username})
                 }
               />
             </View>

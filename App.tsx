@@ -239,7 +239,7 @@ const App = () => {
                 name="PortalVerificationMethodGuide"
                 component={PortalVerificationMethodGuide}
                 options={({navigation}) => ({
-                  title: '메일 인증 방법 안내',
+                  title: '포탈 시스템으로 인증하기',
                   animation: 'slide_from_right',
                   headerTitleAlign: 'center',
                   headerRight: () => (
@@ -1800,7 +1800,7 @@ const App = () => {
                 name="PortalVerificationMethodGuide"
                 component={PortalVerificationMethodGuide}
                 options={({navigation}) => ({
-                  title: '메일 인증 방법 안내',
+                  title: '포탈 시스템으로 인증하기',
                   animation: 'slide_from_right',
                   headerTitleAlign: 'center',
                   headerRight: () => (

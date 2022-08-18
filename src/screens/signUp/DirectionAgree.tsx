@@ -167,7 +167,9 @@ function DirectionAgree({navigation, route}: Props) {
                   year <= thisYear
                 ) {
                   let result = await sendEmail();
-                  if (getHundredsDigit(result.status) === 2) {
+                  if (result.status === 401) {
+                    navigation.navigate('SplashHome');
+                  } else if (getHundredsDigit(result.status) === 2) {
                     Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                     navigation.navigate('RegularMemberAuth');
                   } else if (result.status === 401)
@@ -175,6 +177,10 @@ function DirectionAgree({navigation, route}: Props) {
                   else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                     console.log('이메일 발송 실패');
                     setIsCoolTime(true);
+                  } else if (
+                    result.data.code === 'PORTAL_VERIFICATION_NOT_COMPLETED') {
+                    // 이 로직 탈 경우는 없지만 혹시 모르니 추가함
+                    navigation.navigate('PortalVerificationMethodGuide');
                   } else navigation.navigate('ErrorScreen');
                 } else {
                   navigation.navigate('PortalVerificationMethodGuide');

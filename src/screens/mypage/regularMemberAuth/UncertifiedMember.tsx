@@ -14,7 +14,7 @@ import {PurpleRoundButton, WhiteRoundButton} from '../../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../../components/ModalBottom';
-import { fontBold } from '../../../common/font';
+import {fontBold} from '../../../common/font';
 import {getUser} from '../../../common/myPageApi';
 import User from '../../../classes/User';
 
@@ -38,7 +38,7 @@ const ButtonCenter = styled.View`
 const styles = StyleSheet.create({
   textDescription: {
     fontSize: 15,
-    color: '#87919B'
+    color: '#87919B',
   },
   buttonContainer: {
     backgroundColor: '#ffffff',
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
-  DirectionAgreeMyPage: undefined;
+  DirectionAgreeMyPage: {studentId: number};
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function UncertifiedMember({ navigation }: Props) {
+export default function UncertifiedMember({navigation}: Props) {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
@@ -78,11 +78,12 @@ export default function UncertifiedMember({ navigation }: Props) {
           animation="fadeIn"
           delay={2100}
           style={{marginTop: 90}}>
-          <Description style={[styles.textDescription, fontBold, {marginBottom: 11}]}>
+          <Description
+            style={[styles.textDescription, fontBold, {marginBottom: 11}]}>
             정회원 인증 필요{'\n'}
           </Description>
           <Description style={styles.textDescription}>
-            {user?.username}@sungshin.ac.kr
+            {user?.email || '포탈로 인증하고 오셔야해유'}
           </Description>
         </Animatable.Text>
       </Container>
@@ -92,9 +93,12 @@ export default function UncertifiedMember({ navigation }: Props) {
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="인증하기"
-                onClick={() => 
-                  navigation.navigate('DirectionAgreeMyPage')
-                }
+                onClick={() => {
+                  if (user?.username)
+                    navigation.navigate('DirectionAgreeMyPage', {
+                      studentId: user?.username,
+                    });
+                }}
               />
             </View>
           </ButtonCenter>

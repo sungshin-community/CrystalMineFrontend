@@ -23,11 +23,11 @@ const ButtonContainer = styled.View`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  padding-bottom: 34;
+  padding-bottom: 34px;
 `;
 
 type RootStackParamList = {
-  RegularMemberAuthSelect: { studentId: number };
+  RegularMemberAuthSelect: {studentId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -68,7 +68,11 @@ export default function SignUpComplete({navigation, route}: Props) {
         <Animatable.View animation="fadeIn" delay={2100}>
           <PurpleRoundButton
             text="다음"
-            onClick={() => navigation.navigate('RegularMemberAuthSelect', {studentId: route.params.studentId})}
+            onClick={() =>
+              navigation.navigate('RegularMemberAuthSelect', {
+                studentId: route.params.studentId,
+              })
+            }
           />
         </Animatable.View>
       </ButtonContainer>

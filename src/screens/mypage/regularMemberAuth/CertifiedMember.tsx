@@ -28,7 +28,7 @@ if (Platform.OS === 'android') {
   StatusBar.setBarStyle('dark-content');
 }
 type RootStackParamList = {
-  DirectionAgreeMyPage: undefined;
+  DirectionAgreeMyPage: {studentId: number};
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -87,7 +87,7 @@ export default function CertifiedMember({navigation}: Props) {
             정회원 인증 완료 ({user?.authenticatedDate})
           </Description>
           <Description style={[styles.textDescription]}>
-            {user?.username}@sungshin.ac.kr
+            {user?.email}
           </Description>
         </View>
       </Container>
@@ -99,7 +99,7 @@ export default function CertifiedMember({navigation}: Props) {
               ) : (
                 <PurpleRoundButton
                   text="미리 인증하기"
-                  onClick={() => navigation.navigate('DirectionAgreeMyPage')}
+                  onClick={() => navigation.navigate('DirectionAgreeMyPage', { studentId: user?.username})}
                 />
               )}
             </View>
