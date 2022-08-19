@@ -18,6 +18,10 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Platform, Pressable, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRole} from '../common/authApi';
+import {useState} from 'react';
+import {Authentication} from '../classes/Authentication';
+import {useEffect} from 'react';
+import {getHundredsDigit} from '../common/util/statusUtil';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,19 +33,33 @@ interface Props {
 type RootStackParamList = {
   BoardSearch: undefined;
   TotalSearch: undefined;
+  SplashHome: undefined;
+  ErrorScreen: undefined;
 };
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
 function GlobalNavbar({navigation}: ScreenProps) {
+  const [user, setUser] = useState<Authentication>();
+
   const onSearchPress = async () => {
-    const result = await checkRole();
-    let role = result.data.data.role;
-    if (role === '정회원') {
+    if (user?.isAuthenticated === true && !user?.blacklist) {
       navigation.navigate('TotalSearch');
     } else {
       Toast.show('접근 권한이 없습니다.', Toast.SHORT);
     }
   };
+
+  useEffect(() => {
+    async function init() {
+      const result = await checkRole();
+      if (result.status === 401) {
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(result.status) === 2) {
+        setUser(result.data.data);
+      } else navigation.reset({routes: [{name: 'ErrorScreen'}]});
+    }
+    init();
+  }, []);
 
   return (
     <Tab.Navigator
@@ -97,9 +115,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            const result = await checkRole();
-            let role = result.data.data.role;
-            if (role === '정회원') navigation.navigate('Board');
+            if (user?.isAuthenticated === true && !user?.blacklist)
+              navigation.navigate('Board');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
@@ -136,9 +153,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            const result = await checkRole();
-            let role = result.data.data.role;
-            if (role === '정회원') navigation.navigate('Message');
+
+            if (user?.isAuthenticated === true && !user?.blacklist)
+              navigation.navigate('Message');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
@@ -160,13 +177,13 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Alert"
         component={AlertFragment}
         listeners={({navigation}) => ({
-        tabPress: async e => {
-          e.preventDefault();
-          const result = await checkRole();
-          let role = result.data.data.role;
-          if (role === '정회원') navigation.navigate('Alert');
-          else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-        },
+          tabPress: async e => {
+            e.preventDefault();
+
+            if (user?.isAuthenticated === true && !user?.blacklist)
+              navigation.navigate('Alert');
+            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+          },
         })}
         options={{
           title: '알림',
@@ -186,9 +203,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            const result = await checkRole();
-            let role = result.data.data.role;
-            if (role === '정회원') navigation.navigate('MyPage');
+
+            if (user?.isAuthenticated === true && !user?.blacklist)
+              navigation.navigate('MyPage');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}

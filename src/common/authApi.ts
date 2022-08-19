@@ -15,6 +15,7 @@ import Agreement, {
 } from '../classes/Agreement';
 import TokenReissueDto from '../classes/TokenReissueDto';
 import User from '../classes/User';
+import { Authentication } from '../classes/Authentication';
 
 // 서비스 이용약관
 export const getAgreements = async () => {
@@ -208,7 +209,7 @@ export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
 };
 export const checkRole = async () => {
   try {
-    const response = await client.get<Response<User>>('/user');
+    const response = await client.get<Response<Authentication>>('/user/access');
     return response;
   } catch (e) {
     console.log('여기는 checkRole 함수', e.response);
