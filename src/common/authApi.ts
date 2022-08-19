@@ -184,10 +184,10 @@ export const logout = async () => {
     await AsyncStorage.setItem('uuid', '');
     console.log('uuid', AsyncStorage.getItem('uuid'));
     console.log('여기는 로그아웃 함수', response.data);
-    return response.data;
+    return response;
   } catch (e) {
     console.log('여기는 logout 함수', e.response);
-    return false;
+    return e.response;
   }
 };
 

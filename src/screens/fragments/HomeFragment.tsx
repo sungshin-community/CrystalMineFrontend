@@ -68,7 +68,7 @@ const HomeFragment = ({navigation}: Props) => {
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
   const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
     boolean
-  >();
+  >(false);
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const [user, setUser] = useState<Authentication>();
@@ -127,7 +127,7 @@ const HomeFragment = ({navigation}: Props) => {
       }
       const response = await getAuthentication();
       if (response.status === 401) {
-        navigation.navigate('SplashHome');
+        navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setUser(response.data.data);
         if (
@@ -136,7 +136,7 @@ const HomeFragment = ({navigation}: Props) => {
         ) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
-            navigation.navigate('SplashHome');
+            navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(notification.status) === 2) {
             setNoti(notification.data.data.content);
           } else {
@@ -146,14 +146,14 @@ const HomeFragment = ({navigation}: Props) => {
           const hotBoardData = await getHotBoardContents();
 
           if (pinBoardData.status === 401) {
-            navigation.navigate('SplashHome');
+            navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(pinBoardData.status) === 2) {
             setPinBoardContents(pinBoardData.data.data);
           } else {
             setIsPinBoardError(true);
           }
           if (hotBoardData.status === 401) {
-            navigation.navigate('SplashHome');
+            navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(hotBoardData.status) === 2) {
             setHotBoardContents(hotBoardData.data.data);
           } else {
@@ -674,43 +674,47 @@ const HomeFragment = ({navigation}: Props) => {
               )}
             </View>
           </ScrollView>
-          {blacklistblindModalVisible && (
-            <ModalBottom
-              modalVisible={blacklistblindModalVisible}
-              setModalVisible={setBlacklistblindModalVisible}
-              title={'서비스 이용 제한 안내'}
-              content={blacklistModalContent}
-              isContentCenter={false}
-              purpleButtonText="서비스 이용 방향 보기"
-              purpleButtonFunc={() => {
-                setBlacklistblindModalVisible(!blacklistblindModalVisible);
-                navigation.navigate('InformationUse');
-              }}
-              whiteButtonText="확인 후 로그아웃"
-              whiteButtonFunc={async () => {
-                const result = await logout();
-                navigation.navigate('SplashHome');
-              }}
-            />
-          )}
-          {blindModalVisible && (
-            <ModalBottom
-              modalVisible={blindModalVisible}
-              setModalVisible={setBlindModalVisible}
-              title="블라인드 안내"
-              content={modalBody}
-              isContentCenter={false}
-              purpleButtonText="수정광산 이용 방향 보기"
-              purpleButtonFunc={() => {
-                setBlindModalVisible(!blindModalVisible);
-                navigation.navigate('DirectionAgreeScreen');
-              }}
-              whiteButtonText="확인"
-              whiteButtonFunc={() => {
-                setBlindModalVisible(!blindModalVisible);
-              }}
-            />
-          )}
+          <ModalBottom
+            modalVisible={blacklistblindModalVisible}
+            setModalVisible={setBlacklistblindModalVisible}
+            title={'서비스 이용 제한 안내'}
+            content={blacklistModalContent}
+            isContentCenter={false}
+            purpleButtonText="서비스 이용 방향 보기"
+            purpleButtonFunc={() => {
+              setBlacklistblindModalVisible(false);
+              navigation.navigate('InformationUse');
+            }}
+            whiteButtonText="확인 후 로그아웃"
+            whiteButtonFunc={async () => {
+              const result = await logout();
+              if (result.status === 401) {
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(result.status) === 2) {
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+
+                setBlacklistblindModalVisible(false);
+              } else
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            }}
+          />
+          <ModalBottom
+            modalVisible={blindModalVisible}
+            setModalVisible={setBlindModalVisible}
+            title="블라인드 안내"
+            content={modalBody}
+            isContentCenter={false}
+            purpleButtonText="수정광산 이용 방향 보기"
+            purpleButtonFunc={() => {
+              setBlindModalVisible(!blindModalVisible);
+              navigation.navigate('DirectionAgreeScreen');
+            }}
+            whiteButtonText="확인"
+            whiteButtonFunc={() => {
+              setBlindModalVisible(!blindModalVisible);
+            }}
+          />
         </>
       )}
     </>
