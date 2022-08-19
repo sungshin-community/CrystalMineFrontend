@@ -227,7 +227,6 @@ const AlertItem = ({
           modalVisible={blindModalVisible}
           setModalVisible={setBlindModalVisible}
           title="블라인드 안내"
-          ㄹ
           content={modalBody}
           isContentCenter={false}
           purpleButtonText="수정광산 이용 방향 보기"
