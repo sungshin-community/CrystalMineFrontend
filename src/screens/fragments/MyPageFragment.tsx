@@ -74,7 +74,7 @@ const MyPageFragment = ({navigation}: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
   const [isInited, setIsInited] = useState<boolean>(false);
-
+  const [isError, setIsError] = useState<boolean>(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -83,7 +83,15 @@ const MyPageFragment = ({navigation}: Props) => {
         setIsLoading(true);
       }
       const userDto = await getUser();
-      setUser(userDto);
+      if (userDto.status === 401) {
+        navigation.navigate('SplashHome')
+      }
+      else if (getHundredsDigit(userDto.status) === 2) {
+        setUser(userDto.data.data);
+      }
+      else
+        setIsError(true);
+      
       if (!isInited) {
         setIsLoading(false);
         setIsInited(true);
@@ -129,7 +137,7 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
           </View>}
-          {user && (user?.expireIn <= 0 || !user?.expireIn)&&
+          {user && (user?.expireIn <= 0 || !user?.expireIn) && (user?.role !== '블랙리스트') &&
             <TouchableOpacity onPress={() => {if(!user.expireIn) navigation.navigate('UncertifiedMember');else if (user.expireIn <= 0) navigation.navigate('ExpiredMember');}}>
               <View
                 style={{
