@@ -206,13 +206,13 @@ export const reissueToken = async (tokenReissueDto: TokenReissueDto) => {
     return e.response;
   }
 };
-export const checkRegularMember = async () => {
+export const checkRole = async () => {
   try {
     const response = await client.get<Response<User>>('/user');
-    return response.data.data.isAuthenticated;
+    return response;
   } catch (e) {
-    console.log('여기는 checkRegularMember 함수', e.response);
-    return false;
+    console.log('여기는 checkRole 함수', e.response);
+    return e.response;
   }
 };
 
