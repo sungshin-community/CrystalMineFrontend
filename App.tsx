@@ -124,7 +124,7 @@ const App = () => {
     <>
       {isLoaded && (
         <NavigationContainer>
-         <WaterMark />
+          <WaterMark />
           {!isLoggedIn ? (
             <Stack.Navigator
               screenOptions={{
@@ -1188,6 +1188,30 @@ const App = () => {
                         justifyContent: 'center',
                       }}
                       onPress={() => navigation.navigate('MyPage')}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              {/* 이용제한 사용자가 볼 수정광산 이용안내 */}
+              <Stack.Screen
+                name="InformationUse"
+                component={InformationUse}
+                options={({navigation}) => ({
+                  title: '수정광산 이용안내',
+                  headerTitleAlign: 'center',
+                  animation: 'slide_from_right',
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.navigate('GlobalNavbar')}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),

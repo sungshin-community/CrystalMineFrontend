@@ -11,10 +11,10 @@ export const getUser = async () => {
   try {
     const response = await client.get<Response<User>>('/user');
     console.log(response.data.data);
-    return response.data.data;
+    return response;
   } catch (e) {
     console.log('여기는 getUser 함수', e);
-    return false;
+    return e.response;
   }
 };
 
