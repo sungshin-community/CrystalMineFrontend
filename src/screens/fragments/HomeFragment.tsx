@@ -41,7 +41,8 @@ import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 import WaterMark from '../../components/WaterMark';
 import {getHundredsDigit} from '../../common/util/statusUtil';
-import { logout } from '../../common/authApi';
+import {logout} from '../../common/authApi';
+import ErrorScreen from '../errorScreen/ErrorScreen';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -67,7 +68,7 @@ const HomeFragment = ({navigation}: Props) => {
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
   const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
     boolean
-  >();
+  >(false);
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const [user, setUser] = useState<Authentication>();
@@ -76,6 +77,10 @@ const HomeFragment = ({navigation}: Props) => {
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isInited, setIsInited] = useState<boolean>(false);
+  const [isHomeAlertError, setIsHomeAlertError] = useState<boolean>(false);
+  const [isPinBoardError, setIsPinBoardError] = useState<boolean>(false);
+  const [isHotBoardError, setIsHotBoardError] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const blacklistModalContent = (
     <>
@@ -88,7 +93,8 @@ const HomeFragment = ({navigation}: Props) => {
             참고 부탁드리며, 이후 해당 계정에 대한 로그인과 모든 서비스 이용이
             불가능합니다. {`\n`}
             이용 제한 처리일로 부터 7일 후, 서비스에서 자동으로 로그아웃 되며
-            아래 이용 제한 계정으로도 관련 내용을 보내드리고 있으니 확인 바랍니다.
+            아래 이용 제한 계정으로도 관련 내용을 보내드리고 있으니 확인
+            바랍니다.
             {`\n`}
             {`\n`}
           </Text>
@@ -120,24 +126,46 @@ const HomeFragment = ({navigation}: Props) => {
         setIsLoading(true);
       }
       const response = await getAuthentication();
-      setUser(response.data.data);
-      const notification = await getUnreadNotification();
-      setNoti(notification);
-      if (!response.data.data?.blacklist) {
-        if (response.data.data.isAuthenticated) {
+      if (response.status === 401) {
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        setUser(response.data.data);
+        if (
+          !response.data.data?.blacklist ||
+          response.data.data.isAuthenticated
+        ) {
+          const notification = await getUnreadNotification();
+          if (notification.status === 401) {
+            navigation.reset({routes: [{name: 'SplashHome'}]});
+          } else if (getHundredsDigit(notification.status) === 2) {
+            setNoti(notification.data.data.content);
+          } else {
+            setIsHomeAlertError(true);
+          }
           const pinBoardData = await getPinBoardContents();
           const hotBoardData = await getHotBoardContents();
 
-          if (pinBoardData != null && hotBoardData != null) {
-            setPinBoardContents(pinBoardData);
-            setHotBoardContents(hotBoardData);
+          if (pinBoardData.status === 401) {
+            navigation.reset({routes: [{name: 'SplashHome'}]});
+          } else if (getHundredsDigit(pinBoardData.status) === 2) {
+            setPinBoardContents(pinBoardData.data.data);
+          } else {
+            setIsPinBoardError(true);
           }
+          if (hotBoardData.status === 401) {
+            navigation.reset({routes: [{name: 'SplashHome'}]});
+          } else if (getHundredsDigit(hotBoardData.status) === 2) {
+            setHotBoardContents(hotBoardData.data.data);
+          } else {
+            setIsHotBoardError(true);
+          }
+        } else {
+          // 이용제한
+          console.log('blacklist');
+          setBlacklistblindModalVisible(true);
         }
-      } else {
-        // 이용제한
-        console.log('blacklist');
-        setBlacklistblindModalVisible(true);
-      }
+      } else setIsHotBoardError(true);
+
       if (!isInited) {
         setIsLoading(false);
         setIsInited(true);
@@ -150,491 +178,544 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
-      <View
-        style={{
-          position: 'absolute',
-          alignItems: 'center',
-          justifyContent: 'center',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        }}>
-        <ActivityIndicator
-          size="large"
-          color={'#A055FF'}
-          animating={isLoading}
-          style={{zIndex: 100}}
-        />
-      </View>
-      <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-        <View
-          style={{
-            backgroundColor: '#F6F6F6',
-            paddingVertical: 32,
-          }}>
-          <Text
-            style={{
-              fontSize: 22,
-              marginLeft: 40,
-              marginBottom: noti?.length && 26,
-            }}>
-            <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
-              {user?.nickname}
-            </Text>
-            {` 님, `}
-            {user && user?.nickname.length > 8 ? <Text>{`\n`}</Text> : <></>}
-            {`안녕하세요!`}
-          </Text>
-
+      {isError ? (
+        <ErrorScreen />
+      ) : (
+        <>
           <View
             style={{
-              borderRadius: 20,
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
             }}>
+            <ActivityIndicator
+              size="large"
+              color={'#A055FF'}
+              animating={isLoading}
+              style={{zIndex: 100}}
+            />
+          </View>
+          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
             <View
               style={{
-                borderRadius: 20,
-                marginHorizontal: 24,
-                paddingHorizontal: 18,
-                backgroundColor: '#fff',
+                backgroundColor: '#F6F6F6',
+                paddingVertical: 32,
               }}>
-              {noti?.map((item, index) => (
-                <Pressable
-                  key={index}
-                  style={[
-                    {
-                      borderTopWidth: index === 0 ? 0 : 1,
-                      borderTopColor: '#F6F6F6',
-                      backgroundColor: 'yellow',
-                    },
-                    styles.newsContainer,
-                  ]}
-                  onPress={async () => {
-                    if (item.type === 'WELCOME') {
-                      const result = await readNotification(item.id);
-                      console.log('알람 확인 후 마이페이지로 이동');
-                      navigation.navigate('MyPage');
-                    } else if (
-                      item.type === 'BEFORE_EXPIRE' ||
-                      item.type === 'EXPIRE' ||
-                      item.type === 'NOT_AUTHENTICATED'
-                    ) {
-                      if (item.type === 'BEFORE_EXPIRE')
-                        navigation.navigate('CertifiedMember');
-                      else if (item.type === 'EXPIRE')
-                        navigation.navigate('ExpiredMember');
-                      else if (item.type === 'NOT_AUTHENTICATED')
-                        navigation.navigate('UncertifiedMember');
-                      // const result = await readNotification(item.id);
-                      // 알람 확인 못 해야함.
-                    } else if (
-                      item.type === 'BOARD_BLIND' ||
-                      item.type === 'PIN_BOARD_BLIND' ||
-                      item.type === 'POST_BLIND' ||
-                      item.type === 'COMMENT_BLIND'
-                    ) {
-                      const itemContent = (
-                        <View>
-                          <Text
-                            style={[
-                              fontRegular,
-                              {
-                                marginBottom: 15,
-                                width: Dimensions.get('window').width - 100,
-                              },
-                            ]}>
-                            {item.blind?.message}
-                          </Text>
-                          <View style={{flexDirection: 'row'}}>
-                            <Text
-                              style={[fontBold, {width: 93, marginRight: 7}]}>
-                              블라인드 사유
-                            </Text>
-                            <Text style={{width: 143}}>
-                              {item.blind?.reason}
-                            </Text>
-                          </View>
-                          <View style={{flexDirection: 'row'}}>
-                            <Text
-                              style={[fontBold, {width: 93, marginRight: 7}]}>
-                              {item.type === 'BOARD_BLIND'
-                                ? '게시판 이름'
-                                : item.type === 'PIN_BOARD_BLIND'
-                                ? '게시판 이름'
-                                : item.type === 'POST_BLIND'
-                                ? '작성 내용'
-                                : item.type === 'COMMENT_BLIND'
-                                ? '작성 내용:'
-                                : ''}
-                            </Text>
-                            <Text
-                              style={{
-                                width: Dimensions.get('window').width - 183,
-                              }}>
-                              {item.blind?.content}
-                            </Text>
-                          </View>
-                        </View>
-                      );
-                      if (
-                        (item.type === 'BOARD_BLIND' ||
+              <Text
+                style={{
+                  fontSize: 22,
+                  marginLeft: 40,
+                  marginBottom: noti?.length && 26,
+                }}>
+                <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+                  {user?.nickname}
+                </Text>
+                {` 님, `}
+                {user && user?.nickname.length > 8 ? (
+                  <Text>{`\n`}</Text>
+                ) : (
+                  <></>
+                )}
+                {`안녕하세요!`}
+              </Text>
+
+              <View
+                style={{
+                  borderRadius: 20,
+                }}>
+                <View
+                  style={{
+                    borderRadius: 20,
+                    marginHorizontal: 24,
+                    paddingHorizontal: 18,
+                    backgroundColor: '#fff',
+                  }}>
+                  {noti?.map((item, index) => (
+                    <Pressable
+                      key={index}
+                      style={[
+                        {
+                          borderTopWidth: index === 0 ? 0 : 1,
+                          borderTopColor: '#F6F6F6',
+                          backgroundColor: 'yellow',
+                        },
+                        styles.newsContainer,
+                      ]}
+                      onPress={async () => {
+                        if (item.type === 'WELCOME') {
+                          const result = await readNotification(item.id);
+                          console.log('알람 확인 후 마이페이지로 이동');
+                          navigation.navigate('MyPage');
+                        } else if (
+                          item.type === 'BEFORE_EXPIRE' ||
+                          item.type === 'EXPIRE' ||
+                          item.type === 'NOT_AUTHENTICATED'
+                        ) {
+                          if (item.type === 'BEFORE_EXPIRE')
+                            navigation.navigate('CertifiedMember');
+                          else if (item.type === 'EXPIRE')
+                            navigation.navigate('ExpiredMember');
+                          else if (item.type === 'NOT_AUTHENTICATED')
+                            navigation.navigate('UncertifiedMember');
+                          // const result = await readNotification(item.id);
+                          // 알람 확인 못 해야함.
+                        } else if (
+                          item.type === 'BOARD_BLIND' ||
                           item.type === 'PIN_BOARD_BLIND' ||
                           item.type === 'POST_BLIND' ||
-                          item.type === 'COMMENT_BLIND') &&
-                        item.blind
-                      ) {
-                        setModalBody(itemContent);
-                        const result = await readNotification(item.id);
-                        console.log('블라인드 알림 확인');
-                        setBlindModalVisible(true);
-                      } else if (item.type === 'BOARD_BLIND' && !item.blind)
-                        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-                      else if (item.type === 'PIN_BOARD_BLIND' && !item.blind)
-                        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-                      else if (item.type === 'POST_BLIND' && !item.blind)
-                        Toast.show('삭제된 게시글입니다.', Toast.SHORT);
-                      else if (item.type === 'COMMENT_BLIND' && !item.blind)
-                        Toast.show('삭제된 댓글입니다.', Toast.SHORT);
-                      else
-                        Toast.show(
-                          '알 수 없는 오류가 발생하였습니다.',
-                          Toast.SHORT,
-                        );
-                    } else if (
-                      item.type === 'DELETE_BOARD_BLIND' ||
-                      item.type === 'DELETE_POST_BLIND' ||
-                      item.type === 'DELETE_COMMENT_BLIND'
-                    ) {
-                      const itemContent = (
-                        <View>
-                          <Text
-                            style={[
-                              fontRegular,
-                              {
-                                marginBottom: 15,
-                                width: Dimensions.get('window').width - 100,
-                              },
-                            ]}>
-                            {item.deleteBlind?.message}
-                          </Text>
-                          <View style={{flexDirection: 'row'}}>
-                            <Text
-                              style={[fontBold, {width: 88, marginRight: 7}]}>
-                              {item.type === 'DELETE_BOARD_BLIND'
-                                ? '게시판 이름'
-                                : item.type === 'DELETE_POST_BLIND'
-                                ? '작성 내용'
-                                : item.type === 'DELETE_COMMENT_BLIND'
-                                ? '작성 내용'
-                                : ''}
-                            </Text>
-                            <Text
-                              ellipsizeMode={'tail'}
-                              numberOfLines={3}
-                              style={{
-                                width: Dimensions.get('window').width - 178,
-                              }}>
-                              {item.deleteBlind?.content}
-                            </Text>
-                          </View>
-                        </View>
-                      );
-                      if (
-                        (item.type === 'DELETE_BOARD_BLIND' ||
+                          item.type === 'COMMENT_BLIND'
+                        ) {
+                          const itemContent = (
+                            <View>
+                              <Text
+                                style={[
+                                  fontRegular,
+                                  {
+                                    marginBottom: 15,
+                                    width: Dimensions.get('window').width - 100,
+                                  },
+                                ]}>
+                                {item.blind?.message}
+                              </Text>
+                              <View style={{flexDirection: 'row'}}>
+                                <Text
+                                  style={[
+                                    fontBold,
+                                    {width: 93, marginRight: 7},
+                                  ]}>
+                                  블라인드 사유
+                                </Text>
+                                <Text style={{width: 143}}>
+                                  {item.blind?.reason}
+                                </Text>
+                              </View>
+                              <View style={{flexDirection: 'row'}}>
+                                <Text
+                                  style={[
+                                    fontBold,
+                                    {width: 93, marginRight: 7},
+                                  ]}>
+                                  {item.type === 'BOARD_BLIND'
+                                    ? '게시판 이름'
+                                    : item.type === 'PIN_BOARD_BLIND'
+                                    ? '게시판 이름'
+                                    : item.type === 'POST_BLIND'
+                                    ? '작성 내용'
+                                    : item.type === 'COMMENT_BLIND'
+                                    ? '작성 내용:'
+                                    : ''}
+                                </Text>
+                                <Text
+                                  style={{
+                                    width: Dimensions.get('window').width - 183,
+                                  }}>
+                                  {item.blind?.content}
+                                </Text>
+                              </View>
+                            </View>
+                          );
+                          if (
+                            (item.type === 'BOARD_BLIND' ||
+                              item.type === 'PIN_BOARD_BLIND' ||
+                              item.type === 'POST_BLIND' ||
+                              item.type === 'COMMENT_BLIND') &&
+                            item.blind
+                          ) {
+                            setModalBody(itemContent);
+                            const result = await readNotification(item.id);
+                            console.log('블라인드 알림 확인');
+                            setBlindModalVisible(true);
+                          } else if (item.type === 'BOARD_BLIND' && !item.blind)
+                            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                          else if (
+                            item.type === 'PIN_BOARD_BLIND' &&
+                            !item.blind
+                          )
+                            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                          else if (item.type === 'POST_BLIND' && !item.blind)
+                            Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                          else if (item.type === 'COMMENT_BLIND' && !item.blind)
+                            Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                          else
+                            Toast.show(
+                              '알 수 없는 오류가 발생하였습니다.',
+                              Toast.SHORT,
+                            );
+                        } else if (
+                          item.type === 'DELETE_BOARD_BLIND' ||
                           item.type === 'DELETE_POST_BLIND' ||
-                          item.type === 'DELETE_COMMENT_BLIND') &&
-                        item.deleteBlind
-                      ) {
-                        setModalBody(itemContent);
-                        const result = await readNotification(item.id);
-                        console.log('블라인드 알림 확인');
-                        setBlindModalVisible(true);
-                      } else if (
-                        item.type === 'DELETE_BOARD_BLIND' &&
-                        !item.deleteBlind
-                      )
-                        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-                      else if (
-                        item.type === 'DELETE_POST_BLIND' &&
-                        !item.deleteBlind
-                      )
-                        Toast.show('삭제된 게시글입니다.', Toast.SHORT);
-                      else if (
-                        item.type === 'DELETE_COMMENT_BLIND' &&
-                        !item.deleteBlind
-                      )
-                        Toast.show('삭제된 댓글입니다.', Toast.SHORT);
-                      else
-                        Toast.show(
-                          '알 수 없는 오류가 발생하였습니다.',
-                          Toast.SHORT,
-                        );
+                          item.type === 'DELETE_COMMENT_BLIND'
+                        ) {
+                          const itemContent = (
+                            <View>
+                              <Text
+                                style={[
+                                  fontRegular,
+                                  {
+                                    marginBottom: 15,
+                                    width: Dimensions.get('window').width - 100,
+                                  },
+                                ]}>
+                                {item.deleteBlind?.message}
+                              </Text>
+                              <View style={{flexDirection: 'row'}}>
+                                <Text
+                                  style={[
+                                    fontBold,
+                                    {width: 88, marginRight: 7},
+                                  ]}>
+                                  {item.type === 'DELETE_BOARD_BLIND'
+                                    ? '게시판 이름'
+                                    : item.type === 'DELETE_POST_BLIND'
+                                    ? '작성 내용'
+                                    : item.type === 'DELETE_COMMENT_BLIND'
+                                    ? '작성 내용'
+                                    : ''}
+                                </Text>
+                                <Text
+                                  ellipsizeMode={'tail'}
+                                  numberOfLines={3}
+                                  style={{
+                                    width: Dimensions.get('window').width - 178,
+                                  }}>
+                                  {item.deleteBlind?.content}
+                                </Text>
+                              </View>
+                            </View>
+                          );
+                          if (
+                            (item.type === 'DELETE_BOARD_BLIND' ||
+                              item.type === 'DELETE_POST_BLIND' ||
+                              item.type === 'DELETE_COMMENT_BLIND') &&
+                            item.deleteBlind
+                          ) {
+                            setModalBody(itemContent);
+                            const result = await readNotification(item.id);
+                            console.log('블라인드 알림 확인');
+                            setBlindModalVisible(true);
+                          } else if (
+                            item.type === 'DELETE_BOARD_BLIND' &&
+                            !item.deleteBlind
+                          )
+                            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                          else if (
+                            item.type === 'DELETE_POST_BLIND' &&
+                            !item.deleteBlind
+                          )
+                            Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                          else if (
+                            item.type === 'DELETE_COMMENT_BLIND' &&
+                            !item.deleteBlind
+                          )
+                            Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                          else
+                            Toast.show(
+                              '알 수 없는 오류가 발생하였습니다.',
+                              Toast.SHORT,
+                            );
+                        }
+                      }}>
+                      <View style={{flexDirection: 'row'}}>
+                        {item.type === 'WELCOME' && <CheckMark />}
+                        {(item.type === 'BEFORE_EXPIRE' ||
+                          item.type === 'EXPIRE' ||
+                          item.type === 'NOT_AUTHENTICATED') && (
+                          <AlertCheckIcon />
+                        )}
+                        {(item.type === 'BOARD_BLIND' ||
+                          item.type === 'PIN_BOARD_BLIND' ||
+                          item.type === 'POST_BLIND' ||
+                          item.type === 'COMMENT_BLIND') && <AlertBlindIcon />}
+                        {(item.type === 'DELETE_BOARD_BLIND' ||
+                          item.type === 'DELETE_POST_BLIND' ||
+                          item.type === 'DELETE_COMMENT_BLIND') && (
+                          <AlertBlindIcon />
+                        )}
+                        {item.type === 'COMMENT' && <AlertCommentIcon />}
+                        {item.type === 'HOT_POST' && <AlertHotPostIcon />}
+                        <View
+                          style={{width: Dimensions.get('window').width - 160}}>
+                          <Text
+                            ellipsizeMode={'tail'}
+                            numberOfLines={1}
+                            style={[styles.newsTitle]}>
+                            {item.title}
+                          </Text>
+                          <Text
+                            ellipsizeMode={'tail'}
+                            numberOfLines={1}
+                            style={styles.newsMore}>
+                            {item.content
+                              ? item.content
+                              : item.blind?.content
+                              ? item.blind?.content
+                              : item.deleteBlind?.content}
+                          </Text>
+                        </View>
+                      </View>
+                      <View>
+                        <RightArrowBold />
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                padding: 24,
+              }}>
+              <View style={styles.rowContainer}>
+                <Text style={styles.boardTitle}>고정 게시판</Text>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    {
+                      user?.isAuthenticated
+                        ? navigation.navigate('Board')
+                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
-                  <View style={{flexDirection: 'row'}}>
-                    {item.type === 'WELCOME' && <CheckMark />}
-                    {(item.type === 'BEFORE_EXPIRE' ||
-                      item.type === 'EXPIRE' ||
-                      item.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
-                    {(item.type === 'BOARD_BLIND' ||
-                      item.type === 'PIN_BOARD_BLIND' ||
-                      item.type === 'POST_BLIND' ||
-                      item.type === 'COMMENT_BLIND') && <AlertBlindIcon />}
-                    {(item.type === 'DELETE_BOARD_BLIND' ||
-                      item.type === 'DELETE_POST_BLIND' ||
-                      item.type === 'DELETE_COMMENT_BLIND') && (
-                      <AlertBlindIcon />
-                    )}
-                    {item.type === 'COMMENT' && <AlertCommentIcon />}
-                    {item.type === 'HOT_POST' && <AlertHotPostIcon />}
-                    <View style={{width: Dimensions.get('window').width - 160}}>
-                      <Text  ellipsizeMode={'tail'}
-                        numberOfLines={1} style={[styles.newsTitle]}>{item.title}</Text>
-                      <Text
-                        ellipsizeMode={'tail'}
-                        numberOfLines={1}
-                        style={styles.newsMore}>
-                        {item.content
-                          ? item.content
-                          : item.blind?.content
-                          ? item.blind?.content
-                          : item.deleteBlind?.content}
-                      </Text>
-                    </View>
+                  <Text style={styles.more}>더보기</Text>
+                </TouchableWithoutFeedback>
+              </View>
+              {/* 게시판 글 목록 */}
+              {!isInited ? (
+                // true?
+                skeletonComponent
+              ) : user?.isAuthenticated ? (
+                pinBoardContents?.length === 0 ? (
+                  <View
+                    style={{
+                      backgroundColor: '#F7F7F7',
+                      paddingVertical: 27,
+                      borderRadius: 20,
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      }}>
+                      고정된 게시판이 없습니다.
+                    </Text>
                   </View>
-                  <View>
-                    <RightArrowBold />
-                  </View>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            padding: 24,
-          }}>
-          <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>고정 게시판</Text>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                {
-                  user?.isAuthenticated
-                    ? navigation.navigate('Board')
-                    : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                }
-              }}>
-              <Text style={styles.more}>더보기</Text>
-            </TouchableWithoutFeedback>
-          </View>
-          {/* 게시판 글 목록 */}
-          {!isInited ? (
-            // true?
-            skeletonComponent
-          ) : user?.isAuthenticated ? (
-            pinBoardContents?.length === 0 ? (
+                ) : (
+                  pinBoardContents?.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        if (
+                          item.boardId === 5 ||
+                          item.boardId === 6 ||
+                          item.boardId === 7 ||
+                          item.boardId === 8 ||
+                          item.boardId === 9
+                        ) {
+                          navigation.navigate('WikiTab', {
+                            boardId: item.boardId,
+                          });
+                        } else
+                          navigation.navigate('PostListScreen', {
+                            boardId: item.boardId,
+                          });
+                      }}>
+                      <View style={styles.pinBoardContainer}>
+                        <View style={styles.postTitleSummaryContainer}>
+                          <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={styles.postTitleSummary}>
+                            {item.boardName.slice(0, numOfBoardTitle)}
+                          </Text>
+                        </View>
+                        <View style={styles.postSummaryContainer}>
+                          <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={[
+                              styles.postSummary,
+                              {
+                                color: item.recentPostContent
+                                  ? '#6E7882'
+                                  : '#CBD0D8',
+                              },
+                            ]}>
+                            {item.recentPostContent
+                              ? item.recentPostContent
+                              : '아직 작성된 글이 없습니다!'}
+                          </Text>
+                        </View>
+                        <View style={styles.postNewLabelContainer}>
+                          {item.todayNewPost ? (
+                            <Text style={styles.postNewLabel}>N</Text>
+                          ) : (
+                            <></>
+                          )}
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )
+              ) : (
+                <View
+                  style={{
+                    backgroundColor: '#F7F7F7',
+                    paddingVertical: 27,
+                    borderRadius: 20,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      color: '#6E7882',
+                    }}>
+                    정회원 인증 후 확인하실 수 있습니다.
+                  </Text>
+                </View>
+              )}
+
+              {/* 게시판 글 목록 */}
               <View
                 style={{
-                  backgroundColor: '#F7F7F7',
-                  paddingVertical: 27,
-                  borderRadius: 20,
-                }}>
-                <Text
-                  style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-                  고정된 게시판이 없습니다.
-                </Text>
-              </View>
-            ) : (
-              pinBoardContents?.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
+                  borderBottomColor: '#F0F0F0',
+                  borderBottomWidth: 1,
+                  marginBottom: 24,
+                  marginTop: 24,
+                }}
+              />
+              <View style={styles.rowContainer}>
+                <Text style={styles.boardTitle}>HOT 게시글</Text>
+                <TouchableWithoutFeedback
                   onPress={() => {
-                    if (
-                      item.boardId === 5 ||
-                      item.boardId === 6 ||
-                      item.boardId === 7 ||
-                      item.boardId === 8 ||
-                      item.boardId === 9
-                    ) {
-                      navigation.navigate('WikiTab', {boardId: item.boardId});
-                    } else
-                      navigation.navigate('PostListScreen', {
-                        boardId: item.boardId,
-                      });
+                    {
+                      user?.isAuthenticated
+                        ? navigation.navigate('PostListScreen', {boardId: 2})
+                        : //  ? navigation.navigate('ErrorScreen') :
+                          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                    }
                   }}>
-                  <View style={styles.pinBoardContainer}>
-                    <View style={styles.postTitleSummaryContainer}>
-                      <Text
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={styles.postTitleSummary}>
-                        {item.boardName.slice(0, numOfBoardTitle)}
-                      </Text>
-                    </View>
-                    <View style={styles.postSummaryContainer}>
-                      <Text
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={[
-                          styles.postSummary,
-                          {
-                            color: item.recentPostContent
-                              ? '#6E7882'
-                              : '#CBD0D8',
-                          },
-                        ]}>
-                        {item.recentPostContent
-                          ? item.recentPostContent
-                          : '아직 작성된 글이 없습니다!'}
-                      </Text>
-                    </View>
-                    <View style={styles.postNewLabelContainer}>
-                      {item.todayNewPost ? (
-                        <Text style={styles.postNewLabel}>N</Text>
-                      ) : (
-                        <></>
-                      )}
-                    </View>
+                  <Text style={styles.more}>더보기</Text>
+                </TouchableWithoutFeedback>
+              </View>
+              {!isInited ? (
+                skeletonComponent
+              ) : user?.isAuthenticated ? (
+                hotBoardContents?.hotPosts.length === 0 ? (
+                  <View
+                    style={{
+                      backgroundColor: '#F7F7F7',
+                      paddingVertical: 27,
+                      borderRadius: 20,
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      }}>
+                      공감을 10개 이상 받은 게시글이 없습니다.
+                    </Text>
                   </View>
-                </TouchableOpacity>
-              ))
-            )
-          ) : (
-            <View
-              style={{
-                backgroundColor: '#F7F7F7',
-                paddingVertical: 27,
-                borderRadius: 20,
-              }}>
-              <Text
-                style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-                정회원 인증 후 확인하실 수 있습니다.
-              </Text>
+                ) : (
+                  hotBoardContents?.hotPosts.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate('PostScreen', {postId: item.postId})
+                      }>
+                      <View style={styles.hotPostContainer}>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={[
+                            styles.postSummary,
+                            {
+                              width: Dimensions.get('window').width - 150,
+                              color: '#000',
+                            },
+                          ]}>
+                          {item.postContent.slice(0, 30)}
+                        </Text>
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <EmptyHeart />
+                          <Text style={styles.HOTpostLike}>
+                            {item.likeCount}
+                          </Text>
+                          <EmptyComment />
+                          <Text style={styles.HOTpostComment}>
+                            {item.commentCount}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                )
+              ) : (
+                <View
+                  style={{
+                    backgroundColor: '#F7F7F7',
+                    paddingVertical: 27,
+                    borderRadius: 20,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      color: '#6E7882',
+                    }}>
+                    정회원 인증 후 확인하실 수 있습니다.
+                  </Text>
+                </View>
+              )}
             </View>
-          )}
+          </ScrollView>
+          <ModalBottom
+            modalVisible={blacklistblindModalVisible}
+            setModalVisible={setBlacklistblindModalVisible}
+            title={'서비스 이용 제한 안내'}
+            content={blacklistModalContent}
+            isContentCenter={false}
+            purpleButtonText="서비스 이용 방향 보기"
+            purpleButtonFunc={() => {
+              setBlacklistblindModalVisible(false);
+              navigation.navigate('InformationUse');
+            }}
+            whiteButtonText="확인 후 로그아웃"
+            whiteButtonFunc={async () => {
+              const result = await logout();
+              if (result.status === 401) {
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(result.status) === 2) {
+                navigation.reset({routes: [{name: 'SplashHome'}]});
 
-          {/* 게시판 글 목록 */}
-          <View
-            style={{
-              borderBottomColor: '#F0F0F0',
-              borderBottomWidth: 1,
-              marginBottom: 24,
-              marginTop: 24,
+                setBlacklistblindModalVisible(false);
+              } else
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              navigation.reset({routes: [{name: 'SplashHome'}]});
             }}
           />
-          <View style={styles.rowContainer}>
-            <Text style={styles.boardTitle}>HOT 게시글</Text>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                {
-                  user?.isAuthenticated
-                    ? navigation.navigate('PostListScreen', {boardId: 2})
-                    : //  ? navigation.navigate('ErrorScreen') :
-                      Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                }
-              }}>
-              <Text style={styles.more}>더보기</Text>
-            </TouchableWithoutFeedback>
-          </View>
-          {!isInited ? (
-            skeletonComponent
-          ) : user?.isAuthenticated ? (
-            hotBoardContents?.hotPosts.length === 0 ? (
-              <View
-                style={{
-                  backgroundColor: '#F7F7F7',
-                  paddingVertical: 27,
-                  borderRadius: 20,
-                }}>
-                <Text
-                  style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-                  공감을 10개 이상 받은 게시글이 없습니다.
-                </Text>
-              </View>
-            ) : (
-              hotBoardContents?.hotPosts.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate('PostScreen', {postId: item.postId})
-                  }>
-                  <View style={styles.hotPostContainer}>
-                    <Text
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      style={[
-                        styles.postSummary,
-                        {
-                          width: Dimensions.get('window').width - 150,
-                          color: '#000',
-                        },
-                      ]}>
-                      {item.postContent.slice(0, 30)}
-                    </Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <EmptyHeart />
-                      <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
-                      <EmptyComment />
-                      <Text style={styles.HOTpostComment}>
-                        {item.commentCount}
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))
-            )
-          ) : (
-            <View
-              style={{
-                backgroundColor: '#F7F7F7',
-                paddingVertical: 27,
-                borderRadius: 20,
-              }}>
-              <Text
-                style={{textAlign: 'center', fontSize: 15, color: '#6E7882'}}>
-                정회원 인증 후 확인하실 수 있습니다.
-              </Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
-      {blacklistblindModalVisible && (
-        <ModalBottom
-          modalVisible={blacklistblindModalVisible}
-          setModalVisible={setBlacklistblindModalVisible}
-          title={'서비스 이용 제한 안내'}
-          content={blacklistModalContent}
-          isContentCenter={false}
-          purpleButtonText="서비스 이용 방향 보기"
-          purpleButtonFunc={() => {
-            setBlacklistblindModalVisible(!blacklistblindModalVisible);
-            navigation.navigate('InformationUse');
-          }}
-          whiteButtonText="확인 후 로그아웃"
-          whiteButtonFunc={async () => {
-            const result = await logout();
-            navigation.navigate('SplashHome')
-          }
-          }
-        />
-      )}
-      {blindModalVisible && (
-        <ModalBottom
-          modalVisible={blindModalVisible}
-          setModalVisible={setBlindModalVisible}
-          title="블라인드 안내"
-          content={modalBody}
-          isContentCenter={false}
-          purpleButtonText="수정광산 이용 방향 보기"
-          purpleButtonFunc={() => {
-            setBlindModalVisible(!blindModalVisible);
-            navigation.navigate('DirectionAgreeScreen');
-          }}
-          whiteButtonText="확인"
-          whiteButtonFunc={() => {
-            setBlindModalVisible(!blindModalVisible);
-          }}
-        />
+          <ModalBottom
+            modalVisible={blindModalVisible}
+            setModalVisible={setBlindModalVisible}
+            title="블라인드 안내"
+            content={modalBody}
+            isContentCenter={false}
+            purpleButtonText="수정광산 이용 방향 보기"
+            purpleButtonFunc={() => {
+              setBlindModalVisible(!blindModalVisible);
+              navigation.navigate('DirectionAgreeScreen');
+            }}
+            whiteButtonText="확인"
+            whiteButtonFunc={() => {
+              setBlindModalVisible(!blindModalVisible);
+            }}
+          />
+        </>
       )}
     </>
   );

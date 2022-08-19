@@ -17,7 +17,7 @@ import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Platform, Pressable, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import {checkRegularMember} from '../common/authApi';
+import {checkRole} from '../common/authApi';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,8 +34,9 @@ type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
 function GlobalNavbar({navigation}: ScreenProps) {
   const onSearchPress = async () => {
-    let isRegularMember: boolean = await checkRegularMember();
-    if (isRegularMember) {
+    const result = await checkRole();
+    let role = result.data.data.role;
+    if (role === '정회원') {
       navigation.navigate('TotalSearch');
     } else {
       Toast.show('접근 권한이 없습니다.', Toast.SHORT);
@@ -96,9 +97,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            let isRegularMember: boolean = await checkRegularMember();
-            console.log('정회원 인증여부:', isRegularMember);
-            if (isRegularMember) navigation.navigate('Board');
+            const result = await checkRole();
+            let role = result.data.data.role;
+            if (role === '정회원') navigation.navigate('Board');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
@@ -149,6 +150,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
       <Tab.Screen
         name="Alert"
         component={AlertFragment}
+        listeners={({navigation}) => ({
+        tabPress: async e => {
+          e.preventDefault();
+          const result = await checkRole();
+          let role = result.data.data.role;
+          if (role === '정회원') navigation.navigate('Alert');
+          else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+        },
+        })}
         options={{
           title: '알림',
           headerTitleAlign: 'center',
