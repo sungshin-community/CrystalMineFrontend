@@ -133,6 +133,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
       <Tab.Screen
         name="Message"
         component={MessageFragment}
+        listeners={({navigation}) => ({
+          tabPress: async e => {
+            e.preventDefault();
+            const result = await checkRole();
+            let role = result.data.data.role;
+            if (role === '정회원') navigation.navigate('Message');
+            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+          },
+        })}
         options={{
           title: '쪽지',
           headerTitleAlign: 'center',
