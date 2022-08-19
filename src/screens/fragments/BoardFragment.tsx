@@ -13,10 +13,14 @@ import {
   getCustomBoardList,
   getDepartmentBoardList,
   getOfficialBoardList,
-  getPinnedBoardList,
+  getPinnedDepartmentBoardList,
+  getPinnedOfficialBoardList,
+  getPinnedPublicBoardList,
 } from '../../common/boardApi';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fontRegular } from '../../common/font';
+import { getHundredsDigit } from '../../common/util/statusUtil';
+import ErrorScreen from '../errorScreen/ErrorScreen';
 
 type RootStackParamList = {
   MyPostList: undefined;
@@ -25,6 +29,7 @@ type RootStackParamList = {
   PostListScreen: { boardId: number };
   TermAgreeCreateBoard: undefined;
   WikiTab: {boardId: number};
+  SplashHome: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -36,6 +41,72 @@ export default function BoardFragment({navigation}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isFocused = useIsFocused();
   const [isInited, setIsInited] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const getPinnedBoardList = async () => {
+    let boardList: Board[] = [];
+    const pinnedOfficialResponse = await getPinnedOfficialBoardList();
+    if (pinnedOfficialResponse.status === 401) {
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(pinnedOfficialResponse.status) === 2) {
+      boardList = boardList.concat(pinnedOfficialResponse.data.data);
+    } else {
+      setIsError(true);
+      return;
+    }
+    const pinnedDepartmentResponse = await getPinnedDepartmentBoardList();
+    if (pinnedDepartmentResponse.status === 401) {
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(pinnedDepartmentResponse.status) === 2) {
+      boardList = boardList.concat(pinnedDepartmentResponse.data.data);
+    } else {
+      setIsError(true);
+      return;
+    }
+    const pinnedPublicResponse = await getPinnedPublicBoardList();
+    if (pinnedPublicResponse.status === 401) {
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(pinnedPublicResponse.status) === 2) {
+      boardList = boardList.concat(pinnedPublicResponse.data.data);
+      setPinnedBoardList(boardList);
+    } else {
+      setIsError(true);
+      return;
+    }
+  }
+
+  const getOfficialBoards = async () => {
+    const officialResponse = await getOfficialBoardList();
+    if (officialResponse.status === 401) {
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(officialResponse.status) === 2) {
+      setOfficialBoardList(officialResponse.data.data);
+    } else {
+      setIsError(true);
+    }
+  }
+
+  const getPublicBoards = async () => {
+    const publicResponse = await getCustomBoardList();
+    if (publicResponse.status === 401) {
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(publicResponse.status) === 2) {
+      setCustomBoardList(publicResponse.data.data);
+    } else {
+      setIsError(true);
+    }
+  }
+
+  const getDepartmentBoards = async () => {
+    const departmentResponse = await getDepartmentBoardList();
+    if (departmentResponse.status === 401) {
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(departmentResponse.status) === 2) {
+      setDepartmentBoardList(departmentResponse.data.data);
+    } else {
+      setIsError(true);
+    }
+  }
 
   const updateOfficialBoardList = async () => {
     const officialBoardList = await getOfficialBoardList();
@@ -94,34 +165,28 @@ export default function BoardFragment({navigation}: Props) {
   }
 
   useEffect(() => {
-    async function getBoardList() {
+    async function init() {
       if (!isInited) {
         setIsLoading(true);
       }
-      const pinnedBoardList = await getPinnedBoardList();
-      const customBoardList = await getCustomBoardList();
-      const officialBoardList = await getOfficialBoardList();
-      const departmentBoardList = await getDepartmentBoardList();
-      setPinnedBoardList(pinnedBoardList);
-      setCustomBoardList(customBoardList);
-      setOfficialBoardList(officialBoardList);
-      setDepartmentBoardList(departmentBoardList);
+      await getPinnedBoardList();
+      await getOfficialBoards();
+      await getPublicBoards();
+      await getDepartmentBoards();
       if (!isInited) {
         setIsLoading(false);
         setIsInited(true);
       }
     }
-    // getOfficialBoards();
-    // getCustomBoards();
-    // getPinnedBoards();
     if (isFocused) {
-      getBoardList();
+      init();
     }
   }, [navigation, isFocused]);
 
   
 
   return (
+    isError ? <ErrorScreen /> :
     <>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
         <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />

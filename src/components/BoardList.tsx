@@ -50,7 +50,7 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
                   onUpdate();
                 }}
             }>
-              {item.isOfficial ? (
+              {item.type !== 'PUBLIC' ? (
                 item.id === 1 ? <DarkPin style={{ marginLeft: 13 }} />: 
                 <PurplePin style={{ marginLeft: 13 }} />
               ) : (

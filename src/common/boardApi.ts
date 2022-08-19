@@ -31,14 +31,45 @@ export const getPinnedBoardList = async () => {
   }
 };
 
+export const getPinnedOfficialBoardList = async () => {
+  try {
+    const response = await client.get<Response<Board[]>>('/boards/pin?type=OFFICIAL');
+    return response;
+  } catch (e: any) {
+    console.log('여기는 getPinnedOfficialBoardList 함수', e);
+    return e.response;
+  }
+};
+
+export const getPinnedDepartmentBoardList = async () => {
+  try {
+    const response = await client.get<Response<Board[]>>('/boards/pin?type=DEPARTMENT');
+    return response;
+  } catch (e: any) {
+    console.log('여기는 getPinnedDepartmentBoardList 함수', e);
+    return e.response;
+  }
+};
+
+export const getPinnedPublicBoardList = async () => {
+  try {
+    const response = await client.get<Response<Board[]>>('/boards/pin?type=PUBLIC');
+    return response;
+  } catch (e: any) {
+    console.log('여기는 getPinnedPublicBoardList 함수', e);
+    return e.response;
+  }
+};
+
 export const getOfficialBoardList = async () => {
   try {
     const params = new URLSearchParams();
     params.append('type', 'OFFICIAL');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
-    return response.data.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getOfficialBoardList 함수', e);
+    return e.response;
   }
 };
 
@@ -47,9 +78,10 @@ export const getDepartmentBoardList = async () => {
     const params = new URLSearchParams();
     params.append('type', 'DEPARTMENT');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
-    return response.data.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getDepartmentBoardList 함수', e);
+    return e.response;
   }
 };
 
@@ -58,9 +90,10 @@ export const getCustomBoardList = async () => {
     const params = new URLSearchParams();
     params.append('type', 'PUBLIC');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
-    return response.data.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getCustomBoardList 함수', e);
+    return e.response;
   }
 };
 
