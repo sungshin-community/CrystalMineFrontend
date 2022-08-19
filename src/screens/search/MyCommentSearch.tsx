@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  Platform
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SearchIcon from '../../../resources/icon/SearchIcon';
@@ -70,7 +71,7 @@ function MyCommentSearch({navigation, route}: Props) {
       headerTitle: (): React.ReactNode =>
       <View style={styles.container}>
         <TextInput
-          // autoFocus={true}
+          autoFocus={Platform.OS === 'ios' ? false : true}
           style={styles.input}
           placeholder='내가 작성한 댓글에서 검색'
           placeholderTextColor="#898989"

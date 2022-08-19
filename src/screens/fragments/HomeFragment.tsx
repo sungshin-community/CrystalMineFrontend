@@ -387,8 +387,9 @@ const HomeFragment = ({navigation}: Props) => {
                     )}
                     {item.type === 'COMMENT' && <AlertCommentIcon />}
                     {item.type === 'HOT_POST' && <AlertHotPostIcon />}
-                    <View>
-                      <Text style={styles.newsTitle}>{item.title}</Text>
+                    <View style={{width: Dimensions.get('window').width - 160}}>
+                      <Text  ellipsizeMode={'tail'}
+                        numberOfLines={1} style={[styles.newsTitle]}>{item.title}</Text>
                       <Text
                         ellipsizeMode={'tail'}
                         numberOfLines={1}
@@ -720,7 +721,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 10,
     marginTop: 4,
-    width: Dimensions.get('window').width - 160,
   },
   skeletonRow: {
     flexDirection: 'row',

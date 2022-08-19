@@ -34,7 +34,8 @@ import {BackHandler} from 'react-native';
 import {fontMedium, fontRegular} from '../common/font';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import Autolink from 'react-native-autolink';
-import { SmallPurpleFlag } from '../../resources/icon/SmallPurpleFlag';
+import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
+import Markdown from 'react-native-markdown-display';
 
 interface Props {
   boardType: string;
@@ -172,8 +173,11 @@ function Post({
             {data?.isAnonymous ? (
               <></>
             ) : data?.isOwner ? (
-                boardType === 'PUBLIC' ?
-                  <SmallOrangeFlag style={{ marginLeft: 5 }} /> : <SmallPurpleFlag style={{ marginLeft: 5 }}/>
+              boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
             ) : (
               <></>
             )}
@@ -194,9 +198,7 @@ function Post({
         )}
         <View style={styles.postBody}>
           <Text style={[fontRegular, {fontSize: 14, color: '#222222'}]}>
-            <Autolink
-              text={data ? (data.content ? data.content : "") : ""}
-            />
+            <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
         </View>
         <Text
@@ -208,9 +210,18 @@ function Post({
         </Text>
         {data?.thumbnails.length !== 0 && (
           <View style={{flexDirection: 'row', marginTop: 16}}>
-            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}>
               {data?.thumbnails.map((url, index) => (
-                <Pressable key={index} onPress={() => navigation.navigate('ImageViewerScreen', {imageUrls: imgUrlCoverting(data.images), index: index})}>
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('ImageViewerScreen', {
+                      imageUrls: imgUrlCoverting(data.images),
+                      index: index,
+                    })
+                  }>
                   <Image
                     style={{
                       width: 120,

@@ -10,11 +10,11 @@ import AlertCommentIcon from '../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../resources/icon/AlertHotPostIcon';
 import {readNotification} from '../common/homeApi';
 import Toast from 'react-native-simple-toast';
-import { Alert } from '../classes/AlertDto';
-import React, { useState } from 'react';
-import { Dimensions, Pressable, Text, View } from 'react-native';
-import { fontBold, fontMedium, fontRegular } from '../common/font';
-import { ModalBottom } from './ModalBottom';
+import {Alert} from '../classes/AlertDto';
+import React, {useState} from 'react';
+import {Dimensions, Pressable, Text, View} from 'react-native';
+import {fontBold, fontMedium, fontRegular} from '../common/font';
+import {ModalBottom} from './ModalBottom';
 
 interface AlertProps {
   data: Alert;
@@ -22,9 +22,11 @@ interface AlertProps {
   setBlindModalVisible: any;
 }
 
-const AlertItem = (
-  {data, blindModalVisible, setBlindModalVisible}: AlertProps,
-) => {
+const AlertItem = ({
+  data,
+  blindModalVisible,
+  setBlindModalVisible,
+}: AlertProps) => {
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const navigation = useNavigation();
 
@@ -56,7 +58,6 @@ const AlertItem = (
             // const result = await readNotification(data.id);
             // 알람 확인 못 해야함.
           } else if (data.type === 'COMMENT') {
-
           } else if (
             data.type === 'BOARD_BLIND' ||
             data.type === 'PIN_BOARD_BLIND' ||
@@ -192,7 +193,10 @@ const AlertItem = (
         {data.type === 'RECOMMENT' && <AlertCommentIcon />}
         {data.type === 'HOT_POST' && <AlertHotPostIcon />}
         <View style={{marginLeft: 16}}>
-          <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
+          <Text
+            ellipsizeMode={'tail'}
+            numberOfLines={1}
+            style={[{fontSize: 16, marginBottom: 5, width: Dimensions.get('window').width - 100}, fontMedium]}>
             {data.title}
           </Text>
           <Text
@@ -223,6 +227,7 @@ const AlertItem = (
           modalVisible={blindModalVisible}
           setModalVisible={setBlindModalVisible}
           title="블라인드 안내"
+          ㄹ
           content={modalBody}
           isContentCenter={false}
           purpleButtonText="수정광산 이용 방향 보기"
