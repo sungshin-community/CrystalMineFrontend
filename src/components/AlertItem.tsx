@@ -22,9 +22,11 @@ interface AlertProps {
   setBlindModalVisible: any;
 }
 
-const AlertItem = (
-  {data, blindModalVisible, setBlindModalVisible}: AlertProps,
-) => {
+const AlertItem = ({
+  data,
+  blindModalVisible,
+  setBlindModalVisible,
+}: AlertProps) => {
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const navigation = useNavigation();
 
@@ -192,7 +194,10 @@ const AlertItem = (
         {data.type === 'RECOMMENT' && <AlertCommentIcon />}
         {data.type === 'HOT_POST' && <AlertHotPostIcon />}
         <View style={{marginLeft: 16}}>
-          <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
+          <Text
+            ellipsizeMode={'tail'}
+            numberOfLines={1}
+            style={[{fontSize: 16, marginBottom: 5, width: Dimensions.get('window').width - 100}, fontMedium]}>
             {data.title}
           </Text>
           <Text

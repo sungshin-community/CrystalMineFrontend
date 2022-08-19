@@ -159,7 +159,7 @@ function WikiTab({navigation, route}: Props) {
         <Tab.Screen
           name="페미 위키"
           component={PostListScreen}
-          initialParams={{boardId: 8}}
+          initialParams={{boardId: 9}}
         />
       </Tab.Navigator>
     </>

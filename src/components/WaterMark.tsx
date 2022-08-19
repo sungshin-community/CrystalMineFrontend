@@ -7,11 +7,12 @@ function WaterMark() {
   const [uuid, setUuid] = useState<string>('');
   const [isUuid, setIsUuid] = useState(false);
   const [now, setNow] = useState<string>('');
+  let uuuid: string | null = '';
 
   useEffect(() => {
     async function getUuid() {
       const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      // const uuid = await AsyncStorage.getItem('uuid');
+      uuuid = await AsyncStorage.getItem('uuid');
       if (storageUuid === null || storageUuid === '') setIsUuid(false);
       else {
         setIsUuid(true);
@@ -20,7 +21,7 @@ function WaterMark() {
       // console.log('storageUuid', storageUuid);
     }
     getUuid();
-  }, [now]);
+  }, []);
 
   useEffect(() => {
     const getNow = () => {
@@ -40,7 +41,7 @@ function WaterMark() {
   console.log(now);
   return (
     <>
-      {isUuid && (
+      {/* {isUuid && ( */}
         <View
           style={{
             flex: 1,
@@ -57,11 +58,10 @@ function WaterMark() {
               fontSize: 25,
               opacity: 0.007,
             }}>
-            {/* 캡쳐한 날짜: {now} {`\n`} */}
-            {(uuid+now).repeat(100)}
+            {(uuid).repeat(100)}
           </Text>
         </View>
-      )}
+      {/* )} */}
     </>
   );
 }

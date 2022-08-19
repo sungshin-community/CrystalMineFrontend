@@ -47,7 +47,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
 type RootStackParamList = {
-  PostScreen: {postId: number};
+  PostScreen: {postId: number, boardType: string};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
@@ -366,9 +366,10 @@ const PostListScreen = ({navigation, route}: Props) => {
                 onPress={async () => {
                   navigation.navigate('PostScreen', {
                     postId: item.postId,
+                    boardType: boardInfo?.type
                   });
                 }}>
-                <PostItem post={item} />
+                <PostItem post={item} boardType={boardInfo?.type}/>
               </TouchableOpacity>
             )}
             ItemSeparatorComponent={() => (
