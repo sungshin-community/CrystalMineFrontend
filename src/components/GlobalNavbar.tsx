@@ -183,6 +183,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
       <Tab.Screen
         name="MyPage"
         component={MyPageFragment}
+        listeners={({navigation}) => ({
+          tabPress: async e => {
+            e.preventDefault();
+            const result = await checkRole();
+            let role = result.data.data.role;
+            if (role === '정회원') navigation.navigate('MyPage');
+            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+          },
+        })}
         options={{
           title: '마이페이지',
           headerTitleAlign: 'center',
