@@ -39,13 +39,13 @@ import {
   RectangleUnchecked,
 } from '../../../resources/icon/CheckBox';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
-import { LogBox } from 'react-native';
+import {LogBox} from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-const PostScreen = ({ navigation, route }: Props) => {
+const PostScreen = ({navigation, route}: Props) => {
   console.reportErrorsAsExceptions = false;
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
@@ -268,10 +268,11 @@ const PostScreen = ({ navigation, route }: Props) => {
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{flexGrow: 1}}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
           <Post
+            boardType={route.params.boardType}
             post={post}
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
@@ -288,6 +289,7 @@ const PostScreen = ({ navigation, route }: Props) => {
               renderItem={({item, index}) => (
                 <View key={index}>
                   <Comment
+                    boardType={route.params.boardType}
                     comment={item}
                     setParentId={setParentId}
                     handleCommentLike={handleCommentLike}
@@ -302,6 +304,7 @@ const PostScreen = ({ navigation, route }: Props) => {
                   {item.recomments &&
                     item.recomments.map((recomment, index) => (
                       <Recomment
+                        boardType={route.params.boardType}
                         key={index}
                         recomment={recomment}
                         handleCommentLike={handleCommentLike}
@@ -362,7 +365,10 @@ const PostScreen = ({ navigation, route }: Props) => {
               <Text style={{marginRight: 5}}>익명</Text>
               <Pressable
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => {setIsAnonymous(isAnonymous => !isAnonymous); anonymous = !anonymous;}}>
+                onPress={() => {
+                  setIsAnonymous(isAnonymous => !isAnonymous);
+                  anonymous = !anonymous;
+                }}>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
             </View>

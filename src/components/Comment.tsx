@@ -26,8 +26,11 @@ import Toast from 'react-native-simple-toast';
 import NoReport, {Report} from '../../resources/icon/Report';
 import {fontMedium, fontRegular} from '../common/font';
 import Autolink from 'react-native-autolink';
+import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
+import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 
 interface Props {
+  boardType?: string;
   comment?: any;
   setParentId?: any;
   handleCommentLike?: any;
@@ -40,6 +43,7 @@ interface Props {
   setComponentModalVisible?: any;
 }
 const Comment = ({
+  boardType,
   comment,
   setParentId,
   handleCommentLike,
@@ -145,19 +149,28 @@ const Comment = ({
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-            <View style={{justifyContent: 'center'}}>
-              <Text
-                style={[
-                  fontMedium,
-                  {
-                    fontSize: 15,
-                    paddingLeft: 8,
-                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                  },
-                ]}>
-                {data?.displayName}
-              </Text>
-            </View>
+            <Text
+              style={[
+                fontMedium,
+                {
+                  fontSize: 15,
+                  paddingLeft: 8,
+                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                },
+              ]}>
+              {data?.displayName}
+            </Text>
+            {data.isAnonymous ? (
+              <></>
+            ) : data.isOfBoardOwner ? (
+              boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           {data.isDeleted ? (
             data.isOfReader ? (
@@ -181,8 +194,14 @@ const Comment = ({
           )}
         </View>
         <Text
-          style={[{color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222', fontSize: 14}, fontRegular]}>
-            <Autolink text={data ? (data.content ? data.content : "") : ""} />
+          style={[
+            {
+              color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
+              fontSize: 14,
+            },
+            fontRegular,
+          ]}>
+          <Autolink text={data ? (data.content ? data.content : '') : ''} />
         </Text>
         {data.isDeleted || data.isBlind ? (
           <></>
@@ -244,6 +263,7 @@ const styles = StyleSheet.create({
 });
 
 interface RecommentProps {
+  boardType: string;
   recomment?: any;
   handleCommentLike?: any;
   handleCommentDelete: any;
@@ -253,6 +273,7 @@ interface RecommentProps {
 }
 
 export const Recomment = ({
+  boardType,
   recomment,
   handleCommentLike,
   handleCommentDelete,
@@ -348,19 +369,28 @@ export const Recomment = ({
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-            <View style={{justifyContent: 'center'}}>
-              <Text
-                style={[
-                  fontMedium,
-                  {
-                    fontSize: 15,
-                    paddingLeft: 8,
-                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                  },
-                ]}>
-                {data.displayName}
-              </Text>
-            </View>
+            <Text
+              style={[
+                fontMedium,
+                {
+                  fontSize: 15,
+                  paddingLeft: 8,
+                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                },
+              ]}>
+              {data.displayName}
+            </Text>
+            {data.isAnonymous ? (
+              <></>
+            ) : data.isOfBoardOwner ? (
+              boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           {data.isDeleted ? (
             data.isOfReader ? (
@@ -385,10 +415,14 @@ export const Recomment = ({
         </View>
         <View style={{marginLeft: 20}}>
           <Text
-            style={[{
-              color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222', fontSize: 14
-            }, fontRegular]}>
-            <Autolink text={data ? (data.content ? data.content : "") : ""} />
+            style={[
+              {
+                color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
+                fontSize: 14,
+              },
+              fontRegular,
+            ]}>
+            <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
           {data.isDeleted || data.isBlind ? (
             <></>

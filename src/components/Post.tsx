@@ -34,8 +34,10 @@ import {BackHandler} from 'react-native';
 import {fontMedium, fontRegular} from '../common/font';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import Autolink from 'react-native-autolink';
+import { SmallPurpleFlag } from '../../resources/icon/SmallPurpleFlag';
 
 interface Props {
+  boardType: string;
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
@@ -46,6 +48,7 @@ interface Props {
 }
 
 function Post({
+  boardType,
   post,
   handlePostLike,
   handlePostScrap,
@@ -169,7 +172,8 @@ function Post({
             {data?.isAnonymous ? (
               <></>
             ) : data?.isOwner ? (
-              <SmallOrangeFlag style={{marginLeft: 5}} />
+                boardType === 'PUBLIC' ?
+                  <SmallOrangeFlag style={{ marginLeft: 5 }} /> : <SmallPurpleFlag style={{ marginLeft: 5 }}/>
             ) : (
               <></>
             )}
