@@ -14,4 +14,5 @@ export interface Alert {
   createdAt: string;
   blind?: BlindDto;
   deleteBlind?: DeleteBlindDto;
+  postId: number;
 }

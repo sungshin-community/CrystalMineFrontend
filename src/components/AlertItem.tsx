@@ -12,7 +12,7 @@ import {readNotification} from '../common/homeApi';
 import Toast from 'react-native-simple-toast';
 import { Alert } from '../classes/AlertDto';
 import React, { useState } from 'react';
-import { Dimensions, Pressable, Text, View } from 'react-native';
+import { Dimensions, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { fontBold, fontMedium, fontRegular } from '../common/font';
 import { ModalBottom } from './ModalBottom';
 
@@ -30,7 +30,7 @@ const AlertItem = (
 
   return (
     <>
-      <Pressable
+      <TouchableOpacity
         style={{
           flexDirection: 'row',
           paddingHorizontal: 24,
@@ -175,6 +175,8 @@ const AlertItem = (
             else if (data.type === 'DELETE_COMMENT_BLIND' && !data.deleteBlind)
               Toast.show('삭제된 댓글입니다.', Toast.SHORT);
             else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+          } else if (data.type === 'HOT_POST' || data.type === 'COMMENT') {
+            navigation.navigate('PostScreen', {postId: data.postId});
           }
         }}>
         {data.type === 'WELCOME' && <CheckMark />}
@@ -216,7 +218,7 @@ const AlertItem = (
             {data.createdAt}
           </Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
 
       {modalBody && blindModalVisible && (
         <ModalBottom
