@@ -122,9 +122,9 @@ const App = () => {
 
   return (
     <>
-      {/* <WaterMark /> */}
       {isLoaded && (
         <NavigationContainer>
+         <WaterMark />
           {!isLoggedIn ? (
             <Stack.Navigator
               screenOptions={{

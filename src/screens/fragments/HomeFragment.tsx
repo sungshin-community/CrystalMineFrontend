@@ -150,7 +150,6 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
-      <WaterMark />
       <View
         style={{
           position: 'absolute',
