@@ -696,8 +696,9 @@ const HomeFragment = ({navigation}: Props) => {
                 setBlacklistblindModalVisible(false);
               } else
                 Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-              navigation.reset({routes: [{name: 'SplashHome'}]});
+              navigation.reset({ routes: [{ name: 'SplashHome' }] });
             }}
+            setDisableClose={true}
           />
           <ModalBottom
             modalVisible={blindModalVisible}

@@ -21,6 +21,7 @@ interface Props {
   whiteButtonText?: string;
   whiteButtonFunc?: any;
   setDim?: boolean;
+  setDisableClose?: boolean;
 }
 export const ModalBottom = ({
   modalVisible,
@@ -33,6 +34,7 @@ export const ModalBottom = ({
   whiteButtonText,
   whiteButtonFunc,
   setDim = true,
+  setDisableClose = false,
 }: Props) => {
   return (
     <>
@@ -59,10 +61,12 @@ export const ModalBottom = ({
           onRequestClose={() => {
             setModalVisible(!modalVisible);
           }}>
-          <Pressable
-            style={{flex: 1}}
-            onPress={() => setModalVisible(!modalVisible)}
-          />
+          {!setDisableClose && (
+            <Pressable
+              style={{flex: 1}}
+              onPress={() => setModalVisible(!modalVisible)}
+            />
+          )}
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
