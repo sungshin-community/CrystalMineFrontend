@@ -55,8 +55,6 @@ const AlertItem = (
               navigation.navigate('UncertifiedMember');
             // const result = await readNotification(data.id);
             // 알람 확인 못 해야함.
-          } else if (data.type === 'COMMENT') {
-
           } else if (
             data.type === 'BOARD_BLIND' ||
             data.type === 'PIN_BOARD_BLIND' ||
