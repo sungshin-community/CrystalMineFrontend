@@ -57,7 +57,7 @@ export default function ExpiredMember({navigation}: Props) {
   useEffect(() => {
     async function getUserInfo() {
       const userDto = await getUser();
-      setUser(userDto);
+      setUser(userDto.data.data);
     }
     getUserInfo();
   }, []);
