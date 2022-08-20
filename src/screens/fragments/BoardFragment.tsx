@@ -43,7 +43,6 @@ export default function BoardFragment({navigation}: Props) {
   const isFocused = useIsFocused();
   const [isInited, setIsInited] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [uuid, setUuid] = useState<string>('');
   const [errorStatus, setErrorStatus] = useState<number>();
 
   const getPinnedBoardList = async () => {
@@ -168,8 +167,6 @@ export default function BoardFragment({navigation}: Props) {
       if (!isInited) {
         setIsLoading(true);
       }
-      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      if(storageUuid) setUuid(storageUuid);
       await getPinnedBoardList();
       await getOfficialBoards();
       await getPublicBoards();
@@ -188,7 +185,7 @@ export default function BoardFragment({navigation}: Props) {
 
   return (
     <>
-      <WaterMark uuid={uuid}/>
+      <WaterMark />
       {isError ? <Error status={errorStatus} code={'B001'}/> :
         <>
           <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0 }}>

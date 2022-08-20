@@ -11,6 +11,7 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import { ModalBottom } from '../../components/ModalBottom';
 import { RectangleChecked, RectangleUnchecked } from '../../../resources/icon/CheckBox';
 import Toast from 'react-native-simple-toast';
+import WaterMark from '../../components/WaterMark';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -141,6 +142,7 @@ export default function ScrapedPostList({navigation}: Props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
+      <WaterMark />
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>

@@ -3,24 +3,30 @@ import {useState, useEffect} from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function WaterMark({ uuid }: any) {
+function WaterMark() {
+  const [uuid, setUuid] = useState<string>('');
   const [now, setNow] = useState<string>('');
 
-  useEffect(() => {
-    const getNow = () => {
-      let today = new Date();
-      let time = {
-        year: today.getFullYear(),
-        month: today.getMonth() + 1,
-        date: today.getDate(),
-        // hours: today.getHours(),
-        // minutes: today.getMinutes(),
-      };
-      // let timestring = ` [${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}] `;
-      let timestring = ` [${time.year}/${time.month}/${time.date}] `;
-      setNow(timestring);
+  const getNow = () => {
+    let today = new Date();
+    let time = {
+      year: today.getFullYear(),
+      month: today.getMonth() + 1,
+      date: today.getDate(),
+      // hours: today.getHours(),
+      // minutes: today.getMinutes(),
     };
-    getNow();
+    return ` [${time.year}/${time.month}/${time.date}] `;
+  };
+
+  useEffect(() => {
+    async function init() {
+      const currentTime = getNow();
+      setNow(currentTime);
+      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
+      if(storageUuid) setUuid(storageUuid);
+    }
+    init();
   }, []);
   return (
     <>
@@ -40,7 +46,7 @@ function WaterMark({ uuid }: any) {
           <Text
             style={{
             fontSize: 24,
-            opacity: 0.007,
+            opacity: 1.007,
             fontFamily: 'SpoqaHanSansNeo-light',
             lineHeight: 48,
             }}>

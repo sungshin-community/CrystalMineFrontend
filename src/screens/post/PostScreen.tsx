@@ -40,6 +40,7 @@ import {
 } from '../../../resources/icon/CheckBox';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import {LogBox} from 'react-native';
+import WaterMark from '../../components/WaterMark';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {};
@@ -249,6 +250,7 @@ const PostScreen = ({navigation, route}: Props) => {
         keyboardVerticalOffset={60}
         behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1}}>
+        <WaterMark />
         <View
           style={{
             position: 'absolute',

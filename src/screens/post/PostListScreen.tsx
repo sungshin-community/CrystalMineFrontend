@@ -48,6 +48,7 @@ import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
 import { logout } from '../../common/authApi';
 import { getHundredsDigit } from '../../common/util/statusUtil';
+import WaterMark from '../../components/WaterMark';
 type RootStackParamList = {
   PostScreen: {postId: number, boardType: string};
   PostWriteScreen: {boardId: number};
@@ -139,6 +140,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
+        <WaterMark />
         {boardInfo?.id === 1 ? (
           <BigDarkPin />
         ) : (

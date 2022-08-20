@@ -82,7 +82,6 @@ const HomeFragment = ({navigation}: Props) => {
   const [isPinBoardError, setIsPinBoardError] = useState<boolean>(false);
   const [isHotBoardError, setIsHotBoardError] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [uuid, setUuid] = useState<string>('');
 
   const blacklistModalContent = (
     <>
@@ -127,8 +126,6 @@ const HomeFragment = ({navigation}: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      if(storageUuid) setUuid(storageUuid);
 
       const response = await getAuthentication();
       if (response.status === 401) {
@@ -182,7 +179,7 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
-      <WaterMark uuid={uuid}/>
+      <WaterMark />
       {isError ? (
         <Error status={500} code={'H001'}/>
       ) : (
