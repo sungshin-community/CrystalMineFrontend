@@ -186,8 +186,11 @@ export const logout = async () => {
     console.log('uuid', AsyncStorage.getItem('uuid'));
     console.log('여기는 로그아웃 함수', response.data);
     return response;
-  } catch (e) {
+  } catch (e: any) {
     console.log('여기는 logout 함수', e.response);
+    await AsyncStorage.setItem('accessToken', '');
+    await AsyncStorage.setItem('refreshToken', '');
+    await AsyncStorage.setItem('uuid', '');
     return e.response;
   }
 };
