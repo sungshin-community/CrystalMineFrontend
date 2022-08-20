@@ -267,6 +267,7 @@ const PostScreen = ({navigation, route}: Props) => {
           />
         </View>
         <ScrollView
+          // keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{flexGrow: 1}}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
@@ -282,6 +283,7 @@ const PostScreen = ({navigation, route}: Props) => {
             setComponentModalVisible={setComponentModalVisible}></Post>
           <View style={{flex: 1}}>
             <FlatList
+              // keyboardShouldPersistTaps="always"
               showsVerticalScrollIndicator={false}
               style={{flex: 1}}
               ref={flatListRef}
