@@ -73,7 +73,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusBarHeight, setStatusBarHeight] = useState(0);
-  let anonymous: boolean = true;
+  const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -86,7 +86,7 @@ function PostWriteScreen({navigation, route}: Props) {
       }
     };
     userInfo();
-  }, [route.params.boardId]);
+  }, []);
 
   const onFocus = () => {
     setIsFocus(true);
@@ -98,19 +98,11 @@ function PostWriteScreen({navigation, route}: Props) {
   };
   const onSubmitPress = async () => {
     setIsLoading(true);
-    console.log(
-      'api 함수 호출 전: ',
-      boardId,
-      title,
-      content,
-      isAnonymous,
-      images,
-    );
     const result = await postWritePost(
       boardId,
       title,
       content,
-      anonymous,
+      isAnonymous,
       images,
     );
     if (result) {
@@ -131,7 +123,7 @@ function PostWriteScreen({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable onPress={onSubmitPress}>
+        <Pressable onPress={() => {setIsSubmitState(true)}}>
           <Text
             style={[
               styles.submit,
@@ -171,8 +163,13 @@ function PostWriteScreen({navigation, route}: Props) {
     });
   }, [navigation, title, content]);
 
+  useEffect(() => {
+    if (isSubmitState) {
+      onSubmitPress();
+    }
+  }, [isAnonymous, isSubmitState, images]);
+
   const onSelectImage = () => {
-    console.log('image press');
     launchImageLibrary(
       {
         mediaType: 'photo',
@@ -270,7 +267,6 @@ function PostWriteScreen({navigation, route}: Props) {
             }}
             onPress={() => {
               setIsAnonymous(current => !current);
-              anonymous = !anonymous;
             }}>
             <Text style={{marginRight: 4}}>익명</Text>
             {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
