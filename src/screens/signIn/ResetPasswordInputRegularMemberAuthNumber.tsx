@@ -33,6 +33,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {
   sendResetPasswordEmail,
   checkResetPasswordAuthNumber,
+  logout,
 } from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
@@ -236,7 +237,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   code: value,
                 });
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
                   navigation.navigate('ResetPasswordInputNewPassword', {
@@ -264,7 +266,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   code: value,
                 });
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
                   navigation.navigate('ResetPasswordInputNewPassword', {

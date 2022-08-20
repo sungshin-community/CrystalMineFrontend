@@ -22,7 +22,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {checkNicknameConflict} from '../../common/authApi';
+import {checkNicknameConflict, logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
 
@@ -95,7 +95,7 @@ export default function SignUpNickname({navigation, route}: Props) {
       showSubscription.remove();
     };
   }, []);
-  
+
   return (
     <>
       <View
@@ -105,8 +105,7 @@ export default function SignUpNickname({navigation, route}: Props) {
           backgroundColor: '#A055FF',
         }}
       />
-      <KeyboardAvoidingView
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
@@ -172,7 +171,8 @@ export default function SignUpNickname({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkNicknameConflict(nickname);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('MajorSelect', {
                     userId: route.params.userId,
@@ -182,7 +182,8 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                } else
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}
@@ -193,7 +194,8 @@ export default function SignUpNickname({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkNicknameConflict(nickname);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('MajorSelect', {
                     userId: route.params.userId,
@@ -203,7 +205,8 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                } else
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}

@@ -17,7 +17,7 @@ import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Platform, Pressable, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import {checkRole} from '../common/authApi';
+import {checkRole, logout} from '../common/authApi';
 import {useState} from 'react';
 import {Authentication} from '../classes/Authentication';
 import {useEffect} from 'react';
@@ -53,6 +53,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
     async function init() {
       const result = await checkRole();
       if (result.status === 401) {
+        logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(result.status) === 2) {
         setUser(result.data.data);
@@ -117,8 +118,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             e.preventDefault();
             if (user?.isAuthenticated && !user?.blacklist) {
               navigation.navigate('Board');
-            }
-            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            } else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
         options={{
@@ -180,8 +180,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            if (!user?.blacklist)
-              navigation.navigate('Alert');
+            if (!user?.blacklist) navigation.navigate('Alert');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}

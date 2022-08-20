@@ -129,6 +129,7 @@ const HomeFragment = ({navigation}: Props) => {
 
       const response = await getAuthentication();
       if (response.status === 401) {
+        logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setUser(response.data.data);
@@ -138,6 +139,7 @@ const HomeFragment = ({navigation}: Props) => {
         ) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
+            logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(notification.status) === 2) {
             setNoti(notification.data.data.content);
@@ -148,6 +150,7 @@ const HomeFragment = ({navigation}: Props) => {
           const hotBoardData = await getHotBoardContents();
 
           if (pinBoardData.status === 401) {
+            logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(pinBoardData.status) === 2) {
             setPinBoardContents(pinBoardData.data.data);
@@ -155,6 +158,7 @@ const HomeFragment = ({navigation}: Props) => {
             setIsPinBoardError(true);
           }
           if (hotBoardData.status === 401) {
+            logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(hotBoardData.status) === 2) {
             setHotBoardContents(hotBoardData.data.data);

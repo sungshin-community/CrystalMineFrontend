@@ -25,7 +25,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {checkEmailConflict} from '../../common/authApi';
+import {checkEmailConflict, logout} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
@@ -225,7 +225,8 @@ export default function SignUpId({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkEmailConflict(studentId);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('SignUpPassword', {
                     userId: studentId,
@@ -251,7 +252,8 @@ export default function SignUpId({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkEmailConflict(studentId);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('SignUpPassword', {
                     userId: studentId,

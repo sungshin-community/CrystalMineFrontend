@@ -19,7 +19,7 @@ import {
   DisabledPurpleRoundButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {login} from '../../common/authApi';
+import {login, logout} from '../../common/authApi';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
@@ -193,21 +193,25 @@ export default function SignInPassword({navigation, route}: Props) {
                   password: password,
                 });
                 if (response.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(response.status) === 2) {
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                 } else if (response.data.code === 'INVALID_EMAIL_PASSWORD') {
                   setIsPasswordInCorrect(true);
                 } else if (response.data.code == 'BLACKLIST_MEMBER') {
                   setIsBlackList(true);
-                } else navigation.navigate('ErrorScreen');
+                } else
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}
 
           {!isValidate && <DisabledPurpleRoundButton text="다음" />}
           <Pressable
-            onPress={() => { navigation.navigate('ResetPasswordInputId'); console.log('move') }}>
+            onPress={() => {
+              navigation.navigate('ResetPasswordInputId');
+            }}>
             <Text
               style={{
                 paddingBottom: 20,

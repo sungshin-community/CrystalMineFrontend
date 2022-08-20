@@ -23,6 +23,7 @@ import { getHundredsDigit } from '../../common/util/statusUtil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WaterMark from '../../components/WaterMark';
 import Error from '../../components/Error'
+import { logout } from '../../common/authApi';
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -49,6 +50,7 @@ export default function BoardFragment({navigation}: Props) {
     let boardList: Board[] = [];
     const pinnedOfficialResponse = await getPinnedOfficialBoardList();
     if (pinnedOfficialResponse.status === 401) {
+      logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(pinnedOfficialResponse.status) === 2) {
       boardList = boardList.concat(pinnedOfficialResponse.data.data);
@@ -59,6 +61,7 @@ export default function BoardFragment({navigation}: Props) {
     }
     const pinnedDepartmentResponse = await getPinnedDepartmentBoardList();
     if (pinnedDepartmentResponse.status === 401) {
+      logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(pinnedDepartmentResponse.status) === 2) {
       boardList = boardList.concat(pinnedDepartmentResponse.data.data);
@@ -69,6 +72,7 @@ export default function BoardFragment({navigation}: Props) {
     }
     const pinnedPublicResponse = await getPinnedPublicBoardList();
     if (pinnedPublicResponse.status === 401) {
+      logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(pinnedPublicResponse.status) === 2) {
       boardList = boardList.concat(pinnedPublicResponse.data.data);
@@ -83,6 +87,7 @@ export default function BoardFragment({navigation}: Props) {
   const getOfficialBoards = async () => {
     const officialResponse = await getOfficialBoardList();
     if (officialResponse.status === 401) {
+      logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(officialResponse.status) === 2) {
       setOfficialBoardList(officialResponse.data.data);
@@ -95,6 +100,7 @@ export default function BoardFragment({navigation}: Props) {
   const getPublicBoards = async () => {
     const publicResponse = await getCustomBoardList();
     if (publicResponse.status === 401) {
+      logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(publicResponse.status) === 2) {
       setCustomBoardList(publicResponse.data.data);
@@ -107,6 +113,7 @@ export default function BoardFragment({navigation}: Props) {
   const getDepartmentBoards = async () => {
     const departmentResponse = await getDepartmentBoardList();
     if (departmentResponse.status === 401) {
+      logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(departmentResponse.status) === 2) {
       setDepartmentBoardList(departmentResponse.data.data);

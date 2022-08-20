@@ -26,7 +26,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {sendResetPasswordEmail} from '../../common/authApi';
+import {logout, sendResetPasswordEmail} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
@@ -204,7 +204,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   username: studentId,
                 });
                 if (check.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(check.status) === 2) {
                   Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate(
@@ -234,7 +235,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   username: studentId,
                 });
                 if (check.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(check.status) === 2) {
                   Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate(

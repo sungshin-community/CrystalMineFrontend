@@ -23,7 +23,7 @@ import {CautionText} from '../../components/Input';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
-import {resetPassword} from '../../common/authApi';
+import {logout, resetPassword} from '../../common/authApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
 import {getHundredsDigit} from '../../common/util/statusUtil';
@@ -98,10 +98,11 @@ export default function ResetPasswordInputNewPasswordConfirm({
       password: route.params.previousPassword,
     });
     if (result.status === 401) {
-      navigation.navigate('SplashHome');
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(result.status) === 2) {
       setModalVisible(true);
-    } else navigation.navigate('ErrorScreen');
+    } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
   };
 
   const onKeyboardDidshow = (e: KeyboardEvent) => {
