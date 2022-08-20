@@ -20,8 +20,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fontRegular } from '../../common/font';
 import { getHundredsDigit } from '../../common/util/statusUtil';
-import ErrorScreen from '../errorScreen/ErrorScreen';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import WaterMark from '../../components/WaterMark';
+import Error from '../../components/Error'
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -43,6 +44,7 @@ export default function BoardFragment({navigation}: Props) {
   const [isInited, setIsInited] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [uuid, setUuid] = useState<string>('');
+  const [errorStatus, setErrorStatus] = useState<number>();
 
   const getPinnedBoardList = async () => {
     let boardList: Board[] = [];
@@ -52,6 +54,7 @@ export default function BoardFragment({navigation}: Props) {
     } else if (getHundredsDigit(pinnedOfficialResponse.status) === 2) {
       boardList = boardList.concat(pinnedOfficialResponse.data.data);
     } else {
+      setErrorStatus(pinnedOfficialResponse.status);
       setIsError(true);
       return;
     }
@@ -61,6 +64,7 @@ export default function BoardFragment({navigation}: Props) {
     } else if (getHundredsDigit(pinnedDepartmentResponse.status) === 2) {
       boardList = boardList.concat(pinnedDepartmentResponse.data.data);
     } else {
+      setErrorStatus(pinnedDepartmentResponse.status);
       setIsError(true);
       return;
     }
@@ -71,6 +75,7 @@ export default function BoardFragment({navigation}: Props) {
       boardList = boardList.concat(pinnedPublicResponse.data.data);
       setPinnedBoardList(boardList);
     } else {
+      setErrorStatus(pinnedPublicResponse.status);
       setIsError(true);
       return;
     }
@@ -83,6 +88,7 @@ export default function BoardFragment({navigation}: Props) {
     } else if (getHundredsDigit(officialResponse.status) === 2) {
       setOfficialBoardList(officialResponse.data.data);
     } else {
+      setErrorStatus(officialResponse.status);
       setIsError(true);
     }
   }
@@ -94,6 +100,7 @@ export default function BoardFragment({navigation}: Props) {
     } else if (getHundredsDigit(publicResponse.status) === 2) {
       setCustomBoardList(publicResponse.data.data);
     } else {
+      setErrorStatus(publicResponse.status);
       setIsError(true);
     }
   }
@@ -105,6 +112,7 @@ export default function BoardFragment({navigation}: Props) {
     } else if (getHundredsDigit(departmentResponse.status) === 2) {
       setDepartmentBoardList(departmentResponse.data.data);
     } else {
+      setErrorStatus(departmentResponse.status);
       setIsError(true);
     }
   }
@@ -160,6 +168,8 @@ export default function BoardFragment({navigation}: Props) {
       if (!isInited) {
         setIsLoading(true);
       }
+      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
+      if(storageUuid) setUuid(storageUuid);
       await getPinnedBoardList();
       await getOfficialBoards();
       await getPublicBoards();
@@ -177,51 +187,54 @@ export default function BoardFragment({navigation}: Props) {
   
 
   return (
-    isError ? <ErrorScreen /> :
     <>
-      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
-      </View>
-      <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-        <View
-          style={{flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16}}>
-          <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
-          <BoardListContainer
-            boardCategory="고정게시판"
-            component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} isInited={isInited} onUpdate={updatePinnedBoardList} />}
-          />
-          {/* <BoardListContainer
+      <WaterMark uuid={uuid}/>
+      {isError ? <Error status={errorStatus} code={'B001'}/> :
+        <>
+          <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0 }}>
+            <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{ zIndex: 100 }} />
+          </View>
+          <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            <View
+              style={{ flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16 }}>
+              <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
+              <BoardListContainer
+                boardCategory="고정게시판"
+                component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} isInited={isInited} onUpdate={updatePinnedBoardList} />}
+              />
+              {/* <BoardListContainer
             boardCategory="공식게시판"
             component={<OfficialBoardList items={officialBoardList} />}
           /> */}
-          <View style={{height: 60, paddingLeft: 25, alignItems: 'center', flexDirection: 'row'}}>
-            <Text style={[fontRegular,{
-              fontSize: 17,
-              lineHeight: 20,
-              flex: 1,
-              fontWeight: 'bold',
-              color: '#222222'
-            }]}>
-              공식게시판
-            </Text>
-          </View>
-          <OfficialBoardListContainer
-            boardCategory="수정광장"
-            component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
-          />
-          <OfficialBoardListContainer
-            defaultFolded={true}
-            boardCategory="학과게시판"
-            component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
-          />
-          <CustomBoardListContainer
-            boardCategory="수정게시판"
-            component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
-            moveToCreateBoard={moveToCreateBoard}
-          />
-          <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
-        </View>
-      </ScrollView>
+              <View style={{ height: 60, paddingLeft: 25, alignItems: 'center', flexDirection: 'row' }}>
+                <Text style={[fontRegular, {
+                  fontSize: 17,
+                  lineHeight: 20,
+                  flex: 1,
+                  fontWeight: 'bold',
+                  color: '#222222'
+                }]}>
+                  공식게시판
+                </Text>
+              </View>
+              <OfficialBoardListContainer
+                boardCategory="수정광장"
+                component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+              />
+              <OfficialBoardListContainer
+                defaultFolded={true}
+                boardCategory="학과게시판"
+                component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+              />
+              <CustomBoardListContainer
+                boardCategory="수정게시판"
+                component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+                moveToCreateBoard={moveToCreateBoard}
+              />
+              <View style={{ height: 36, backgroundColor: '#FFFFFF' }}></View>
+            </View>
+          </ScrollView>
+        </>}
       </>
   );
 }
