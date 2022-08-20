@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-
 import {
   StatusBar,
   View,
@@ -11,8 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  KeyboardEvent,
 } from 'react-native';
-
 import {TwoLineTitle} from '../../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -24,8 +23,10 @@ import {CautionText} from '../../../components/Input';
 import PasswordShow from '../../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
-import {resetPassword} from '../../../common/authApi';
+import {logout, resetPassword} from '../../../common/authApi';
 import {ModalBottom} from '../../../components/ModalBottom';
+import Toast from 'react-native-simple-toast';
+import { getHundredsDigit } from '../../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -60,6 +61,7 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
   const [isEqual, setIsEqual] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -82,19 +84,34 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
   };
 
   const resetPasswordConfirm = async () => {
-    let result: number = await resetPassword({
+     let result = await resetPassword({
       username: route.params.username,
       password: route.params.previousPassword,
     });
-    if (result === 0) {
+    if (result.status === 401) {
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(result.status) === 2) {
       setModalVisible(true);
-    }
+    } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
   };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
 
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={90}
-      behavior={Platform.select({ios: 'padding'})}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
         <TextContainer>
@@ -118,7 +135,7 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
               fontSize: 21,
               fontFamily: 'SpoqaHanSansNeo-Regular',
               paddingBottom: 7,
-              color: '#222222'
+              color: '#222222',
             }}
             onFocus={(e: any) => {
               onInputFocus();
@@ -153,7 +170,7 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: isFocused ? 0 : 34,
+          bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : 34,
           justifyContent: 'center',
           alignItems: 'center',
         }}>

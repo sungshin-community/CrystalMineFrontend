@@ -168,17 +168,10 @@ export const checkPassword = async (password: string) => {
     const response = await client.post<Response<User>>(
       '/user/check-password',
       {password: password},
-      {
-        headers: {Authorization: `Bearer ${accessToken}`},
-      },
     );
-    console.log('~', response.data);
-    return response.data.code;
+    return response;
   } catch (error) {
-    const errorCode = error.response.data.code;
-    console.log('~~', errorCode);
-
-    return errorCode;
+    return error.response;
   }
 };
 

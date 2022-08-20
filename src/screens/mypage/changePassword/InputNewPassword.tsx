@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-
 import {
   StatusBar,
   View,
@@ -11,8 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  KeyboardEvent,
 } from 'react-native';
-
 import {NormalOneLineText, Description} from '../../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -24,7 +23,9 @@ import {CautionText} from '../../../components/Input';
 import PasswordShow from '../../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
-import {checkNewPassword} from '../../../common/authApi';
+import {checkNewPassword, logout} from '../../../common/authApi';
+import { getHundredsDigit } from '../../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -63,6 +64,8 @@ export default function InputNewPassword({navigation, route}: Props) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
   const [isChangeable, setIsChangeable] = useState<boolean>(true);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
   const onInputFocus = () => {
     setIsFocused(true);
   };
@@ -86,13 +89,23 @@ export default function InputNewPassword({navigation, route}: Props) {
     setShowPassword(!showPassword);
   };
 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={90}
-      behavior={Platform.select({ios: 'padding'})}
-      style={{flex: 1, backgroundColor:'#fff'}}>
-      <ScrollView
-        style={{flex: 1, paddingHorizontal: 24}}>
+    <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
+      <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
         <TextContainer>
           <NormalOneLineText>새 비밀번호를 입력해주세요.</NormalOneLineText>
           <Description>
@@ -115,7 +128,7 @@ export default function InputNewPassword({navigation, route}: Props) {
               fontSize: 21,
               fontFamily: 'SpoqaHanSansNeo-Regular',
               paddingBottom: 7,
-              color: '#222222'
+              color: '#222222',
             }}
             onFocus={(e: any) => {
               onInputFocus();
@@ -159,7 +172,7 @@ export default function InputNewPassword({navigation, route}: Props) {
       </ScrollView>
       <View
         style={{
-          bottom: isFocused ? 0 : 34,
+          bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : 34,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -167,17 +180,22 @@ export default function InputNewPassword({navigation, route}: Props) {
           <PurpleFullButton
             text="다음"
             onClick={async () => {
-             let result: number = await checkNewPassword({
+              let result = await checkNewPassword({
                 username: route.params.username,
                 password: password,
               });
-              if (result === 0) {
+              if (result.status === 401) {
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(result.status) === 2) {
                 navigation.navigate('InputNewPasswordConfirm', {
                   username: route.params.username,
                   previousPassword: password,
                 });
-              } else {
+              } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                 setIsChangeable(false);
+              } else {
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }
             }}
           />
@@ -186,27 +204,28 @@ export default function InputNewPassword({navigation, route}: Props) {
           <PurpleRoundButton
             text="다음"
             onClick={async () => {
-              let result: number = await checkNewPassword({
+              let result = await checkNewPassword({
                 username: route.params.username,
                 password: password,
               });
-              if (result === 0) {
+              if (result.status === 401) {
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(result.status) === 2) {
                 navigation.navigate('InputNewPasswordConfirm', {
                   username: route.params.username,
                   previousPassword: password,
                 });
-              } else {
+              } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                 setIsChangeable(false);
+              } else {
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }
             }}
           />
         )}
-        {!isValidate && isFocused && (
-          <DisabledPurpleFullButton text="다음" />
-        )}
-        {!isValidate && !isFocused && (
-          <DisabledPurpleRoundButton text="다음" />
-        )}
+        {!isValidate && isFocused && <DisabledPurpleFullButton text="다음" />}
+        {!isValidate && !isFocused && <DisabledPurpleRoundButton text="다음" />}
       </View>
     </KeyboardAvoidingView>
   );
