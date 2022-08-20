@@ -11,6 +11,7 @@ import {
   Pressable,
   ActivityIndicator,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
@@ -133,7 +134,7 @@ const MyPageFragment = ({navigation}: Props) => {
                 <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
                   {user?.department}
                 </Text>
-                <Text style={{marginTop: 3, fontSize: 17, fontFamily: 'SpoqaHanSansNeo-Bold'}}>
+                <Text style={{marginTop: 3, fontSize: 17, fontFamily: 'SpoqaHanSansNeo-Bold', marginBottom: Platform.OS === 'ios' ? 5 : 0}}>
                   {user?.nickname}
                 </Text>
                 <Text style={{marginBottom: 11, color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
