@@ -1173,7 +1173,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('MyPage')}>
+                      onPress={() => navigation.reset({ routes: [{ name: 'MyPage' }]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2746,7 +2746,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('MyPage')}>
+                      onPress={() =>  navigation.reset({routes: [{name: 'MyPage'}]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
