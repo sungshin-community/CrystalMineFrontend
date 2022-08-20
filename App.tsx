@@ -124,7 +124,6 @@ const App = () => {
     <>
       {isLoaded && (
         <NavigationContainer>
-          <WaterMark />
           {!isLoggedIn ? (
             <Stack.Navigator
               screenOptions={{
@@ -142,20 +141,7 @@ const App = () => {
                 component={ErrorScreen}
                 options={({navigation}) => ({
                   title: '',
-                  headerRight: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() => navigation.pop()}>
-                      <CloseButtonIcon />
-                    </TouchableHighlight>
-                  ),
+                  headerShown: false
                 })}
               />
               {/* [F-1 회원가입] */}
@@ -1722,20 +1708,8 @@ const App = () => {
                 component={ErrorScreen}
                 options={({navigation}) => ({
                   title: '',
-                  headerRight: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() => navigation.pop()}>
-                      <CloseButtonIcon />
-                    </TouchableHighlight>
-                  ),
+                  headerShown: false
+
                 })}
               />
               <Stack.Screen

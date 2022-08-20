@@ -1,10 +1,10 @@
 import React from 'react';
 import {SafeAreaView, Text, View, Dimensions, Image} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-type RootStackParamList = {};
-type StackProps = NativeStackScreenProps<RootStackParamList>;
-
-const ErrorScreen = ({route}: StackProps) => {
+interface Props {
+  status?: number;
+  code?: string;
+}
+const Error = ({status, code}: Props) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View
@@ -32,17 +32,15 @@ const ErrorScreen = ({route}: StackProps) => {
             lineHeight: 22.5,
             marginTop: 20,
           }}>
-          <Text>{route.params.status || ''}</Text>
+          <Text>{status || ''}</Text>
           {` ERROR\n`}
           개발팀 열일 중!{`\n`}
           {`\n`}
-          <Text style={{color: '#CCCCCC'}}>
-            error code: {route.params.code || ''}
-          </Text>
+          <Text style={{color: '#CCCCCC'}}>error code: {code || ''}</Text>
         </Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default ErrorScreen;
+export default Error;

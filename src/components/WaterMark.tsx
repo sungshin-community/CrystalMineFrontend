@@ -3,25 +3,8 @@ import {useState, useEffect} from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function WaterMark() {
-  const [uuid, setUuid] = useState<string>('');
-  const [isUuid, setIsUuid] = useState(false);
+function WaterMark({ uuid }: any) {
   const [now, setNow] = useState<string>('');
-  let uuuid: string | null = '';
-
-  useEffect(() => {
-    async function getUuid() {
-      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      uuuid = await AsyncStorage.getItem('uuid');
-      if (storageUuid === null || storageUuid === '') setIsUuid(false);
-      else {
-        setIsUuid(true);
-        setUuid(storageUuid);
-      }
-      // console.log('storageUuid', storageUuid);
-    }
-    getUuid();
-  }, []);
 
   useEffect(() => {
     const getNow = () => {
@@ -30,18 +13,17 @@ function WaterMark() {
         year: today.getFullYear(),
         month: today.getMonth() + 1,
         date: today.getDate(),
-        hours: today.getHours(),
-        minutes: today.getMinutes(),
+        // hours: today.getHours(),
+        // minutes: today.getMinutes(),
       };
-      let timestring = ` [${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}] `;
+      // let timestring = ` [${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}] `;
+      let timestring = ` [${time.year}/${time.month}/${time.date}] `;
       setNow(timestring);
     };
     getNow();
   }, []);
-  console.log(now);
   return (
     <>
-      {/* {isUuid && ( */}
         <View
           style={{
             flex: 1,
@@ -51,17 +33,20 @@ function WaterMark() {
             top: 0,
             zIndex: 1,
             elevation: 1,
+            flexDirection: 'row',
+            justifyContent: 'center'
           }}
           pointerEvents={'none'}>
           <Text
             style={{
-              fontSize: 25,
-              opacity: 0.007,
+            fontSize: 24,
+            opacity: 0.007,
+            fontFamily: 'SpoqaHanSansNeo-light',
+            lineHeight: 48,
             }}>
-            {(uuid).repeat(100)}
+            {(uuid + now).repeat(100)}
           </Text>
         </View>
-      {/* )} */}
     </>
   );
 }
