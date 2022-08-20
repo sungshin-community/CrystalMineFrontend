@@ -43,6 +43,7 @@ import WaterMark from '../../components/WaterMark';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
 import ErrorScreen from '../errorScreen/ErrorScreen';
+import Error from '../../components/Error';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -56,7 +57,7 @@ type RootStackParamList = {
   ExpiredMember: undefined;
   CertifiedMember: undefined;
   UncertifiedMember: undefined;
-  ErrorScreen: undefined;
+  ErrorScreen: { status: number, code: string };
   SplashHome: undefined;
 };
 type notiItemDto = {
@@ -179,7 +180,7 @@ const HomeFragment = ({navigation}: Props) => {
   return (
     <>
       {isError ? (
-        <ErrorScreen />
+        <Error status={500} code={'H001'}/>
       ) : (
         <>
           <View
@@ -593,8 +594,8 @@ const HomeFragment = ({navigation}: Props) => {
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        ? navigation.navigate('PostListScreen', {boardId: 2})
-                        : //  ? navigation.navigate('ErrorScreen') :
+                        // ? navigation.navigate('PostListScreen', {boardId: 2})
+                          ? navigation.navigate('ErrorScreen', {status: 500, code: 'H001'}) :
                           Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>

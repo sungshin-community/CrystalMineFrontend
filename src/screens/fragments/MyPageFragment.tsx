@@ -175,6 +175,7 @@ const MyPageFragment = ({navigation}: Props) => {
             <TouchableHighlight
               underlayColor='#EEEEEE'
               onPress={() => {
+                
                 if (user) {
                     if (!user?.expireIn) {
                       navigation.navigate('UncertifiedMember');
