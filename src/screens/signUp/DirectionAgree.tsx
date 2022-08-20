@@ -40,6 +40,7 @@ import {
 import {getContractGuide, getSignUpDirection} from '../../common/contractApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import WaterMark from '../../components/WaterMark';
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: {agreementIds: number[]};
@@ -93,6 +94,7 @@ function DirectionAgree({navigation, route}: Props) {
 
   return (
     <>
+      <WaterMark />
       <View style={{backgroundColor: 'white', flex: 1}}>
         <ScrollView style={{marginBottom: 45}}>
           <View>

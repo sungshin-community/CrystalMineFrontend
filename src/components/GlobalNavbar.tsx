@@ -204,7 +204,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
 
-            if (user?.isAuthenticated && !user?.blacklist)
+            if (!user?.blacklist)
               navigation.navigate('MyPage');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },

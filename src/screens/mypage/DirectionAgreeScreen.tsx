@@ -7,6 +7,7 @@ import Markdown from 'react-native-markdown-display';
 import { AgreementAll, DirectionAgreement } from '../../classes/Agreement';
 import { getAllAgreements } from '../../common/authApi';
 import { getContractGuide } from '../../common/contractApi';
+import WaterMark from '../../components/WaterMark';
 
 export const DirectionAgreeScreen = () => {
   const [data, setData] = useState<AgreementAll>();
@@ -20,6 +21,7 @@ export const DirectionAgreeScreen = () => {
 
   return (
     <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingTop: 20}}>
+      <WaterMark />
       <Markdown>
         {data?.direction.content ? data?.direction.content : ""}
       </Markdown>

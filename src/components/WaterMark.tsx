@@ -46,7 +46,7 @@ function WaterMark() {
           <Text
             style={{
             fontSize: 24,
-            opacity: 1.007,
+            opacity: 0.007,
             fontFamily: 'SpoqaHanSansNeo-light',
             lineHeight: 48,
             }}>

@@ -140,7 +140,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
-        <WaterMark />
         {boardInfo?.id === 1 ? (
           <BigDarkPin />
         ) : (
@@ -282,6 +281,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   );
   return (
     <>
+      <WaterMark />
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}

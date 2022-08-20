@@ -13,6 +13,7 @@ import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../../resources/icon/SortIcon';
 import { searchPosts } from '../../../common/SearchApi';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import WaterMark from '../../../components/WaterMark';
 
 interface Props {
   searchWord: string;
@@ -79,6 +80,7 @@ export default function PostSearchResult({searchWord}: Props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1}}>
+      <WaterMark />
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
         <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
       </View>

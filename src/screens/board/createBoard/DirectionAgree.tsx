@@ -31,6 +31,7 @@ import {AgreementContainer} from '../../../components/HideToggleContainer';
 import Agreement from '../../../classes/Agreement';
 import {getBoardirectionAgreements} from '../../../common/boardApi';
 import { getContractCreateBoard } from '../../../common/contractApi';
+import WaterMark from '../../../components/WaterMark';
 
 type RootStackParamList = {
   CreateBoard: undefined;
@@ -78,6 +79,7 @@ function TermAgreeCreateBoard({navigation}: Props) {
 
   return (
     <>
+      <WaterMark />
       <View style={{backgroundColor: 'white', flex: 1}}>
         <ScrollView style={{marginBottom: 45}}>
           <View>

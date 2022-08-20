@@ -14,6 +14,7 @@ import Agreement, {
 } from '../../../classes/Agreement';
 import { fontRegular } from '../../../common/font';
 import { getContractGuide } from '../../../common/contractApi';
+import WaterMark from '../../../components/WaterMark';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -64,6 +65,7 @@ function InformationUse() {
         name={`수정광산\n이용 방향`}
         children={() => (
           <ScrollView style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <WaterMark />
             <Markdown>{agreements ? agreements?.direction.content : ''}</Markdown>
             <View style={{paddingVertical: 30}}/>
           </ScrollView>
@@ -73,6 +75,7 @@ function InformationUse() {
         name={`서비스\n이용약관`}
         children={() => (
           <ScrollView style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <WaterMark />
             <Markdown>{agreements ? agreements?.agreement.content : ''}</Markdown>
             <View style={{paddingVertical: 30}}/>
           </ScrollView>
@@ -82,6 +85,7 @@ function InformationUse() {
         name={`개인정보\n처리방침`}
         children={() => (
           <ScrollView style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+            <WaterMark />
             <Markdown>{agreements ? agreements?.policy.content : ''}</Markdown>
             <View style={{paddingVertical: 30}}/>
           </ScrollView>
