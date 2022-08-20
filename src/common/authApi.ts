@@ -293,14 +293,17 @@ export const getQuitAgreements = async () => {
 };
 
 export const applyQuitMembership = async (password: string) => {
+  await AsyncStorage.setItem('accessToken', '');
+  await AsyncStorage.setItem('refreshToken', '');
+  await AsyncStorage.setItem('uuid', '');
   try {
     const response = await client.delete<Response<null>>('/user', {
       data: {password},
     });
     console.log('회원탈퇴 성공', response.data);
-    return true;
-  } catch (error) {
-    console.log('회원탈퇴 실패', error.response);
-    return false;
+    return response;
+  } catch (error: any) {
+    console.log('회원탈퇴 실패', error.response.data);
+    return error.response;
   }
 };
