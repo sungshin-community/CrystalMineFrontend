@@ -14,7 +14,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Pressable,
-  KeyboardEvent
+  KeyboardEvent,
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
@@ -31,7 +31,7 @@ import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -116,16 +116,19 @@ export default function SignUpId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
- 
+
   const onKeyboardDidshow = (e: KeyboardEvent) => {
-    setKeyboardHeight(e.endCoordinates.height)
-  }
+    setKeyboardHeight(e.endCoordinates.height);
+  };
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', onKeyboardDidshow);
-      return () => {
-        showSubscription.remove();
-    }
-  }, [])
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
   console.log('keyboardHeight', keyboardHeight);
 
   return (
@@ -137,10 +140,7 @@ export default function SignUpId({navigation, route}: Props) {
           backgroundColor: '#A055FF',
         }}
       />
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={0}
-        // behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
@@ -148,7 +148,9 @@ export default function SignUpId({navigation, route}: Props) {
               <Description style={{marginRight: 5.5}}>
                 학번으로 이루어진 성신 G-mail 계정을 사용합니다.
               </Description>
-              <Pressable onPress={() => navigation.navigate('CreateMailGuide')}>
+              <Pressable
+                onPress={() => navigation.navigate('CreateMailGuide')}
+                hitSlop={20}>
                 <SignUpQuestionMark />
               </Pressable>
             </View>
@@ -188,7 +190,7 @@ export default function SignUpId({navigation, route}: Props) {
                   Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
               }}
               placeholder="아이디"
-              placeholderTextColor='#A0AAB4'
+              placeholderTextColor="#A0AAB4"
               keyboardType="number-pad"
               selectionColor="#A055FF"
               value={studentId}
@@ -208,7 +210,11 @@ export default function SignUpId({navigation, route}: Props) {
 
         <View
           style={{
-            bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -232,7 +238,7 @@ export default function SignUpId({navigation, route}: Props) {
                 ) {
                   setIsBlackList(true);
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -258,7 +264,7 @@ export default function SignUpId({navigation, route}: Props) {
                 ) {
                   setIsBlackList(true);
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
