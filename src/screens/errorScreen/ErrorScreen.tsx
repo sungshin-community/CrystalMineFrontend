@@ -34,7 +34,8 @@ const ErrorScreen = ({route}: StackProps) => {
           }}>
           <Text>{route.params.status || ''}</Text>
           {` ERROR\n`}
-          개발팀 열일 중!{`\n`}
+          앗, 에러가 발생했어요!{`\n`}
+          빠른 시일 내에 해결하겠습니다!{`\n`}
           {`\n`}
           <Text style={{color: '#CCCCCC'}}>
             error code: {route.params.code || ''}

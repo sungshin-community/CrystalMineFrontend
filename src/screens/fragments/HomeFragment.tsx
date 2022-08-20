@@ -57,7 +57,7 @@ type RootStackParamList = {
   ExpiredMember: undefined;
   CertifiedMember: undefined;
   UncertifiedMember: undefined;
-  ErrorScreen: { status: number, code: string };
+  ErrorScreen: {status: number; code: string};
   SplashHome: undefined;
 };
 type notiItemDto = {
@@ -128,7 +128,7 @@ const HomeFragment = ({navigation}: Props) => {
         setIsLoading(true);
       }
       const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      if(storageUuid) setUuid(storageUuid);
+      if (storageUuid) setUuid(storageUuid);
 
       const response = await getAuthentication();
       if (response.status === 401) {
@@ -182,9 +182,9 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
-      <WaterMark uuid={uuid}/>
+      <WaterMark uuid={uuid} />
       {isError ? (
-        <Error status={500} code={'H001'}/>
+        <Error status={500} code={'H001'} />
       ) : (
         <>
           <View
@@ -598,9 +598,16 @@ const HomeFragment = ({navigation}: Props) => {
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        // ? navigation.navigate('PostListScreen', {boardId: 2})
-                          ? navigation.navigate('ErrorScreen', {status: 500, code: 'H001'}) :
-                          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                        ? // ? navigation.navigate('PostListScreen', {boardId: 2})
+                          navigation.reset({
+                            routes: [
+                              {
+                                name: 'ErrorScreen',
+                                params: {status: 500, code: 'H001'},
+                              },
+                            ],
+                          })
+                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
                   <Text style={styles.more}>더보기</Text>
@@ -692,16 +699,9 @@ const HomeFragment = ({navigation}: Props) => {
             }}
             whiteButtonText="확인 후 로그아웃"
             whiteButtonFunc={async () => {
-              const result = await logout();
-              if (result.status === 401) {
-                navigation.reset({routes: [{name: 'SplashHome'}]});
-              } else if (getHundredsDigit(result.status) === 2) {
-                navigation.reset({routes: [{name: 'SplashHome'}]});
-
-                setBlacklistblindModalVisible(false);
-              } else
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-              navigation.reset({ routes: [{ name: 'SplashHome' }] });
+              await logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+              setBlacklistblindModalVisible(false);
             }}
             setDisableClose={true}
           />
