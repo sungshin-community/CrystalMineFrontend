@@ -30,11 +30,12 @@ import CustomButton, {
   DisabledPurpleFullButton,
 } from '../../../components/Button';
 import {ModalBottom} from '../../../components/ModalBottom';
-import {checkAuthNumber, sendEmail} from '../../../common/authApi';
+import {checkAuthNumber, logout, sendEmail} from '../../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {useIsFocused} from '@react-navigation/native';
+import {getHundredsDigit} from '../../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -224,18 +225,23 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             <PurpleFullButton
               text="인증 완료"
               onClick={async () => {
-                const result: number = await checkAuthNumber(value);
-                if (result === 0) {
+                let result = await await checkAuthNumber(value);
+                if (result.status === 401) {
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                  navigation.navigate('MyPage');
-                } else if (typeof result.data.attemptCount === 'number') {
-                  setTryCnt(5 - result.data.attemptCount);
+                  navigation.reset({routes: [{name: 'MyPage'}]});
+                } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
+                  setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
-                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                  {
-                    setIsCoolTime(true);
-                    navigation.navigate('MyPage');
-                  }
+                } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setIsCoolTime(true);
+                  navigation.reset({routes: [{name: 'MyPage'}]});
+                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  setTryCnt(0);
+                } else {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}></PurpleFullButton>
           )}
@@ -243,22 +249,23 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             <PurpleRoundButton
               text="인증 완료"
               onClick={async () => {
-                console.log(value);
-                let result: number = await checkAuthNumber(value);
-                if (result === 0) {
-                  Toast.show(
-                    '정회원 인증을 성공적으로 완료하였습니다.',
-                    Toast.SHORT,
-                  );
-                  navigation.navigate('MyPage');
-                } else if (typeof result.data.attemptCount === 'number') {
-                  setTryCnt(5 - result.data.attemptCount);
+                let result = await await checkAuthNumber(value);
+                if (result.status === 401) {
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(result.status) === 2) {
+                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  navigation.reset({routes: [{name: 'MyPage'}]});
+                } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
+                  setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
-                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                  {
-                    setIsCoolTime(true);
-                    navigation.navigate('MyPage');
-                  }
+                } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setIsCoolTime(true);
+                  navigation.reset({routes: [{name: 'MyPage'}]});
+                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  setTryCnt(0);
+                } else {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}></PurpleRoundButton>
           )}

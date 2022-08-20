@@ -30,11 +30,12 @@ import CustomButton, {
   DisabledPurpleFullButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {checkAuthNumber, sendEmail} from '../../common/authApi';
+import {checkAuthNumber, logout, sendEmail} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {useIsFocused} from '@react-navigation/native';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -109,7 +110,7 @@ export default function RegularMemberAuth({navigation}: Props) {
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
     startResendOtpTimer();
-    setTryCnt(tryCnt - 1);
+    setTryCnt(5);
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
@@ -207,15 +208,7 @@ export default function RegularMemberAuth({navigation}: Props) {
 
           <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
           <TouchableWithoutFeedback
-            onPress={async () => {
-              let result: boolean = await sendEmail();
-              if (result) {
-                Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
-                console.log('이메일 재발송 성공');
-              } else {
-                console.log('이메일 재발송 실패');
-              }
-            }}>
+            onPress={async () => onResendOtpButtonPress()}>
             <Text style={styles.resent}>인증번호 재전송</Text>
           </TouchableWithoutFeedback>
         </View>
@@ -231,19 +224,23 @@ export default function RegularMemberAuth({navigation}: Props) {
             <PurpleFullButton
               text="인증 완료"
               onClick={async () => {
-                const result: number = await checkAuthNumber(value);
-                if (result === 0) {
+                let result = await await checkAuthNumber(value);
+                if (result.status === 401) {
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-                } else if (typeof result.data.attemptCount === 'number') {
-                  setTryCnt(5 - result.data.attemptCount);
+                } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
+                  setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
-                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                  {
-                    setTryCnt(0);
-                    setIsCoolTime(true);
-                    navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-                  }
+                } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setIsCoolTime(true);
+                  navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  setTryCnt(0);
+                } else {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}></PurpleFullButton>
           )}
@@ -251,17 +248,23 @@ export default function RegularMemberAuth({navigation}: Props) {
             <PurpleRoundButton
               text="인증 완료"
               onClick={async () => {
-                const result: number = await checkAuthNumber(value);
-                if (result === 0) {
+                let result = await await checkAuthNumber(value);
+                if (result.status === 401) {
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-                } else if (typeof result.data.attemptCount === 'number') {
-                  setTryCnt(5 - result.data.attemptCount);
+                } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
+                  setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
-                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
-                  setTryCnt(0);
+                } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  setTryCnt(0);
+                } else {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}></PurpleRoundButton>
           )}
@@ -281,7 +284,9 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="인증번호 재전송"
           purpleButtonFunc={onResendOtpButtonPress}
           whiteButtonText="인증 취소"
-          whiteButtonFunc={() =>  navigation.reset({routes: [{name: 'GlobalNavbar'}]})}
+          whiteButtonFunc={() =>
+            navigation.reset({routes: [{name: 'GlobalNavbar'}]})
+          }
         />
       )}
       {tryCnt === 0 && (

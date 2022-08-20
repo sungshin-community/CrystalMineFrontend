@@ -126,7 +126,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
     navigation.navigate('SplashHome');
   };
-  const onFocusOut= () => {
+  const onFocusOut = () => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
@@ -249,11 +249,11 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   setIsIncorrect(true);
                 } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('SplashHome');
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}></PurpleFullButton>
           )}
@@ -278,11 +278,11 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   setIsIncorrect(true);
                 } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('SplashHome');
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}></PurpleRoundButton>
           )}
