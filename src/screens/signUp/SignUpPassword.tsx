@@ -13,7 +13,6 @@ import {
   Dimensions,
   KeyboardEvent,
 } from 'react-native';
-
 import {NormalOneLineText, Description} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -98,7 +97,7 @@ export default function SignUpPassword({navigation, route}: Props) {
       showSubscription.remove();
     };
   }, []);
-  
+
   return (
     <>
       <View
