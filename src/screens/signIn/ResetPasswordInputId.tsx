@@ -219,9 +219,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   setIsBlackList(true);
                 } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('SplashHome');
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -250,9 +249,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   setIsBlackList(true);
                 } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('SplashHome');
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -267,14 +265,13 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
           )}
         </View>
       </KeyboardAvoidingView>
-      {isCoolTime && (
-        <ModalBottom
-          modalVisible={isCoolTime}
-          setModalVisible={setIsCoolTime}
-          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
-          purpleButtonText="확인"
-          purpleButtonFunc={navigation.navigate('SplashHome')}></ModalBottom>
-      )}
+
+       {/* <ModalBottom
+        modalVisible={isCoolTime}
+        setModalVisible={setIsCoolTime}
+        content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+        purpleButtonText="확인"
+        purpleButtonFunc={navigation.navigate('SplashHome')}/> */}
     </>
   );
 }

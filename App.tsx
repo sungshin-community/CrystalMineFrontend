@@ -585,7 +585,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('SplashHome')}>
+                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2158,7 +2158,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.navigate('SplashHome')}>
+                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),

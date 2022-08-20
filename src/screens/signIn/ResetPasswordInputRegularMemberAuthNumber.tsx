@@ -248,6 +248,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                 } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
                   navigation.navigate('SplashHome');
+                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  setTryCnt(0);
                 } else {
                   navigation.navigate('ErrorScreen');
                 }
@@ -274,6 +276,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                 } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
                   navigation.navigate('SplashHome');
+                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  setTryCnt(0);
                 } else {
                   navigation.navigate('ErrorScreen');
                 }

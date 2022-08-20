@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   KeyboardEvent,
+  Pressable,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -205,8 +206,8 @@ export default function SignInPassword({navigation, route}: Props) {
           )}
 
           {!isValidate && <DisabledPurpleRoundButton text="다음" />}
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('ResetPasswordInputId')}>
+          <Pressable
+            onPress={() => { navigation.navigate('ResetPasswordInputId'); console.log('move') }}>
             <Text
               style={{
                 paddingBottom: 20,
@@ -218,7 +219,7 @@ export default function SignInPassword({navigation, route}: Props) {
               }}>
               비밀번호를 잊으셨나요?
             </Text>
-          </TouchableWithoutFeedback>
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
     </>
