@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -14,8 +14,8 @@ import {
   Platform,
   Dimensions,
   TouchableWithoutFeedback,
+  KeyboardEvent,
 } from 'react-native';
-
 import {NormalOneLineText, Description} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Toast from 'react-native-simple-toast';
@@ -101,6 +101,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
   const [isNotExisted, setIsNotExisted] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -110,12 +111,24 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>비밀번호 재설정</NormalOneLineText>
@@ -135,7 +148,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '65%',
                 fontSize: 21,
@@ -156,7 +169,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
               }}
               placeholder="아이디"
-              placeholderTextColor='#A0AAB4'
+              placeholderTextColor="#A0AAB4"
               keyboardType="ascii-capable"
               selectionColor="#A055FF"
               value={studentId}
@@ -164,18 +177,22 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
             />
             <Text style={styles.suffix}>@sungshin.ac.kr</Text>
           </MiddleInputContainerStyle>
-            <Text style={styles.errorMessage}>
-              {isNotExisted
-                ? '아이디를 정확하게 입력해 주세요.'
-                : isBlackList
-                ? '접근이 불가능한 계정입니다.'
-                : ''}
-            </Text>
+          <Text style={styles.errorMessage}>
+            {isNotExisted
+              ? '아이디를 정확하게 입력해 주세요.'
+              : isBlackList
+              ? '접근이 불가능한 계정입니다.'
+              : ''}
+          </Text>
         </ScrollView>
 
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
