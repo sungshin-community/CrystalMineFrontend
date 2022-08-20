@@ -83,8 +83,10 @@ const MyPageFragment = ({navigation}: Props) => {
         setIsLoading(true);
       }
       const userDto = await getUser();
+      console.log(userDto.data)
       if (userDto.status === 401) {
-        navigation.navigate('SplashHome')
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
       }
       else if (getHundredsDigit(userDto.status) === 2) {
         setUser(userDto.data.data);

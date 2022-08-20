@@ -18,7 +18,7 @@ import {
 import {MajorRow} from '../../components/MajorRow';
 import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getMajorList, register} from '../../common/authApi';
+import {getMajorList, logout, register} from '../../common/authApi';
 import Major from '../../classes/Major';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 
@@ -165,7 +165,8 @@ export default function MajorSelect({navigation, route}: Props) {
                   departmentId: selectedMajorId,
                 });
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.reset({
                     routes: [

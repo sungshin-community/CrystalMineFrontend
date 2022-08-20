@@ -94,8 +94,10 @@ export default function RegularMemberAuthSelect({navigation, route}: Props) {
               <PurpleRoundButton
                 text="지금 인증하기"
                 onClick={() => {
-                    navigation.navigate('DirectionAgree', {studentId: route.params.studentId})
-                }}               
+                  navigation.navigate('DirectionAgree', {
+                    studentId: route.params.studentId,
+                  });
+                }}
               />
             </View>
             <WhiteRoundButton
@@ -108,19 +110,17 @@ export default function RegularMemberAuthSelect({navigation, route}: Props) {
           </ButtonCenter>
         </Animatable.View>
       </View>
-      {modalVisible && (
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          content={modalBody}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setModalVisible(!modalVisible);
-            navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-          }}
-        />
-      )}
+      <ModalBottom
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        content={modalBody}
+        isContentCenter={false}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
+          setModalVisible(false);
+          navigation.reset({routes: [{name: 'GlobalNavbar'}]});
+        }}
+      />
     </>
   );
 }

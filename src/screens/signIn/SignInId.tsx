@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  KeyboardEvent,
 } from 'react-native';
 import {Description, NormalOneLineText} from '../../components/Top';
 import {
@@ -60,6 +61,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function SignInId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isIdFocused, setIsIdFocused] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -70,12 +72,23 @@ export default function SignInId({navigation}: Props) {
     Keyboard.dismiss();
   };
 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
@@ -84,7 +97,7 @@ export default function SignInId({navigation}: Props) {
               <MiddleInputContainerStyle
                 style={{borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'}}>
                 <TextInput
-                  autoFocus={Platform.OS === 'ios' ? false : true}
+                  autoFocus={true}
                   style={{
                     width: '60%',
                     fontSize: 21,
@@ -123,7 +136,11 @@ export default function SignInId({navigation}: Props) {
         </ScrollView>
         <View
           style={{
-            paddingBottom: isIdFocused ? 0 : 34,
+            bottom: isIdFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             backgroundColor: '#FFFFFF',
             justifyContent: 'center',
             alignItems: 'center',

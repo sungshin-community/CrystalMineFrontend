@@ -54,7 +54,8 @@ type RootStackParamList = {
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
-  PostSearch: {boardId: number, boardName: string};
+  PostSearch: { boardId: number, boardName: string };
+  SplashHome: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 

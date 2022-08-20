@@ -139,15 +139,13 @@ export const checkAuthNumber = async (code: string) => {
       },
     );
     console.log(response.data.data);
-    return 0;
+    return response;
   } catch (e) {
     console.log(
       '여기는 checkAuthNumber 함수',
       e.response.data,
-      e.response.data.data.attemptCount,
-      e.response.data.code,
     );
-    return e.response.data;
+    return e.response;
   }
 };
 

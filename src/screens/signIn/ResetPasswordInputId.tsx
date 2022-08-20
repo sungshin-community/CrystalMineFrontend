@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -14,8 +14,8 @@ import {
   Platform,
   Dimensions,
   TouchableWithoutFeedback,
+  KeyboardEvent,
 } from 'react-native';
-
 import {NormalOneLineText, Description} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Toast from 'react-native-simple-toast';
@@ -26,7 +26,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {sendResetPasswordEmail} from '../../common/authApi';
+import {logout, sendResetPasswordEmail} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
@@ -101,6 +101,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
   const [isNotExisted, setIsNotExisted] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -110,12 +111,24 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>비밀번호 재설정</NormalOneLineText>
@@ -135,7 +148,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '65%',
                 fontSize: 21,
@@ -156,26 +169,30 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
               }}
               placeholder="아이디"
-              placeholderTextColor='#A0AAB4'
-              keyboardType="ascii-capable"
+              placeholderTextColor="#A0AAB4"
+              keyboardType="number-pad"
               selectionColor="#A055FF"
               value={studentId}
               maxLength={40}
             />
             <Text style={styles.suffix}>@sungshin.ac.kr</Text>
           </MiddleInputContainerStyle>
-            <Text style={styles.errorMessage}>
-              {isNotExisted
-                ? '아이디를 정확하게 입력해 주세요.'
-                : isBlackList
-                ? '접근이 불가능한 계정입니다.'
-                : ''}
-            </Text>
+          <Text style={styles.errorMessage}>
+            {isNotExisted
+              ? '아이디를 정확하게 입력해 주세요.'
+              : isBlackList
+              ? '접근이 불가능한 계정입니다.'
+              : ''}
+          </Text>
         </ScrollView>
 
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -187,7 +204,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   username: studentId,
                 });
                 if (check.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(check.status) === 2) {
                   Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate(
@@ -202,9 +220,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   setIsBlackList(true);
                 } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('SplashHome');
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -218,7 +235,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   username: studentId,
                 });
                 if (check.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(check.status) === 2) {
                   Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
                   navigation.navigate(
@@ -233,9 +251,8 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   setIsBlackList(true);
                 } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('SplashHome');
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -250,14 +267,14 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
           )}
         </View>
       </KeyboardAvoidingView>
-      {isCoolTime && (
-        <ModalBottom
-          modalVisible={isCoolTime}
-          setModalVisible={setIsCoolTime}
-          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
-          purpleButtonText="확인"
-          purpleButtonFunc={navigation.navigate('SplashHome')}></ModalBottom>
-      )}
+
+      <ModalBottom
+        modalVisible={isCoolTime}
+        setModalVisible={setIsCoolTime}
+        content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => navigation.navigate('SplashHome')}
+      />
     </>
   );
 }

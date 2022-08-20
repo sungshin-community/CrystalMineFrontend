@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   View,
@@ -14,8 +14,8 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Pressable,
+  KeyboardEvent,
 } from 'react-native';
-
 import {NormalOneLineText, Description} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
@@ -25,7 +25,7 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
-import {checkEmailConflict} from '../../common/authApi';
+import {checkEmailConflict, logout} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
@@ -45,12 +45,14 @@ const Container = styled.SafeAreaView`
 const TextContainer = styled.View`
   margin: 55px 0px 52px 0px;
 `;
+
 const MiddleInputContainerStyle = styled.View`
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
+
 const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 2,
@@ -105,6 +107,7 @@ export default function SignUpId({navigation, route}: Props) {
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -115,6 +118,20 @@ export default function SignUpId({navigation, route}: Props) {
     Keyboard.dismiss();
   };
 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
       <View
@@ -124,10 +141,7 @@ export default function SignUpId({navigation, route}: Props) {
           backgroundColor: '#A055FF',
         }}
       />
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>아이디를 입력해주세요</NormalOneLineText>
@@ -135,7 +149,9 @@ export default function SignUpId({navigation, route}: Props) {
               <Description style={{marginRight: 5.5}}>
                 학번으로 이루어진 성신 G-mail 계정을 사용합니다.
               </Description>
-              <Pressable onPress={() => navigation.navigate('CreateMailGuide')}>
+              <Pressable
+                onPress={() => navigation.navigate('CreateMailGuide')}
+                hitSlop={20}>
                 <SignUpQuestionMark />
               </Pressable>
             </View>
@@ -154,7 +170,7 @@ export default function SignUpId({navigation, route}: Props) {
               },
             ]}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '65%',
                 fontSize: 21,
@@ -175,7 +191,7 @@ export default function SignUpId({navigation, route}: Props) {
                   Toast.show('학번을 정확하게 입력하여 주세요.', Toast.SHORT);
               }}
               placeholder="아이디"
-              placeholderTextColor='#A0AAB4'
+              placeholderTextColor="#A0AAB4"
               keyboardType="number-pad"
               selectionColor="#A055FF"
               value={studentId}
@@ -195,7 +211,11 @@ export default function SignUpId({navigation, route}: Props) {
 
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -205,7 +225,8 @@ export default function SignUpId({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkEmailConflict(studentId);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('SignUpPassword', {
                     userId: studentId,
@@ -219,7 +240,7 @@ export default function SignUpId({navigation, route}: Props) {
                 ) {
                   setIsBlackList(true);
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />
@@ -231,7 +252,8 @@ export default function SignUpId({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkEmailConflict(studentId);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('SignUpPassword', {
                     userId: studentId,
@@ -245,7 +267,7 @@ export default function SignUpId({navigation, route}: Props) {
                 ) {
                   setIsBlackList(true);
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
             />

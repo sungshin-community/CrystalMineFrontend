@@ -240,6 +240,7 @@ export default function RegularMemberAuth({navigation}: Props) {
                   setIsIncorrect(true);
                 } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                   {
+                    setTryCnt(0);
                     setIsCoolTime(true);
                     navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                   }
@@ -258,6 +259,7 @@ export default function RegularMemberAuth({navigation}: Props) {
                   setTryCnt(5 - result.data.attemptCount);
                   setIsIncorrect(true);
                 } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
+                  setTryCnt(0);
                   setIsCoolTime(true);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                 }
@@ -279,7 +281,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="인증번호 재전송"
           purpleButtonFunc={onResendOtpButtonPress}
           whiteButtonText="인증 취소"
-          whiteButtonFunc={() => navigation.navigate('GlobalNavbar')}
+          whiteButtonFunc={() =>  navigation.reset({routes: [{name: 'GlobalNavbar'}]})}
         />
       )}
       {tryCnt === 0 && (

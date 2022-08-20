@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform, StatusBar, View, Dimensions} from 'react-native';
+import {Platform, StatusBar, View, Dimensions, Image} from 'react-native';
 import {TwoLineTitle, Description} from '../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {PurpleRoundButton} from '../../components/Button';
@@ -60,7 +60,16 @@ export default function SignUpComplete({navigation, route}: Props) {
               paddingHorizontal: Dimensions.get('window').width / 4,
               paddingVertical: Dimensions.get('window').height / 8,
             }}>
-            <HappySuryong />
+            <Image
+              style={{
+                width: 150,
+                height: 150,
+              }}
+              source={{
+                uri:
+                  'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/icon/Happy.png',
+              }}
+            />
           </View>
         </Animatable.View>
       </Container>

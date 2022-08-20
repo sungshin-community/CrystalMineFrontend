@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-
 import {
   StatusBar,
   View,
@@ -11,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  KeyboardEvent,
 } from 'react-native';
 
 import {TwoLineTitle} from '../../components/Top';
@@ -62,6 +62,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isEqual, setIsEqual] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -83,6 +84,20 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
     setShowPassword(!showPassword);
   };
 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
       <View
@@ -92,10 +107,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
           backgroundColor: '#A055FF',
         }}
       />
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <TwoLineTitle
@@ -112,7 +124,7 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '93%',
                 fontSize: 21,
@@ -153,7 +165,11 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

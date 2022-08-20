@@ -10,6 +10,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  KeyboardEvent,
+  Pressable,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -17,7 +19,7 @@ import {
   DisabledPurpleRoundButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {login} from '../../common/authApi';
+import {login, logout} from '../../common/authApi';
 import PasswordShow from '../../../resources/icon/PasswordShow';
 import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
@@ -62,6 +64,7 @@ export default function SignInPassword({navigation, route}: Props) {
   );
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -76,12 +79,23 @@ export default function SignInPassword({navigation, route}: Props) {
     setShowPassword(!showPassword);
   };
 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
@@ -105,7 +119,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   },
                 ]}>
                 <TextInput
-                  autoFocus={Platform.OS === 'ios' ? false : true}
+                  autoFocus={true}
                   style={{
                     fontSize: 21,
                     width: '90%',
@@ -161,7 +175,11 @@ export default function SignInPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            paddingBottom: isPasswordFocused ? 0 : 34,
+            bottom: isPasswordFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             backgroundColor: '#FFFFFF',
             justifyContent: 'center',
             alignItems: 'center',
@@ -175,21 +193,25 @@ export default function SignInPassword({navigation, route}: Props) {
                   password: password,
                 });
                 if (response.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(response.status) === 2) {
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                 } else if (response.data.code === 'INVALID_EMAIL_PASSWORD') {
                   setIsPasswordInCorrect(true);
                 } else if (response.data.code == 'BLACKLIST_MEMBER') {
                   setIsBlackList(true);
-                } else navigation.navigate('ErrorScreen');
+                } else
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}
 
           {!isValidate && <DisabledPurpleRoundButton text="다음" />}
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('ResetPasswordInputId')}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('ResetPasswordInputId');
+            }}>
             <Text
               style={{
                 paddingBottom: 20,
@@ -201,7 +223,7 @@ export default function SignInPassword({navigation, route}: Props) {
               }}>
               비밀번호를 잊으셨나요?
             </Text>
-          </TouchableWithoutFeedback>
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
     </>

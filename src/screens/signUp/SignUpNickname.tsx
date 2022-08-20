@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-
 import {
   StatusBar,
   View,
@@ -13,8 +12,8 @@ import {
   Dimensions,
   Text,
   StyleSheet,
+  KeyboardEvent,
 } from 'react-native';
-
 import {Description, NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -23,8 +22,9 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {checkNicknameConflict} from '../../common/authApi';
+import {checkNicknameConflict, logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -71,6 +71,7 @@ export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -80,6 +81,21 @@ export default function SignUpNickname({navigation, route}: Props) {
     setIsFocused(false);
     Keyboard.dismiss();
   };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
       <View
@@ -89,10 +105,7 @@ export default function SignUpNickname({navigation, route}: Props) {
           backgroundColor: '#A055FF',
         }}
       />
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <NormalOneLineText>닉네임을 입력해주세요</NormalOneLineText>
@@ -107,7 +120,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
@@ -144,7 +157,11 @@ export default function SignUpNickname({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -154,7 +171,8 @@ export default function SignUpNickname({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkNicknameConflict(nickname);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('MajorSelect', {
                     userId: route.params.userId,
@@ -164,7 +182,8 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else navigation.navigate('ErrorScreen');
+                } else
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}
@@ -175,7 +194,8 @@ export default function SignUpNickname({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkNicknameConflict(nickname);
                 if (result.status === 401) {
-                  navigation.navigate('SplashHome');
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   navigation.navigate('MajorSelect', {
                     userId: route.params.userId,
@@ -185,7 +205,8 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else navigation.navigate('ErrorScreen');
+                } else
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}

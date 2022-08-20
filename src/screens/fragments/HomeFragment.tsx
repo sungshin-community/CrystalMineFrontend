@@ -57,7 +57,7 @@ type RootStackParamList = {
   ExpiredMember: undefined;
   CertifiedMember: undefined;
   UncertifiedMember: undefined;
-  ErrorScreen: { status: number, code: string };
+  ErrorScreen: {status: number; code: string};
   SplashHome: undefined;
 };
 type notiItemDto = {
@@ -129,12 +129,14 @@ const HomeFragment = ({navigation}: Props) => {
 
       const response = await getAuthentication();
       if (response.status === 401) {
+        logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setUser(response.data.data);
         if (!response.data.data?.blacklist) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
+            logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(notification.status) === 2) {
             setNoti(notification.data.data.content);
@@ -147,6 +149,7 @@ const HomeFragment = ({navigation}: Props) => {
             const hotBoardData = await getHotBoardContents();
 
             if (pinBoardData.status === 401) {
+              logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(pinBoardData.status) === 2) {
               setPinBoardContents(pinBoardData.data.data);
@@ -154,6 +157,7 @@ const HomeFragment = ({navigation}: Props) => {
               setIsPinBoardError(true);
             }
             if (hotBoardData.status === 401) {
+              logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(hotBoardData.status) === 2) {
               setHotBoardContents(hotBoardData.data.data);
@@ -181,7 +185,7 @@ const HomeFragment = ({navigation}: Props) => {
     <>
       <WaterMark />
       {isError ? (
-        <Error status={500} code={'H001'}/>
+        <Error status={500} code={'H001'} />
       ) : (
         <>
           <View
@@ -595,9 +599,8 @@ const HomeFragment = ({navigation}: Props) => {
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        // ? navigation.navigate('PostListScreen', {boardId: 2})
-                          ? navigation.navigate('ErrorScreen', {status: 500, code: 'H001'}) :
-                          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                        ? navigation.navigate('PostListScreen', {boardId: 2})
+                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
                   <Text style={styles.more}>더보기</Text>
