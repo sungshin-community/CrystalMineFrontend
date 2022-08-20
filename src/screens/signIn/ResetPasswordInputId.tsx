@@ -170,7 +170,7 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
               }}
               placeholder="아이디"
               placeholderTextColor="#A0AAB4"
-              keyboardType="ascii-capable"
+              keyboardType="number-pad"
               selectionColor="#A055FF"
               value={studentId}
               maxLength={40}
@@ -266,12 +266,13 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
         </View>
       </KeyboardAvoidingView>
 
-       {/* <ModalBottom
+      <ModalBottom
         modalVisible={isCoolTime}
         setModalVisible={setIsCoolTime}
         content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
         purpleButtonText="확인"
-        purpleButtonFunc={navigation.navigate('SplashHome')}/> */}
+        purpleButtonFunc={() => navigation.navigate('SplashHome')}
+      />
     </>
   );
 }
