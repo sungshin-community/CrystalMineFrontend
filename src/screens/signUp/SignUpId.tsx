@@ -14,6 +14,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Pressable,
+  KeyboardEvent
 } from 'react-native';
 
 import {NormalOneLineText, Description} from '../../components/Top';
@@ -30,7 +31,7 @@ import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
-
+import { useEffect } from 'react';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -105,6 +106,7 @@ export default function SignUpId({navigation, route}: Props) {
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onIdFocus = () => {
     setIsIdFocused(true);
@@ -114,6 +116,17 @@ export default function SignUpId({navigation, route}: Props) {
     setIsIdFocused(false);
     Keyboard.dismiss();
   };
+ 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height)
+  }
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', onKeyboardDidshow);
+      return () => {
+        showSubscription.remove();
+    }
+  }, [])
+  console.log('keyboardHeight', keyboardHeight);
 
   return (
     <>
@@ -125,8 +138,8 @@ export default function SignUpId({navigation, route}: Props) {
         }}
       />
       <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
+        keyboardVerticalOffset={0}
+        // behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
@@ -195,7 +208,7 @@ export default function SignUpId({navigation, route}: Props) {
 
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
