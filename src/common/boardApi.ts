@@ -193,9 +193,10 @@ export async function getMyPostList(
       `/posts?${params}`,
     );
     // console.log(response.data.data);
-    return response.data.data.content;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getMyPostList 함수', e);
+    return e.response;
   }
 }
 
@@ -206,9 +207,10 @@ export async function deleteMyPosts(postIds: number[]) {
       `/posts/${postIdListStr}`,
     );
     console.log(response.data.data);
-    return response.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 deleteMyPosts 함수', e);
+    return e.response;
   }
 }
 
@@ -264,9 +266,10 @@ export async function getMyCommentList(
       `/comments?${params}`,
     );
     console.log(response.data.data);
-    return response.data.data.content;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getMyCommentList 함수', e);
+    return e.response;
   }
 }
 // HOT 게시판 글 목록

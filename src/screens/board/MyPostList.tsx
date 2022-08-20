@@ -14,6 +14,10 @@ import Toast from 'react-native-simple-toast';
 import SortIcon from '../../../resources/icon/SortIcon';
 import { fontRegular } from '../../common/font';
 import WaterMark from '../../components/WaterMark';
+import { logout } from '../../common/authApi';
+import { getHundredsDigit } from '../../common/util/statusUtil';
+import ErrorScreen from '../errorScreen/ErrorScreen';
+import Error from '../../components/Error';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -33,6 +37,8 @@ export default function MyPostList({navigation, route}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [httpStatus, setHttpStatus] = useState<number>();
 
   const moveToPost = (post: MyPostContentDto) => {
     if (deleteMode) {
@@ -104,9 +110,17 @@ export default function MyPostList({navigation, route}: Props) {
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      const postList = await getMyPostList(0, sortBy);
-      setCurrentPage(0);
-      setMyPostList(postList);
+      const response = await getMyPostList(0, sortBy);
+      if (response.status === 401) {
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        setCurrentPage(0);
+        setMyPostList(response.data.data.content);
+      } else {
+        setHttpStatus(response.status);
+        setIsError(true);
+      }
       setIsLoading(false);
     }
     init();
@@ -136,24 +150,41 @@ export default function MyPostList({navigation, route}: Props) {
 
   const handleRefresh = async () => {
     if (!deleteMode) {
-      const postList = await getMyPostList(0, sortBy);
-      setCurrentPage(0);
-      setMyPostList(postList);
-      setIsCheckedAll(false);
+      const response = await getMyPostList(0, sortBy);
+      if (response.status === 401) {
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        setCurrentPage(0);
+        setMyPostList(response.data.data.content);
+        setIsCheckedAll(false);
+      } else {
+        setHttpStatus(response.status);
+        setIsError(true);
+      }
     }
   }
 
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    let thisPagePostList: MyPostContentDto[] = await getMyPostList(currentPage + 1, sortBy);
-    setMyPostList(myPostList.concat(thisPagePostList));
-    if (thisPagePostList.length > 0) {
-      setCurrentPage(currentPage + 1);
+    const response = await getMyPostList(currentPage + 1, sortBy);
+    if (response.status === 401) {
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      let thisPagePostList: MyPostContentDto[] = response.data.data.content;
+      setMyPostList(myPostList.concat(thisPagePostList));
+      if (thisPagePostList.length > 0) {
+        setCurrentPage(currentPage + 1);
+      }
+    } else {
+      Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
     }
     setIsNextPageLoading(false);
   }
 
   return (
+    isError ? <Error status={httpStatus} code='M001' /> :
     <SafeAreaView style={{ backgroundColor: '#FFFFFF', flex: 1}}>
       <WaterMark />
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
@@ -244,13 +275,29 @@ export default function MyPostList({navigation, route}: Props) {
           whiteButtonText='취소'
           purpleButtonFunc={async () => {
             setIsLoading(true);
-            await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
-            const postList = await getMyPostList(currentPage, sortBy);
-            setMyPostList(postList);
-            Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.SHORT);
+            const deleteResponse = await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
+            if (deleteResponse.status === 401) {
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(deleteResponse.status) === 2) {
+              Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.SHORT);
+              setDeleteMode(false);
+              setDeleteModalVisible(false);
+            } else {
+              Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+            }
+            const postResponse = await getMyPostList(0, sortBy);
+            if (postResponse.status === 401) {
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(postResponse.status) === 2) {
+              setCurrentPage(0);
+              setMyPostList(postResponse.data.data.content);
+            } else {
+              setHttpStatus(postResponse.status);
+              setIsError(true);
+            }
             setIsLoading(false);
-            setDeleteMode(false);
-            setDeleteModalVisible(false);
           }}
           whiteButtonFunc={() => {
             setDeleteModalVisible(false);

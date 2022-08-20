@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ActivityIndicator, Text, Pressable, View, FlatList, TouchableOpacity, RefreshControl, TouchableHighlightBase, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MyPostItem from '../../../components/MyPostItem';
-import { deleteMyPosts, toggleBoardPin } from '../../../common/boardApi';
+import { toggleBoardPin } from '../../../common/boardApi';
 import { MyPostContentDto } from '../../../classes/board/MyPostDto';
 import SpinningThreeDots from '../../../components/SpinningThreeDots';
 import SearchIcon from '../../../../resources/icon/SearchIcon';

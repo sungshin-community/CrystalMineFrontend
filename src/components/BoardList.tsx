@@ -59,7 +59,8 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
                   onUpdate();
                 } else {
                   Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-                }}
+                }
+              }
             }>
               {item.type !== 'PUBLIC' ? (
                 item.id === 1 ? <DarkPin style={{ marginLeft: 13 }} />: 
