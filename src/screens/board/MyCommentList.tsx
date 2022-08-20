@@ -112,7 +112,7 @@ export default function MyCommentList({navigation, route}: Props) {
       setIsLoading(true);
       const commentList = await getMyCommentList(0, sortBy);
       setCurrentPage(0);
-      setMyCommentList(commentList);
+      setMyCommentList(commentList.data.data.content);
       setIsLoading(false);
     }
     init();
@@ -142,15 +142,16 @@ export default function MyCommentList({navigation, route}: Props) {
 
   const handleRefresh = async () => {
     if (!deleteMode) {
-      const commentList = await getMyCommentList(0, sortBy);
+      const response = await getMyCommentList(0, sortBy);
       setCurrentPage(0);
-      setMyCommentList(commentList);
+      setMyCommentList(response.data.data.content);
       setIsCheckedAll(false);
     }
   }
 
   const fetchNextPage = async () => {
-    let thisPageCommentList: MyCommentDto[] = await getMyCommentList(currentPage + 1, sortBy);
+    const response = await getMyCommentList(currentPage + 1, sortBy)
+    let thisPageCommentList: MyCommentDto[] = response.data.data.content;
     setMyCommentList(myCommentList.concat(thisPageCommentList));
     if (thisPageCommentList.length > 0) {
       setCurrentPage(currentPage + 1);
@@ -246,8 +247,8 @@ export default function MyCommentList({navigation, route}: Props) {
           purpleButtonFunc={async () => {
             setIsLoading(true);
             await deleteMyComments(myCommentList.filter(c => c.isChecked).map(c => c.id));
-            const commentList = await getMyCommentList(currentPage, sortBy);
-            setMyCommentList(commentList);
+            const response = await getMyCommentList(currentPage, sortBy);
+            setMyCommentList(response.data.data.content);
             Toast.show("댓글이 성공적으로 삭제되었습니다", Toast.SHORT);
             setIsLoading(false);
             setDeleteMode(false);
