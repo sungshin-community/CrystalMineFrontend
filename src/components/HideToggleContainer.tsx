@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableHighlight,
+  Pressable,
 } from 'react-native';
 import {
   FoldButton,
@@ -312,10 +313,11 @@ export function AgreementContainer({
             )}
           </View>
           <View style={{height: 24, justifyContent: 'center'}}>
-            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: 252}} >{title}</SmallText>
+            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: Dimensions.get('screen').width - 150}} >{title}</SmallText>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        <Pressable
+          hitSlop={30}
           onPress={() => setIsSpread(!isSpread)}
           style={{
             flex: 1,
@@ -326,7 +328,7 @@ export function AgreementContainer({
             marginLeft: 5,
           }}>
           {isSpread ? <FoldButton /> : <SpreadButton />}
-        </TouchableOpacity>
+        </Pressable>
       </View>
       {isSpread && (
         <ScrollView
