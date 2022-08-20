@@ -27,6 +27,7 @@ import { useIsFocused } from "@react-navigation/native";
 import ExclamationMark from '../../../resources/icon/ExclamationMark';
 import Toast from 'react-native-simple-toast';
 import { getHundredsDigit } from '../../common/util/statusUtil';
+import Error from '../../components/Error';
 
 const styles = StyleSheet.create({
   menu: {
@@ -76,7 +77,8 @@ const MyPageFragment = ({navigation}: Props) => {
   const [isInited, setIsInited] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const isFocused = useIsFocused();
-
+  const [errorStatus, setErrorStatus] = useState<number>();
+  
   useEffect(() => {
     async function getUserInfo() {
       if (!isInited) {
@@ -91,8 +93,10 @@ const MyPageFragment = ({navigation}: Props) => {
       else if (getHundredsDigit(userDto.status) === 2) {
         setUser(userDto.data.data);
       }
-      else
+      else {
+        setErrorStatus(userDto.status);
         setIsError(true);
+      }
       
       if (!isInited) {
         setIsLoading(false);
@@ -103,7 +107,10 @@ const MyPageFragment = ({navigation}: Props) => {
       getUserInfo();
     }
   }, [navigation, isFocused]);
+  
   return (
+    isError ? <Error status={errorStatus} code={'M001'} /> :
+      <>
     <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
         <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
@@ -453,7 +460,8 @@ const MyPageFragment = ({navigation}: Props) => {
           }}
         />
       </ScrollView>
-    </SafeAreaView>
+        </SafeAreaView>
+      </>
   );
 };
 

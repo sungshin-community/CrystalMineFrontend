@@ -126,7 +126,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
     navigation.navigate('SplashHome');
   };
-  const onFocusOut = () => {
+  const onFocusOut= () => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
