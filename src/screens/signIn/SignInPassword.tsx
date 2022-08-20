@@ -10,6 +10,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  KeyboardEvent,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -62,6 +63,7 @@ export default function SignInPassword({navigation, route}: Props) {
   );
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -76,12 +78,23 @@ export default function SignInPassword({navigation, route}: Props) {
     setShowPassword(!showPassword);
   };
 
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
@@ -105,7 +118,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   },
                 ]}>
                 <TextInput
-                  autoFocus={Platform.OS === 'ios' ? false : true}
+                  autoFocus={true}
                   style={{
                     fontSize: 21,
                     width: '90%',
@@ -161,7 +174,11 @@ export default function SignInPassword({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            paddingBottom: isPasswordFocused ? 0 : 34,
+            bottom: isPasswordFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             backgroundColor: '#FFFFFF',
             justifyContent: 'center',
             alignItems: 'center',
