@@ -7,7 +7,6 @@ function WaterMark() {
   const [uuid, setUuid] = useState<string>('');
   const [isUuid, setIsUuid] = useState(false);
   const [now, setNow] = useState<string>('');
-  let uuuid: string | null = '';
 
   useEffect(() => {
     async function getUuid() {
@@ -30,10 +29,11 @@ function WaterMark() {
         year: today.getFullYear(),
         month: today.getMonth() + 1,
         date: today.getDate(),
-        hours: today.getHours(),
-        minutes: today.getMinutes(),
+        // hours: today.getHours(),
+        // minutes: today.getMinutes(),
       };
-      let timestring = ` [${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}] `;
+      // let timestring = ` [${time.year}/${time.month}/${time.date} ${time.hours}:${time.minutes}] `;
+      let timestring = ` [${time.year}/${time.month}/${time.date}] `;
       setNow(timestring);
     };
     getNow();
@@ -41,7 +41,7 @@ function WaterMark() {
   console.log(now);
   return (
     <>
-      {/* {isUuid && ( */}
+      {isUuid && (
         <View
           style={{
             flex: 1,
@@ -51,17 +51,22 @@ function WaterMark() {
             top: 0,
             zIndex: 1,
             elevation: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-around'
           }}
           pointerEvents={'none'}>
           <Text
             style={{
-              fontSize: 25,
-              opacity: 0.007,
+            fontSize: 24,
+            opacity: 0.007,
+            fontFamily: 'SpoqaHanSansNeo-light',
+            // lineHeight: 48
+              flexWrap: 'wrap',
             }}>
-            {(uuid).repeat(100)}
+            {(uuid + now).repeat(100)}
           </Text>
         </View>
-      {/* )} */}
+      )}
     </>
   );
 }
