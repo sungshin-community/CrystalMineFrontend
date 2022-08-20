@@ -598,15 +598,7 @@ const HomeFragment = ({navigation}: Props) => {
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        ? // ? navigation.navigate('PostListScreen', {boardId: 2})
-                          navigation.reset({
-                            routes: [
-                              {
-                                name: 'ErrorScreen',
-                                params: {status: 500, code: 'H001'},
-                              },
-                            ],
-                          })
+                        ?  navigation.navigate('PostListScreen', {boardId: 2})            
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
