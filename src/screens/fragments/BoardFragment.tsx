@@ -36,6 +36,7 @@ export default function BoardFragment({navigation}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isFocused = useIsFocused();
   const [isInited, setIsInited] = useState<boolean>(false);
+  const [uuid, setUuid] = useState<string>('');
 
   const updateOfficialBoardList = async () => {
     const officialBoardList = await getOfficialBoardList();

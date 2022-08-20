@@ -124,7 +124,6 @@ const App = () => {
     <>
       {isLoaded && (
         <NavigationContainer>
-          <WaterMark />
           {!isLoggedIn ? (
             <Stack.Navigator
               screenOptions={{

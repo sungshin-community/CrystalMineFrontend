@@ -3,24 +3,8 @@ import {useState, useEffect} from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function WaterMark() {
-  const [uuid, setUuid] = useState<string>('');
-  const [isUuid, setIsUuid] = useState(false);
+function WaterMark({ uuid }: any) {
   const [now, setNow] = useState<string>('');
-
-  useEffect(() => {
-    async function getUuid() {
-      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      uuuid = await AsyncStorage.getItem('uuid');
-      if (storageUuid === null || storageUuid === '') setIsUuid(false);
-      else {
-        setIsUuid(true);
-        setUuid(storageUuid);
-      }
-      // console.log('storageUuid', storageUuid);
-    }
-    getUuid();
-  }, []);
 
   useEffect(() => {
     const getNow = () => {
@@ -38,10 +22,8 @@ function WaterMark() {
     };
     getNow();
   }, []);
-  console.log(now);
   return (
     <>
-      {isUuid && (
         <View
           style={{
             flex: 1,
@@ -52,13 +34,13 @@ function WaterMark() {
             zIndex: 1,
             elevation: 1,
             flexDirection: 'row',
-            justifyContent: 'space-around'
+            justifyContent: 'center'
           }}
           pointerEvents={'none'}>
           <Text
             style={{
             fontSize: 24,
-            opacity: 0.007,
+            opacity: 1.007,
             fontFamily: 'SpoqaHanSansNeo-light',
             // lineHeight: 48
               flexWrap: 'wrap',
@@ -66,7 +48,6 @@ function WaterMark() {
             {(uuid + now).repeat(100)}
           </Text>
         </View>
-      )}
     </>
   );
 }
