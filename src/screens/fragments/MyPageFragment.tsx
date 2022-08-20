@@ -412,13 +412,8 @@ const MyPageFragment = ({navigation}: Props) => {
           content="로그아웃 하시겠습니까?"
           purpleButtonText="확인"
           purpleButtonFunc={async () => {
-            const result = await logout();
-            if (result.status === 401 || getHundredsDigit(result.status) === 2)
-              navigation.reset({ routes: [{ name: 'SplashHome' }] });
-            else {
-              Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-              navigation.reset({ routes: [{ name: 'SplashHome' }] });
-            }
+            await logout();
+            navigation.reset({ routes: [{ name: 'SplashHome' }] });
           }}
           whiteButtonText="취소"
           whiteButtonFunc={() => setModalVisible(false)}

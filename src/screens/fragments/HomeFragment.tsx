@@ -82,7 +82,6 @@ const HomeFragment = ({navigation}: Props) => {
   const [isPinBoardError, setIsPinBoardError] = useState<boolean>(false);
   const [isHotBoardError, setIsHotBoardError] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [uuid, setUuid] = useState<string>('');
 
   const blacklistModalContent = (
     <>
@@ -127,8 +126,6 @@ const HomeFragment = ({navigation}: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-      const storageUuid: string | null = await AsyncStorage.getItem('uuid');
-      if(storageUuid) setUuid(storageUuid);
 
       const response = await getAuthentication();
       if (response.status === 401) {
@@ -182,7 +179,7 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
-      <WaterMark uuid={uuid}/>
+      <WaterMark />
       {isError ? (
         <Error status={500} code={'H001'}/>
       ) : (
@@ -692,16 +689,9 @@ const HomeFragment = ({navigation}: Props) => {
             }}
             whiteButtonText="확인 후 로그아웃"
             whiteButtonFunc={async () => {
-              const result = await logout();
-              if (result.status === 401) {
-                navigation.reset({routes: [{name: 'SplashHome'}]});
-              } else if (getHundredsDigit(result.status) === 2) {
-                navigation.reset({routes: [{name: 'SplashHome'}]});
-
-                setBlacklistblindModalVisible(false);
-              } else
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-              navigation.reset({ routes: [{ name: 'SplashHome' }] });
+              await logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+              setBlacklistblindModalVisible(false);
             }}
             setDisableClose={true}
           />

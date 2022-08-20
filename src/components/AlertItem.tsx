@@ -37,11 +37,14 @@ const AlertItem = ({
           flexDirection: 'row',
           paddingHorizontal: 24,
           paddingVertical: 16,
-          backgroundColor: data.isRead ? '#F6F2FF' : '#fff',
+          backgroundColor: data.isRead ? '#FFFFFF' : '#F6F2FF',
         }}
         onPress={async () => {
+          // 정회원 관련 알림은 읽음 처리 안 해야 함
+          if (data.type !== 'BEFORE_EXPIRE' && data.type !== 'EXPIRE' && data.type !== 'NOT_AUTHENTICATED') {
+            await readNotification(data.id);
+          }
           if (data.type === 'WELCOME') {
-            const result = await readNotification(data.id);
             console.log('알람 확인 후 마이페이지로 이동');
             navigation.navigate('MyPage');
           } else if (
@@ -55,8 +58,6 @@ const AlertItem = ({
               navigation.navigate('ExpiredMember');
             else if (data.type === 'NOT_AUTHENTICATED')
               navigation.navigate('UncertifiedMember');
-            // const result = await readNotification(data.id);
-            // 알람 확인 못 해야함.
           } else if (
             data.type === 'BOARD_BLIND' ||
             data.type === 'PIN_BOARD_BLIND' ||
@@ -110,8 +111,6 @@ const AlertItem = ({
               data.blind
             ) {
               setModalBody(itemContent);
-              const result = await readNotification(data.id);
-              console.log('블라인드 알림 확인');
               setBlindModalVisible(true);
             } else if (data.type === 'BOARD_BLIND' && !data.blind)
               Toast.show('삭제된 게시판입니다.', Toast.SHORT);
@@ -165,8 +164,6 @@ const AlertItem = ({
               data.deleteBlind
             ) {
               setModalBody(itemContent);
-              const result = await readNotification(data.id);
-              console.log('블라인드 알림 확인');
               setBlindModalVisible(true);
             } else if (data.type === 'DELETE_BOARD_BLIND' && !data.deleteBlind)
               Toast.show('삭제된 게시판입니다.', Toast.SHORT);

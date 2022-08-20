@@ -36,7 +36,7 @@ interface Props {
   handleCommentLike?: any;
   isRecomment: boolean;
   setIsRecomment?: any;
-  handleCommentDelete: any;
+  handleCommentDelete: (id: number) => void;
   handleCommentReport?: any;
   handleFocus: () => void;
   componentModalVisible?: boolean;
