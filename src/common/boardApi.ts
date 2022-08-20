@@ -11,25 +11,6 @@ import MyCommentDto from '../classes/MyCommentDto';
 import {PostWriteDto, PostWriteInfoDto} from '../classes/PostDto';
 import {MyPostContentDto} from '../classes/board/MyPostDto';
 
-export const getPinnedBoardList = async () => {
-  let boardList: Board[] = [];
-  try {
-    const officialResponse = await client.get<Response<Board[]>>(
-      `/boards/pin?type=OFFICIAL`,
-    );
-    officialResponse.data.data.forEach(b => (b.isOfficial = true));
-    boardList = boardList.concat(officialResponse.data.data);
-    const departmentResponse = await client.get<Response<Board[]>>(`/boards/pin?type=DEPARTMENT`);
-    departmentResponse.data.data.forEach(b => (b.isOfficial = true));
-    boardList = boardList.concat(departmentResponse.data.data);
-    const customResponse = await client.get<Response<Board[]>>(`/boards/pin?type=PUBLIC`);
-    customResponse.data.data.forEach(b => (b.isOfficial = false));
-    boardList = boardList.concat(customResponse.data.data);
-    return boardList;
-  } catch (e) {
-    console.log('여기는 getPinnedBoardList 함수', e);
-  }
-};
 
 export const getPinnedOfficialBoardList = async () => {
   try {
@@ -100,11 +81,11 @@ export const getCustomBoardList = async () => {
 export const toggleBoardPin = async (boardId: number) => {
   try {
     const response = await client.post<AxiosResponse>(`/boards/${boardId}/pin`);
-    console.log(response.data);
-    return true;
-  } catch (e) {
+    console.log("고정/고정해제 response:", response);
+    return response;
+  } catch (e: any) {
     console.log('여기는 toggleBoardPin 함수', e);
-    return false;
+    return e.response;
   }
 };
 

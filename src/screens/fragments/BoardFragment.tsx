@@ -109,35 +109,25 @@ export default function BoardFragment({navigation}: Props) {
   }
 
   const updateOfficialBoardList = async () => {
-    const officialBoardList = await getOfficialBoardList();
-    const pinnedBoardList = await getPinnedBoardList();
-    setOfficialBoardList(officialBoardList);
-    setPinnedBoardList(pinnedBoardList);
+    getOfficialBoards();
+    getPinnedBoardList();
   }
 
   const updatePinnedBoardList = async () => {
-    const pinnedBoardList = await getPinnedBoardList();
-    const customBoardList = await getCustomBoardList();
-    const officialBoardList = await getOfficialBoardList();
-    const departmentBoards = await getDepartmentBoardList();
-    setPinnedBoardList(pinnedBoardList);
-    setCustomBoardList(customBoardList);
-    setOfficialBoardList(officialBoardList);
-    setDepartmentBoardList(departmentBoards);
+    getPinnedBoardList();
+    getPublicBoards();
+    getOfficialBoards();
+    getDepartmentBoards();
   }
 
   const updateCustomBoardList = async () => {
-    const customBoardList = await getCustomBoardList();
-    const pinnedBoardList = await getPinnedBoardList();
-    setCustomBoardList(customBoardList);
-    setPinnedBoardList(pinnedBoardList);
+    getPublicBoards();
+    getPinnedBoardList();
   }
 
   const updateDepartmentBoardList = async () => {
-    const departmentBoards = await getDepartmentBoardList();
-    const pinnedBoardList = await getPinnedBoardList();
-    setDepartmentBoardList(departmentBoards);
-    setPinnedBoardList(pinnedBoardList);
+    getDepartmentBoards();
+    getPinnedBoardList();
   }
 
   const moveToMyPostList = () => {

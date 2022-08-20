@@ -20,6 +20,8 @@ import { SearchBoard } from '../../../classes/Search';
 import { fontRegular } from '../../../common/font';
 import Board from '../../../classes/Board';
 import GrayFlag from '../../../../resources/icon/GrayFlag';
+import { logout } from '../../../common/authApi';
+import { getHundredsDigit } from '../../../common/util/statusUtil';
 
 interface Props {
   searchWord: string;
@@ -131,9 +133,14 @@ export default function BoardSearchResult({searchWord}: Props) {
           }}>
             <Pressable 
               onPress={async () => {
-                let result: boolean = await toggleBoardPin(item.id);
-                if (result) {
-                  await handleRefresh();
+                const response = await toggleBoardPin(item.id);
+                if (response.status === 401) {
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(response.status) === 2) {
+                  handleRefresh();
+                } else {
+                  Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
                 }
               }}
               style={{height: 61, justifyContent: 'center', 
