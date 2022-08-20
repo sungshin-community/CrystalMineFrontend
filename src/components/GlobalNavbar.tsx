@@ -42,7 +42,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
   const [user, setUser] = useState<Authentication>();
 
   const onSearchPress = async () => {
-    if (user?.isAuthenticated === true && !user?.blacklist) {
+    if (user?.isAuthenticated && !user?.blacklist) {
       navigation.navigate('TotalSearch');
     } else {
       Toast.show('접근 권한이 없습니다.', Toast.SHORT);
@@ -115,8 +115,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            if (user?.isAuthenticated === true && !user?.blacklist)
+            if (user?.isAuthenticated && !user?.blacklist) {
               navigation.navigate('Board');
+            }
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
@@ -154,7 +155,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
 
-            if (user?.isAuthenticated === true && !user?.blacklist)
+            if (user?.isAuthenticated && !user?.blacklist)
               navigation.navigate('Message');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
@@ -179,8 +180,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-
-            if (user?.isAuthenticated === true && !user?.blacklist)
+            if (!user?.blacklist)
               navigation.navigate('Alert');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
@@ -204,7 +204,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
 
-            if (user?.isAuthenticated === true && !user?.blacklist)
+            if (user?.isAuthenticated && !user?.blacklist)
               navigation.navigate('MyPage');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
