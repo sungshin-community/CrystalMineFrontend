@@ -692,16 +692,9 @@ const HomeFragment = ({navigation}: Props) => {
             }}
             whiteButtonText="확인 후 로그아웃"
             whiteButtonFunc={async () => {
-              const result = await logout();
-              if (result.status === 401) {
-                navigation.reset({routes: [{name: 'SplashHome'}]});
-              } else if (getHundredsDigit(result.status) === 2) {
-                navigation.reset({routes: [{name: 'SplashHome'}]});
-
-                setBlacklistblindModalVisible(false);
-              } else
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-              navigation.reset({ routes: [{ name: 'SplashHome' }] });
+              await logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+              setBlacklistblindModalVisible(false);
             }}
             setDisableClose={true}
           />
