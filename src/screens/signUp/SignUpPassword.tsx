@@ -98,6 +98,7 @@ export default function SignUpPassword({navigation, route}: Props) {
       showSubscription.remove();
     };
   }, []);
+  
   return (
     <>
       <View
