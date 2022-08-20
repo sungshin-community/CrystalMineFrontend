@@ -366,19 +366,20 @@ function PostWriteScreen({navigation, route}: Props) {
                         deleteImage={deleteImage}
                       />
                     ))}
-                  <View
+                  <TouchableOpacity
+                    onPress={onSelectImage}
                     style={[
                       styles.imageSelectBox,
                       styles.imageBox,
                       {marginTop: 5},
                     ]}>
-                    <Pressable onPress={onSelectImage} hitSlop={25}>
+                    <View>
                       <PhotoIcon />
                       <Text style={[fontMedium, styles.count]}>
                         {images?.length}/10
                       </Text>
-                    </Pressable>
-                  </View>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </ScrollView>
             </View>

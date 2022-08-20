@@ -12,6 +12,10 @@ import PlusIcon from '../../resources/icon/PlusIcon';
 import Board from '../classes/Board';
 import { toggleBoardPin } from '../common/boardApi';
 import { fontRegular } from '../common/font';
+import { getHundredsDigit } from '../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
+import { useNavigation } from '@react-navigation/native';
+import { logout } from '../common/authApi';
 
 interface Props {
   items: Board[];
@@ -21,6 +25,8 @@ interface Props {
 }
 
 export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Props) {
+
+  const navigation = useNavigation();
 
   return (
     !isInited ?
@@ -45,12 +51,17 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
               width: 42
             }}
               onPress={async () => {
-                let result: boolean = await toggleBoardPin(item.id);
-                if (result) {
+                const response = await toggleBoardPin(item.id);
+                if (response.status === 401) {
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(response.status) === 2) {
                   onUpdate();
+                } else {
+                  Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
                 }}
             }>
-              {item.isOfficial ? (
+              {item.type !== 'PUBLIC' ? (
                 item.id === 1 ? <DarkPin style={{ marginLeft: 13 }} />: 
                 <PurplePin style={{ marginLeft: 13 }} />
               ) : (
@@ -91,6 +102,8 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
 
 export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Props) {
 
+  const navigation = useNavigation();
+
   return (
     !isInited ?
     boardSkeletonComponent
@@ -108,9 +121,14 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
         }}>
           <Pressable
             onPress={async () => {
-              let result: boolean = await toggleBoardPin(item.id);
-              if (result) {
+              const response = await toggleBoardPin(item.id);
+              if (response.status === 401) {
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(response.status) === 2) {
                 onUpdate();
+              } else {
+                Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
               }
             }}
             style={{height: 61, justifyContent: 'center', 
@@ -171,7 +189,10 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
 }
 
 export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Props) {
+
   const [value, setValue] = useState<boolean>(false);
+  const navigation = useNavigation();
+
   return (
     items != null && items.length > 0 ? items.map((item, index) => 
           <TouchableOpacity
@@ -186,9 +207,14 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
             }}>
               <Pressable 
                 onPress={async () => {
-                  let result: boolean = await toggleBoardPin(item.id);
-                  if (result) {
+                  const response = await toggleBoardPin(item.id);
+                  if (response.status === 401) {
+                    logout();
+                    navigation.reset({routes: [{name: 'SplashHome'}]});
+                  } else if (getHundredsDigit(response.status) === 2) {
                     onUpdate();
+                  } else {
+                    Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
                   }
                 }}
                 style={{height: 61, justifyContent: 'center', 
@@ -227,9 +253,9 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
             </View>
           </TouchableOpacity>
 
-)
-:
-<View
+  )
+  :
+  <View
     style={{
       alignItems: 'center',
       backgroundColor: '#F6F6F6',

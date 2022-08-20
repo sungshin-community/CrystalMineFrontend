@@ -46,6 +46,8 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
+import { logout } from '../../common/authApi';
+import { getHundredsDigit } from '../../common/util/statusUtil';
 type RootStackParamList = {
   PostScreen: {postId: number, boardType: string};
   PostWriteScreen: {boardId: number};
@@ -142,9 +144,16 @@ const PostListScreen = ({navigation, route}: Props) => {
         ) : (
           <Pressable
             onPress={async () => {
-              const result = await toggleBoardPin(route.params.boardId);
-              const boardInfo = await getBoardInfo(route.params.boardId);
-              setBoardInfo(boardInfo);
+              const response = await toggleBoardPin(route.params.boardId);
+              if (response.status === 401) {
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(response.status) === 2) {
+                const boardInfo = await getBoardInfo(route.params.boardId);
+                setBoardInfo(boardInfo);
+              } else {
+                Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
+              }
             }}>
             {boardInfo?.isOwner ? (
               boardInfo?.isPinned ? (

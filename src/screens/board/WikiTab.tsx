@@ -14,6 +14,8 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import Toast from 'react-native-simple-toast';
 import PostListScreen from '../post/PostListScreen';
+import { logout } from '../../common/authApi';
+import { getHundredsDigit } from '../../common/util/statusUtil';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -47,9 +49,16 @@ function WikiTab({navigation, route}: Props) {
       <>
         <Pressable
           onPress={async () => {
-            await toggleBoardPin(route.params.boardId);
-            const boardUpdate = await getBoardInfo(route.params.boardId);
-            setBoardInfo(boardUpdate);
+            const response = await toggleBoardPin(route.params.boardId);
+            if (response.status === 401) {
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(response.status) === 2) {
+              const boardUpdate = await getBoardInfo(route.params.boardId);
+              setBoardInfo(boardUpdate);
+            } else {
+              Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
+            }
           }}>
           {boardInfo?.isOwner ? (
             boardInfo?.isPinned ? (

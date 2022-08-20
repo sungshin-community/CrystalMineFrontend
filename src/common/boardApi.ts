@@ -11,23 +11,34 @@ import MyCommentDto from '../classes/MyCommentDto';
 import {PostWriteDto, PostWriteInfoDto} from '../classes/PostDto';
 import {MyPostContentDto} from '../classes/board/MyPostDto';
 
-export const getPinnedBoardList = async () => {
-  let boardList: Board[] = [];
+
+export const getPinnedOfficialBoardList = async () => {
   try {
-    const officialResponse = await client.get<Response<Board[]>>(
-      `/boards/pin?type=OFFICIAL`,
-    );
-    officialResponse.data.data.forEach(b => (b.isOfficial = true));
-    boardList = boardList.concat(officialResponse.data.data);
-    const departmentResponse = await client.get<Response<Board[]>>(`/boards/pin?type=DEPARTMENT`);
-    departmentResponse.data.data.forEach(b => (b.isOfficial = true));
-    boardList = boardList.concat(departmentResponse.data.data);
-    const customResponse = await client.get<Response<Board[]>>(`/boards/pin?type=PUBLIC`);
-    customResponse.data.data.forEach(b => (b.isOfficial = false));
-    boardList = boardList.concat(customResponse.data.data);
-    return boardList;
-  } catch (e) {
-    console.log('여기는 getPinnedBoardList 함수', e);
+    const response = await client.get<Response<Board[]>>('/boards/pin?type=OFFICIAL');
+    return response;
+  } catch (e: any) {
+    console.log('여기는 getPinnedOfficialBoardList 함수', e);
+    return e.response;
+  }
+};
+
+export const getPinnedDepartmentBoardList = async () => {
+  try {
+    const response = await client.get<Response<Board[]>>('/boards/pin?type=DEPARTMENT');
+    return response;
+  } catch (e: any) {
+    console.log('여기는 getPinnedDepartmentBoardList 함수', e);
+    return e.response;
+  }
+};
+
+export const getPinnedPublicBoardList = async () => {
+  try {
+    const response = await client.get<Response<Board[]>>('/boards/pin?type=PUBLIC');
+    return response;
+  } catch (e: any) {
+    console.log('여기는 getPinnedPublicBoardList 함수', e);
+    return e.response;
   }
 };
 
@@ -36,9 +47,10 @@ export const getOfficialBoardList = async () => {
     const params = new URLSearchParams();
     params.append('type', 'OFFICIAL');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
-    return response.data.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getOfficialBoardList 함수', e);
+    return e.response;
   }
 };
 
@@ -47,9 +59,10 @@ export const getDepartmentBoardList = async () => {
     const params = new URLSearchParams();
     params.append('type', 'DEPARTMENT');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
-    return response.data.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getDepartmentBoardList 함수', e);
+    return e.response;
   }
 };
 
@@ -58,20 +71,21 @@ export const getCustomBoardList = async () => {
     const params = new URLSearchParams();
     params.append('type', 'PUBLIC');
     const response = await client.get<Response<Board[]>>(`/boards?${params}`);
-    return response.data.data;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('여기는 getCustomBoardList 함수', e);
+    return e.response;
   }
 };
 
 export const toggleBoardPin = async (boardId: number) => {
   try {
     const response = await client.post<AxiosResponse>(`/boards/${boardId}/pin`);
-    console.log(response.data);
-    return true;
-  } catch (e) {
+    console.log("고정/고정해제 response:", response);
+    return response;
+  } catch (e: any) {
     console.log('여기는 toggleBoardPin 함수', e);
-    return false;
+    return e.response;
   }
 };
 

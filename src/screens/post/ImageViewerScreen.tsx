@@ -52,14 +52,8 @@ const ImageViewerScreen = () => {
         Toast.show('사진이 저장되었습니다.', Toast.SHORT);
       });
     } else {
-      if (Platform.OS === 'ios') {
         CameraRoll.save(url);
         Toast.show('사진이 저장되었습니다.', Toast.SHORT);
-      }
-      else {
-        CameraRoll.saveToCameraRoll(url);
-        Toast.show('사진이 저장되었습니다.', Toast.SHORT);
-      }
     }
   }
   
