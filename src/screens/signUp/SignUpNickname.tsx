@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 
 import {
@@ -13,6 +13,7 @@ import {
   Dimensions,
   Text,
   StyleSheet,
+  KeyboardEvent,
 } from 'react-native';
 
 import {Description, NormalOneLineText} from '../../components/Top';
@@ -71,6 +72,7 @@ export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -80,6 +82,20 @@ export default function SignUpNickname({navigation, route}: Props) {
     setIsFocused(false);
     Keyboard.dismiss();
   };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
   return (
     <>
       <View
@@ -90,8 +106,6 @@ export default function SignUpNickname({navigation, route}: Props) {
         }}
       />
       <KeyboardAvoidingView
-        keyboardVerticalOffset={90}
-        behavior={Platform.select({ios: 'padding'})}
         style={{flex: 1, backgroundColor: '#fff'}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
@@ -107,7 +121,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                 : '#D7DCE6',
             }}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '100%',
                 fontSize: 21,
@@ -144,7 +158,11 @@ export default function SignUpNickname({navigation, route}: Props) {
         </ScrollView>
         <View
           style={{
-            bottom: isFocused ? 0 : 34,
+            bottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

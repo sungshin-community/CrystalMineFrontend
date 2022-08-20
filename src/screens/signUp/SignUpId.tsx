@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   View,
@@ -16,7 +16,6 @@ import {
   Pressable,
   KeyboardEvent,
 } from 'react-native';
-
 import {NormalOneLineText, Description} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
@@ -31,7 +30,7 @@ import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
-import {useEffect} from 'react';
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -46,12 +45,14 @@ const Container = styled.SafeAreaView`
 const TextContainer = styled.View`
   margin: 55px 0px 52px 0px;
 `;
+
 const MiddleInputContainerStyle = styled.View`
   border-bottom-width: 2px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
+
 const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 2,
@@ -120,7 +121,7 @@ export default function SignUpId({navigation, route}: Props) {
   const onKeyboardDidshow = (e: KeyboardEvent) => {
     setKeyboardHeight(e.endCoordinates.height);
   };
-  
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       'keyboardDidShow',
