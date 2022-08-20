@@ -140,7 +140,7 @@ export default function BoardSearchResult({searchWord}: Props) {
                 } else if (getHundredsDigit(response.status) === 2) {
                   handleRefresh();
                 } else {
-                  Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
               }}
               style={{height: 61, justifyContent: 'center', 

@@ -152,7 +152,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 const boardInfo = await getBoardInfo(route.params.boardId);
                 setBoardInfo(boardInfo);
               } else {
-                Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }
             }}>
             {boardInfo?.isOwner ? (
