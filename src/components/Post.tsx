@@ -269,8 +269,7 @@ const styles = StyleSheet.create({
   postLike: {
     fontSize: 13,
     marginLeft: 5,
-    marginRight: 5,
-    width: 35,
+    marginRight: 11
   },
   postComment: {
     fontSize: 13,
