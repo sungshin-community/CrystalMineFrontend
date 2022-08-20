@@ -120,6 +120,7 @@ export default function SignUpId({navigation, route}: Props) {
   const onKeyboardDidshow = (e: KeyboardEvent) => {
     setKeyboardHeight(e.endCoordinates.height);
   };
+  
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       'keyboardDidShow',
