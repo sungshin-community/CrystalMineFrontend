@@ -129,7 +129,6 @@ export default function SignUpId({navigation, route}: Props) {
       showSubscription.remove();
     };
   }, []);
-  console.log('keyboardHeight', keyboardHeight);
 
   return (
     <>
@@ -169,7 +168,7 @@ export default function SignUpId({navigation, route}: Props) {
               },
             ]}>
             <TextInput
-              autoFocus={Platform.OS === 'ios' ? false : true}
+              autoFocus={true}
               style={{
                 width: '65%',
                 fontSize: 21,
