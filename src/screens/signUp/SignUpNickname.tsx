@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-
 import {
   StatusBar,
   View,
@@ -15,7 +14,6 @@ import {
   StyleSheet,
   KeyboardEvent,
 } from 'react-native';
-
 import {Description, NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
@@ -26,6 +24,7 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -96,6 +95,7 @@ export default function SignUpNickname({navigation, route}: Props) {
       showSubscription.remove();
     };
   }, []);
+  
   return (
     <>
       <View
@@ -182,7 +182,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else navigation.navigate('ErrorScreen');
+                } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}
@@ -203,7 +203,7 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else navigation.navigate('ErrorScreen');
+                } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }}
             />
           )}
