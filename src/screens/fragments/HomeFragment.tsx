@@ -133,10 +133,7 @@ const HomeFragment = ({navigation}: Props) => {
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setUser(response.data.data);
-        if (
-          !response.data.data?.blacklist ||
-          response.data.data.isAuthenticated
-        ) {
+        if (!response.data.data?.blacklist) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
             logout();
@@ -146,30 +143,33 @@ const HomeFragment = ({navigation}: Props) => {
           } else {
             setIsHomeAlertError(true);
           }
-          const pinBoardData = await getPinBoardContents();
-          const hotBoardData = await getHotBoardContents();
 
-          if (pinBoardData.status === 401) {
-            logout();
-            navigation.reset({routes: [{name: 'SplashHome'}]});
-          } else if (getHundredsDigit(pinBoardData.status) === 2) {
-            setPinBoardContents(pinBoardData.data.data);
-          } else {
-            setIsPinBoardError(true);
-          }
-          if (hotBoardData.status === 401) {
-            logout();
-            navigation.reset({routes: [{name: 'SplashHome'}]});
-          } else if (getHundredsDigit(hotBoardData.status) === 2) {
-            setHotBoardContents(hotBoardData.data.data);
-          } else {
-            setIsHotBoardError(true);
+          if (response.data.data.isAuthenticated) {
+            const pinBoardData = await getPinBoardContents();
+            const hotBoardData = await getHotBoardContents();
+
+            if (pinBoardData.status === 401) {
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(pinBoardData.status) === 2) {
+              setPinBoardContents(pinBoardData.data.data);
+            } else {
+              setIsPinBoardError(true);
+            }
+            if (hotBoardData.status === 401) {
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(hotBoardData.status) === 2) {
+              setHotBoardContents(hotBoardData.data.data);
+            } else {
+              setIsHotBoardError(true);
+            }
           }
         } else {
           // 이용제한
           setBlacklistblindModalVisible(true);
         }
-      } else setIsHotBoardError(true);
+      } else setIsError(true);
 
       if (!isInited) {
         setIsLoading(false);

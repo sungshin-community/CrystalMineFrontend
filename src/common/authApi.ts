@@ -97,6 +97,7 @@ export const register = async (signUpRequestDto: SignUpRequestDto) => {
       'refreshToken',
       response.data.data.tokenDto.refreshToken,
     );
+    await AsyncStorage.setItem('uuid', response.data.data.uuid);
     return response;
   } catch (e) {
     console.log('여기는 register 함수', e.response);
