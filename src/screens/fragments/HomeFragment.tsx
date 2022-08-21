@@ -129,6 +129,7 @@ const HomeFragment = ({navigation}: Props) => {
 
       const response = await getAuthentication();
       if (response.status === 401) {
+        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
@@ -136,6 +137,7 @@ const HomeFragment = ({navigation}: Props) => {
         if (!response.data.data?.blacklist) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
+            Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
             logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(notification.status) === 2) {
@@ -149,6 +151,7 @@ const HomeFragment = ({navigation}: Props) => {
             const hotBoardData = await getHotBoardContents();
 
             if (pinBoardData.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(pinBoardData.status) === 2) {
@@ -157,6 +160,7 @@ const HomeFragment = ({navigation}: Props) => {
               setIsPinBoardError(true);
             }
             if (hotBoardData.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(hotBoardData.status) === 2) {

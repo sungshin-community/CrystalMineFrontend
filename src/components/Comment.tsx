@@ -430,7 +430,7 @@ export const Recomment = ({
                 style={{
                   flexDirection: 'row',
                   marginTop: 15,
-                  justifyContent: 'space-between',
+                  justifyContent: 'space-between'
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Pressable

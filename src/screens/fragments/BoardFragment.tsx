@@ -24,6 +24,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WaterMark from '../../components/WaterMark';
 import Error from '../../components/Error'
 import { logout } from '../../common/authApi';
+import Toast from 'react-native-simple-toast';
+
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -50,6 +52,7 @@ export default function BoardFragment({navigation}: Props) {
     let boardList: Board[] = [];
     const pinnedOfficialResponse = await getPinnedOfficialBoardList();
     if (pinnedOfficialResponse.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(pinnedOfficialResponse.status) === 2) {
@@ -61,6 +64,7 @@ export default function BoardFragment({navigation}: Props) {
     }
     const pinnedDepartmentResponse = await getPinnedDepartmentBoardList();
     if (pinnedDepartmentResponse.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(pinnedDepartmentResponse.status) === 2) {
@@ -72,6 +76,7 @@ export default function BoardFragment({navigation}: Props) {
     }
     const pinnedPublicResponse = await getPinnedPublicBoardList();
     if (pinnedPublicResponse.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(pinnedPublicResponse.status) === 2) {
@@ -87,6 +92,7 @@ export default function BoardFragment({navigation}: Props) {
   const getOfficialBoards = async () => {
     const officialResponse = await getOfficialBoardList();
     if (officialResponse.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(officialResponse.status) === 2) {
@@ -100,6 +106,7 @@ export default function BoardFragment({navigation}: Props) {
   const getPublicBoards = async () => {
     const publicResponse = await getCustomBoardList();
     if (publicResponse.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(publicResponse.status) === 2) {
@@ -113,6 +120,7 @@ export default function BoardFragment({navigation}: Props) {
   const getDepartmentBoards = async () => {
     const departmentResponse = await getDepartmentBoardList();
     if (departmentResponse.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(departmentResponse.status) === 2) {
