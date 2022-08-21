@@ -389,23 +389,21 @@ function PostWriteScreen({navigation, route}: Props) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      {goBackWarning && (
-        <ModalBottom
-          modalVisible={goBackWarning}
-          setModalVisible={setGoBackWarning}
-          content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
-          isContentCenter={true}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setGoBackWarning(!goBackWarning);
-            navigation.goBack();
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => {
-            setGoBackWarning(!goBackWarning);
-          }}
-        />
-      )}
+      <ModalBottom
+        modalVisible={goBackWarning}
+        setModalVisible={setGoBackWarning}
+        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isContentCenter={true}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+          navigation.goBack();
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+        }}
+      />
     </>
   );
 }
