@@ -23,7 +23,7 @@ function PostItem({post, boardType}: Props) {
           <Image style={{ width: 24, height: 24, borderRadius: 12 }}
             source={{uri: post.profileImage}}/>
           <Text style={styles.name}>{post.displayName}</Text>
-          {post.isAnonymous ? <></> : ( post.isOwner && (boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
+          {!post.isAnonymous && ( post.isOwner && (boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
       </View>
