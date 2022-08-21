@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Keyboard,
@@ -41,14 +42,16 @@ function RequestWriteScreen({navigation}: Props) {
   const [content, setContent] = useState('');
   const [imageResponse, setImageResponse] = useState<any>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitPress = async () => {
-    console.log('title', title, 'content: ', content, 'images', imageResponse);
+    setIsLoading(true);
     const result = await writeQuestion(title, content, imageResponse);
     if (result) {
       navigation.navigate('QuestionList');
       Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.SHORT);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -102,6 +105,23 @@ function RequestWriteScreen({navigation}: Props) {
 
   return (
     <>
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
+      </View>
       <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={styles.container}>
           <View style={styles.header}>
