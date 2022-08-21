@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Platform, StatusBar, View, Dimensions} from 'react-native';
+import {Platform, StatusBar, View, Dimensions, Image} from 'react-native';
 import {TwoLineTitle, Description} from '../../../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -61,7 +61,16 @@ export default function QuitComplete({navigation}: Props) {
             paddingHorizontal: Dimensions.get('window').width / 4,
             paddingVertical: Dimensions.get('window').height / 8,
           }}>
-          <RemoveDataSuryong />
+          <Image
+            style={{
+              width: 150,
+              height: 150,
+            }}
+            source={{
+              uri:
+                'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/icon/DeleteData.png',
+            }}
+          />
         </View>
       </Animatable.View>
     </Container>
