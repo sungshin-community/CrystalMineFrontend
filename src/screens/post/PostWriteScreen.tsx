@@ -18,6 +18,7 @@ import {
   View,
   NativeModules,
   ActivityIndicator,
+  KeyboardEvent,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontMedium, fontRegular} from '../../common/font';
@@ -74,6 +75,8 @@ function PostWriteScreen({navigation, route}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusBarHeight, setStatusBarHeight] = useState(0);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -212,6 +215,29 @@ function PostWriteScreen({navigation, route}: Props) {
       : null;
   }, []);
 
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
       <View
@@ -231,10 +257,7 @@ function PostWriteScreen({navigation, route}: Props) {
           style={{zIndex: 100}}
         />
       </View>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={60}
-        behavior={Platform.select({ios: 'height'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable
             onPress={() => Keyboard.dismiss()}
@@ -279,7 +302,7 @@ function PostWriteScreen({navigation, route}: Props) {
             {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
           </Pressable>
         </View>
-        <ScrollView style={styles.container}>
+        <ScrollView style={[styles.container]}>
           <View
             style={{
               flex: 1,
@@ -306,7 +329,6 @@ function PostWriteScreen({navigation, route}: Props) {
                 />
               </View>
             )}
-
             {info?.direction.content && (
               <TextInput
                 autoFocus={false}
@@ -323,14 +345,32 @@ function PostWriteScreen({navigation, route}: Props) {
                     );
                 }}
                 maxLength={1000}
-                onBlur={() => {
-                  Keyboard.dismiss();
-                }}
-                style={[fontRegular, styles.input]}
+                style={[
+                  fontRegular,
+                  styles.input,
+                  {
+                    maxHeight: isFocused
+                      ? Platform.OS == 'ios'
+                        ? info?.hasTitle
+                          ? Dimensions.get('window').height -
+                            keyboardHeight -
+                            500
+                          : Dimensions.get('window').height -
+                            keyboardHeight -
+                            250
+                        : 100000
+                      : 400,
+                  },
+                ]}
                 autoCorrect={false}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
               />
             )}
-
             <Pressable
               onPress={() => navigation.navigate('DirectionAgreeScreen')}
               style={{
@@ -357,7 +397,9 @@ function PostWriteScreen({navigation, route}: Props) {
               }}>
               <View style={styles.image}>
                 <ImageIcon />
-                <Text style={[fontMedium, styles.imageText]}>이미지 ({images.length} / 10)</Text>
+                <Text style={[fontMedium, styles.imageText]}>
+                  이미지 ({images.length} / 10)
+                </Text>
               </View>
               <ScrollView horizontal={true}>
                 <View style={{flexDirection: 'row'}}>
@@ -421,8 +463,9 @@ const styles = StyleSheet.create({
     color: '#222222',
   },
   input: {
+    // minHeight: Dimensions.get('screen').height - 400,
     minHeight: 400,
-    maxHeight: Platform.OS === 'ios' ? 300 : 5000,
+    // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
     fontSize: 15,
     paddingTop: 14,
     paddingHorizontal: 24,

@@ -32,13 +32,13 @@ const ErrorScreen = ({route}: StackProps) => {
             lineHeight: 22.5,
             marginTop: 20,
           }}>
-          <Text>{route.params.status || ''}</Text>
+          <Text>{route ? route.params.status : ''}</Text>
           {` ERROR\n`}
           앗, 에러가 발생했어요!{`\n`}
           빠른 시일 내에 해결하겠습니다!{`\n`}
           {`\n`}
           <Text style={{color: '#CCCCCC'}}>
-            error code: {route.params.code || ''}
+            error code: {route ? route.params.code : ''}
           </Text>
         </Text>
       </View>
