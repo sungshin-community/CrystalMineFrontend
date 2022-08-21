@@ -49,7 +49,7 @@ import SortIcon from '../../../resources/icon/SortIcon';
 import { logout } from '../../common/authApi';
 import { getHundredsDigit } from '../../common/util/statusUtil';
 type RootStackParamList = {
-  PostScreen: {postId: number, boardType: string};
+  PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
@@ -377,8 +377,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               <TouchableOpacity
                 onPress={async () => {
                   navigation.navigate('PostScreen', {
-                    postId: item.postId,
-                    boardType: boardInfo?.type
+                    postId: item.postId
                   });
                 }}>
                 <PostItem post={item} boardType={boardInfo?.type}/>
