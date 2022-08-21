@@ -243,7 +243,6 @@ const Comment = ({
         )}
         <View style={{marginBottom: 15}} />
       </View>
-      <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
     </>
   );
 };
@@ -451,7 +450,6 @@ export const Recomment = ({
           )}
         </View>
       </View>
-      <View style={{borderWidth: 1, borderColor: '#F4F4F4'}}></View>
     </>
   );
 };

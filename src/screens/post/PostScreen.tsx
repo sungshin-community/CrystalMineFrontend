@@ -15,6 +15,8 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableHighlight,
+  KeyboardEvent,
+  Keyboard,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
@@ -67,6 +69,8 @@ const PostScreen = ({navigation, route}: Props) => {
   );
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
@@ -269,6 +273,27 @@ const PostScreen = ({navigation, route}: Props) => {
     setComments(commentData);
     return result;
   };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
   return (
     <>
       {componentModalVisible ? (
@@ -286,10 +311,7 @@ const PostScreen = ({navigation, route}: Props) => {
           }}
         />
       ) : null}
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={60}
-        behavior={Platform.select({ios: 'padding'})}
-        style={{flex: 1}}>
+      <KeyboardAvoidingView style={{flex: 1}}>
         <WaterMark />
         <View
           style={{
@@ -360,7 +382,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 </View>
               )}
               ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+                <View style={{height: 1, backgroundColor: '#F4F4F4'}}></View>
               )}
             />
             {/* {comments?.map((comment, index) => (
@@ -390,12 +412,11 @@ const PostScreen = ({navigation, route}: Props) => {
             ))} */}
           </View>
         </ScrollView>
-        <View style={{backgroundColor: '#fff'}}>
+        <View style={{backgroundColor: '#fff',  bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) :0}}>
           <View
             style={{
               flexDirection: 'row',
               paddingVertical: 5,
-              paddingBottom: Platform.OS === 'ios' ? 35 : 5,
             }}>
             <View
               style={{
@@ -416,8 +437,7 @@ const PostScreen = ({navigation, route}: Props) => {
             <View
               style={[
                 styles.inputBox,
-                {flexDirection: 'row', justifyContent: 'space-between'},
-              ]}>
+                { flexDirection: 'row', justifyContent: 'space-between' }]}>
               <TextInput
                 ref={commentInputRef}
                 placeholder="댓글을 입력해 주세요."
@@ -435,6 +455,12 @@ const PostScreen = ({navigation, route}: Props) => {
                 autoCorrect={false}
                 style={[styles.input]}
                 maxLength={500}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
               />
               <View
                 style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
