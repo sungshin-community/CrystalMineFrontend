@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text, View, Dimensions} from 'react-native';
+import {SafeAreaView, Text, View, Dimensions, Image} from 'react-native';
 import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
 const MessageFragment = () => {
   return (
@@ -10,7 +10,16 @@ const MessageFragment = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <NoCommentSuryong/>
+         <Image
+          style={{
+            width: 150,
+            height: 150,
+          }}
+          source={{
+            uri:
+              'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/icon/NoComment.png',
+          }}
+        />
         <Text
           style={{
             color: '#6E7882',
