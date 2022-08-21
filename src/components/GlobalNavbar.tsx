@@ -39,7 +39,6 @@ type RootStackParamList = {
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
 function GlobalNavbar({navigation}: ScreenProps) {
-  const [user, setUser] = useState<Authentication>();
 
   const onSearchPress = async () => {
     if (user?.isAuthenticated && !user?.blacklist) {
@@ -48,29 +47,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
       Toast.show('접근 권한이 없습니다.', Toast.SHORT);
     }
   };
-
-  useEffect(() => {
-    async function init() {
-      const result = await checkRole();
-      if (result.status === 401) {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
-        logout();
-        navigation.reset({routes: [{name: 'SplashHome'}]});
-      } else if (getHundredsDigit(result.status) === 2) {
-        setUser(result.data.data);
-      } else
-        navigation.reset({
-          routes: [
-            {
-              name: 'ErrorScreen',
-              params: {status: result.status, code: 'G001'},
-            },
-          ],
-        });
-      logout();
-    }
-    init();
-  }, []);
 
   return (
     <Tab.Navigator
@@ -126,9 +102,27 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            if (user?.isAuthenticated && !user?.blacklist) {
-              navigation.navigate('Board');
-            } else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            const response = await checkRole();
+            if (response.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(response.status) === 2) {
+              const user = response.data.data;
+              if (user?.isAuthenticated && !user?.blacklist) {
+                navigation.navigate('Board');
+              } else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            } else {
+              logout();
+              navigation.reset({
+                routes: [
+                  {
+                    name: 'ErrorScreen',
+                    params: {status: response.status, code: 'G001'},
+                  },
+                ],
+              });
+            }
           },
         })}
         options={{
@@ -165,9 +159,29 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
 
-            if (user?.isAuthenticated && !user?.blacklist)
-              navigation.navigate('Message');
-            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            const response = await checkRole();
+            if (response.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(response.status) === 2) {
+              const user = response.data.data;
+              if (user?.isAuthenticated && !user?.blacklist)
+                navigation.navigate('Message');
+              else {
+                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              }
+            } else {
+              logout();
+              navigation.reset({
+                routes: [
+                  {
+                    name: 'ErrorScreen',
+                    params: {status: response.status, code: 'G001'},
+                  },
+                ],
+              });
+            }
           },
         })}
         options={{
@@ -190,9 +204,30 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            if (!user?.blacklist) navigation.navigate('Alert');
-            if (!user?.blacklist) navigation.navigate('Alert');
-            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            const response = await checkRole();
+            if (response.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(response.status) === 2) {
+              const user = response.data.data;
+              if (!user?.blacklist) {
+                navigation.navigate('Alert');
+              } else {
+                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              }
+            } else {
+              logout();
+              navigation.reset({
+                routes: [
+                  {
+                    name: 'ErrorScreen',
+                    params: {status: response.status, code: 'G001'},
+                  },
+                ],
+              });
+            }
+            
           },
         })}
         options={{
@@ -214,8 +249,29 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
 
-            if (!user?.blacklist) navigation.navigate('MyPage');
-            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            const response = await checkRole();
+            if (response.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(response.status) === 2) {
+              const user = response.data.data;
+              if (!user?.blacklist) {
+                navigation.navigate('MyPage');
+              } else {
+                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              }
+            } else {
+              logout();
+              navigation.reset({
+                routes: [
+                  {
+                    name: 'ErrorScreen',
+                    params: {status: response.status, code: 'G001'},
+                  },
+                ],
+              });
+            }
           },
         })}
         options={{
