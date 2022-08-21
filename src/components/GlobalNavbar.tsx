@@ -66,6 +66,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             },
           ],
         });
+      logout();
     }
     init();
   }, []);
