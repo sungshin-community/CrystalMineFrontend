@@ -125,21 +125,24 @@ function PostWriteScreen({navigation, route}: Props) {
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            setIsSubmitState(true);
+            if (info?.hasTitle) {
+              if (title && content) setIsSubmitState(true);
+              else setIsSubmitState(false);
+            } else if (content) setIsSubmitState(true);
+            else setIsSubmitState(false);
           }}>
           <Text
             style={[
               styles.submit,
               fontRegular,
               {
-                color:
-                  info && info?.hasTitle
-                    ? title && content
-                      ? '#A055FF'
-                      : '#d8b9ff'
-                    : content
+                color: info?.hasTitle
+                  ? title && content
                     ? '#A055FF'
-                    : '#d8b9ff',
+                    : '#d8b9ff'
+                  : content
+                  ? '#A055FF'
+                  : '#d8b9ff',
               },
             ]}>
             완료
