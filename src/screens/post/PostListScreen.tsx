@@ -71,6 +71,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
+  const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
 
   useEffect(() => {
     async function init() {
@@ -79,6 +80,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         const hotBoardData = await getHotBoardPosts(0);
         setBoardDetail(hotBoardData);
       } else {
+        setIsHotBoard(false);
         const boardDetail = await getBoardDetail(
           route.params.boardId,
           0,
@@ -407,7 +409,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         </View>
           </>
         )}
-        {boardInfo?.id !== 2 && (
+        {!isHotBoard && (
           <FloatingWriteButton
             onPress={() =>
               navigation.navigate('PostWriteScreen', {

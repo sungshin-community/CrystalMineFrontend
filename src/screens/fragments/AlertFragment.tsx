@@ -67,7 +67,7 @@ const AlertFragment = () => {
       </View>
       <View>
         <Text>
-          {`게시글과 댓글에 관련한 알림은 아직 개발 중입니다.\n추후 기능 개발 후 사용하실 수 있습니다.`}
+          {`푸시알림 기능은 아직 개발 중입니다.\n추후 기능 개발 후 사용하실 수 있습니다.`}
         </Text>
       </View>
     </View>
@@ -118,7 +118,7 @@ const AlertFragment = () => {
           style={{marginLeft: 16}}
           onPress={() => setNoticeModalVisible(true)}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
-            게시글 알림 기능은{' '}
+            푸시알림 기능은{' '}
             <Text style={{color: '#A055FF'}}>아직 개발 중</Text>이에요!
           </Text>
           <Text
@@ -132,7 +132,7 @@ const AlertFragment = () => {
               },
               fontRegular,
             ]}>
-            게시글과 댓글에 관련한 알림은 아직 개발 중입니다.
+            개발이 완료되면 알려드릴게요
           </Text>
         </Pressable>
       </View>
