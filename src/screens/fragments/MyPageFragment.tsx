@@ -88,6 +88,7 @@ const MyPageFragment = ({navigation}: Props) => {
       const userDto = await getUser();
       console.log(userDto.data)
       if (userDto.status === 401) {
+        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       }

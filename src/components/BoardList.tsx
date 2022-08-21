@@ -53,6 +53,7 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
               onPress={async () => {
                 const response = await toggleBoardPin(item.id);
                 if (response.status === 401) {
+                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(response.status) === 2) {
@@ -123,6 +124,7 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
             onPress={async () => {
               const response = await toggleBoardPin(item.id);
               if (response.status === 401) {
+                Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(response.status) === 2) {
@@ -209,6 +211,7 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
                 onPress={async () => {
                   const response = await toggleBoardPin(item.id);
                   if (response.status === 401) {
+                    Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                     logout();
                     navigation.reset({routes: [{name: 'SplashHome'}]});
                   } else if (getHundredsDigit(response.status) === 2) {
