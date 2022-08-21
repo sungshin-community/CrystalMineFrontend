@@ -41,10 +41,28 @@ type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 function GlobalNavbar({navigation}: ScreenProps) {
 
   const onSearchPress = async () => {
-    if (user?.isAuthenticated && !user?.blacklist) {
-      navigation.navigate('TotalSearch');
+    const response = await checkRole();
+    if (response.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      const user = response.data.data;
+      if (user?.isAuthenticated && !user?.blacklist) {
+        navigation.navigate('TotalSearch');
+      } else {
+        Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+      }
     } else {
-      Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+      logout();
+      navigation.reset({
+        routes: [
+          {
+            name: 'ErrorScreen',
+            params: {status: response.status, code: 'G001'},
+          },
+        ],
+      });
     }
   };
 
