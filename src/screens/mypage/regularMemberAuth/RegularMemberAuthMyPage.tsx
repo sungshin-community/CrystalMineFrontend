@@ -250,7 +250,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             <PurpleRoundButton
               text="인증 완료"
               onClick={async () => {
-                let result = await await checkAuthNumber(value);
+                let result = await checkAuthNumber(value);
                 if (result.status === 401) {
                   Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                   logout();
