@@ -172,7 +172,7 @@ const AlertItem = ({
             else if (data.type === 'DELETE_COMMENT_BLIND' && !data.deleteBlind)
               Toast.show('삭제된 댓글입니다.', Toast.SHORT);
             else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-          } else if (data.type === 'HOT_POST' || data.type === 'COMMENT') {
+          } else if (data.type === 'HOT_POST' || data.type === 'COMMENT' || data.type === 'RECOMMENT') {
             navigation.navigate('PostScreen', {postId: data.postId});
           }
         }}>
