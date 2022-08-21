@@ -173,7 +173,10 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
                 ) {
                   let result = await sendEmail();
                   if (result.status === 401) {
-                    Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
                     logout();
                     navigation.reset({routes: [{name: 'SplashHome'}]});
                   } else if (getHundredsDigit(result.status) === 2) {
@@ -188,16 +191,11 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
                     // 이 로직 탈 경우는 없지만 혹시 모르니 추가함
                     navigation.navigate('PortalVerificationMethodGuide');
                   } else {
-                    navigation.reset({
-                      routes: [
-                        {
-                          name: 'ErrorScreen',
-                          params: {status: result.status, code: 'M003'},
-                        },
-                      ],
-                    });
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
                   }
-                  logout();
                 } else {
                   navigation.navigate('PortalVerificationMethodGuide');
                 }

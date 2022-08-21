@@ -21,6 +21,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getMajorList, logout, register} from '../../common/authApi';
 import Major from '../../classes/Major';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -165,7 +166,10 @@ export default function MajorSelect({navigation, route}: Props) {
                   departmentId: selectedMajorId,
                 });
                 if (result.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
@@ -178,16 +182,8 @@ export default function MajorSelect({navigation, route}: Props) {
                     ],
                   });
                 } else {
-                  navigation.reset({
-                    routes: [
-                      {
-                        name: 'ErrorScreen',
-                        params: {status: result.status, code: 'S002'},
-                      },
-                    ],
-                  });
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
                 }
-                logout();
               }}
             />
           ) : (
