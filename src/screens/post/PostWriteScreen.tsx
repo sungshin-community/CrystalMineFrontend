@@ -357,7 +357,7 @@ function PostWriteScreen({navigation, route}: Props) {
               }}>
               <View style={styles.image}>
                 <ImageIcon />
-                <Text style={[fontMedium, styles.imageText]}>이미지</Text>
+                <Text style={[fontMedium, styles.imageText]}>이미지 ({images.length} / 10)</Text>
               </View>
               <ScrollView horizontal={true}>
                 <View style={{flexDirection: 'row'}}>

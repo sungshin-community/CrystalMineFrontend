@@ -252,8 +252,7 @@ const styles = StyleSheet.create({
   postLike: {
     fontSize: 13,
     marginLeft: 5,
-    marginRight: 5,
-    width: 35,
+    marginRight: 11
   },
   postComment: {
     fontSize: 13,
@@ -433,8 +432,9 @@ export const Recomment = ({
                   flexDirection: 'row',
                   marginTop: 15,
                   justifyContent: 'space-between',
+                  backgroundColor: '#ff0000'
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: '#ff0000'}}>
                   <Pressable
                     hitSlop={{top: 15, left: 15, bottom: 15, right: 15}}
                     onPress={() => handleCommentLike(data.id)}>
