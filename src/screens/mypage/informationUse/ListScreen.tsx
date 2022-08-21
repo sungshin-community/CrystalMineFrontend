@@ -20,7 +20,7 @@ function ListScreen({navigation}: Props) {
     <SafeAreaView style={{ backgroundColor: '#EEEEEE' }}>
       <View style={styles.versionContainer}>
         <Text style={[fontRegular, styles.menuText]}>앱 버전</Text>
-        <Text style={[fontRegular, { color: '#878787', fontSize: 12, marginTop: 5}]}>1.2.0</Text>
+        <Text style={[fontRegular, { color: '#878787', fontSize: 12, marginTop: 5}]}>1.0.0</Text>
       </View>
         <View
           style={{
