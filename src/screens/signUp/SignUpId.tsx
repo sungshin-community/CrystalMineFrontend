@@ -225,6 +225,7 @@ export default function SignUpId({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkEmailConflict(studentId);
                 if (result.status === 401) {
+                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
@@ -252,6 +253,7 @@ export default function SignUpId({navigation, route}: Props) {
               onClick={async () => {
                 let result = await checkEmailConflict(studentId);
                 if (result.status === 401) {
+                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {

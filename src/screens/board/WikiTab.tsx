@@ -51,6 +51,7 @@ function WikiTab({navigation, route}: Props) {
           onPress={async () => {
             const response = await toggleBoardPin(route.params.boardId);
             if (response.status === 401) {
+              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(response.status) === 2) {
