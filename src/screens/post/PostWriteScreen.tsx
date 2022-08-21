@@ -123,20 +123,26 @@ function PostWriteScreen({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable onPress={() => {setIsSubmitState(true)}}>
+        <Pressable
+          onPress={() => {
+            if (info?.hasTitle) {
+              if (title && content) setIsSubmitState(true);
+              else setIsSubmitState(false);
+            } else if (content) setIsSubmitState(true);
+            else setIsSubmitState(false);
+          }}>
           <Text
             style={[
               styles.submit,
               fontRegular,
               {
-                color:
-                  info && info?.hasTitle
-                    ? title && content
-                      ? '#A055FF'
-                      : '#d8b9ff'
-                    : content
+                color: info?.hasTitle
+                  ? title && content
                     ? '#A055FF'
-                    : '#d8b9ff',
+                    : '#d8b9ff'
+                  : content
+                  ? '#A055FF'
+                  : '#d8b9ff',
               },
             ]}>
             완료
@@ -154,14 +160,15 @@ function PostWriteScreen({navigation, route}: Props) {
             justifyContent: 'center',
           }}
           onPress={() => {
-            setGoBackWarning(true);
-            console.log('click');
+            if (title.length >= 1 || content.length >= 1 || images.length >= 1)
+              setGoBackWarning(true);
+            else navigation.goBack();
           }}>
           <BackButtonIcon />
         </TouchableHighlight>
       ),
     });
-  }, [navigation, title, content]);
+  }, [navigation, title, content, images]);
 
   useEffect(() => {
     if (isSubmitState) {
@@ -382,23 +389,21 @@ function PostWriteScreen({navigation, route}: Props) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      {goBackWarning && (
-        <ModalBottom
-          modalVisible={goBackWarning}
-          setModalVisible={setGoBackWarning}
-          content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
-          isContentCenter={true}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setGoBackWarning(!goBackWarning);
-            navigation.goBack();
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => {
-            setGoBackWarning(!goBackWarning);
-          }}
-        />
-      )}
+      <ModalBottom
+        modalVisible={goBackWarning}
+        setModalVisible={setGoBackWarning}
+        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isContentCenter={true}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+          navigation.goBack();
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+        }}
+      />
     </>
   );
 }

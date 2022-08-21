@@ -14,6 +14,7 @@ import {
   Dimensions,
   FlatList,
   ActivityIndicator,
+  TouchableHighlight,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
@@ -41,6 +42,9 @@ import {
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import {LogBox} from 'react-native';
 import WaterMark from '../../components/WaterMark';
+import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
+import getCommments from '../../common/CommentApi';
+import {ModalBottom} from '../../components/ModalBottom';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {};
@@ -61,22 +65,58 @@ const PostScreen = ({navigation, route}: Props) => {
   const [componentModalVisible, setComponentModalVisible] = useState<boolean>(
     false,
   );
-  let anonymous: boolean = true;
+  const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
+  const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
 
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
     if (isRecomment)
-      addRecommentFunc(route.params.postId, parentId, newComment, anonymous);
-    else addCommentFunc(route.params.postId, newComment, anonymous);
+      addRecommentFunc(route.params.postId, parentId, newComment, isAnonymous);
+    else addCommentFunc(route.params.postId, newComment, isAnonymous);
+    setIsSubmitState(false);
   }, [newComment]);
+
+  useEffect(() => {
+    console.log('isSubmitState', isSubmitState, 'isAnonymous', isAnonymous);
+    if (isSubmitState) {
+      if (isRecomment)
+        addRecommentFunc(
+          route.params.postId,
+          parentId,
+          newComment,
+          isAnonymous,
+        );
+      else addCommentFunc(route.params.postId, newComment, isAnonymous);
+      setIsSubmitState(false);
+    }
+  }, [isAnonymous, isSubmitState, newComment]);
 
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
       headerTitle: () => <HeaderTitle />,
+      headerLeft: () => (
+        <TouchableHighlight
+          underlayColor="#EEEEEE"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            if (newComment.length >= 1) setGoBackWarning(true);
+            else {
+              navigation.goBack();
+            }
+          }}>
+          <BackButtonIcon />
+        </TouchableHighlight>
+      ),
     });
-  }, [navigation, post?.boardName]);
+  }, [navigation, post?.boardName, newComment]);
 
   const HeaderTitle = () => {
     return (
@@ -369,7 +409,6 @@ const PostScreen = ({navigation, route}: Props) => {
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
                 onPress={() => {
                   setIsAnonymous(isAnonymous => !isAnonymous);
-                  anonymous = !anonymous;
                 }}>
                 {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
               </Pressable>
@@ -407,7 +446,8 @@ const PostScreen = ({navigation, route}: Props) => {
                         bottom: 0,
                       }}
                       onPress={() => {
-                        onSubmit();
+                        setIsSubmitState(true);
+                        console.log(isSubmitState);
                       }}>
                       <CommentSendIcon />
                     </Pressable>
@@ -418,6 +458,21 @@ const PostScreen = ({navigation, route}: Props) => {
           </View>
         </View>
       </KeyboardAvoidingView>
+      <ModalBottom
+        modalVisible={goBackWarning}
+        setModalVisible={setGoBackWarning}
+        content={`작성한 댓글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isContentCenter={true}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+          navigation.goBack();
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+        }}
+      />
     </>
   );
 };
