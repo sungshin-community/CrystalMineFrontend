@@ -123,7 +123,10 @@ function PostWriteScreen({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable onPress={() => {setIsSubmitState(true)}}>
+        <Pressable
+          onPress={() => {
+            setIsSubmitState(true);
+          }}>
           <Text
             style={[
               styles.submit,
@@ -154,14 +157,15 @@ function PostWriteScreen({navigation, route}: Props) {
             justifyContent: 'center',
           }}
           onPress={() => {
-            setGoBackWarning(true);
-            console.log('click');
+            if (title.length >= 1 || content.length >= 1 || images.length >= 1)
+              setGoBackWarning(true);
+            else navigation.goBack();
           }}>
           <BackButtonIcon />
         </TouchableHighlight>
       ),
     });
-  }, [navigation, title, content]);
+  }, [navigation, title, content, images]);
 
   useEffect(() => {
     if (isSubmitState) {
