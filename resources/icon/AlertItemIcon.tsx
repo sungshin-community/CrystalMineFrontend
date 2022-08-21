@@ -17,17 +17,18 @@ export const AlertWorkIcon = (props: SvgProps) => (
 );
 
 export const AlertCheckIcon = (props: SvgProps) => (
-  <Svg
+   <Svg
     width={36}
     height={36}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}>
+    {...props}
+  >
     <Circle cx={18} cy={18} r={18} fill="#FFA767" />
     <Path
-      d="M9 18.84 14.4 25 27 11"
+      d="M10 18.72 14.8 24 26 12"
       stroke="#fff"
-      strokeWidth={2}
+      strokeWidth={3}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
