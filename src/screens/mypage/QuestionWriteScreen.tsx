@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Keyboard,
@@ -8,6 +9,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -27,28 +29,21 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-interface ImageResponse {
-  fileName: string;
-  fileSize: number;
-  height: number;
-  type: string;
-  uri: string;
-  width: number;
-}
-
 function RequestWriteScreen({navigation}: Props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [imageResponse, setImageResponse] = useState<any>([]);
+  const [images, setImages] = useState<Asset[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmitPress = async () => {
-    console.log('title', title, 'content: ', content, 'images', imageResponse);
-    const result = await writeQuestion(title, content, imageResponse);
+    setIsLoading(true);
+    const result = await writeQuestion(title, content, images);
     if (result) {
       navigation.navigate('QuestionList');
       Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.SHORT);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -84,24 +79,41 @@ function RequestWriteScreen({navigation}: Props) {
         if (res.didCancel) {
           return;
         }
-        let tempImages: Asset[] = [...imageResponse, ...res.assets];
+        let tempImages: Asset[] = [...images, ...res.assets];
         if (tempImages.length > 10) {
           Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
-          setImageResponse(tempImages?.slice(0, 10));
+          setImages(tempImages?.slice(0, 10));
         } else {
-          setImageResponse(tempImages);
+          setImages(tempImages);
         }
       },
     );
   };
 
   const deleteImage = (imageUri: string) => {
-    setImageResponse(imageResponse.filter(item => item.uri !== imageUri));
-    console.log('>>>', imageResponse);
+    setImages(images.filter(item => item.uri !== imageUri));
+    console.log('>>>', images);
   };
 
   return (
     <>
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
+      </View>
       <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={styles.container}>
           <View style={styles.header}>
@@ -146,31 +158,32 @@ function RequestWriteScreen({navigation}: Props) {
           <View style={{paddingHorizontal: 24}}>
             <View style={styles.image}>
               <ImageIcon />
-              <Text style={[fontMedium, styles.imageText]}>이미지</Text>
+              <Text style={[fontMedium, styles.imageText]}>이미지 ({images.length} / 10)</Text>
             </View>
            <ScrollView horizontal={true}>
                 <View style={{flexDirection: 'row'}}>
-                  {imageResponse?.length !== 0 &&
-                    imageResponse?.map((asset, index) => (
+                  {images?.length !== 0 &&
+                    images?.map((asset, index) => (
                       <ImageDelete
                         key={index}
                         imageUri={asset.uri}
                         deleteImage={deleteImage}
                       />
                     ))}
-                  <View
+                  <TouchableOpacity
+                    onPress={() => onSelectImage()}
                     style={[
                       styles.imageSelectBox,
                       styles.imageBox,
                       {marginTop: 5},
                     ]}>
-                    <Pressable onPress={onSelectImage} hitSlop={25}>
+                    <View>
                       <PhotoIcon />
                       <Text style={[fontMedium, styles.count]}>
-                        {imageResponse?.length}/10
+                        {images?.length}/10
                       </Text>
-                    </Pressable>
-                  </View>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </ScrollView>
           </View>

@@ -128,6 +128,7 @@ function QuestionList({navigation, route}: Props) {
                 style={{
                   color: '#FF6060',
                   opacity: deleteButtonEnabled ? 1 : 0.3,
+                  fontSize: 17
                 }}>
                 삭제
               </Text>
