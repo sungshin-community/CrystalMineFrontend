@@ -28,6 +28,7 @@ import {ModalBottom} from '../../../../components/ModalBottom';
 import { checkPassword } from '../../../../common/myPageApi';
 import { getHundredsDigit } from '../../../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -189,7 +190,9 @@ export default function QuitPassword({navigation}: Props) {
             purpleButtonFunc={async () => {
               setModalVisible(false);
               const response = await applyQuitMembership(password);
-              console.log("탈퇴하기 호출 완료");
+              AsyncStorage.setItem('accessToken', '');
+              AsyncStorage.setItem('refreshToken', '');
+              AsyncStorage.setItem('uuid', '');
               if (response.status === 401) {
                 Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
                 logout();

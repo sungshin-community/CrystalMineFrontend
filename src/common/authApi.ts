@@ -294,9 +294,6 @@ export const getQuitAgreements = async () => {
 
 export const applyQuitMembership = async (password: string) => {
   console.log("여기는 탈퇴하기 함수")
-  AsyncStorage.setItem('accessToken', '');
-  AsyncStorage.setItem('refreshToken', '');
-  AsyncStorage.setItem('uuid', '');
   try {
     console.log("호출 전")
     const response = await client.delete<AxiosResponse>('/user', {

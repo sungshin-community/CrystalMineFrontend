@@ -32,7 +32,7 @@ export default function QuitComplete({navigation}: Props) {
 
       setTimeout(() => {
         setSec(0);
-        navigation.navigate('SplashHome');
+        navigation.reset({routes: [{name: 'SplashHome'}]});
       }, 5600);
     };
     timer();

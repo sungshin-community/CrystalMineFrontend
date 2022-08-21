@@ -36,9 +36,7 @@ client.interceptors.response.use(
     const {config, response: { status }} = error;
     const originalRequest = config;
     if (originalRequest.url === '/auth/reissue-token') {
-      console.log("토큰 재발급 실패. SplashHome으로 감");
-      // 리프레시 토큰마저 만료됐으면 로그인 화면으로 이동시키기
-      await AsyncStorage.setItem('accessToken', '');
+      console.log("토큰 재발급 실패");
       return Promise.reject(error);
   }
     if (status === 401) {
