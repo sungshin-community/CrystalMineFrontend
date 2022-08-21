@@ -141,6 +141,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
+        <WaterMark />
         {boardInfo?.id === 1 ? (
           <BigDarkPin />
         ) : (

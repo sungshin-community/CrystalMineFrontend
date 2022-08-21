@@ -118,7 +118,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
             e.preventDefault();
             if (user?.isAuthenticated && !user?.blacklist) {
               navigation.navigate('Board');
-            } else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            }
+            else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },
         })}
         options={{
@@ -180,6 +181,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
+            if (!user?.blacklist)
+              navigation.navigate('Alert');
             if (!user?.blacklist) navigation.navigate('Alert');
             else Toast.show('접근 권한이 없습니다.', Toast.SHORT);
           },

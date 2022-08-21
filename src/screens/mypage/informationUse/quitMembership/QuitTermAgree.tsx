@@ -120,6 +120,7 @@ function QuitTermAgree({navigation}: Props) {
                 marginRight: 24,
                 borderRadius: 10,
                 marginTop: 31,
+                alignItems: 'center'
               }}
               onPress={(e: any) => {
                 let agreementList = agreements.slice();
