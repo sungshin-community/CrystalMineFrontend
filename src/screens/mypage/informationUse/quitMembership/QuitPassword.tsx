@@ -20,11 +20,14 @@ import {
   PurpleFullButton,
   PurpleRoundButton,
 } from '../../../../components/Button';
-import {applyQuitMembership} from '../../../../common/authApi';
+import {applyQuitMembership, logout} from '../../../../common/authApi';
 
 import PasswordShow from '../../../../../resources/icon/PasswordShow';
 import PasswordNotShow from '../../../../../resources/icon/PasswordNotShow';
 import {ModalBottom} from '../../../../components/ModalBottom';
+import { checkPassword } from '../../../../common/myPageApi';
+import { getHundredsDigit } from '../../../../common/util/statusUtil';
+import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -160,7 +163,22 @@ export default function QuitPassword({navigation}: Props) {
           {isValidate && isPasswordFocused && (
             <PurpleFullButton
               text="탈퇴하기"
-              onClick={() => setModalVisible(true)}
+              onClick={async () => {
+                const response = await checkPassword(password);
+                console.log(response.data);
+                if (response.status === 401) {
+                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(response.status) === 2) {
+                  setIsPasswordCorrect(true);
+                  setModalVisible(true);
+                } else if (response.data.code === 'PASSWORD_NOT_MATCH') {
+                  setIsPasswordCorrect(false);
+                } else {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }
+              }}
             />
           )}
           <ModalBottom
@@ -169,12 +187,19 @@ export default function QuitPassword({navigation}: Props) {
             setModalVisible={setModalVisible}
             purpleButtonText="네"
             purpleButtonFunc={async () => {
-              let result: boolean = await applyQuitMembership(password);
               setModalVisible(false);
-              if (result) {
-                navigation.navigate('QuitComplete');
-              } else {
+              const response = await applyQuitMembership(password);
+              console.log("탈퇴하기 호출 완료");
+              if (response.status === 401) {
+                Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(response.status) === 2) {
+                navigation.reset({routes: [{name: 'QuitComplete'}]});
+              } else if (response.data.code === 'PASSWORD_NOT_MATCH') {
                 setIsPasswordCorrect(false);
+              } else {
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }
             }}
             whiteButtonText="아니요"

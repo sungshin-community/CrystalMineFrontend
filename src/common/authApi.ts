@@ -293,13 +293,16 @@ export const getQuitAgreements = async () => {
 };
 
 export const applyQuitMembership = async (password: string) => {
-  await AsyncStorage.setItem('accessToken', '');
-  await AsyncStorage.setItem('refreshToken', '');
-  await AsyncStorage.setItem('uuid', '');
+  console.log("여기는 탈퇴하기 함수")
+  AsyncStorage.setItem('accessToken', '');
+  AsyncStorage.setItem('refreshToken', '');
+  AsyncStorage.setItem('uuid', '');
   try {
-    const response = await client.delete<Response<null>>('/user', {
-      data: {password},
+    console.log("호출 전")
+    const response = await client.delete<AxiosResponse>('/user', {
+      data: {password: password}
     });
+    console.log("호출 후")
     console.log('회원탈퇴 성공', response.data);
    return response;
   } catch (error: any) {

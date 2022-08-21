@@ -170,7 +170,7 @@ export const checkPassword = async (password: string) => {
       {password: password},
     );
     return response;
-  } catch (error) {
+  } catch (error: any) {
     return error.response;
   }
 };
