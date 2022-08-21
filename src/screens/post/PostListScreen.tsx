@@ -48,14 +48,12 @@ import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
 import { logout } from '../../common/authApi';
 import { getHundredsDigit } from '../../common/util/statusUtil';
-import WaterMark from '../../components/WaterMark';
 type RootStackParamList = {
   PostScreen: {postId: number, boardType: string};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
-  PostSearch: { boardId: number, boardName: string };
-  SplashHome: undefined;
+  PostSearch: {boardId: number, boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -143,7 +141,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   const HeaderIcon = () => {
     return (
       <>
-        <WaterMark />
         {boardInfo?.id === 1 ? (
           <BigDarkPin />
         ) : (
@@ -158,7 +155,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 const boardInfo = await getBoardInfo(route.params.boardId);
                 setBoardInfo(boardInfo);
               } else {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
               }
             }}>
             {boardInfo?.isOwner ? (
@@ -286,7 +283,6 @@ const PostListScreen = ({navigation, route}: Props) => {
   );
   return (
     <>
-      <WaterMark />
       {reportModalVisible && (
         <SelectModalBottom
           modalVisible={reportModalVisible}

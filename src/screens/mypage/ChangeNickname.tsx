@@ -95,12 +95,9 @@ export default function ChangeNickname({navigation}: Props) {
 
   return (
     <>
-      <KeyboardAvoidingView style={{flex: 1}}>
-        <Container>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
           <ScrollView
-            scrollEnabled={false}
-            keyboardShouldPersistTaps="handled"
-            style={{backgroundColor: '#fff', marginHorizontal: 24}}>
+            style={{flex: 1, paddingHorizontal: 24}}>
             <TextContainer>
               <NormalOneLineText>
                 새로운 닉네임을 입력해주세요
@@ -206,7 +203,6 @@ export default function ChangeNickname({navigation}: Props) {
               <DisabledPurpleRoundButton text="다음" />
             )}
           </View>
-        </Container>
       </KeyboardAvoidingView>
     </>
   );

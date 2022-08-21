@@ -116,7 +116,7 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
                   marginRight: 24,
                   borderRadius: 10,
                   marginTop: 31,
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
                 onPress={(e: any) => {
                   let agreementList = agreements.slice();
@@ -187,7 +187,17 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
                   ) {
                     // 이 로직 탈 경우는 없지만 혹시 모르니 추가함
                     navigation.navigate('PortalVerificationMethodGuide');
-                  } else navigation.navigate('ErrorScreen');
+                  } else {
+                    navigation.reset({
+                      routes: [
+                        {
+                          name: 'ErrorScreen',
+                          params: {status: result.status, code: 'M003'},
+                        },
+                      ],
+                    });
+                  }
+                  logout();
                 } else {
                   navigation.navigate('PortalVerificationMethodGuide');
                 }

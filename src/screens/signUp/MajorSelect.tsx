@@ -178,8 +178,16 @@ export default function MajorSelect({navigation, route}: Props) {
                     ],
                   });
                 } else {
-                  navigation.navigate('ErrorScreen');
+                  navigation.reset({
+                    routes: [
+                      {
+                        name: 'ErrorScreen',
+                        params: {status: result.status, code: 'S002'},
+                      },
+                    ],
+                  });
                 }
+                logout();
               }}
             />
           ) : (

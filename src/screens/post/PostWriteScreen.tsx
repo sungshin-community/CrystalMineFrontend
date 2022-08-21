@@ -18,6 +18,7 @@ import {
   View,
   NativeModules,
   ActivityIndicator,
+  KeyboardEvent,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontMedium, fontRegular} from '../../common/font';
@@ -74,6 +75,8 @@ function PostWriteScreen({navigation, route}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusBarHeight, setStatusBarHeight] = useState(0);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -123,20 +126,26 @@ function PostWriteScreen({navigation, route}: Props) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
-        <Pressable onPress={() => {setIsSubmitState(true)}}>
+        <Pressable
+          onPress={() => {
+            if (info?.hasTitle) {
+              if (title && content) setIsSubmitState(true);
+              else setIsSubmitState(false);
+            } else if (content) setIsSubmitState(true);
+            else setIsSubmitState(false);
+          }}>
           <Text
             style={[
               styles.submit,
               fontRegular,
               {
-                color:
-                  info && info?.hasTitle
-                    ? title && content
-                      ? '#A055FF'
-                      : '#d8b9ff'
-                    : content
+                color: info?.hasTitle
+                  ? title && content
                     ? '#A055FF'
-                    : '#d8b9ff',
+                    : '#d8b9ff'
+                  : content
+                  ? '#A055FF'
+                  : '#d8b9ff',
               },
             ]}>
             완료
@@ -154,14 +163,15 @@ function PostWriteScreen({navigation, route}: Props) {
             justifyContent: 'center',
           }}
           onPress={() => {
-            setGoBackWarning(true);
-            console.log('click');
+            if (title.length >= 1 || content.length >= 1 || images.length >= 1)
+              setGoBackWarning(true);
+            else navigation.goBack();
           }}>
           <BackButtonIcon />
         </TouchableHighlight>
       ),
     });
-  }, [navigation, title, content]);
+  }, [navigation, title, content, images]);
 
   useEffect(() => {
     if (isSubmitState) {
@@ -205,6 +215,29 @@ function PostWriteScreen({navigation, route}: Props) {
       : null;
   }, []);
 
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
       <View
@@ -224,10 +257,7 @@ function PostWriteScreen({navigation, route}: Props) {
           style={{zIndex: 100}}
         />
       </View>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={60}
-        behavior={Platform.select({ios: 'height'})}
-        style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable
             onPress={() => Keyboard.dismiss()}
@@ -272,7 +302,7 @@ function PostWriteScreen({navigation, route}: Props) {
             {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
           </Pressable>
         </View>
-        <ScrollView style={styles.container}>
+        <ScrollView style={[styles.container]}>
           <View
             style={{
               flex: 1,
@@ -299,7 +329,6 @@ function PostWriteScreen({navigation, route}: Props) {
                 />
               </View>
             )}
-
             {info?.direction.content && (
               <TextInput
                 autoFocus={false}
@@ -316,14 +345,32 @@ function PostWriteScreen({navigation, route}: Props) {
                     );
                 }}
                 maxLength={1000}
-                onBlur={() => {
-                  Keyboard.dismiss();
-                }}
-                style={[fontRegular, styles.input]}
+                style={[
+                  fontRegular,
+                  styles.input,
+                  {
+                    maxHeight: isFocused
+                      ? Platform.OS == 'ios'
+                        ? info?.hasTitle
+                          ? Dimensions.get('window').height -
+                            keyboardHeight -
+                            500
+                          : Dimensions.get('window').height -
+                            keyboardHeight -
+                            250
+                        : 100000
+                      : 400,
+                  },
+                ]}
                 autoCorrect={false}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
               />
             )}
-
             <Pressable
               onPress={() => navigation.navigate('DirectionAgreeScreen')}
               style={{
@@ -350,7 +397,9 @@ function PostWriteScreen({navigation, route}: Props) {
               }}>
               <View style={styles.image}>
                 <ImageIcon />
-                <Text style={[fontMedium, styles.imageText]}>이미지 ({images.length} / 10)</Text>
+                <Text style={[fontMedium, styles.imageText]}>
+                  이미지 ({images.length} / 10)
+                </Text>
               </View>
               <ScrollView horizontal={true}>
                 <View style={{flexDirection: 'row'}}>
@@ -382,23 +431,21 @@ function PostWriteScreen({navigation, route}: Props) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      {goBackWarning && (
-        <ModalBottom
-          modalVisible={goBackWarning}
-          setModalVisible={setGoBackWarning}
-          content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
-          isContentCenter={true}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setGoBackWarning(!goBackWarning);
-            navigation.goBack();
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => {
-            setGoBackWarning(!goBackWarning);
-          }}
-        />
-      )}
+      <ModalBottom
+        modalVisible={goBackWarning}
+        setModalVisible={setGoBackWarning}
+        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isContentCenter={true}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+          navigation.goBack();
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => {
+          setGoBackWarning(!goBackWarning);
+        }}
+      />
     </>
   );
 }
@@ -416,8 +463,9 @@ const styles = StyleSheet.create({
     color: '#222222',
   },
   input: {
+    // minHeight: Dimensions.get('screen').height - 400,
     minHeight: 400,
-    maxHeight: Platform.OS === 'ios' ? 300 : 5000,
+    // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
     fontSize: 15,
     paddingTop: 14,
     paddingHorizontal: 24,

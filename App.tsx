@@ -1012,22 +1012,6 @@ const App = () => {
                   headerTitleStyle: {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                  headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
-                  ),
                 })}
               />
               <Stack.Screen
@@ -2585,22 +2569,6 @@ const App = () => {
                   headerTitleStyle: {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
-                  headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
-                  ),
                 })}
               />
               <Stack.Screen
