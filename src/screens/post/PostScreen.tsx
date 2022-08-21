@@ -382,7 +382,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 </View>
               )}
               ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F4F4F4'}}></View>
+                <View style={{height: 1, backgroundColor: '#F0F0F0'}}></View>
               )}
             />
             {/* {comments?.map((comment, index) => (
@@ -460,6 +460,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 }}
                 onBlur={(e: any) => {
                   onInputFocusOut();
+                  setIsRecomment(false);
                 }}
               />
               <View
