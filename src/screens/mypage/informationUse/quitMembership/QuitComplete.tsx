@@ -5,7 +5,7 @@ import {Platform, StatusBar, View, Dimensions, Image} from 'react-native';
 import {TwoLineTitle, Description} from '../../../../components/Top';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import RemoveDataSuryong from '../../../../../resources/icon/custom/RemoveDataSuryong';
+
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
@@ -66,10 +66,7 @@ export default function QuitComplete({navigation}: Props) {
               width: 150,
               height: 150,
             }}
-            source={{
-              uri:
-                'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/icon/DeleteData.png',
-            }}
+            source={require('../../../../../resources/images/DeleteData.png')}
           />
         </View>
       </Animatable.View>

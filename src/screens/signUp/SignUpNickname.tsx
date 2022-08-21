@@ -183,8 +183,9 @@ export default function SignUpNickname({navigation, route}: Props) {
                   });
                 } else if (result.data.code === 'NICKNAME_DUPLICATION') {
                   setIsDuplicate(true);
-                } else
+                } else {
                   Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }
               }}
             />
           )}

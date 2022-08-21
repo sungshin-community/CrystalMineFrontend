@@ -197,7 +197,6 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
                       ],
                     });
                   }
-                  logout();
                 } else {
                   navigation.navigate('PortalVerificationMethodGuide');
                 }

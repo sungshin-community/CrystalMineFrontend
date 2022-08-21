@@ -187,7 +187,6 @@ export default function MajorSelect({navigation, route}: Props) {
                     ],
                   });
                 }
-                logout();
               }}
             />
           ) : (
