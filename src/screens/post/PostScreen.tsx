@@ -47,12 +47,12 @@ import WaterMark from '../../components/WaterMark';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import getCommments from '../../common/CommentApi';
 import {ModalBottom} from '../../components/ModalBottom';
-LogBox.ignoreLogs(['Warning: ...']);
-LogBox.ignoreAllLogs();
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostScreen = ({navigation, route}: Props) => {
+  LogBox.ignoreLogs(['Warning: ...']);
+  LogBox.ignoreAllLogs();
   console.reportErrorsAsExceptions = false;
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();

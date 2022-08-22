@@ -85,10 +85,14 @@ import ScrapedPostSearch from './src/screens/search/ScrapedPostSearch';
 import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResult';
 import WikiSearchResult from './src/screens/search/WikiSearchResult';
 import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
+import {LogBox} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  LogBox.ignoreLogs(['Warning: ...']);
+  LogBox.ignoreAllLogs();
+  console.reportErrorsAsExceptions = false;
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
