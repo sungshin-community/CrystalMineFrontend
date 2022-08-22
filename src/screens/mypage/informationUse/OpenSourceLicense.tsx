@@ -27,7 +27,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function OpenSourceLicense({navigation}: Props) {
 
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled={true}>
       <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
         <LicenseSpreadList id={1} title={'OSS Notice | CrystalMineFrontend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
         <LicenseSpreadList id={2} title={'OSS Notice | CrystalMineBackend'} agreementDate={'2022.08.22 작성'} content={be} ></LicenseSpreadList>
@@ -71,6 +71,7 @@ export function LicenseSpreadList({ id, title, agreementDate, content}: any) {
       {isSpread && (
         <>
           <ScrollView
+            nestedScrollEnabled={true}
             style={{
               height: Dimensions.get('window').height / 2,
               backgroundColor: '#FBFBFB',paddingHorizontal: 24,
