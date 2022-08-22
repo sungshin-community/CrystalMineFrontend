@@ -141,7 +141,8 @@ const HomeFragment = ({navigation}: Props) => {
             logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(notification.status) === 2) {
-            setNoti(notification.data.data.content);
+            console.log('notification.data.data', notification.data.data)
+            setNoti(notification.data.data);
           } else {
             setIsHomeAlertError(true);
           }
@@ -184,7 +185,7 @@ const HomeFragment = ({navigation}: Props) => {
       getContents();
     }
   }, [isFocused, modalBody, blindModalVisible]);
-
+console.log(noti)
   return (
     <>
       <WaterMark />
