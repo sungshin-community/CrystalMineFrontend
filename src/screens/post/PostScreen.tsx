@@ -49,12 +49,12 @@ import getCommments from '../../common/CommentApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import { getHundredsDigit } from '../../common/util/statusUtil';
 import { logout } from '../../common/authApi';
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostScreen = ({navigation, route}: Props) => {
-  LogBox.ignoreLogs(['Warning: ...']);
-  LogBox.ignoreAllLogs();
   console.reportErrorsAsExceptions = false;
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
@@ -350,16 +350,15 @@ const PostScreen = ({navigation, route}: Props) => {
           contentContainerStyle={{flexGrow: 1}}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
-          {post &&
-            <Post
-              boardType={post.boardType}
-              post={post}
-              handlePostLike={handlePostLike}
-              handlePostScrap={handlePostScrap}
-              handlePostDelete={handlePostDelete}
-              handlePostReport={handlePostReport}
-              componentModalVisible={componentModalVisible}
-              setComponentModalVisible={setComponentModalVisible}></Post>}
+          <Post
+            boardType={route.params.boardType}
+            post={post}
+            handlePostLike={handlePostLike}
+            handlePostScrap={handlePostScrap}
+            handlePostDelete={handlePostDelete}
+            handlePostReport={handlePostReport}
+            componentModalVisible={componentModalVisible}
+            setComponentModalVisible={setComponentModalVisible}></Post>
           <View style={{flex: 1}}>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -368,25 +367,23 @@ const PostScreen = ({navigation, route}: Props) => {
               data={comments}
               renderItem={({item, index}) => (
                 <View key={index}>
-                  {post &&
-                    <Comment
-                      boardType={post.boardType}
-                      comment={item}
-                      setParentId={setParentId}
-                      handleCommentLike={handleCommentLike}
-                      isRecomment={isRecomment}
-                      setIsRecomment={setIsRecomment}
-                      handleCommentDelete={handleCommentDelete}
-                      handleCommentReport={handleCommentReport}
-                      handleFocus={focusCommentInput}
-                      componentModalVisible={componentModalVisible}
-                      setComponentModalVisible={setComponentModalVisible}
-                    />}
+                  <Comment
+                    boardType={route.params.boardType}
+                    comment={item}
+                    setParentId={setParentId}
+                    handleCommentLike={handleCommentLike}
+                    isRecomment={isRecomment}
+                    setIsRecomment={setIsRecomment}
+                    handleCommentDelete={handleCommentDelete}
+                    handleCommentReport={handleCommentReport}
+                    handleFocus={focusCommentInput}
+                    componentModalVisible={componentModalVisible}
+                    setComponentModalVisible={setComponentModalVisible}
+                  />
                   {item.recomments &&
                     item.recomments.map((recomment, index) => (
-                      post &&
                       <Recomment
-                        boardType={post.boardType}
+                        boardType={route.params.boardType}
                         key={index}
                         recomment={recomment}
                         handleCommentLike={handleCommentLike}
@@ -430,7 +427,7 @@ const PostScreen = ({navigation, route}: Props) => {
             ))} */}
           </View>
         </ScrollView>
-        <View style={{backgroundColor: '#fff',  paddingBottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : Dimensions.get('window').height * 0.02}}>
+        <View style={{backgroundColor: '#fff',  bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) :0}}>
           <View
             style={{
               flexDirection: 'row',
