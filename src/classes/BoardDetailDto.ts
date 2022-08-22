@@ -16,10 +16,10 @@ export interface ContentPreviewDto {
   imageCount: number;
   commentCount: number;
   isDeleted: number;
+  boardType: string;
   // TODO: 여기 아래 필드는 필요한 지 모르겠음. 쓰고 있는지 확인해야함.
   isAuthor: boolean;
   createdAt: string;
   isScraped: boolean;
   scrapCount: number;
-  boardType: string;
 }

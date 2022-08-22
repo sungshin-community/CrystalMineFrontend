@@ -380,7 +380,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                     postId: item.postId
                   });
                 }}>
-                <PostItem post={item} boardType={boardInfo?.type}/>
+                <PostItem post={item} boardId={boardInfo?.id}/>
               </TouchableOpacity>
             )}
             ItemSeparatorComponent={() => (
