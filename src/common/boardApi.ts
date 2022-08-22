@@ -392,10 +392,10 @@ export const addComment = async (
       isAnonymous: isAnonymous,
     });
     console.log('addComment 함수 성공', response.data);
-    return 0;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('addComment 함수 실패', e.response.data);
-    return e.response.data.status;
+    return e.response;
   }
 };
 // 대댓글 생성
@@ -417,10 +417,10 @@ export const addRecomment = async (
       },
     );
     console.log('addRecomment 함수 성공', response.data);
-    return 0;
-  } catch (e) {
+    return response;
+  } catch (e: any) {
     console.log('addRecomment 함수 실패', e.response.data);
-    return e.response.data.status;
+    return e.response;
   }
 };
 // 댓글, 대댓글 공감
