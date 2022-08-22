@@ -95,7 +95,8 @@ function CreateBoard({navigation}: Props) {
                 );
             }}
             maxLength={15}
-            style={{fontSize: 15, paddingVertical: 20}}
+            style={{ fontSize: 15, paddingVertical: 20 }}
+            numberOfLines={1}
           />
           <View
             style={{
