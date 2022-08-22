@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
+  KeyboardEvent,
+  Keyboard,
 } from 'react-native';
 import {Checked} from '../../resources/icon/CheckBox';
 import RadioButtonUnChecked, {
@@ -53,7 +55,31 @@ export const SelectModalBottom = ({
   const [isCheckedReportNum, setIsCheckedReportNum] = useState<number>(1);
   const [detail, setDetail] = useState<string>('');
   const inputRef = useRef(null);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
   useEffect(() => {
     async function init() {
       const result = await getReportReason();
@@ -78,7 +104,14 @@ export const SelectModalBottom = ({
           }}
         />
       ) : null}
-      <View style={[styles.centeredView]}>
+      <View
+        style={[
+          styles.centeredView,
+          {
+            bottom:
+              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : 45) : 45,
+          },
+        ]}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -90,7 +123,10 @@ export const SelectModalBottom = ({
             style={{flex: 1}}
             onPress={() => setModalVisible(!modalVisible)}
           />
-          <View style={[styles.centeredView]}>
+          <View style={[styles.centeredView, {
+            bottom:
+              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : 45) : 45,
+          },]}>
             <View style={[styles.modalView]}>
               <View style={{alignSelf: 'center'}}>
                 {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
@@ -108,25 +144,27 @@ export const SelectModalBottom = ({
                   ]}>
                   {`• 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
                 </Text>
-              <ReportItem
-                list={reason}
-                isCheckedReportNum={isCheckedReportNum}
-                setIsCheckedReportNum={setIsCheckedReportNum}
-                detail={detail}
-                setDetail={setDetail}
-              />
-              <Text
-                style={[
-                  {
-                    color: '#CCCCCC',
-                    fontSize: 12,
-                    marginBottom: 10,
-                    marginTop: 20,
-                  },
-                  fontRegular,
-                ]}>
-                신고 사유에 대한 자세한 내용은 {`\n`} 마이페이지 > 수정광산
-                이용방향을 참고하여 주세요.
+                <ReportItem
+                  list={reason}
+                  isCheckedReportNum={isCheckedReportNum}
+                  setIsCheckedReportNum={setIsCheckedReportNum}
+                  detail={detail}
+                  setDetail={setDetail}
+                  onInputFocus={onInputFocus}
+                  onInputFocusOut={onInputFocusOut}
+                />
+                <Text
+                  style={[
+                    {
+                      color: '#CCCCCC',
+                      fontSize: 12,
+                      marginBottom: 10,
+                      marginTop: 20,
+                    },
+                    fontRegular,
+                  ]}>
+                  신고 사유에 대한 자세한 내용은 {`\n`} 마이페이지 > 수정광산
+                  이용방향을 참고하여 주세요.
                 </Text>
               </View>
               <TouchableOpacity
@@ -163,10 +201,7 @@ export const SelectModalBottom = ({
                     result.code === 'COMMENT_REPORT_DUPLICATION'
                   ) {
                     setModalVisible(false);
-                    Toast.show(
-                      '이미 신고한 게시글입니다.',
-                      Toast.SHORT,
-                    );
+                    Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
                   } else if (
                     result.code === 'REPORT_FAIL_REASON_DETAIL_NECESSARY'
                   ) {
@@ -176,7 +211,10 @@ export const SelectModalBottom = ({
                     );
                     setModalVisible(true);
                   } else {
-                    Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
                     setModalVisible(false);
                   }
                 }}>
@@ -205,6 +243,8 @@ interface ReportItemProps {
   detail?: string;
   setDetail?: any;
   inputRef?: any;
+  onInputFocus?: any;
+  onInputFocusOut?: any;
 }
 export const ReportItem = ({
   list,
@@ -213,6 +253,8 @@ export const ReportItem = ({
   detail,
   setDetail,
   inputRef,
+  onInputFocus,
+  onInputFocusOut,
 }: ReportItemProps) => {
   const numofETC = 10; // 기타 사유 id
   return (
@@ -258,14 +300,19 @@ export const ReportItem = ({
         {isCheckedReportNum !== numofETC ? (
           <View
             style={{
-              width: Dimensions.get('window').width -200,
+              width: Dimensions.get('window').width - 200,
               marginLeft: 5,
               height: 24,
               backgroundColor: '#F6F6F6',
               borderRadius: 10,
             }}></View>
         ) : (
-          <View style={{width: Dimensions.get('window').width -200, marginLeft: 5, height: 24}}>
+          <View
+            style={{
+              width: Dimensions.get('window').width - 200,
+              marginLeft: 5,
+              height: 24,
+            }}>
             <TextInput
               ref={inputRef}
               value={detail}
@@ -279,8 +326,14 @@ export const ReportItem = ({
                 fontSize: 13,
                 borderRadius: 10,
                 padding: 0,
-                width: Dimensions.get('window').width -200,
+                width: Dimensions.get('window').width - 200,
                 paddingVertical: Platform.OS == 'ios' ? 5 : 0,
+              }}
+              onFocus={(e: any) => {
+                onInputFocus();
+              }}
+              onBlur={(e: any) => {
+                onInputFocusOut();
               }}
             />
           </View>
@@ -295,9 +348,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 45,
     left: '50%',
-    transform: [{translateX: -Dimensions.get('window').width * 0.445}],
+    transform: [{ translateX: -Dimensions.get('window').width * 0.445 }],
+    // bottom: 15
   },
   modalView: {
     margin: 2,
