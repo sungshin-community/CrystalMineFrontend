@@ -53,7 +53,7 @@ const TextContainer = styled.View`
 `;
 
 const CELL_COUNT = 6;
-const TIME = 30;
+const TIME = 600;
 
 type RootStackParamList = {
   Home: undefined;
