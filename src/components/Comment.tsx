@@ -30,7 +30,6 @@ import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 
 interface Props {
-  boardType?: string;
   comment?: any;
   setParentId?: any;
   handleCommentLike?: any;
@@ -43,7 +42,6 @@ interface Props {
   setComponentModalVisible?: any;
 }
 const Comment = ({
-  boardType,
   comment,
   setParentId,
   handleCommentLike,
@@ -62,7 +60,7 @@ const Comment = ({
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
- console.log(boardType)
+  console.log(comment);
   const handleCommentDeleteComponent = (
     <>
       {modalVisible && (
@@ -160,6 +158,17 @@ const Comment = ({
               ]}>
               {data?.displayName}
             </Text>
+            {data.isAnonymous ? (
+              <></>
+            ) : data.isOfBoardOwner ? (
+              data.boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           {data.isDeleted ? (
             data.isOfReader ? (
@@ -212,7 +221,7 @@ const Comment = ({
                 </Pressable>
                 <Text style={styles.postLike}>{data?.likeCount}</Text>
                 <Pressable
-                    hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
+                  hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
                   onPress={() => {
                     handleFocus();
                     setParentId(data.id);
@@ -240,7 +249,7 @@ const styles = StyleSheet.create({
   postLike: {
     fontSize: 13,
     marginLeft: 5,
-    marginRight: 11
+    marginRight: 11,
   },
   postComment: {
     fontSize: 13,
@@ -250,7 +259,6 @@ const styles = StyleSheet.create({
 });
 
 interface RecommentProps {
-  boardType: string;
   recomment?: any;
   handleCommentLike?: any;
   handleCommentDelete: any;
@@ -260,7 +268,6 @@ interface RecommentProps {
 }
 
 export const Recomment = ({
-  boardType,
   recomment,
   handleCommentLike,
   handleCommentDelete,
@@ -344,7 +351,7 @@ export const Recomment = ({
           backgroundColor: data.isOfReader ? '#F8F8F8' : '#FFF',
           paddingBottom: 12,
           borderTopColor: '#F0F0F0',
-          borderTopWidth: 1
+          borderTopWidth: 1,
         }}>
         <View
           style={{
@@ -369,6 +376,17 @@ export const Recomment = ({
               ]}>
               {data.displayName}
             </Text>
+            {data.isAnonymous ? (
+              <></>
+            ) : data.isOfBoardOwner ? (
+              data.boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           {data.isDeleted ? (
             data.isOfReader ? (
@@ -410,11 +428,11 @@ export const Recomment = ({
                 style={{
                   flexDirection: 'row',
                   marginTop: 15,
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Pressable
-                      hitSlop={20}
+                    hitSlop={20}
                     onPress={() => handleCommentLike(data.id)}>
                     {data.isLiked ? <PostLike /> : <PostUnlike />}
                   </Pressable>

@@ -185,7 +185,7 @@ const HomeFragment = ({navigation}: Props) => {
       getContents();
     }
   }, [isFocused, modalBody, blindModalVisible]);
-console.log(noti)
+console.log(pinBoardContents)
   return (
     <>
       <WaterMark />

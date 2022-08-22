@@ -2,6 +2,7 @@ export default interface CommentDto {
   id: number;
   parentId: number;
   postId: number;
+  boardType: string;
   isAnonymous: boolean;
   displayName: string;
   profileImage: string;
@@ -23,6 +24,7 @@ export interface RecommentDto {
   id: number;
   parentId: number;
   postId: number;
+  boardType: string;
   isAnonymous: boolean;
   displayName: string;
   profileImage: string;
