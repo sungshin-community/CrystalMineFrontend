@@ -267,16 +267,16 @@ export const ReportItem = ({
             alignItems: 'center',
           }}
           key={item.id}>
-          <Pressable onPress={() => setIsCheckedReportNum(item.id)}>
+          <Pressable style={{flexDirection: 'row'}} onPress={() => setIsCheckedReportNum(item.id)}>
             {isCheckedReportNum === item.id ? (
               <RadioButtonChecked style={{marginRight: 10}} />
             ) : (
               <RadioButtonUnChecked style={{marginRight: 10}} />
             )}
+            <Text style={[fontRegular]}>
+              {item.num} {item.reason}
+            </Text>
           </Pressable>
-          <Text style={[fontRegular]}>
-            {item.num} {item.reason}
-          </Text>
         </View>
       ))}
       <View
@@ -286,6 +286,7 @@ export const ReportItem = ({
           alignItems: 'center',
         }}>
         <Pressable
+          style={{flexDirection: 'row'}}
           onPress={() => {
             setIsCheckedReportNum(numofETC);
             setDetail(null);
@@ -295,8 +296,8 @@ export const ReportItem = ({
           ) : (
             <RadioButtonUnChecked style={{marginRight: 10}} />
           )}
+          <Text>기타</Text>
         </Pressable>
-        <Text>기타</Text>
         {isCheckedReportNum !== numofETC ? (
           <View
             style={{
