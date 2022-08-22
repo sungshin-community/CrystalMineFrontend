@@ -69,6 +69,7 @@ import InformationUse from './src/screens/mypage/blindMemberAccess/InformationUs
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
 import CloseButtonIcon from './resources/icon/CloseButtonIcon';
+import LabScreen from './src/screens/mypage/informationUse/LabScreen';
 import QuitTermAgree from './src/screens/mypage/informationUse/quitMembership/QuitTermAgree';
 import QuitPassword from './src/screens/mypage/informationUse/quitMembership/QuitPassword';
 import QuitComplete from './src/screens/mypage/informationUse/quitMembership/QuitComplete';
@@ -1152,7 +1153,7 @@ const App = () => {
                 component={RegularMemberAuthMyPage}
                 options={({navigation}) => ({
                   title: '',
-                  animation: 'slide_from_right'
+                  animation: 'slide_from_right',
                 })}
               />
               {/* 이용제한 사용자가 볼 수정광산 이용안내 */}
@@ -1542,6 +1543,33 @@ const App = () => {
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="LabScreen"
+                component={LabScreen}
+                options={({navigation}) => ({
+                  title: '실험실',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.goBack()}>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -3086,6 +3114,33 @@ const App = () => {
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="LabScreen"
+                component={LabScreen}
+                options={({navigation}) => ({
+                  title: '실험실',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.goBack()}>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
