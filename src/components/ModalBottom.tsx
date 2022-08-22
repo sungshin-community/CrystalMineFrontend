@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     position: 'absolute',
-    bottom: 45,
+    bottom: Dimensions.get('window').width * 0.15,
     left: '50%',
     transform: [{translateX: -Dimensions.get('window').width * 0.445}],
   },

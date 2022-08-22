@@ -109,7 +109,7 @@ export const SelectModalBottom = ({
           styles.centeredView,
           {
             bottom:
-              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : 45) : 45,
+              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : Dimensions.get('window').width * 0.15) : Dimensions.get('window').width * 0.15,
           },
         ]}>
         <Modal
@@ -125,7 +125,7 @@ export const SelectModalBottom = ({
           />
           <View style={[styles.centeredView, {
             bottom:
-              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : 45) : 45,
+              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : Dimensions.get('window').width * 0.15) : Dimensions.get('window').width * 0.15,
           },]}>
             <View style={[styles.modalView]}>
               <View style={{alignSelf: 'center'}}>
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     paddingVertical: 24,
-    paddingHorizontal: Dimensions.get('window').width - 400,
+    paddingHorizontal: Dimensions.get('window').width * 0.05,
     // alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: {
