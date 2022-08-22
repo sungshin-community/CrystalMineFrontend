@@ -34,7 +34,7 @@ function OpenSourceLicense({navigation}: Props) {
       <LicenseSpreadList id={1} title={'OSS Notice | CrystalMineFrontend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
       <LicenseSpreadList id={2} title={'OSS Notice | CrystalMineBackend'} agreementDate={'2022.08.22 작성'} content={be} ></LicenseSpreadList>
       </SafeAreaView>
-      <Text style={[fontRegular, {textAlign: 'center', paddingVertical: 20}]}>
+      <Text style={[fontRegular, {textAlign: 'center', paddingVertical: 20, color: '#d0d0d0'}]}>
         This application is Copyright © Salty Lab.{`\n`}
         All rights reserved.
       </Text>

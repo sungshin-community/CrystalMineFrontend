@@ -101,7 +101,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
     init();
   }, [sortBy]);
-
+console.log(boardInfo)
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
