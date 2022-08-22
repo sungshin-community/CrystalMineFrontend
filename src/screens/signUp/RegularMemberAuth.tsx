@@ -226,10 +226,10 @@ export default function RegularMemberAuth({navigation}: Props) {
         <View
           style={{
             paddingBottom: isFocused
-              ? Platform.OS == 'ios'
+              ? (Platform.OS == 'ios'
                 ? keyboardHeight
-                : 0
-              : 15,
+                : 0)
+              : 34,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
