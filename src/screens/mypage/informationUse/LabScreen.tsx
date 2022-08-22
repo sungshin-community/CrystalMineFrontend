@@ -44,7 +44,8 @@ const LabScreen = () => {
         </Text>
         <Animated.View
           style={{
-            transform: [{translateX: pan.x}, {translateY: pan.y}],
+            transform: [{ translateX: pan.x }, { translateY: pan.y }],
+            zIndex: 10
           }}
           {...panResponder.panHandlers}>
           <Image
