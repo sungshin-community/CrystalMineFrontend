@@ -37,6 +37,8 @@ client.interceptors.response.use(
     const originalRequest = config;
     if (originalRequest.url === '/auth/reissue-token') {
       console.log("토큰 재발급 실패");
+      AsyncStorage.setItem('accessToken', '');
+      AsyncStorage.setItem('refreshToken', '');
       return Promise.reject(error);
   }
     if (status === 401) {
