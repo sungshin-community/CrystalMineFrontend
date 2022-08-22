@@ -170,13 +170,7 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-            {data?.isOwner && (
-              data.boardType === 'PUBLIC' ? (
-                <SmallOrangeFlag style={{marginLeft: 5}} />
-              ) : (
-                <SmallPurpleFlag style={{marginLeft: 5}} />
-              )
-            )}
+             {!data.isAnonymous && ( data.isOwner && (data.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
