@@ -110,13 +110,15 @@ export default function BoardSearchResult({searchWord}: Props) {
             onPress={() => {
               if (sortBy === 'createdAt') {
                 setSortBy('pinCount');
+              } else if (sortBy === 'pinCount') {
+                setSortBy('dictionary');
               } else {
-                setSortBy('createdAt');
+                setSortBy('createdAt')
               }
             }}
             style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{marginRight: 5}}>
-              {sortBy === 'createdAt' ? "최신순" : "고정순"}
+              {sortBy === 'createdAt' ? "최신순" : (sortBy === 'pinCount' ? "고정순" : '이름순')}
             </Text>
             <SortIcon />
           </TouchableOpacity>

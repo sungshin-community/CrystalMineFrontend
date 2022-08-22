@@ -170,16 +170,12 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-            {data?.isAnonymous ? (
-              <></>
-            ) : data?.isOwner ? (
-              boardType === 'PUBLIC' ? (
+            {data?.isOwner && (
+              data.boardType === 'PUBLIC' ? (
                 <SmallOrangeFlag style={{marginLeft: 5}} />
               ) : (
                 <SmallPurpleFlag style={{marginLeft: 5}} />
               )
-            ) : (
-              <></>
             )}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, Pressable, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Pressable, View, TouchableHighlight} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontMedium, fontRegular} from '../../../common/font';
 import RightArrow from '../../../../resources/icon/Arrow';
@@ -20,7 +20,7 @@ function ListScreen({navigation}: Props) {
     <SafeAreaView style={{ backgroundColor: '#EEEEEE' }}>
       <View style={styles.versionContainer}>
         <Text style={[fontRegular, styles.menuText]}>앱 버전</Text>
-        <Text style={[fontRegular, { color: '#878787', fontSize: 12, marginTop: 5}]}>1.2.0</Text>
+        <Text style={[fontRegular, { color: '#878787', fontSize: 12, marginTop: 5}]}>1.0.0</Text>
       </View>
         <View
           style={{
@@ -29,17 +29,18 @@ function ListScreen({navigation}: Props) {
           }}
         />
       <View style={styles.menuContainer}>
-        <Pressable hitSlop={{top: 16}}
-         onPress={() => navigation.navigate('NoticeList')}>
+        <TouchableHighlight
+          underlayColor='#EEEEEE'
+          onPress={() => navigation.navigate('NoticeList')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>공지사항</Text>
             <View style={styles.menuIcon}>
               <RightArrow />
             </View>
           </View>
-        </Pressable>
-        <Pressable
-          hitSlop={{bottom: 16}}
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor='#EEEEEE'
           onPress={() => navigation.navigate('TermsOfService')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>서비스 이용약관</Text>
@@ -47,9 +48,9 @@ function ListScreen({navigation}: Props) {
               <RightArrow />
             </View>
           </View>
-        </Pressable>
-        <Pressable
-          hitSlop={{bottom: 16}}
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor='#EEEEEE'
           onPress={() => navigation.navigate('OpenSourceLicense')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>오픈소스 라이센스</Text>
@@ -57,8 +58,9 @@ function ListScreen({navigation}: Props) {
               <RightArrow />
             </View>
           </View>
-        </Pressable>
-        <Pressable hitSlop={{ top: 16 }}
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor='#EEEEEE'
           onPress={() => navigation.navigate('UsageRestrictions')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>이용 제한 내역</Text>
@@ -66,12 +68,12 @@ function ListScreen({navigation}: Props) {
               <RightArrow />
             </View>
           </View>
-        </Pressable>
+        </TouchableHighlight>
       </View>
       <View style={{ padding: 8 }}/>
       <View style={styles.menuContainer}>
-        <Pressable
-          hitSlop={{bottom: 16}}
+        <TouchableHighlight
+          underlayColor='#EEEEEE'
           onPress={() => navigation.navigate('QuitTermAgree')}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>회원 탈퇴</Text>
@@ -79,7 +81,7 @@ function ListScreen({navigation}: Props) {
               <RightArrow />
             </View>
           </View>
-        </Pressable>
+        </TouchableHighlight>
       </View>
     </SafeAreaView>
   );

@@ -18,10 +18,7 @@ const ErrorScreen = ({route}: StackProps) => {
             width: 150,
             height: 150,
           }}
-          source={{
-            uri:
-              'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/icon/NoComment.png',
-          }}
+          source={require('../../../resources/images/NoComment.png')}
         />
         <Text
           style={{

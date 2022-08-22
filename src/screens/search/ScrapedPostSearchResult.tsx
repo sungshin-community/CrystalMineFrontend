@@ -71,25 +71,6 @@ function ScrapedPostSearchResult({navigation, route}: Props) {
   return (
     <>
     {
-      false ? <View style={{paddingHorizontal: 40, backgroundColor: '#FFFFFF', flex: 1}}>
-      <Text style={[styles.title, fontBold]}>최근 검색어</Text>
-      <View style={{flex: 1, marginTop: 14}}>
-        {
-          ['네모 좋아', '산업디자인과', '수정유랑단', '크리스탈'].map(text => (
-            <TouchableOpacity style={{height: 36, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-              <Text style={[fontRegular, {fontSize: 15}]}>{text}</Text>
-              <TouchableHighlight
-                onPress={() => {console.log("눌림")}}
-                underlayColor='#EEEEEE'
-                style={{height: 36, width: 36, justifyContent: 'center', alignItems: 'center', borderRadius: 18}}
-              >
-                <CancelButton color="#87919B" />
-              </TouchableHighlight>
-            </TouchableOpacity>
-          ))
-        }
-      </View>
-    </View> :
     <Tab.Navigator
       initialRouteName="게시글"
       screenOptions={{

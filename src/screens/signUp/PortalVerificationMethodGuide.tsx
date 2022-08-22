@@ -87,20 +87,14 @@ export const PortalVerificationMethodGuide = () => {
         </Text>
         <Image
           style={{width: 302, height: 135, marginBottom: 35}}
-          source={{
-            uri:
-              'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/guide/regular-member-verification-guide1.jpg',
-          }}
+          source={require('../../../resources/images/regular-member-verification-guide1.jpg')}
         />
         <Text style={[fontRegular, {fontSize: 13, marginBottom: 15}]}>
           {`b. [성신여대 포탈 시스템 - 통합정보시스템 - 학적관리 -\n     학적변동조회] 의 상단에 위치한 [학생기초정보] 부분 캡쳐`}
         </Text>
         <Image
           style={{width: 303, height: 55, marginBottom: 35}}
-          source={{
-            uri:
-              'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/guide/regular-member-verification-guide2.jpg',
-          }}
+          source={require('../../../resources/images/regular-member-verification-guide2.jpg')}
         /></View>
       </View>
     </ScrollView>

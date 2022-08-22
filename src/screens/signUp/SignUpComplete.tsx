@@ -65,10 +65,7 @@ export default function SignUpComplete({navigation, route}: Props) {
                 width: 150,
                 height: 150,
               }}
-              source={{
-                uri:
-                  'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/icon/Happy.png',
-              }}
+              source={require('../../../resources/images/Happy.png')}
             />
           </View>
         </Animatable.View>

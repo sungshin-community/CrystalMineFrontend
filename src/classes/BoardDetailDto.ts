@@ -21,4 +21,5 @@ export interface ContentPreviewDto {
   createdAt: string;
   isScraped: boolean;
   scrapCount: number;
+  boardType: string;
 }
