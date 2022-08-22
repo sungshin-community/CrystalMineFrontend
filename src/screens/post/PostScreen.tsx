@@ -427,7 +427,7 @@ const PostScreen = ({navigation, route}: Props) => {
             ))} */}
           </View>
         </ScrollView>
-        <View style={{backgroundColor: '#fff',  paddingBottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) :20}}>
+        <View style={{backgroundColor: '#fff',  paddingBottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : (Platform.OS === 'ios' ? 20 : 0)}}>
           <View
             style={{
               flexDirection: 'row',
