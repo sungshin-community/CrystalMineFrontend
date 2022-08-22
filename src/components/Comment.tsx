@@ -62,7 +62,7 @@ const Comment = ({
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
-
+ console.log(boardType)
   const handleCommentDeleteComponent = (
     <>
       {modalVisible && (

@@ -335,15 +335,16 @@ const PostScreen = ({navigation, route}: Props) => {
           contentContainerStyle={{flexGrow: 1}}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
-          <Post
-            boardType={route.params.boardType}
-            post={post}
-            handlePostLike={handlePostLike}
-            handlePostScrap={handlePostScrap}
-            handlePostDelete={handlePostDelete}
-            handlePostReport={handlePostReport}
-            componentModalVisible={componentModalVisible}
-            setComponentModalVisible={setComponentModalVisible}></Post>
+          {post &&
+            <Post
+              boardType={post.boardType}
+              post={post}
+              handlePostLike={handlePostLike}
+              handlePostScrap={handlePostScrap}
+              handlePostDelete={handlePostDelete}
+              handlePostReport={handlePostReport}
+              componentModalVisible={componentModalVisible}
+              setComponentModalVisible={setComponentModalVisible}></Post>}
           <View style={{flex: 1}}>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -352,23 +353,25 @@ const PostScreen = ({navigation, route}: Props) => {
               data={comments}
               renderItem={({item, index}) => (
                 <View key={index}>
-                  <Comment
-                    boardType={route.params.boardType}
-                    comment={item}
-                    setParentId={setParentId}
-                    handleCommentLike={handleCommentLike}
-                    isRecomment={isRecomment}
-                    setIsRecomment={setIsRecomment}
-                    handleCommentDelete={handleCommentDelete}
-                    handleCommentReport={handleCommentReport}
-                    handleFocus={focusCommentInput}
-                    componentModalVisible={componentModalVisible}
-                    setComponentModalVisible={setComponentModalVisible}
-                  />
+                  {post &&
+                    <Comment
+                      boardType={post.boardType}
+                      comment={item}
+                      setParentId={setParentId}
+                      handleCommentLike={handleCommentLike}
+                      isRecomment={isRecomment}
+                      setIsRecomment={setIsRecomment}
+                      handleCommentDelete={handleCommentDelete}
+                      handleCommentReport={handleCommentReport}
+                      handleFocus={focusCommentInput}
+                      componentModalVisible={componentModalVisible}
+                      setComponentModalVisible={setComponentModalVisible}
+                    />}
                   {item.recomments &&
                     item.recomments.map((recomment, index) => (
+                      post &&
                       <Recomment
-                        boardType={route.params.boardType}
+                        boardType={post.boardType}
                         key={index}
                         recomment={recomment}
                         handleCommentLike={handleCommentLike}
