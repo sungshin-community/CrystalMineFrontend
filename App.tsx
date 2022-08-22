@@ -145,7 +145,7 @@ const App = () => {
                 component={ErrorScreen}
                 options={({navigation}) => ({
                   title: '',
-                  headerShown: false
+                  headerShown: false,
                 })}
               />
               {/* [F-1 회원가입] */}
@@ -589,7 +589,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'SplashHome'}]})
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1150,21 +1152,7 @@ const App = () => {
                 component={RegularMemberAuthMyPage}
                 options={({navigation}) => ({
                   title: '',
-                  animation: 'slide_from_right',
-                  headerRight: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() => navigation.reset({ routes: [{ name: 'MyPage' }]})}>
-                      <CloseButtonIcon />
-                    </TouchableHighlight>
-                  ),
+                  animation: 'slide_from_right'
                 })}
               />
               {/* 이용제한 사용자가 볼 수정광산 이용안내 */}
@@ -1696,8 +1684,7 @@ const App = () => {
                 component={ErrorScreen}
                 options={({navigation}) => ({
                   title: '',
-                  headerShown: false
-
+                  headerShown: false,
                 })}
               />
               <Stack.Screen
@@ -2146,7 +2133,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'SplashHome'}]})
+                      }>
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -2708,20 +2697,6 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
-                  headerRight: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>  navigation.reset({routes: [{name: 'MyPage'}]})}>
-                      <CloseButtonIcon />
-                    </TouchableHighlight>
-                  ),
                 })}
               />
               {/* 이용제한 사용자가 볼 수정광산 이용안내 */}

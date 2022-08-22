@@ -12,6 +12,10 @@ import {
   StatusBar,
   Keyboard,
   TouchableWithoutFeedback,
+  TouchableHighlight,
+  KeyboardEvent,
+  ScrollView,
+  Pressable,
 } from 'react-native';
 import {
   CodeField,
@@ -20,7 +24,6 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {TwoLineTitle} from '../../../components/Top';
-import styled from 'styled-components';
 import CustomButton, {
   WhiteRoundButton,
   PurpleRoundButton,
@@ -36,32 +39,30 @@ import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {useIsFocused} from '@react-navigation/native';
 import {getHundredsDigit} from '../../../common/util/statusUtil';
+import BackgroundTimer from 'react-native-background-timer';
+import BackButtonIcon from '../../../../resources/icon/BackButtonIcon';
+import CloseButtonIcon from '../../../../resources/icon/CloseButtonIcon';
+import styled from 'styled-components/native';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
+const TextContainer = styled.View`
+  margin: 55px 0px 52px 0px;
 `;
 
 const CELL_COUNT = 6;
-const RESEND_OTP_TIME_LIMIT = 600;
+const TIME = 30;
 
 type RootStackParamList = {
   CertifiedMember: undefined;
   MyPage: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
-export default function RegularMemberAuthMyPage({navigation}: Props) {
-  let resendOtpTimerInterval: any;
 
-  const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
-    RESEND_OTP_TIME_LIMIT,
-  );
+export default function RegularMemberAuthMyPage({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
     boolean
@@ -73,29 +74,92 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     setValue,
   });
   const [tryCnt, setTryCnt] = useState(5);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
   const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
     false,
   );
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
-  const isF = useIsFocused();
+  const [secondsLeft, setSecondsLeft] = useState(TIME);
+  const [timerOn, setTimerOn] = useState(true);
+  const [min, setMin] = useState<number>(0);
+  const [sec, setSec] = useState<number>(0);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
-  const startResendOtpTimer = () => {
-    if (isF) {
-      if (resendOtpTimerInterval) {
-        clearInterval(resendOtpTimerInterval);
-      }
-      resendOtpTimerInterval = setInterval(() => {
-        if (resendButtonDisabledTime <= 0) {
-          clearInterval(resendOtpTimerInterval);
-        } else {
-          setResendButtonDisabledTime(resendButtonDisabledTime - 1);
-        }
-      }, 1000);
-    }
+  const onInputFocus = () => {
+    setIsFocused(true);
   };
+
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableHighlight
+          underlayColor="#EEEEEE"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            console.log('press');
+            // navigation.reset({routes: [{name: 'MyPage'}]});
+            navigation.navigate('MyPage');
+          }}>
+          <CloseButtonIcon />
+        </TouchableHighlight>
+      ),
+    });
+  }, []);
+
+  console.log('시간 가는 중', secondsLeft);
+
+  useEffect(() => {
+    if (timerOn) startTimer();
+    else BackgroundTimer.stopBackgroundTimer();
+    return () => {
+      BackgroundTimer.stopBackgroundTimer();
+    };
+  }, [timerOn]);
+
+  const startTimer = () => {
+    BackgroundTimer.runBackgroundTimer(() => {
+      setSecondsLeft(secs => {
+        if (secs > 0) return secs - 1;
+        else return 0;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (secondsLeft === 0) BackgroundTimer.stopBackgroundTimer();
+    let mins = Math.floor((secondsLeft / 60) % 60);
+    let seconds = Math.floor(secondsLeft % 60);
+    let displayMins = mins < 10 ? `0${mins}` : mins;
+    let displaySecs = seconds < 10 ? `0${seconds}` : seconds;
+    setMin(displayMins);
+    setSec(displaySecs);
+  }, [secondsLeft]);
 
   //다시 시도하기 버튼 눌렀을 경우
   const onResendOtpButtonPress = async () => {
@@ -109,39 +173,31 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
       Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
       console.log('이메일 재발송 실패');
     }
-    setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
-    startResendOtpTimer();
+    setSecondsLeft(TIME);
+    startTimer();
     setTryCnt(5);
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    navigation.navigate('MyPage');
+    navigation.reset({routes: [{name: 'MyPage'}]});
   };
   const onFocusOut = () => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
-  //타이머 시작
-  useEffect(() => {
-    startResendOtpTimer();
-    return () => {
-      if (resendOtpTimerInterval) {
-        clearInterval(resendOtpTimerInterval);
-      }
-    };
-  }, [resendButtonDisabledTime]);
 
   return (
     <>
-      <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
-        <View style={{flex: 1}}>
-          <View style={{marginTop: 37, marginLeft: 24}}>
+      <KeyboardAvoidingView style={{backgroundColor: '#fff', flex: 1}}>
+        <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
+          <TextContainer>
             <TwoLineTitle
               firstLineText="성신 G-mail 로 전송된"
               secondLineText="인증번호를 입력해주세요"
             />
-          </View>
+          </TextContainer>
           <CodeField
+            // autoFocus={true}
             ref={ref}
             {...props}
             value={value}
@@ -177,46 +233,26 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                 : ''}
             </Text>
           </View>
-
-          {parseInt(String(resendButtonDisabledTime / 60)) > 0 ? (
-            parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
-              <View style={styles.timerContainer}>
-                <Text style={styles.timerText}>
-                  0{parseInt(String(resendButtonDisabledTime / 60))}:
-                  {parseInt(String(resendButtonDisabledTime % 60))}
-                </Text>
-              </View>
-            ) : (
-              <View style={styles.timerContainer}>
-                <Text style={styles.timerText}>
-                  {parseInt(String(resendButtonDisabledTime / 60))}:0
-                  {parseInt(String(resendButtonDisabledTime % 60))}
-                </Text>
-              </View>
-            )
-          ) : parseInt(String(resendButtonDisabledTime % 60)) > 9 ? (
-            <View style={styles.timerContainer}>
-              <Text style={styles.timerText}>
-                00:{parseInt(String(resendButtonDisabledTime % 60))}
-              </Text>
-            </View>
-          ) : (
-            <View style={styles.timerContainer}>
-              <Text style={styles.timerText}>
-                00:0{parseInt(String(resendButtonDisabledTime % 60))}
-              </Text>
-            </View>
-          )}
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>
+              {min} : {sec}
+            </Text>
+          </View>
 
           <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-          <TouchableWithoutFeedback
-            onPress={async () => onResendOtpButtonPress()}>
-            <Text style={styles.resent}>인증번호 재전송</Text>
-          </TouchableWithoutFeedback>
-        </View>
+          <Pressable onPress={async () => onResendOtpButtonPress()}>
+            <View style={{alignSelf: 'center', width: 'auto'}}>
+              <Text style={styles.resent}>인증번호 재전송</Text>
+            </View>
+          </Pressable>
+        </ScrollView>
         <View
           style={{
-            paddingBottom: isFocused ? 0 : 15,
+            paddingBottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 15,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
@@ -227,7 +263,10 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               onClick={async () => {
                 let result = await checkAuthNumber(value);
                 if (result.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
@@ -252,7 +291,10 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               onClick={async () => {
                 let result = await checkAuthNumber(value);
                 if (result.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
@@ -278,8 +320,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
           )}
         </View>
-      </SafeAreaView>
-      {resendButtonDisabledTime === 0 && (
+      </KeyboardAvoidingView>
+      {secondsLeft === 0 && (
         <ModalBottom
           modalVisible={!modalVisible}
           setModalVisible={setModalVisible}
@@ -309,6 +351,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     </>
   );
 }
+
 const styles = StyleSheet.create({
   codeFieldRoot: {
     marginTop: 40,
@@ -371,11 +414,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   resent: {
-    justifyContent: 'center',
-    textAlign: 'center',
     color: '#6E7882',
     fontSize: 15,
-    marginTop: 26,
+    marginVertical: 26,
     textDecorationLine: 'underline',
   },
 });

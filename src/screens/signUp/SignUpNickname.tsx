@@ -69,8 +69,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function SignUpNickname({navigation, route}: Props) {
   const [nickname, setNickname] = useState<string>('');
-  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onInputFocus = () => {
