@@ -47,6 +47,8 @@ import WaterMark from '../../components/WaterMark';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import getCommments from '../../common/CommentApi';
 import {ModalBottom} from '../../components/ModalBottom';
+import { getHundredsDigit } from '../../common/util/statusUtil';
+import { logout } from '../../common/authApi';
 type RootStackParamList = {};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -90,7 +92,9 @@ const PostScreen = ({navigation, route}: Props) => {
           newComment,
           isAnonymous,
         );
-      else addCommentFunc(route.params.postId, newComment, isAnonymous);
+      else {
+        addCommentFunc(route.params.postId, newComment, isAnonymous);
+      }
       setIsSubmitState(false);
     }
   }, [isAnonymous, isSubmitState, newComment]);
@@ -194,17 +198,22 @@ const PostScreen = ({navigation, route}: Props) => {
   const addCommentFunc = useCallback(
     async (postId: number, newComment: string, isAnonymous: boolean) => {
       setIsLoading(true);
-      const result = await addComment(postId, newComment, isAnonymous);
-      if (result) {
-        console.log('댓글 추가 성공');
+      const response = await addComment(postId, newComment, isAnonymous);
+      if (response.status === 401) {
+        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        setNewComment('');
+        const postData = await getPosts(route.params.postId);
+        setPost(postData);
+        const commentData = await getComments(route.params.postId);
+        setComments(commentData);
+        scrollViewRef.current?.scrollToEnd({animated: true});
+      } else {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
       }
-      setNewComment('');
-      const postData = await getPosts(route.params.postId);
-      setPost(postData);
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
       setIsLoading(false);
-      scrollViewRef.current?.scrollToEnd({animated: true});
     },
     [],
   );
@@ -217,28 +226,34 @@ const PostScreen = ({navigation, route}: Props) => {
       isAnonymous: boolean,
     ) => {
       setIsLoading(true);
-      const result = await addRecomment(
+      const response = await addRecomment(
         postId,
         parentId,
         newComment,
         isAnonymous,
       );
-      if (result) {
+      if (response.status === 401) {
+        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
         console.log('대댓글 추가 성공');
+        setIsRecomment(false);
+        setNewComment('');
+        const postData = await getPosts(route.params.postId);
+        setPost(postData);
+        const commentData = await getComments(route.params.postId);
+        setComments(commentData);
+        const index = comments?.findIndex(c => c.id === parentId);
+        flatListRef.current?.scrollToIndex({
+          index: index,
+          animated: true,
+          viewPosition: 0,
+        });
+      } else {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
       }
-      setIsRecomment(false);
-      setNewComment('');
-      const postData = await getPosts(route.params.postId);
-      setPost(postData);
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
       setIsLoading(false);
-      const index = comments?.findIndex(c => c.id === parentId);
-      flatListRef.current?.scrollToIndex({
-        index: index,
-        animated: true,
-        viewPosition: 0,
-      });
     },
     [],
   );

@@ -354,6 +354,8 @@ export const Recomment = ({
           paddingHorizontal: 24,
           backgroundColor: data.isOfReader ? '#F8F8F8' : '#FFF',
           paddingBottom: 12,
+          borderTopColor: '#F0F0F0',
+          borderTopWidth: 1
         }}>
         <View
           style={{
