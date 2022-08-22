@@ -14,8 +14,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import NoticeListDto from '../../../classes/mypage/NoticeDto';
 import {getNoticeList} from '../../../common/myPageApi';
-
-import NoCommentSuryong from '../../../../resources/icon/custom/NoCommentSuryong';
 import WaterMark from '../../../components/WaterMark';
 import Markdown from 'react-native-markdown-display';
 import { SpreadList } from './TermsOfService';

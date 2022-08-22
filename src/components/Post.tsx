@@ -170,7 +170,7 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-             {!data.isAnonymous && ( data.isOwner && (data.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
+             {!data?.isAnonymous && ( data?.isOwner && (data.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
@@ -183,7 +183,7 @@ function Post({
         </View>
         {data?.hasTitle && (
           <Text style={[fontMedium, {fontSize: 17, marginTop: 12}]}>
-            {data.title}
+            {data?.title}
           </Text>
         )}
         <View style={styles.postBody}>
