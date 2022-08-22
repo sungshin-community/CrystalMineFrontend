@@ -160,6 +160,17 @@ const Comment = ({
               ]}>
               {data?.displayName}
             </Text>
+            {data.isAnonymous ? (
+              <></>
+            ) : data.isOfBoardOwner ? (
+              boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           {data.isDeleted ? (
             data.isOfReader ? (
@@ -369,6 +380,17 @@ export const Recomment = ({
               ]}>
               {data.displayName}
             </Text>
+            {data.isAnonymous ? (
+              <></>
+            ) : data.isOfBoardOwner ? (
+              boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              )
+            ) : (
+              <></>
+            )}
           </View>
           {data.isDeleted ? (
             data.isOfReader ? (
