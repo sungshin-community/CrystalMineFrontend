@@ -50,7 +50,7 @@ if (Platform.OS === 'android') {
   StatusBar.setBarStyle('dark-content');
 }
 const TextContainer = styled.View`
-  margin: 55px 0px 52px 0px;
+  margin: 40px 0px 40px 0px;
 `;
 
 const CELL_COUNT = 6;
