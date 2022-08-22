@@ -323,7 +323,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           setModalVisible={setIsCoolTime}
           content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>
+          purpleButtonFunc={() => { gotoHome(); setTimerOn(false);}}></ModalBottom>
       )}
     </>
   );

@@ -179,7 +179,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    navigation.reset({routes: [{name: 'MyPage'}]});
+    // navigation.reset({routes: [{name: 'MyPage'}]});
+    navigation.navigate('MyPage');
   };
   const onFocusOut = () => {
     setIsFocused(false);
@@ -338,7 +339,11 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           setModalVisible={setModalIncorrectOverVisible}
           content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
           purpleButtonText="확인"
-          purpleButtonFunc={() => {gotoHome(); setTimerOn(false)}}></ModalBottom>
+          purpleButtonFunc={() => {
+            setModalIncorrectOverVisible(!modalIncorrectOverVisble);
+            gotoHome();
+            setTimerOn(false);
+          }}></ModalBottom>
       )}
       {isCoolTime && (
         <ModalBottom
@@ -346,7 +351,11 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           setModalVisible={setIsCoolTime}
           content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>
+          purpleButtonFunc={() => {
+            setModalIncorrectOverVisible(!modalIncorrectOverVisble);
+            gotoHome();
+            setTimerOn(false);
+          }}></ModalBottom>
       )}
     </>
   );
