@@ -13,6 +13,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
+  Pressable,
+  KeyboardEvent
 } from 'react-native';
 import {
   CodeField,
@@ -73,7 +75,6 @@ export default function RegularMemberAuth({navigation}: Props) {
     setValue,
   });
   const [tryCnt, setTryCnt] = useState(5);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
   const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
     false,
@@ -83,9 +84,34 @@ export default function RegularMemberAuth({navigation}: Props) {
   const [timerOn, setTimerOn] = useState(true);
   const [min, setMin] = useState<number>(0);
   const [sec, setSec] = useState<number>(0);
-  console.log('시간 가는 중', secondsLeft);
+   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
 
   useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+  console.log('시간 가는 중', secondsLeft);
+
+   useEffect(() => {
     if (timerOn) startTimer();
     else BackgroundTimer.stopBackgroundTimer();
     return () => {
@@ -148,6 +174,7 @@ export default function RegularMemberAuth({navigation}: Props) {
             />
           </TextContainer>
           <CodeField
+            // autoFocus={true}
             ref={ref}
             {...props}
             value={value}
@@ -190,15 +217,19 @@ export default function RegularMemberAuth({navigation}: Props) {
           </View>
 
           <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
-          <TouchableWithoutFeedback
-            onPress={async () => onResendOtpButtonPress()}>
-            <Text style={styles.resent}>인증번호 재전송</Text>
-          </TouchableWithoutFeedback>
+          <Pressable onPress={async () => onResendOtpButtonPress()}>
+            <View style={{alignSelf: 'center', width: 'auto'}}>
+              <Text style={styles.resent}>인증번호 재전송</Text>
+            </View>
+          </Pressable>
         </ScrollView>
-
         <View
           style={{
-            paddingBottom: isFocused ? 0 : 15,
+            paddingBottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : 15,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
@@ -207,7 +238,7 @@ export default function RegularMemberAuth({navigation}: Props) {
             <PurpleFullButton
               text="인증 완료"
               onClick={async () => {
-                let result = await await checkAuthNumber(value);
+                let result = await checkAuthNumber(value);
                 if (result.status === 401) {
                   Toast.show(
                     '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
@@ -218,7 +249,6 @@ export default function RegularMemberAuth({navigation}: Props) {
                 } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-                  setTimerOn(false);
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
@@ -236,7 +266,7 @@ export default function RegularMemberAuth({navigation}: Props) {
             <PurpleRoundButton
               text="인증 완료"
               onClick={async () => {
-                let result = await await checkAuthNumber(value);
+                let result = await checkAuthNumber(value);
                 if (result.status === 401) {
                   Toast.show(
                     '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
@@ -247,7 +277,6 @@ export default function RegularMemberAuth({navigation}: Props) {
                 } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
-                  setTimerOn(false);
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
@@ -277,9 +306,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="인증번호 재전송"
           purpleButtonFunc={onResendOtpButtonPress}
           whiteButtonText="인증 취소"
-          whiteButtonFunc={() =>
-            navigation.reset({routes: [{name: 'GlobalNavbar'}]})
-          }
+          whiteButtonFunc={() => navigation.navigate('GlobalNavbar') }
         />
       )}
       {tryCnt === 0 && (
@@ -288,7 +315,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           setModalVisible={setModalIncorrectOverVisible}
           content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>
+          purpleButtonFunc={() => { gotoHome(); setTimerOn(false);}}></ModalBottom>
       )}
       {isCoolTime && (
         <ModalBottom
@@ -301,6 +328,7 @@ export default function RegularMemberAuth({navigation}: Props) {
     </>
   );
 }
+
 const styles = StyleSheet.create({
   codeFieldRoot: {
     marginTop: 40,
@@ -363,11 +391,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   resent: {
-    justifyContent: 'center',
-    textAlign: 'center',
     color: '#6E7882',
     fontSize: 15,
-    marginTop: 26,
+    marginVertical: 26,
     textDecorationLine: 'underline',
   },
 });

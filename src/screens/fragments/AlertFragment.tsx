@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
   Pressable,
   FlatList,
+  Image,
   RefreshControl,
 } from 'react-native';
-import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
 import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {PlatformOS} from '../../components/PlatformOS';
@@ -22,7 +22,7 @@ import {useState} from 'react';
 import AlertDto, {Alert} from '../../classes/AlertDto';
 import {ModalBottom} from '../../components/ModalBottom';
 import AlertItem from '../../components/AlertItem';
-import { AlertWorkIcon } from '../../../resources/icon/AlertItemIcon';
+import {AlertWorkIcon} from '../../../resources/icon/AlertItemIcon';
 
 const AlertFragment = () => {
   const [alerts, setAlerts] = useState<Alert[]>();
@@ -63,7 +63,13 @@ const AlertFragment = () => {
   const noticeBody = (
     <View>
       <View style={{alignItems: 'center', marginBottom: 25}}>
-        <NoCommentSuryong />
+        <Image
+          style={{
+            width: 150,
+            height: 150,
+          }}
+          source={require('../../../resources/images/NoComment.png')}
+        />
       </View>
       <View>
         <Text>
@@ -118,8 +124,8 @@ const AlertFragment = () => {
           style={{marginLeft: 16}}
           onPress={() => setNoticeModalVisible(true)}>
           <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
-            푸시알림 기능은{' '}
-            <Text style={{color: '#A055FF'}}>아직 개발 중</Text>이에요!
+            푸시알림 기능은 <Text style={{color: '#A055FF'}}>아직 개발 중</Text>
+            이에요!
           </Text>
           <Text
             ellipsizeMode={'tail'}
@@ -204,8 +210,6 @@ const AlertFragment = () => {
 
 export default AlertFragment;
 
-
-
 // type RootStackParamList = {
 //   MyPage: undefined;
 //   CertifiedMember: undefined;
@@ -213,4 +217,3 @@ export default AlertFragment;
 //   UncertifiedMember: undefined;
 // };
 // type Props = NativeStackScreenProps<RootStackParamList>;
-

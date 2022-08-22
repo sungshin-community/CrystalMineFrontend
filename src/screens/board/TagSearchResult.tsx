@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import NotFoundSuryong from '../../../resources/icon/custom/NotFoundSuryong';
 import {fontRegular} from '../../common/font';
 
 function TagSearchResult() {

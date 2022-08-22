@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, Text, View, Dimensions, Image} from 'react-native';
-import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
 const MessageFragment = () => {
   return (
     <SafeAreaView style={{flex: 1}}>

@@ -338,7 +338,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           setModalVisible={setModalIncorrectOverVisible}
           content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>
+          purpleButtonFunc={() => {gotoHome(); setTimerOn(false)}}></ModalBottom>
       )}
       {isCoolTime && (
         <ModalBottom

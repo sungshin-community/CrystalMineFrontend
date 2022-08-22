@@ -28,7 +28,6 @@ import {
 import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import Toast from 'react-native-simple-toast';
 import {getPosts} from '../../common/boardApi';
-import NoCommentSuryong from '../../../resources/icon/custom/NoCommentSuryong';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {fontMedium, fontRegular} from '../../common/font';
