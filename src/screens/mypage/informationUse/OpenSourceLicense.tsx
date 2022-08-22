@@ -31,7 +31,7 @@ function OpenSourceLicense({navigation}: Props) {
   return (
     <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
       <LicenseSpreadList id={1} title={'OSS Notice | CrystalMineFrontend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
-      <LicenseSpreadList id={2} title={'OSS Notice | CrystalMinBackend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
+      <LicenseSpreadList id={2} title={'OSS Notice | CrystalMineBackend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
     </SafeAreaView>
   );
 }
