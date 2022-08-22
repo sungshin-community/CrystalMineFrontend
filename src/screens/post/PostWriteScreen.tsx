@@ -38,6 +38,8 @@ import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {ImageDelete} from '../../components/ImageDelete';
+import { getHundredsDigit } from '../../common/util/statusUtil';
+import { logout } from '../../common/authApi';
 const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
@@ -101,15 +103,18 @@ function PostWriteScreen({navigation, route}: Props) {
   };
   const onSubmitPress = async () => {
     setIsLoading(true);
-    const result = await postWritePost(
+    const response = await postWritePost(
       boardId,
       title,
       content,
       isAnonymous,
       images,
     );
-    if (result) {
-      setIsLoading(false);
+    if (response.status === 401) {
+      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
       if (boardId >= 5 && boardId < 10) {
         navigation.pop();
         navigation.pop();
@@ -120,7 +125,10 @@ function PostWriteScreen({navigation, route}: Props) {
         navigation.navigate('PostListScreen', {boardId: boardId});
       }
       Toast.show('게시글이 등록되었습니다.', Toast.SHORT);
+    } else {
+      Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
