@@ -90,9 +90,9 @@ export const SelectModalBottom = ({
             style={{flex: 1}}
             onPress={() => setModalVisible(!modalVisible)}
           />
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <View>
+          <View style={[styles.centeredView]}>
+            <View style={[styles.modalView]}>
+              <View style={{alignSelf: 'center'}}>
                 {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
                 <Text
                   style={[
@@ -108,7 +108,6 @@ export const SelectModalBottom = ({
                   ]}>
                   {`• 무분별한 신고를 방지하기 위해 신고 1회당 50포인트가 차감됩니다.`}
                 </Text>
-              </View>
               <ReportItem
                 list={reason}
                 isCheckedReportNum={isCheckedReportNum}
@@ -128,7 +127,8 @@ export const SelectModalBottom = ({
                 ]}>
                 신고 사유에 대한 자세한 내용은 {`\n`} 마이페이지 > 수정광산
                 이용방향을 참고하여 주세요.
-              </Text>
+                </Text>
+              </View>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose, {marginTop: 28}]}
                 onPress={async () => {
@@ -258,14 +258,14 @@ export const ReportItem = ({
         {isCheckedReportNum !== numofETC ? (
           <View
             style={{
-              width: 220,
+              width: Dimensions.get('window').width -200,
               marginLeft: 5,
               height: 24,
               backgroundColor: '#F6F6F6',
               borderRadius: 10,
             }}></View>
         ) : (
-          <View style={{width: 240, marginLeft: 5, height: 24}}>
+          <View style={{width: Dimensions.get('window').width -200, marginLeft: 5, height: 24}}>
             <TextInput
               ref={inputRef}
               value={detail}
@@ -279,7 +279,7 @@ export const ReportItem = ({
                 fontSize: 13,
                 borderRadius: 10,
                 padding: 0,
-                width: 220,
+                width: Dimensions.get('window').width -200,
                 paddingVertical: Platform.OS == 'ios' ? 5 : 0,
               }}
             />
@@ -305,8 +305,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     paddingVertical: 24,
-    paddingHorizontal: 27,
-    // alignItems: 'center',
+    paddingHorizontal: Dimensions.get('window').width - 400,
+    // alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

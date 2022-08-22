@@ -313,7 +313,7 @@ export function AgreementContainer({
             )}
           </View>
           <View style={{height: 24, justifyContent: 'center'}}>
-            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: Dimensions.get('screen').width - 150}} >{title}</SmallText>
+            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: Dimensions.get('window').width - 150}} >{title}</SmallText>
           </View>
         </TouchableOpacity>
         <Pressable

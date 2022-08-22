@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     color: '#222222',
   },
   input: {
-    // minHeight: Dimensions.get('screen').height - 400,
+    // minHeight: Dimensions.get('window').height - 400,
     minHeight: 400,
     // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
     fontSize: 15,
