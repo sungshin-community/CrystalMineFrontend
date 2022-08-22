@@ -28,9 +28,10 @@ export function SpreadList({ id, title, agreementDate, content}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   return (
     <>
-      <TouchableWithoutFeedback
+      <Pressable
         key={id}
-        onPress={() => setIsSpread(!isSpread)}>
+        onPress={() => setIsSpread(!isSpread)}
+        hitSlop={20}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>
@@ -48,7 +49,7 @@ export function SpreadList({ id, title, agreementDate, content}: any) {
             {agreementDate} 동의
           </Text>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
       {isSpread && (
         <>
           <ScrollView

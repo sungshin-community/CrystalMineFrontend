@@ -29,10 +29,16 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function OpenSourceLicense({navigation}: Props) {
 
   return (
+    <>
     <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
       <LicenseSpreadList id={1} title={'OSS Notice | CrystalMineFrontend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
-      <LicenseSpreadList id={2} title={'OSS Notice | CrystalMineBackend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
-    </SafeAreaView>
+      <LicenseSpreadList id={2} title={'OSS Notice | CrystalMineBackend'} agreementDate={'2022.08.22 작성'} content={be} ></LicenseSpreadList>
+      </SafeAreaView>
+      <Text style={[fontRegular, {textAlign: 'center', paddingVertical: 20}]}>
+        This application is Copyright © Salty Lab.{`\n`}
+        All rights reserved.
+      </Text>
+      </>
   );
 }
 
@@ -42,9 +48,10 @@ export function LicenseSpreadList({ id, title, agreementDate, content}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   return (
     <>
-      <TouchableWithoutFeedback
+      <Pressable
         key={id}
-        onPress={() => setIsSpread(!isSpread)}>
+        onPress={() => setIsSpread(!isSpread)}
+        hitSlop={20}>
         <View style={styles.menuContainer}>
           <View style={styles.menu}>
             <Text style={[fontMedium, styles.menuText]}>
@@ -62,7 +69,7 @@ export function LicenseSpreadList({ id, title, agreementDate, content}: any) {
             {agreementDate}
           </Text>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
       {isSpread && (
         <>
           <ScrollView
@@ -109,7 +116,8 @@ const styles = StyleSheet.create({
 
 # OSS Notice | CrystalMineFrontend #
 
-This application is Copyright © (owner name). All rights reserved.
+This application is Copyright © Salty Lab.
+All rights reserved.
 
 The following sets forth attribution notices for third party software that may be contained in this application.
 
@@ -371,7 +379,8 @@ const be = `
 
 # OSS Notice | CrystalMineBackend #
 
-This application is Copyright © (owner name). All rights reserved.
+This application is Copyright © Salty Lab.
+All rights reserved.
 
 The following sets forth attribution notices for third party software that may be contained in this application.
 
