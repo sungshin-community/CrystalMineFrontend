@@ -51,6 +51,7 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
               width: 42
             }}
               onPress={async () => {
+                if (item.id === 1) return;
                 const response = await toggleBoardPin(item.id);
                 if (response.status === 401) {
                   Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
@@ -122,6 +123,7 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
         }}>
           <Pressable
             onPress={async () => {
+              if (item.id === 1) return;
               const response = await toggleBoardPin(item.id);
               if (response.status === 401) {
                 Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
@@ -209,6 +211,7 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
             }}>
               <Pressable 
                 onPress={async () => {
+                  if (item.id === 1) return;
                   const response = await toggleBoardPin(item.id);
                   if (response.status === 401) {
                     Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);

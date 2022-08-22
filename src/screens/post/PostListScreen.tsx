@@ -145,6 +145,7 @@ console.log(boardInfo)
         ) : (
           <Pressable
             onPress={async () => {
+              if (item.id === 1) return;
               const response = await toggleBoardPin(route.params.boardId);
               if (response.status === 401) {
                 Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
