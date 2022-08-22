@@ -186,7 +186,7 @@ export default function SignInPassword({navigation, route}: Props) {
           }}>
           {isValidate && (
             <PurpleRoundButton
-              text="다음"
+              text="로그인"
               onClick={async () => {
                 const response = await login({
                   username: route.params.userId,
@@ -208,7 +208,7 @@ export default function SignInPassword({navigation, route}: Props) {
             />
           )}
 
-          {!isValidate && <DisabledPurpleRoundButton text="다음" />}
+          {!isValidate && <DisabledPurpleRoundButton text="로그인" />}
           <Pressable
             onPress={() => {
               navigation.navigate('ResetPasswordInputId');
