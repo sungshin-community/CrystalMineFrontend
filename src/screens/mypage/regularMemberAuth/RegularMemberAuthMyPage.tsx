@@ -272,13 +272,13 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                  navigation.reset({routes: [{name: 'MyPage'}]});
+                  navigation.navigate('MyPage');
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
                 } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.reset({routes: [{name: 'MyPage'}]});
+                  navigation.navigate('MyPage');
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
@@ -300,13 +300,13 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
                   Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                  navigation.reset({routes: [{name: 'MyPage'}]});
+                  navigation.navigate('MyPage');
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
                   setIsIncorrect(true);
                 } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.reset({routes: [{name: 'MyPage'}]});
+                  navigation.navigate('MyPage');
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {

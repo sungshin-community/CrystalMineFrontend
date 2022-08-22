@@ -69,7 +69,24 @@ function ListScreen({navigation}: Props) {
             </View>
           </View>
         </TouchableHighlight>
+         <View
+          style={{
+            borderBottomColor: '#F0F0F0',
+            borderBottomWidth: 1,
+          }}
+        />
+        <TouchableHighlight
+          underlayColor='#EEEEEE'
+          onPress={() => navigation.navigate('UsageRestrictions')}>
+          <View style={styles.menu}>
+            <Text style={[fontMedium, styles.menuText]}>실험실</Text>
+            <View style={styles.menuIcon}>
+              <RightArrow />
+            </View>
+          </View>
+        </TouchableHighlight>
       </View>
+      <View style={{ padding: 8 }}/>
       <View style={{ padding: 8 }}/>
       <View style={styles.menuContainer}>
         <TouchableHighlight
