@@ -38,7 +38,6 @@ import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import Markdown from 'react-native-markdown-display';
 
 interface Props {
-  boardType: string;
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
@@ -49,7 +48,6 @@ interface Props {
 }
 
 function Post({
-  boardType,
   post,
   handlePostLike,
   handlePostScrap,

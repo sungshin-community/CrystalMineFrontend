@@ -309,6 +309,7 @@ const PostScreen = ({navigation, route}: Props) => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
+
   return (
     <>
       {componentModalVisible ? (
@@ -351,7 +352,6 @@ const PostScreen = ({navigation, route}: Props) => {
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
           <Post
-            boardType={route.params.boardType}
             post={post}
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
@@ -368,7 +368,6 @@ const PostScreen = ({navigation, route}: Props) => {
               renderItem={({item, index}) => (
                 <View key={index}>
                   <Comment
-                    boardType={route.params.boardType}
                     comment={item}
                     setParentId={setParentId}
                     handleCommentLike={handleCommentLike}
@@ -383,7 +382,6 @@ const PostScreen = ({navigation, route}: Props) => {
                   {item.recomments &&
                     item.recomments.map((recomment, index) => (
                       <Recomment
-                        boardType={route.params.boardType}
                         key={index}
                         recomment={recomment}
                         handleCommentLike={handleCommentLike}
