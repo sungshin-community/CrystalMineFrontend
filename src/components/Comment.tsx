@@ -215,7 +215,7 @@ const Comment = ({
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Pressable
-                  hitSlop={15}
+                  hitSlop={20}
                   onPress={() => {
                     handleCommentLike(data.id);
                   }}>
@@ -223,7 +223,7 @@ const Comment = ({
                 </Pressable>
                 <Text style={styles.postLike}>{data?.likeCount}</Text>
                 <Pressable
-                  hitSlop={15}
+                    hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
                   onPress={() => {
                     handleFocus();
                     setParentId(data.id);
@@ -434,7 +434,7 @@ export const Recomment = ({
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Pressable
-                    hitSlop={{top: 15, left: 15, bottom: 15, right: 15}}
+                      hitSlop={20}
                     onPress={() => handleCommentLike(data.id)}>
                     {data.isLiked ? <PostLike /> : <PostUnlike />}
                   </Pressable>
