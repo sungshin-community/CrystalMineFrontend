@@ -62,9 +62,9 @@ export default function PostSearchResult({searchWord}: Props) {
 
 
   const handleRefresh = async () => {
-    const postList = await searchPosts(searchWord, 0, sortBy);
+    const response = await searchPosts(searchWord, 0, sortBy);
     setCurrentPage(0);
-    setMyPostList(postList);
+    setMyPostList(response.data.content);
   }
 
   const fetchNextPage = async () => {
