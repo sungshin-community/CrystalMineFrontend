@@ -14,8 +14,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import NoticeListDto from '../../../classes/mypage/NoticeDto';
 import {getNoticeList} from '../../../common/myPageApi';
-
-import NoCommentSuryong from '../../../../resources/icon/custom/NoCommentSuryong';
 import WaterMark from '../../../components/WaterMark';
 import Markdown from 'react-native-markdown-display';
 import { SpreadList } from './TermsOfService';
@@ -30,14 +28,14 @@ function OpenSourceLicense({navigation}: Props) {
 
   return (
     <>
-    <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
+    <ScrollView nestedScrollEnabled={true} style={{ backgroundColor: '#E5E5E5' }}>
       <LicenseSpreadList id={1} title={'OSS Notice | CrystalMineFrontend'} agreementDate={'2022.08.22 작성'} content={fe} ></LicenseSpreadList>
       <LicenseSpreadList id={2} title={'OSS Notice | CrystalMineBackend'} agreementDate={'2022.08.22 작성'} content={be} ></LicenseSpreadList>
-      </SafeAreaView>
       <Text style={[fontRegular, {textAlign: 'center', paddingVertical: 20, color: '#d0d0d0'}]}>
         This application is Copyright © Salty Lab.{`\n`}
         All rights reserved.
       </Text>
+      </ScrollView>
       </>
   );
 }
