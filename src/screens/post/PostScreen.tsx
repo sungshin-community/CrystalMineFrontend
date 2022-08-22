@@ -232,6 +232,7 @@ const PostScreen = ({navigation, route}: Props) => {
         newComment,
         isAnonymous,
       );
+      setIsLoading(false);
       if (response.status === 401) {
         Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
         logout();
@@ -253,7 +254,6 @@ const PostScreen = ({navigation, route}: Props) => {
       } else {
         Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
       }
-      setIsLoading(false);
     },
     [],
   );
