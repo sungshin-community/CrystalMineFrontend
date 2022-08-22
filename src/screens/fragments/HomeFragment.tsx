@@ -202,6 +202,7 @@ console.log(noti)
               right: 0,
               top: 0,
               bottom: 0,
+              zIndex: 100
             }}>
             <ActivityIndicator
               size="large"
