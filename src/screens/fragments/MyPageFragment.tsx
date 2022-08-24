@@ -29,6 +29,7 @@ import ExclamationMark from '../../../resources/icon/ExclamationMark';
 import Toast from 'react-native-simple-toast';
 import { getHundredsDigit } from '../../common/util/statusUtil';
 import Error from '../../components/Error';
+import { fontRegular } from '../../common/font';
 
 const styles = StyleSheet.create({
   menu: {
@@ -390,7 +391,7 @@ const MyPageFragment = ({navigation}: Props) => {
             </TouchableHighlight>
           </View>
           <View
-            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 10, marginBottom: 16}}>
+            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 10}}>
             <TouchableHighlight
               underlayColor='#EEEEEE' onPress={() => setModalVisible(true)}>
               <View style={styles.menu}>
@@ -407,7 +408,10 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </View>
             </TouchableHighlight>
-          </View>
+              </View>
+              {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
+                Salty Lab | contact@crystalmine.kr
+              </Text> */}
         </View>
         {/* <View style={{paddingVertical: 24, alignItems: 'center'}}>
           <PurpleRoundButton
