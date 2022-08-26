@@ -154,6 +154,7 @@ export const createBoard = async (
       introduction: introduction,
       hotable: hotable,
     });
+    console.log('게시판 생성 hotable', hotable);
     console.log('createBoard 함수 성공', response.data);
     return response.data;
   } catch (e) {
@@ -168,7 +169,7 @@ export const updateBoard = async (
   hotable: boolean,
 ) => {
   try {
-    console.log(hotable);
+    console.log('게시판 수정 hotable', hotable);
     const response = await client.patch<Response<Board>>(`/boards/${boardId}`, {
       introduction: introduction,
       hotable: hotable,

@@ -34,7 +34,9 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function UpdateBoard({navigation, route}: Props) {
   const [boardInfo, setBoardInfo] = useState<Board>();
   const [newBoardIntroduction, setNewBoardIntroduction] = useState<string>('');
-  const [newHotable, setNewHotable] = useState<boolean>();
+  const [newHotable, setNewHotable] = useState<boolean>(true);
+  const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
+
   useEffect(() => {
     async function init() {
       const boardInfo = await getBoardInfo(route.params.boardId);
@@ -48,24 +50,40 @@ function UpdateBoard({navigation, route}: Props) {
     setNewHotable(boardInfo?.hotable);
   }, [boardInfo]);
 
-  const onSubmitPress = async () => {
-    const result = await updateBoard(
-      route.params.boardId,
-      newBoardIntroduction,
-      !newHotable,
-    );
-    // TODO: newHotable 불리언값 반대로 해야 적상 작동함. 확인 필요.
+  const onSubmitPress = async (
+    boardId: number,
+    newBoardIntroduction: string,
+    newHotable: boolean,
+  ) => {
+    const result = await updateBoard(boardId, newBoardIntroduction, newHotable);
     if (result) {
-      Toast.show('게시판을 성공적으로 수정했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('게시판을 성공적으로 수정했습니다.', Toast.SHORT);
+      }, 100);
       navigation.navigate('PostListScreen', {boardId: result.id});
     }
   };
+
+  useEffect(() => {
+    console.log(
+      'newHotable:',
+      newHotable,
+      'newBoardIntroduction: ',
+      newBoardIntroduction,
+    );
+    if (isSubmitState) {
+      onSubmitPress(route.params.boardId, newBoardIntroduction, newHotable);
+    }
+    setIsSubmitState(false);
+  }, [newHotable, newBoardIntroduction, isSubmitState]);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (newBoardIntroduction) onSubmitPress();
+            setIsSubmitState(true);
+            console.log('isSubmitState', isSubmitState)
           }}>
           <Text
             style={[
@@ -88,12 +106,15 @@ function UpdateBoard({navigation, route}: Props) {
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
-            <LockIcon style={{ marginLeft: 11 }}/>
+            <LockIcon style={{marginLeft: 11}} />
           </View>
           <TextInput
             value={boardInfo?.name}
             editable={false}
-            style={[fontRegular,{fontSize: 15, paddingVertical: 20, color: '#87919B'}]}
+            style={[
+              fontRegular,
+              {fontSize: 15, paddingVertical: 20, color: '#87919B'},
+            ]}
           />
           <View
             style={{
@@ -111,7 +132,7 @@ function UpdateBoard({navigation, route}: Props) {
               value={newBoardIntroduction}
               onChangeText={value => {
                 setNewBoardIntroduction(value);
-                 if (value.length === 22)
+                if (value.length === 22)
                   Toast.show(
                     '게시판 설명은 22글자까지만 입력 가능합니다.',
                     Toast.SHORT,
@@ -171,13 +192,12 @@ export default UpdateBoard;
 import Svg, {SvgProps, Path} from 'react-native-svg';
 
 const LockIcon = (props: SvgProps) => (
-   <Svg
+  <Svg
     width={12}
     height={17}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       d="M10.5 6h-.75V4.5C9.75 2.43 8.07.75 6 .75 3.93.75 2.25 2.43 2.25 4.5V6H1.5C.675 6 0 6.675 0 7.5V15c0 .825.675 1.5 1.5 1.5h9c.825 0 1.5-.675 1.5-1.5V7.5c0-.825-.675-1.5-1.5-1.5ZM6 12.75c-.825 0-1.5-.675-1.5-1.5s.675-1.5 1.5-1.5 1.5.675 1.5 1.5-.675 1.5-1.5 1.5ZM8.325 6h-4.65V4.5A2.327 2.327 0 0 1 6 2.175 2.327 2.327 0 0 1 8.325 4.5V6Z"
       fill="#222"

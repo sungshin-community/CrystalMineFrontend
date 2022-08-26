@@ -60,7 +60,6 @@ const Comment = ({
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
-  console.log(comment);
   const handleCommentDeleteComponent = (
     <>
       <ModalBottom
