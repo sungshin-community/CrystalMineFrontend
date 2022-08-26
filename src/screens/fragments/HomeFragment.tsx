@@ -129,7 +129,12 @@ const HomeFragment = ({navigation}: Props) => {
 
       const response = await getAuthentication();
       if (response.status === 401) {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
@@ -137,11 +142,16 @@ const HomeFragment = ({navigation}: Props) => {
         if (!response.data.data?.blacklist) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
-            Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+            setTimeout(function () {
+              Toast.show(
+                '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                Toast.SHORT,
+              );
+            }, 100);
             logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
           } else if (getHundredsDigit(notification.status) === 2) {
-            console.log('notification.data.data', notification.data.data)
+            console.log('notification.data.data', notification.data.data);
             setNoti(notification.data.data);
           } else {
             setIsHomeAlertError(true);
@@ -152,7 +162,12 @@ const HomeFragment = ({navigation}: Props) => {
             const hotBoardData = await getHotBoardContents();
 
             if (pinBoardData.status === 401) {
-              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show(
+                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                  Toast.SHORT,
+                );
+              }, 100);
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(pinBoardData.status) === 2) {
@@ -161,7 +176,12 @@ const HomeFragment = ({navigation}: Props) => {
               setIsPinBoardError(true);
             }
             if (hotBoardData.status === 401) {
-              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show(
+                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                  Toast.SHORT,
+                );
+              }, 100);
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(hotBoardData.status) === 2) {
@@ -185,7 +205,7 @@ const HomeFragment = ({navigation}: Props) => {
       getContents();
     }
   }, [isFocused, modalBody, blindModalVisible]);
-console.log(pinBoardContents)
+  console.log(pinBoardContents);
   return (
     <>
       <WaterMark />
@@ -341,21 +361,31 @@ console.log(pinBoardContents)
                             console.log('블라인드 알림 확인');
                             setBlindModalVisible(true);
                           } else if (item.type === 'BOARD_BLIND' && !item.blind)
-                            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                            }, 100);
                           else if (
                             item.type === 'PIN_BOARD_BLIND' &&
                             !item.blind
                           )
-                            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                            }, 100);
                           else if (item.type === 'POST_BLIND' && !item.blind)
-                            Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                            }, 100);
                           else if (item.type === 'COMMENT_BLIND' && !item.blind)
-                            Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                            }, 100);
                           else
-                            Toast.show(
-                              '알 수 없는 오류가 발생하였습니다.',
-                              Toast.SHORT,
-                            );
+                            setTimeout(function () {
+                              Toast.show(
+                                '알 수 없는 오류가 발생하였습니다.',
+                                Toast.SHORT,
+                              );
+                            }, 100);
                         } else if (
                           item.type === 'DELETE_BOARD_BLIND' ||
                           item.type === 'DELETE_POST_BLIND' ||
@@ -412,22 +442,30 @@ console.log(pinBoardContents)
                             item.type === 'DELETE_BOARD_BLIND' &&
                             !item.deleteBlind
                           )
-                            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+                            }, 100);
                           else if (
                             item.type === 'DELETE_POST_BLIND' &&
                             !item.deleteBlind
                           )
-                            Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+                            }, 100);
                           else if (
                             item.type === 'DELETE_COMMENT_BLIND' &&
                             !item.deleteBlind
                           )
-                            Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                            setTimeout(function () {
+                              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+                            }, 100);
                           else
-                            Toast.show(
-                              '알 수 없는 오류가 발생하였습니다.',
-                              Toast.SHORT,
-                            );
+                            setTimeout(function () {
+                              Toast.show(
+                                '알 수 없는 오류가 발생하였습니다.',
+                                Toast.SHORT,
+                              );
+                            }, 100);
                         }
                       }}>
                       <View style={{flexDirection: 'row'}}>

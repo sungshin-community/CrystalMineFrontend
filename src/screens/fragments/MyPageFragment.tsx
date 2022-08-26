@@ -89,7 +89,9 @@ const MyPageFragment = ({navigation}: Props) => {
       const userDto = await getUser();
       console.log(userDto.data)
       if (userDto.status === 401) {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       }
@@ -449,10 +451,14 @@ const MyPageFragment = ({navigation}: Props) => {
                 let response = await uploadProfileImage(res.assets[0]);
                 if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
                   setUser(response.data);
-                  Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
+                  }, 100);
                 }
                 else {
-                  Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.SHORT);
+                  }, 100);
                 }
               },
             );
@@ -462,7 +468,9 @@ const MyPageFragment = ({navigation}: Props) => {
             let response = await setDefaultProfileImage();
             setUser(response.data.data);
             setProfileModalVisible(false);
-            Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
+            setTimeout(function () {
+              Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
+            }, 100);
           }}
         />
       </ScrollView>
