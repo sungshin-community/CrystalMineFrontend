@@ -247,10 +247,12 @@ export default function MyPostList({navigation, route}: Props) {
             await deleteMyPosts(myPostList.filter(p => p.isChecked).map(p => p.postId));
             const postList = await getMyPostList(currentPage, sortBy);
             setMyPostList(postList);
-            Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.SHORT);
             setIsLoading(false);
             setDeleteMode(false);
             setDeleteModalVisible(false);
+            setTimeout(function () {
+              Toast.show("게시글이 성공적으로 삭제되었습니다", Toast.SHORT);
+            }, 100);
           }}
           whiteButtonFunc={() => {
             setDeleteModalVisible(false);
