@@ -47,8 +47,8 @@ import WaterMark from '../../components/WaterMark';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import getCommments from '../../common/CommentApi';
 import {ModalBottom} from '../../components/ModalBottom';
-import { getHundredsDigit } from '../../common/util/statusUtil';
-import { logout } from '../../common/authApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+import {logout} from '../../common/authApi';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {};
@@ -146,13 +146,17 @@ const PostScreen = ({navigation, route}: Props) => {
       setIsLoading(true);
       const postData = await getPosts(route.params.postId);
       if (postData.code === 'BOARD_ALREADY_BLIND') {
-        Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+        }, 100);
         navigation.goBack();
       } else if (
         postData.code === 'POST_NOT_FOUND' ||
         postData.code === 'POST_ALREADY_DELETED'
       ) {
-        Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.SHORT);
+        }, 100);
         navigation.goBack();
       } else setPost(postData);
       const commentData = await getComments(route.params.postId);
@@ -200,7 +204,12 @@ const PostScreen = ({navigation, route}: Props) => {
       setIsLoading(true);
       const response = await addComment(postId, newComment, isAnonymous);
       if (response.status === 401) {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
@@ -211,7 +220,9 @@ const PostScreen = ({navigation, route}: Props) => {
         setComments(commentData);
         scrollViewRef.current?.scrollToEnd({animated: true});
       } else {
-        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+        }, 100);
       }
       setIsLoading(false);
     },
@@ -234,7 +245,12 @@ const PostScreen = ({navigation, route}: Props) => {
       );
       setIsLoading(false);
       if (response.status === 401) {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
@@ -252,7 +268,9 @@ const PostScreen = ({navigation, route}: Props) => {
           viewPosition: 0,
         });
       } else {
-        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+        setTimeout(function () {
+          Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+        }, 100);
       }
     },
     [],
@@ -425,7 +443,17 @@ const PostScreen = ({navigation, route}: Props) => {
             ))} */}
           </View>
         </ScrollView>
-        <View style={{backgroundColor: '#fff',  paddingBottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : (Platform.OS === 'ios' ? 20 : 0)}}>
+        <View
+          style={{
+            backgroundColor: '#fff',
+            paddingBottom: isFocused
+              ? Platform.OS == 'ios'
+                ? keyboardHeight
+                : 0
+              : Platform.OS === 'ios'
+              ? 20
+              : 0,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -450,7 +478,8 @@ const PostScreen = ({navigation, route}: Props) => {
             <View
               style={[
                 styles.inputBox,
-                { flexDirection: 'row', justifyContent: 'space-between' }]}>
+                {flexDirection: 'row', justifyContent: 'space-between'},
+              ]}>
               <TextInput
                 ref={commentInputRef}
                 placeholder="댓글을 입력해 주세요."
