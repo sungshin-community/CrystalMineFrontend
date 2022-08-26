@@ -30,6 +30,7 @@ import {
   reportPost,
   setPostLike,
   setPostScrap,
+  setUserMute,
 } from '../../common/boardApi';
 import {addComment, addRecomment, reportComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
@@ -187,6 +188,12 @@ const PostScreen = ({navigation, route}: Props) => {
     if (result) return true;
     else return false;
   };
+  // 이용자 차단, 이용자 뮤트
+  const handleMuteUser = async (postId: number) => {
+    const result = await setUserMute(postId);
+    if (result) return true;
+    else return false;
+  }
   // 게시글 신고
   const handlePostReport = async (
     postId: number,
@@ -374,6 +381,7 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
             handlePostDelete={handlePostDelete}
+            handleMuteUser={handleMuteUser}
             handlePostReport={handlePostReport}
             componentModalVisible={componentModalVisible}
             setComponentModalVisible={setComponentModalVisible}></Post>

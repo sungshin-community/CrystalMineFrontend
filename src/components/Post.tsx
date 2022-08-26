@@ -36,12 +36,16 @@ import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import Autolink from 'react-native-autolink';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import Markdown from 'react-native-markdown-display';
-
+import UserMuteIcon from '../../resources/icon/UserMuteIcon';
+import {setUserMute} from '../common/boardApi';
+import {getHundredsDigit} from '../common/util/statusUtil';
+import {logout} from '../common/authApi';
 interface Props {
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
   handlePostDelete?: any;
+  handleMuteUser?: any;
   handlePostReport?: any;
   componentModalVisible?: boolean;
   setComponentModalVisible?: any;
@@ -52,6 +56,7 @@ function Post({
   handlePostLike,
   handlePostScrap,
   handlePostDelete,
+  handleMuteUser,
   handlePostReport,
   setComponentModalVisible,
 }: Props) {
@@ -60,6 +65,7 @@ function Post({
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const [muteModalVisible, setMuteModalVisible] = useState<boolean>(false);
 
   const closePhotoModal = () => {
     if (isPhotoVisible) {
@@ -117,8 +123,34 @@ function Post({
       </Pressable>
     </>
   );
-  const handlePostReportComponent = (
+  const handleOthersPostComponent = (
     <>
+      <ModalBottom
+        modalVisible={muteModalVisible}
+        setModalVisible={setMuteModalVisible}
+        content={`해당 이용자를 피드에서 숨기시겠습니까? \n해당 이용자가 작성한 모든 글이 숨김 처리 되며, \n이 기능은 취소할 수 없습니다.`}
+        purpleButtonText="해당 이용자의 게시글 숨기기"
+        purpleButtonFunc={() => {
+          if (handleMuteUser(data.postId)) {
+            setTimeout(function () {
+              Toast.show(
+                '해당 이용자의 게시글이 모두 숨김처리 됐습니다.',
+                Toast.SHORT,
+              );
+            }, 100);
+            setMuteModalVisible(false);
+            navigation.pop();
+          } else {
+            setTimeout(function () {
+              Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+            }, 100);
+            setMuteModalVisible(false);
+          }
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setMuteModalVisible(false)}
+        setDim={false}
+      />
       <SelectModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
@@ -130,22 +162,30 @@ function Post({
         whiteButtonFunc={() => setReportModalVisible(false)}
         setDim={false}
       />
-      {data?.isReported ? (
+      <View style={{flexDirection: 'row'}}>
         <Pressable
           onPress={() => {
-            Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+            setMuteModalVisible(true);
           }}>
-          <Report style={{marginRight: 14}} />
+          <UserMuteIcon style={{marginRight: 14}} />
         </Pressable>
-      ) : (
-        <Pressable
-          onPress={() => {
-            setReportModalVisible(true);
-            setComponentModalVisible(reportModalVisible);
-          }}>
-          <NoReport style={{marginRight: 14}} />
-        </Pressable>
-      )}
+        {data?.isReported ? (
+          <Pressable
+            onPress={() => {
+              Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+            }}>
+            <Report style={{marginRight: 14}} />
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => {
+              setReportModalVisible(true);
+              setComponentModalVisible(reportModalVisible);
+            }}>
+            <NoReport style={{marginRight: 14}} />
+          </Pressable>
+        )}
+      </View>
     </>
   );
   return (
@@ -179,7 +219,7 @@ function Post({
               isMine={data?.isAuthor}
               handleDefaultModeComponent={handlePostScrapComponent}
               handleOptionModeIsMineComponent={handlePostDeleteComponent}
-              handleOptionModeIsNotMineComponent={handlePostReportComponent}
+              handleOptionModeIsNotMineComponent={handleOthersPostComponent}
             />
           </View>
         </View>

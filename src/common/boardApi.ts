@@ -336,6 +336,16 @@ export const setPostScrap = async (postId: number) => {
     return false;
   }
 };
+// 이용자 차단, 이용자 뮤트
+export const setUserMute = async (postId: number) => {
+  try {
+    const response = await client.post<Response<null>>(`/block/${postId}`);
+    return true;
+  } catch (e) {
+    console.log('여기는 setUserMute 함수', e);
+    return false;
+  }
+};
 // 게시글 신고
 export const reportPost = async (
   postId: number,
@@ -354,8 +364,7 @@ export const reportPost = async (
     return e.response.data;
   }
 };
-// 게시글 삭제
-// TODO: postId 쉼표 구분으로 여러개 받아야함
+// 게시글 삭제'
 export const deletePosts = async (postId: number) => {
   try {
     const response = await client.delete<Response<null>>(`/posts/${postId}`);
@@ -365,7 +374,6 @@ export const deletePosts = async (postId: number) => {
     return false;
   }
 };
-
 // 댓글
 export const getComments = async (postId: number/*, page: number*/) => {
   try {
