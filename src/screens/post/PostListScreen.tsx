@@ -84,13 +84,17 @@ const PostListScreen = ({navigation, route}: Props) => {
           sortBy,
         );
         if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
-          Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+          setTimeout(function () {
+            Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+          }, 100);
           navigation.goBack();
         } else if (
           boardDetail.code === 'BOARD_NOT_FOUND' ||
           boardDetail.code === 'BOARD_ALREADY_DELETED'
         ) {
-          Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+          setTimeout(function () {
+            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+          }, 100);
           navigation.goBack();
         } else setBoardDetail(boardDetail);
       }
@@ -148,17 +152,24 @@ const PostListScreen = ({navigation, route}: Props) => {
               if (route.params.boardId === 1) return;
               const response = await toggleBoardPin(route.params.boardId);
               if (response.status === 401) {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(response.status) === 2) {
                 const boardInfo = await getBoardInfo(route.params.boardId);
                 setBoardInfo(boardInfo);
               } else {
-                Toast.show('게시판 고정/고정해제에 실패했습니다.', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show(
+                    '게시판 고정/고정해제에 실패했습니다.',
+                    Toast.SHORT,
+                  );
+                }, 100);
               }
             }}>
             {boardInfo?.isOwner ? (
