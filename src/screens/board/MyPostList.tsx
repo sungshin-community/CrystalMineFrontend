@@ -40,10 +40,14 @@ export default function MyPostList({navigation, route}: Props) {
       setMyPostList(tempList);
     } else {
       if (post.isBoardDeleted) {
-        Toast.show("삭제된 게시판에 작성된 게시글입니다.", Toast.SHORT);
+        setTimeout(function () {                    
+          Toast.show("삭제된 게시판에 작성된 게시글입니다.", Toast.SHORT);
+        }, 100);
         return;
       } else if (post.isBoardBlinded) {
-        Toast.show("블라인드된 게시판에 작성된 게시글입니다.", Toast.SHORT);
+        setTimeout(function () {                    
+          Toast.show("블라인드된 게시판에 작성된 게시글입니다.", Toast.SHORT);
+        }, 100);
         return;
       }
       navigation.navigate('PostScreen', {
