@@ -213,7 +213,12 @@ export default function ResetPasswordInputNewPassword({
                     password: password,
                   });
                   if (result.status === 401) {
-                    Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                    setTimeout(function () {
+                      Toast.show(
+                        '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                     logout();
                     navigation.reset({routes: [{name: 'SplashHome'}]});
                   } else if (getHundredsDigit(result.status) === 2) {
@@ -227,10 +232,12 @@ export default function ResetPasswordInputNewPassword({
                   } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                     setIsChangeable(false);
                   } else {
-                    Toast.show(
-                      '알 수 없는 오류가 발생하였습니다.',
-                      Toast.SHORT,
-                    );
+                    setTimeout(function () {
+                      Toast.show(
+                        '알 수 없는 오류가 발생하였습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                   }
                 }}
               />
@@ -244,7 +251,12 @@ export default function ResetPasswordInputNewPassword({
                     password: password,
                   });
                   if (result.status === 401) {
-                    Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                    setTimeout(function () {
+                      Toast.show(
+                        '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                     logout();
                     navigation.reset({routes: [{name: 'SplashHome'}]});
                   } else if (getHundredsDigit(result.status) === 2) {
@@ -258,10 +270,12 @@ export default function ResetPasswordInputNewPassword({
                   } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                     setIsChangeable(false);
                   } else {
-                    Toast.show(
-                      '알 수 없는 오류가 발생하였습니다.',
-                      Toast.SHORT,
-                    );
+                    setTimeout(function () {
+                      Toast.show(
+                        '알 수 없는 오류가 발생하였습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                   }
                 }}
               />

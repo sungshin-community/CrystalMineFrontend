@@ -112,10 +112,14 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
       username: route.params.userId,
     });
     if (result) {
-      Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+      }, 100);
       console.log('비밀번호 재설정 이메일 재발송 성공');
     } else {
-      Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
+      }, 100);
       console.log('비밀번호 재설정 이메일 재발송 실패');
     }
     setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
@@ -237,11 +241,18 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   code: value,
                 });
                 if (result.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
-                  Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.navigate('ResetPasswordInputNewPassword', {
                     userId: route.params.userId,
                   });
@@ -254,7 +265,12 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}></PurpleFullButton>
           )}
@@ -267,11 +283,18 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   code: value,
                 });
                 if (result.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
-                  Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('회원 인증에 성공하였습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.navigate('ResetPasswordInputNewPassword', {
                     userId: route.params.userId,
                   });
@@ -284,7 +307,12 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}></PurpleRoundButton>
           )}

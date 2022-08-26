@@ -204,11 +204,18 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   username: studentId,
                 });
                 if (check.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(check.status) === 2) {
-                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.navigate(
                     'ResetPasswordInputRegularMemberAuthNumber',
                     {
@@ -222,7 +229,12 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}
             />
@@ -236,11 +248,18 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                   username: studentId,
                 });
                 if (check.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(check.status) === 2) {
-                  Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.navigate(
                     'ResetPasswordInputRegularMemberAuthNumber',
                     {
@@ -254,7 +273,12 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 } else if (check.data.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}
             />
