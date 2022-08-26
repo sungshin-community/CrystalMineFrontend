@@ -39,16 +39,24 @@ export default function MyCommentList({navigation, route}: Props) {
       setMyCommentList(tempList);
     } else {
       if (comment.isPostDeleted) {
-        Toast.show("삭제된 게시글에 작성된 댓글입니다.", Toast.SHORT);
+        setTimeout(function () {              
+          Toast.show("삭제된 게시글에 작성된 댓글입니다.", Toast.SHORT);
+        }, 100);
         return;
       } else if (comment.isPostBlinded) {
-        Toast.show("블라인드된 게시글에 작성된 댓글입니다.", Toast.SHORT);
+        setTimeout(function () {            
+          Toast.show("블라인드된 게시글에 작성된 댓글입니다.", Toast.SHORT);
+        }, 100);
         return;
       } else if (comment.isBoardDeleted) {
-        Toast.show("삭제된 게시판에 작성된 댓글입니다.", Toast.SHORT);
+        setTimeout(function () {                     
+          Toast.show("삭제된 게시판에 작성된 댓글입니다.", Toast.SHORT);
+        }, 100);
         return;
       } else if (comment.isBoardBlinded) {
-        Toast.show("블라인드된 게시판에 작성된 댓글입니다.", Toast.SHORT);
+        setTimeout(function () {                   
+          Toast.show("블라인드된 게시판에 작성된 댓글입니다.", Toast.SHORT);
+        }, 100);
         return;
       }
       navigation.navigate('PostScreen', {
