@@ -24,7 +24,7 @@ import PasswordShow from '../../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
 import {checkNewPassword, logout} from '../../../common/authApi';
-import { getHundredsDigit } from '../../../common/util/statusUtil';
+import {getHundredsDigit} from '../../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
@@ -185,7 +185,12 @@ export default function InputNewPassword({navigation, route}: Props) {
                 password: password,
               });
               if (result.status === 401) {
-                Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(result.status) === 2) {
@@ -196,7 +201,9 @@ export default function InputNewPassword({navigation, route}: Props) {
               } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                 setIsChangeable(false);
               } else {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }, 100);
               }
             }}
           />
@@ -210,7 +217,12 @@ export default function InputNewPassword({navigation, route}: Props) {
                 password: password,
               });
               if (result.status === 401) {
-                Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(result.status) === 2) {
@@ -221,7 +233,9 @@ export default function InputNewPassword({navigation, route}: Props) {
               } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
                 setIsChangeable(false);
               } else {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }, 100);
               }
             }}
           />
