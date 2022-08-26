@@ -71,7 +71,12 @@ const Comment = ({
         purpleButtonFunc={() => {
           handleCommentDelete(data.id);
           setModalVisible(false);
-          Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.SHORT);
+          setTimeout(function () {
+            Toast.show(
+              '작성하신 댓글이 성공적으로 삭제되었습니다.',
+              Toast.SHORT,
+            );
+          }, 100);
         }}
         whiteButtonText="취소"
         whiteButtonFunc={() => setModalVisible(false)}
@@ -284,10 +289,12 @@ export const Recomment = ({
           purpleButtonFunc={() => {
             handleCommentDelete(data.id);
             setModalVisible(false);
-            Toast.show(
-              '작성하신 댓글이 성공적으로 삭제되었습니다.',
-              Toast.SHORT,
-            );
+            setTimeout(function () {
+              Toast.show(
+                '작성하신 댓글이 성공적으로 삭제되었습니다.',
+                Toast.SHORT,
+              );
+            }, 100);
           }}
           whiteButtonText="취소"
           whiteButtonFunc={() => setModalVisible(false)}
