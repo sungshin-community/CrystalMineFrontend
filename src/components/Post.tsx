@@ -91,10 +91,12 @@ function Post({
         purpleButtonFunc={() => {
           if (handlePostDelete(data.postId)) {
             setDeleteModalVisible(false);
-            Toast.show(
-              '작성하신 게시글이 성공적으로 삭제되었습니다.',
-              Toast.SHORT,
-            );
+            setTimeout(function () {
+              Toast.show(
+                '작성하신 게시글이 성공적으로 삭제되었습니다.',
+                Toast.SHORT,
+              );
+            }, 100);
             // navigation.goBack();
             navigation.pop();
             navigation.pop();
