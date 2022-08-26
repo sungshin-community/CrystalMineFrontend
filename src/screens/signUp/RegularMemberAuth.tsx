@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   Pressable,
-  KeyboardEvent
+  KeyboardEvent,
 } from 'react-native';
 import {
   CodeField,
@@ -51,7 +51,7 @@ if (Platform.OS === 'android') {
 }
 
 const TextContainer = styled.View`
-  margin:40px 0px 40px 0px;
+  margin: 40px 0px 40px 0px;
 `;
 
 const CELL_COUNT = 6;
@@ -84,7 +84,7 @@ export default function RegularMemberAuth({navigation}: Props) {
   const [timerOn, setTimerOn] = useState(true);
   const [min, setMin] = useState<number>(0);
   const [sec, setSec] = useState<number>(0);
-   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const onInputFocus = () => {
@@ -111,7 +111,7 @@ export default function RegularMemberAuth({navigation}: Props) {
   }, []);
   console.log('시간 가는 중', secondsLeft);
 
-   useEffect(() => {
+  useEffect(() => {
     if (timerOn) startTimer();
     else BackgroundTimer.stopBackgroundTimer();
     return () => {
@@ -144,10 +144,14 @@ export default function RegularMemberAuth({navigation}: Props) {
     setValue('');
     let result: boolean = await sendEmail();
     if (result) {
-      Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+      }, 100);
       console.log('이메일 재발송 성공');
     } else {
-      Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
+      }, 100);
       console.log('이메일 재발송 실패');
     }
     setSecondsLeft(TIME);
@@ -226,9 +230,9 @@ export default function RegularMemberAuth({navigation}: Props) {
         <View
           style={{
             paddingBottom: isFocused
-              ? (Platform.OS == 'ios'
+              ? Platform.OS == 'ios'
                 ? keyboardHeight
-                : 0)
+                : 0
               : 34,
             justifyContent: 'center',
             alignItems: 'center',
@@ -240,14 +244,18 @@ export default function RegularMemberAuth({navigation}: Props) {
               onClick={async () => {
                 let result = await checkAuthNumber(value);
                 if (result.status === 401) {
-                  Toast.show(
-                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                    Toast.SHORT,
-                  );
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
-                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
@@ -258,7 +266,12 @@ export default function RegularMemberAuth({navigation}: Props) {
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}></PurpleFullButton>
           )}
@@ -268,14 +281,18 @@ export default function RegularMemberAuth({navigation}: Props) {
               onClick={async () => {
                 let result = await checkAuthNumber(value);
                 if (result.status === 401) {
-                  Toast.show(
-                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                    Toast.SHORT,
-                  );
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
-                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.reset({routes: [{name: 'GlobalNavbar'}]});
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
@@ -286,7 +303,12 @@ export default function RegularMemberAuth({navigation}: Props) {
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}></PurpleRoundButton>
           )}
@@ -306,7 +328,7 @@ export default function RegularMemberAuth({navigation}: Props) {
           purpleButtonText="인증번호 재전송"
           purpleButtonFunc={onResendOtpButtonPress}
           whiteButtonText="인증 취소"
-          whiteButtonFunc={() => navigation.navigate('GlobalNavbar') }
+          whiteButtonFunc={() => navigation.navigate('GlobalNavbar')}
         />
       )}
       {tryCnt === 0 && (
@@ -315,7 +337,10 @@ export default function RegularMemberAuth({navigation}: Props) {
           setModalVisible={setModalIncorrectOverVisible}
           content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
           purpleButtonText="확인"
-          purpleButtonFunc={() => { gotoHome(); setTimerOn(false);}}></ModalBottom>
+          purpleButtonFunc={() => {
+            gotoHome();
+            setTimerOn(false);
+          }}></ModalBottom>
       )}
       {isCoolTime && (
         <ModalBottom
@@ -323,7 +348,10 @@ export default function RegularMemberAuth({navigation}: Props) {
           setModalVisible={setIsCoolTime}
           content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
-          purpleButtonFunc={() => { gotoHome(); setTimerOn(false);}}></ModalBottom>
+          purpleButtonFunc={() => {
+            gotoHome();
+            setTimerOn(false);
+          }}></ModalBottom>
       )}
     </>
   );
