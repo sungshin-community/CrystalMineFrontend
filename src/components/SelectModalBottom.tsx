@@ -109,7 +109,11 @@ export const SelectModalBottom = ({
           styles.centeredView,
           {
             bottom:
-              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : Dimensions.get('window').width * 0.15) : Dimensions.get('window').width * 0.15,
+              Platform.OS == 'ios'
+                ? isFocused
+                  ? keyboardHeight
+                  : Dimensions.get('window').width * 0.15
+                : Dimensions.get('window').width * 0.15,
           },
         ]}>
         <Modal
@@ -123,10 +127,18 @@ export const SelectModalBottom = ({
             style={{flex: 1}}
             onPress={() => setModalVisible(!modalVisible)}
           />
-          <View style={[styles.centeredView, {
-            bottom:
-              Platform.OS == 'ios' ? (isFocused ? keyboardHeight : Dimensions.get('window').width * 0.15) : Dimensions.get('window').width * 0.15,
-          },]}>
+          <View
+            style={[
+              styles.centeredView,
+              {
+                bottom:
+                  Platform.OS == 'ios'
+                    ? isFocused
+                      ? keyboardHeight
+                      : Dimensions.get('window').width * 0.15
+                    : Dimensions.get('window').width * 0.15,
+              },
+            ]}>
             <View style={[styles.modalView]}>
               <View style={{alignSelf: 'center'}}>
                 {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
@@ -180,42 +192,52 @@ export const SelectModalBottom = ({
                     result.code === 'CREATE_POST_REPORT_SUCCESS' ||
                     result.code === 'CREATE_COMMENT_REPORT_SUCCESS'
                   ) {
-                    Toast.show(
-                      '신고하신 내용이 정상적으로 접수되었습니다.',
-                      Toast.SHORT,
-                    );
                     setModalVisible(false);
+                    setTimeout(function () {
+                      Toast.show(
+                        '신고하신 내용이 정상적으로 접수되었습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                   } else if (
                     result.code === 'BOARD_REPORT_FAIL_POINT_NOT_ENOUGH' ||
                     result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH' ||
                     result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH'
                   ) {
                     setModalVisible(false);
-                    Toast.show(
-                      '보유 포인트가 부족하여 신고가 불가능합니다.',
-                      Toast.SHORT,
-                    );
+                    setTimeout(function () {
+                      Toast.show(
+                        '보유 포인트가 부족하여 신고가 불가능합니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                   } else if (
                     result.code === 'BOARD_REPORT_DUPLICATION' ||
                     result.code === 'POST_REPORT_DUPLICATION' ||
                     result.code === 'COMMENT_REPORT_DUPLICATION'
                   ) {
                     setModalVisible(false);
-                    Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+                    setTimeout(function () {
+                      Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+                    }, 100);
                   } else if (
                     result.code === 'REPORT_FAIL_REASON_DETAIL_NECESSARY'
                   ) {
-                    Toast.show(
-                      '기타 사유에 대한 내용이 필요합니다',
-                      Toast.SHORT,
-                    );
-                    setModalVisible(true);
-                  } else {
-                    Toast.show(
-                      '알 수 없는 오류가 발생하였습니다.',
-                      Toast.SHORT,
-                    );
                     setModalVisible(false);
+                    setTimeout(function () {
+                      Toast.show(
+                        '기타 사유에 대한 내용이 필요합니다',
+                        Toast.SHORT,
+                      );
+                    }, 100);
+                  } else {
+                    setModalVisible(false);
+                    setTimeout(function () {
+                      Toast.show(
+                        '알 수 없는 오류가 발생하였습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
                   }
                 }}>
                 <Text style={styles.textStyle}>{purpleButtonText}</Text>
@@ -267,7 +289,9 @@ export const ReportItem = ({
             alignItems: 'center',
           }}
           key={item.id}>
-          <Pressable style={{flexDirection: 'row'}} onPress={() => setIsCheckedReportNum(item.id)}>
+          <Pressable
+            style={{flexDirection: 'row'}}
+            onPress={() => setIsCheckedReportNum(item.id)}>
             {isCheckedReportNum === item.id ? (
               <RadioButtonChecked style={{marginRight: 10}} />
             ) : (
@@ -350,7 +374,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     left: '50%',
-    transform: [{ translateX: -Dimensions.get('window').width * 0.445 }],
+    transform: [{translateX: -Dimensions.get('window').width * 0.445}],
     // bottom: 15
   },
   modalView: {
