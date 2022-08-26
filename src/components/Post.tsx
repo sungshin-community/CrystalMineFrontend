@@ -83,31 +83,29 @@ function Post({
 
   const handlePostDeleteComponent = (
     <>
-      {deleteModalVisible && (
-        <ModalBottom
-          modalVisible={deleteModalVisible}
-          setModalVisible={setDeleteModalVisible}
-          content={`작성한 게시글을 삭제하시겠습니까?`}
-          purpleButtonText="삭제"
-          purpleButtonFunc={() => {
-            if (handlePostDelete(data.postId)) {
-              setDeleteModalVisible(false);
-              Toast.show(
-                '작성하신 게시글이 성공적으로 삭제되었습니다.',
-                Toast.SHORT,
-              );
-              // navigation.goBack();
-              navigation.pop();
-              navigation.pop();
-              navigation.navigate('PostListScreen', {boardId: data.boardId});
-              console.log('게시글 삭제 성공');
-            }
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setDeleteModalVisible(false)}
-          setDim={false}
-        />
-      )}
+      <ModalBottom
+        modalVisible={deleteModalVisible}
+        setModalVisible={setDeleteModalVisible}
+        content={`작성한 게시글을 삭제하시겠습니까?`}
+        purpleButtonText="삭제"
+        purpleButtonFunc={() => {
+          if (handlePostDelete(data.postId)) {
+            setDeleteModalVisible(false);
+            Toast.show(
+              '작성하신 게시글이 성공적으로 삭제되었습니다.',
+              Toast.SHORT,
+            );
+            // navigation.goBack();
+            navigation.pop();
+            navigation.pop();
+            navigation.navigate('PostListScreen', {boardId: data.boardId});
+            console.log('게시글 삭제 성공');
+          }
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setDeleteModalVisible(false)}
+        setDim={false}
+      />
       <Pressable
         onPress={() => {
           setDeleteModalVisible(true);
@@ -119,19 +117,17 @@ function Post({
   );
   const handlePostReportComponent = (
     <>
-      {reportModalVisible && (
-        <SelectModalBottom
-          modalVisible={reportModalVisible}
-          setModalVisible={setReportModalVisible}
-          title={`게시글 신고`}
-          purpleButtonText="신고하기"
-          reportId={data.postId}
-          reportFunc={handlePostReport}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setReportModalVisible(false)}
-          setDim={false}
-        />
-      )}
+      <SelectModalBottom
+        modalVisible={reportModalVisible}
+        setModalVisible={setReportModalVisible}
+        title={`게시글 신고`}
+        purpleButtonText="신고하기"
+        reportId={data.postId}
+        reportFunc={handlePostReport}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setReportModalVisible(false)}
+        setDim={false}
+      />
       {data?.isReported ? (
         <Pressable
           onPress={() => {
@@ -168,7 +164,13 @@ function Post({
                 {data?.displayName}
               </Text>
             </View>
-             {!data?.isAnonymous && ( data?.isOwner && (data.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
+            {!data?.isAnonymous &&
+              data?.isOwner &&
+              (data.boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              ))}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
@@ -257,7 +259,7 @@ const styles = StyleSheet.create({
   postLike: {
     fontSize: 13,
     marginLeft: 5,
-    marginRight: 11
+    marginRight: 11,
   },
   postComment: {
     fontSize: 13,

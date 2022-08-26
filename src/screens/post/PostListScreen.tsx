@@ -45,14 +45,14 @@ import SettingIcon from '../../../resources/icon/SettingIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
-import { logout } from '../../common/authApi';
-import { getHundredsDigit } from '../../common/util/statusUtil';
+import {logout} from '../../common/authApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
-  PostSearch: {boardId: number, boardName: string};
+  PostSearch: {boardId: number; boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -100,7 +100,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
     init();
   }, [sortBy]);
-console.log(boardInfo)
+  console.log(boardInfo);
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
@@ -148,7 +148,10 @@ console.log(boardInfo)
               if (route.params.boardId === 1) return;
               const response = await toggleBoardPin(route.params.boardId);
               if (response.status === 401) {
-                Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                Toast.show(
+                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                  Toast.SHORT,
+                );
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(response.status) === 2) {
@@ -214,7 +217,10 @@ console.log(boardInfo)
   }, [navigation, boardInfo, reportModalVisible]);
 
   const toBoardSearch = () => {
-    navigation.navigate('PostSearch', {boardId: boardInfo?.id, boardName: boardInfo?.name});
+    navigation.navigate('PostSearch', {
+      boardId: boardInfo?.id,
+      boardName: boardInfo?.name,
+    });
   };
   const handleBoardSearchComponent = (
     <TouchableHighlight
@@ -283,18 +289,16 @@ console.log(boardInfo)
   );
   return (
     <>
-      {reportModalVisible && (
-        <SelectModalBottom
-          modalVisible={reportModalVisible}
-          setModalVisible={setReportModalVisible}
-          title={`게시판 신고`}
-          purpleButtonText="신고하기"
-          reportId={boardInfo?.id}
-          reportFunc={reportBoard}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setReportModalVisible(false)}
-        />
-      )}
+      <SelectModalBottom
+        modalVisible={reportModalVisible}
+        setModalVisible={setReportModalVisible}
+        title={`게시판 신고`}
+        purpleButtonText="신고하기"
+        reportId={boardInfo?.id}
+        reportFunc={reportBoard}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setReportModalVisible(false)}
+      />
       <View style={{flex: 1}}>
         <View
           style={{
@@ -369,39 +373,46 @@ console.log(boardInfo)
           </SafeAreaView>
         ) : (
           <>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            style={{flex: 1, backgroundColor: '#FFFFFF'}}
-            data={boardDetail}
-            renderItem={({item, index}) => (
-              <TouchableOpacity
-                onPress={async () => {
-                  navigation.navigate('PostScreen', {
-                    postId: item.postId
-                  });
-                }}>
-                <PostItem post={item} boardId={boardInfo?.id}/>
-              </TouchableOpacity>
-            )}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-            )}
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                colors={['#A055FF']} // for android
-                tintColor={'#A055FF'} // for ios
-              />
-            }
-            onEndReached={fetchNextPage}
-            onEndReachedThreshold={0.8}
-          />
-          <View style={{backgroundColor: '#FFFFFF'}}>
-          {isNextPageLoading && <ActivityIndicator size="large" color={'#A055FF'} animating={isNextPageLoading} style={{zIndex: 100}} />}
-        </View>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              style={{flex: 1, backgroundColor: '#FFFFFF'}}
+              data={boardDetail}
+              renderItem={({item, index}) => (
+                <TouchableOpacity
+                  onPress={async () => {
+                    navigation.navigate('PostScreen', {
+                      postId: item.postId,
+                    });
+                  }}>
+                  <PostItem post={item} boardId={boardInfo?.id} />
+                </TouchableOpacity>
+              )}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={fetchNextPage}
+              onEndReachedThreshold={0.8}
+            />
+            <View style={{backgroundColor: '#FFFFFF'}}>
+              {isNextPageLoading && (
+                <ActivityIndicator
+                  size="large"
+                  color={'#A055FF'}
+                  animating={isNextPageLoading}
+                  style={{zIndex: 100}}
+                />
+              )}
+            </View>
           </>
         )}
         {!isHotBoard && (

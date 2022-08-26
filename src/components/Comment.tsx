@@ -63,25 +63,20 @@ const Comment = ({
   console.log(comment);
   const handleCommentDeleteComponent = (
     <>
-      {modalVisible && (
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          content={`작성한 댓글을 삭제하시겠습니까?`}
-          purpleButtonText="삭제"
-          purpleButtonFunc={() => {
-            handleCommentDelete(data.id);
-            setModalVisible(false);
-            Toast.show(
-              '작성하신 댓글이 성공적으로 삭제되었습니다.',
-              Toast.SHORT,
-            );
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setModalVisible(false)}
-          setDim={false}
-        />
-      )}
+      <ModalBottom
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        content={`작성한 댓글을 삭제하시겠습니까?`}
+        purpleButtonText="삭제"
+        purpleButtonFunc={() => {
+          handleCommentDelete(data.id);
+          setModalVisible(false);
+          Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.SHORT);
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setModalVisible(false)}
+        setDim={false}
+      />
       <Pressable
         onPress={() => {
           setModalVisible(true);
@@ -93,19 +88,17 @@ const Comment = ({
   );
   const handleCommentReportComponent = (
     <>
-      {reportModalVisible && (
-        <SelectModalBottom
-          modalVisible={reportModalVisible}
-          setModalVisible={setReportModalVisible}
-          title={`댓글 신고`}
-          purpleButtonText="신고하기"
-          reportId={data.id}
-          reportFunc={handleCommentReport}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setReportModalVisible(false)}
-          setDim={false}
-        />
-      )}
+      <SelectModalBottom
+        modalVisible={reportModalVisible}
+        setModalVisible={setReportModalVisible}
+        title={`댓글 신고`}
+        purpleButtonText="신고하기"
+        reportId={data.id}
+        reportFunc={handleCommentReport}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setReportModalVisible(false)}
+        setDim={false}
+      />
       {data?.isReported ? (
         <Pressable
           onPress={() => {
