@@ -52,7 +52,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 function QuestionList({navigation, route}: Props) {
-  const [questionList, setQuestionList] = useState<QuestionListDto[]>();
+  const [questionList, setQuestionList] = useState<QuestionListDto[]>([]);
   const [deleteMode, setDeleteMode] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(
@@ -128,7 +128,7 @@ function QuestionList({navigation, route}: Props) {
                 style={{
                   color: '#FF6060',
                   opacity: deleteButtonEnabled ? 1 : 0.3,
-                  fontSize: 17
+                  fontSize: 17,
                 }}>
                 삭제
               </Text>
@@ -322,10 +322,12 @@ function QuestionList({navigation, route}: Props) {
           );
           const qList = await getQuestionList(currentPage);
           setQuestionList(qList);
-          Toast.show('문의가 성공적으로 삭제되었습니다', Toast.SHORT);
+          setDeleteModalVisible(false);
+          setTimeout(function () {
+            Toast.show('문의가 성공적으로 삭제되었습니다', Toast.SHORT);
+          }, 100);
           setIsLoading(false);
           setDeleteMode(false);
-          setDeleteModalVisible(false);
         }}
         whiteButtonFunc={() => {
           setDeleteModalVisible(false);
