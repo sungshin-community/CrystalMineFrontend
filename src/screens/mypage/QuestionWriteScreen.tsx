@@ -41,7 +41,9 @@ function RequestWriteScreen({navigation}: Props) {
     const result = await writeQuestion(title, content, images);
     if (result) {
       navigation.navigate('QuestionList');
-      Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('문의하신 내용이 정상적으로 접수되었습니다.', Toast.SHORT);
+      }, 100);
     }
     setIsLoading(false);
   };
@@ -66,7 +68,7 @@ function RequestWriteScreen({navigation}: Props) {
     });
   }, [navigation, title, content]);
 
-   const onSelectImage = () => {
+  const onSelectImage = () => {
     console.log('image press');
     launchImageLibrary(
       {
@@ -81,7 +83,9 @@ function RequestWriteScreen({navigation}: Props) {
         }
         let tempImages: Asset[] = [...images, ...res.assets];
         if (tempImages.length > 10) {
-          Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
+          setTimeout(function () {
+            Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
+          }, 100);
           setImages(tempImages?.slice(0, 10));
         } else {
           setImages(tempImages);
@@ -158,34 +162,36 @@ function RequestWriteScreen({navigation}: Props) {
           <View style={{paddingHorizontal: 24}}>
             <View style={styles.image}>
               <ImageIcon />
-              <Text style={[fontMedium, styles.imageText]}>이미지 ({images.length} / 10)</Text>
+              <Text style={[fontMedium, styles.imageText]}>
+                이미지 ({images.length} / 10)
+              </Text>
             </View>
-           <ScrollView horizontal={true}>
-                <View style={{flexDirection: 'row'}}>
-                  {images?.length !== 0 &&
-                    images?.map((asset, index) => (
-                      <ImageDelete
-                        key={index}
-                        imageUri={asset.uri}
-                        deleteImage={deleteImage}
-                      />
-                    ))}
-                  <TouchableOpacity
-                    onPress={() => onSelectImage()}
-                    style={[
-                      styles.imageSelectBox,
-                      styles.imageBox,
-                      {marginTop: 5},
-                    ]}>
-                    <View>
-                      <PhotoIcon />
-                      <Text style={[fontMedium, styles.count]}>
-                        {images?.length}/10
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
+            <ScrollView horizontal={true}>
+              <View style={{flexDirection: 'row'}}>
+                {images?.length !== 0 &&
+                  images?.map((asset, index) => (
+                    <ImageDelete
+                      key={index}
+                      imageUri={asset.uri}
+                      deleteImage={deleteImage}
+                    />
+                  ))}
+                <TouchableOpacity
+                  onPress={() => onSelectImage()}
+                  style={[
+                    styles.imageSelectBox,
+                    styles.imageBox,
+                    {marginTop: 5},
+                  ]}>
+                  <View>
+                    <PhotoIcon />
+                    <Text style={[fontMedium, styles.count]}>
+                      {images?.length}/10
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
