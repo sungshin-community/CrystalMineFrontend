@@ -14,15 +14,15 @@ import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import Toast from 'react-native-simple-toast';
 import PostListScreen from '../post/PostListScreen';
-import { logout } from '../../common/authApi';
-import { getHundredsDigit } from '../../common/util/statusUtil';
+import {logout} from '../../common/authApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
-  PostSearch: {boardId: number, boardName: string};
+  PostSearch: {boardId: number; boardName: string};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -51,14 +51,21 @@ function WikiTab({navigation, route}: Props) {
           onPress={async () => {
             const response = await toggleBoardPin(route.params.boardId);
             if (response.status === 401) {
-              Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show(
+                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                  Toast.SHORT,
+                );
+              }, 100);
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(response.status) === 2) {
               const boardUpdate = await getBoardInfo(route.params.boardId);
               setBoardInfo(boardUpdate);
             } else {
-              Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              }, 100);
             }
           }}>
           {boardInfo?.isOwner ? (
@@ -98,7 +105,10 @@ function WikiTab({navigation, route}: Props) {
       }}
       underlayColor="#EEEEEE"
       onPress={() =>
-        navigation.navigate('PostSearch', {boardId: boardInfo?.id, boardName: boardInfo?.name})
+        navigation.navigate('PostSearch', {
+          boardId: boardInfo?.id,
+          boardName: boardInfo?.name,
+        })
       }>
       <SearchIcon />
     </TouchableHighlight>
