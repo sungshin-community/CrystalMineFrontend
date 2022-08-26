@@ -64,7 +64,7 @@ const LabScreen = () => {
             fontFamily: 'SpoqaHanSansNeo-Regular',
             textAlign: 'center',
             lineHeight: 22.5,
-            marginTop: 20,
+            marginTop: 10,
           }}>
           저를 드래그 해주세요!
         </Text>
