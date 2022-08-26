@@ -37,7 +37,6 @@ const LabScreen = () => {
             fontFamily: 'SpoqaHanSansNeo-Regular',
             textAlign: 'center',
             lineHeight: 22.5,
-            marginTop: 20,
           }}>
           두근두근 수정광산 실험실!{'\n'}
           어떤 기능들이 준비되고 있을까요?
@@ -65,6 +64,7 @@ const LabScreen = () => {
             textAlign: 'center',
             lineHeight: 22.5,
             marginTop: 10,
+            marginBottom: 60
           }}>
           저를 드래그 해주세요!
         </Text>
