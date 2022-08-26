@@ -340,10 +340,10 @@ export const setPostScrap = async (postId: number) => {
 export const setUserMute = async (postId: number) => {
   try {
     const response = await client.post<Response<null>>(`/block/${postId}`);
-    return true;
+    return response;
   } catch (e) {
-    console.log('여기는 setUserMute 함수', e);
-    return false;
+    console.log('여기는 setUserMute 함수', e.response);
+    return e.response;
   }
 };
 // 게시글 신고

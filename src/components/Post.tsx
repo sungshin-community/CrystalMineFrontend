@@ -130,8 +130,18 @@ function Post({
         setModalVisible={setMuteModalVisible}
         content={`해당 이용자를 피드에서 숨기시겠습니까? \n해당 이용자가 작성한 모든 글이 숨김 처리 되며, \n이 기능은 취소할 수 없습니다.`}
         purpleButtonText="해당 이용자의 게시글 숨기기"
-        purpleButtonFunc={() => {
-          if (handleMuteUser(data.postId)) {
+        purpleButtonFunc={async () => {
+          const result = await setUserMute(data.postId);
+          if (result.status === 401) {
+            setTimeout(function () {
+              Toast.show(
+                '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                Toast.SHORT,
+              );
+            }, 100);
+            logout();
+            navigation.reset({routes: [{name: 'SplashHome'}]});
+          } else if (getHundredsDigit(result.code) === 2) {
             setTimeout(function () {
               Toast.show(
                 '해당 이용자의 게시글이 모두 숨김처리 됐습니다.',
@@ -140,6 +150,16 @@ function Post({
             }, 100);
             setMuteModalVisible(false);
             navigation.pop();
+          } else if (result.data.code === 'USER_BLOCK_FAIL_ADMIN') {
+            setTimeout(function () {
+              Toast.show('관리자의 게시글은 숨길 수 없습니다.', Toast.SHORT);
+            }, 100);
+            setMuteModalVisible(false);
+          } else if (result.data.code === 'BLOCK_DUPLICATION') {
+            setTimeout(function () {
+              Toast.show('이미 숨김처리 된 게시글입니다. ', Toast.SHORT);
+            }, 100);
+            setMuteModalVisible(false);
           } else {
             setTimeout(function () {
               Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);

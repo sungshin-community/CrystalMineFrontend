@@ -191,8 +191,10 @@ const PostScreen = ({navigation, route}: Props) => {
   // 이용자 차단, 이용자 뮤트
   const handleMuteUser = async (postId: number) => {
     const result = await setUserMute(postId);
-    if (result) return true;
-    else return false;
+    console.log('>>', result.data.code, result.status)
+    // if (result) return true;
+    // else return false;
+    return result
   }
   // 게시글 신고
   const handlePostReport = async (
