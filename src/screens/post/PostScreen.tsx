@@ -155,21 +155,23 @@ const PostScreen = ({navigation, route}: Props) => {
       setPost(result.data.data);
     } else if (result.data.code === 'BOARD_ALREADY_BLIND') {
       setTimeout(function () {
-        Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+        Toast.show('블라인드된 게시판입니다.', Toast.SHORT);
       }, 100);
       navigation.goBack();
-    } else if (
-      result.data.code === 'POST_NOT_FOUND' ||
-      result.data.code === 'POST_ALREADY_DELETED'
-    ) {
+    } else if (result.data.code === 'POST_NOT_FOUND') {
       result.data;
       setTimeout(function () {
-        Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.SHORT);
+        Toast.show('삭제되었거나 블라인드된 게시글입니다.', Toast.SHORT);
       }, 100);
       navigation.goBack();
     } else if (result.data.code === 'BOARD_ALREADY_DELETED') {
       setTimeout(function () {
         Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+      }, 100);
+      navigation.goBack();
+    } else if (result.data.code === 'POST_ALREDY_BLOCK') {
+      setTimeout(function () {
+        Toast.show('숨김처리된 게시글입니다.', Toast.SHORT);
       }, 100);
       navigation.goBack();
     } else {
