@@ -26,7 +26,7 @@ import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
 import {logout, resetPassword} from '../../../common/authApi';
 import {ModalBottom} from '../../../components/ModalBottom';
 import Toast from 'react-native-simple-toast';
-import { getHundredsDigit } from '../../../common/util/statusUtil';
+import {getHundredsDigit} from '../../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -84,7 +84,7 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
   };
 
   const resetPasswordConfirm = async () => {
-     let result = await resetPassword({
+    let result = await resetPassword({
       username: route.params.username,
       password: route.params.previousPassword,
     });
@@ -93,7 +93,10 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(result.status) === 2) {
       setModalVisible(true);
-    } else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+    } else
+      setTimeout(function () {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
   };
 
   const onKeyboardDidshow = (e: KeyboardEvent) => {
@@ -111,8 +114,7 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
   }, []);
 
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1, backgroundColor: '#fff'}}>
+    <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
       <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
         <TextContainer>
           <TwoLineTitle

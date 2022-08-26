@@ -184,7 +184,9 @@ export default function InputPassword({navigation, route}: Props) {
               } else if (result.data.code === 'PASSWORD_NOT_MATCH') {
                 setIsChangeable(false);
               } else {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }, 100);
               }
             }}
           />
@@ -201,7 +203,9 @@ export default function InputPassword({navigation, route}: Props) {
               } else if (result.data.code === 'PASSWORD_NOT_MATCH') {
                 setIsChangeable(false);
               } else {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }, 100);
               }
             }}
           />
