@@ -153,7 +153,6 @@ const PostScreen = ({navigation, route}: Props) => {
       navigation.reset({routes: [{name: 'SplashHome'}]});
     } else if (getHundredsDigit(result.status) === 2) {
       setPost(result.data.data);
-      console.log('post', post, 'result.data.data', result.data.data);
     } else if (result.data.code === 'BOARD_ALREADY_BLIND') {
       setTimeout(function () {
         Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
@@ -208,7 +207,6 @@ const PostScreen = ({navigation, route}: Props) => {
   // 이용자 차단, 이용자 뮤트
   const handleMuteUser = async (postId: number) => {
     const result = await setUserMute(postId);
-    console.log('>>', result.data.code, result.status);
     // if (result) return true;
     // else return false;
     return result;
@@ -395,7 +393,6 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
             handlePostDelete={handlePostDelete}
-            handleMuteUser={handleMuteUser}
             handlePostReport={handlePostReport}
             componentModalVisible={componentModalVisible}
             setComponentModalVisible={setComponentModalVisible}></Post>

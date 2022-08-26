@@ -45,7 +45,6 @@ interface Props {
   handlePostLike: any;
   handlePostScrap: any;
   handlePostDelete?: any;
-  handleMuteUser?: any;
   handlePostReport?: any;
   componentModalVisible?: boolean;
   setComponentModalVisible?: any;
@@ -56,7 +55,6 @@ function Post({
   handlePostLike,
   handlePostScrap,
   handlePostDelete,
-  handleMuteUser,
   handlePostReport,
   setComponentModalVisible,
 }: Props) {
@@ -141,7 +139,7 @@ function Post({
             }, 100);
             logout();
             navigation.reset({routes: [{name: 'SplashHome'}]});
-          } else if (getHundredsDigit(result.code) === 2) {
+          } else if (getHundredsDigit(result.status) === 2) {
             setTimeout(function () {
               Toast.show(
                 '해당 이용자의 게시글이 모두 숨김처리 됐습니다.',
