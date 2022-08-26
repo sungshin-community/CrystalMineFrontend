@@ -167,10 +167,14 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
     setValue('');
     let result: boolean = await sendEmail();
     if (result) {
-      Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
+      }, 100);
       console.log('이메일 재발송 성공');
     } else {
-      Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('메일 전송을 실패했습니다.', Toast.SHORT);
+      }, 100);
       console.log('이메일 재발송 실패');
     }
     setSecondsLeft(TIME);
@@ -250,9 +254,9 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
         <View
           style={{
             paddingBottom: isFocused
-              ? (Platform.OS == 'ios'
+              ? Platform.OS == 'ios'
                 ? keyboardHeight
-                : 0)
+                : 0
               : 34,
             justifyContent: 'center',
             alignItems: 'center',
@@ -264,14 +268,18 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               onClick={async () => {
                 let result = await checkAuthNumber(value);
                 if (result.status === 401) {
-                  Toast.show(
-                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                    Toast.SHORT,
-                  );
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
-                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.navigate('MyPage');
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
@@ -282,7 +290,12 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}></PurpleFullButton>
           )}
@@ -292,14 +305,18 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               onClick={async () => {
                 let result = await checkAuthNumber(value);
                 if (result.status === 401) {
-                  Toast.show(
-                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                    Toast.SHORT,
-                  );
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(result.status) === 2) {
-                  Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                  }, 100);
                   navigation.navigate('MyPage');
                 } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.data.attemptCount);
@@ -310,7 +327,12 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                 } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
                 }
               }}></PurpleRoundButton>
           )}
