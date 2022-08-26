@@ -42,16 +42,20 @@ function CreateBoard({navigation}: Props) {
     const result = await createBoard(boardName, boardIntroduction, hotable);
     setIsLoading(false);
     if (result.code === 'CREATE_BOARD_SUCCESS') {
-      Toast.show('게시판을 성공적으로 생성했습니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('게시판을 성공적으로 생성했습니다.', Toast.SHORT);
+      }, 100);
       navigation.pop();
       navigation.pop();
-      navigation.navigate('PostListScreen', { boardId: result.data.id });
-    }
-    else if (result.code === 'BOARD_NAME_DUPLICATION') {
-      Toast.show('이미 존재하는 게시판 이름입니다. ', Toast.SHORT);
-    }
-    else 
-      Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      navigation.navigate('PostListScreen', {boardId: result.data.id});
+    } else if (result.code === 'BOARD_NAME_DUPLICATION') {
+      setTimeout(function () {
+        Toast.show('이미 존재하는 게시판 이름입니다. ', Toast.SHORT);
+      }, 100);
+    } else
+      setTimeout(function () {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
   };
   useEffect(() => {
     navigation.setOptions({
@@ -75,15 +79,29 @@ function CreateBoard({navigation}: Props) {
 
   return (
     <>
-      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
       </View>
       <View style={styles.container}>
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
           <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
           <TextInput
             placeholder="게시판 이름은 공백포함 15글자까지 입력 가능합니다."
-            placeholderTextColor='#D5DBE1'
+            placeholderTextColor="#D5DBE1"
             value={boardName}
             autoCorrect={false}
             onChangeText={value => {
@@ -95,7 +113,7 @@ function CreateBoard({navigation}: Props) {
                 );
             }}
             maxLength={15}
-            style={{ fontSize: 15, paddingVertical: 20 }}
+            style={{fontSize: 15, paddingVertical: 20}}
             numberOfLines={1}
           />
           <View
@@ -110,7 +128,7 @@ function CreateBoard({navigation}: Props) {
             <TextInput
               textAlignVertical="top"
               placeholder="게시판 설명은 공백포함 22글자까지 입력 가능합니다."
-              placeholderTextColor='#D5DBE1'
+              placeholderTextColor="#D5DBE1"
               value={boardIntroduction}
               autoCorrect={false}
               onChangeText={value => {
