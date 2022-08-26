@@ -43,7 +43,9 @@ function MyCommentSearch({navigation, route}: Props) {
       const searchWords = await saveRecentSearchWord(text.trim(), 'recentMyCommentSearch');
       setRecentSearchWords(searchWords);
     } else {
-      Toast.show('공백은 검색이 불가능합니다.', Toast.SHORT);
+      setTimeout(function () {
+        Toast.show('공백은 검색이 불가능합니다.', Toast.SHORT);
+      }, 100);
     }
   }
 
