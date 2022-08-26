@@ -54,13 +54,17 @@ export default function BoardList({ items, moveToBoard, isInited, onUpdate }: Pr
                 if (item.id === 1) return;
                 const response = await toggleBoardPin(item.id);
                 if (response.status === 401) {
-                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                  }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
                 } else if (getHundredsDigit(response.status) === 2) {
                   onUpdate();
                 } else {
-                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  setTimeout(function () {
+                    Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                  }, 100);
                 }}
             }>
               {item.type !== 'PUBLIC' ? (
@@ -126,13 +130,17 @@ export function OfficialBoardList({ items, onUpdate, moveToBoard, isInited }: Pr
               if (item.id === 1) return;
               const response = await toggleBoardPin(item.id);
               if (response.status === 401) {
-                Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                }, 100);
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(response.status) === 2) {
                 onUpdate();
               } else {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                setTimeout(function () {
+                  Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                }, 100);
               }
             }}
             style={{height: 61, justifyContent: 'center', 
@@ -214,13 +222,17 @@ export function CustomBoardList({ items, onUpdate, moveToBoard, isInited }: Prop
                   if (item.id === 1) return;
                   const response = await toggleBoardPin(item.id);
                   if (response.status === 401) {
-                    Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+                    setTimeout(function () {
+                      Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);                   
+                    }, 100);
                     logout();
                     navigation.reset({routes: [{name: 'SplashHome'}]});
                   } else if (getHundredsDigit(response.status) === 2) {
                     onUpdate();
                   } else {
-                    Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+                    setTimeout(function () {
+                      Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);            
+                    }, 100);
                   }
                 }}
                 style={{height: 61, justifyContent: 'center', 

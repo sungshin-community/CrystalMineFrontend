@@ -122,7 +122,7 @@ function Post({
         setModalVisible={setReportModalVisible}
         title={`게시글 신고`}
         purpleButtonText="신고하기"
-        reportId={data.postId}
+        reportId={data?.postId}
         reportFunc={handlePostReport}
         whiteButtonText="취소"
         whiteButtonFunc={() => setReportModalVisible(false)}

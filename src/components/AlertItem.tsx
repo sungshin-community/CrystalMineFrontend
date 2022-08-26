@@ -10,11 +10,17 @@ import AlertCommentIcon from '../../resources/icon/AlertCommentIcon';
 import AlertHotPostIcon from '../../resources/icon/AlertHotPostIcon';
 import {readNotification} from '../common/homeApi';
 import Toast from 'react-native-simple-toast';
-import { Alert } from '../classes/AlertDto';
-import React, { useState } from 'react';
-import { Dimensions, Pressable, Text, TouchableOpacity, View } from 'react-native';
-import { fontBold, fontMedium, fontRegular } from '../common/font';
-import { ModalBottom } from './ModalBottom';
+import {Alert} from '../classes/AlertDto';
+import React, {useState} from 'react';
+import {
+  Dimensions,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {fontBold, fontMedium, fontRegular} from '../common/font';
+import {ModalBottom} from './ModalBottom';
 
 interface AlertProps {
   data: Alert;
@@ -41,7 +47,11 @@ const AlertItem = ({
         }}
         onPress={async () => {
           // 정회원 관련 알림은 읽음 처리 안 해야 함
-          if (data.type !== 'BEFORE_EXPIRE' && data.type !== 'EXPIRE' && data.type !== 'NOT_AUTHENTICATED') {
+          if (
+            data.type !== 'BEFORE_EXPIRE' &&
+            data.type !== 'EXPIRE' &&
+            data.type !== 'NOT_AUTHENTICATED'
+          ) {
             await readNotification(data.id);
           }
           if (data.type === 'WELCOME') {
@@ -113,14 +123,25 @@ const AlertItem = ({
               setModalBody(itemContent);
               setBlindModalVisible(true);
             } else if (data.type === 'BOARD_BLIND' && !data.blind)
-              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+              }, 100);
             else if (data.type === 'PIN_BOARD_BLIND' && !data.blind)
-              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+              }, 100);
             else if (data.type === 'POST_BLIND' && !data.blind)
-              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+              }, 100);
             else if (data.type === 'COMMENT_BLIND' && !data.blind)
-              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
-            else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+              }, 100);
+            else
+              setTimeout(function () {
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              }, 100);
           } else if (
             data.type === 'DELETE_BOARD_BLIND' ||
             data.type === 'DELETE_POST_BLIND' ||
@@ -166,13 +187,26 @@ const AlertItem = ({
               setModalBody(itemContent);
               setBlindModalVisible(true);
             } else if (data.type === 'DELETE_BOARD_BLIND' && !data.deleteBlind)
-              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+              }, 100);
             else if (data.type === 'DELETE_POST_BLIND' && !data.deleteBlind)
-              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+              setTimeout(function () {
+                Toast.show('삭제된 게시글입니다.', Toast.SHORT);
+              }, 100);
             else if (data.type === 'DELETE_COMMENT_BLIND' && !data.deleteBlind)
-              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
-            else Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-          } else if (data.type === 'HOT_POST' || data.type === 'COMMENT' || data.type === 'RECOMMENT') {
+              setTimeout(function () {
+                Toast.show('삭제된 댓글입니다.', Toast.SHORT);
+              }, 100);
+            else
+              setTimeout(function () {
+                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+              }, 100);
+          } else if (
+            data.type === 'HOT_POST' ||
+            data.type === 'COMMENT' ||
+            data.type === 'RECOMMENT'
+          ) {
             navigation.navigate('PostScreen', {postId: data.postId});
           }
         }}>
@@ -194,7 +228,14 @@ const AlertItem = ({
           <Text
             ellipsizeMode={'tail'}
             numberOfLines={1}
-            style={[{fontSize: 16, marginBottom: 5, width: Dimensions.get('window').width - 100}, fontMedium]}>
+            style={[
+              {
+                fontSize: 16,
+                marginBottom: 5,
+                width: Dimensions.get('window').width - 100,
+              },
+              fontMedium,
+            ]}>
             {data.title}
           </Text>
           <Text
