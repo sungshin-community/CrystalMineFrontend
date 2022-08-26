@@ -308,10 +308,10 @@ export const getPosts = async (postId: number) => {
   try {
     const response = await client.get<Response<null>>(`/posts/${postId}`);
     console.log('getPosts 함수 성공', response.data);
-    return response.data.data;
+    return response;
   } catch (e) {
     console.log('여기는 getPosts 함수', e.response.data);
-    return e.response.data;
+    return e.response;
   }
 };
 // 게시글 공감

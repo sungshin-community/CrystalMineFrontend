@@ -140,47 +140,64 @@ const PostScreen = ({navigation, route}: Props) => {
       </View>
     );
   };
+  const getPostsFunc = async () => {
+    const result = await getPosts(route.params.postId);
+    if (result.status === 401) {
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(result.status) === 2) {
+      setPost(result.data.data);
+      console.log('post', post, 'result.data.data', result.data.data);
+    } else if (result.data.code === 'BOARD_ALREADY_BLIND') {
+      setTimeout(function () {
+        Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+      }, 100);
+      navigation.goBack();
+    } else if (
+      result.data.code === 'POST_NOT_FOUND' ||
+      result.data.code === 'POST_ALREADY_DELETED'
+    ) {
+      result.data;
+      setTimeout(function () {
+        Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.SHORT);
+      }, 100);
+      navigation.goBack();
+    } else if (result.data.code === 'BOARD_ALREADY_DELETED') {
+      setTimeout(function () {
+        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+      }, 100);
+      navigation.goBack();
+    } else {
+      setTimeout(function () {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
+      navigation.goBack();
+    }
+  };
 
   // 초기화
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      const postData = await getPosts(route.params.postId);
-      if (postData.code === 'BOARD_ALREADY_BLIND') {
-        setTimeout(function () {
-          Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
-        }, 100);
-        navigation.goBack();
-      } else if (
-        postData.code === 'POST_NOT_FOUND' ||
-        postData.code === 'POST_ALREADY_DELETED'
-      ) {
-        setTimeout(function () {
-          Toast.show('작성자에 의해 삭제된 게시글입니다.', Toast.SHORT);
-        }, 100);
-        navigation.goBack();
-      } else setPost(postData);
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
-      setIsLoading(false);
+      getPostsFunc();
     }
     init();
   }, [componentModalVisible]);
   // 게시글 공감
   const handlePostLike = async (postId: number) => {
     const result = await setPostLike(postId);
-    const postData = await getPosts(route.params.postId);
-    setPost(postData);
-    // const commentData = await getComments(route.params.postId);
-    // setComments(commentData);
+    getPostsFunc();
   };
   // 게시글 스크랩
   const handlePostScrap = async (postId: number) => {
     const result = await setPostScrap(postId);
-    const postData = await getPosts(route.params.postId);
-    setPost(postData);
-    // const commentData = await getComments(route.params.postId);
-    // setComments(commentData);
+    getPostsFunc();
   };
   // 게시글 삭제
   const handlePostDelete = async (postId: number) => {
@@ -191,11 +208,11 @@ const PostScreen = ({navigation, route}: Props) => {
   // 이용자 차단, 이용자 뮤트
   const handleMuteUser = async (postId: number) => {
     const result = await setUserMute(postId);
-    console.log('>>', result.data.code, result.status)
+    console.log('>>', result.data.code, result.status);
     // if (result) return true;
     // else return false;
-    return result
-  }
+    return result;
+  };
   // 게시글 신고
   const handlePostReport = async (
     postId: number,
@@ -203,8 +220,7 @@ const PostScreen = ({navigation, route}: Props) => {
     detail?: string,
   ) => {
     const result = await reportPost(postId, reasonId, detail);
-    const postData = await getPosts(route.params.postId);
-    setPost(postData);
+    getPostsFunc();
     return result;
   };
   // 댓글 생성
@@ -223,8 +239,7 @@ const PostScreen = ({navigation, route}: Props) => {
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setNewComment('');
-        const postData = await getPosts(route.params.postId);
-        setPost(postData);
+        getPostsFunc();
         const commentData = await getComments(route.params.postId);
         setComments(commentData);
         scrollViewRef.current?.scrollToEnd({animated: true});
@@ -266,8 +281,7 @@ const PostScreen = ({navigation, route}: Props) => {
         console.log('대댓글 추가 성공');
         setIsRecomment(false);
         setNewComment('');
-        const postData = await getPosts(route.params.postId);
-        setPost(postData);
+        getPostsFunc();
         const commentData = await getComments(route.params.postId);
         setComments(commentData);
         const index = comments?.findIndex(c => c.id === parentId);
@@ -291,16 +305,14 @@ const PostScreen = ({navigation, route}: Props) => {
   // 댓글, 대댓글 공감
   const handleCommentLike = async (commentId: number) => {
     const result = await setCommentLike(commentId);
-    const postData = await getPosts(route.params.postId);
-    setPost(postData);
+    getPostsFunc();
     const commentData = await getComments(route.params.postId);
     setComments(commentData);
   };
   // 댓글, 대댓글 삭제
   const handleCommentDelete = async (commentId: number) => {
     const result = await deleteComment(commentId);
-    const postData = await getPosts(route.params.postId);
-    setPost(postData);
+    getPostsFunc();
     const commentData = await getComments(route.params.postId);
     setComments(commentData);
   };
