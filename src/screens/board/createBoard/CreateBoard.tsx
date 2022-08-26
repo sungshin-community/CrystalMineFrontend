@@ -36,8 +36,13 @@ function CreateBoard({navigation}: Props) {
   const [boardIntroduction, setBoardIntroduction] = useState<string>('');
   const [hotable, setHotable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
 
-  const onSubmitPress = async () => {
+  const onSubmitPress = async (
+    boardName: string,
+    boardIntroduction: string,
+    hotable: boolean,
+  ) => {
     setIsLoading(true);
     const result = await createBoard(boardName, boardIntroduction, hotable);
     setIsLoading(false);
@@ -57,12 +62,23 @@ function CreateBoard({navigation}: Props) {
         Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
       }, 100);
   };
+
+  useEffect(() => {
+    if (isSubmitState) {
+      onSubmitPress(boardName, boardIntroduction, hotable);
+    }
+    setIsSubmitState(false);
+  }, [hotable, boardIntroduction, isSubmitState]);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (boardName && boardIntroduction) onSubmitPress();
+            if (boardName && boardIntroduction) {
+              setIsSubmitState(true);
+              console.log('isSubmitState', isSubmitState);
+            }
           }}>
           <Text
             style={[
