@@ -187,6 +187,9 @@ const PostScreen = ({navigation, route}: Props) => {
     async function init() {
       setIsLoading(true);
       getPostsFunc();
+      const commentData = await getComments(route.params.postId);
+      setComments(commentData);
+      setIsLoading(false);
     }
     init();
   }, [componentModalVisible]);
