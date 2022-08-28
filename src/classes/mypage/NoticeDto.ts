@@ -10,7 +10,9 @@ export class NoticeDto {
   id: number = 0;
   title: string = '';
   content: string = '';
-  images: Images[] = [];
+  thumbnails: string[] = [];
+  images: string[] = [];
+  // images: Images[] = [];
   isNew: boolean = false;
   createdAt: string = '';
 }
