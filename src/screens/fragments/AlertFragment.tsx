@@ -23,6 +23,7 @@ import AlertDto, {Alert} from '../../classes/AlertDto';
 import {ModalBottom} from '../../components/ModalBottom';
 import AlertItem from '../../components/AlertItem';
 import {AlertWorkIcon} from '../../../resources/icon/AlertItemIcon';
+import WaterMark from '../../components/WaterMark';
 
 const AlertFragment = () => {
   const [alerts, setAlerts] = useState<Alert[]>();
@@ -80,6 +81,7 @@ const AlertFragment = () => {
   );
   return (
     <>
+      <WaterMark/>
       {blindModalVisible ? (
         <View
           style={{

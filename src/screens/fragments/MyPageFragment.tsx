@@ -30,6 +30,7 @@ import Toast from 'react-native-simple-toast';
 import { getHundredsDigit } from '../../common/util/statusUtil';
 import Error from '../../components/Error';
 import { fontRegular } from '../../common/font';
+import WaterMark from '../../components/WaterMark';
 
 const styles = StyleSheet.create({
   menu: {
@@ -116,6 +117,7 @@ const MyPageFragment = ({navigation}: Props) => {
   return (
     isError ? <Error status={errorStatus} code={'M001'} /> :
       <>
+    <WaterMark/>
     <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
       <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
         <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />

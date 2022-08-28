@@ -20,6 +20,7 @@ import {useState} from 'react';
 import {getAgreementsWithDate} from '../../../common/myPageApi';
 import { AgreementWithDate } from '../../../classes/Agreement';
 import Markdown from 'react-native-markdown-display';
+import WaterMark from '../../../components/WaterMark';
 type RootStackParamList = {
   Announcement: undefined;
 };
@@ -82,9 +83,12 @@ function TermsOfService({navigation}: Props) {
 
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
-      {data?.map((item, index) => (<SpreadList key={index} id={index} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
-    </SafeAreaView>
+    <>
+      <WaterMark/>
+      <SafeAreaView style={{ backgroundColor: '#E5E5E5' }}>
+        {data?.map((item, index) => (<SpreadList key={index} id={index} title={item.title} agreementDate={item.agreementDate} content={item.content}  ></SpreadList>))}
+      </SafeAreaView>
+    </>
   );
 }
 

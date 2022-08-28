@@ -14,6 +14,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import {getUsageRestrictions} from '../../../common/myPageApi';
 import UsageRestrictionsDto from '../../../classes/mypage/UsageRestrictionsDto';
+import WaterMark from '../../../components/WaterMark';
 type RootStackParamList = {
   Announcement: undefined;
 };
@@ -50,6 +51,7 @@ function UsageRestrictions({navigation}: Props) {
 
   return (
     <>
+      <WaterMark/>
         <View
           style={{
             position: 'absolute',

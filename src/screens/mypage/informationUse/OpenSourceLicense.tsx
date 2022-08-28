@@ -46,6 +46,7 @@ export function LicenseSpreadList({ id, title, agreementDate, content}: any) {
   const [isSpread, setIsSpread] = useState<boolean>(false);
   return (
     <>
+      <WaterMark/>
       <Pressable
         key={id}
         onPress={() => setIsSpread(!isSpread)}

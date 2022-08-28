@@ -15,6 +15,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import NoticeListDto from '../../../classes/mypage/NoticeDto';
 import {getNoticeList} from '../../../common/myPageApi';
+import WaterMark from '../../../components/WaterMark';
 type RootStackParamList = {
   Notice: {noticeId: number};
 };
@@ -51,6 +52,7 @@ function NoticeList({navigation}: Props) {
   };
   return (
     <>
+      <WaterMark/>
       <View
         style={{
           position: 'absolute',

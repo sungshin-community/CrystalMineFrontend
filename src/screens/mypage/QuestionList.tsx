@@ -45,6 +45,7 @@ import Toast from 'react-native-simple-toast';
 import PostItem from '../../components/PostItem';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useNavigation} from '@react-navigation/native';
+import WaterMark from '../../components/WaterMark';
 
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
@@ -184,6 +185,7 @@ function QuestionList({navigation, route}: Props) {
 
   return (
     <>
+      <WaterMark/>
       <View style={{flex: 1}}>
         <View
           style={{
