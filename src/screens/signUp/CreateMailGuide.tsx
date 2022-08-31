@@ -117,7 +117,7 @@ export const CreateMailGuide = () => {
           <Text style={[fontMedium, {fontSize: 15, marginRight: 7}]}>03</Text>
           <View>
             <Text style={[fontRegular, {fontSize: 15, marginBottom: 5}]}>
-              졸업생인데, 성신 G-mail 계정이 없어요!
+              성신 G-mail 계정이 있는데, 학번이 아니에요!
             </Text>
           </View>
         </View>
