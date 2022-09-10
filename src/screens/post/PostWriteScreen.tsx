@@ -340,7 +340,7 @@ function PostWriteScreen({navigation, route}: Props) {
                         Toast.SHORT,
                       );
                   }}
-                  maxLength={23}
+                  maxLength={20}
                   style={[fontMedium, styles.title]}
                 />
                 <View
