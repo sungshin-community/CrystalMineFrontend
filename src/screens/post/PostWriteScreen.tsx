@@ -357,13 +357,13 @@ function PostWriteScreen({navigation, route}: Props) {
                 multiline={true}
                 onChangeText={value => {
                   setContent(value);
-                  if (value.length === 1000)
+                  if (value.length === 5000)
                     Toast.show(
-                      '게시글 내용은 1000글자까지만 입력 가능합니다.',
+                      '게시글 내용은 5000글자까지만 입력 가능합니다.',
                       Toast.SHORT,
                     );
                 }}
-                maxLength={1000}
+                maxLength={5000}
                 style={[
                   fontRegular,
                   styles.input,
