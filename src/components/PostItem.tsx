@@ -16,14 +16,16 @@ interface Props {
   boardId: number;
 }
 
-function PostItem({post, boardId}: Props) {
+function PostItem({ post, boardId }: Props) {
   return (
     <View style={styles.container}>
-      <View style={{marginBottom: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
-        <SmallBoard style={{marginLeft: 11}} />
-        <Text style={[{color: '#87919B', marginLeft: 8, fontSize: 14}, fontRegular]}>{post.boardName}</Text>
-      </View>
-      <View>
+      {boardId === 2 &&
+        <View style={{ marginBottom: 14, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }}>
+          <SmallBoard style={{ marginLeft: 11 }} />
+          <Text style={[{ color: '#87919B', marginLeft: 8, fontSize: 14 }, fontRegular]}>{post.boardName}</Text>
+        </View>
+      }
+      <View style={{paddingHorizontal: 10}}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image style={{ width: 24, height: 24, borderRadius: 12 }}
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 10,
   },
   name: {
     paddingTop: 2,
