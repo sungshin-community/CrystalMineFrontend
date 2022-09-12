@@ -59,6 +59,7 @@ type RootStackParamList = {
   UncertifiedMember: undefined;
   ErrorScreen: {status: number; code: string};
   SplashHome: undefined;
+  NoticeList: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -279,8 +280,10 @@ const HomeFragment = ({navigation}: Props) => {
                       onPress={async () => {
                         if (item.type === 'WELCOME') {
                           const result = await readNotification(item.id);
-                          console.log('알람 확인 후 마이페이지로 이동');
                           navigation.navigate('MyPage');
+                        } else if (item.type === 'NOTICE') {
+                          const result = await readNotification(item.id);
+                          navigation.navigate('NoticeList');
                         } else if (
                           item.type === 'BEFORE_EXPIRE' ||
                           item.type === 'EXPIRE' ||
@@ -469,7 +472,7 @@ const HomeFragment = ({navigation}: Props) => {
                         }
                       }}>
                       <View style={{flexDirection: 'row'}}>
-                        {item.type === 'WELCOME' && <CheckMark />}
+                        {(item.type === 'WELCOME'|| item.type ==='NOTICE') && <CheckMark />}
                         {(item.type === 'BEFORE_EXPIRE' ||
                           item.type === 'EXPIRE' ||
                           item.type === 'NOT_AUTHENTICATED') && (
