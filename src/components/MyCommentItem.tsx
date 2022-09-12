@@ -18,24 +18,24 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
     <TouchableOpacity
       onPress={() => moveToPost(comment)}
       style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
-      <View>
       <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
         <SmallBoard style={{marginLeft: 11}} />
         <Text style={{color: '#87919B', marginLeft: 8}}>{comment.boardName}</Text>
         {deleteMode && (
-            <View style={{flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingRight: 13}}>
+          <View style={{flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          paddingRight: 13}}>
               {comment.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
             </View>
             )
           }
       </View>
+      <View style={{paddingHorizontal: 10}}>
       <View style={styles.nameContainer}>
         <View style={{flexDirection: 'row'}}>
-        <Image style={{width: 24, height: 24, borderRadius: 12, marginLeft: 10}} source={{uri: comment.profileImage}} />
+        <Image style={{width: 24, height: 24, borderRadius: 12}} source={{uri: comment.profileImage}} />
           <Text style={styles.name}>{comment.displayName}</Text>
         </View>
         <Text style={[styles.textSmall, styles.timeStamp]}>{comment.createdAt}</Text>
@@ -48,7 +48,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
         </Text>
       </View>
       <Text
-        style={[{color: "#A0A8B0", fontSize: 13, marginBottom: 16, marginLeft: 10, marginRight: 10}, fontRegular]}
+        style={[{color: "#A0A8B0", fontSize: 13, marginBottom: 16, marginRight: 10}, fontRegular]}
         numberOfLines={1}
         ellipsizeMode="tail"
       >{(comment.isPostDeleted ? '' : '게시글 내용: ') + comment.postContent}</Text>
@@ -94,14 +94,12 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 14,
-    marginLeft: 10,
     lineHeight: 22.5,
   },
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 16,
-    marginLeft: 10
   },
   iconCount: {
     marginLeft: 5,
