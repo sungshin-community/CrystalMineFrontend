@@ -200,8 +200,8 @@ function PostWriteScreen({navigation, route}: Props) {
     launchImageLibrary(
       {
         mediaType: 'photo',
-        maxWidth: 10000,
-        maxHeight: 10000,
+        maxWidth: 15000,
+        maxHeight: 15000,
         selectionLimit: 10,
       },
       res => {
