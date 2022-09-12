@@ -18,44 +18,44 @@ interface Props {
 export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
   return (
     <TouchableOpacity style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}} onPress={() => moveToPost(post)}>
-      <View>
-        <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
-          <SmallBoard style={{marginLeft: 11}} />
-          <Text style={[{color: '#87919B', marginLeft: 8, fontSize: 14}, fontRegular]}>{post.boardName}</Text>
-          {deleteMode && (
-            <View style={{flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingRight: 13}}>
-              {post.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
-            </View>
-            )
-          }
-        </View>
-      <View style={styles.nameContainer}>
-        <View style={{flexDirection: 'row'}}>
-          <Image style={{width: 24, height: 24, borderRadius: 12, marginLeft: 10}} source={{uri: post.profileImage}} />
-          <Text style={styles.name}>{post.displayName}</Text>
-        </View>
-        <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
+      <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
+        <SmallBoard style={{marginLeft: 11}} />
+        <Text style={[{color: '#87919B', marginLeft: 8, fontSize: 14}, fontRegular]}>{post.boardName}</Text>
+        {deleteMode && (
+          <View style={{flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          paddingRight: 13}}>
+            {post.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
+          </View>
+          )
+        }
       </View>
-      {post.hasTitle && <Text style={styles.titleText}>{post.title}</Text>}
-      <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
-      <View style={styles.icon}>
-        {post.isLiked ? <PostLike /> : <PostUnlike />}
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.likeCount}
-        </Text>
-        <PostImage />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.imageCount}
-        </Text>
-        <PostComment />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.commentCount}
-        </Text>
-      </View>
+      <View style={{paddingHorizontal: 10}}>
+        <View style={styles.nameContainer}>
+          <View style={{flexDirection: 'row'}}>
+            <Image style={{width: 24, height: 24, borderRadius: 12}} source={{uri: post.profileImage}} />
+            <Text style={styles.name}>{post.displayName}</Text>
+          </View>
+          <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
+        </View>
+        {post.hasTitle && <Text style={styles.titleText}>{post.title}</Text>}
+        <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
+        <View style={styles.icon}>
+          {post.isLiked ? <PostLike /> : <PostUnlike />}
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.likeCount}
+          </Text>
+          <PostImage />
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.imageCount}
+          </Text>
+          <PostComment />
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.commentCount}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -99,14 +99,12 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 14,
-    marginLeft: 10,
     lineHeight: 22.5,
   },
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 24,
-    marginLeft: 10
   },
   iconCount: {
     marginLeft: 5,

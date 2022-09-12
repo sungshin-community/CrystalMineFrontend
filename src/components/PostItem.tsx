@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
+import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import PostComment from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
@@ -18,30 +19,36 @@ interface Props {
 function PostItem({post, boardId}: Props) {
   return (
     <View style={styles.container}>
-      <View style={styles.nameContainer}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image style={{ width: 24, height: 24, borderRadius: 12 }}
-            source={{uri: post.profileImage}}/>
-          <Text style={styles.name}>{post.displayName}</Text>
-          { boardId !== 2 && !post.isAnonymous && ( post.isOwner && (post.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
-        </View>
-        <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
+      <View style={{marginBottom: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
+        <SmallBoard style={{marginLeft: 11}} />
+        <Text style={[{color: '#87919B', marginLeft: 8, fontSize: 14}, fontRegular]}>{post.boardName}</Text>
       </View>
-      {post.hasTitle ? <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>{post.title}</Text>:<></>}
-      <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
-      <View style={styles.icon}>
-        {post.isLiked ? <PostLike /> : <PostUnlike />}
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.likeCount}
-        </Text>
-        <PostImage />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.imageCount}
-        </Text>
-        <PostComment />
-        <Text style={[styles.textSmall, styles.iconCount]}>
-          {post.commentCount}
-        </Text>
+      <View>
+        <View style={styles.nameContainer}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image style={{ width: 24, height: 24, borderRadius: 12 }}
+              source={{uri: post.profileImage}}/>
+            <Text style={styles.name}>{post.displayName}</Text>
+            { boardId !== 2 && !post.isAnonymous && ( post.isOwner && (post.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
+          </View>
+          <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
+        </View>
+        {post.hasTitle ? <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>{post.title}</Text>:<></>}
+        <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
+        <View style={styles.icon}>
+          {post.isLiked ? <PostLike /> : <PostUnlike />}
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.likeCount}
+          </Text>
+          <PostImage />
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.imageCount}
+          </Text>
+          <PostComment />
+          <Text style={[styles.textSmall, styles.iconCount]}>
+            {post.commentCount}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -49,8 +56,8 @@ function PostItem({post, boardId}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
-    paddingHorizontal: 24,
+    marginTop: 10,
+    paddingHorizontal: 14,
     borderBottomColor: '#f4f4f4',
     borderStyle: 'solid',
     borderBottomWidth: 1,
