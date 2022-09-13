@@ -96,7 +96,7 @@ function PostSearch({navigation, route}: Props) {
         </View>
       </View>,
       headerRight: (): React.ReactNode => <TouchableHighlight style={{width: 50, borderRadius: 20, alignItems: 'center', height: 40, justifyContent: 'center'}} underlayColor='#EEEEEE' onPress={() => {navigation.goBack()}}>
-      <Text style={{fontSize: 17}}>닫기</Text>
+        <Text style={[fontRegular, {fontSize: 17}]}>닫기</Text>
     </TouchableHighlight>,
       headerBackVisible: false,
     });

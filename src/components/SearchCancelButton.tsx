@@ -1,5 +1,6 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
+import { fontRegular } from '../common/font';
 
 const styles = StyleSheet.create({
   cancel: {
@@ -18,7 +19,7 @@ interface Props {
 function SearchCancelButton({onPress}: Props) {
   return (
     <Pressable onPress={onPress}>
-      <Text style={styles.cancel}>닫기</Text>
+      <Text style={[fontRegular, styles.cancel]}>닫기</Text>
     </Pressable>
   );
 }
