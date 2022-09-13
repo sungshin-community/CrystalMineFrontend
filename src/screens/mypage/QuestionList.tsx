@@ -126,11 +126,12 @@ function QuestionList({navigation, route}: Props) {
               }}
               hitSlop={{top: 5, bottom: 5, left: 10, right: 10}}>
               <Text
-                style={{
+                style={[
+                  fontRegular, {
                   color: '#FF6060',
                   opacity: deleteButtonEnabled ? 1 : 0.3,
                   fontSize: 17,
-                }}>
+                }]}>
                 삭제
               </Text>
             </TouchableOpacity>
@@ -213,14 +214,15 @@ function QuestionList({navigation, route}: Props) {
               backgroundColor: '#F6F6F6',
             }}>
             <Text
-              style={{
+              style={[
+                fontRegular, {
                 color: '#6E7882',
                 fontSize: 15,
                 fontFamily: 'SpoqaHanSansNeo-Regular',
                 textAlign: 'center',
                 lineHeight: 22.5,
                 marginTop: 20,
-              }}>
+              }]}>
               {isLoading
                 ? ''
                 : '아직 작성된 문의사항이 없습니다.\n첫 문의사항을 작성해주세요.'}
@@ -253,11 +255,12 @@ function QuestionList({navigation, route}: Props) {
                     paddingBottom: 10,
                   }}>
                   <Text
-                    style={{
+                      style={[
+                      fontRegular, {
                       marginRight: 9,
                       fontSize: 13,
                       fontFamily: 'SpoqaHanSansNeo-Medium',
-                    }}>
+                    }]}>
                     {`${questionList?.filter(c => c.isChecked).length}/${
                       questionList?.length
                     }`}
@@ -429,11 +432,12 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 {backgroundColor: questionItem.status ? '#F1E7FF' : '#F6F6F6'},
               ]}>
               <Text
-                style={{
+                style={[
+                  fontRegular, {
                   color: questionItem.status ? '#A055FF' : '#6E7882',
                   fontSize: 13,
                   textAlign: 'center',
-                }}>
+                }]}>
                 {questionItem.status ? '답변 완료' : '답변 대기'}
               </Text>
             </View>
@@ -482,7 +486,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
             <Text style={[fontRegular, {marginBottom: 10}]}>
               {data?.content}
             </Text>
-            <Text style={[styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
+            <Text style={[fontRegular, styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
 
             {data?.images.length !== 0 && (
               <View style={{flexDirection: 'row', marginTop: 16}}>
@@ -527,10 +531,10 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                     운영진
                   </Text>
                 </View>
-                <View style={{marginTop: 8, marginLeft: 30, marginBottom: 10}}>
-                  <Text>{data?.answer.content}</Text>
+                <View style={[{marginTop: 8, marginLeft: 30, marginBottom: 10}]}>
+                  <Text style={fontRegular}>{data?.answer.content}</Text>
                 </View>
-                <Text style={[styles.date, {marginLeft: 30}]}>
+                <Text style={[fontRegular, styles.date, {marginLeft: 30}]}>
                   {data?.answer.createdAt}
                 </Text>
                 {data?.images.length !== 0 && (
