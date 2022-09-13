@@ -61,14 +61,15 @@ export function BoardListContainer({boardCategory, component}: Props) {
         }}
         onPress={() => setIsSpread(!isSpread)}>
         <Text
-          style={{
+          style={[
+            fontBold, {
             fontSize: 17,
             fontFamily: 'SpoqaHanSansNeo-Regular',
             lineHeight: 20,
             flex: 1,
             fontWeight: 'bold',
             color: '#222222',
-          }}>
+          }]}>
           {boardCategory}
         </Text>
         {isSpread ? (
@@ -106,6 +107,7 @@ export function BoardListContainer({boardCategory, component}: Props) {
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Markdown from 'react-native-markdown-display';
+import { fontBold, fontRegular } from '../common/font';
 export function CustomBoardListContainer({
   boardCategory,
   component,
