@@ -104,19 +104,19 @@ const HomeFragment = ({navigation}: Props) => {
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 계정
             </Text>
-            <Text>{user?.blacklist.username}</Text>
+            <Text style={fontRegular}>{user?.blacklist.username}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 날짜
             </Text>
-            <Text>{user?.blacklist.createdAt}</Text>
+            <Text style={fontRegular}>{user?.blacklist.createdAt}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={[fontBold, {width: 88, marginRight: 7}]}>
               이용 제한 사유
             </Text>
-            <Text>{user?.blacklist.reason}</Text>
+            <Text style={fontRegular}>{user?.blacklist.reason}</Text>
           </View>
         </View>
       )}
@@ -238,12 +238,13 @@ const HomeFragment = ({navigation}: Props) => {
                 paddingVertical: 32,
               }}>
               <Text
-                style={{
+                  style={[
+                  fontRegular,{
                   fontSize: 22,
                   marginLeft: 40,
                   marginBottom: noti?.length && 26,
-                }}>
-                <Text style={{fontWeight: 'bold', color: '#A055FF'}}>
+                }]}>
+                <Text style={[fontRegular, {fontWeight: 'bold', color: '#A055FF'}]}>
                   {user?.nickname}
                 </Text>
                 {` 님, `}
@@ -323,7 +324,7 @@ const HomeFragment = ({navigation}: Props) => {
                                   ]}>
                                   블라인드 사유
                                 </Text>
-                                <Text style={{width: 143}}>
+                                <Text style={[fontRegular, {width: 143}]}>
                                   {item.blind?.reason}
                                 </Text>
                               </View>
@@ -344,9 +345,10 @@ const HomeFragment = ({navigation}: Props) => {
                                     : ''}
                                 </Text>
                                 <Text
-                                  style={{
+                                  style={[
+                                    fontRegular, {
                                     width: Dimensions.get('window').width - 183,
-                                  }}>
+                                  }]}>
                                   {item.blind?.content}
                                 </Text>
                               </View>
@@ -423,9 +425,10 @@ const HomeFragment = ({navigation}: Props) => {
                                 <Text
                                   ellipsizeMode={'tail'}
                                   numberOfLines={3}
-                                  style={{
+                                  style={[
+                                    fontRegular, {
                                     width: Dimensions.get('window').width - 178,
-                                  }}>
+                                  }]}>
                                   {item.deleteBlind?.content}
                                 </Text>
                               </View>
@@ -494,13 +497,13 @@ const HomeFragment = ({navigation}: Props) => {
                           <Text
                             ellipsizeMode={'tail'}
                             numberOfLines={1}
-                            style={[styles.newsTitle]}>
+                            style={[fontRegular, styles.newsTitle]}>
                             {item.title}
                           </Text>
                           <Text
                             ellipsizeMode={'tail'}
                             numberOfLines={1}
-                            style={styles.newsMore}>
+                            style={[fontRegular,styles.newsMore]}>
                             {item.content
                               ? item.content
                               : item.blind?.content
@@ -522,7 +525,7 @@ const HomeFragment = ({navigation}: Props) => {
                 padding: 24,
               }}>
               <View style={styles.rowContainer}>
-                <Text style={styles.boardTitle}>고정 게시판</Text>
+                <Text style={[fontRegular ,styles.boardTitle]}>고정 게시판</Text>
                 <TouchableWithoutFeedback
                   onPress={() => {
                     {
@@ -531,7 +534,7 @@ const HomeFragment = ({navigation}: Props) => {
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
-                  <Text style={styles.more}>더보기</Text>
+                  <Text style={[fontRegular, styles.more]}>더보기</Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* 게시판 글 목록 */}
@@ -547,11 +550,12 @@ const HomeFragment = ({navigation}: Props) => {
                       borderRadius: 20,
                     }}>
                     <Text
-                      style={{
+                        style={[
+                        fontRegular,{
                         textAlign: 'center',
                         fontSize: 15,
                         color: '#6E7882',
-                      }}>
+                      }]}>
                       고정된 게시판이 없습니다.
                     </Text>
                   </View>
@@ -580,7 +584,7 @@ const HomeFragment = ({navigation}: Props) => {
                           <Text
                             numberOfLines={1}
                             ellipsizeMode="tail"
-                            style={styles.postTitleSummary}>
+                            style={[fontRegular ,styles.postTitleSummary]}>
                             {item.boardName.slice(0, numOfBoardTitle)}
                           </Text>
                         </View>
@@ -589,6 +593,7 @@ const HomeFragment = ({navigation}: Props) => {
                             numberOfLines={1}
                             ellipsizeMode="tail"
                             style={[
+                              fontRegular,
                               styles.postSummary,
                               {
                                 color: item.recentPostContent
@@ -603,7 +608,7 @@ const HomeFragment = ({navigation}: Props) => {
                         </View>
                         <View style={styles.postNewLabelContainer}>
                           {item.todayNewPost ? (
-                            <Text style={styles.postNewLabel}>N</Text>
+                            <Text style={[fontRegular, styles.postNewLabel]}>N</Text>
                           ) : (
                             <></>
                           )}
@@ -620,11 +625,12 @@ const HomeFragment = ({navigation}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Text
-                    style={{
+                      style={[
+                      fontRegular, {
                       textAlign: 'center',
                       fontSize: 15,
                       color: '#6E7882',
-                    }}>
+                    }]}>
                     정회원 인증 후 확인하실 수 있습니다.
                   </Text>
                 </View>
@@ -640,7 +646,7 @@ const HomeFragment = ({navigation}: Props) => {
                 }}
               />
               <View style={styles.rowContainer}>
-                <Text style={styles.boardTitle}>HOT 게시글</Text>
+                <Text style={[fontRegular, styles.boardTitle]}>HOT 게시글</Text>
                 <TouchableWithoutFeedback
                   onPress={() => {
                     {
@@ -649,7 +655,7 @@ const HomeFragment = ({navigation}: Props) => {
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
-                  <Text style={styles.more}>더보기</Text>
+                  <Text style={[fontRegular, styles.more]}>더보기</Text>
                 </TouchableWithoutFeedback>
               </View>
               {!isInited ? (
@@ -663,11 +669,12 @@ const HomeFragment = ({navigation}: Props) => {
                       borderRadius: 20,
                     }}>
                     <Text
-                      style={{
+                        style={[
+                        fontRegular, {
                         textAlign: 'center',
                         fontSize: 15,
                         color: '#6E7882',
-                      }}>
+                      }]}>
                       공감을 10개 이상 받은 게시글이 없습니다.
                     </Text>
                   </View>
@@ -683,6 +690,7 @@ const HomeFragment = ({navigation}: Props) => {
                           numberOfLines={1}
                           ellipsizeMode="tail"
                           style={[
+                            fontRegular,
                             styles.postSummary,
                             {
                               width: Dimensions.get('window').width - 150,
@@ -694,11 +702,11 @@ const HomeFragment = ({navigation}: Props) => {
                         <View
                           style={{flexDirection: 'row', alignItems: 'center'}}>
                           <EmptyHeart />
-                          <Text style={styles.HOTpostLike}>
+                          <Text style={[fontRegular, styles.HOTpostLike]}>
                             {item.likeCount}
                           </Text>
                           <EmptyComment />
-                          <Text style={styles.HOTpostComment}>
+                          <Text style={[fontRegular, styles.HOTpostComment]}>
                             {item.commentCount}
                           </Text>
                         </View>
@@ -714,11 +722,12 @@ const HomeFragment = ({navigation}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Text
-                    style={{
+                      style={[
+                      fontRegular, {
                       textAlign: 'center',
                       fontSize: 15,
                       color: '#6E7882',
-                    }}>
+                    }]}>
                     정회원 인증 후 확인하실 수 있습니다.
                   </Text>
                 </View>
