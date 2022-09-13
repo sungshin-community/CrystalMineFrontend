@@ -20,12 +20,12 @@ function PostItem({ post, boardId }: Props) {
   return (
     <View style={styles.container}>
       {boardId === 2 &&
-        <View style={{ marginBottom: 14, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }}>
+        <View style={{ marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }}>
           <SmallBoard style={{ marginLeft: 11 }} />
           <Text style={[{ color: '#87919B', marginLeft: 8, fontSize: 14 }, fontRegular]}>{post.boardName}</Text>
         </View>
       }
-      <View style={{paddingHorizontal: 10}}>
+      <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image style={{ width: 24, height: 24, borderRadius: 12 }}
@@ -58,7 +58,6 @@ function PostItem({ post, boardId }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
     paddingHorizontal: 14,
     borderBottomColor: '#f4f4f4',
     borderStyle: 'solid',
@@ -94,7 +93,6 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 25,
   },
   iconCount: {
     marginLeft: 5,
