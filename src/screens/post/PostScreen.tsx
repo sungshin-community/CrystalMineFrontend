@@ -36,7 +36,7 @@ import {addComment, addRecomment, reportComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
 import {useCallback} from 'react';
 import {setCommentLike} from '../../common/boardApi';
-import {fontMedium} from '../../common/font';
+import {fontMedium, fontRegular} from '../../common/font';
 import Toast from 'react-native-simple-toast';
 import {
   RectangleChecked,
@@ -490,7 +490,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={{marginRight: 5}}>익명</Text>
+              <Text style={[fontRegular, {marginRight: 5}]}>익명</Text>
               <Pressable
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
                 onPress={() => {
@@ -519,7 +519,7 @@ const PostScreen = ({navigation, route}: Props) => {
                 }}
                 value={newComment}
                 autoCorrect={false}
-                style={[styles.input]}
+                style={[fontRegular, styles.input]}
                 maxLength={500}
                 onFocus={(e: any) => {
                   onInputFocus();
