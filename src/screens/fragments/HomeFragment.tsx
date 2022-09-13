@@ -44,6 +44,7 @@ import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
 import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
+import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -279,11 +280,16 @@ const HomeFragment = ({navigation}: Props) => {
                         styles.newsContainer,
                       ]}
                       onPress={async () => {
+                        if (
+                          item.type !== 'BEFORE_EXPIRE' &&
+                          item.type !== 'EXPIRE' &&
+                          item.type !== 'NOT_AUTHENTICATED'
+                        ) {
+                          await readNotification(item.id);
+                        }
                         if (item.type === 'WELCOME') {
-                          const result = await readNotification(item.id);
                           navigation.navigate('MyPage');
                         } else if (item.type === 'NOTICE') {
-                          const result = await readNotification(item.id);
                           navigation.navigate('NoticeList');
                         } else if (
                           item.type === 'BEFORE_EXPIRE' ||
@@ -296,8 +302,6 @@ const HomeFragment = ({navigation}: Props) => {
                             navigation.navigate('ExpiredMember');
                           else if (item.type === 'NOT_AUTHENTICATED')
                             navigation.navigate('UncertifiedMember');
-                          // const result = await readNotification(item.id);
-                          // 알람 확인 못 해야함.
                         } else if (
                           item.type === 'BOARD_BLIND' ||
                           item.type === 'PIN_BOARD_BLIND' ||
@@ -362,8 +366,6 @@ const HomeFragment = ({navigation}: Props) => {
                             item.blind
                           ) {
                             setModalBody(itemContent);
-                            const result = await readNotification(item.id);
-                            console.log('블라인드 알림 확인');
                             setBlindModalVisible(true);
                           } else if (item.type === 'BOARD_BLIND' && !item.blind)
                             setTimeout(function () {
@@ -441,8 +443,6 @@ const HomeFragment = ({navigation}: Props) => {
                             item.deleteBlind
                           ) {
                             setModalBody(itemContent);
-                            const result = await readNotification(item.id);
-                            console.log('블라인드 알림 확인');
                             setBlindModalVisible(true);
                           } else if (
                             item.type === 'DELETE_BOARD_BLIND' &&
@@ -475,7 +475,8 @@ const HomeFragment = ({navigation}: Props) => {
                         }
                       }}>
                       <View style={{flexDirection: 'row'}}>
-                        {(item.type === 'WELCOME'|| item.type ==='NOTICE') && <CheckMark />}
+                        {(item.type === 'WELCOME') && <CheckMark />}
+                        {(item.type ==='NOTICE') && <AlertNoticeIcon />}
                         {(item.type === 'BEFORE_EXPIRE' ||
                           item.type === 'EXPIRE' ||
                           item.type === 'NOT_AUTHENTICATED') && (

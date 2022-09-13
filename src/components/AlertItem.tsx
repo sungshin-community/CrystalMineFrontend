@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../common/font';
 import {ModalBottom} from './ModalBottom';
+import AlertNoticeIcon from '../../resources/icon/AlertNoticeIcon';
 
 interface AlertProps {
   data: Alert;
@@ -55,8 +56,9 @@ const AlertItem = ({
             await readNotification(data.id);
           }
           if (data.type === 'WELCOME') {
-            console.log('알람 확인 후 마이페이지로 이동');
             navigation.navigate('MyPage');
+          } else if (data.type === 'NOTICE') {
+            navigation.navigate('NoticeList');
           } else if (
             data.type === 'BEFORE_EXPIRE' ||
             data.type === 'EXPIRE' ||
@@ -211,7 +213,8 @@ const AlertItem = ({
             navigation.navigate('PostScreen', {postId: data.postId});
           }
         }}>
-        {data.type === 'WELCOME' && <CheckMark />}
+        {(data.type === 'WELCOME') && <CheckMark />}
+        {(data.type ==='NOTICE') && <AlertNoticeIcon />}
         {(data.type === 'BEFORE_EXPIRE' ||
           data.type === 'EXPIRE' ||
           data.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
