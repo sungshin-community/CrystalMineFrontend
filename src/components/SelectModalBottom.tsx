@@ -320,7 +320,7 @@ export const ReportItem = ({
           ) : (
             <RadioButtonUnChecked style={{marginRight: 10}} />
           )}
-          <Text>기타</Text>
+          <Text style={fontMedium}>기타</Text>
         </Pressable>
         {isCheckedReportNum !== numofETC ? (
           <View
@@ -346,14 +346,15 @@ export const ReportItem = ({
               }}
               maxLength={50}
               editable={isCheckedReportNum === numofETC ? true : false}
-              style={{
+                style={[
+                fontRegular, {
                 backgroundColor: '#F6F6F6',
                 fontSize: 13,
                 borderRadius: 10,
                 padding: 0,
                 width: Dimensions.get('window').width - 200,
                 paddingVertical: Platform.OS == 'ios' ? 5 : 0,
-              }}
+              }]}
               onFocus={(e: any) => {
                 onInputFocus();
               }}
