@@ -10,6 +10,7 @@ import { WhiteCancelButton } from "../../../resources/icon/Cancel";
 import DownloadIcon from "../../../resources/icon/DownloadIcon";
 import { fontMedium } from "../../common/font";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {LogBox} from 'react-native';
 
 interface Props {
   imageUrls: {url: string}[];
@@ -17,6 +18,9 @@ interface Props {
 }
 
 const ImageViewerScreen = () => {
+  LogBox.ignoreLogs(['Warning: ...']);
+  LogBox.ignoreAllLogs();
+  console.reportErrorsAsExceptions = false;
   const navigation = useNavigation();
   const route = useRoute();
 
