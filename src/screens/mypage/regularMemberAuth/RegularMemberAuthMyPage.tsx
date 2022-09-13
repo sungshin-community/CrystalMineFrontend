@@ -43,6 +43,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import BackButtonIcon from '../../../../resources/icon/BackButtonIcon';
 import CloseButtonIcon from '../../../../resources/icon/CloseButtonIcon';
 import styled from 'styled-components/native';
+import { fontRegular } from '../../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -225,7 +226,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   value.length !== 6 && styles.cellRoot,
                   value.length !== 6 && isFocused && styles.focusCell,
                 ]}>
-                <Text style={styles.cellText}>
+                <Text style={[fontRegular, styles.cellText]}>
                   {symbol || (isFocused ? <Cursor /> : null)}
                 </Text>
               </View>
@@ -244,10 +245,10 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             </Text>
           </View>
 
-          <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
+          <Text style={[fontRegular, styles.tryCnt]}>남은 횟수 {tryCnt}/5</Text>
           <Pressable onPress={async () => onResendOtpButtonPress()}>
             <View style={{alignSelf: 'center', width: 'auto'}}>
-              <Text style={styles.resent}>인증번호 재전송</Text>
+              <Text style={[fontRegular, styles.resent]}>인증번호 재전송</Text>
             </View>
           </Pressable>
         </ScrollView>

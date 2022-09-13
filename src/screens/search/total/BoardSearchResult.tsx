@@ -117,7 +117,7 @@ export default function BoardSearchResult({searchWord}: Props) {
               }
             }}
             style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{marginRight: 5}}>
+            <Text style={[fontRegular, {marginRight: 5}]}>
               {sortBy === 'createdAt' ? "최신순" : (sortBy === 'pinCount' ? "고정순" : '이름순')}
             </Text>
             <SortIcon />

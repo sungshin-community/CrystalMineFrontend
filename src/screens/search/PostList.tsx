@@ -17,6 +17,7 @@ import { PostContent } from '../../classes/Search';
 import PostItem from '../../components/PostItem';
 import { ContentPreviewDto } from '../../classes/BoardDetailDto';
 import WaterMark from '../../components/WaterMark';
+import { fontRegular } from '../../common/font';
 
 interface Props {
   searchWord: string;
@@ -109,7 +110,7 @@ export default function PostList({searchWord, boardId, boardName}: Props) {
               }
             }}
             style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{marginRight: 5}}>
+            <Text style={[fontRegular, {marginRight: 5}]}>
               {sortBy === 'createdAt' ? "최신순" : "공감순"}
             </Text>
             <SortIcon />

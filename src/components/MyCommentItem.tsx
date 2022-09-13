@@ -20,7 +20,7 @@ export default function MyCommentItem({comment, moveToPost, deleteMode}: Props) 
       style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}>
       <View style={{marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10}}>
         <SmallBoard style={{marginLeft: 11}} />
-        <Text style={{color: '#87919B', marginLeft: 8}}>{comment.boardName}</Text>
+        <Text style={[fontRegular, {color: '#87919B', marginLeft: 8}]}>{comment.boardName}</Text>
         {deleteMode && (
           <View style={{flexDirection: 'row',
           flex: 1,

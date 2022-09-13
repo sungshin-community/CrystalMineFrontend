@@ -77,7 +77,7 @@ export default function MyCommentList({navigation, route}: Props) {
             onPress={() => {if (myCommentList.filter(c => c.isChecked).length > 0) {setDeleteModalVisible(true)}}}
             hitSlop={{top: 5, bottom: 5, left: 10, right: 10 }}
           >
-            <Text style={{color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3, fontSize: 17}}>삭제</Text>
+            <Text style={[fontRegular, {color: '#FF6060', opacity: deleteButtonEnabled ? 1 : 0.3, fontSize: 17}]}>삭제</Text>
           </TouchableOpacity>
           <TouchableHighlight
             style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
@@ -202,7 +202,7 @@ export default function MyCommentList({navigation, route}: Props) {
             }
           }}
           style={{ marginLeft: 24, width: 83, height: 24, backgroundColor: '#f6f6f6', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{marginRight: 5}}>
+          <Text style={[fontRegular, {marginRight: 5}]}>
             {sortBy === 'createdAt' ? "최신순" : "공감순"}
           </Text>
           <SortIcon />

@@ -39,6 +39,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import { fontRegular } from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -177,7 +178,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
                   value.length !== 6 && styles.cellRoot,
                   value.length !== 6 && isFocused && styles.focusCell,
                 ]}>
-                <Text style={styles.cellText}>
+                <Text style={[fontRegular, styles.cellText]}>
                   {symbol || (isFocused ? <Cursor /> : null)}
                 </Text>
               </View>
@@ -220,9 +221,9 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
             </View>
           )}
 
-          <Text style={styles.tryCnt}>남은 횟수 {tryCnt}/5</Text>
+          <Text style={[fontRegular, styles.tryCnt]}>남은 횟수 {tryCnt}/5</Text>
           <TouchableWithoutFeedback onPress={() => onResendOtpButtonPress()}>
-            <Text style={styles.resent}>인증번호 재전송</Text>
+            <Text style={[fontRegular, styles.resent]}>인증번호 재전송</Text>
           </TouchableWithoutFeedback>
         </View>
         <View
