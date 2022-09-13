@@ -25,6 +25,7 @@ import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
+import { fontRegular } from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -100,10 +101,11 @@ export default function SignInPassword({navigation, route}: Props) {
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
             <Text
-              style={{
+              style={[
+                fontRegular,{
                 marginTop: 36,
                 color: isPasswordInCorrect ? '#E64646' : '#A055FF',
-              }}>
+              }]}>
               비밀번호
             </Text>
             <View style={{marginTop: 12}}>
@@ -163,7 +165,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   <PasswordNotShow onPress={letShowPassword} />
                 )}
               </View>
-              <Text style={styles.errorMessage}>
+              <Text style={[fontRegular,styles.errorMessage]}>
                 {isPasswordInCorrect
                   ? '아이디 및 비밀번호를 정확하게 입력해주세요.'
                   : isBlackList

@@ -200,7 +200,7 @@ export default function SignUpId({navigation, route}: Props) {
             <Text style={styles.suffix}>@sungshin.ac.kr</Text>
           </MiddleInputContainerStyle>
 
-          <Text style={styles.errorMessage}>
+          <Text style={[fontRegular, styles.errorMessage]}>
             {isDuplicate
               ? '이미 가입되어 있는 계정입니다.'
               : isBlackList

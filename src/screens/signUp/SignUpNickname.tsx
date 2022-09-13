@@ -25,6 +25,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict, logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
+import { fontRegular } from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -150,7 +151,7 @@ export default function SignUpNickname({navigation, route}: Props) {
             />
           </MiddleInputContainerStyle>
           {isDuplicate && (
-            <Text style={styles.errorMessage}>
+            <Text style={[fontRegular, styles.errorMessage]}>
               사용할 수 없는 닉네임입니다.
             </Text>
           )}
