@@ -7,7 +7,7 @@ import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import { MyPostContentDto } from '../classes/board/MyPostDto';
-import { fontRegular } from '../common/font';
+import { fontMedium, fontRegular } from '../common/font';
 
 interface Props {
   post: MyPostContentDto;
@@ -32,7 +32,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
           )
         }
       </View>
-      <View style={{paddingHorizontal: 10}}>
+      <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row'}}>
             <Image style={{width: 24, height: 24, borderRadius: 12}} source={{uri: post.profileImage}} />
@@ -40,7 +40,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
           </View>
           <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
         </View>
-        {post.hasTitle && <Text style={styles.titleText}>{post.title}</Text>}
+        {post.hasTitle && <Text style={[fontMedium, styles.titleText]}>{post.title}</Text>}
         <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
         <View style={styles.icon}>
           {post.isLiked ? <PostLike /> : <PostUnlike />}
@@ -62,7 +62,6 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
 }
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
     paddingHorizontal: 24,
     borderBottomColor: '#f4f4f4',
     borderStyle: 'solid',
@@ -72,8 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
-    marginTop: 12
+    marginBottom: 10,
   },
   name: {
     paddingTop: 2,
@@ -90,8 +88,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 17,
-    fontFamily: 'SpoqaHanSansNeo-Bold',
-    marginLeft: 10
+    marginBottom: 5
   },
   timeStamp: {
     paddingTop: 6,
@@ -104,7 +101,6 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 24,
   },
   iconCount: {
     marginLeft: 5,
