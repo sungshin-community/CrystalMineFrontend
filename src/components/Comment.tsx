@@ -216,7 +216,7 @@ const Comment = ({
                   }}>
                   {data.isLiked ? <PostLike /> : <PostUnlike />}
                 </Pressable>
-                <Text style={styles.postLike}>{data?.likeCount}</Text>
+                <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
                 <Pressable
                   hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
                   onPress={() => {
@@ -229,7 +229,7 @@ const Comment = ({
                 </Pressable>
               </View>
               <View>
-                <Text style={{color: '#949494', fontSize: 13}}>
+                <Text style={[fontRegular, {color: '#949494', fontSize: 13}]}>
                   {data?.createdAt}
                 </Text>
               </View>
@@ -435,10 +435,10 @@ export const Recomment = ({
                     onPress={() => handleCommentLike(data.id)}>
                     {data.isLiked ? <PostLike /> : <PostUnlike />}
                   </Pressable>
-                  <Text style={styles.postLike}>{data?.likeCount}</Text>
+                  <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
                 </View>
                 <View>
-                  <Text style={{color: '#949494', fontSize: 13}}>
+                  <Text style={[fontRegular, {color: '#949494', fontSize: 13}]}>
                     {data?.createdAt}
                   </Text>
                 </View>

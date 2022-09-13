@@ -293,9 +293,9 @@ function Post({
             onPress={() => handlePostLike(data.postId)}>
             {data?.isLiked ? <PostLike /> : <PostUnlike />}
           </Pressable>
-          <Text style={styles.postLike}>{data?.likeCount}</Text>
+          <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
           <PostComment />
-          <Text style={styles.postComment}>{data?.commentCount}</Text>
+          <Text style={[fontRegular, styles.postComment]}>{data?.commentCount}</Text>
         </View>
       </View>
       <View
