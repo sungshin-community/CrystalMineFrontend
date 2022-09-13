@@ -352,7 +352,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={{marginRight: 5}}>
+              <Text style={[fontRegular, {marginRight: 5}]}>
                 {sortBy === 'createdAt' ? '최신순' : '공감순'}
               </Text>
               <SortIcon />
