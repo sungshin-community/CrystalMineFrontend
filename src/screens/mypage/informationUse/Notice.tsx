@@ -85,7 +85,9 @@ function Notice({route}: Props) {
               </View>
             )}
           </View>
-          <Autolink text={data ? (data.content ? data.content : '') : ''} />
+          <Text style={fontRegular}>
+            <Autolink text={data ? (data.content ? data.content : '') : ''} />
+          </Text>
           <Text
             style={[
               fontRegular,
