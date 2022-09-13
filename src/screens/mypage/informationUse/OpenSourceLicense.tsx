@@ -77,10 +77,12 @@ export function LicenseSpreadList({ id, title, agreementDate, content}: any) {
               height: Dimensions.get('window').height / 2,
               backgroundColor: '#FBFBFB',paddingHorizontal: 24,
             }}>
-            <View style={{ paddingTop: 15, paddingBottom: 15}}>
-              <Markdown>
-              {content}
-              </Markdown>
+            <View style={{ paddingTop: 15, paddingBottom: 15 }}>
+              <Text style={fontRegular}>
+                <Markdown>
+                {content}
+                </Markdown>
+              </Text>
             </View>
           </ScrollView>
         </>
