@@ -61,12 +61,13 @@ export default function CertifiedMember({navigation}: Props) {
         <View style={styles.expirationDate} key={index}>
           <TextInput
             key={index}
-            style={{
+            style={[
+              fontRegular, {
               fontSize: 45,
               textAlign: 'center',
               color: '#222222',
               paddingBottom: 0,
-            }}
+            }]}
             editable={false}>
             {day}
           </TextInput>
