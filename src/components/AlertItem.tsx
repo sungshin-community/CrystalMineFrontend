@@ -90,7 +90,7 @@ const AlertItem = ({
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
                     블라인드 사유
                   </Text>
-                  <Text style={{width: 143}}>{data.blind?.reason}</Text>
+                  <Text style={[fontRegular, {width: 143}]}>{data.blind?.reason}</Text>
                 </View>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
@@ -105,9 +105,10 @@ const AlertItem = ({
                       : ''}
                   </Text>
                   <Text
-                    style={{
+                    style={[
+                      fontRegular, {
                       width: Dimensions.get('window').width - 183,
-                    }}>
+                    }]}>
                     {data.blind?.content}
                   </Text>
                 </View>
@@ -172,7 +173,7 @@ const AlertItem = ({
                   <Text
                     ellipsizeMode={'tail'}
                     numberOfLines={3}
-                    style={{width: Dimensions.get('window').width - 178}}>
+                    style={[fontRegular, {width: Dimensions.get('window').width - 178}]}>
                     {data.deleteBlind?.content}
                   </Text>
                 </View>
@@ -255,7 +256,7 @@ const AlertItem = ({
               ? data.blind?.content
               : data.deleteBlind?.content}
           </Text>
-          <Text style={{color: '#A3A3A3', fontSize: 12, marginTop: 5}}>
+          <Text style={[fontRegular, {color: '#A3A3A3', fontSize: 12, marginTop: 5}]}>
             {data.createdAt}
           </Text>
         </View>
