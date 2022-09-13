@@ -58,7 +58,7 @@ function PostItem({ post, boardId }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 20,
     paddingHorizontal: 14,
     borderBottomColor: '#f4f4f4',
     borderStyle: 'solid',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 26,
+    paddingBottom: 25,
   },
   iconCount: {
     marginLeft: 5,
