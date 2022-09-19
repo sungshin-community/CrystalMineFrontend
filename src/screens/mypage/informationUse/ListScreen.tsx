@@ -28,7 +28,7 @@ function ListScreen({navigation}: Props) {
         <Text style={[fontRegular, styles.menuText]}>앱 버전</Text>
         <Text
           style={[fontRegular, {color: '#878787', fontSize: 12, marginTop: 5}]}>
-          1.1.2
+          1.1.3
         </Text>
       </View>
       <View
