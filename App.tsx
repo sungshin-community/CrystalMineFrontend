@@ -607,7 +607,7 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.popToTop()}>
+                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
