@@ -344,11 +344,11 @@ export function AgreementContainer({
           }}
           nestedScrollEnabled={true}>
           <View style={{ paddingTop: 15, paddingBottom: 15 }}>
-            <Text style={fontRegular}>
+            {/* <Text style={fontRegular}> */}
             <Markdown>
               {content}
               </Markdown>
-            </Text>
+            {/* </Text> */}
           </View>
         </ScrollView>
       )}

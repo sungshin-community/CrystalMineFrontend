@@ -78,11 +78,11 @@ export function LicenseSpreadList({ id, title, agreementDate, content}: any) {
               backgroundColor: '#FBFBFB',paddingHorizontal: 24,
             }}>
             <View style={{ paddingTop: 15, paddingBottom: 15 }}>
-              <Text style={fontRegular}>
+              {/* <Text style={fontRegular}> */}
                 <Markdown>
                 {content}
                 </Markdown>
-              </Text>
+              {/* </Text> */}
             </View>
           </ScrollView>
         </>

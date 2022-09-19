@@ -24,11 +24,11 @@ export const DirectionAgreeScreen = () => {
   return (
     <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingTop: 20}}>
       <WaterMark />
-      <Text style={fontRegular}>
-        <Markdown>
+      {/* <Text style={fontRegular}> */}
+        <Markdown >
           {data?.direction.content ? data?.direction.content : ""}
         </Markdown>
-      </Text>
+      {/* </Text> */}
       <View style={{paddingVertical: 30}}/>
     </ScrollView>
     );
