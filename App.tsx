@@ -127,6 +127,7 @@ const App = () => {
 
   return (
     <>
+      <StatusBar barStyle="dark-content" />
       {isLoaded && (
         <NavigationContainer>
           {!isLoggedIn ? (
