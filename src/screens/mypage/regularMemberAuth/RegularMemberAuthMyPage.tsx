@@ -23,7 +23,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {TwoLineTitle} from '../../../components/Top';
+import {Description, TwoLineTitle} from '../../../components/Top';
 import CustomButton, {
   WhiteRoundButton,
   PurpleRoundButton,
@@ -201,6 +201,9 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
               firstLineText="성신 G-mail 로 전송된"
               secondLineText="인증번호를 입력해주세요"
             />
+            <Description style={{marginRight: 5.5, marginTop: 13}}>
+              성신 G-mail이 없는 분들은 인증을 진행한 메일로 전송됩니다.
+            </Description>
           </TextContainer>
           <CodeField
             // autoFocus={true}
@@ -386,7 +389,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
 
 const styles = StyleSheet.create({
   codeFieldRoot: {
-    marginTop: 40,
+    marginTop: 30,
     width: '80%',
     marginHorizontal: Dimensions.get('window').width / 11,
   },
