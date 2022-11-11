@@ -42,10 +42,14 @@ function PostItem({ post, boardId }: Props) {
           <Text style={[styles.textSmall, styles.iconCount]}>
             {post.likeCount}
           </Text>
-          <PostImage />
-          <Text style={[styles.textSmall, styles.iconCount]}>
-            {post.imageCount}
-          </Text>
+          {post.imageCount > 0 &&
+            <>
+            <PostImage />
+            <Text style={[styles.textSmall, styles.iconCount]}>
+              {post.imageCount}
+            </Text>
+            </>
+          }
           <PostComment />
           <Text style={[styles.textSmall, styles.iconCount]}>
             {post.commentCount}
