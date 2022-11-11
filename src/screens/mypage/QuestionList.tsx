@@ -537,7 +537,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                 <Text style={[fontRegular, styles.date, {marginLeft: 30}]}>
                   {data?.answer.createdAt}
                 </Text>
-                {data?.images.length !== 0 && (
+                {data?.answer.images.length !== 0 && (
                   <View
                     style={{
                       flexDirection: 'row',
@@ -547,12 +547,12 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                     <ScrollView
                       showsHorizontalScrollIndicator={false}
                       horizontal={true}>
-                      {data?.thumbnails.map((url, index) => (
+                      {data?.answer.thumbnails.map((url, index) => (
                         <Pressable
                           key={index}
                           onPress={() =>
                             navigation.navigate('ImageViewerScreen', {
-                              imageUrls: imgUrlCoverting(data.images),
+                              imageUrls: imgUrlCoverting(data.answer.images),
                               index: index,
                             })
                           }>
