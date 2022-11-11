@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardEvent,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import {NormalOneLineText} from '../../components/Top';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -66,6 +67,7 @@ export default function SignInPassword({navigation, route}: Props) {
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onPasswordFocus = () => {
     setIsPasswordFocused(true);
@@ -96,7 +98,24 @@ export default function SignInPassword({navigation, route}: Props) {
 
   return (
     <>
-      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}>
+          <ActivityIndicator
+            size="large"
+            color={'#A055FF'}
+            animating={isLoading}
+            style={{zIndex: 100}}
+          />
+        </View>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
@@ -190,10 +209,12 @@ export default function SignInPassword({navigation, route}: Props) {
             <PurpleRoundButton
               text="로그인"
               onClick={async () => {
+                setIsLoading(true);
                 const response = await login({
                   username: route.params.userId,
                   password: password,
                 });
+                setIsLoading(false);
                 if (response.status === 401) {
                   setTimeout(function () {
                     Toast.show(
