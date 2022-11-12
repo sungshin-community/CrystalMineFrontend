@@ -46,6 +46,7 @@ import PostItem from '../../components/PostItem';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useNavigation} from '@react-navigation/native';
 import WaterMark from '../../components/WaterMark';
+import Autolink from 'react-native-autolink';
 
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
@@ -484,7 +485,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
               {data?.title}
             </Text>
             <Text style={[fontRegular, {marginBottom: 10}]}>
-              {data?.content}
+              <Autolink text={data ? (data.content ? data.content : '') : ''} />
             </Text>
             <Text style={[fontRegular, styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
 
@@ -532,7 +533,9 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                   </Text>
                 </View>
                 <View style={[{marginTop: 8, marginLeft: 30, marginBottom: 10}]}>
-                  <Text style={fontRegular}>{data?.answer.content}</Text>
+                  <Text style={fontRegular}>
+                    <Autolink text={data ? (data?.answer.content ? data?.answer.content : '') : ''} />
+                  </Text>
                 </View>
                 <Text style={[fontRegular, styles.date, {marginLeft: 30}]}>
                   {data?.answer.createdAt}
