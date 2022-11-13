@@ -88,6 +88,8 @@ import WikiSearchResult from './src/screens/search/WikiSearchResult';
 import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
 import {LogBox} from 'react-native';
 
+import StudyAlertScreenSY from './src/screens/StudyAlertScreenSY';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -607,7 +609,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'SplashHome'}]})
+                      }>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1708,6 +1712,14 @@ const App = () => {
                 headerBackVisible: false,
               }}
               initialRouteName="GlobalNavbar">
+              <Stack.Screen
+                name="StudyScreen"
+                component={StudyAlertScreenSY}
+                options={({navigation}) => ({
+                  title: '알림(스터디)',
+                  headerTitleAlign: 'center',
+                })}
+              />
               <Stack.Screen
                 name="ErrorScreen"
                 component={ErrorScreen}

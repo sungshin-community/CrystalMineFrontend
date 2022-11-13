@@ -61,6 +61,7 @@ type RootStackParamList = {
   ErrorScreen: {status: number; code: string};
   SplashHome: undefined;
   NoticeList: undefined;
+  StudyScreen: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -69,9 +70,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>([]);
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
-  const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
-    boolean
-  >(false);
+  const [blacklistblindModalVisible, setBlacklistblindModalVisible] =
+    useState<boolean>(false);
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const [user, setUser] = useState<Authentication>();
@@ -239,13 +239,16 @@ const HomeFragment = ({navigation}: Props) => {
                 paddingVertical: 32,
               }}>
               <Text
-                  style={[
-                  fontRegular,{
-                  fontSize: 22,
-                  marginLeft: 40,
-                  marginBottom: noti?.length && 26,
-                }]}>
-                <Text style={[fontRegular, {fontWeight: 'bold', color: '#A055FF'}]}>
+                style={[
+                  fontRegular,
+                  {
+                    fontSize: 22,
+                    marginLeft: 40,
+                    marginBottom: noti?.length && 26,
+                  },
+                ]}>
+                <Text
+                  style={[fontRegular, {fontWeight: 'bold', color: '#A055FF'}]}>
                   {user?.nickname}
                 </Text>
                 {` 님, `}
@@ -350,9 +353,12 @@ const HomeFragment = ({navigation}: Props) => {
                                 </Text>
                                 <Text
                                   style={[
-                                    fontRegular, {
-                                    width: Dimensions.get('window').width - 183,
-                                  }]}>
+                                    fontRegular,
+                                    {
+                                      width:
+                                        Dimensions.get('window').width - 183,
+                                    },
+                                  ]}>
                                   {item.blind?.content}
                                 </Text>
                               </View>
@@ -428,9 +434,12 @@ const HomeFragment = ({navigation}: Props) => {
                                   ellipsizeMode={'tail'}
                                   numberOfLines={3}
                                   style={[
-                                    fontRegular, {
-                                    width: Dimensions.get('window').width - 178,
-                                  }]}>
+                                    fontRegular,
+                                    {
+                                      width:
+                                        Dimensions.get('window').width - 178,
+                                    },
+                                  ]}>
                                   {item.deleteBlind?.content}
                                 </Text>
                               </View>
@@ -475,8 +484,8 @@ const HomeFragment = ({navigation}: Props) => {
                         }
                       }}>
                       <View style={{flexDirection: 'row'}}>
-                        {(item.type === 'WELCOME') && <CheckMark />}
-                        {(item.type ==='NOTICE') && <AlertNoticeIcon />}
+                        {item.type === 'WELCOME' && <CheckMark />}
+                        {item.type === 'NOTICE' && <AlertNoticeIcon />}
                         {(item.type === 'BEFORE_EXPIRE' ||
                           item.type === 'EXPIRE' ||
                           item.type === 'NOT_AUTHENTICATED') && (
@@ -504,7 +513,7 @@ const HomeFragment = ({navigation}: Props) => {
                           <Text
                             ellipsizeMode={'tail'}
                             numberOfLines={1}
-                            style={[fontRegular,styles.newsMore]}>
+                            style={[fontRegular, styles.newsMore]}>
                             {item.content
                               ? item.content
                               : item.blind?.content
@@ -526,12 +535,14 @@ const HomeFragment = ({navigation}: Props) => {
                 padding: 24,
               }}>
               <View style={styles.rowContainer}>
-                <Text style={[fontRegular ,styles.boardTitle]}>고정 게시판</Text>
+                <Text style={[fontRegular, styles.boardTitle]}>
+                  고정 게시판
+                </Text>
                 <TouchableWithoutFeedback
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        ? navigation.navigate('Board')
+                        ? navigation.navigate('StudyScreen')
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
@@ -551,12 +562,14 @@ const HomeFragment = ({navigation}: Props) => {
                       borderRadius: 20,
                     }}>
                     <Text
-                        style={[
-                        fontRegular,{
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      }]}>
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: 'center',
+                          fontSize: 15,
+                          color: '#6E7882',
+                        },
+                      ]}>
                       고정된 게시판이 없습니다.
                     </Text>
                   </View>
@@ -585,7 +598,7 @@ const HomeFragment = ({navigation}: Props) => {
                           <Text
                             numberOfLines={1}
                             ellipsizeMode="tail"
-                            style={[fontRegular ,styles.postTitleSummary]}>
+                            style={[fontRegular, styles.postTitleSummary]}>
                             {item.boardName.slice(0, numOfBoardTitle)}
                           </Text>
                         </View>
@@ -609,7 +622,9 @@ const HomeFragment = ({navigation}: Props) => {
                         </View>
                         <View style={styles.postNewLabelContainer}>
                           {item.todayNewPost ? (
-                            <Text style={[fontRegular, styles.postNewLabel]}>N</Text>
+                            <Text style={[fontRegular, styles.postNewLabel]}>
+                              N
+                            </Text>
                           ) : (
                             <></>
                           )}
@@ -626,12 +641,14 @@ const HomeFragment = ({navigation}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Text
-                      style={[
-                      fontRegular, {
-                      textAlign: 'center',
-                      fontSize: 15,
-                      color: '#6E7882',
-                    }]}>
+                    style={[
+                      fontRegular,
+                      {
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      },
+                    ]}>
                     정회원 인증 후 확인하실 수 있습니다.
                   </Text>
                 </View>
@@ -670,12 +687,14 @@ const HomeFragment = ({navigation}: Props) => {
                       borderRadius: 20,
                     }}>
                     <Text
-                        style={[
-                        fontRegular, {
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      }]}>
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: 'center',
+                          fontSize: 15,
+                          color: '#6E7882',
+                        },
+                      ]}>
                       공감을 10개 이상 받은 게시글이 없습니다.
                     </Text>
                   </View>
@@ -723,12 +742,14 @@ const HomeFragment = ({navigation}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Text
-                      style={[
-                      fontRegular, {
-                      textAlign: 'center',
-                      fontSize: 15,
-                      color: '#6E7882',
-                    }]}>
+                    style={[
+                      fontRegular,
+                      {
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      },
+                    ]}>
                     정회원 인증 후 확인하실 수 있습니다.
                   </Text>
                 </View>
