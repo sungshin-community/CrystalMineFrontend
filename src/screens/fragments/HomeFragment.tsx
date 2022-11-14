@@ -47,6 +47,7 @@ import Error from '../../components/Error';
 import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 
 type RootStackParamList = {
+  StudyMin: undefined;
   PostListScreen: {boardId: number};
   MyPage: undefined;
   PostScreen: {postId: number};

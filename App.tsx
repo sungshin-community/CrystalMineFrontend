@@ -6,6 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
 // screens
+import StudyMin from './src/screens/fragments/AlertMinhyeong';
 import ErrorScreen from './src/screens/errorScreen/ErrorScreen';
 // signIn
 import SplashHome from './src/screens/SplashHome';
@@ -923,6 +924,17 @@ const App = () => {
                   },
                 })}
               />
+              <Stack.Screen
+                name='StudyMin'
+                component={StudyMin}
+                options={({navigation})=>({
+                  title : 'StudyMin',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  }
+                })}
+                />
               <Stack.Screen
                 name="MyPostList"
                 component={MyPostList}
