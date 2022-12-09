@@ -289,7 +289,7 @@ const MyPageFragment = ({navigation}: Props) => {
             </View> */}
           </View>
           <View
-            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
+            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
             <TouchableHighlight
               underlayColor='#EEEEEE' onPress={() => setProfileModalVisible(true)}>
@@ -335,6 +335,27 @@ const MyPageFragment = ({navigation}: Props) => {
                     flexDirection: 'row',
                     flex: 1,
                     justifyContent: 'flex-end',
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
+            <Text style={styles.menuTitle}>앱설정</Text>
+            <TouchableHighlight
+              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('AlertSetting')}}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>
+                  푸시 알림 설정
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
                   }}>
                   <RightArrow />
                 </View>

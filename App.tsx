@@ -65,6 +65,7 @@ import UsageRestrictions from './src/screens/mypage/informationUse/UsageRestrict
 import QuestionList from './src/screens/mypage/QuestionList';
 import QuestionWriteScreen from './src/screens/mypage/QuestionWriteScreen';
 import InformationUse from './src/screens/mypage/blindMemberAccess/InformationUse';
+import AlertSettingScreen from './src/screens/mypage/AlertSettingScreen';
 
 import BackButtonIcon from './resources/icon/BackButtonIcon';
 import {CommonActions} from '@react-navigation/native';
@@ -2921,6 +2922,36 @@ const App = () => {
                 component={DirectionAgreeScreen}
                 options={({navigation}) => ({
                   title: '수정광산 이용 방향',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              {/* 마이페이지 - 푸시알림 설정 */}
+              <Stack.Screen
+                name="AlertSetting"
+                component={AlertSettingScreen}
+                options={({navigation}) => ({
+                  title: '푸시 알림 설정',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
