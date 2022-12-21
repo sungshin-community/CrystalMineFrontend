@@ -1,17 +1,8 @@
 import React from 'react'
 import {
-    SafeAreaView,
-    ScrollView,
     Text,
     View,
-    Switch,
-    TouchableHighlight,
     StyleSheet,
-    Image,
-    Pressable,
-    ActivityIndicator,
-    TouchableOpacity,
-    Platform,
   } from 'react-native';
 
 import {AlertOffIcon, AlertOnIcon} from '../../../resources/icon/AlertSettingIcon';
@@ -21,8 +12,6 @@ export default function AlertSettingScreen() {
     <View>
         <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27, borderBottomColor: '#EEEEEE', borderBottomWidth: 16}}>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' >
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   모든 푸시 알림
@@ -37,15 +26,10 @@ export default function AlertSettingScreen() {
                 </View>
                 <AlertOffIcon/>
               </View>
-              
-            </TouchableHighlight>
           </View>
-
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
             <Text style={styles.menuTitle}>활동 알림</Text>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' >
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   댓글 알림
@@ -60,9 +44,6 @@ export default function AlertSettingScreen() {
                 </View>
                 <AlertOffIcon/>
               </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE'>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   HOT 게시판 전송 알림
@@ -76,29 +57,10 @@ export default function AlertSettingScreen() {
                 </View>
                 <AlertOnIcon/>
               </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE'>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  인증일 알림
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                  }}>
-                </View>
-                <AlertOnIcon/>
-              </View>
-            </TouchableHighlight>
           </View>
           <View
             style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
-            <Text style={styles.menuTitle}>활동 알림</Text>
-            <TouchableHighlight
-              underlayColor='#EEEEEE'>
+            <Text style={styles.menuTitle}>공식 알림</Text>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   인증일 알림
@@ -112,9 +74,6 @@ export default function AlertSettingScreen() {
                 </View>
                 <AlertOffIcon/>
               </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE'>
               <View style={styles.menu}>
                 <Text style={styles.menuText}>
                   새 공지사항 업로드 알림
@@ -128,7 +87,6 @@ export default function AlertSettingScreen() {
                 </View>
                 <AlertOffIcon/>
               </View>
-            </TouchableHighlight>
           </View>
     </View>
   )
