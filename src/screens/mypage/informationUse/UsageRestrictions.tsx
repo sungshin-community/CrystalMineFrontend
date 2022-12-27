@@ -139,7 +139,7 @@ function UsageRestrictions({navigation}: Props) {
               tintColor={'#A055FF'} // for ios
             />
           }
-          onEndReached={fetchNextPage}
+          onEndReached={() => fetchNextPage()}
           onEndReachedThreshold={0.8} />
       )}
     </>
