@@ -240,7 +240,7 @@ export default function MyCommentList({navigation, route}: Props) {
               tintColor={'#A055FF'} // for ios
             />
           }
-          onEndReached={fetchNextPage}
+          onEndReached={() => fetchNextPage()}
           onEndReachedThreshold={0.8}
       />
       </View>}

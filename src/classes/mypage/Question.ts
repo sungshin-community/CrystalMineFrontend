@@ -23,4 +23,6 @@ interface Answer {
   id: number;
   content: string;
   createdAt: string;
+  images: string[];
+  thumbnails: string[];
 }

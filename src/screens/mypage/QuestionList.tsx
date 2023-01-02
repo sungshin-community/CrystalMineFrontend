@@ -46,6 +46,7 @@ import PostItem from '../../components/PostItem';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useNavigation} from '@react-navigation/native';
 import WaterMark from '../../components/WaterMark';
+import Autolink from 'react-native-autolink';
 
 type RootStackParamList = {
   QuestionWriteScreen: undefined;
@@ -292,7 +293,7 @@ function QuestionList({navigation, route}: Props) {
                   tintColor={'#A055FF'} // for ios
                 />
               }
-              onEndReached={fetchNextPage}
+              onEndReached={() => fetchNextPage()}
               onEndReachedThreshold={0.8}
             />
             <View>
@@ -484,7 +485,7 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
               {data?.title}
             </Text>
             <Text style={[fontRegular, {marginBottom: 10}]}>
-              {data?.content}
+              <Autolink text={data ? (data.content ? data.content : '') : ''} />
             </Text>
             <Text style={[fontRegular, styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
 
@@ -532,12 +533,14 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                   </Text>
                 </View>
                 <View style={[{marginTop: 8, marginLeft: 30, marginBottom: 10}]}>
-                  <Text style={fontRegular}>{data?.answer.content}</Text>
+                  <Text style={fontRegular}>
+                    <Autolink text={data ? (data?.answer.content ? data?.answer.content : '') : ''} />
+                  </Text>
                 </View>
                 <Text style={[fontRegular, styles.date, {marginLeft: 30}]}>
                   {data?.answer.createdAt}
                 </Text>
-                {data?.images.length !== 0 && (
+                {data?.answer.images.length !== 0 && (
                   <View
                     style={{
                       flexDirection: 'row',
@@ -547,12 +550,12 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                     <ScrollView
                       showsHorizontalScrollIndicator={false}
                       horizontal={true}>
-                      {data?.thumbnails.map((url, index) => (
+                      {data?.answer.thumbnails.map((url, index) => (
                         <Pressable
                           key={index}
                           onPress={() =>
                             navigation.navigate('ImageViewerScreen', {
-                              imageUrls: imgUrlCoverting(data.images),
+                              imageUrls: imgUrlCoverting(data.answer.images),
                               index: index,
                             })
                           }>

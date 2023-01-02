@@ -139,7 +139,7 @@ export default function MyPostList({searchWord}: Props) {
               tintColor={'#A055FF'} // for ios
             />
           }
-          onEndReached={fetchNextPage}
+          onEndReached={() => fetchNextPage()}
           onEndReachedThreshold={0.6}
         />
         <View>
