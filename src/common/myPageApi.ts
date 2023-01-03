@@ -1,7 +1,7 @@
 import client from './client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosResponse} from 'axios';
-import User from '../classes/User';
+import User, {UserAlertSetting} from '../classes/User';
 import Response from '../classes/Response';
 import QuestionWriteRequest from '../classes/QuestionWriteRequest';
 import QuestionWriteResponse from '../classes/QuestionWriteResponse';
@@ -209,3 +209,38 @@ export async function deleteQuestions(questionIds: number[]) {
     console.log('여기는 deleteQuestions 함수', e);
   }
 }
+
+export const createAlertSettings = async () => {
+  try {
+    const response = await client.get<AxiosResponse>('/push-setting');
+    return response;
+  } catch (error: any) {
+    console.log('알림 세팅 생성 실패', error.response.data);
+    return error.response.data;
+  }
+};
+
+export const getAlertSettings = async () => {
+  try {
+    const response = await client.get<Response<UserAlertSetting>>(
+      '/push-setting',
+    );
+    return response;
+  } catch (error: any) {
+    console.log('알림 세팅 가져오기 실패', error.response.data);
+    return error.response.data;
+  }
+};
+
+export const changeAlertSettings = async (type: string, setting: boolean) => {
+  try {
+    const response = await client.patch<Response<UserAlertSetting>>(
+      `/push-setting?type=${type}`,
+      {setting: setting},
+    );
+    return response;
+  } catch (error: any) {
+    console.log('알림 세팅 수정 실패', error.response.data);
+    return error.response.data;
+  }
+};

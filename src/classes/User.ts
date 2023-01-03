@@ -11,3 +11,14 @@ export default interface User {
     point: number;
     email: string;
 }
+
+interface IObjectKeys {
+  [key: string]: string | boolean | number;
+}
+export interface UserAlertSetting extends IObjectKeys {
+  allSetting: boolean;
+  comment: boolean;
+  hotBoard: boolean;
+  notice: boolean;
+  verification: boolean;
+}
