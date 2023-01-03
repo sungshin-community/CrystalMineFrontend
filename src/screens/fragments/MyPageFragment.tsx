@@ -65,7 +65,7 @@ type RootStackParamList = {
   QuestionList: undefined;
   ListScreen: undefined;
   DirectionAgreeScreen: undefined;
-  AlertSettingScreen: undefined;
+  AlertSetting: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
