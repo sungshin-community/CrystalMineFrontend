@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
@@ -28,10 +29,21 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
+
 @implementation AppDelegate
 // Required for the register event.
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+  if ([FIRApp defaultApp] == nil) { 
+  [FIRApp configure];
+}
+  #ifdef FB_SONARKIT_ENABLED
+  InitializeFlipper(application);
+  
+#endif
+
+
+
  [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 // Required for the notification event. You must call the completion handler after handling the remote notification.
