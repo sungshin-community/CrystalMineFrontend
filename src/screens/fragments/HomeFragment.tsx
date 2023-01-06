@@ -132,7 +132,7 @@ const HomeFragment = ({navigation}: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-
+      await AsyncStorage.removeItem('messagePermission');
       const response = await getAuthentication();
       if (response.status === 401) {
         setTimeout(function () {
@@ -149,8 +149,8 @@ const HomeFragment = ({navigation}: Props) => {
           'messagePermission',
         );
         if (messagePermission === null) {
-          pushTokenLogic();
-          topicTokenLogic();
+          await pushTokenLogic();
+          // await topicTokenLogic(permission);
         }
 
         if (!response.data.data?.blacklist) {

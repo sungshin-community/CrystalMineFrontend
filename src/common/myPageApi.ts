@@ -212,8 +212,8 @@ export async function deleteQuestions(questionIds: number[]) {
 
 export const createAlertSettings = async () => {
   try {
-    const response = await client.get<AxiosResponse>('/push-setting');
-    return response;
+    const response = await client.post<AxiosResponse>('/push-setting');
+    return response.data;
   } catch (error: any) {
     console.log('알림 세팅 생성 실패', error.response.data);
     return error.response.data;
@@ -225,7 +225,7 @@ export const getAlertSettings = async () => {
     const response = await client.get<Response<UserAlertSetting>>(
       '/push-setting',
     );
-    return response;
+    return response.data;
   } catch (error: any) {
     console.log('알림 세팅 가져오기 실패', error.response.data);
     return error.response.data;
@@ -238,7 +238,7 @@ export const changeAlertSettings = async (type: string, setting: boolean) => {
       `/push-setting?type=${type}`,
       {setting: setting},
     );
-    return response;
+    return response.data;
   } catch (error: any) {
     console.log('알림 세팅 수정 실패', error.response.data);
     return error.response.data;

@@ -8,8 +8,8 @@ export const postDeviceToken = async (token: string) => {
     const response = await client.post<AxiosResponse>('/push', {
       fcmToken: token,
     });
-    console.log('push token 전송 response:', response);
-    return response;
+    console.log('push token 전송 response:', response.data);
+    return response.data;
   } catch (error: any) {
     console.log('push token 전송 실패', error.response.data);
     return error.response.data;
@@ -19,7 +19,7 @@ export const postDeviceToken = async (token: string) => {
 export const getReadableTopic = async () => {
   try {
     const response = await client.get<Response<PushTopic>>('/push/topic/read');
-    return response;
+    return response.data;
   } catch (error: any) {
     console.log('topic 발급 실패', error.response.data);
     return error.response.data;
@@ -31,8 +31,7 @@ export const postRegisterTopic = async (topic: string) => {
     const response = await client.post<AxiosResponse>('/push/topic/register', {
       fcmTopic: topic,
     });
-    console.log('topic 전송 reponse: ', response);
-    return response;
+    return response.data;
   } catch (e) {
     console.log('topic 전송 실패', e.response.data);
     return e.response.data;
