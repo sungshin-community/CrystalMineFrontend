@@ -12,6 +12,7 @@ import {
   TouchableHighlight,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -46,6 +47,10 @@ import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
 import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 
+import {
+  pushTokenLogic,
+  topicTokenLogic,
+} from '../../common/util/pushRegisterUtil';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPage: undefined;
@@ -69,9 +74,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>([]);
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
-  const [blacklistblindModalVisible, setBlacklistblindModalVisible] = useState<
-    boolean
-  >(false);
+  const [blacklistblindModalVisible, setBlacklistblindModalVisible] =
+    useState<boolean>(false);
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const [user, setUser] = useState<Authentication>();
@@ -141,6 +145,14 @@ const HomeFragment = ({navigation}: Props) => {
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setUser(response.data.data);
+        const messagePermission = await AsyncStorage.getItem(
+          'messagePermission',
+        );
+        if (messagePermission === null) {
+          pushTokenLogic();
+          topicTokenLogic();
+        }
+
         if (!response.data.data?.blacklist) {
           const notification = await getUnreadNotification();
           if (notification.status === 401) {
@@ -207,7 +219,8 @@ const HomeFragment = ({navigation}: Props) => {
       getContents();
     }
   }, [isFocused, modalBody, blindModalVisible]);
-  console.log(pinBoardContents);
+  // console.log(pinBoardContents);
+
   return (
     <>
       <WaterMark />
@@ -239,13 +252,16 @@ const HomeFragment = ({navigation}: Props) => {
                 paddingVertical: 32,
               }}>
               <Text
-                  style={[
-                  fontRegular,{
-                  fontSize: 22,
-                  marginLeft: 40,
-                  marginBottom: noti?.length && 26,
-                }]}>
-                <Text style={[fontRegular, {fontWeight: 'bold', color: '#A055FF'}]}>
+                style={[
+                  fontRegular,
+                  {
+                    fontSize: 22,
+                    marginLeft: 40,
+                    marginBottom: noti?.length && 26,
+                  },
+                ]}>
+                <Text
+                  style={[fontRegular, {fontWeight: 'bold', color: '#A055FF'}]}>
                   {user?.nickname}
                 </Text>
                 {` 님, `}
@@ -350,9 +366,12 @@ const HomeFragment = ({navigation}: Props) => {
                                 </Text>
                                 <Text
                                   style={[
-                                    fontRegular, {
-                                    width: Dimensions.get('window').width - 183,
-                                  }]}>
+                                    fontRegular,
+                                    {
+                                      width:
+                                        Dimensions.get('window').width - 183,
+                                    },
+                                  ]}>
                                   {item.blind?.content}
                                 </Text>
                               </View>
@@ -428,9 +447,12 @@ const HomeFragment = ({navigation}: Props) => {
                                   ellipsizeMode={'tail'}
                                   numberOfLines={3}
                                   style={[
-                                    fontRegular, {
-                                    width: Dimensions.get('window').width - 178,
-                                  }]}>
+                                    fontRegular,
+                                    {
+                                      width:
+                                        Dimensions.get('window').width - 178,
+                                    },
+                                  ]}>
                                   {item.deleteBlind?.content}
                                 </Text>
                               </View>
@@ -475,8 +497,8 @@ const HomeFragment = ({navigation}: Props) => {
                         }
                       }}>
                       <View style={{flexDirection: 'row'}}>
-                        {(item.type === 'WELCOME') && <CheckMark />}
-                        {(item.type ==='NOTICE') && <AlertNoticeIcon />}
+                        {item.type === 'WELCOME' && <CheckMark />}
+                        {item.type === 'NOTICE' && <AlertNoticeIcon />}
                         {(item.type === 'BEFORE_EXPIRE' ||
                           item.type === 'EXPIRE' ||
                           item.type === 'NOT_AUTHENTICATED') && (
@@ -504,7 +526,7 @@ const HomeFragment = ({navigation}: Props) => {
                           <Text
                             ellipsizeMode={'tail'}
                             numberOfLines={1}
-                            style={[fontRegular,styles.newsMore]}>
+                            style={[fontRegular, styles.newsMore]}>
                             {item.content
                               ? item.content
                               : item.blind?.content
@@ -526,7 +548,9 @@ const HomeFragment = ({navigation}: Props) => {
                 padding: 24,
               }}>
               <View style={styles.rowContainer}>
-                <Text style={[fontRegular ,styles.boardTitle]}>고정 게시판</Text>
+                <Text style={[fontRegular, styles.boardTitle]}>
+                  고정 게시판
+                </Text>
                 <TouchableWithoutFeedback
                   onPress={() => {
                     {
@@ -551,12 +575,14 @@ const HomeFragment = ({navigation}: Props) => {
                       borderRadius: 20,
                     }}>
                     <Text
-                        style={[
-                        fontRegular,{
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      }]}>
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: 'center',
+                          fontSize: 15,
+                          color: '#6E7882',
+                        },
+                      ]}>
                       고정된 게시판이 없습니다.
                     </Text>
                   </View>
@@ -585,7 +611,7 @@ const HomeFragment = ({navigation}: Props) => {
                           <Text
                             numberOfLines={1}
                             ellipsizeMode="tail"
-                            style={[fontRegular ,styles.postTitleSummary]}>
+                            style={[fontRegular, styles.postTitleSummary]}>
                             {item.boardName.slice(0, numOfBoardTitle)}
                           </Text>
                         </View>
@@ -609,7 +635,9 @@ const HomeFragment = ({navigation}: Props) => {
                         </View>
                         <View style={styles.postNewLabelContainer}>
                           {item.todayNewPost ? (
-                            <Text style={[fontRegular, styles.postNewLabel]}>N</Text>
+                            <Text style={[fontRegular, styles.postNewLabel]}>
+                              N
+                            </Text>
                           ) : (
                             <></>
                           )}
@@ -626,12 +654,14 @@ const HomeFragment = ({navigation}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Text
-                      style={[
-                      fontRegular, {
-                      textAlign: 'center',
-                      fontSize: 15,
-                      color: '#6E7882',
-                    }]}>
+                    style={[
+                      fontRegular,
+                      {
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      },
+                    ]}>
                     정회원 인증 후 확인하실 수 있습니다.
                   </Text>
                 </View>
@@ -670,12 +700,14 @@ const HomeFragment = ({navigation}: Props) => {
                       borderRadius: 20,
                     }}>
                     <Text
-                        style={[
-                        fontRegular, {
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      }]}>
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: 'center',
+                          fontSize: 15,
+                          color: '#6E7882',
+                        },
+                      ]}>
                       공감을 10개 이상 받은 게시글이 없습니다.
                     </Text>
                   </View>
@@ -723,12 +755,14 @@ const HomeFragment = ({navigation}: Props) => {
                     borderRadius: 20,
                   }}>
                   <Text
-                      style={[
-                      fontRegular, {
-                      textAlign: 'center',
-                      fontSize: 15,
-                      color: '#6E7882',
-                    }]}>
+                    style={[
+                      fontRegular,
+                      {
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      },
+                    ]}>
                     정회원 인증 후 확인하실 수 있습니다.
                   </Text>
                 </View>
