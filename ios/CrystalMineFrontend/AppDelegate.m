@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
-#import <Firebase.h>
+// #import <Firebase.h>
+#import <Firebase/Firebase.h>
 
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
@@ -34,9 +35,7 @@ static void InitializeFlipper(UIApplication *application) {
 // Required for the register event.
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  if ([FIRApp defaultApp] == nil) { 
-  [FIRApp configure];
-}
+
   #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
   
@@ -67,6 +66,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  if ([FIRApp defaultApp] == nil) { 
+  [FIRApp configure];
+}
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -93,6 +95,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
    // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
+  
   
   return YES;
 }
