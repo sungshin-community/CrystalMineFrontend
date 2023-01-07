@@ -1,4 +1,5 @@
-import { BlindDto, DeleteBlindDto } from "./Home";
+import {BlindDto, DeleteBlindDto} from './Home';
+import {IObjectKeys} from './User';
 
 export default interface AlertDto {
   content: Alert[];
@@ -15,4 +16,9 @@ export interface Alert {
   blind?: BlindDto;
   deleteBlind?: DeleteBlindDto;
   postId: number;
+}
+
+export interface AlertData extends IObjectKeys {
+  type: string;
+  contentId?: string;
 }

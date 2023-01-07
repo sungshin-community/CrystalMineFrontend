@@ -20,6 +20,10 @@ import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {getHundredsDigit} from '../../common/util/statusUtil';
+import {
+  subscribeTopic,
+  unsubscribeTopic,
+} from '../../common/util/pushRegisterUtil';
 
 type RootStackParamList = {};
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
@@ -50,7 +54,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
         }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
-      } else if (getHundredsDigit(response.status) === 2) {
+      } else if (response.status === 'OK') {
         setSettings(response.data);
         setIsLoading(false);
       } else {
@@ -58,57 +62,69 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
       }
     }
 
-    // if (isFocused) {
-    //   getSettings();
-    // }
+    if (isFocused) {
+      getSettings();
+    }
   }, [isFocused]);
 
-  const getKeyByValue = (obj: UserAlertSetting, value: boolean) => {
-    let count: number = 0;
-    Object.keys(obj).forEach(key => {
-      if (key !== 'allSetting' && obj[key] === value) {
-        count++;
-      }
-    });
-    return count;
-  };
+  // const getKeyByValue = (obj: UserAlertSetting, value: boolean) => {
+  //   let count: number = 0;
+  //   Object.keys(obj).forEach(key => {
+  //     if (key !== 'allSetting' && obj[key] === value) {
+  //       count++;
+  //     }
+  //   });
+  //   return count;
+  // };
 
-  const onPress = (value: string) => {
+  const onPress = async (value: string) => {
     console.log('clicked!');
-    // changeAlertSettings(value, !settings[value]);
-    setSettings(prevState => {
-      let obj = Object.assign({}, prevState);
-      obj[value] = !settings[value];
-      obj.allSetting = getKeyByValue(obj, false) > 0 ? false : true;
-      return obj;
-    });
-  };
-
-  const onAllPress = () => {
-    // changeAlertSettings('allSetting', !settings.allSetting);
-    if (settings.allSetting) {
-      setSettings({
-        allSetting: false,
-        comment: false,
-        hotBoard: false,
-        notice: false,
-        verification: false,
-      });
+    if (value === 'notice' && settings.notice) {
+      unsubscribeTopic();
+    } else if (value === 'notice' && !settings.notice) {
+      subscribeTopic();
+    }
+    const changedStat = await changeAlertSettings(value, !settings[value]);
+    // setSettings(prevState => {
+    //   let obj = Object.assign({}, prevState);
+    //   obj[value] = !settings[value];
+    //   obj.allSetting = getKeyByValue(obj, false) > 0 ? false : true;
+    //   return obj;
+    // });
+    if (changedStat.status === 'OK') {
+      setSettings(changedStat.data);
     } else {
-      setSettings({
-        allSetting: true,
-        comment: true,
-        hotBoard: true,
-        notice: true,
-        verification: true,
-      });
+      setTimeout(function () {
+        Toast.show('알림 설정 중 오류가 발생했습니다.', Toast.SHORT);
+      }, 100);
     }
   };
+
+  // const onAllPress = () => {
+  //   // changeAlertSettings('allSetting', !settings.allSetting);
+  //   if (settings.allSetting) {
+  //     setSettings({
+  //       allSetting: false,
+  //       comment: false,
+  //       hotBoard: false,
+  //       notice: false,
+  //       verification: false,
+  //     });
+  //   } else {
+  //     setSettings({
+  //       allSetting: true,
+  //       comment: true,
+  //       hotBoard: true,
+  //       notice: true,
+  //       verification: true,
+  //     });
+  //   }
+  // };
 
   return (
     <View style={{flex: 1}}>
       <WaterMark />
-      {/* <View
+      <View
         style={{
           position: 'absolute',
           alignItems: 'center',
@@ -124,7 +140,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
           animating={isLoading}
           style={{zIndex: 100}}
         />
-      </View> */}
+      </View>
 
       <View
         style={[
@@ -135,7 +151,9 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
         ]}>
         <View style={styles.menu}>
           <Text style={styles.menuText}>모든 푸시 알림</Text>
-          <Pressable style={styles.toggleButton} onPress={onAllPress}>
+          <Pressable
+            style={styles.toggleButton}
+            onPress={() => onPress('allSetting')}>
             {settings.allSetting ? <AlertOnIcon /> : <AlertOffIcon />}
           </Pressable>
         </View>
