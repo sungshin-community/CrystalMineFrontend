@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
+  NativeModules,
+  Linking,
   SafeAreaView,
   ScrollView,
   Text,
@@ -31,6 +33,7 @@ import { getHundredsDigit } from '../../common/util/statusUtil';
 import Error from '../../components/Error';
 import { fontRegular } from '../../common/font';
 import WaterMark from '../../components/WaterMark';
+import messaging from '@react-native-firebase/messaging';
 
 const styles = StyleSheet.create({
   menu: {
@@ -75,7 +78,9 @@ const MyPageFragment = ({navigation}: Props) => {
   const [allowAlert, setAllowAlert] = useState<boolean>(false);
   const [allowMessage, setAllowMessage] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false);
+  const [profileModalVisible, setProfileModalVisible] =
+    useState<boolean>(false);
+  const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
   const [isInited, setIsInited] = useState<boolean>(false);
@@ -257,22 +262,6 @@ const MyPageFragment = ({navigation}: Props) => {
               </View>
             </View>
             <View style={styles.menu}>
-              <Text style={styles.menuText}>알림 설정</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'flex-end',
-                }}>
-                <Switch
-                  trackColor={{false: '#C4C4C4', true: '#A055FF'}}
-                  thumbColor={'#FFFFFF'}
-                  onValueChange={() => setAllowAlert(!allowAlert)}
-                  value={allowAlert}
-                />
-              </View>
-            </View>
-            <View style={styles.menu}>
               <Text style={styles.menuText}>쪽지 설정</Text>
               <View
                 style={{
@@ -288,154 +277,183 @@ const MyPageFragment = ({navigation}: Props) => {
                 />
               </View>
             </View> */}
-          </View>
-          <View
-            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
-            <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => setProfileModalVisible(true)}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  프로필 이미지 변경
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}>
-                  <RightArrow />
+            </View>
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                paddingBottom: 20,
+                paddingTop: 27,
+                borderBottomColor: '#EEEEEE',
+                borderBottomWidth: 1,
+              }}>
+              <Text style={styles.menuTitle}>회원 정보 등록 및 수정</Text>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => setProfileModalVisible(true)}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>프로필 이미지 변경</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ChangeNickname')}}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  닉네임 변경
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <RightArrow />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('ChangeNickname');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>닉네임 변경</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ChangeMajor')}}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  소속 학과 변경
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <RightArrow />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('ChangeMajor');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>소속 학과 변경</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View
-            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 27}}>
-            <Text style={styles.menuTitle}>앱설정</Text>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('AlertSetting')}}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  푸시 알림 설정
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}>
-                  <RightArrow />
+              </TouchableHighlight>
+            </View>
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                paddingBottom: 20,
+                paddingTop: 27,
+              }}>
+              <Text style={styles.menuTitle}>앱설정</Text>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={async () => {
+                  const enabled = await messaging().hasPermission();
+                  if (enabled) {
+                    navigation.navigate('AlertSetting');
+                  } else {
+                    setAlertModalVisible(true);
+                  }
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>푸시 알림 설정</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View
-            style={{backgroundColor: '#FFFFFF', paddingBottom: 18, paddingTop: 20, marginTop: 16, borderBottomColor: '#F6F6F6', borderBottomWidth: 1}}>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('DirectionAgreeScreen')}}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  수정광산 이용 방향
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}>
-                  <RightArrow />
+              </TouchableHighlight>
+            </View>
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                paddingBottom: 18,
+                paddingTop: 20,
+                marginTop: 16,
+                borderBottomColor: '#F6F6F6',
+                borderBottomWidth: 1,
+              }}>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('DirectionAgreeScreen');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>수정광산 이용 방향</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => {navigation.navigate('ListScreen')}}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  이용안내
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}>
-                  <RightArrow />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('ListScreen');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>이용안내</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => { navigation.navigate('QuestionList')}}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  문의하기
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <RightArrow />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('QuestionList');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>문의하기</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                    }}>
+                    <RightArrow />
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View
-            style={{backgroundColor: '#FFFFFF', paddingBottom: 20, paddingTop: 10}}>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={() => setModalVisible(true)}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  로그아웃
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}>
+              </TouchableHighlight>
+            </View>
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                paddingBottom: 20,
+                paddingTop: 10,
+              }}>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => setModalVisible(true)}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>로그아웃</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}></View>
                 </View>
-              </View>
-            </TouchableHighlight>
-              </View>
-              {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
+              </TouchableHighlight>
+            </View>
+            {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
                 Salty Lab | contact@crystalmine.kr
               </Text> */}
         </View>
@@ -447,81 +465,141 @@ const MyPageFragment = ({navigation}: Props) => {
             }}
           />
         </View> */}
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          content="로그아웃 하시겠습니까?"
-          purpleButtonText="확인"
-          purpleButtonFunc={async () => {
-            await logout();
-            navigation.reset({ routes: [{ name: 'SplashHome' }] });
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setModalVisible(false)}
-        />
-        <ModalBottom
-          modalVisible={profileModalVisible}
-          setModalVisible={setProfileModalVisible}
-          title="프로필 사진 변경"
-          purpleButtonText="앨범에서 이미지 선택"
-          purpleButtonFunc={async () => {
-            setProfileModalVisible(false);
-            launchImageLibrary(
-              {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
-              async (res) => {
-                if (res.didCancel) {
-                  return;
+          <ModalBottom
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            content="로그아웃 하시겠습니까?"
+            purpleButtonText="확인"
+            purpleButtonFunc={async () => {
+              await logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            }}
+            whiteButtonText="취소"
+            whiteButtonFunc={() => setModalVisible(false)}
+          />
+          <ModalBottom
+            modalVisible={profileModalVisible}
+            setModalVisible={setProfileModalVisible}
+            title="프로필 사진 변경"
+            purpleButtonText="앨범에서 이미지 선택"
+            purpleButtonFunc={async () => {
+              setProfileModalVisible(false);
+              launchImageLibrary(
+                {mediaType: 'photo', maxWidth: 512, maxHeight: 512},
+                async res => {
+                  if (res.didCancel) {
+                    return;
+                  }
+                  let response = await uploadProfileImage(res.assets[0]);
+                  if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
+                    setUser(response.data);
+                    setTimeout(function () {
+                      Toast.show(
+                        '프로필 이미지가 성공적으로 변경되었습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
+                  } else {
+                    setTimeout(function () {
+                      Toast.show(
+                        '프로필 이미지 변경에 실패했습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
+                  }
+                },
+              );
+            }}
+            whiteButtonText="기본 이미지로 변경"
+            whiteButtonFunc={async () => {
+              let response = await setDefaultProfileImage();
+              setUser(response.data.data);
+              setProfileModalVisible(false);
+              setTimeout(function () {
+                Toast.show(
+                  '프로필 이미지가 성공적으로 변경되었습니다.',
+                  Toast.SHORT,
+                );
+              }, 100);
+            }}
+          />
+          <ModalBottom
+            modalVisible={alertModalVisible}
+            setModalVisible={setAlertModalVisible}
+            content={
+              '알림 설정을 위해\n기기의 [설정] - [수정광산]에서\n알림을 허용해 주세요.'
+            }
+            purpleButtonText="확인"
+            purpleButtonFunc={async () => {
+              if (Platform.OS === 'ios') {
+                Linking.openURL('App-Prefs:root');
+              } else {
+                if (NativeModules.OpenExternalURLModule) {
+                  NativeModules.OpenExternalURLModule.linkAndroidSettings();
                 }
-                let response = await uploadProfileImage(res.assets[0]);
-                if (response.code === 'UPDATE_PROFILE_IMAGE_SUCCESS') {
-                  setUser(response.data);
-                  setTimeout(function () {
-                    Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
-                  }, 100);
-                }
-                else {
-                  setTimeout(function () {
-                    Toast.show('프로필 이미지 변경에 실패했습니다.', Toast.SHORT);
-                  }, 100);
-                }
-              },
-            );
-          }}
-          whiteButtonText="기본 이미지로 변경"
-          whiteButtonFunc={async () => {
-            let response = await setDefaultProfileImage();
-            setUser(response.data.data);
-            setProfileModalVisible(false);
-            setTimeout(function () {
-              Toast.show('프로필 이미지가 성공적으로 변경되었습니다.', Toast.SHORT);
-            }, 100);
-          }}
-        />
-      </ScrollView>
-        </SafeAreaView>
-      </>
+              }
+              setAlertModalVisible(false);
+            }}
+          />
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };
 
-const skeletonComponent = <View
-style={{
-  height: 160,
-  flexDirection: 'row',
-  backgroundColor: '#FFFFFF',
-  paddingLeft: 35,
-  paddingTop: 20,
-}}
->
-<DefaultProfile />
-<View style={{height: 80}}>
-  <View style={{marginLeft: 18, marginRight: 24, borderBottomColor: '#EEEEEE', borderBottomWidth: 1, height: 80 }}>
-    <View style={{height: 15, width: 72, backgroundColor: '#E1E4EA', marginTop: 2}}></View>
-    <View style={{height: 20, width: 137, backgroundColor: '#E1E4EA', marginTop: 8}}></View>
-    <View style={{height: 15, width: 186, backgroundColor: '#E1E4EA', marginTop: 8}}></View>
+const skeletonComponent = (
+  <View
+    style={{
+      height: 160,
+      flexDirection: 'row',
+      backgroundColor: '#FFFFFF',
+      paddingLeft: 35,
+      paddingTop: 20,
+    }}>
+    <DefaultProfile />
+    <View style={{height: 80}}>
+      <View
+        style={{
+          marginLeft: 18,
+          marginRight: 24,
+          borderBottomColor: '#EEEEEE',
+          borderBottomWidth: 1,
+          height: 80,
+        }}>
+        <View
+          style={{
+            height: 15,
+            width: 72,
+            backgroundColor: '#E1E4EA',
+            marginTop: 2,
+          }}></View>
+        <View
+          style={{
+            height: 20,
+            width: 137,
+            backgroundColor: '#E1E4EA',
+            marginTop: 8,
+          }}></View>
+        <View
+          style={{
+            height: 15,
+            width: 186,
+            backgroundColor: '#E1E4EA',
+            marginTop: 8,
+          }}></View>
+      </View>
+      <View
+        style={{
+          marginLeft: 19,
+          marginTop: 12,
+          height: 20,
+          width: 100,
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#E1E4EA',
+        }}></View>
+    </View>
   </View>
-  <View style={{marginLeft: 19, marginTop: 12, height: 20, width: 100, flexDirection: 'row', alignItems: 'center', backgroundColor: '#E1E4EA'}}>
-  </View>
-</View>
-</View>;
+);
 
 export default MyPageFragment;
