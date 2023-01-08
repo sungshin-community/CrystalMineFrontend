@@ -24,6 +24,7 @@ import {getHundredsDigit} from '../common/util/statusUtil';
 import messaging from '@react-native-firebase/messaging';
 import {AlertData} from '../classes/AlertDto';
 import {readNotificationOnPush} from '../common/pushApi';
+import {getPostByComment} from '../common/boardApi';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,8 +47,13 @@ type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 function GlobalNavbar({navigation}: ScreenProps) {
   useEffect(() => {
     messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('data :::::::::::::::::: ', remoteMessage.data);
+      if (remoteMessage) {
+        //처리 로직
+        console.log('data :::::::::::::: ', remoteMessage.data);
+        onNotificationPress(remoteMessage.data);
+      }
     });
+
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
@@ -60,12 +66,12 @@ function GlobalNavbar({navigation}: ScreenProps) {
   }, []);
 
   const onNotificationPress = async (data: AlertData) => {
-    await readNotificationOnPush(data);
-    if (
-      data.type === 'HOT_POST' ||
-      data.type === 'COMMENT' ||
-      data.type === 'RECOMMENT'
-    ) {
+    const response = await readNotificationOnPush(data);
+    console.log(response);
+    if (data.type === 'COMMENT' || data.type === 'RECOMMENT') {
+      const content = await getPostByComment(Number(data.contentId));
+      navigation.navigate('PostScreen', {postId: content?.postId});
+    } else if (data.type === 'HOT_POST') {
       navigation.navigate('PostScreen', {postId: Number(data.contentId)});
     } else if (data.type === 'NOTICE') {
       navigation.navigate('Notice', {noticeId: Number(data.contentId)});

@@ -42,7 +42,8 @@ export const postRegisterTopic = async (topic: string) => {
 export const readNotificationOnPush = async (data: AlertData) => {
   try {
     const response = await client.patch<AxiosResponse>('/notifications', {
-      data,
+      type: data.type,
+      contentId: Number(data.contentId),
     });
     return response.data;
   } catch (error: any) {

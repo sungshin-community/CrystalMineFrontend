@@ -29,6 +29,13 @@
             {
               "client_id": "26244505794-36qaj1vse5hlcmu4gsr5nh8ogkh7fi73.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "26244505794-bg3bnpnhk0ia2tfg3km8ortah4jnl0ou.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.crystalmine.1936.master"
+              }
             }
           ]
         }

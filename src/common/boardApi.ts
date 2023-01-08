@@ -8,7 +8,7 @@ import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
 import {DirectionAgreement} from '../classes/Agreement';
 import MyCommentDto from '../classes/MyCommentDto';
-import {PostWriteDto, PostWriteInfoDto} from '../classes/PostDto';
+import PostDto, {PostWriteDto, PostWriteInfoDto} from '../classes/PostDto';
 import {MyPostContentDto} from '../classes/board/MyPostDto';
 
 
@@ -312,6 +312,17 @@ export const getPosts = async (postId: number) => {
   } catch (e) {
     console.log('여기는 getPosts 함수', e.response.data);
     return e.response;
+  }
+};
+
+export const getPostByComment = async (commentId: number) => {
+  try {
+    const response = await client.get<Response<PostDto>>(
+      `/posts/by/${commentId}`,
+    );
+    return response.data.data;
+  } catch (error: any) {
+    console.log('여기는 getAlertsByComment 함수', error.response.data);
   }
 };
 // 게시글 공감
