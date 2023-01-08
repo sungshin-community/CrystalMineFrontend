@@ -18,10 +18,12 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Platform, Pressable, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRole, logout} from '../common/authApi';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Authentication} from '../classes/Authentication';
-import {useEffect} from 'react';
 import {getHundredsDigit} from '../common/util/statusUtil';
+import messaging from '@react-native-firebase/messaging';
+import {AlertData} from '../classes/AlertDto';
+import {readNotificationOnPush} from '../common/pushApi';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,10 +37,43 @@ type RootStackParamList = {
   TotalSearch: undefined;
   SplashHome: undefined;
   ErrorScreen: undefined;
+  PostScreen: {postId: number};
+  Notice: {noticeId: number};
+  MyPage: undefined;
 };
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
 function GlobalNavbar({navigation}: ScreenProps) {
+  useEffect(() => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('data :::::::::::::::::: ', remoteMessage.data);
+    });
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          //처리 로직
+          console.log('data ;;;;;;;;;;;;;;;;;;; ', remoteMessage.data);
+          onNotificationPress(remoteMessage.data);
+        }
+      });
+  }, []);
+
+  const onNotificationPress = async (data: AlertData) => {
+    await readNotificationOnPush(data);
+    if (
+      data.type === 'HOT_POST' ||
+      data.type === 'COMMENT' ||
+      data.type === 'RECOMMENT'
+    ) {
+      navigation.navigate('PostScreen', {postId: Number(data.contentId)});
+    } else if (data.type === 'NOTICE') {
+      navigation.navigate('Notice', {noticeId: Number(data.contentId)});
+    } else if (data.type === 'BEFORE_EXPIRE') {
+      navigation.navigate('MyPage');
+    }
+  };
+
   const onSearchPress = async () => {
     const response = await checkRole();
     if (response.status === 401) {

@@ -2,6 +2,7 @@ import client from './client';
 import {AxiosResponse} from 'axios';
 import PushTopic from '../classes/Push';
 import Response from '../classes/Response';
+import {AlertData} from '../classes/AlertDto';
 
 export const postDeviceToken = async (token: string) => {
   try {
@@ -35,5 +36,16 @@ export const postRegisterTopic = async (topic: string) => {
   } catch (e) {
     console.log('topic 전송 실패', e.response.data);
     return e.response.data;
+  }
+};
+
+export const readNotificationOnPush = async (data: AlertData) => {
+  try {
+    const response = await client.patch<AxiosResponse>('/notifications', {
+      data,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log('push 알림 클릭 시 읽음 실패', error.response.data);
   }
 };

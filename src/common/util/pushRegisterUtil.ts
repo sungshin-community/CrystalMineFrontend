@@ -23,18 +23,22 @@ export const pushTokenLogic = async () => {
     //     Toast.show('알 수 없는 오류가 발생하였습니다. (34)', Toast.SHORT);
     //   }, 100);
     // }
-    const fcmFS = await AsyncStorage.getItem('fcmToken');
-    const fcmToken = await messaging().getToken();
-    console.log('토큰토큰토큰토큰', fcmToken);
-    if (fcmFS !== fcmToken) {
-      await AsyncStorage.setItem('fcmToken', fcmToken);
-      const response = await postDeviceToken(fcmToken);
-      console.log(response);
-      if (response.status !== 'OK') {
-        setTimeout(function () {
-          Toast.show('알 수 없는 오류가 발생하였습니다. (87)', Toast.SHORT);
-        }, 100);
+    try {
+      const fcmFS = await AsyncStorage.getItem('fcmToken');
+      const fcmToken = await messaging().getToken();
+      console.log('토큰토큰토큰토큰', fcmToken);
+      if (fcmFS !== fcmToken) {
+        await AsyncStorage.setItem('fcmToken', fcmToken);
+        const response = await postDeviceToken(fcmToken);
+        console.log(response);
+        if (response.status !== 'OK') {
+          setTimeout(function () {
+            Toast.show('알 수 없는 오류가 발생하였습니다. (87)', Toast.SHORT);
+          }, 100);
+        }
       }
+    } catch (error) {
+      console.log('에러 발생함');
     }
   }
 };
