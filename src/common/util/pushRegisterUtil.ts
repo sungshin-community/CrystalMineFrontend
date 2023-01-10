@@ -11,34 +11,37 @@ export const pushTokenLogic = async () => {
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  await AsyncStorage.setItem('messagePermission', enabled.toString());
-  if (enabled) {
-    console.log('토큰 발급 로직 들어옴!');
-    //알림 설정 api 호출 => 위치나 if문 순서 바꿔야될듯
-    // const createResponse = await createAlertSettings();
-    // console.log('알림 설정 완료 : ', createResponse);
+  const settingCreated = await AsyncStorage.getItem('messagePermission');
+  if (settingCreated === null) {
+    const createResponse = await createAlertSettings();
+    console.log('알림 설정 완료 : ', createResponse);
     // if (getHundredsDigit(createResponse.status) !== 2) {
     //   setTimeout(function () {
     //     Toast.show('알 수 없는 오류가 발생하였습니다. (34)', Toast.SHORT);
     //   }, 100);
     // }
+  }
+
+  await AsyncStorage.setItem('messagePermission', enabled.toString());
+  if (enabled) {
+    console.log('토큰 발급 로직 들어옴!');
     try {
       const fcmFS = await AsyncStorage.getItem('fcmToken');
       const fcmToken = await messaging().getToken();
       console.log('토큰토큰토큰토큰', fcmToken);
       if (fcmFS !== fcmToken) {
-        await AsyncStorage.setItem('fcmToken', fcmToken);
         const response = await postDeviceToken(fcmToken);
         console.log(response);
         if (response.status !== 'OK') {
           setTimeout(function () {
             Toast.show('알 수 없는 오류가 발생하였습니다. (87)', Toast.SHORT);
           }, 100);
+        } else if (response.status === 'OK') {
+          await AsyncStorage.setItem('fcmToken', fcmToken);
         }
       }
     } catch (error) {
-      console.log('에러 발생함');
+      console.log('에러 발생함', error);
     }
   }
 };
@@ -46,7 +49,7 @@ export const pushTokenLogic = async () => {
 export const topicTokenLogic = async () => {
   console.log('토픽 토큰 발급 로직 들어옴');
   const enabled = await AsyncStorage.getItem('messagePermission');
-  if (JSON.parse(enabled)) {
+  if (enabled === 'true') {
     await subscribeTopic();
   }
 };

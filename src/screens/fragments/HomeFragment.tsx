@@ -46,6 +46,7 @@ import {logout} from '../../common/authApi';
 import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
 import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
+import messaging from '@react-native-firebase/messaging';
 
 import {
   pushTokenLogic,
@@ -132,7 +133,7 @@ const HomeFragment = ({navigation}: Props) => {
       if (!isInited) {
         setIsLoading(true);
       }
-      await AsyncStorage.removeItem('messagePermission');
+      // await AsyncStorage.removeItem('messagePermission');
       const response = await getAuthentication();
       if (response.status === 401) {
         setTimeout(function () {
@@ -148,9 +149,12 @@ const HomeFragment = ({navigation}: Props) => {
         const messagePermission = await AsyncStorage.getItem(
           'messagePermission',
         );
-        if (messagePermission === null) {
+        const enabled = await messaging().hasPermission();
+        if (messagePermission === null || enabled) {
           await pushTokenLogic();
-          // await topicTokenLogic(permission);
+          if (messagePermission === null) {
+            await topicTokenLogic();
+          }
         }
 
         if (!response.data.data?.blacklist) {
