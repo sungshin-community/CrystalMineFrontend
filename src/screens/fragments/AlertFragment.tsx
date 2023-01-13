@@ -81,7 +81,7 @@ const AlertFragment = () => {
   );
   return (
     <>
-      <WaterMark/>
+      <WaterMark />
       {blindModalVisible ? (
         <View
           style={{
@@ -114,7 +114,7 @@ const AlertFragment = () => {
           style={{zIndex: 100}}
         />
       </View>
-      <View
+      {/* <View
         style={{
           flexDirection: 'row',
           paddingHorizontal: 24,
@@ -143,7 +143,7 @@ const AlertFragment = () => {
             개발이 완료되면 알려드릴게요
           </Text>
         </Pressable>
-      </View>
+      </View> */}
 
       {alerts?.length === 0 ? (
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -193,7 +193,7 @@ const AlertFragment = () => {
           // onEndReachedThreshold={0.8}
         />
       )}
-      {noticeBody && noticeModalVisible && (
+      {/* {noticeBody && noticeModalVisible && (
         <ModalBottom
           modalVisible={noticeModalVisible}
           setModalVisible={setNoticeModalVisible}
@@ -205,7 +205,7 @@ const AlertFragment = () => {
             setNoticeModalVisible(!noticeModalVisible);
           }}
         />
-      )}
+      )} */}
     </>
   );
 };

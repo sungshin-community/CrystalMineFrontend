@@ -608,7 +608,9 @@ const App = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      onPress={() => navigation.reset({routes: [{name: 'SplashHome'}]})}>
+                      onPress={() =>
+                        navigation.reset({routes: [{name: 'SplashHome'}]})
+                      }>
                       <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
@@ -1156,6 +1158,35 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   animation: 'slide_from_right',
+                })}
+              />
+              <Stack.Screen
+                name="AlertSetting"
+                component={AlertSettingScreen}
+                options={({navigation}) => ({
+                  title: '푸시 알림 설정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
                 })}
               />
               {/* 이용제한 사용자가 볼 수정광산 이용안내 */}
