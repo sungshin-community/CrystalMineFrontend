@@ -41,6 +41,9 @@ type RootStackParamList = {
   PostScreen: {postId: number};
   Notice: {noticeId: number};
   MyPage: undefined;
+  CertifiedMember: undefined;
+  ExpiredMember: undefined;
+  UncertifiedMember: undefined;
 };
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
@@ -76,6 +79,12 @@ function GlobalNavbar({navigation}: ScreenProps) {
     } else if (data.type === 'NOTICE') {
       navigation.navigate('Notice', {noticeId: Number(data.contentId)});
     } else if (data.type === 'BEFORE_EXPIRE') {
+      navigation.navigate('CertifiedMember');
+    } else if (data.type === 'EXPIRE') {
+      navigation.navigate('ExpiredMember');
+    } else if (data.type === 'NOT_AUTHENTICATED') {
+      navigation.navigate('UncertifiedMember');
+    } else if (data.type === 'WELCOME') {
       navigation.navigate('MyPage');
     }
   };
