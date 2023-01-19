@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">수정광산</string>
+    <string name="default_notification_channel_id">crystalminepush</string>
 </resources>
