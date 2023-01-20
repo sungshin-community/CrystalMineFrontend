@@ -58,7 +58,7 @@ const AlertItem = ({
           if (data.type === 'WELCOME') {
             navigation.navigate('MyPage');
           } else if (data.type === 'NOTICE') {
-            navigation.navigate('NoticeList');
+            navigation.navigate('Notice', {noticeId: data.postId});
           } else if (
             data.type === 'BEFORE_EXPIRE' ||
             data.type === 'EXPIRE' ||
