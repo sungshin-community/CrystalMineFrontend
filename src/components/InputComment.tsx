@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS == 'ios' ? 13: 0,
     minHeight: 44,
     maxHeight: 230,
-    color: '#222222'
+    color: '#222222',
+    lineHeight: 22.5
   },
 });

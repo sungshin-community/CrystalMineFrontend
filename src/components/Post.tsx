@@ -247,7 +247,7 @@ function Post({
           </Text>
         )}
         <View style={styles.postBody}>
-          <Text style={[fontRegular, {fontSize: 14, color: '#222222'}]}>
+          <Text style={[fontRegular, {fontSize: 14, color: '#222222', lineHeight: 22.5}]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
         </View>
