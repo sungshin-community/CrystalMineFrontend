@@ -69,8 +69,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
   }, []);
 
   const onNotificationPress = async (data: AlertData) => {
-    const response = await readNotificationOnPush(data);
-    console.log(response);
     if (data.type === 'COMMENT' || data.type === 'RECOMMENT') {
       const content = await getPostByComment(Number(data.contentId));
       navigation.navigate('PostScreen', {postId: content?.postId});
@@ -86,6 +84,14 @@ function GlobalNavbar({navigation}: ScreenProps) {
       navigation.navigate('UncertifiedMember');
     } else if (data.type === 'WELCOME') {
       navigation.navigate('MyPage');
+    }
+    if (
+      data.type !== 'BEFORE_EXPIRE' &&
+      data.type !== 'EXPIRE' &&
+      data.type !== 'NOT_AUTHENTICATED'
+    ) {
+      const response = await readNotificationOnPush(data);
+      console.log(response);
     }
   };
 

@@ -66,7 +66,7 @@ type RootStackParamList = {
   UncertifiedMember: undefined;
   ErrorScreen: {status: number; code: string};
   SplashHome: undefined;
-  NoticeList: undefined;
+  Notice: {noticeId: number};
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -310,7 +310,9 @@ const HomeFragment = ({navigation}: Props) => {
                         if (item.type === 'WELCOME') {
                           navigation.navigate('MyPage');
                         } else if (item.type === 'NOTICE') {
-                          navigation.navigate('NoticeList');
+                          navigation.navigate('Notice', {
+                            noticeId: item.postId,
+                          });
                         } else if (
                           item.type === 'BEFORE_EXPIRE' ||
                           item.type === 'EXPIRE' ||
