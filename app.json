@@ -1,4 +1,8 @@
 {
     "name": "CrystalMineFrontend",
-    "displayName": "수정광산"
+    "displayName": "수정광산",
+    "react-native-google-mobile-ads": {
+        "android_app_id": "ca-app-pub-3040874789822833~6335424584",
+        "ios_app_id": "ca-app-pub-3040874789822833~2779322951"
+    }
 }

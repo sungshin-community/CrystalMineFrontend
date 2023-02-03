@@ -88,10 +88,16 @@ import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResul
 import WikiSearchResult from './src/screens/search/WikiSearchResult';
 import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
 import {LogBox} from 'react-native';
+import {MobileAds} from 'react-native-google-mobile-ads';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  MobileAds()
+    .initialize()
+    .then(adapterStatuses => {
+      // Initialization complete!
+  });
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreAllLogs();
   console.reportErrorsAsExceptions = false;

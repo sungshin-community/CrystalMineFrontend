@@ -31,6 +31,7 @@
         "react-native-autolink": "^4.0.0",
         "react-native-background-timer": "2.4.1",
         "react-native-confirmation-code-field": "7.2.0",
+        "react-native-google-mobile-ads": "^9.1.1",
         "react-native-image-picker": "^4.7.3",
         "react-native-image-zoom-viewer": "3.0.1",
         "react-native-markdown-display": "7.0.0-alpha.2",

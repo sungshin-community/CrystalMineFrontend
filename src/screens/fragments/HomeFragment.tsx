@@ -47,7 +47,7 @@ import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
 import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 import messaging from '@react-native-firebase/messaging';
-
+import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
 import {
   pushTokenLogic,
   topicTokenLogic,
@@ -276,7 +276,6 @@ const HomeFragment = ({navigation}: Props) => {
                 )}
                 {`안녕하세요!`}
               </Text>
-
               <View
                 style={{
                   borderRadius: 20,
@@ -547,6 +546,12 @@ const HomeFragment = ({navigation}: Props) => {
                     </Pressable>
                   ))}
                 </View>
+              </View>
+              <View>
+                <BannerAd
+                  unitId={TestIds.BANNER}
+                  size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
+                />
               </View>
             </View>
             <View
