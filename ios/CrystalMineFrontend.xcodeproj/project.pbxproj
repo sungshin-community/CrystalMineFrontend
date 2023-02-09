@@ -47,9 +47,6 @@
 		B86EFC7B8D1FE6C0230288A0 /* Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend-CrystalMineFrontendTests/Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD6BE3CD271DCB8D00424307 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		CD877219271186200070D1F4 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
-		D49A929AFFD2E94E8F27DB6D /* libPods-CrystalMineFrontend.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrystalMineFrontend.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC3F3EC3B44B8FCCA8A1069E /* Pods-CrystalMineFrontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend.release.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend.release.xcconfig"; sourceTree = "<group>"; };
-		E37238FA1A55F5B793922190 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrystalMineFrontend-CrystalMineFrontendTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F41375CD2967EE830016F610 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F426779F2969531D00A7BD42 /* CrystalMineFrontend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CrystalMineFrontend.entitlements; path = CrystalMineFrontend/CrystalMineFrontend.entitlements; sourceTree = "<group>"; };
@@ -490,7 +487,7 @@
 				CODE_SIGN_ENTITLEMENTS = CrystalMineFrontend/CrystalMineFrontend.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7X8J9DB9Y8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CrystalMineFrontend/Info.plist;
@@ -499,7 +496,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -524,7 +521,7 @@
 				CODE_SIGN_ENTITLEMENTS = CrystalMineFrontend/CrystalMineFrontend.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7X8J9DB9Y8;
 				INFOPLIST_FILE = CrystalMineFrontend/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "수정광산";
@@ -532,7 +529,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
