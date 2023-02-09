@@ -532,19 +532,25 @@ const PostScreen = ({navigation, route}: Props) => {
               <View
                 style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
                 <Text>
-                  {newComment && (
-                    <Pressable
-                      style={{
-                        paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                        bottom: 0,
-                      }}
-                      onPress={() => {
-                        setIsSubmitState(true);
-                        console.log(isSubmitState);
-                      }}>
-                      <CommentSendIcon />
-                    </Pressable>
-                  )}
+                  {newComment &&
+                    (isSubmitState ? (
+                      <></>
+                    ) : (
+                      <Pressable
+                        style={{
+                          paddingBottom: Platform.OS === 'ios' ? 3 : 5,
+                          bottom: 0,
+                        }}
+                        onPress={() => {
+                          setIsSubmitState(true);
+                          console.log(
+                            '댓글 작성 버튼 클릭, isSubmitState',
+                            isSubmitState,
+                          );
+                        }}>
+                        <CommentSendIcon />
+                      </Pressable>
+                    ))}
                 </Text>
               </View>
             </View>
