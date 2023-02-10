@@ -48,6 +48,7 @@ import SortIcon from '../../../resources/icon/SortIcon';
 import {logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
+import AdMob from '../../components/AdMob';
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
@@ -332,6 +333,9 @@ const PostListScreen = ({navigation, route}: Props) => {
         </View>
         {boardDetail.length !== 0 && route.params.boardId !== 2 && (
           <View style={{backgroundColor: '#fff'}}>
+            <View style={{marginTop: -5,marginBottom: -10}}>
+              <AdMob />
+            </View>
             <TouchableOpacity
               onPress={() => {
                 if (sortBy === 'createdAt') {

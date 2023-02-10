@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import React from 'react';
-import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
+import {BannerAd, TestIds} from 'react-native-google-mobile-ads';
 
 export default function AdMob() {
   return (
