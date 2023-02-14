@@ -62,12 +62,14 @@ export default function CertifiedMember({navigation}: Props) {
           <TextInput
             key={index}
             style={[
-              fontRegular, {
-              fontSize: 45,
-              textAlign: 'center',
-              color: '#222222',
-              paddingBottom: 0,
-            }]}
+              fontRegular,
+              {
+                fontSize: 45,
+                textAlign: 'center',
+                color: '#222222',
+                paddingBottom: 0,
+              },
+            ]}
             editable={false}>
             {day}
           </TextInput>
@@ -83,7 +85,7 @@ export default function CertifiedMember({navigation}: Props) {
         <Text style={[styles.title, fontMedium]}>인증 만료까지{'\n'}</Text>
 
         {expireInComponent}
-        <View style={{marginTop: 90}}>
+        <View style={{marginTop: 63}}>
           <Description
             style={[
               styles.textDescription,
@@ -94,6 +96,19 @@ export default function CertifiedMember({navigation}: Props) {
           </Description>
           <Description style={[styles.textDescription]}>
             {user?.email}
+          </Description>
+        </View>
+        <View
+          style={{
+            marginTop: 40,
+            backgroundColor: '#f6f6f6',
+            paddingHorizontal: 16,
+            paddingVertical: 17,
+            borderRadius: 10,
+          }}>
+          <Description style={styles.alterDescription}>
+            성신 지메일을 사용할 수 없는 경우,{'\n'}[마이페이지] - [대체 이메일
+            변경] 에서{'\n'}대체 이메일을 등록해주세요.
           </Description>
         </View>
       </Container>
@@ -149,5 +164,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: '#ffffff',
     paddingBottom: 34,
+  },
+  alterDescription: {
+    fontSize: 12,
+    lineHeight: 16,
+    color: '#89919A',
   },
 });
