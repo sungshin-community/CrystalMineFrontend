@@ -337,6 +337,23 @@ const MyPageFragment = ({navigation}: Props) => {
                   </View>
                 </View>
               </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('ReplaceEmail');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>대체 이메일 관리</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                    }}>
+                    <RightArrow />
+                  </View>
+                </View>
+              </TouchableHighlight>
             </View>
             <View
               style={{
