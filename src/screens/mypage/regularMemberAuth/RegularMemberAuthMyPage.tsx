@@ -43,7 +43,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import BackButtonIcon from '../../../../resources/icon/BackButtonIcon';
 import CloseButtonIcon from '../../../../resources/icon/CloseButtonIcon';
 import styled from 'styled-components/native';
-import { fontRegular } from '../../../common/font';
+import {fontRegular} from '../../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -65,9 +65,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function RegularMemberAuthMyPage({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
-    boolean
-  >(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
+    useState<boolean>(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -76,9 +75,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
-    false,
-  );
+  const [errorMessageVisible, setErrorMessageVisible] =
+    useState<boolean>(false);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState(TIME);
   const [timerOn, setTimerOn] = useState(true);
@@ -198,11 +196,12 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
             <TwoLineTitle
-              firstLineText="성신 G-mail 로 전송된"
+              firstLineText="등록한 이메일로 전송된"
               secondLineText="인증번호를 입력해주세요"
             />
             <Description style={{marginRight: 5.5, marginTop: 13}}>
-              성신 G-mail이 없는 분들은 인증을 진행한 메일로 전송됩니다.
+              대체 이메일이 등록되어 있을 경우,{'\n'}인증번호가 대체 이메일로
+              전송됩니다.
             </Description>
           </TextContainer>
           <CodeField
