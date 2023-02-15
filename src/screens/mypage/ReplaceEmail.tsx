@@ -52,9 +52,19 @@ export default function ReplaceEmail(navigation) {
               </View>
             </View>
           )}
-          {/* 원래 이메일 */}
-          <View>
-            <Text style={{color: '#CECFD6'}}>{firstmail}</Text>
+          {/* 성신 이메일 */}
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={
+                secondmail == null ? {color: '#3A424E'} : {color: '#CECFD6'}
+              }>
+              {firstmail}
+            </Text>
+            {secondmail == null ? (
+              <View style={styles.repview}>
+                <Text style={styles.rep}>대표</Text>
+              </View>
+            ) : null}
           </View>
         </View>
         <View style={styles.guide}>
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
   },
   repline: {
     flexDirection: 'row',
-    marginBottom: 18,
+    marginBottom: 15,
   },
   repview: {
     backgroundColor: '#F3E9FF',
