@@ -6,8 +6,16 @@ import {
   DisabledPurpleRoundButton,
 } from '../../components/Button';
 import {getUserEmail} from '../../common/authApi';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import WaterMark from '../../components/WaterMark';
 
-export default function ReplaceEmail(navigation) {
+type RootStackParamList = {
+  ReplaceEmailInput: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function ReplaceEmail({navigation}: Props) {
   const [del, setDel] = useState(false);
   const [firstmail, setFirstmail] = useState('');
   const [secondmail, setSecondmail] = useState(null);
@@ -25,6 +33,7 @@ export default function ReplaceEmail(navigation) {
   }, []);
   return (
     <View style={styles.container}>
+      <WaterMark />
       <View style={styles.wrap}>
         <View style={styles.title}>
           <Text style={styles.purple}>현재 등록된 이메일</Text>
@@ -82,7 +91,7 @@ export default function ReplaceEmail(navigation) {
         {secondmail == null ? (
           <PurpleRoundButton
             onClick={() => {
-              navigation.navigate('#');
+              navigation.navigate('ReplaceEmailInput');
             }}
             text="대체 이메일 등록하기"
           />
