@@ -307,3 +307,13 @@ export const applyQuitMembership = async (password: string) => {
     return error.response;
   }
 };
+// 등록된 이메일 조회
+export const getUserEmail = async () => {
+  try {
+    const response = await client.get<Response<Agreement[]>>('/user/email');
+    // console.log('등록된 이메일 조회 성공');
+    return response.data.data;
+  } catch (error: any) {
+    return error.response;
+  }
+};
