@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 15,
     fontWeight: 'bold',
   },
@@ -101,16 +102,17 @@ const styles = StyleSheet.create({
   },
   repline: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 18,
   },
   repview: {
     backgroundColor: '#F3E9FF',
     borderRadius: 4,
-    marginLeft: 5,
+    marginLeft: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
   },
   rep: {
-    padding: 5,
-    borderRadius: 4,
     color: '#A055FF',
     fontSize: 12,
   },
@@ -120,8 +122,8 @@ const styles = StyleSheet.create({
     marginBottom: -6,
   },
   del: {
-    padding: 7,
-    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     color: '#FFFFFF',
     fontSize: 12,
   },
@@ -130,10 +132,13 @@ const styles = StyleSheet.create({
     color: '#89919A',
     fontSize: 14,
     marginTop: 15,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+    lineHeight: 18,
   },
   purple: {
     fontSize: 16,
     color: '#A055FF',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   btn: {
     bottom: 34,
