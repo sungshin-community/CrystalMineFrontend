@@ -4,6 +4,7 @@ import DeleteIcon from '../../../resources/icon/DeleteIcon';
 import {PurpleRoundButton} from '../../components/Button';
 
 export default function ReplaceEmail(navigation) {
+  const mails = ['0000000@sungshin.ac.kr', 'crystal124@naver.com'];
   return (
     <View style={styles.container}>
       <View style={styles.wrap}>
@@ -14,7 +15,17 @@ export default function ReplaceEmail(navigation) {
           </TouchableOpacity>
         </View>
         <View style={styles.email}>
-          <Text>crystal124@naver.com</Text>
+          {/* 대체 이메일(대표, 삭제가능) */}
+          <View style={styles.repline}>
+            <Text>{mails[1]}</Text>
+            <View style={styles.repview}>
+              <Text style={styles.rep}>대표</Text>
+            </View>
+          </View>
+          {/* 원래 이메일 */}
+          <View>
+            <Text style={{color: '#CECFD6'}}>{mails[0]}</Text>
+          </View>
         </View>
         <View style={styles.guide}>
           <Text style={styles.purple}>대체 이메일 등록 이용 안내</Text>
@@ -58,6 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
+    fontWeight: 'bold',
   },
   email: {
     borderWidth: 1.5,
@@ -65,6 +77,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 70,
     padding: 20,
+  },
+  repline: {
+    flexDirection: 'row',
+    marginBottom: 18,
+  },
+  repview: {
+    backgroundColor: '#F3E9FF',
+    borderRadius: 4,
+    marginLeft: 5,
+  },
+  rep: {
+    padding: 5,
+    borderRadius: 4,
+    color: '#A055FF',
+    fontSize: 12,
   },
   guide: {bottom: 34},
   purple: {
