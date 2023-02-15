@@ -1,16 +1,28 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import DeleteIcon from '../../../resources/icon/DeleteIcon';
 import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
 } from '../../components/Button';
+import {getUserEmail} from '../../common/authApi';
 
 export default function ReplaceEmail(navigation) {
   const [del, setDel] = useState(false);
-  const firstmail = '0000000@sungshin.ac.kr';
-  const secondmail = 'crystal124@naver.com';
+  const [firstmail, setFirstmail] = useState('');
+  const [secondmail, setSecondmail] = useState(null);
+  // const firstmail = '0000000@sungshin.ac.kr';
+  // const secondmail = 'crystal124@naver.com';
   // const secondmail = null;
+
+  useEffect(() => {
+    async function getEmail() {
+      const result = await getUserEmail();
+      setFirstmail(result.firstEmail);
+      setSecondmail(result.secondEmail);
+    }
+    getEmail();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.wrap}>
