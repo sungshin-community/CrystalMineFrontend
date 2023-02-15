@@ -15,7 +15,7 @@ import Agreement, {
 } from '../classes/Agreement';
 import TokenReissueDto from '../classes/TokenReissueDto';
 import User from '../classes/User';
-import { Authentication } from '../classes/Authentication';
+import {Authentication} from '../classes/Authentication';
 
 // 서비스 이용약관
 export const getAgreements = async () => {
@@ -141,10 +141,7 @@ export const checkAuthNumber = async (code: string) => {
     console.log(response.data.data);
     return response;
   } catch (e) {
-    console.log(
-      '여기는 checkAuthNumber 함수',
-      e.response.data,
-    );
+    console.log('여기는 checkAuthNumber 함수', e.response.data);
     return e.response;
   }
 };
@@ -293,15 +290,15 @@ export const getQuitAgreements = async () => {
 };
 
 export const applyQuitMembership = async (password: string) => {
-  console.log("여기는 탈퇴하기 함수")
+  console.log('여기는 탈퇴하기 함수');
   try {
-    console.log("호출 전")
+    console.log('호출 전');
     const response = await client.delete<AxiosResponse>('/user', {
-      data: {password: password}
+      data: {password: password},
     });
-    console.log("호출 후")
+    console.log('호출 후');
     console.log('회원탈퇴 성공', response.data);
-   return response;
+    return response;
   } catch (error: any) {
     console.log('회원탈퇴 실패', error.response.data);
     return error.response;
@@ -310,7 +307,7 @@ export const applyQuitMembership = async (password: string) => {
 // 등록된 이메일 조회
 export const getUserEmail = async () => {
   try {
-    const response = await client.get<Response<Agreement[]>>('/user/email');
+    const response = await client.get<AxiosResponse>('/user/email');
     // console.log('등록된 이메일 조회 성공');
     return response.data.data;
   } catch (error: any) {
