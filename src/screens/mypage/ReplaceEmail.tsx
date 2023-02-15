@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import DeleteIcon from '../../../resources/icon/DeleteIcon';
 import {
   PurpleRoundButton,
@@ -7,6 +7,7 @@ import {
 } from '../../components/Button';
 
 export default function ReplaceEmail(navigation) {
+  const [del, setDel] = useState(false);
   const firstmail = '0000000@sungshin.ac.kr';
   const secondmail = 'crystal124@naver.com';
   // const secondmail = null;
@@ -15,9 +16,17 @@ export default function ReplaceEmail(navigation) {
       <View style={styles.wrap}>
         <View style={styles.title}>
           <Text style={styles.purple}>현재 등록된 이메일</Text>
-          <TouchableOpacity>
-            <DeleteIcon />
-          </TouchableOpacity>
+          {del ? (
+            <TouchableOpacity onPress={() => setDel(false)}>
+              <View style={styles.delview}>
+                <Text style={styles.del}>삭제</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => setDel(true)}>
+              <DeleteIcon />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.email}>
           {/* 대체 이메일(대표, 삭제가능) */}
@@ -80,6 +89,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontWeight: 'bold',
   },
+  delbtn: {
+    fontSize: 12,
+  },
   email: {
     borderWidth: 1.5,
     borderColor: '#CECFD6',
@@ -100,6 +112,17 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 4,
     color: '#A055FF',
+    fontSize: 12,
+  },
+  delview: {
+    backgroundColor: '#A055FF',
+    borderRadius: 4,
+    marginBottom: -6,
+  },
+  del: {
+    padding: 7,
+    borderRadius: 4,
+    color: '#FFFFFF',
     fontSize: 12,
   },
   guide: {bottom: 34},
