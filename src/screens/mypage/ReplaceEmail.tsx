@@ -6,7 +6,7 @@ import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
 } from '../../components/Button';
-import {getUserEmail} from '../../common/authApi';
+import * as authApi from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import WaterMark from '../../components/WaterMark';
 
@@ -19,36 +19,49 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 export default function ReplaceEmail({navigation}: Props) {
   const [check, setCheck] = useState(false);
   const [del, setDel] = useState(false);
-  // const [firstmail, setFirstmail] = useState('');
-  // const [secondmail, setSecondmail] = useState(null);
-  const firstmail = '0000000@sungshin.ac.kr';
-  const secondmail = 'crystal124@naver.com';
-  // const secondmail = null;
+  const [firstmail, setFirstmail] = useState('');
+  const [secondmail, setSecondmail] = useState(null);
+  // const firstmail = '0000000@sungshin.ac.kr';
+  // const secondmail = 'crystal124@naver.com';
 
-  // useEffect(() => {
-  //   async function getEmail() {
-  //     const result = await getUserEmail();
-  //     // setFirstmail(result.firstEmail);
-  //     // setSecondmail(result.secondEmail);
-  //   }
-  //   getEmail();
-  // }, []);
+  useEffect(() => {
+    async function getEmail() {
+      const result = await authApi.getUserEmail();
+      setFirstmail(result.firstEmail);
+      setSecondmail(result.secondEmail);
+    }
+    getEmail();
+    async function delEmail() {
+      const result = await authApi.deleteSecondEmail();
+      return result;
+    }
+    // 체크박스 누르고 삭제버튼 눌렀을 경우만 삭제 API 실행
+    if (check && !del) {
+      delEmail();
+    }
+  }, [check, del]);
+
   return (
     <View style={styles.container}>
       <WaterMark />
       <View style={styles.wrap}>
         <View style={styles.title}>
           <Text style={styles.purple}>현재 등록된 이메일</Text>
-          {del ? (
-            <TouchableOpacity onPress={() => setDel(false)}>
-              <View style={styles.delview}>
-                <Text style={styles.del}>삭제</Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={() => setDel(true)}>
-              <DeleteIcon />
-            </TouchableOpacity>
+          {/* 대체 이메일 없을 경우 삭제 버튼 안보임 */}
+          {secondmail == null ? null : (
+            <>
+              {del ? (
+                <TouchableOpacity onPress={() => setDel(!del)}>
+                  <View style={styles.delview}>
+                    <Text style={styles.del}>삭제</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setDel(true)}>
+                  <DeleteIcon />
+                </TouchableOpacity>
+              )}
+            </>
           )}
         </View>
         <View style={styles.email}>
