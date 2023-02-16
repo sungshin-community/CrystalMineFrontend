@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DeleteIcon from '../../../resources/icon/DeleteIcon';
 import {
   PurpleRoundButton,
@@ -8,21 +9,22 @@ import {
 import {getUserEmail} from '../../common/authApi';
 
 export default function ReplaceEmail(navigation) {
+  const [check, setCheck] = useState(false);
   const [del, setDel] = useState(false);
-  const [firstmail, setFirstmail] = useState('');
-  const [secondmail, setSecondmail] = useState(null);
-  // const firstmail = '0000000@sungshin.ac.kr';
-  // const secondmail = 'crystal124@naver.com';
+  // const [firstmail, setFirstmail] = useState('');
+  // const [secondmail, setSecondmail] = useState(null);
+  const firstmail = '0000000@sungshin.ac.kr';
+  const secondmail = 'crystal124@naver.com';
   // const secondmail = null;
 
-  useEffect(() => {
-    async function getEmail() {
-      const result = await getUserEmail();
-      setFirstmail(result.firstEmail);
-      setSecondmail(result.secondEmail);
-    }
-    getEmail();
-  }, []);
+  // useEffect(() => {
+  //   async function getEmail() {
+  //     const result = await getUserEmail();
+  //     // setFirstmail(result.firstEmail);
+  //     // setSecondmail(result.secondEmail);
+  //   }
+  //   getEmail();
+  // }, []);
   return (
     <View style={styles.container}>
       <View style={styles.wrap}>
@@ -46,6 +48,18 @@ export default function ReplaceEmail(navigation) {
             <></>
           ) : (
             <View style={styles.repline}>
+              {del ? (
+                <View>
+                  <BouncyCheckbox
+                    size={16}
+                    iconStyle={{borderRadius: 3}}
+                    innerIconStyle={{borderRadius: 3}}
+                    fillColor="#CECFD6"
+                    unfillColor="#FFFFFF"
+                    onPress={() => setCheck(!check)}
+                  />
+                </View>
+              ) : null}
               <Text>{secondmail}</Text>
               <View style={styles.repview}>
                 <Text style={styles.rep}>대표</Text>
@@ -54,6 +68,16 @@ export default function ReplaceEmail(navigation) {
           )}
           {/* 성신 이메일 */}
           <View style={{flexDirection: 'row'}}>
+            {del ? (
+              <BouncyCheckbox
+                size={16}
+                iconStyle={{borderRadius: 3}}
+                innerIconStyle={{borderRadius: 3}}
+                fillColor="#CECFD6"
+                unfillColor="#FFFFFF"
+                disabled={true}
+              />
+            ) : null}
             <Text
               style={
                 secondmail == null ? {color: '#3A424E'} : {color: '#CECFD6'}
