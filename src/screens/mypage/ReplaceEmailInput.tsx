@@ -19,7 +19,10 @@ import {
 import {checkEmailConflict, logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
 
-type RootStackParamList = {SplashHome: undefined};
+type RootStackParamList = {
+  SplashHome: undefined;
+  ReplaceEmailCheck: {email: string};
+};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function ReplaceEmailInput({navigation}: Props) {
@@ -119,33 +122,34 @@ export default function ReplaceEmailInput({navigation}: Props) {
               text="다음"
               onClick={async () => {
                 //이메일 유효성 검사
-                let result = await checkEmailConflict(replaceEmail);
-                console.log(result);
-                if (result.status === 401) {
-                  setTimeout(function () {
-                    Toast.show(
-                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                      Toast.SHORT,
-                    );
-                  }, 100);
-                  logout();
-                  navigation.reset({routes: [{name: 'SplashHome'}]});
-                } else if (getHundredsDigit(result.status) === 2) {
-                } else if (result.data.code === 'EMAIL_DUPLICATION') {
-                  setIsDuplicate(true);
-                } else if (
-                  result.data.code === 'BLACKLIST_MEMBER' ||
-                  result.data.code === 'HOLDING_WITHDRAWAL'
-                ) {
-                  setIsBlackList(true);
-                } else {
-                  setTimeout(function () {
-                    Toast.show(
-                      '알 수 없는 오류가 발생하였습니다.',
-                      Toast.SHORT,
-                    );
-                  }, 100);
-                }
+                navigation.navigate('ReplaceEmailCheck', {email: replaceEmail});
+                //   let result = await checkEmailConflict(replaceEmail);
+                //   console.log(result);
+                //   if (result.status === 401) {
+                //     setTimeout(function () {
+                //       Toast.show(
+                //         '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                //         Toast.SHORT,
+                //       );
+                //     }, 100);
+                //     logout();
+                //     navigation.reset({routes: [{name: 'SplashHome'}]});
+                //   } else if (getHundredsDigit(result.status) === 2) {
+                //   } else if (result.data.code === 'EMAIL_DUPLICATION') {
+                //     setIsDuplicate(true);
+                //   } else if (
+                //     result.data.code === 'BLACKLIST_MEMBER' ||
+                //     result.data.code === 'HOLDING_WITHDRAWAL'
+                //   ) {
+                //     setIsBlackList(true);
+                //   } else {
+                //     setTimeout(function () {
+                //       Toast.show(
+                //         '알 수 없는 오류가 발생하였습니다.',
+                //         Toast.SHORT,
+                //       );
+                //     }, 100);
+                //   }
               }}
             />
           )}
