@@ -364,10 +364,11 @@ export const checkSecondEmailNumber = async (
 // 대체 이메일 삭제
 export const deleteSecondEmail = async () => {
   try {
-    const response = await client.delete<AxiosResponse>('/email');
-    return response.data;
+    // const response = await client.delete<AxiosResponse>('/user/email');
+    console.log('대체이메일 삭제 완료');
+    // return response.data.data;
   } catch (error: any) {
     console.log('대체 메일 삭제 실패');
-    return error.response.data;
+    return error.response;
   }
 };
