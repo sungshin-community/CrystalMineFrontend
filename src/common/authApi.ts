@@ -314,3 +314,60 @@ export const getUserEmail = async () => {
     return error.response;
   }
 };
+
+// 대체 메일 유효성 확인
+export const checkSecondEmailConfilct = async (secondEmail: string) => {
+  try {
+    const response = await client.get<AxiosResponse>(
+      `/auth/check-second-mail/${secondEmail}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 유효성 확인 실패');
+    return error.response.data;
+  }
+};
+
+// 대체 이메일 인증 메일 전송
+export const sendSecondEmail = async (secondEmail: string) => {
+  try {
+    const response = await client.post<AxiosResponse>('/mail/second-mail', {
+      secondEmail: secondEmail,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 전송 실패');
+    return error.response.data;
+  }
+};
+
+// 대체 이메일 인증 번호 확인
+export const checkSecondEmailNumber = async (
+  secondEmail: string,
+  code: string,
+) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      '/mail/second-mail-verification',
+      {
+        secondEmail: secondEmail,
+        code: code,
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 인증 실패');
+    return error.response.data;
+  }
+};
+
+// 대체 이메일 삭제
+export const deleteSecondEmail = async () => {
+  try {
+    const response = await client.delete<AxiosResponse>('/email');
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 삭제 실패');
+    return error.response.data;
+  }
+};
