@@ -90,6 +90,7 @@ import WikiSearchResult from './src/screens/search/WikiSearchResult';
 import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
 import {LogBox} from 'react-native';
 import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
+import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 
 const Stack = createNativeStackNavigator();
 
@@ -1463,6 +1464,33 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }>
                       <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ReplaceEmailCheck"
+                component={ReplaceEmailCheck}
+                options={({navigation}) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.popToTop()}>
+                      <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
                 })}
@@ -3123,6 +3151,33 @@ const App = () => {
                         navigation.dispatch(CommonActions.goBack())
                       }>
                       <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ReplaceEmailCheck"
+                component={ReplaceEmailCheck}
+                options={({navigation}) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.popToTop()}>
+                      <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
                 })}
