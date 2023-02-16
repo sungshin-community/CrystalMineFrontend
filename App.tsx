@@ -89,6 +89,7 @@ import ScrapedPostSearchResult from './src/screens/search/ScrapedPostSearchResul
 import WikiSearchResult from './src/screens/search/WikiSearchResult';
 import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
 import {LogBox} from 'react-native';
+import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
 
 const Stack = createNativeStackNavigator();
 
@@ -1411,6 +1412,35 @@ const App = () => {
               <Stack.Screen
                 name="ReplaceEmail"
                 component={ReplaceEmail}
+                options={({navigation}) => ({
+                  title: '대체 이메일 관리',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ReplaceEmailInput"
+                component={ReplaceEmailInput}
                 options={({navigation}) => ({
                   title: '대체 이메일 관리',
                   headerTitleAlign: 'center',
@@ -3042,6 +3072,35 @@ const App = () => {
               <Stack.Screen
                 name="ReplaceEmail"
                 component={ReplaceEmail}
+                options={({navigation}) => ({
+                  title: '대체 이메일 관리',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ReplaceEmailInput"
+                component={ReplaceEmailInput}
                 options={({navigation}) => ({
                   title: '대체 이메일 관리',
                   headerTitleAlign: 'center',

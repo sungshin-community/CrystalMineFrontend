@@ -1,0 +1,176 @@
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+  Keyboard,
+  TextInput,
+  Platform,
+  ScrollView,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import WaterMark from '../../components/WaterMark';
+import {BigTwoLineText, Description} from '../../components/Top';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {
+  PurpleFullButton,
+  DisabledPurpleFullButton,
+} from '../../components/Button';
+import {checkEmailConflict, logout} from '../../common/authApi';
+import Toast from 'react-native-simple-toast';
+
+type RootStackParamList = {SplashHome: undefined};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+export default function ReplaceEmailInput({navigation}: Props) {
+  const [isFocused, setIsIdFocused] = useState<boolean>(false);
+  const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
+  const [isBlackList, setIsBlackList] = useState<boolean>(false);
+  const [replaceEmail, setReplaceEmail] = useState<string>('');
+  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+
+  const onIdFocus = () => {
+    setIsIdFocused(true);
+  };
+
+  const onIdFocusOut = () => {
+    setIsIdFocused(false);
+    Keyboard.dismiss();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+
+  return (
+    <>
+      <WaterMark />
+      <KeyboardAvoidingView style={styles.container}>
+        <ScrollView>
+          <BigTwoLineText style={{paddingBottom: 5}}>
+            대체 이메일을 입력해주세요.
+          </BigTwoLineText>
+          <Description style={{marginBottom: 24}}>
+            입력한 이메일로 인증번호가 전송됩니다.
+          </Description>
+          <View
+            style={[
+              styles.inputContainer,
+              {
+                borderColor:
+                  isDuplicate || isBlackList
+                    ? '#ff0000'
+                    : isFocused
+                    ? '#A055FF'
+                    : '#D7DCE6',
+              },
+            ]}>
+            <TextInput
+              autoFocus={true}
+              style={{
+                width: '65%',
+                fontSize: 18,
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+                paddingBottom: 12,
+                color: '#222222',
+              }}
+              onFocus={(e: any) => {
+                onIdFocus();
+              }}
+              onBlur={(e: any) => {
+                onIdFocusOut();
+              }}
+              onChangeText={(value: string) => {
+                setReplaceEmail(value);
+                setIsDuplicate(false);
+              }}
+              placeholder="ex) Crystal@sungshin.ac.kr"
+              placeholderTextColor="#A0AAB4"
+              keyboardType="email-address"
+              selectionColor="#A055FF"
+              value={replaceEmail}
+              // maxLength={40}
+            />
+          </View>
+        </ScrollView>
+
+        <View
+          style={{
+            bottom: isFocused
+              ? Platform.OS === 'ios'
+                ? keyboardHeight
+                : 0
+              : 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {replaceEmail.length > 0 && (
+            <PurpleFullButton
+              text="다음"
+              onClick={async () => {
+                //이메일 유효성 검사
+                let result = await checkEmailConflict(replaceEmail);
+                console.log(result);
+                if (result.status === 401) {
+                  setTimeout(function () {
+                    Toast.show(
+                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                      Toast.SHORT,
+                    );
+                  }, 100);
+                  logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                } else if (getHundredsDigit(result.status) === 2) {
+                } else if (result.data.code === 'EMAIL_DUPLICATION') {
+                  setIsDuplicate(true);
+                } else if (
+                  result.data.code === 'BLACKLIST_MEMBER' ||
+                  result.data.code === 'HOLDING_WITHDRAWAL'
+                ) {
+                  setIsBlackList(true);
+                } else {
+                  setTimeout(function () {
+                    Toast.show(
+                      '알 수 없는 오류가 발생하였습니다.',
+                      Toast.SHORT,
+                    );
+                  }, 100);
+                }
+              }}
+            />
+          )}
+
+          {replaceEmail.length === 0 && (
+            <DisabledPurpleFullButton text="다음" />
+          )}
+        </View>
+      </KeyboardAvoidingView>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 24,
+    paddingTop: 34,
+  },
+  inputContainer: {
+    borderBottomWidth: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderColor: '#D7DCE6',
+  },
+});
