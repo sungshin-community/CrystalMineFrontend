@@ -49,7 +49,7 @@ export default function ReplaceEmail({navigation}: Props) {
         <View style={styles.title}>
           <Text style={styles.purple}>현재 등록된 이메일</Text>
           {/* 대체 이메일 없을 경우 삭제 버튼 안보임 */}
-          {secondmail == null || secondmail === '' ? null : (
+          {/* {secondmail == null || secondmail === '' ? null : (
             <>
               {del ? (
                 <TouchableOpacity onPress={() => setDel(!del)}>
@@ -63,7 +63,7 @@ export default function ReplaceEmail({navigation}: Props) {
                 </TouchableOpacity>
               )}
             </>
-          )}
+          )} */}
         </View>
         <View style={styles.email}>
           {/* 대체 이메일(대표, 삭제가능) */}
