@@ -318,8 +318,11 @@ export const getUserEmail = async () => {
 // 대체 메일 유효성 확인
 export const checkSecondEmailConfilct = async (secondEmail: string) => {
   try {
-    const response = await client.get<AxiosResponse>(
-      `/auth/check-second-mail/${secondEmail}`,
+    const response = await client.post<AxiosResponse>(
+      '/auth/check-second-mail',
+      {
+        secondEmail: secondEmail,
+      },
     );
     return response.data;
   } catch (error: any) {
@@ -364,9 +367,9 @@ export const checkSecondEmailNumber = async (
 // 대체 이메일 삭제
 export const deleteSecondEmail = async () => {
   try {
-    // const response = await client.delete<AxiosResponse>('/user/email');
+    const response = await client.delete<AxiosResponse>('/user/email');
     console.log('대체이메일 삭제 완료');
-    // return response.data.data;
+    return response.data.data;
   } catch (error: any) {
     console.log('대체 메일 삭제 실패');
     return error.response;
