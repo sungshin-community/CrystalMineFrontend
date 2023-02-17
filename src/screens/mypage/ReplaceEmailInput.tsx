@@ -143,36 +143,36 @@ export default function ReplaceEmailInput({navigation}: Props) {
                   console.log('확인 성공');
                   let sendResult = await sendSecondEmail(replaceEmail);
                   console.log(sendResult);
-                  // if (sendResult.status === 401) {
-                  //   setTimeout(function () {
-                  //     Toast.show(
-                  //       '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  //       Toast.SHORT,
-                  //     );
-                  //   }, 100);
-                  //   logout();
-                  //   navigation.reset({routes: [{name: 'SplashHome'}]});
-                  // } else if (getHundredsDigit(sendResult.status) === 2) {
-                  //   setTimeout(function () {
-                  //     Toast.show(
-                  //       '메일을 성공적으로 전송했습니다.',
-                  //       Toast.SHORT,
-                  //     );
-                  //   }, 100);
-                  navigation.navigate('ReplaceEmailCheck', {
-                    email: replaceEmail,
-                  });
-                  // } else if (sendResult.data.code === 'AUTH_COOL_TIME_LIMIT') {
-                  //   console.log('이메일 발송 실패');
-                  //   // setIsCoolTime(true);
-                  // } else {
-                  //   setTimeout(function () {
-                  //     Toast.show(
-                  //       '알 수 없는 오류가 발생하였습니다.',
-                  //       Toast.SHORT,
-                  //     );
-                  //   }, 100);
-                  // }
+                  if (sendResult.status === 401) {
+                    setTimeout(function () {
+                      Toast.show(
+                        '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                        Toast.SHORT,
+                      );
+                    }, 100);
+                    logout();
+                    navigation.reset({routes: [{name: 'SplashHome'}]});
+                  } else if (sendResult.code === 'SEND_SECOND_MAIL_SUCCESS') {
+                    setTimeout(function () {
+                      Toast.show(
+                        '메일을 성공적으로 전송했습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
+                    navigation.navigate('ReplaceEmailCheck', {
+                      email: replaceEmail,
+                    });
+                  } else if (sendResult.code === 'AUTH_COOL_TIME_LIMIT') {
+                    console.log('이메일 발송 실패');
+                    // setIsCoolTime(true);
+                  } else {
+                    setTimeout(function () {
+                      Toast.show(
+                        '알 수 없는 오류가 발생하였습니다.',
+                        Toast.SHORT,
+                      );
+                    }, 100);
+                  }
                 } else if (result.code === 'EMAIL_DUPLICATION') {
                   setIsDuplicate(true);
                 } else if (

@@ -27,6 +27,7 @@ export default function ReplaceEmail({navigation}: Props) {
   useEffect(() => {
     async function getEmail() {
       const result = await authApi.getUserEmail();
+      console.log(result);
       setFirstmail(result.firstEmail);
       setSecondmail(result.secondEmail);
     }
@@ -48,7 +49,7 @@ export default function ReplaceEmail({navigation}: Props) {
         <View style={styles.title}>
           <Text style={styles.purple}>현재 등록된 이메일</Text>
           {/* 대체 이메일 없을 경우 삭제 버튼 안보임 */}
-          {secondmail == null ? null : (
+          {secondmail == null || secondmail === '' ? null : (
             <>
               {del ? (
                 <TouchableOpacity onPress={() => setDel(!del)}>
@@ -66,7 +67,7 @@ export default function ReplaceEmail({navigation}: Props) {
         </View>
         <View style={styles.email}>
           {/* 대체 이메일(대표, 삭제가능) */}
-          {secondmail == null ? (
+          {secondmail == null || secondmail === '' ? (
             <></>
           ) : (
             <View style={styles.repline}>
@@ -76,7 +77,7 @@ export default function ReplaceEmail({navigation}: Props) {
                     size={16}
                     iconStyle={{borderRadius: 3}}
                     innerIconStyle={{borderRadius: 3}}
-                    fillColor="#CECFD6"
+                    fillColor="#A055FF"
                     unfillColor="#FFFFFF"
                     onPress={() => setCheck(!check)}
                   />
@@ -102,11 +103,13 @@ export default function ReplaceEmail({navigation}: Props) {
             ) : null}
             <Text
               style={
-                secondmail == null ? {color: '#3A424E'} : {color: '#CECFD6'}
+                secondmail == null || secondmail === ''
+                  ? {color: '#3A424E'}
+                  : {color: '#CECFD6'}
               }>
               {firstmail}
             </Text>
-            {secondmail == null ? (
+            {secondmail == null || secondmail === '' ? (
               <View style={styles.repview}>
                 <Text style={styles.rep}>대표</Text>
               </View>
@@ -125,7 +128,7 @@ export default function ReplaceEmail({navigation}: Props) {
         </View>
       </View>
       <View style={styles.btn}>
-        {secondmail == null ? (
+        {secondmail == null || secondmail === '' ? (
           <PurpleRoundButton
             onClick={() => {
               navigation.navigate('ReplaceEmailInput');

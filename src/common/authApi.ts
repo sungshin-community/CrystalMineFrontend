@@ -372,6 +372,7 @@ export const deleteSecondEmail = async () => {
     return response.data.data;
   } catch (error: any) {
     console.log('대체 메일 삭제 실패');
+    console.log(error.response.data);
     return error.response;
   }
 };
