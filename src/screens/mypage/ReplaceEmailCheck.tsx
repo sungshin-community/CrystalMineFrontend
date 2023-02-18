@@ -55,6 +55,8 @@ const TIME = 600;
 type RootStackParamList = {
   Home: undefined;
   GlobalNavbar: undefined;
+  MyPage: undefined;
+  SplashHome: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -241,7 +243,7 @@ export default function ReplaceEmailCheck({navigation, route}: Props) {
                       Toast.SHORT,
                     );
                   }, 100);
-                  navigation.reset({routes: [{name: 'MyPage'}]});
+                  navigation.navigate('MyPage');
                 } else if (result.code === 'AUTH_NUMBER_INCORRECT') {
                   setTryCnt(5 - result.data.attemptCount);
                   setIsIncorrect(true);
