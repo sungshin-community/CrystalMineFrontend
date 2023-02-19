@@ -6323,6 +6323,14 @@ react-native-fit-image@^1.5.5:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-google-mobile-ads@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-google-mobile-ads/-/react-native-google-mobile-ads-9.1.1.tgz#f1ea02e1e3943db29600fac59514b67294597865"
+  integrity sha512-JCi0WwEgvtbgN0vYdNNpsUgLUi+HrOjh3xEPqP58kizWuAu4W009+1Df8qncCIMr+s4wEb/ziVzn1ORx5Vol2g==
+  dependencies:
+    "@iabtcf/core" "^1.5.3"
+    use-deep-compare-effect "^1.8.1"
+
 react-native-image-pan-zoom@^2.1.12:
   version "2.1.12"
   resolved "https://registry.npmjs.org/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.12.tgz"
