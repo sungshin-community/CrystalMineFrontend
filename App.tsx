@@ -91,10 +91,16 @@ import ImageViewerScreen from './src/screens/post/ImageViewerScreen';
 import {LogBox} from 'react-native';
 import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
 import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
+import {MobileAds} from 'react-native-google-mobile-ads';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  MobileAds()
+    .initialize()
+    .then(adapterStatuses => {
+      // Initialization complete!
+  });
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreAllLogs();
   console.reportErrorsAsExceptions = false;

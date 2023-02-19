@@ -50,6 +50,7 @@ import getCommments from '../../common/CommentApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
+import AdMob from '../../components/AdMob';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {};
@@ -401,6 +402,7 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostReport={handlePostReport}
             componentModalVisible={componentModalVisible}
             setComponentModalVisible={setComponentModalVisible}></Post>
+          <AdMob />
           <View style={{flex: 1}}>
             <FlatList
               showsVerticalScrollIndicator={false}

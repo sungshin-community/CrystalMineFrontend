@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import AdMob from '../../components/AdMob';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PurpleRoundButton} from '../../components/Button';
@@ -47,7 +48,6 @@ import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
 import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 import messaging from '@react-native-firebase/messaging';
-
 import {
   pushTokenLogic,
   topicTokenLogic,
@@ -253,7 +253,7 @@ const HomeFragment = ({navigation}: Props) => {
             <View
               style={{
                 backgroundColor: '#F6F6F6',
-                paddingVertical: 32,
+                paddingTop: 32,
               }}>
               <Text
                 style={[
@@ -276,7 +276,6 @@ const HomeFragment = ({navigation}: Props) => {
                 )}
                 {`안녕하세요!`}
               </Text>
-
               <View
                 style={{
                   borderRadius: 20,
@@ -548,6 +547,7 @@ const HomeFragment = ({navigation}: Props) => {
                   ))}
                 </View>
               </View>
+              <AdMob />
             </View>
             <View
               style={{

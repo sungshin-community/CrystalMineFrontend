@@ -298,8 +298,8 @@ function Post({
           <Text style={[fontRegular, styles.postComment]}>{data?.commentCount}</Text>
         </View>
       </View>
-      <View
-        style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 28}}></View>
+      {/* <View
+        style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 28}}></View> */}
     </>
   );
 }
@@ -308,6 +308,7 @@ const styles = StyleSheet.create({
   postContainer: {
     paddingHorizontal: 24,
     paddingTop: 18,
+    marginBottom: 6,
   },
   postHeader: {
     flexDirection: 'row',
