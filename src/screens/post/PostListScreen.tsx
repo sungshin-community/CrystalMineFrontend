@@ -30,7 +30,7 @@ import Toast from 'react-native-simple-toast';
 import {getPosts} from '../../common/boardApi';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
-import {fontMedium, fontRegular} from '../../common/font';
+import {fontMedium, fontRegular, fontBold} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {
@@ -61,9 +61,8 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [reportCheckModalVisible, setReportCheckModalVisible] =
+    useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -302,7 +301,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   );
   return (
     <>
-      <WaterMark/>
+      <WaterMark />
       <SelectModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
@@ -331,38 +330,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
-        {boardDetail.length !== 0 && route.params.boardId !== 2 && (
-          <View style={{backgroundColor: '#fff'}}>
-            <View style={{marginTop: -5,marginBottom: -10}}>
-              <AdMob />
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                if (sortBy === 'createdAt') {
-                  setSortBy('likeCount');
-                } else {
-                  setSortBy('createdAt');
-                }
-              }}
-              style={{
-                marginLeft: 24,
-                marginBottom: 10,
-                marginTop: 16,
-                width: 83,
-                height: 24,
-                backgroundColor: '#f6f6f6',
-                borderRadius: 12,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text style={[fontRegular, {marginRight: 5}]}>
-                {sortBy === 'createdAt' ? '최신순' : '공감순'}
-              </Text>
-              <SortIcon />
-            </TouchableOpacity>
-          </View>
-        )}
+
         {boardDetail.length === 0 ? (
           <SafeAreaView style={{flex: 1}}>
             <View
@@ -419,6 +387,59 @@ const PostListScreen = ({navigation, route}: Props) => {
               }
               onEndReached={() => fetchNextPage()}
               onEndReachedThreshold={0.8}
+              ListHeaderComponent={
+                boardDetail.length !== 0 &&
+                route.params.boardId !== 2 && (
+                  <View>
+                    <View style={{marginTop: -16}}>
+                      <AdMob />
+                    </View>
+                    <View style={{flexDirection: 'row', paddingHorizontal: 24}}>
+                      <TouchableOpacity
+                        style={[
+                          styles.grayButtonStyle,
+                          {
+                            flex: 1,
+                            marginRight: 10,
+                            paddingLeft: 6,
+                          },
+                        ]}>
+                        <Text style={[styles.popularButtonText, fontBold]}>
+                          인기
+                        </Text>
+                        <Text style={[styles.grayButtonText, fontRegular]}>
+                          인기글인기글인기글...
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (sortBy === 'createdAt') {
+                            setSortBy('likeCount');
+                          } else {
+                            setSortBy('createdAt');
+                          }
+                        }}
+                        style={[
+                          styles.grayButtonStyle,
+                          {
+                            width: 78,
+                            justifyContent: 'center',
+                          },
+                        ]}>
+                        <Text
+                          style={{
+                            marginRight: 5,
+                            color: '#6E7882',
+                            fontSize: 12,
+                          }}>
+                          {sortBy === 'createdAt' ? '최신순' : '공감순'}
+                        </Text>
+                        <SortIcon />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              }
             />
             <View style={{backgroundColor: '#FFFFFF'}}>
               {isNextPageLoading && (
@@ -467,5 +488,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  grayButtonStyle: {
+    backgroundColor: '#F6F6F6',
+    borderRadius: 10,
+    height: 28,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  grayButtonText: {
+    color: '#6E7882',
+    fontSize: 12,
+    lineHeight: 15,
+  },
+  popularButtonText: {
+    fontWeight: '700',
+    fontSize: 12,
+    color: '#A055FF',
+    paddingHorizontal: 10,
+    lineHeight: 15,
   },
 });
