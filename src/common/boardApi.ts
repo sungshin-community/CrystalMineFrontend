@@ -3,7 +3,7 @@ import {AxiosResponse} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Board from '../classes/Board';
 import Response from '../classes/Response';
-import BoardDetailDto from '../classes/BoardDetailDto';
+import BoardDetailDto, {BoardHotPostDto} from '../classes/BoardDetailDto';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import MyPostDto from '../classes/MyPostDto';
 import {DirectionAgreement} from '../classes/Agreement';
@@ -11,10 +11,11 @@ import MyCommentDto from '../classes/MyCommentDto';
 import PostDto, {PostWriteDto, PostWriteInfoDto} from '../classes/PostDto';
 import {MyPostContentDto} from '../classes/board/MyPostDto';
 
-
 export const getPinnedOfficialBoardList = async () => {
   try {
-    const response = await client.get<Response<Board[]>>('/boards/pin?type=OFFICIAL');
+    const response = await client.get<Response<Board[]>>(
+      '/boards/pin?type=OFFICIAL',
+    );
     return response;
   } catch (e: any) {
     console.log('여기는 getPinnedOfficialBoardList 함수', e);
@@ -24,7 +25,9 @@ export const getPinnedOfficialBoardList = async () => {
 
 export const getPinnedDepartmentBoardList = async () => {
   try {
-    const response = await client.get<Response<Board[]>>('/boards/pin?type=DEPARTMENT');
+    const response = await client.get<Response<Board[]>>(
+      '/boards/pin?type=DEPARTMENT',
+    );
     return response;
   } catch (e: any) {
     console.log('여기는 getPinnedDepartmentBoardList 함수', e);
@@ -34,7 +37,9 @@ export const getPinnedDepartmentBoardList = async () => {
 
 export const getPinnedPublicBoardList = async () => {
   try {
-    const response = await client.get<Response<Board[]>>('/boards/pin?type=PUBLIC');
+    const response = await client.get<Response<Board[]>>(
+      '/boards/pin?type=PUBLIC',
+    );
     return response;
   } catch (e: any) {
     console.log('여기는 getPinnedPublicBoardList 함수', e);
@@ -81,7 +86,7 @@ export const getCustomBoardList = async () => {
 export const toggleBoardPin = async (boardId: number) => {
   try {
     const response = await client.post<AxiosResponse>(`/boards/${boardId}/pin`);
-    console.log("고정/고정해제 response:", response);
+    console.log('고정/고정해제 response:', response);
     return response;
   } catch (e: any) {
     console.log('여기는 toggleBoardPin 함수', e);
@@ -130,12 +135,25 @@ export const getBoardDetail = async (
   }
 };
 
+//게시판 내 인기 게시물
+export const getBoardHotPost = async (boardId: number) => {
+  try {
+    const response = await client.get<Response<BoardHotPostDto>>(
+      `/boards/${boardId}/hot-post`,
+    );
+    return response.data.data;
+  } catch (e) {
+    console.log('여기는 getBoardHotPost 함수', e.response.data);
+    return e.response.data;
+  }
+};
+
 export const getReportReason = async () => {
   try {
     const response = await client.get<Response<Board>>(
       `/contract/report-reasons`,
     );
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (e) {
     console.log('여기는 getReportReason 함수', e.responde.data);
@@ -386,7 +404,7 @@ export const deletePosts = async (postId: number) => {
   }
 };
 // 댓글
-export const getComments = async (postId: number/*, page: number*/) => {
+export const getComments = async (postId: number /*, page: number*/) => {
   try {
     // const params = new URLSearchParams();
     // params.append('page', page.toString());
@@ -495,7 +513,18 @@ export const postWritePost = async (
 ) => {
   try {
     const formData = new FormData();
-    console.log('api 함수 호출 전: boardId: ', boardId, 'title', title, 'content', content, 'isAnonymous', isAnonymous, 'images', images)
+    console.log(
+      'api 함수 호출 전: boardId: ',
+      boardId,
+      'title',
+      title,
+      'content',
+      content,
+      'isAnonymous',
+      isAnonymous,
+      'images',
+      images,
+    );
     images?.map((image: any, index: number) => {
       const photo = {
         uri: image.uri,
