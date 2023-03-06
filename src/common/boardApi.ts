@@ -141,7 +141,7 @@ export const getBoardHotPost = async (boardId: number) => {
     const response = await client.get<Response<BoardHotPostDto>>(
       `/boards/${boardId}/hot-post`,
     );
-    return response.data.data;
+    return response.data;
   } catch (e) {
     console.log('여기는 getBoardHotPost 함수', e.response.data);
     return e.response.data;

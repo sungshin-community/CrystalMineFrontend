@@ -65,7 +65,12 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [boardHotPost, setBoardHotPost] = useState<BoardHotPostDto>();
+  const [boardHotPost, setBoardHotPost] = useState<BoardHotPostDto>({
+    isExist: false,
+    postId: null,
+    content: null,
+    title: null,
+  });
   const [reportCheckModalVisible, setReportCheckModalVisible] =
     useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
@@ -75,6 +80,12 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
+  const listHeaderCondition =
+    route.params?.boardId !== 5 &&
+    route.params?.boardId !== 6 &&
+    route.params?.boardId !== 7 &&
+    route.params?.boardId !== 8 &&
+    route.params?.boardId !== 9; // 광고/인기글 제외 게시판 목록
 
   useEffect(() => {
     async function init() {
@@ -106,6 +117,7 @@ const PostListScreen = ({navigation, route}: Props) => {
 
         //인기 게시물 설정
         const hotPost = await getBoardHotPost(route.params.boardId);
+        console.log(hotPost);
         if (hotPost.code === 'BOARD_ALREADY_BLIND') {
           setTimeout(function () {
             Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
@@ -119,14 +131,12 @@ const PostListScreen = ({navigation, route}: Props) => {
             Toast.show('삭제된 게시판입니다.', Toast.SHORT);
           }, 100);
           navigation.goBack();
-        } else {
+        } else if (hotPost.code === 'READ_HOT_POST_IN_BOARD_SUCCESS') {
           setBoardHotPost(hotPost.data);
-          // setBoardHotPost({
-          //   isExist: false,
-          //   postId: null,
-          //   content: '가나다라마바사아',
-          //   title: '삐리빠라뽀뽀뽀',
-          // });
+        } else {
+          setTimeout(function () {
+            Toast.show('인기 게시글 생성 중 오류가 발생했습니다.', Toast.SHORT);
+          }, 100);
         }
       }
       const boardInfo = await getBoardInfo(route.params.boardId);
@@ -135,7 +145,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
     init();
   }, [sortBy]);
-  console.log(boardHotPost);
+
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
@@ -360,6 +370,45 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
+        {boardDetail.length !== 0 &&
+          route.params?.boardId !== 2 &&
+          !listHeaderCondition && (
+            <View>
+              <View
+                style={{
+                  paddingTop: 11,
+                  paddingHorizontal: 24,
+                  backgroundColor: 'white',
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (sortBy === 'createdAt') {
+                      setSortBy('likeCount');
+                    } else {
+                      setSortBy('createdAt');
+                    }
+                  }}
+                  style={[
+                    styles.grayButtonStyle,
+                    {
+                      width: 78,
+                      justifyContent: 'center',
+                      marginBottom: 2,
+                    },
+                  ]}>
+                  <Text
+                    style={{
+                      marginRight: 5,
+                      color: '#6E7882',
+                      fontSize: 12,
+                    }}>
+                    {sortBy === 'createdAt' ? '최신순' : '공감순'}
+                  </Text>
+                  <SortIcon />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
 
         {boardDetail.length === 0 ? (
           <SafeAreaView style={{flex: 1}}>
@@ -419,7 +468,8 @@ const PostListScreen = ({navigation, route}: Props) => {
               onEndReachedThreshold={0.8}
               ListHeaderComponent={
                 boardDetail.length !== 0 &&
-                route.params.boardId !== 2 && (
+                route.params?.boardId !== 2 &&
+                listHeaderCondition && (
                   <View>
                     <View style={{marginTop: -16}}>
                       <AdMob />
