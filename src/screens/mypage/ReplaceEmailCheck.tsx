@@ -1,55 +1,50 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
-  Text,
   View,
-  TouchableOpacity,
-  StyleSheet,
-  Button,
-  KeyboardAvoidingView,
-  Platform,
+  Text,
+  LogBox,
   StatusBar,
-  Keyboard,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
-  KeyboardEvent,
+  Platform,
   ScrollView,
   Pressable,
+  KeyboardEvent,
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
 } from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {Description, TwoLineTitle} from '../../../components/Top';
-import CustomButton, {
-  WhiteRoundButton,
-  PurpleRoundButton,
-  DisabledPurpleRoundButton,
+import {BigTwoLineText} from '../../components/Top';
+import {
   PurpleFullButton,
-  DisabledWhiteRoundButton,
   DisabledPurpleFullButton,
-} from '../../../components/Button';
-import {ModalBottom} from '../../../components/ModalBottom';
-import {checkAuthNumber, logout, sendEmail} from '../../../common/authApi';
+} from '../../components/Button';
+import {ModalBottom} from '../../components/ModalBottom';
+import {
+  checkSecondEmailNumber,
+  logout,
+  sendSecondEmail,
+} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import {useIsFocused} from '@react-navigation/native';
-import {getHundredsDigit} from '../../../common/util/statusUtil';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 import BackgroundTimer from 'react-native-background-timer';
-import BackButtonIcon from '../../../../resources/icon/BackButtonIcon';
-import CloseButtonIcon from '../../../../resources/icon/CloseButtonIcon';
 import styled from 'styled-components/native';
-import {fontRegular} from '../../../common/font';
+import {fontRegular} from '../../common/font';
 
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
+
 const TextContainer = styled.View`
   margin: 40px 0px 40px 0px;
 `;
@@ -58,12 +53,14 @@ const CELL_COUNT = 6;
 const TIME = 600;
 
 type RootStackParamList = {
-  CertifiedMember: undefined;
+  Home: undefined;
+  GlobalNavbar: undefined;
   MyPage: undefined;
+  SplashHome: undefined;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function RegularMemberAuthMyPage({navigation}: Props) {
+export default function ReplaceEmailCheck({navigation, route}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
     useState<boolean>(false);
@@ -75,8 +72,6 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] =
-    useState<boolean>(false);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState(TIME);
   const [timerOn, setTimerOn] = useState(true);
@@ -84,15 +79,6 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   const [sec, setSec] = useState<number>(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-
-  const onInputFocus = () => {
-    setIsFocused(true);
-  };
-
-  const onInputFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
-  };
 
   const onKeyboardDidshow = (e: KeyboardEvent) => {
     setKeyboardHeight(e.endCoordinates.height);
@@ -103,35 +89,12 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
       'keyboardDidShow',
       onKeyboardDidshow,
     );
+    console.log(route.params.email);
     return () => {
       showSubscription.remove();
     };
   }, []);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableHighlight
-          underlayColor="#EEEEEE"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => {
-            console.log('press');
-            // navigation.reset({routes: [{name: 'MyPage'}]});
-            navigation.navigate('MyPage');
-          }}>
-          <CloseButtonIcon />
-        </TouchableHighlight>
-      ),
-    });
-  }, []);
-
-  console.log('시간 가는 중', secondsLeft);
+  // console.log('시간 가는 중', secondsLeft);
 
   useEffect(() => {
     if (timerOn) startTimer();
@@ -164,7 +127,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   const onResendOtpButtonPress = async () => {
     //인증번호 발송 API
     setValue('');
-    let result: boolean = await sendEmail();
+    let result: boolean = await sendSecondEmail(route.params.email);
     if (result) {
       setTimeout(function () {
         Toast.show('메일을 성공적으로 전송했습니다.', Toast.SHORT);
@@ -182,12 +145,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    // navigation.reset({routes: [{name: 'MyPage'}]});
-    navigation.navigate('MyPage');
-  };
-  const onFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
+    navigation.reset({routes: [{name: 'GlobalNavbar'}]});
   };
 
   return (
@@ -195,17 +153,11 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
       <KeyboardAvoidingView style={{backgroundColor: '#fff', flex: 1}}>
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <TextContainer>
-            <TwoLineTitle
-              firstLineText="등록한 이메일로 전송된"
-              secondLineText="인증번호를 입력해주세요"
-            />
-            <Description style={{marginRight: 5.5, marginTop: 13}}>
-              대체 이메일이 등록되어 있을 경우,{'\n'}인증번호가 대체 이메일로
-              전송됩니다.
-            </Description>
+            <BigTwoLineText>
+              입력한 이메일로 전송된{'\n'}인증번호를 입력해주세요.
+            </BigTwoLineText>
           </TextContainer>
           <CodeField
-            // autoFocus={true}
             ref={ref}
             {...props}
             value={value}
@@ -255,21 +207,26 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
           </Pressable>
         </ScrollView>
         <View
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             paddingBottom: isFocused
-              ? Platform.OS == 'ios'
+              ? Platform.OS === 'ios'
                 ? keyboardHeight
                 : 0
-              : 34,
+              : 0,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
           }}>
-          {value.length === 6 && isFocused && (
+          {value.length === 6 && (
             <PurpleFullButton
               text="인증 완료"
               onClick={async () => {
-                let result = await checkAuthNumber(value);
+                let result = await checkSecondEmailNumber(
+                  route.params.email,
+                  value,
+                );
+                console.log(result);
                 if (result.status === 401) {
                   setTimeout(function () {
                     Toast.show(
@@ -279,18 +236,21 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                   }, 100);
                   logout();
                   navigation.reset({routes: [{name: 'SplashHome'}]});
-                } else if (getHundredsDigit(result.status) === 2) {
+                } else if (result.code === 'SECOND_MAIL_AUTH_SUCCESS') {
                   setTimeout(function () {
-                    Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
+                    Toast.show(
+                      '대체 이메일 인증에 성공하였습니다.',
+                      Toast.SHORT,
+                    );
                   }, 100);
                   navigation.navigate('MyPage');
-                } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
-                  setTryCnt(5 - result.data.data.attemptCount);
+                } else if (result.code === 'AUTH_NUMBER_INCORRECT') {
+                  setTryCnt(5 - result.data.attemptCount);
                   setIsIncorrect(true);
-                } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
+                } else if (result.code === 'AUTH_COOL_TIME_LIMIT') {
                   setIsCoolTime(true);
-                  navigation.navigate('MyPage');
-                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
+                  navigation.reset({routes: [{name: 'MyPage'}]});
+                } else if (result.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
                   setTryCnt(0);
                 } else {
                   setTimeout(function () {
@@ -300,87 +260,51 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                     );
                   }, 100);
                 }
-              }}></PurpleFullButton>
+              }}
+            />
           )}
-          {value.length === 6 && !isFocused && (
-            <PurpleRoundButton
-              text="인증 완료"
-              onClick={async () => {
-                let result = await checkAuthNumber(value);
-                if (result.status === 401) {
-                  setTimeout(function () {
-                    Toast.show(
-                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                      Toast.SHORT,
-                    );
-                  }, 100);
-                  logout();
-                  navigation.reset({routes: [{name: 'SplashHome'}]});
-                } else if (getHundredsDigit(result.status) === 2) {
-                  setTimeout(function () {
-                    Toast.show('정회원 인증에 성공하였습니다.', Toast.SHORT);
-                  }, 100);
-                  navigation.navigate('MyPage');
-                } else if (result.data.code === 'AUTH_NUMBER_INCORRECT') {
-                  setTryCnt(5 - result.data.data.attemptCount);
-                  setIsIncorrect(true);
-                } else if (result.data.code === 'AUTH_COOL_TIME_LIMIT') {
-                  setIsCoolTime(true);
-                  navigation.navigate('MyPage');
-                } else if (result.data.code === 'AUTH_ATTEMPT_COUNT_LIMIT') {
-                  setTryCnt(0);
-                } else {
-                  setTimeout(function () {
-                    Toast.show(
-                      '알 수 없는 오류가 발생하였습니다.',
-                      Toast.SHORT,
-                    );
-                  }, 100);
-                }
-              }}></PurpleRoundButton>
-          )}
-          {value.length < 6 && isFocused && (
-            <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
-          )}
-          {value.length < 6 && !isFocused && (
-            <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
-          )}
+
+          {value.length < 6 && <DisabledPurpleFullButton text="인증 완료" />}
         </View>
       </KeyboardAvoidingView>
       {secondsLeft === 0 && (
         <ModalBottom
           modalVisible={!modalVisible}
           setModalVisible={setModalVisible}
-          content={`인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.`}
+          content={'인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.'}
           purpleButtonText="인증번호 재전송"
           purpleButtonFunc={onResendOtpButtonPress}
           whiteButtonText="인증 취소"
-          whiteButtonFunc={() => navigation.navigate('MyPage')}
+          whiteButtonFunc={() => navigation.navigate('GlobalNavbar')}
         />
       )}
       {tryCnt === 0 && (
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
-          content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
+          content={
+            '인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.'
+          }
           purpleButtonText="확인"
           purpleButtonFunc={() => {
-            setModalIncorrectOverVisible(!modalIncorrectOverVisble);
             gotoHome();
             setTimerOn(false);
-          }}></ModalBottom>
+          }}
+        />
       )}
       {isCoolTime && (
         <ModalBottom
           modalVisible={isCoolTime}
           setModalVisible={setIsCoolTime}
-          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          content={
+            '이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.'
+          }
           purpleButtonText="확인"
           purpleButtonFunc={() => {
-            setModalIncorrectOverVisible(!modalIncorrectOverVisble);
             gotoHome();
             setTimerOn(false);
-          }}></ModalBottom>
+          }}
+        />
       )}
     </>
   );

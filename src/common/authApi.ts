@@ -15,7 +15,7 @@ import Agreement, {
 } from '../classes/Agreement';
 import TokenReissueDto from '../classes/TokenReissueDto';
 import User from '../classes/User';
-import { Authentication } from '../classes/Authentication';
+import {Authentication} from '../classes/Authentication';
 
 // 서비스 이용약관
 export const getAgreements = async () => {
@@ -141,10 +141,7 @@ export const checkAuthNumber = async (code: string) => {
     console.log(response.data.data);
     return response;
   } catch (e) {
-    console.log(
-      '여기는 checkAuthNumber 함수',
-      e.response.data,
-    );
+    console.log('여기는 checkAuthNumber 함수', e.response.data);
     return e.response;
   }
 };
@@ -293,17 +290,89 @@ export const getQuitAgreements = async () => {
 };
 
 export const applyQuitMembership = async (password: string) => {
-  console.log("여기는 탈퇴하기 함수")
+  console.log('여기는 탈퇴하기 함수');
   try {
-    console.log("호출 전")
+    console.log('호출 전');
     const response = await client.delete<AxiosResponse>('/user', {
-      data: {password: password}
+      data: {password: password},
     });
-    console.log("호출 후")
+    console.log('호출 후');
     console.log('회원탈퇴 성공', response.data);
-   return response;
+    return response;
   } catch (error: any) {
     console.log('회원탈퇴 실패', error.response.data);
+    return error.response;
+  }
+};
+// 등록된 이메일 조회
+export const getUserEmail = async () => {
+  try {
+    const response = await client.get<AxiosResponse>('/user/email');
+    // console.log('등록된 이메일 조회 성공');
+    return response.data.data;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+// 대체 메일 유효성 확인
+export const checkSecondEmailConfilct = async (secondEmail: string) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      '/auth/check-second-mail',
+      {
+        secondEmail: secondEmail,
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 유효성 확인 실패');
+    return error.response.data;
+  }
+};
+
+// 대체 이메일 인증 메일 전송
+export const sendSecondEmail = async (secondEmail: string) => {
+  try {
+    const response = await client.post<AxiosResponse>('/mail/second-mail', {
+      secondEmail: secondEmail,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 전송 실패');
+    return error.response.data;
+  }
+};
+
+// 대체 이메일 인증 번호 확인
+export const checkSecondEmailNumber = async (
+  secondEmail: string,
+  code: string,
+) => {
+  try {
+    const response = await client.post<AxiosResponse>(
+      '/mail/second-mail-verification',
+      {
+        secondEmail: secondEmail,
+        code: code,
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('대체 메일 인증 실패');
+    return error.response.data;
+  }
+};
+
+// 대체 이메일 삭제
+export const deleteSecondEmail = async () => {
+  try {
+    const response = await client.delete<AxiosResponse>('/user/email');
+    console.log('대체이메일 삭제 완료');
+    return response.data.data;
+  } catch (error: any) {
+    console.log('대체 메일 삭제 실패');
+    console.log(error.response.data);
     return error.response;
   }
 };
