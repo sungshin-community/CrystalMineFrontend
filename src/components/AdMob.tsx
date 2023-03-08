@@ -1,6 +1,6 @@
 import {View, Dimensions} from 'react-native';
 import React from 'react';
-import {BannerAd, TestIds} from 'react-native-google-mobile-ads';
+import {BannerAd} from 'react-native-google-mobile-ads';
 
 export default function AdMob() {
   return (
@@ -14,7 +14,7 @@ export default function AdMob() {
         overflow: 'hidden',
       }}>
       <BannerAd
-        unitId={TestIds.BANNER}
+        unitId="ca-app-pub-3040874789822833/1483209695"
         size={`${Math.floor(Dimensions.get('screen').width - 48)}x70`}
       />
     </View>
