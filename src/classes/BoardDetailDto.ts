@@ -23,3 +23,10 @@ export interface ContentPreviewDto {
   isScraped: boolean;
   scrapCount: number;
 }
+
+export interface BoardHotPostDto {
+  isExist: boolean;
+  postId: number | null;
+  content: string | null;
+  title: string | null;
+}

@@ -20,17 +20,21 @@ import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   getBoardDetail,
+  getBoardHotPost,
   getBoardInfo,
   getHotBoardPosts,
   reportBoard,
   toggleBoardPin,
 } from '../../common/boardApi';
-import BoardDetailDto, {ContentPreviewDto} from '../../classes/BoardDetailDto';
+import BoardDetailDto, {
+  BoardHotPostDto,
+  ContentPreviewDto,
+} from '../../classes/BoardDetailDto';
 import Toast from 'react-native-simple-toast';
 import {getPosts} from '../../common/boardApi';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
-import {fontMedium, fontRegular} from '../../common/font';
+import {fontMedium, fontRegular, fontBold} from '../../common/font';
 import Board from '../../classes/Board';
 import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {
@@ -61,9 +65,14 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
+  const [boardHotPost, setBoardHotPost] = useState<BoardHotPostDto>({
+    isExist: false,
+    postId: null,
+    content: null,
+    title: null,
+  });
+  const [reportCheckModalVisible, setReportCheckModalVisible] =
+    useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -71,6 +80,12 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
+  const listHeaderCondition =
+    route.params?.boardId !== 5 &&
+    route.params?.boardId !== 6 &&
+    route.params?.boardId !== 7 &&
+    route.params?.boardId !== 8 &&
+    route.params?.boardId !== 9; // 광고/인기글 제외 게시판 목록
 
   useEffect(() => {
     async function init() {
@@ -99,6 +114,30 @@ const PostListScreen = ({navigation, route}: Props) => {
           }, 100);
           navigation.goBack();
         } else setBoardDetail(boardDetail);
+
+        //인기 게시물 설정
+        const hotPost = await getBoardHotPost(route.params.boardId);
+        console.log(hotPost);
+        if (hotPost.code === 'BOARD_ALREADY_BLIND') {
+          setTimeout(function () {
+            Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+          }, 100);
+          navigation.goBack();
+        } else if (
+          hotPost.code === 'BOARD_NOT_FOUND' ||
+          hotPost.code === 'BOARD_ALREADY_DELETED'
+        ) {
+          setTimeout(function () {
+            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+          }, 100);
+          navigation.goBack();
+        } else if (hotPost.code === 'READ_HOT_POST_IN_BOARD_SUCCESS') {
+          setBoardHotPost(hotPost.data);
+        } else {
+          setTimeout(function () {
+            Toast.show('인기 게시글 생성 중 오류가 발생했습니다.', Toast.SHORT);
+          }, 100);
+        }
       }
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
@@ -106,7 +145,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
     init();
   }, [sortBy]);
-  console.log(boardInfo);
+
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
@@ -302,7 +341,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   );
   return (
     <>
-      <WaterMark/>
+      <WaterMark />
       <SelectModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
@@ -331,38 +370,46 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
-        {boardDetail.length !== 0 && route.params.boardId !== 2 && (
-          <View style={{backgroundColor: '#fff'}}>
-            <View style={{marginTop: -5,marginBottom: -10}}>
-              <AdMob />
+        {boardDetail.length !== 0 &&
+          route.params?.boardId !== 2 &&
+          !listHeaderCondition && (
+            <View>
+              <View
+                style={{
+                  paddingTop: 11,
+                  paddingHorizontal: 24,
+                  backgroundColor: 'white',
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (sortBy === 'createdAt') {
+                      setSortBy('likeCount');
+                    } else {
+                      setSortBy('createdAt');
+                    }
+                  }}
+                  style={[
+                    styles.grayButtonStyle,
+                    {
+                      width: 78,
+                      justifyContent: 'center',
+                      marginBottom: 2,
+                    },
+                  ]}>
+                  <Text
+                    style={{
+                      marginRight: 5,
+                      color: '#6E7882',
+                      fontSize: 12,
+                    }}>
+                    {sortBy === 'createdAt' ? '최신순' : '공감순'}
+                  </Text>
+                  <SortIcon />
+                </TouchableOpacity>
+              </View>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                if (sortBy === 'createdAt') {
-                  setSortBy('likeCount');
-                } else {
-                  setSortBy('createdAt');
-                }
-              }}
-              style={{
-                marginLeft: 24,
-                marginBottom: 10,
-                marginTop: 16,
-                width: 83,
-                height: 24,
-                backgroundColor: '#f6f6f6',
-                borderRadius: 12,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text style={[fontRegular, {marginRight: 5}]}>
-                {sortBy === 'createdAt' ? '최신순' : '공감순'}
-              </Text>
-              <SortIcon />
-            </TouchableOpacity>
-          </View>
-        )}
+          )}
+
         {boardDetail.length === 0 ? (
           <SafeAreaView style={{flex: 1}}>
             <View
@@ -419,6 +466,73 @@ const PostListScreen = ({navigation, route}: Props) => {
               }
               onEndReached={() => fetchNextPage()}
               onEndReachedThreshold={0.8}
+              ListHeaderComponent={
+                boardDetail.length !== 0 &&
+                route.params?.boardId !== 2 &&
+                listHeaderCondition && (
+                  <View>
+                    <View style={{marginTop: -16}}>
+                      <AdMob />
+                    </View>
+                    <View style={{flexDirection: 'row', paddingHorizontal: 24}}>
+                      <TouchableOpacity
+                        style={[
+                          styles.grayButtonStyle,
+                          {
+                            flex: 1,
+                            marginRight: 10,
+                            paddingLeft: 6,
+                          },
+                        ]}
+                        onPress={() => {
+                          boardHotPost?.isExist
+                            ? navigation.navigate('PostScreen', {
+                                postId: boardHotPost.postId,
+                              })
+                            : {};
+                        }}>
+                        {boardHotPost?.isExist ? (
+                          <Text style={[styles.popularButtonText, fontBold]}>
+                            인기
+                          </Text>
+                        ) : null}
+                        <Text style={[styles.grayButtonText, fontRegular]}>
+                          {boardHotPost?.isExist === false
+                            ? '현재 실시간 인기글이 없습니다.'
+                            : boardHotPost?.title !== null
+                            ? boardHotPost?.title
+                            : boardHotPost.content}
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (sortBy === 'createdAt') {
+                            setSortBy('likeCount');
+                          } else {
+                            setSortBy('createdAt');
+                          }
+                        }}
+                        style={[
+                          styles.grayButtonStyle,
+                          {
+                            width: 78,
+                            justifyContent: 'center',
+                          },
+                        ]}>
+                        <Text
+                          style={{
+                            marginRight: 5,
+                            color: '#6E7882',
+                            fontSize: 12,
+                          }}>
+                          {sortBy === 'createdAt' ? '최신순' : '공감순'}
+                        </Text>
+                        <SortIcon />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              }
             />
             <View style={{backgroundColor: '#FFFFFF'}}>
               {isNextPageLoading && (
@@ -467,5 +581,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  grayButtonStyle: {
+    backgroundColor: '#F6F6F6',
+    borderRadius: 10,
+    height: 28,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  grayButtonText: {
+    color: '#6E7882',
+    fontSize: 12,
+    lineHeight: 15,
+    paddingLeft: 10,
+  },
+  popularButtonText: {
+    fontWeight: '700',
+    fontSize: 12,
+    color: '#A055FF',
+    paddingLeft: 10,
+    lineHeight: 15,
   },
 });
