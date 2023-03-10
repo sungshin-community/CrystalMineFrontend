@@ -496,7 +496,14 @@ const PostListScreen = ({navigation, route}: Props) => {
                             인기
                           </Text>
                         ) : null}
-                        <Text style={[styles.grayButtonText, fontRegular]}>
+                        <Text
+                          style={[
+                            styles.grayButtonText,
+                            fontRegular,
+                            {flex: 1},
+                          ]}
+                          numberOfLines={1}
+                          ellipsizeMode="tail">
                           {boardHotPost?.isExist === false
                             ? '현재 실시간 인기글이 없습니다.'
                             : boardHotPost?.title !== null
