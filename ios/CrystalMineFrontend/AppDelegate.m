@@ -1,6 +1,9 @@
 #import "AppDelegate.h"
 #import <Firebase.h>
 
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import <AdSupport/AdSupport.h>
+
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
@@ -31,6 +34,14 @@ static void InitializeFlipper(UIApplication *application) {
 
 
 @implementation AppDelegate
+
+- (void)requestIDFA {
+  [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+    // Tracking authorization completed. Start loading ads here.
+    // [self loadAd];
+  }];
+}
+
 // Required for the register event.
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {

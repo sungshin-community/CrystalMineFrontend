@@ -14,6 +14,9 @@
       android:icon="@mipmap/ic_launcher"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+      <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3040874789822833~6335424584"/>
 
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
                   android:value="true"/>

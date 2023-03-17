@@ -13,6 +13,8 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
+  AppState,
+  Platform
 } from 'react-native';
 import AdMob from '../../components/AdMob';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
@@ -52,6 +54,7 @@ import {
   pushTokenLogic,
   topicTokenLogic,
 } from '../../common/util/pushRegisterUtil';
+import {request, PERMISSIONS} from 'react-native-permissions';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPage: undefined;
@@ -224,7 +227,17 @@ const HomeFragment = ({navigation}: Props) => {
     }
   }, [isFocused, modalBody, blindModalVisible]);
   // console.log(pinBoardContents);
+  useEffect(() => {
+    const listener = AppState.addEventListener('change', (status) => {
+      if (Platform.OS === 'ios' && status === 'active') {
+        request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
+          .then((result) => console.warn(result))
+          .catch((error) => console.warn(error));
+      }
+    });
 
+    return () => {listener.remove()}
+  }, []);
   return (
     <>
       <WaterMark />

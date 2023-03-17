@@ -46,4 +46,7 @@ target 'CrystalMineFrontend' do
   # post_install do |installer|
   #   react_native_post_install(installer)
   # end
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
+  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
 end
