@@ -68,9 +68,8 @@ const PostScreen = ({navigation, route}: Props) => {
   const commentInputRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const flatListRef = useRef<FlatList>(null);
-  const [componentModalVisible, setComponentModalVisible] = useState<boolean>(
-    false,
-  );
+  const [componentModalVisible, setComponentModalVisible] =
+    useState<boolean>(false);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -402,7 +401,7 @@ const PostScreen = ({navigation, route}: Props) => {
             handlePostReport={handlePostReport}
             componentModalVisible={componentModalVisible}
             setComponentModalVisible={setComponentModalVisible}></Post>
-          <AdMob />
+          {/* <AdMob /> */}
           <View style={{flex: 1}}>
             <FlatList
               showsVerticalScrollIndicator={false}

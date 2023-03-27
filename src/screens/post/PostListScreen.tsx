@@ -471,9 +471,9 @@ const PostListScreen = ({navigation, route}: Props) => {
                 route.params?.boardId !== 2 &&
                 listHeaderCondition && (
                   <View>
-                    <View style={{marginTop: -16}}>
+                    {/* <View style={{marginTop: -16}}>
                       <AdMob />
-                    </View>
+                    </View> */}
                     <View style={{flexDirection: 'row', paddingHorizontal: 24}}>
                       <TouchableOpacity
                         style={[
