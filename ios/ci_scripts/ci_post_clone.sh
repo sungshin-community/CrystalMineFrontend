@@ -1,6 +1,4 @@
  #!/bin/zsh
-brew install cocoapods
-pod install
 
  # fail if any command fails
 
