@@ -12,11 +12,13 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1D0EFC339CBA4F992C968328 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E390D065AE0839351AAF1C8E /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */; };
-		22C731AC4B2A13DDCD97758A /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5469F37CCB10B856B2075043 /* libPods-CrystalMineFrontend.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9FA687685A23190B45FB9CB1 /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4443B6129E1A65C00F8CA2A /* libPods-CrystalMineFrontend.a */; };
 		CD6BE3CE271DCB8D00424307 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = CD6BE3CD271DCB8D00424307 /* Fonts */; };
 		CD87721A271186200070D1F4 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD877219271186200070D1F4 /* SplashScreen.storyboard */; };
+		DD7BD2BBB2338F935A3AAA09 /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5469F37CCB10B856B2075043 /* libPods-CrystalMineFrontend.a */; };
 		F41375CE2967EE830016F610 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F41375CD2967EE830016F610 /* GoogleService-Info.plist */; };
+		FE4B0F513E6327E1E1685CAD /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4443B6329E1A65C00F8CA2A /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,64 @@
 		F1A748D25398BFC11A9CCB22 /* Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig"; path = "Target Support Files/Pods-CrystalMineFrontend-CrystalMineFrontendTests/Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F41375CD2967EE830016F610 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F426779F2969531D00A7BD42 /* CrystalMineFrontend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CrystalMineFrontend.entitlements; path = CrystalMineFrontend/CrystalMineFrontend.entitlements; sourceTree = "<group>"; };
+		F4443B3F29E1A65C00F8CA2A /* libBEMCheckBox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBEMCheckBox.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4129E1A65C00F8CA2A /* libDoubleConversion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libDoubleConversion.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4329E1A65C00F8CA2A /* libFBReactNativeSpec.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFBReactNativeSpec.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4529E1A65C00F8CA2A /* libFirebaseCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4729E1A65C00F8CA2A /* libFirebaseCoreExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCoreExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4929E1A65C00F8CA2A /* libFirebaseCoreInternal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCoreInternal.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4B29E1A65C00F8CA2A /* libFirebaseInstallations.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseInstallations.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4D29E1A65C00F8CA2A /* libFirebaseMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B4F29E1A65C00F8CA2A /* libfmt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfmt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B5129E1A65C00F8CA2A /* libglog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libglog.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B5329E1A65C00F8CA2A /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = Pods/GoogleAppMeasurement/Frameworks/GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
+		F4443B5529E1A65C00F8CA2A /* GoogleAppMeasurementIdentitySupport.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurementIdentitySupport.xcframework; path = Pods/GoogleAppMeasurement/Frameworks/GoogleAppMeasurementIdentitySupport.xcframework; sourceTree = "<group>"; };
+		F4443B5729E1A65C00F8CA2A /* libGoogleDataTransport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGoogleDataTransport.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B5929E1A65C00F8CA2A /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "Pods/Google-Mobile-Ads-SDK/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
+		F4443B5B29E1A65C00F8CA2A /* libGoogleUtilities.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGoogleUtilities.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B5D29E1A65C00F8CA2A /* libnanopb.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnanopb.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B5F29E1A65C00F8CA2A /* libPermission-AppTrackingTransparency.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPermission-AppTrackingTransparency.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6129E1A65C00F8CA2A /* libPods-CrystalMineFrontend.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-CrystalMineFrontend.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6329E1A65C00F8CA2A /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-CrystalMineFrontend-CrystalMineFrontendTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6529E1A65C00F8CA2A /* libPromisesObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPromisesObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6729E1A65C00F8CA2A /* libRCT-Folly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libRCT-Folly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6929E1A65C00F8CA2A /* libRCTTypeSafety.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRCTTypeSafety.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6B29E1A65C00F8CA2A /* libReact-Core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-Core.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6D29E1A65C00F8CA2A /* libReact-CoreModules.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-CoreModules.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B6F29E1A65C00F8CA2A /* libReact-cxxreact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-cxxreact.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7129E1A65C00F8CA2A /* libReact-jsi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-jsi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7329E1A65C00F8CA2A /* libReact-jsiexecutor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-jsiexecutor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7529E1A65C00F8CA2A /* libReact-jsinspector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-jsinspector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7729E1A65C00F8CA2A /* libreact-native-background-timer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-background-timer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7929E1A65C00F8CA2A /* libreact-native-cameraroll.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-cameraroll.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7B29E1A65C00F8CA2A /* libreact-native-image-picker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-image-picker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7D29E1A65C00F8CA2A /* libreact-native-pager-view.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-pager-view.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B7F29E1A65C00F8CA2A /* libreact-native-safe-area-context.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-safe-area-context.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8129E1A65C00F8CA2A /* libreact-native-simple-toast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-simple-toast.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8329E1A65C00F8CA2A /* libreact-native-splash-screen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-splash-screen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8529E1A65C00F8CA2A /* libReact-perflogger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-perflogger.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8729E1A65C00F8CA2A /* libReact-RCTAnimation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTAnimation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8929E1A65C00F8CA2A /* libReact-RCTBlob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTBlob.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8B29E1A65C00F8CA2A /* libReact-RCTImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTImage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8D29E1A65C00F8CA2A /* libReact-RCTLinking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTLinking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B8F29E1A65C00F8CA2A /* libReact-RCTNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTNetwork.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9129E1A65C00F8CA2A /* libReact-RCTSettings.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTSettings.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9329E1A65C00F8CA2A /* libReact-RCTText.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTText.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9529E1A65C00F8CA2A /* libReact-RCTVibration.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTVibration.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9729E1A65C00F8CA2A /* libReactCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReactCommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9929E1A65C00F8CA2A /* librn-fetch-blob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "librn-fetch-blob.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9B29E1A65C00F8CA2A /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNCAsyncStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9D29E1A65C00F8CA2A /* libRNCCheckbox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNCCheckbox.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443B9F29E1A65C00F8CA2A /* libRNCPushNotificationIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNCPushNotificationIOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BA129E1A65C00F8CA2A /* libRNFBApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFBApp.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BA329E1A65C00F8CA2A /* libRNFBMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNFBMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BA529E1A65C00F8CA2A /* libRNGoogleMobileAds.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNGoogleMobileAds.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BA729E1A65C00F8CA2A /* libRNPermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNPermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BA929E1A65C00F8CA2A /* libRNScreens.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNScreens.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BAB29E1A65C00F8CA2A /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNSVG.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BAD29E1A65C00F8CA2A /* libToast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libToast.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4443BAF29E1A65C00F8CA2A /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = Pods/GoogleUserMessagingPlatform/Frameworks/Release/UserMessagingPlatform.xcframework; sourceTree = "<group>"; };
+		F4443BB129E1A65C00F8CA2A /* libYoga.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYoga.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +119,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D0EFC339CBA4F992C968328 /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */,
+				FE4B0F513E6327E1E1685CAD /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,7 +127,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22C731AC4B2A13DDCD97758A /* libPods-CrystalMineFrontend.a in Frameworks */,
+				DD7BD2BBB2338F935A3AAA09 /* libPods-CrystalMineFrontend.a in Frameworks */,
+				9FA687685A23190B45FB9CB1 /* libPods-CrystalMineFrontend.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +170,64 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4443B3F29E1A65C00F8CA2A /* libBEMCheckBox.a */,
+				F4443B4129E1A65C00F8CA2A /* libDoubleConversion.a */,
+				F4443B4329E1A65C00F8CA2A /* libFBReactNativeSpec.a */,
+				F4443B4529E1A65C00F8CA2A /* libFirebaseCore.a */,
+				F4443B4729E1A65C00F8CA2A /* libFirebaseCoreExtension.a */,
+				F4443B4929E1A65C00F8CA2A /* libFirebaseCoreInternal.a */,
+				F4443B4B29E1A65C00F8CA2A /* libFirebaseInstallations.a */,
+				F4443B4D29E1A65C00F8CA2A /* libFirebaseMessaging.a */,
+				F4443B4F29E1A65C00F8CA2A /* libfmt.a */,
+				F4443B5129E1A65C00F8CA2A /* libglog.a */,
+				F4443B5329E1A65C00F8CA2A /* GoogleAppMeasurement.xcframework */,
+				F4443B5529E1A65C00F8CA2A /* GoogleAppMeasurementIdentitySupport.xcframework */,
+				F4443B5729E1A65C00F8CA2A /* libGoogleDataTransport.a */,
+				F4443B5929E1A65C00F8CA2A /* GoogleMobileAds.xcframework */,
+				F4443B5B29E1A65C00F8CA2A /* libGoogleUtilities.a */,
+				F4443B5D29E1A65C00F8CA2A /* libnanopb.a */,
+				F4443B5F29E1A65C00F8CA2A /* libPermission-AppTrackingTransparency.a */,
+				F4443B6129E1A65C00F8CA2A /* libPods-CrystalMineFrontend.a */,
+				F4443B6329E1A65C00F8CA2A /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */,
+				F4443B6529E1A65C00F8CA2A /* libPromisesObjC.a */,
+				F4443B6729E1A65C00F8CA2A /* libRCT-Folly.a */,
+				F4443B6929E1A65C00F8CA2A /* libRCTTypeSafety.a */,
+				F4443B6B29E1A65C00F8CA2A /* libReact-Core.a */,
+				F4443B6D29E1A65C00F8CA2A /* libReact-CoreModules.a */,
+				F4443B6F29E1A65C00F8CA2A /* libReact-cxxreact.a */,
+				F4443B7129E1A65C00F8CA2A /* libReact-jsi.a */,
+				F4443B7329E1A65C00F8CA2A /* libReact-jsiexecutor.a */,
+				F4443B7529E1A65C00F8CA2A /* libReact-jsinspector.a */,
+				F4443B7729E1A65C00F8CA2A /* libreact-native-background-timer.a */,
+				F4443B7929E1A65C00F8CA2A /* libreact-native-cameraroll.a */,
+				F4443B7B29E1A65C00F8CA2A /* libreact-native-image-picker.a */,
+				F4443B7D29E1A65C00F8CA2A /* libreact-native-pager-view.a */,
+				F4443B7F29E1A65C00F8CA2A /* libreact-native-safe-area-context.a */,
+				F4443B8129E1A65C00F8CA2A /* libreact-native-simple-toast.a */,
+				F4443B8329E1A65C00F8CA2A /* libreact-native-splash-screen.a */,
+				F4443B8529E1A65C00F8CA2A /* libReact-perflogger.a */,
+				F4443B8729E1A65C00F8CA2A /* libReact-RCTAnimation.a */,
+				F4443B8929E1A65C00F8CA2A /* libReact-RCTBlob.a */,
+				F4443B8B29E1A65C00F8CA2A /* libReact-RCTImage.a */,
+				F4443B8D29E1A65C00F8CA2A /* libReact-RCTLinking.a */,
+				F4443B8F29E1A65C00F8CA2A /* libReact-RCTNetwork.a */,
+				F4443B9129E1A65C00F8CA2A /* libReact-RCTSettings.a */,
+				F4443B9329E1A65C00F8CA2A /* libReact-RCTText.a */,
+				F4443B9529E1A65C00F8CA2A /* libReact-RCTVibration.a */,
+				F4443B9729E1A65C00F8CA2A /* libReactCommon.a */,
+				F4443B9929E1A65C00F8CA2A /* librn-fetch-blob.a */,
+				F4443B9B29E1A65C00F8CA2A /* libRNCAsyncStorage.a */,
+				F4443B9D29E1A65C00F8CA2A /* libRNCCheckbox.a */,
+				F4443B9F29E1A65C00F8CA2A /* libRNCPushNotificationIOS.a */,
+				F4443BA129E1A65C00F8CA2A /* libRNFBApp.a */,
+				F4443BA329E1A65C00F8CA2A /* libRNFBMessaging.a */,
+				F4443BA529E1A65C00F8CA2A /* libRNGoogleMobileAds.a */,
+				F4443BA729E1A65C00F8CA2A /* libRNPermissions.a */,
+				F4443BA929E1A65C00F8CA2A /* libRNScreens.a */,
+				F4443BAB29E1A65C00F8CA2A /* libRNSVG.a */,
+				F4443BAD29E1A65C00F8CA2A /* libToast.a */,
+				F4443BAF29E1A65C00F8CA2A /* UserMessagingPlatform.xcframework */,
+				F4443BB129E1A65C00F8CA2A /* libYoga.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5469F37CCB10B856B2075043 /* libPods-CrystalMineFrontend.a */,
 				E390D065AE0839351AAF1C8E /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */,
@@ -319,9 +439,11 @@
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -434,7 +556,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F1A748D25398BFC11A9CCB22 /* Pods-CrystalMineFrontend-CrystalMineFrontendTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				DEVELOPMENT_TEAM = 7X8J9DB9Y8;
@@ -449,6 +571,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -466,7 +589,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBA0614CFAC2326A96DB836E /* Pods-CrystalMineFrontend-CrystalMineFrontendTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
@@ -478,6 +601,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -501,7 +625,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7X8J9DB9Y8;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = CrystalMineFrontend/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "수정광산";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -536,6 +660,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7X8J9DB9Y8;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = CrystalMineFrontend/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "수정광산";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -589,6 +714,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
@@ -616,6 +742,7 @@
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 				);
+				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -654,6 +781,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
@@ -674,6 +802,7 @@
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 				);
+				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
