@@ -561,7 +561,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A8DB03299052E3B7D162B14 /* Pods-CrystalMineFrontend.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -627,7 +626,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B8338A2C8DEF164CE4C53CA9 /* Pods-CrystalMineFrontend.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
