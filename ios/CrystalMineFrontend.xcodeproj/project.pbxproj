@@ -16,7 +16,6 @@
 		9FA687685A23190B45FB9CB1 /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4443B6129E1A65C00F8CA2A /* libPods-CrystalMineFrontend.a */; };
 		CD6BE3CE271DCB8D00424307 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = CD6BE3CD271DCB8D00424307 /* Fonts */; };
 		CD87721A271186200070D1F4 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD877219271186200070D1F4 /* SplashScreen.storyboard */; };
-		DD7BD2BBB2338F935A3AAA09 /* libPods-CrystalMineFrontend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5469F37CCB10B856B2075043 /* libPods-CrystalMineFrontend.a */; };
 		F41375CE2967EE830016F610 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F41375CD2967EE830016F610 /* GoogleService-Info.plist */; };
 		FE4B0F513E6327E1E1685CAD /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4443B6329E1A65C00F8CA2A /* libPods-CrystalMineFrontend-CrystalMineFrontendTests.a */; };
 /* End PBXBuildFile section */
@@ -127,7 +126,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD7BD2BBB2338F935A3AAA09 /* libPods-CrystalMineFrontend.a in Frameworks */,
 				9FA687685A23190B45FB9CB1 /* libPods-CrystalMineFrontend.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,9 +441,11 @@
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CrystalMineFrontend/Pods-CrystalMineFrontend-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -575,7 +575,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -605,7 +605,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -637,6 +637,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACH_O_TYPE = mh_execute;
 				MARKETING_VERSION = 1.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -672,6 +673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACH_O_TYPE = staticlib;
 				MARKETING_VERSION = 1.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -746,7 +748,7 @@
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
