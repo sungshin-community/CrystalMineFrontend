@@ -1,4 +1,4 @@
- #!/bin/zsh
+#!/bin/zsh
 
  # fail if any command fails
 
