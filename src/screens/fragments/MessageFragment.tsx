@@ -1,12 +1,13 @@
 import React from 'react';
 import {SafeAreaView, Text, View, Dimensions, Image} from 'react-native';
+import MessageItem from '../../components/MessageItem';
 import WaterMark from '../../components/WaterMark';
 const MessageFragment = () => {
   return (
     <>
       <WaterMark/>
       <SafeAreaView style={{flex: 1}}>
-        <View
+        {/* <View
           style={{
             flex: 1,
             justifyContent: 'center',
@@ -31,7 +32,8 @@ const MessageFragment = () => {
             현재 개발 중인 기능입니다.{'\n'}
             추후 기능 개발 후 사용하실 수 있습니다.
           </Text>
-        </View>
+        </View> */}
+        <MessageItem/>
       </SafeAreaView>
     </>
   );
