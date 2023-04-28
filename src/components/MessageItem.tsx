@@ -14,7 +14,6 @@ const MessageItem = ({
   nickname = '',
   boardType = '장터게시판',
   content = '안녕하세요 직거래로하시나요 택배로 거래하시나요? 답변주세요!!!',
-  isRead = true,
   time = '방금',
   messageCount = 3,
   profileImage = '',
@@ -26,7 +25,7 @@ const MessageItem = ({
           flexDirection: 'row',
           paddingVertical: 18,
           paddingHorizontal: 27,
-          backgroundColor: isRead ? '#FFFFFF' : '#F6F2FF',
+          backgroundColor: messageCount == 0 ? '#FFFFFF' : '#F6F2FF',
         }}>
         <View>
           {/* <ProfileImage /> */}
@@ -40,11 +39,7 @@ const MessageItem = ({
           )}
         </View>
         <View style={{marginLeft: 13}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.line}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.nickname}>
                 {nickname ? nickname : '수정'}
@@ -53,22 +48,20 @@ const MessageItem = ({
             </View>
             <Text style={styles.smallText}>{time}</Text>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.line}>
             <Text
               ellipsizeMode={'tail'}
               numberOfLines={1}
               style={styles.content}>
               {content}
             </Text>
-            <View style={styles.count}>
-              <Text style={{color: '#FFFFFF', fontSize: 11, fontWeight: '500'}}>
-                {messageCount}
-              </Text>
-            </View>
+            {messageCount == 0 ? null : (
+              <View style={styles.count}>
+                <Text style={{color: '#FFFFFF', fontSize: 11, fontWeight: '500'}}>
+                  {messageCount}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </TouchableOpacity>
@@ -82,6 +75,11 @@ const styles = StyleSheet.create({
     marginRight: 6,
     marginBottom: 4,
   },
+  line: {
+    width: Dimensions.get('window').width - 100,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   smallText: {
     lineHeight: 14,
     fontSize: 11,
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
     color: '#9DA4AB',
   },
   content: {
-    width: Dimensions.get('window').width - 115,
     color: '#6E7882',
     paddingRight: 5,
   },

@@ -9,7 +9,6 @@ export interface Message {
   boardType: string;
   content: string;
   time: string;
-  isRead: boolean;
   postId: number;
   messageCount: number;
 }
