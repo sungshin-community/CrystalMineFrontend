@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  RefreshControl,
 } from 'react-native';
 import {View} from 'react-native-animatable';
 import {
@@ -15,9 +14,10 @@ import {
 } from '../../../resources/icon/CheckBox';
 import SettingIcon from '../../../resources/icon/SettingIcon';
 import MessageItem from '../../components/MessageItem';
-import { ModalBottom } from '../../components/ModalBottom';
+import {ModalBottom} from '../../components/ModalBottom';
 import WaterMark from '../../components/WaterMark';
-
+import CheckEdit from '../../../resources/icon/CheckEdit';
+import Hamburger from '../../../resources/icon/Hamburger';
 const dummy = [
   {
     id: 0,
@@ -77,15 +77,17 @@ const MessageFragment = () => {
   const clickEdit = () => {
     setEdit(true);
     setSort(false);
+    setSetting(false);
   };
   const clickSort = () => {
     setEdit(false);
     setSort(true);
+    setSetting(false);
   };
   return (
     <>
       <WaterMark/>
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView>
         {edit && (
           <View
             style={{backgroundColor: '#FFFFFF', height: 45, paddingTop: 15}}>
@@ -95,11 +97,7 @@ const MessageFragment = () => {
                 onPress={() => {
                   setIsCheckedAll(!isCheckedAll);
                 }}
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  paddingLeft: 27}}>
+                style={styles.check}>
                 {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
               </TouchableOpacity>
               <View style={{flexDirection: 'row', paddingRight: 24}}>
@@ -124,15 +122,23 @@ const MessageFragment = () => {
             <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
           )}
         />
-
-        <View>
-          <TouchableOpacity onPress={() => clickEdit()}>
-            <Text>편집하기</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => clickSort()}>
-            <Text>정렬하기</Text>
-          </TouchableOpacity>
-        </View>
+        {setting && (
+          <View style={styles.setting}>
+            <TouchableOpacity
+              style={styles.setItem}
+              onPress={() => clickEdit()}>
+              <CheckEdit />
+              <Text style={styles.setText}>편집하기</Text>
+            </TouchableOpacity>
+            <View style={styles.hr} />
+            <TouchableOpacity
+              style={styles.setItem}
+              onPress={() => clickSort()}>
+              <Hamburger />
+              <Text style={styles.setText}>정렬하기</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         {deleteModalVisible && (
           <ModalBottom
             modalVisible={deleteModalVisible}
@@ -152,4 +158,37 @@ const MessageFragment = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  setting: {
+    width: 137,
+    height: 84,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    right: 2,
+    top: 2,
+  },
+  setItem: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 11,
+  },
+  setText: {
+    paddingLeft: 8,
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  check: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingLeft: 27,
+  },
+  hr: {
+    borderBottomColor: '#EFEFEF',
+    borderBottomWidth: 1,
+    marginHorizontal: 8,
+  },
+});
 export default MessageFragment;
