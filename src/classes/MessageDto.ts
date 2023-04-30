@@ -11,4 +11,5 @@ export interface Message {
   time: string;
   postId: number;
   messageCount: number;
+  isChecked: boolean;
 }
