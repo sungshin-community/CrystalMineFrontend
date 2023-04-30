@@ -15,10 +15,12 @@ import {
 } from '../../../resources/icon/CheckBox';
 import SettingIcon from '../../../resources/icon/SettingIcon';
 import MessageItem from '../../components/MessageItem';
+import { ModalBottom } from '../../components/ModalBottom';
 import WaterMark from '../../components/WaterMark';
 
 const dummy = [
   {
+    id: 0,
     nickname: '수정',
     boardType: '장터게시판',
     content: '안녕하세요 직거래로하시나요 택배로 거래하시나요? 답변주세요!!!',
@@ -28,6 +30,7 @@ const dummy = [
     isChecked: true,
   },
   {
+    id: 1,
     nickname: '펭귄',
     boardType: '질문게시판',
     content: '나눔 받고싶어요',
@@ -37,6 +40,7 @@ const dummy = [
     isChecked: false,
   },
   {
+    id: 2,
     nickname: '초록초록',
     boardType: '자수정',
     content: '집에 나온 거미 잡아줄 사람?? 제발',
@@ -53,6 +57,7 @@ const MessageFragment = () => {
   const [sort, setSort] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
   const navigation = useNavigation();
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   useEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {
@@ -101,7 +106,10 @@ const MessageFragment = () => {
                 <TouchableOpacity style={{marginRight: 18}}>
                   <Text>읽음</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setDeleteModalVisible(true);
+                  }}>
                   <Text>삭제</Text>
                 </TouchableOpacity>
               </View>
@@ -125,6 +133,21 @@ const MessageFragment = () => {
             <Text>정렬하기</Text>
           </TouchableOpacity>
         </View>
+        {deleteModalVisible && (
+          <ModalBottom
+            modalVisible={deleteModalVisible}
+            setModalVisible={setDeleteModalVisible}
+            content="선택하신 쪽지를 삭제하시겠습니까?"
+            purpleButtonText="삭제"
+            whiteButtonText="취소"
+            purpleButtonFunc={() => {
+              console.log('DELETE OK');
+            }}
+            whiteButtonFunc={() => {
+              setDeleteModalVisible(false);
+          }}
+        />
+      )}
       </SafeAreaView>
     </>
   );
