@@ -58,6 +58,7 @@ const MessageFragment = () => {
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
   const navigation = useNavigation();
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [readModalVisible, setReadModalVisible] = useState<boolean>(false);
   useEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {
@@ -87,7 +88,7 @@ const MessageFragment = () => {
   return (
     <>
       <WaterMark/>
-      <SafeAreaView>
+      <SafeAreaView style={{flex:1}}>
         {edit && (
           <View
             style={{backgroundColor: '#FFFFFF', height: 45, paddingTop: 15}}>
@@ -101,7 +102,11 @@ const MessageFragment = () => {
                 {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
               </TouchableOpacity>
               <View style={{flexDirection: 'row', paddingRight: 24}}>
-                <TouchableOpacity style={{marginRight: 18}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setReadModalVisible(true);
+                  }}
+                  style={{marginRight: 18}}>
                   <Text>읽음</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -151,9 +156,24 @@ const MessageFragment = () => {
             }}
             whiteButtonFunc={() => {
               setDeleteModalVisible(false);
-          }}
-        />
-      )}
+            }}
+          />
+        )}
+        {readModalVisible && (
+          <ModalBottom
+            modalVisible={readModalVisible}
+            setModalVisible={setReadModalVisible}
+            content="선택하신 쪽지를 읽음 처리 하시겠습니까?"
+            purpleButtonText="읽음"
+            whiteButtonText="취소"
+            purpleButtonFunc={() => {
+              console.log('READ OK');
+            }}
+            whiteButtonFunc={() => {
+              setReadModalVisible(false);
+            }}
+          />
+        )}
       </SafeAreaView>
     </>
   );

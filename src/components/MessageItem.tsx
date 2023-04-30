@@ -19,7 +19,6 @@ interface Props {
   edit: boolean;
 }
 const MessageItem = ({message, edit}: Props) => {
-    console.log(Dimensions.get('window').width-125)
   return (
     <>
       <TouchableOpacity
