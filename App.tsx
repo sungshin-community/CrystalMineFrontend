@@ -92,6 +92,7 @@ import {LogBox} from 'react-native';
 import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
 import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 import {MobileAds} from 'react-native-google-mobile-ads';
+import MessageScreen from './src/screens/message/MessageScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -1827,6 +1828,35 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="MessageScreen"
+                component={MessageScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator
@@ -3490,6 +3520,35 @@ const App = () => {
                 component={QuestionWriteScreen}
                 options={({navigation}) => ({
                   title: '문의하기',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MessageScreen"
+                component={MessageScreen}
+                options={({navigation}) => ({
+                  title: '',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
