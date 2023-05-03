@@ -236,6 +236,8 @@ const styles = StyleSheet.create({
     width: 83,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingBottom: 6,
   },
   inputBox: {
     backgroundColor: '#F2F2F2',
