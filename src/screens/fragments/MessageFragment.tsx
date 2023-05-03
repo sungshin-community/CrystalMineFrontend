@@ -18,6 +18,7 @@ import {ModalBottom} from '../../components/ModalBottom';
 import WaterMark from '../../components/WaterMark';
 import CheckEdit from '../../../resources/icon/CheckEdit';
 import Hamburger from '../../../resources/icon/Hamburger';
+import DownTriangle from '../../../resources/icon/Triangle';
 const dummy = [
   {
     id: 0,
@@ -59,6 +60,7 @@ const MessageFragment = () => {
   const navigation = useNavigation();
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [readModalVisible, setReadModalVisible] = useState<boolean>(false);
+  const [sortBy, setSortBy] = useState<string>('createdAt');
   useEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {
@@ -117,6 +119,28 @@ const MessageFragment = () => {
                 </TouchableOpacity>
               </View>
             </View>
+          </View>
+        )}
+        {sort && (
+          <View
+            style={{backgroundColor: '#FFFFFF', height: 45, paddingTop: 15}}>
+            <TouchableOpacity
+              style={styles.sortBox}
+              onPress={() => {
+                sortBy === 'createdAt'
+                  ? setSortBy('notReat')
+                  : setSortBy('createdAt');
+              }}>
+              <Text
+                style={{
+                  color: '#6E7882',
+                  fontSize: 13,
+                  marginRight: 8,
+                }}>
+                {sortBy === 'createdAt' ? '최신순' : '안읽은 순'}
+              </Text>
+              <DownTriangle style={{paddingTop: 15}}/>
+            </TouchableOpacity>
           </View>
         )}
         <FlatList
@@ -209,6 +233,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EFEFEF',
     borderBottomWidth: 1,
     marginHorizontal: 8,
+  },
+  sortBox: {
+    flexDirection: 'row',
+    backgroundColor: '#F6F6F6',
+    height: 20,
+    width: 82,
+    paddingTop: 2,
+    borderRadius: 12,
+    justifyContent: 'center',
+    marginLeft: 24,
   },
 });
 export default MessageFragment;
