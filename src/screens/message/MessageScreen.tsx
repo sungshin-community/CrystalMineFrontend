@@ -17,6 +17,7 @@ import ImageIcon from '../../../resources/icon/ImageIcon';
 import {fontRegular} from '../../common/font';
 import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
+import {ModalBottom} from '../../components/ModalBottom';
 
 const MyChat = () => {
   return (
@@ -52,14 +53,14 @@ const OtherChat = () => {
 const MessageScreen = ({navigation}) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [setting, setSetting] = useState<boolean>(false);
+  const [menu, setMenu] = useState<boolean>(false);
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => setSetting(!setting)}
+          onPress={() => setMenu(!menu)}
           style={{paddingRight: 13}}>
           <Dots />
         </TouchableOpacity>
@@ -180,6 +181,22 @@ const MessageScreen = ({navigation}) => {
           </View>
         </View>
       </View>
+      {menu && (
+        <ModalBottom
+          modalVisible={menu}
+          setModalVisible={setMenu}
+          content="쪽지메뉴"
+          purpleButtonText="사용자 차단"
+          purpleButtonText2="채팅방 나가기"
+          whiteButtonText="취소"
+          purpleButtonFunc={() => {
+            console.log('READ OK');
+          }}
+          whiteButtonFunc={() => {
+            setMenu(false);
+          }}
+        />
+      )}
     </View>
   );
 };
