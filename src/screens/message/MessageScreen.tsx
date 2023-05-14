@@ -187,7 +187,8 @@ const MessageScreen = ({navigation}) => {
           setModalVisible={setMenu}
           content="쪽지메뉴"
           purpleButtonText="사용자 차단"
-          purpleButtonText2="채팅방 나가기"
+          purpleButtonText2="신고하기"
+          purpleButtonText3="채팅방 나가기"
           whiteButtonText="취소"
           purpleButtonFunc={() => {
             console.log('READ OK');

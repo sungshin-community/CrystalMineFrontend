@@ -22,6 +22,7 @@ import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
 import {SelectModalBottom} from './SelectModalBottom';
+import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
 import NoReport, {Report} from '../../resources/icon/Report';
 import {fontMedium, fontRegular} from '../common/font';
@@ -57,6 +58,7 @@ const Comment = ({
   const data: CommentDto = comment;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const [messageModalVisible, setMessageModalVisible] = useState<boolean>(false);
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
@@ -103,6 +105,13 @@ const Comment = ({
         whiteButtonFunc={() => setReportModalVisible(false)}
         setDim={false}
       />
+      <MessageModalBottom
+        modalVisible={messageModalVisible}
+        setModalVisible={setMessageModalVisible}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => setMessageModalVisible(false)}
+        setDim={false}
+      />
       {data?.isReported ? (
         <Pressable
           onPress={() => {
@@ -111,13 +120,23 @@ const Comment = ({
           <Report style={{marginRight: 14}} />
         </Pressable>
       ) : (
-        <Pressable
-          onPress={() => {
-            setReportModalVisible(true);
-            setComponentModalVisible(reportModalVisible);
-          }}>
-          <NoReport style={{marginRight: 14}} />
-        </Pressable>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Pressable
+            onPress={() => {
+              setReportModalVisible(true);
+              setComponentModalVisible(reportModalVisible);
+            }}>
+            <NoReport style={{marginRight: 14}} />
+          </Pressable>
+          {/* 여기 */}
+          <Pressable
+            onPress={() => {
+              setMessageModalVisible(true);
+              setComponentModalVisible(messageModalVisible);
+            }}>
+            <NoReport style={{marginRight: 14}} />
+          </Pressable>
+        </View>
       )}
     </>
   );
