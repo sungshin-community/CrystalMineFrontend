@@ -24,6 +24,7 @@ import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
+import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
@@ -64,7 +65,7 @@ function Post({
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [muteModalVisible, setMuteModalVisible] = useState<boolean>(false);
-
+  const [messageModalVisible, setMessageModalVisible] = useState<boolean>(false);
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -180,6 +181,13 @@ function Post({
         whiteButtonFunc={() => setReportModalVisible(false)}
         setDim={false}
       />
+      <MessageModalBottom
+        modalVisible={messageModalVisible}
+        setModalVisible={setMessageModalVisible}
+        purpleButtonText="확인"
+        purpleButtonFunc={() => setMessageModalVisible(false)}
+        setDim={false}
+      />
       <View style={{flexDirection: 'row'}}>
         <Pressable
           onPress={() => {
@@ -203,6 +211,13 @@ function Post({
             <NoReport style={{marginRight: 14}} />
           </Pressable>
         )}
+        <Pressable
+            onPress={() => {
+              setMessageModalVisible(true);
+              setComponentModalVisible(messageModalVisible);
+            }}>
+            <NoReport style={{marginRight: 14}} />
+          </Pressable>
       </View>
     </>
   );
