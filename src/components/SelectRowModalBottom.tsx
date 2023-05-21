@@ -1,4 +1,5 @@
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
 import {
   Modal,
   StyleSheet,
@@ -8,42 +9,30 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {fontBold, fontMedium, fontRegular} from '../common/font';
+import RadioButtonUnChecked, {
+  RadioButtonChecked,
+} from '../../resources/icon/RadioButton';
 
 interface Props {
   modalVisible: boolean;
   setModalVisible: any;
-  title?: any;
-  content?: any;
   isContentCenter?: boolean;
   purpleButtonText?: string;
   purpleButtonFunc: any;
-  purpleButtonText2?: string;
-  purpleButtonFunc2?: any;
-  purpleButtonText3?: string;
-  purpleButtonFunc3?: any;
-  whiteButtonText?: string;
-  whiteButtonFunc?: any;
   setDim?: boolean;
   setDisableClose?: boolean;
 }
-export const ModalBottom = ({
+
+export const MessageModalBottom = ({
   modalVisible,
   setModalVisible,
-  title,
-  content,
   isContentCenter = true,
-  purpleButtonText,
   purpleButtonFunc,
-  purpleButtonText2,
-  purpleButtonFunc2,
-  purpleButtonText3,
-  purpleButtonFunc3,
-  whiteButtonText,
-  whiteButtonFunc,
   setDim = true,
   setDisableClose = false,
 }: Props) => {
+  const [isAnonymous, setIsAnonymos] = useState<boolean>(true);
+  const navigation = useNavigation();
   return (
     <>
       {setDim && modalVisible ? (
@@ -72,66 +61,60 @@ export const ModalBottom = ({
           {!setDisableClose && (
             <Pressable
               style={{flex: 1}}
-              onPress={() => setModalVisible(!modalVisible)}
-            />
+              onPress={() => setModalVisible(!modalVisible)} />
           )}
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignItems: 'center'}}>
-                {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
-                {content && (
-                  <Text
-                    style={[
-                      fontRegular,
-                      {
-                        textAlign: isContentCenter ? 'center' : 'left',
-                        fontSize: 15,
-                      },
-                    ]}>
-                    {content}
-                  </Text>
-                )}
+                <Text style={styles.title}>쪽지 보낼 방식을 선택해주세요.</Text>
+                <Text
+                  style={[
+                    {
+                      textAlign: isContentCenter ? 'center' : 'left',
+                      fontSize: 12,
+                      marginBottom: 20,
+                    },
+                  ]}>
+                  한 번 선택하면 해당 대화방에서는 더이상 변경할 수 없습니다.
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: Dimensions.get('window').width * 0.53,
+                  }}>
+                  <Pressable style={{flexDirection: 'row'}}
+                    onPress={() => {
+                      setIsAnonymos(true);
+                    }}>
+                    {isAnonymous ? (
+                      <RadioButtonChecked style={{marginRight: 10}} />
+                    ) : (
+                      <RadioButtonUnChecked style={{marginRight: 10}} />
+                    )}
+                    <Text>익명</Text>
+                  </Pressable>
+                  <Pressable style={{flexDirection: 'row'}}
+                    onPress={() => {
+                      setIsAnonymos(false);
+                    }}>
+                    {!isAnonymous ? (
+                      <RadioButtonChecked style={{marginRight: 10}} />
+                    ) : (
+                      <RadioButtonUnChecked style={{marginRight: 10}} />
+                    )}
+                    <Text>닉네임(??)</Text>
+                  </Pressable>
+                </View>
               </View>
               <TouchableOpacity
-                style={[
-                  styles.button,
-                  styles.buttonClose,
-                  {marginTop: content ? 20 : 0},
-                ]}
-                onPress={() => purpleButtonFunc()}>
-                <Text style={styles.textStyle}>{purpleButtonText}</Text>
+                style={[styles.button, styles.buttonClose, {marginTop: 20}]}
+                onPress={() => {
+                  navigation.navigate('MessageScreen');
+                  setModalVisible(!modalVisible);
+                }}>
+                <Text style={styles.textStyle}>확인</Text>
               </TouchableOpacity>
-              {purpleButtonText2 && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc2()}>
-                  <Text style={styles.textStyle}>{purpleButtonText2}</Text>
-                </TouchableOpacity>
-              )}
-              {purpleButtonText3 && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc3()}>
-                  <Text style={styles.textStyle}>{purpleButtonText3}</Text>
-                </TouchableOpacity>
-              )}
-              {whiteButtonText && (
-                <TouchableOpacity
-                  style={[styles.secondButton, styles.secondButtonClose]}
-                  onPress={() => whiteButtonFunc()}>
-                  <Text style={styles.secondButtonTextStyle}>
-                    {whiteButtonText}
-                  </Text>
-                </TouchableOpacity>
-              )}
             </View>
           </View>
         </Modal>
@@ -198,6 +181,6 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 17,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });

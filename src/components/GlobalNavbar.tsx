@@ -25,6 +25,8 @@ import messaging from '@react-native-firebase/messaging';
 import {AlertData} from '../classes/AlertDto';
 import {readNotificationOnPush} from '../common/pushApi';
 import {getPostByComment} from '../common/boardApi';
+import {CommonActions} from '@react-navigation/native';
+import BackButtonIcon from '../../resources/icon/BackButtonIcon';
 
 const Tab = createBottomTabNavigator();
 
@@ -291,6 +293,20 @@ function GlobalNavbar({navigation}: ScreenProps) {
               <MessageTabIcon size={size} color={color} focused={focused} />
             );
           },
+          headerLeft: () => (
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => navigation.dispatch(CommonActions.goBack())}>
+              <BackButtonIcon />
+            </TouchableHighlight>
+          ),
         }}
       />
       <Tab.Screen
