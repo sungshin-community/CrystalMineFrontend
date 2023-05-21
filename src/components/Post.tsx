@@ -41,6 +41,7 @@ import UserMuteIcon from '../../resources/icon/UserMuteIcon';
 import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
+import MessageIcon from '../../resources/icon/Message';
 interface Props {
   post: any;
   handlePostLike: any;
@@ -216,7 +217,7 @@ function Post({
               setMessageModalVisible(true);
               setComponentModalVisible(messageModalVisible);
             }}>
-            <NoReport style={{marginRight: 14}} />
+            <MessageIcon style={{marginRight: 14, marginTop: 5, marginLeft: 3}} />
           </Pressable>
       </View>
     </>
