@@ -1,15 +1,20 @@
-export default interface MessageDto {
-  content: Message[];
+export interface Chat {
+  chatId: number;
+  senderId: number;
+  chat: string;
+  photoUrl: string;
+  createdAt: string;
+  readAt: string;
+}
+export interface Content {
+  content: Chat[];
 }
 
 export interface Message {
-  id: number;
-  nickname: string;
-  profileImage: string;
-  boardType: string;
-  content: string;
-  time: string;
+  roomId: number;
+  partnerNickname: string;
   postId: number;
-  messageCount: number;
-  isChecked: boolean;
+  postBoardName: string;
+  postContent: string;
+  chats: Content;
 }
