@@ -6,8 +6,10 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StompJs from '@stomp/stompjs';
 import Toast from 'react-native-simple-toast';
 import WaterMark from '../../components/WaterMark';
@@ -21,38 +23,8 @@ import {ModalBottom} from '../../components/ModalBottom';
 import CheckEdit from '../../../resources/icon/CheckEdit';
 import Hamburger from '../../../resources/icon/Hamburger';
 import DownTriangle from '../../../resources/icon/Triangle';
-const dummy = [
-  {
-    id: 0,
-    nickname: '수정',
-    boardType: '장터게시판',
-    content: '안녕하세요 직거래로하시나요 택배로 거래하시나요? 답변주세요!!!',
-    time: '방금',
-    messageCount: 3,
-    profileImage: '',
-    isChecked: true,
-  },
-  {
-    id: 1,
-    nickname: '펭귄',
-    boardType: '질문게시판',
-    content: '나눔 받고싶어요',
-    time: '방금',
-    messageCount: '999+',
-    profileImage: '',
-    isChecked: false,
-  },
-  {
-    id: 2,
-    nickname: '초록초록',
-    boardType: '자수정',
-    content: '집에 나온 거미 잡아줄 사람?? 제발',
-    time: '방금',
-    messageCount: 0,
-    profileImage: '',
-    isChecked: false,
-  },
-];
+import {getChatRoom, getSocketToken} from '../../common/messageApi';
+import {MessageRoom} from '../../classes/MessageDto';
 
 const TextEncodingPolyfill = require('text-encoding');
 const BigInt = require('big-integer');
@@ -64,20 +36,20 @@ Object.assign(global, {
 });
 
 const MessageFragment = () => {
+  const isFocused = useIsFocused();
   const messageClient = useRef<any>({});
-  const [message, setMessage] = useState<String>('');
-  const [messageList, setMessageList] = useState<String[]>([]); //나중에 type 바꿀 것
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [messageList, setMessageList] = useState<MessageRoom[]>([]); //나중에 type 바꿀 것
+  const [messagePage, setMessagePage] = useState<number>(0);
 
   const [setting, setSetting] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
   const [sort, setSort] = useState<boolean>(false);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
-  const navigation = useNavigation();
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [readModalVisible, setReadModalVisible] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>('createdAt');
-
-  const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -94,43 +66,72 @@ const MessageFragment = () => {
       ),
     });
   });
-
   useEffect(() => {
-    connect();
+    async function init() {
+      let socketToken = await AsyncStorage.getItem('socketToken');
+
+      if (socketToken === null) {
+        const response = await getSocketToken();
+        console.log(response.status);
+        if (response.status === 'OK') {
+          AsyncStorage.setItem('socketToken', response.data.socketToken);
+        } else {
+          setTimeout(function () {
+            Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
+          }, 100);
+        }
+      }
+
+      // 소켓 연결
+      console.log('in connect');
+      let wsUrl = encodeURI(
+        'ws://34.64.137.61:8787/ws?roomId=0&accessToken=Bearer ' + socketToken,
+      );
+      messageClient.current = new StompJs.Client({
+        brokerURL: wsUrl,
+        debug: str => console.log('STOMP: ' + str),
+        onConnect: () => {
+          console.log('success');
+          subscribe();
+        },
+        onStompError: (frame: any) => {
+          console.log('Broker reported error: ' + frame.headers['message']);
+          console.log('Additional details: ' + frame.body);
+        },
+        onChangeState: () => {
+          console.log('processing...', messageClient.current.connected);
+        },
+        onDisconnect: () => {
+          console.log('disconnected!');
+        },
+        forceBinaryWSFrames: true,
+        appendMissingNULLonIncoming: true,
+      });
+
+      messageClient.current.activate();
+
+      //채팅방 데이터 받아오기
+      const messageData = await getChatRoom(messagePage);
+
+      if (messageData.status === 'OK') {
+        setMessageList(messageData.data.content);
+      } else {
+        setTimeout(function () {
+          Toast.show(
+            '메세지 목록을 불러오는 중 오류가 발생했습니다.',
+            Toast.SHORT,
+          );
+        }, 100);
+      }
+      setLoading(false);
+    }
+    console.log('init');
+    if (isFocused) {
+      init();
+    }
 
     return () => messageClient.current.deactivate();
-  });
-
-  useEffect(() => {
-    if (isSubmitState) {
-      publish(message);
-      setMessage('');
-      setIsSubmitState(false);
-    }
-  }, [message, isSubmitState]);
-
-  const connect = () => {
-    console.log('in connect');
-    messageClient.current = new StompJs.Client({
-      brokerURL: 'ws://34.64.137.61:8787/ws',
-      debug: str => console.log('STOMP: ' + str),
-      onConnect: () => {
-        console.log('success');
-        subscribe();
-      },
-      onStompError: (frame: any) => {
-        console.log('Broker reported error: ' + frame.headers['message']);
-        console.log('Additional details: ' + frame.body);
-      },
-      onChangeState: () => {
-        console.log('processing...', messageClient.current.connected);
-      },
-      forceBinaryWSFrames: true,
-      appendMissingNULLonIncoming: true,
-    });
-
-    messageClient.current.activate();
-  };
+  }, [isFocused]);
 
   const subscribe = () => {
     console.log('/sub/chat/'); //채널구독, api 주소 바뀔예정
@@ -142,21 +143,6 @@ const MessageFragment = () => {
       });
     } catch (error) {
       console.log('erererer');
-      console.error(error);
-    }
-  };
-
-  const publish = (chat: String) => {
-    console.log('/pub/chat/'); //메세지발행, api 주소 바뀔예정
-    if (!messageClient.current.connected) return;
-    try {
-      messageClient.current.publish({
-        destination: '/pub/chat',
-        body: JSON.stringify({
-          chat: chat,
-        }),
-      });
-    } catch (error) {
       console.error(error);
     }
   };
@@ -174,6 +160,23 @@ const MessageFragment = () => {
 
   return (
     <>
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={loading}
+          style={{zIndex: 100}}
+        />
+      </View>
       <WaterMark />
       <SafeAreaView style={{flex: 1}}>
         {edit && (
@@ -228,14 +231,39 @@ const MessageFragment = () => {
             </TouchableOpacity>
           </View>
         )}
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={dummy}
-          renderItem={({item}) => <MessageItem message={item} edit={edit} />}
-          ItemSeparatorComponent={() => (
-            <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-          )}
-        />
+        {messageList.length !== 0 ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={messageList}
+            renderItem={({item}) => <MessageItem message={item} edit={edit} />}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: '#F6F6F6'}} />
+            )}
+          />
+        ) : (
+          <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#6E7882',
+                  fontSize: 15,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  textAlign: 'center',
+                  lineHeight: 22.5,
+                  marginTop: 20,
+                }}>
+                아직 쪽지 내역이 없습니다. {'\n'}수정이와 쪽지를 주고받아
+                보세요.
+              </Text>
+            </View>
+          </SafeAreaView>
+        )}
+
         {setting && (
           <View style={styles.setting}>
             <TouchableOpacity
@@ -331,22 +359,3 @@ const styles = StyleSheet.create({
   },
 });
 export default MessageFragment;
-
-// const styles = StyleSheet.create({
-//   inputBox: {
-//     backgroundColor: '#F2F2F2',
-//     width: Dimensions.get('window').width - 90,
-//     borderRadius: 25,
-//     paddingLeft: 14,
-//     paddingRight: 5,
-//   },
-//   input: {
-//     fontSize: 13,
-//     width: Dimensions.get('window').width - 150,
-//     paddingVertical: 5,
-//     paddingTop: Platform.OS == 'ios' ? 13 : 0,
-//     minHeight: 44,
-//     maxHeight: 230,
-//     color: '#222222',
-//   },
-// });

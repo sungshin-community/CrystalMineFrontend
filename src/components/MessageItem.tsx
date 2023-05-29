@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Message} from '../classes/MessageDto';
+import {MessageRoom} from '../classes/MessageDto';
 import ProfileImageBig from '../../resources/icon/ProfileImageBig';
 import {
   RectangleChecked,
@@ -15,7 +15,7 @@ import {
 } from '../../resources/icon/CheckBox';
 
 interface Props {
-  message: Message;
+  message: MessageRoom;
   edit: boolean;
 }
 const MessageItem = ({message, edit}: Props) => {
@@ -26,7 +26,7 @@ const MessageItem = ({message, edit}: Props) => {
           flexDirection: 'row',
           paddingVertical: 18,
           paddingHorizontal: 27,
-          backgroundColor: message.messageCount == 0 ? '#FFFFFF' : '#F6F2FF',
+          backgroundColor: message.unreadCount === 0 ? '#FFFFFF' : '#F6F2FF',
         }}>
         {edit && (
           <View style={styles.check}>
@@ -35,10 +35,10 @@ const MessageItem = ({message, edit}: Props) => {
         )}
         <View>
           {/* <ProfileImage /> */}
-          {message.profileImage ? (
+          {message.partnerProfile ? (
             <Image
               style={{width: 36, height: 36}}
-              source={{uri: message.profileImage}}
+              source={{uri: message.partnerProfile}}
             />
           ) : (
             <ProfileImageBig />
@@ -48,13 +48,14 @@ const MessageItem = ({message, edit}: Props) => {
           <View style={styles.line}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.nickname}>
-                {message.nickname ? message.nickname : '수정'}
+                {message.partnerNickname ? message.partnerNickname : '수정'}
               </Text>
-              <Text style={styles.smallText}>{message.boardType}</Text>
+              <Text style={styles.smallText}>{message.postBoard}</Text>
             </View>
-            <Text style={styles.smallText}>{message.time}</Text>
+            <Text style={styles.smallText}>{message.lastChatTime}</Text>
           </View>
-          <View style={{
+          <View
+            style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: edit
@@ -69,12 +70,13 @@ const MessageItem = ({message, edit}: Props) => {
                 color: '#6E7882',
                 paddingRight: 5,
               }}>
-              {message.content}
+              {message.lastChat}
             </Text>
-            {message.messageCount == 0 ? null : (
+            {message.unreadCount === 0 ? null : (
               <View style={styles.count}>
-                <Text style={{color: '#FFFFFF', fontSize: 11, fontWeight: '500'}}>
-                  {message.messageCount}
+                <Text
+                  style={{color: '#FFFFFF', fontSize: 11, fontWeight: '500'}}>
+                  {message.unreadCount}
                 </Text>
               </View>
             )}

@@ -1,15 +1,15 @@
 export default interface MessageDto {
-  content: Message[];
+  content: MessageRoom[];
 }
 
-export interface Message {
-  id: number;
-  nickname: string;
-  profileImage: string;
-  boardType: string;
-  content: string;
-  time: string;
-  postId: number;
-  messageCount: number;
+export interface MessageRoom {
+  roomId: number;
+  partnerProfile: string;
+  partnerNickname: string;
+  postBoard: string;
+  lastChat: string;
+  lastPhoto: string | null;
+  lastChatTime: string;
+  unreadCount: number;
   isChecked: boolean;
 }
