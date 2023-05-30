@@ -27,211 +27,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
-const dummy = {
-  timestamp: '2023-05-15T02:33:51.322431',
-  code: 'READ_CHAT_SUCCESS',
-  status: 'OK',
-  detail: '채팅 조회 성공',
-  data: {
-    roomId: 1,
-    partnerNickname: '수정',
-    postId: 27,
-    postBoardName: '교내 위키',
-    postContent:
-      '등록금을 납부했다고 해도, 바로 적용되지 않을수도 있어요.\n보통 다음날, 납부 여부가 업데이트 돼요. (하지만, 다음날이 주말이면 업데이트 안될 수도 있어요!)',
-    chats: {
-      content: [
-        {
-          chatId: 76,
-          senderId: 15,
-          chat: '야호 ㅎㅎ',
-          photoUrl: null,
-          createdAt: '2023-05-17T22:29:48',
-          readAt: '2023-05-15T02:33:51.073796',
-        },
-        {
-          chatId: 75,
-          senderId: 15,
-          chat: '야호!',
-          photoUrl: null,
-          createdAt: '2023-05-17T22:28:35',
-          readAt: '2023-05-15T02:33:51.073829',
-        },
-        {
-          chatId: 74,
-          senderId: 15,
-          chat: '채팅을 보내자 채팅을 보내자',
-          photoUrl: null,
-          createdAt: '2023-05-17T22:20:00',
-          readAt: '2023-05-15T02:33:51.073833',
-        },
-        {
-          chatId: 73,
-          senderId: 2,
-          chat: '이미지도잘들어간닷',
-          photoUrl: null,
-          createdAt: '2023-05-16T19:04:47',
-          readAt: '2023-05-15T02:33:51.073835',
-        },
-        {
-          chatId: 72,
-          senderId: 2,
-          chat: null,
-          photoUrl:
-            'https://crystalmine.s3.ap-northeast-2.amazonaws.com/chatPhoto/2023-05-14/6e4a5f7f-1e1a-4027-ad2a-abe5500ff087.jpg',
-          createdAt: '2023-05-15T19:04:07',
-          readAt: '2023-05-15T02:33:51.073838',
-        },
-        {
-          chatId: 71,
-          senderId: 2,
-          chat: '채팅이 아주 잘들어갑니다',
-          photoUrl: null,
-          createdAt: '2023-05-15T18:55:59',
-          readAt: '2023-05-15T02:33:51.07384',
-        },
-        {
-          chatId: 70,
-          senderId: 2,
-          chat: '테스트으',
-          photoUrl: null,
-          createdAt: '2023-05-14T18:55:40',
-          readAt: '2023-05-15T02:33:51.073843',
-        },
-        {
-          chatId: 69,
-          senderId: 15,
-          chat: '힝..',
-          photoUrl: null,
-          createdAt: '2023-05-14T04:41:45',
-          readAt: '2023-05-15T02:33:51.073845',
-        },
-        {
-          chatId: 68,
-          senderId: 1,
-          chat: '흠',
-          photoUrl: null,
-          createdAt: '2023-05-14T04:38:53',
-          readAt: '2023-05-15T02:33:51.073848',
-        },
-        {
-          chatId: 67,
-          senderId: 15,
-          chat: '안녕 이제 나도 바로 볼게',
-          photoUrl: null,
-          createdAt: '2023-05-14T04:29:29',
-          readAt: '2023-05-15T02:33:51.07385',
-        },
-        {
-          chatId: 66,
-          senderId: 1,
-          chat: '보내~깅',
-          photoUrl: null,
-          createdAt: '2023-05-14T04:29:11',
-          readAt: '2023-05-15T02:33:51.073853',
-        },
-        {
-          chatId: 63,
-          senderId: 1,
-          chat: null,
-          photoUrl:
-            'https://crystalmine.s3.ap-northeast-2.amazonaws.com/chatPhoto/2023-05-14/abc31f93-9663-45c1-bc70-e70017bdcb0e.png',
-          createdAt: '2023-05-14T01:53:49',
-          readAt: '2023-05-15T02:33:51.073855',
-        },
-        {
-          chatId: 62,
-          senderId: 1,
-          chat: 'rast chat',
-          photoUrl: null,
-          createdAt: '2023-05-14T01:53:35',
-          readAt: '2023-05-15T02:33:51.073858',
-        },
-        {
-          chatId: 61,
-          senderId: 15,
-          chat: null,
-          photoUrl:
-            'https://crystalmine.s3.ap-northeast-2.amazonaws.com/chatPhoto/2023-05-14/dedfee39-34d2-412b-8b5e-cebf36de2261.png',
-          createdAt: '2023-05-14T01:52:46',
-          readAt: '2023-05-15T02:33:51.073867',
-        },
-        {
-          chatId: 60,
-          senderId: 15,
-          chat: null,
-          photoUrl:
-            'https://crystalmine.s3.ap-northeast-2.amazonaws.com/chatPhoto/2023-05-14/60fb5718-cd13-47ad-a8c2-c064bfcec908.png',
-          createdAt: '2023-05-14T01:49:29',
-          readAt: '2023-05-15T02:33:51.07387',
-        },
-        {
-          chatId: 59,
-          senderId: 15,
-          chat: '다행이당',
-          photoUrl: null,
-          createdAt: '2023-05-14T01:48:15',
-          readAt: '2023-05-15T02:33:51.073873',
-        },
-        {
-          chatId: 58,
-          senderId: 15,
-          chat: '이제 잘 되네',
-          photoUrl: null,
-          createdAt: '2023-05-14T01:48:14',
-          readAt: '2023-05-15T02:33:51.073876',
-        },
-        {
-          chatId: 57,
-          senderId: 15,
-          chat: '신기하다~',
-          photoUrl: null,
-          createdAt: '2023-05-14T01:48:12',
-          readAt: '2023-05-15T02:33:51.073879',
-        },
-        {
-          chatId: 56,
-          senderId: 1,
-          chat: '와하 굿굿',
-          photoUrl: null,
-          createdAt: '2023-05-14T01:48:03',
-          readAt: '2023-05-15T02:33:51.073882',
-        },
-        {
-          chatId: 55,
-          senderId: 1,
-          chat: '다시다시',
-          photoUrl: null,
-          createdAt: '2023-05-14T01:47:59',
-          readAt: '2023-05-15T02:33:51.073884',
-        },
-      ],
-      pageable: {
-        sort: {
-          unsorted: true,
-          sorted: false,
-          empty: true,
-        },
-        pageNumber: 0,
-        pageSize: 20,
-        offset: 0,
-        paged: true,
-        unpaged: false,
-      },
-      numberOfElements: 20,
-      number: 0,
-      sort: {
-        unsorted: true,
-        sorted: false,
-        empty: true,
-      },
-      first: true,
-      last: false,
-      size: 20,
-      empty: false,
-    },
-  },
-};
+import DeleteImageIcon from '../../components/ImageDelete';
+
 const imgUrlCoverting = (arr: string[]) => {
   const array = arr.map(url => {
     return {url: url};
@@ -335,13 +132,35 @@ const MessageScreen = ({navigation}: Props) => {
   const [images, setImages] = useState<Asset[]>([]);
   const scrollViewRef = useRef(null);
   const camera = useRef(null);
-  const chat = dummy.data.chats.content;
-
-  chat.reverse();
-  // console.log(chat);
-
+  const [chatData, setChatData] = useState<Message>();
+  const [chat, setChat] = useState<string[]>();
   const devices = useCameraDevices();
   const device = devices.back;
+
+  useEffect(() => {
+    // 채팅내용 불러오기
+    async function getMessage() {
+      const roomId = 1;
+      const result = await getMessageContent(roomId);
+      // console.log('Message', result);
+      setChatData(result);
+      setChat(result.data.chats.content.slice().reverse());
+    }
+    getMessage();
+    // 카메라 사용을 위한 권한 확인
+    const checkPermission = async () => {
+      const cameraPermission = await Camera.getCameraPermissionStatus();
+      if (cameraPermission === 'not-determined') {
+        const newCameraPermission = await Camera.requestCameraPermission();
+        if (newCameraPermission === 'denied') {
+          Toast.show('카메라 사용 권한이 거부되었습니다.');
+        }
+      } else {
+        console.log('권한 확인 완료');
+      }
+    };
+    checkPermission();
+  }, []);
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
@@ -356,6 +175,39 @@ const MessageScreen = ({navigation}: Props) => {
       headerTitle: () => <HeaderTitle />,
     });
   }, [navigation]);
+
+  const HeaderTitle = () => {
+    return (
+      <View style={{flexDirection: 'row'}}>
+        <Text style={[{fontSize: 20}]} numberOfLines={1}>
+          {chatData && chatData.data.partnerNickname}
+        </Text>
+      </View>
+    );
+  };
+  // 키보드
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
+  // Input Focus
+  const onInputFocus = () => {
+    setIsFocused(true);
+  };
+  const onInputFocusOut = () => {
+    setIsFocused(false);
+    Keyboard.dismiss();
+  };
+
+  // 이미지 선택
   const onSelectImage = () => {
     launchImageLibrary(
       {
@@ -374,74 +226,9 @@ const MessageScreen = ({navigation}: Props) => {
       },
     );
   };
-  useEffect(() => {
-    // 카메라 사용을 위한 권한 확인
-    const checkPermission = async () => {
-      const cameraPermission = await Camera.getCameraPermissionStatus();
-      if (cameraPermission === 'not-determined') {
-        const newCameraPermission = await Camera.requestCameraPermission();
-        if (newCameraPermission === 'denied') {
-          Toast.show('카메라 사용 권한이 거부되었습니다.');
-        }
-      } else {
-        // console.log('권한 확인 완료');
-      }
-    };
-    checkPermission();
-  }, []);
-  // useEffect(() => {
-  //   async function getMessage() {
-  //     const roomId = 1;
-  //     const result = await getMessageContent(roomId);
-  //     console.log('Message', result);
-  //   }
-  //   getMessage();
-  // }, []);
-
-  const HeaderTitle = () => {
-    return (
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[{fontSize: 20}]} numberOfLines={1}>
-          {dummy.data.partnerNickname}
-        </Text>
-      </View>
-    );
-  };
-
-  const onKeyboardDidshow = (e: KeyboardEvent) => {
-    setKeyboardHeight(e.endCoordinates.height);
-  };
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener(
-      'keyboardDidShow',
-      onKeyboardDidshow,
-    );
-    return () => {
-      showSubscription.remove();
-    };
-  }, []);
-  const onInputFocus = () => {
-    setIsFocused(true);
-  };
-  const onInputFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
-  };
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, []);
-
-  // const scrollToBottom = () => {
-  //   scrollViewRef.current.scrollToEnd({animated: true});
-  // };
-
-  // const handleLayout = () => {
-  //   scrollToBottom();
-  // };
 
   // 사진 찍기
   const onPressButton = async () => {
-    // console.log('x', camera);
     if (!camera.current) return;
     const photo = await camera.current.takePhoto({
       flash: 'off',
@@ -450,11 +237,16 @@ const MessageScreen = ({navigation}: Props) => {
     setPhotoPath(photo.path);
   };
   // 사진 결정
-  const onSendButtonPress = () => {
+  const onCameraSendButton = () => {
     if (photoPath) {
-      // 사진을 보내는 로직
+      setShowCamera(false);
       console.log('사진을 보냈습니다.');
     }
+  };
+
+  const DeleteImage = () => {
+    setImages([]);
+    setPhotoPath(null);
   };
 
   return (
@@ -495,27 +287,27 @@ const MessageScreen = ({navigation}: Props) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.whiteButton, {right: 30}]}
-                onPress={onSendButtonPress}>
+                onPress={onCameraSendButton}>
                 <Text style={styles.whiteButtonText}>전송</Text>
               </TouchableOpacity>
             </>
           )}
         </>
-      ) : (
+      ) : chatData ? (
         <View style={styles.container}>
           <TouchableOpacity
             onPress={async () => {
-              navigation.navigate('PostScreen', {
-                postId: dummy.data.postId,
+              navigation.push('PostScreen', {
+                postId: chatData.data.postId,
               });
             }}
             style={styles.post}>
-            <Text style={styles.postTitle}>{dummy.data.postBoardName}</Text>
+            <Text style={styles.postTitle}>{chatData.data.postBoardName}</Text>
             <Text
               ellipsizeMode={'tail'}
               numberOfLines={1}
               style={styles.postContent}>
-              {dummy.data.postContent}
+              {chatData.data.postContent}
             </Text>
 
             <LeftArrow style={{marginTop: 2}} />
@@ -582,19 +374,55 @@ const MessageScreen = ({navigation}: Props) => {
                   styles.inputBox,
                   {flexDirection: 'row', justifyContent: 'space-between'},
                 ]}>
-                <TextInput
-                  placeholder="메시지를 입력해 주세요."
-                  placeholderTextColor="#87919B"
-                  multiline={true}
-                  maxLength={500}
-                  style={[fontRegular, styles.input]}
-                  onFocus={(e: any) => {
-                    onInputFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onInputFocusOut();
-                  }}
-                />
+                {photoPath || images.length > 0 ? (
+                  <View
+                    style={{
+                      width: 155,
+                      height: 150,
+                      marginTop: 5,
+                      marginBottom: -40,
+                    }}>
+                    {photoPath ? (
+                      <Image
+                        source={{uri: `file://${photoPath}`}}
+                        style={styles.imageBox}
+                      />
+                    ) : (
+                      <Image
+                        source={{uri: `${images[0].uri}`}}
+                        style={styles.imageBox}
+                      />
+                    )}
+
+                    <Pressable
+                      onPress={() => {
+                        DeleteImage();
+                      }}
+                      style={{
+                        position: 'absolute',
+                        right: 47,
+                        top: -5,
+                      }}
+                      hitSlop={20}>
+                      <DeleteImageIcon />
+                    </Pressable>
+                  </View>
+                ) : (
+                  <TextInput
+                    placeholder="메시지를 입력해 주세요."
+                    placeholderTextColor="#87919B"
+                    multiline={true}
+                    maxLength={500}
+                    style={[fontRegular, styles.input]}
+                    onFocus={(e: any) => {
+                      onInputFocus();
+                    }}
+                    onBlur={(e: any) => {
+                      onInputFocusOut();
+                    }}
+                  />
+                )}
+
                 <View
                   style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
                   <Text>
@@ -628,7 +456,7 @@ const MessageScreen = ({navigation}: Props) => {
             />
           )}
         </View>
-      )}
+      ) : null}
     </>
   );
 };
@@ -737,7 +565,7 @@ const styles = StyleSheet.create({
   },
   whiteButton: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 30,
     alignSelf: 'center',
     backgroundColor: 'white',
     paddingVertical: 10,
@@ -755,5 +583,12 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  imageBox: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    marginRight: 8,
+    marginBottom: 8,
   },
 });
