@@ -147,19 +147,6 @@ const MessageScreen = ({navigation}: Props) => {
       setChat(result.data.chats.content.slice().reverse());
     }
     getMessage();
-    // 카메라 사용을 위한 권한 확인
-    const checkPermission = async () => {
-      const cameraPermission = await Camera.getCameraPermissionStatus();
-      if (cameraPermission === 'not-determined') {
-        const newCameraPermission = await Camera.requestCameraPermission();
-        if (newCameraPermission === 'denied') {
-          Toast.show('카메라 사용 권한이 거부되었습니다.');
-        }
-      } else {
-        console.log('권한 확인 완료');
-      }
-    };
-    checkPermission();
   }, []);
   useEffect(() => {
     navigation.setOptions({
@@ -229,6 +216,20 @@ const MessageScreen = ({navigation}: Props) => {
 
   // 사진 찍기
   const onPressButton = async () => {
+    // 카메라 사용을 위한 권한 확인
+    const checkPermission = async () => {
+      const cameraPermission = await Camera.getCameraPermissionStatus();
+      if (cameraPermission === 'not-determined') {
+        const newCameraPermission = await Camera.requestCameraPermission();
+        if (newCameraPermission === 'denied') {
+          Toast.show('카메라 사용 권한이 거부되었습니다.');
+        }
+      } else {
+        console.log('권한 확인 완료');
+      }
+    };
+    checkPermission();
+
     if (!camera.current) return;
     const photo = await camera.current.takePhoto({
       flash: 'off',
