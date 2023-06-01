@@ -10,7 +10,8 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
-  ScrollView,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {View} from 'react-native-animatable';
 import CameraIcon from '../../../resources/icon/CameraIcon';
@@ -22,12 +23,13 @@ import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
 import {Message} from '../../classes/MessageDto';
 import {useNavigation} from '@react-navigation/native';
-import {getMessageContent} from '../../common/messageApi';
+import {getMessageContent, postPhotoMessage} from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import DeleteImageIcon from '../../components/ImageDelete';
+import { logout } from '../../common/authApi';
 
 const imgUrlCoverting = (arr: string[]) => {
   const array = arr.map(url => {
@@ -88,7 +90,6 @@ const MyChat = (items: any) => {
     </View>
   );
 };
-
 const OtherChat = (items: any) => {
   const navigation = useNavigation();
   var data = items.items;
@@ -126,22 +127,26 @@ const MessageScreen = ({navigation}: Props) => {
   // const navigation = useNavigation();
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [menu, setMenu] = useState<boolean>(false);
   const [showCamera, setShowCamera] = useState<boolean>(false);
   const [photoPath, setPhotoPath] = useState(null);
-  const [images, setImages] = useState<Asset[]>([]);
-  const scrollViewRef = useRef(null);
-  const camera = useRef(null);
-  const [chatData, setChatData] = useState<Message>();
-  const [chat, setChat] = useState<string[]>();
   const devices = useCameraDevices();
   const device = devices.back;
-
+  const [images, setImages] = useState<Asset[]>([]);
+  const camera = useRef(null);
+  const FlatViewRef = useRef(null);
+  // 채팅내역 조회 API 반환 데이터
+  const [chatData, setChatData] = useState<Message>();
+  // 채팅만 뽑아낸 데이터
+  const [chat, setChat] = useState<string[]>();
+  const [roomId, setRoomId] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   useEffect(() => {
     // 채팅내용 불러오기
     async function getMessage() {
-      const roomId = 1;
-      const result = await getMessageContent(roomId);
+      const result = await getMessageContent(roomId, 0);
       // console.log('Message', result);
       setChatData(result);
       setChat(result.data.chats.content.slice().reverse());
@@ -162,7 +167,20 @@ const MessageScreen = ({navigation}: Props) => {
       headerTitle: () => <HeaderTitle />,
     });
   }, [navigation]);
-
+  // 다음 페이지 채팅 내역 불러오기
+  const fetchNextPage = async () => {
+    setIsNextPageLoading(true);
+    console.log('FETCH');
+    let thisPageMessage: any = await getMessageContent(roomId, page + 1);
+    if (thisPageMessage.data.chats.content.length > 0) {
+      setPage(page + 1);
+      const updatedChat = [...chat, ...thisPageMessage.data.chats.content];
+      setChat(updatedChat);
+    }
+    // console.log(chat);
+    setIsNextPageLoading(false);
+  };
+  // 헤더
   const HeaderTitle = () => {
     return (
       <View style={{flexDirection: 'row'}}>
@@ -193,7 +211,6 @@ const MessageScreen = ({navigation}: Props) => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
-
   // 이미지 선택
   const onSelectImage = () => {
     launchImageLibrary(
@@ -213,7 +230,6 @@ const MessageScreen = ({navigation}: Props) => {
       },
     );
   };
-
   // 사진 찍기
   const onPressButton = async () => {
     // 카메라 사용을 위한 권한 확인
@@ -244,15 +260,36 @@ const MessageScreen = ({navigation}: Props) => {
       console.log('사진을 보냈습니다.');
     }
   };
-
+  // 선택한 사진 취소
   const DeleteImage = () => {
     setImages([]);
     setPhotoPath(null);
   };
-
+  // 전송버튼
+  const onSubmitPress = async () => {
+    setIsLoading(true);
+    // 사진 전송
+    const response = await postPhotoMessage(roomId, images, photoPath);
+    if (response.status === 401) {
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else {
+      setTimeout(function () {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
+    }
+    setIsLoading(false);
+  };
   return (
     <>
       {device && showCamera ? (
+        // 카메라 화면
         <>
           <Camera
             style={StyleSheet.absoluteFill}
@@ -313,32 +350,43 @@ const MessageScreen = ({navigation}: Props) => {
 
             <LeftArrow style={{marginTop: 2}} />
           </TouchableOpacity>
-          <ScrollView
-            ref={scrollViewRef}
-            onLayout={() => {
-            scrollViewRef.current.scrollToEnd({animated: true});
-            }}>
-            {chat &&
-              chat.map((item: any, index) => {
-                let displayDate = true;
-                if (index !== 0) {
-                  const prevChat = chat[index - 1].createdAt;
-                  if (formatDate(item.createdAt) === formatDate(prevChat)) {
-                    displayDate = false;
-                  }
+          <View style={{backgroundColor: '#FFFFFF'}}>
+            {isNextPageLoading && (
+              <ActivityIndicator
+                size="large"
+                color={'#A055FF'}
+                animating={isNextPageLoading}
+                style={{zIndex: 100}}
+              />
+            )}
+          </View>
+          {/* 채팅 내역 */}
+          <FlatList
+            data={chat}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item, index}) => {
+              let displayDate = true;
+              if (index !== 0) {
+                const prevChat = chat[index - 1].createdAt;
+                if (formatDate(item.createdAt) === formatDate(prevChat)) {
+                  displayDate = false;
                 }
-                return (
-                  <View key={index}>
-                    {displayDate ? <DateBox time={item.createdAt} /> : null}
-                    {item.senderId === 15 ? (
-                      <MyChat items={item} />
-                    ) : (
-                      <OtherChat items={item} />
-                    )}
-                  </View>
-                );
-              })}
-          </ScrollView>
+              }
+              return (
+                <View key={index}>
+                  {displayDate ? <DateBox time={item.createdAt} /> : null}
+                  {item.senderId === 15 ? (
+                    <MyChat items={item} />
+                  ) : (
+                    <OtherChat items={item} />
+                  )}
+                </View>
+              );
+            }}
+            inverted={true}
+            onEndReached={() => fetchNextPage()}
+          />
+
           <View
             style={{
               paddingLeft: 24,
@@ -375,6 +423,7 @@ const MessageScreen = ({navigation}: Props) => {
                   styles.inputBox,
                   {flexDirection: 'row', justifyContent: 'space-between'},
                 ]}>
+                {/* 사진 전송 전 미리보기 */}
                 {photoPath || images.length > 0 ? (
                   <View
                     style={{
@@ -394,7 +443,6 @@ const MessageScreen = ({navigation}: Props) => {
                         style={styles.imageBox}
                       />
                     )}
-
                     <Pressable
                       onPress={() => {
                         DeleteImage();
@@ -428,6 +476,7 @@ const MessageScreen = ({navigation}: Props) => {
                   style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
                   <Text>
                     <Pressable
+                      onPress={() => onSubmitPress()}
                       style={{
                         paddingBottom: Platform.OS === 'ios' ? 3 : 5,
                         bottom: 0,
