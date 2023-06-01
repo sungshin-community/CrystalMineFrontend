@@ -37,10 +37,10 @@ export const getChatRoom = async (page: number) => {
 };
 
 // 채팅방 채팅 내역 불러오기
-export const getMessageContent = async (roomId: number) => {
+export const getMessageContent = async (roomId: number, page: number) => {
   try {
     const response = await messageClient.get<AxiosResponse>(
-      `/chat-room/${roomId}?page=0`,
+      `/chat-room/${roomId}?page=${page}`,
     );
     return response.data;
   } catch (error: any) {
@@ -48,3 +48,44 @@ export const getMessageContent = async (roomId: number) => {
     return error.response.data;
   }
 };
+
+// 쪽지보내기 Photo
+export const postPhotoMessage = async (
+  roomId: number,
+  images?: any,
+  photoPath?: any,
+) => {
+  const formData = new FormData();
+
+  if (images && images.length > 0) {
+    const image = images[0];
+    const fileType = image.type ? image.type : 'image/jpeg'; // 파일의 Content-Type
+    const fileName = image.filename ? image.filename : 'photo.jpg'; // 파일 이름
+    formData.append('photo', {
+      uri: image.uri,
+      name: fileName,
+      type: fileType,
+    });
+  } else if (photoPath) {
+    formData.append('photo', {
+      uri: photoPath,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    });
+  }
+  try {
+    const response = await messageClient.post<AxiosResponse>(
+      `/chat/photo/${roomId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log('photo 쪽지 보내기 실패', error.response.data);
+    return error.response.data;
+  }
+}

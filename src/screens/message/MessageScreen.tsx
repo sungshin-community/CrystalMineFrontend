@@ -170,7 +170,6 @@ const MessageScreen = ({navigation}: Props) => {
   // 다음 페이지 채팅 내역 불러오기
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    console.log('FETCH');
     let thisPageMessage: any = await getMessageContent(roomId, page + 1);
     if (thisPageMessage.data.chats.content.length > 0) {
       setPage(page + 1);
@@ -270,6 +269,7 @@ const MessageScreen = ({navigation}: Props) => {
     setIsLoading(true);
     // 사진 전송
     const response = await postPhotoMessage(roomId, images, photoPath);
+    console.log("<<", images);
     if (response.status === 401) {
       setTimeout(function () {
         Toast.show(
