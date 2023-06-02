@@ -40,6 +40,14 @@ export const CreateMailGuide = () => {
             </Text>
           </View>
         </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={[fontMedium, {fontSize: 13, marginRight: 7}]}>04</Text>
+          <View>
+            <Text style={[fontRegular, {fontSize: 13}]}>
+              대학원생도 수정광산을 이용할 수 있나요?
+            </Text>
+          </View>
+        </View>
       </View>
       <View style={{backgroundColor: '#F5F5F5', height: 10}}></View>
       <View
@@ -130,6 +138,25 @@ export const CreateMailGuide = () => {
         <Text style={[fontRegular, {fontSize: 13, marginBottom: 20}]}>
           1) 수정광산 가입 시, 본인의 학번을 아이디로 등록하여 가입 진행.{`\n`}
           2) 가입 후 정회원 인증 시, 별도로 안내되는 절차에 따라 인증 진행.
+        </Text>
+      </View>
+      <View style={{backgroundColor: '#F5F5F5', height: 10}}></View>
+      <View
+        style={{
+          backgroundColor: '#fff',
+          paddingHorizontal: 25,
+          paddingVertical: 20,
+        }}>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={[fontMedium, {fontSize: 15, marginRight: 7}]}>04</Text>
+          <View>
+            <Text style={[fontRegular, {fontSize: 15, marginBottom: 5}]}>
+              대학원생도 수정광산을 이용할 수 있나요?
+            </Text>
+          </View>
+        </View>
+        <Text style={[fontRegular, {fontSize: 13, marginBottom: 20}]}>
+          정보 공유성 커뮤니티라는 수정광산의 취지에 맞게 학부 졸업생이 아닌 대학원생도 수정광산을 사용할 수 있도록 하였습니다.{`\n`}다만, 수정광산이 여성들만의 공간인 만큼 학부 졸업생이 아닌 대학원생의 경우 정회원 인증 시 여성임을 확인할 수 있는 정보를 추가로 요구하고 있습니다. 자세한 인증 방법은 공지사항을 확인해주시길 바랍니다.
         </Text>
       </View>
     </ScrollView>
