@@ -167,7 +167,7 @@ function DirectionAgree({navigation, route}: Props) {
                 year = +studentId.substring(0, 4);
                 if (
                   studentId.length === 8 &&
-                  year >= 2008 &&
+                  year >= thisYear - 3 &&
                   year <= thisYear
                 ) {
                   let result = await sendEmail();
