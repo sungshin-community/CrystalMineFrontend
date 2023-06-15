@@ -29,7 +29,7 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import DeleteImageIcon from '../../components/ImageDelete';
-import { logout } from '../../common/authApi';
+import {logout} from '../../common/authApi';
 
 const imgUrlCoverting = (arr: string[]) => {
   const array = arr.map(url => {
@@ -136,7 +136,7 @@ const MessageScreen = ({navigation}: Props) => {
   const device = devices.back;
   const [images, setImages] = useState<Asset[]>([]);
   const camera = useRef(null);
-  const FlatViewRef = useRef(null);
+  const [text, setText] = useState<string>('');
   // 채팅내역 조회 API 반환 데이터
   const [chatData, setChatData] = useState<Message>();
   // 채팅만 뽑아낸 데이터
@@ -152,8 +152,7 @@ const MessageScreen = ({navigation}: Props) => {
       setChat(result.data.chats.content.slice().reverse());
     }
     getMessage();
-  }, []);
-  useEffect(() => {
+
     navigation.setOptions({
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
@@ -166,7 +165,7 @@ const MessageScreen = ({navigation}: Props) => {
       ),
       headerTitle: () => <HeaderTitle />,
     });
-  }, [navigation]);
+  }, [menu, navigation, roomId]);
   // 다음 페이지 채팅 내역 불러오기
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
@@ -267,9 +266,12 @@ const MessageScreen = ({navigation}: Props) => {
   // 전송버튼
   const onSubmitPress = async () => {
     setIsLoading(true);
-    // 사진 전송
-    const response = await postPhotoMessage(roomId, images, photoPath);
-    console.log("<<", images);
+    let response;
+    if (images && photoPath) {
+      response = await postPhotoMessage(roomId, images, photoPath);
+    } else {
+      console.log("텍스트 전송")
+    }
     if (response.status === 401) {
       setTimeout(function () {
         Toast.show(
@@ -286,6 +288,7 @@ const MessageScreen = ({navigation}: Props) => {
     }
     setIsLoading(false);
   };
+  
   return (
     <>
       {device && showCamera ? (
@@ -463,6 +466,8 @@ const MessageScreen = ({navigation}: Props) => {
                     multiline={true}
                     maxLength={500}
                     style={[fontRegular, styles.input]}
+                    value={text}
+                    onChangeText={setText}
                     onFocus={(e: any) => {
                       onInputFocus();
                     }}
