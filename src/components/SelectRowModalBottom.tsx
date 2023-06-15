@@ -61,7 +61,8 @@ export const MessageModalBottom = ({
           {!setDisableClose && (
             <Pressable
               style={{flex: 1}}
-              onPress={() => setModalVisible(!modalVisible)} />
+              onPress={() => setModalVisible(!modalVisible)}
+            />
           )}
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -83,7 +84,8 @@ export const MessageModalBottom = ({
                     justifyContent: 'space-between',
                     width: Dimensions.get('window').width * 0.53,
                   }}>
-                  <Pressable style={{flexDirection: 'row'}}
+                  <Pressable
+                    style={{flexDirection: 'row'}}
                     onPress={() => {
                       setIsAnonymos(true);
                     }}>
@@ -94,7 +96,8 @@ export const MessageModalBottom = ({
                     )}
                     <Text>익명</Text>
                   </Pressable>
-                  <Pressable style={{flexDirection: 'row'}}
+                  <Pressable
+                    style={{flexDirection: 'row'}}
                     onPress={() => {
                       setIsAnonymos(false);
                     }}>
@@ -110,8 +113,7 @@ export const MessageModalBottom = ({
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose, {marginTop: 20}]}
                 onPress={() => {
-                  navigation.navigate('MessageScreen');
-                  setModalVisible(!modalVisible);
+                  purpleButtonFunc(isAnonymous);
                 }}>
                 <Text style={styles.textStyle}>확인</Text>
               </TouchableOpacity>

@@ -41,6 +41,7 @@ import UserMuteIcon from '../../resources/icon/UserMuteIcon';
 import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
+import {postChatRoom} from '../common/messageApi';
 interface Props {
   post: any;
   handlePostLike: any;
@@ -65,7 +66,8 @@ function Post({
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [muteModalVisible, setMuteModalVisible] = useState<boolean>(false);
-  const [messageModalVisible, setMessageModalVisible] = useState<boolean>(false);
+  const [messageModalVisible, setMessageModalVisible] =
+    useState<boolean>(false);
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -85,6 +87,21 @@ function Post({
       </Pressable>
     </View>
   );
+
+  const handlePostMessage = async (isAnonymous: boolean) => {
+    let messageData = {
+      partnerId: 15,
+      postId: post.postId,
+      isAnonymous: isAnonymous,
+    };
+
+    // const response = await postChatRoom(messageData);
+    // if (response.data === 'OK') {
+    navigation.navigate('MessageScreen', {roomId: 4});
+    // navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    // }
+    setMessageModalVisible(false);
+  };
 
   const handlePostDeleteComponent = (
     <>
@@ -185,7 +202,7 @@ function Post({
         modalVisible={messageModalVisible}
         setModalVisible={setMessageModalVisible}
         purpleButtonText="확인"
-        purpleButtonFunc={() => setMessageModalVisible(false)}
+        purpleButtonFunc={handlePostMessage}
         setDim={false}
       />
       <View style={{flexDirection: 'row'}}>
@@ -212,12 +229,12 @@ function Post({
           </Pressable>
         )}
         <Pressable
-            onPress={() => {
-              setMessageModalVisible(true);
-              setComponentModalVisible(messageModalVisible);
-            }}>
-            <NoReport style={{marginRight: 14}} />
-          </Pressable>
+          onPress={() => {
+            setMessageModalVisible(true);
+            setComponentModalVisible(messageModalVisible);
+          }}>
+          <NoReport style={{marginRight: 14}} />
+        </Pressable>
       </View>
     </>
   );
@@ -262,7 +279,11 @@ function Post({
           </Text>
         )}
         <View style={styles.postBody}>
-          <Text style={[fontRegular, {fontSize: 14, color: '#222222', lineHeight: 22.5}]}>
+          <Text
+            style={[
+              fontRegular,
+              {fontSize: 14, color: '#222222', lineHeight: 22.5},
+            ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
         </View>
@@ -310,7 +331,9 @@ function Post({
           </Pressable>
           <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
           <PostComment />
-          <Text style={[fontRegular, styles.postComment]}>{data?.commentCount}</Text>
+          <Text style={[fontRegular, styles.postComment]}>
+            {data?.commentCount}
+          </Text>
         </View>
       </View>
       {/* <View

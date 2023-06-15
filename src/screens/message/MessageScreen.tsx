@@ -18,6 +18,7 @@ import {fontRegular} from '../../common/font';
 import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const MyChat = () => {
   return (
@@ -50,10 +51,17 @@ const OtherChat = () => {
     </View>
   );
 };
-const MessageScreen = ({navigation}) => {
+
+type RootStackParamList = {
+  PostScreen: {postId: number};
+};
+type ScreenProps = NativeStackScreenProps<RootStackParamList>;
+
+const MessageScreen = ({navigation}: ScreenProps) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [menu, setMenu] = useState<boolean>(false);
+
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
@@ -68,6 +76,7 @@ const MessageScreen = ({navigation}) => {
       headerTitle: () => <HeaderTitle />,
     });
   }, [navigation]);
+
   const HeaderTitle = () => {
     return (
       <View style={{flexDirection: 'row'}}>
@@ -99,7 +108,11 @@ const MessageScreen = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.post}>
+      <TouchableOpacity
+        style={styles.post}
+        onPress={() => {
+          navigation.push('PostScreen', {postId: 49});
+        }}>
         <Text style={styles.postTitle}>일상게시판</Text>
         <Text
           ellipsizeMode={'tail'}
@@ -107,12 +120,14 @@ const MessageScreen = ({navigation}) => {
           style={styles.postContent}>
           수정이들 빨리 들어와봐 대박이야 안 보면어쩌고저쩌고
         </Text>
-        <LeftArrow style={{marginTop: 2}}/>
-      </View>
+        <LeftArrow style={{marginTop: 2}} />
+      </TouchableOpacity>
       {/* FlatList가 들어갈 곳 */}
       <View style={{flex: 1}}>
         <View style={{alignItems: 'center', marginBottom: 14, marginTop: 20}}>
-          <Text style={{fontSize: 12, fontWeight: '500', color: '#3A424E'}}>2022년 4월 18일</Text>
+          <Text style={{fontSize: 12, fontWeight: '500', color: '#3A424E'}}>
+            2022년 4월 18일
+          </Text>
         </View>
         <View>
           <MyChat />
