@@ -29,6 +29,7 @@ import {fontMedium, fontRegular} from '../common/font';
 import Autolink from 'react-native-autolink';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
+import MessageIcon from '../../resources/icon/Message';
 
 interface Props {
   comment?: any;
@@ -134,7 +135,7 @@ const Comment = ({
               setMessageModalVisible(true);
               setComponentModalVisible(messageModalVisible);
             }}>
-            <NoReport style={{marginRight: 14}} />
+            <MessageIcon style={{marginRight: 14, marginTop: 4}} />
           </Pressable>
         </View>
       )}
