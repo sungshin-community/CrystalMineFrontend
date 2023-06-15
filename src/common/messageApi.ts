@@ -5,11 +5,11 @@ const messageClient: AxiosInstance = axios.create({
   baseURL: 'http://34.64.137.61:8787/',
 });
 
+//소켓토큰 아니고 로그인토큰 사용중... api 주소 달라서 분리함.
 messageClient.interceptors.request.use(async (request: any) => {
   const accessToken = await AsyncStorage.getItem('accessToken');
-  const refreshToken = await AsyncStorage.getItem('refreshToken');
   console.log(accessToken);
-  // console.log(refreshToken)
+
   request.headers.Authorization = accessToken ? `Bearer ${accessToken}` : '';
   return request;
 });
@@ -36,6 +36,18 @@ export const getChatRoom = async (page: number) => {
   }
 };
 
+export const postChatRoom = async (data: any) => {
+  try {
+    const response = await messageClient.post<AxiosResponse>(
+      '/chat-room',
+      data,
+    );
+    return response.data;
+  } catch (e: any) {
+    console.error(e);
+    return e.response;
+  }
+};
 // 채팅방 채팅 내역 불러오기
 export const getMessageContent = async (roomId: number, page: number) => {
   try {
@@ -88,4 +100,4 @@ export const postPhotoMessage = async (
     console.log('photo 쪽지 보내기 실패', error.response.data);
     return error.response.data;
   }
-}
+};

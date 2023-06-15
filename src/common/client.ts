@@ -1,9 +1,10 @@
 import axios, {AxiosInstance} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {reissueToken} from './authApi';
+import {getSocketToken} from './messageApi';
 
 const client: AxiosInstance = axios.create({
-  baseURL: 'https://api.crystalmine.kr/',
+  baseURL: 'http://34.64.137.61:8080/',
 });
 
 let isRefreshing = false;
@@ -72,6 +73,12 @@ client.interceptors.response.use(
       client.defaults.headers.common.Authorization = reissuedAccessToken
         ? `Bearer ${reissuedAccessToken}`
         : '';
+      const socketResponse = await getSocketToken();
+      if (socketResponse.status === 'OK') {
+        AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
+      } else {
+        console.error('소켓 토큰 발급 실패!');
+      }
       // onTokenRefreshed(reissuedAccessToken);
       // }
       // const retryOriginalRequest = new Promise((resolve) => {

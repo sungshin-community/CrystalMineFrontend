@@ -118,13 +118,13 @@ const OtherChat = (items: any) => {
     </View>
   );
 };
+
 type RootStackParamList = {
   PostScreen: {postId: number};
 };
-type Props = NativeStackScreenProps<RootStackParamList>;
+type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
-const MessageScreen = ({navigation}: Props) => {
-  // const navigation = useNavigation();
+const MessageScreen = ({navigation}: ScreenProps) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -270,7 +270,7 @@ const MessageScreen = ({navigation}: Props) => {
     if (images && photoPath) {
       response = await postPhotoMessage(roomId, images, photoPath);
     } else {
-      console.log("텍스트 전송")
+      console.log('텍스트 전송');
     }
     if (response.status === 401) {
       setTimeout(function () {
@@ -288,7 +288,7 @@ const MessageScreen = ({navigation}: Props) => {
     }
     setIsLoading(false);
   };
-  
+
   return (
     <>
       {device && showCamera ? (

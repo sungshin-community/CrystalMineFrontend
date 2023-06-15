@@ -1,28 +1,17 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
   View,
-  ScrollView,
-  Dimensions,
   ActivityIndicator,
-  Pressable,
   FlatList,
-  Image,
   RefreshControl,
 } from 'react-native';
-import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
-import {fontBold, fontMedium, fontRegular} from '../../common/font';
-import {PlatformOS} from '../../components/PlatformOS';
+
 import {useIsFocused} from '@react-navigation/native';
-import Svg, {SvgProps, Circle, Path} from 'react-native-svg';
-import {useEffect} from 'react';
 import {getAlerts} from '../../common/alertApi';
-import {useState} from 'react';
-import AlertDto, {Alert} from '../../classes/AlertDto';
-import {ModalBottom} from '../../components/ModalBottom';
+import {Alert} from '../../classes/AlertDto';
 import AlertItem from '../../components/AlertItem';
-import {AlertWorkIcon} from '../../../resources/icon/AlertItemIcon';
 import WaterMark from '../../components/WaterMark';
 
 const AlertFragment = () => {
@@ -61,24 +50,6 @@ const AlertFragment = () => {
     setIsNextPageLoading(false);
   };
 
-  const noticeBody = (
-    <View>
-      <View style={{alignItems: 'center', marginBottom: 25}}>
-        <Image
-          style={{
-            width: 150,
-            height: 150,
-          }}
-          source={require('../../../resources/images/NoComment.png')}
-        />
-      </View>
-      <View>
-        <Text>
-          {`푸시알림 기능은 아직 개발 중입니다.\n추후 기능 개발 후 사용하실 수 있습니다.`}
-        </Text>
-      </View>
-    </View>
-  );
   return (
     <>
       <WaterMark />
@@ -114,36 +85,6 @@ const AlertFragment = () => {
           style={{zIndex: 100}}
         />
       </View>
-      {/* <View
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-          backgroundColor: '#F5F5F5',
-        }}>
-        <AlertWorkIcon />
-        <Pressable
-          style={{marginLeft: 16}}
-          onPress={() => setNoticeModalVisible(true)}>
-          <Text style={[{fontSize: 16, marginBottom: 5}, fontMedium]}>
-            푸시알림 기능은 <Text style={{color: '#A055FF'}}>아직 개발 중</Text>
-            이에요!
-          </Text>
-          <Text
-            ellipsizeMode={'tail'}
-            numberOfLines={2}
-            style={[
-              {
-                fontSize: 14,
-                color: '#878787',
-                width: Dimensions.get('window').width - 100,
-              },
-              fontRegular,
-            ]}>
-            개발이 완료되면 알려드릴게요
-          </Text>
-        </Pressable>
-      </View> */}
 
       {alerts?.length === 0 ? (
         <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -193,29 +134,8 @@ const AlertFragment = () => {
           // onEndReachedThreshold={0.8}
         />
       )}
-      {/* {noticeBody && noticeModalVisible && (
-        <ModalBottom
-          modalVisible={noticeModalVisible}
-          setModalVisible={setNoticeModalVisible}
-          title="게시글 알림 개발 지연 안내"
-          content={noticeBody}
-          isContentCenter={false}
-          purpleButtonText="확인"
-          purpleButtonFunc={() => {
-            setNoticeModalVisible(!noticeModalVisible);
-          }}
-        />
-      )} */}
     </>
   );
 };
 
 export default AlertFragment;
-
-// type RootStackParamList = {
-//   MyPage: undefined;
-//   CertifiedMember: undefined;
-//   ExpiredMember: undefined;
-//   UncertifiedMember: undefined;
-// };
-// type Props = NativeStackScreenProps<RootStackParamList>;
