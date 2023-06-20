@@ -21,8 +21,7 @@ import {fontRegular} from '../../common/font';
 import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
-import {Message} from '../../classes/MessageDto';
-import {useNavigation} from '@react-navigation/native';
+import {Chat, Message} from '../../classes/MessageDto';
 import {getMessageContent, postPhotoMessage} from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
@@ -30,94 +29,7 @@ import Toast from 'react-native-simple-toast';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import DeleteImageIcon from '../../components/ImageDelete';
 import {logout} from '../../common/authApi';
-
-const imgUrlCoverting = (arr: string[]) => {
-  const array = arr.map(url => {
-    return {url: url};
-  });
-  return array;
-};
-const formatTime = (time: string) => {
-  var d = new Date(time);
-  var h = d.getHours() < 12 ? 1 : 0;
-  return h
-    ? '오전 ' + d.getHours() + ':' + d.getMinutes()
-    : '오후 ' + (d.getHours() - 12) + ':' + d.getMinutes();
-};
-const formatDate = (day: string) => {
-  var d = new Date(day);
-  return (
-    d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일'
-  );
-};
-const DateBox = (time: any) => {
-  return (
-    <View style={{alignItems: 'center', marginBottom: 14, marginTop: 20}}>
-      <Text style={{fontSize: 12, fontWeight: '500', color: '#3A424E'}}>
-        {formatDate(time.time)}
-      </Text>
-    </View>
-  );
-};
-const MyChat = (items: any) => {
-  const navigation = useNavigation();
-  var data = items.items;
-  return (
-    <View style={{alignItems: 'flex-end', marginRight: 24, marginBottom: 6}}>
-      <View style={styles.line}>
-        <View style={{alignItems: 'flex-end'}}>
-          <Text style={styles.read}>{data.readAt ? '' : '안읽음'}</Text>
-          <Text style={styles.chatTime}>{formatTime(data.createdAt)}</Text>
-        </View>
-        {data.photoUrl ? (
-          <Pressable
-            onPress={() =>
-              navigation.navigate('ImageViewerScreen', {
-                imageUrls: imgUrlCoverting([data.photoUrl]),
-              })
-            }>
-            <Image
-              source={{uri: data.photoUrl}}
-              style={{width: 140, height: 140, borderRadius: 10}}
-            />
-          </Pressable>
-        ) : (
-          <View style={[styles.chat, {backgroundColor: '#E5D2FC'}]}>
-            <Text>{data.chat}</Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
-};
-const OtherChat = (items: any) => {
-  const navigation = useNavigation();
-  var data = items.items;
-  return (
-    <View style={{alignItems: 'flex-start', marginLeft: 24, marginBottom: 6}}>
-      <View style={styles.line}>
-        {data.photoUrl ? (
-          <Pressable
-            onPress={() =>
-              navigation.navigate('ImageViewerScreen', {
-                imageUrls: imgUrlCoverting([data.photoUrl]),
-              })
-            }>
-            <Image
-              source={{uri: data.photoUrl}}
-              style={{width: 140, height: 140, borderRadius: 10}}
-            />
-          </Pressable>
-        ) : (
-          <View style={[styles.chat, {backgroundColor: '#EFEFF3'}]}>
-            <Text>{data.chat}</Text>
-          </View>
-        )}
-        <Text style={styles.chatTime}>{formatTime(data.createdAt)}</Text>
-      </View>
-    </View>
-  );
-};
+import {DateBox, formatDate, MyChat, OtherChat} from '../../components/Chat';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -140,18 +52,21 @@ const MessageScreen = ({navigation}: ScreenProps) => {
   // 채팅내역 조회 API 반환 데이터
   const [chatData, setChatData] = useState<Message>();
   // 채팅만 뽑아낸 데이터
-  const [chat, setChat] = useState<string[]>();
+  const [chat, setChat] = useState<Chat[]>();
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     // 채팅내용 불러오기
     async function getMessage() {
       const result = await getMessageContent(roomId, 0);
-      // console.log('Message', result);
+      console.log('Message', result.data.chats.content);
       setChatData(result);
       setChat(result.data.chats.content.slice().reverse());
+      // console.log(result.data.chats.content.slice().reverse());
+      // console.log(chat);
     }
     getMessage();
+    console.log('>>', chat);
 
     navigation.setOptions({
       headerTitleAlign: 'center',
@@ -570,28 +485,6 @@ const styles = StyleSheet.create({
     minHeight: 44,
     maxHeight: 230,
     color: '#222222',
-  },
-  chat: {
-    maxWidth: 240,
-    color: '#222222',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-  },
-  line: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  chatTime: {
-    color: '#6E7882',
-    fontSize: 10,
-    paddingHorizontal: 8,
-  },
-  read: {
-    marginRight: 8,
-    marginBottom: 2,
-    color: '#A055FF',
-    fontSize: 10,
   },
   area: {
     position: 'absolute',
