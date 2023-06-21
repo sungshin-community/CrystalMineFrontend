@@ -53,7 +53,9 @@ import {logout} from '../../common/authApi';
 import AdMob from '../../components/AdMob';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
-type RootStackParamList = {};
+type RootStackParamList = {
+  MessageScreen: {roomId: number};
+};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostScreen = ({navigation, route}: Props) => {
