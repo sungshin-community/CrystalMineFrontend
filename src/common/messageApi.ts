@@ -101,3 +101,25 @@ export const postPhotoMessage = async (
     return error.response.data;
   }
 };
+// 쪽지방 나가기
+export const deleteChatRoom = async (roomId: number) => {
+  try {
+    const response = await messageClient.delete<AxiosResponse>(
+      `/chat-room/${roomId}`,
+    );
+    return response.data;
+  } catch (e: any) {
+    return e.response;
+  }
+};
+// 쪽지방 차단
+export const patchBlockChatRoom = async (roomId: number) => {
+  try {
+    const response = await messageClient.delete<AxiosResponse>(
+      `/chat-room/block/${roomId}`,
+    );
+    return response.data;
+  } catch (e: any) {
+    return e.response;
+  }
+};
