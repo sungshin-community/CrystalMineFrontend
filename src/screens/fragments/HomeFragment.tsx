@@ -153,7 +153,7 @@ const HomeFragment = ({navigation}: Props) => {
           'messagePermission',
         );
         const enabled = await messaging().hasPermission();
-        if (messagePermission === null || enabled) {
+        if (messagePermission === null && enabled) {
           await pushTokenLogic();
           if (messagePermission === null) {
             await topicTokenLogic();
