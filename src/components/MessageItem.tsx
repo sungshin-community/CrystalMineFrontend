@@ -15,10 +15,11 @@ import {
 } from '../../resources/icon/CheckBox';
 
 interface Props {
+  navigation: any;
   message: MessageRoom;
   edit: boolean;
 }
-const MessageItem = ({message, edit}: Props) => {
+const MessageItem = ({navigation, message, edit}: Props) => {
   return (
     <>
       <TouchableOpacity
@@ -27,6 +28,9 @@ const MessageItem = ({message, edit}: Props) => {
           paddingVertical: 18,
           paddingHorizontal: 27,
           backgroundColor: message.unreadCount === 0 ? '#FFFFFF' : '#F6F2FF',
+        }}
+        onPress={() => {
+          navigation.navigate('MessageScreen', {roomId: message.roomId});
         }}>
         {edit && (
           <View style={styles.check}>

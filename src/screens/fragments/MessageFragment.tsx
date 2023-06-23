@@ -8,7 +8,8 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StompJs from '@stomp/stompjs';
 import Toast from 'react-native-simple-toast';
@@ -25,9 +26,12 @@ import Hamburger from '../../../resources/icon/Hamburger';
 import DownTriangle from '../../../resources/icon/Triangle';
 import {getChatRoom, getSocketToken} from '../../common/messageApi';
 import {MessageRoom} from '../../classes/MessageDto';
+import {getAuthentication} from '../../common/homeApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+import {logout} from '../../common/authApi';
 
-const TextEncodingPolyfill = require('text-encoding');
-const BigInt = require('big-integer');
+import TextEncodingPolyfill from 'text-encoding';
+import BigInt from 'big-integer';
 
 Object.assign(global, {
   TextEncoder: TextEncodingPolyfill.TextEncoder,
@@ -35,11 +39,16 @@ Object.assign(global, {
   BigInt: BigInt,
 });
 
-const MessageFragment = () => {
+type RootStackParamList = {
+  MessageScreen: {roomId: number};
+};
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+const MessageFragment = ({navigation}: Props) => {
   const isFocused = useIsFocused();
   const messageClient = useRef<any>({});
-  const navigation = useNavigation();
   const [loading, setLoading] = useState<boolean>(true);
+  const [accountId, setAccountId] = useState<number | null>(null);
   const [messageList, setMessageList] = useState<MessageRoom[]>([]); //나중에 type 바꿀 것
   const [messagePage, setMessagePage] = useState<number>(0);
 
@@ -68,62 +77,77 @@ const MessageFragment = () => {
   });
   useEffect(() => {
     async function init() {
-      let socketToken = await AsyncStorage.getItem('socketToken');
+      const response = await getAuthentication();
+      if (response.status === 401) {
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        setAccountId(response.data.data.id);
+        let socketToken = await AsyncStorage.getItem('socketToken');
 
-      if (socketToken === null) {
-        const response = await getSocketToken();
-        console.log(response.status);
-        if (response.status === 'OK') {
-          AsyncStorage.setItem('socketToken', response.data.socketToken);
+        // if (socketToken === null) {
+        const socketResponse = await getSocketToken();
+        //매번 해야되나?? 로그인 시 로그인토큰이 바뀜 -> 소켓토큰도 바뀜... 그냥 로그인 했을 때 같이 처리해줘야되나?
+        if (socketResponse.status === 'OK') {
+          AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
         } else {
           setTimeout(function () {
             Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
           }, 100);
         }
+        // }
+
+        // 소켓 연결
+        console.log('in connect');
+        let wsUrl = encodeURI(
+          'ws://34.64.137.61:8787/ws?roomId=0&accessToken=Bearer ' +
+            socketToken,
+        );
+        messageClient.current = new StompJs.Client({
+          brokerURL: wsUrl,
+          debug: str => console.log('STOMP: ' + str),
+          onConnect: () => {
+            console.log('success');
+            subscribe();
+          },
+          onStompError: (frame: any) => {
+            console.log('Broker reported error: ' + frame.headers['message']);
+            console.log('Additional details: ' + frame.body);
+          },
+          onChangeState: () => {
+            console.log('processing...', messageClient.current.connected);
+          },
+          onDisconnect: () => {
+            console.log('disconnected!');
+          },
+          forceBinaryWSFrames: true,
+          appendMissingNULLonIncoming: true,
+        });
+
+        messageClient.current.activate();
+
+        //채팅방 데이터 받아오기
+        const messageData = await getChatRoom(messagePage);
+        console.log(messageData.data);
+
+        if (messageData.status === 'OK') {
+          setMessageList(messageData.data.content);
+        } else {
+          setTimeout(function () {
+            Toast.show(
+              '메세지 목록을 불러오는 중 오류가 발생했습니다.',
+              Toast.SHORT,
+            );
+          }, 100);
+        }
+        setLoading(false);
       }
-
-      // 소켓 연결
-      console.log('in connect');
-      let wsUrl = encodeURI(
-        'ws://34.64.137.61:8787/ws?roomId=0&accessToken=Bearer ' + socketToken,
-      );
-      messageClient.current = new StompJs.Client({
-        brokerURL: wsUrl,
-        debug: str => console.log('STOMP: ' + str),
-        onConnect: () => {
-          console.log('success');
-          subscribe();
-        },
-        onStompError: (frame: any) => {
-          console.log('Broker reported error: ' + frame.headers['message']);
-          console.log('Additional details: ' + frame.body);
-        },
-        onChangeState: () => {
-          console.log('processing...', messageClient.current.connected);
-        },
-        onDisconnect: () => {
-          console.log('disconnected!');
-        },
-        forceBinaryWSFrames: true,
-        appendMissingNULLonIncoming: true,
-      });
-
-      messageClient.current.activate();
-
-      //채팅방 데이터 받아오기
-      const messageData = await getChatRoom(messagePage);
-
-      if (messageData.status === 'OK') {
-        setMessageList(messageData.data.content);
-      } else {
-        setTimeout(function () {
-          Toast.show(
-            '메세지 목록을 불러오는 중 오류가 발생했습니다.',
-            Toast.SHORT,
-          );
-        }, 100);
-      }
-      setLoading(false);
     }
     console.log('init');
     if (isFocused) {
@@ -134,9 +158,8 @@ const MessageFragment = () => {
   }, [isFocused]);
 
   const subscribe = () => {
-    console.log('/sub/chat/'); //채널구독, api 주소 바뀔예정
     try {
-      messageClient.current.subscribe('/sub/chat', (body: any) => {
+      messageClient.current.subscribe(`/sub/list/${accountId}`, (body: any) => {
         console.log('here');
         console.log('message >>>>>>>>> ', JSON.parse(body.body));
         // console.log('console: ', body); //return messageList
@@ -235,7 +258,9 @@ const MessageFragment = () => {
           <FlatList
             showsVerticalScrollIndicator={false}
             data={messageList}
-            renderItem={({item}) => <MessageItem message={item} edit={edit} />}
+            renderItem={({item}) => (
+              <MessageItem message={item} edit={edit} navigation={navigation} />
+            )}
             ItemSeparatorComponent={() => (
               <View style={{height: 1, backgroundColor: '#F6F6F6'}} />
             )}
@@ -359,3 +384,45 @@ const styles = StyleSheet.create({
   },
 });
 export default MessageFragment;
+
+let data = {
+  content: [
+    {
+      lastChat: 'ooooo',
+      lastChatTime: '6분 전',
+      lastPhoto: null,
+      partnerNickname: '수정',
+      partnerProfile:
+        'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/profileImages/default.png',
+      postBoard: '교육학과',
+      roomId: 21,
+      unreadCount: 3,
+    },
+    {
+      lastChat: 'chat',
+      lastChatTime: '20:18',
+      lastPhoto: null,
+      partnerNickname: '수정',
+      partnerProfile:
+        'https://crystalmine-s3.s3.ap-northeast-2.amazonaws.com/profileImages/default.png',
+      postBoard: '교육학과',
+      roomId: 19,
+      unreadCount: 7,
+    },
+  ],
+  empty: false,
+  first: true,
+  last: true,
+  number: 0,
+  numberOfElements: 2,
+  pageable: {
+    offset: 0,
+    pageNumber: 0,
+    pageSize: 20,
+    paged: true,
+    sort: {empty: false, sorted: true, unsorted: false},
+    unpaged: false,
+  },
+  size: 20,
+  sort: {empty: false, sorted: true, unsorted: false},
+};

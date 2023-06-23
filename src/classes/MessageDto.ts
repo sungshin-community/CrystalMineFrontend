@@ -11,7 +11,7 @@ export interface MessageRoom {
   lastPhoto: string | null;
   lastChatTime: string;
   unreadCount: number;
-  isChecked: boolean;
+  isChecked: boolean | null;
 }
 export interface Chat {
   chatId: number;
