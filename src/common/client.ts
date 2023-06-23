@@ -22,7 +22,7 @@ const addRefreshSubscriber = (callback: any) => {
 client.interceptors.request.use(async (request: any) => {
   const accessToken = await AsyncStorage.getItem('accessToken');
   const refreshToken = await AsyncStorage.getItem('refreshToken');
-  console.log(accessToken);
+  // console.log(accessToken);
   // console.log(refreshToken)
   request.headers.Authorization = accessToken ? `Bearer ${accessToken}` : '';
   return request;
@@ -75,7 +75,11 @@ client.interceptors.response.use(
         : '';
       const socketResponse = await getSocketToken();
       if (socketResponse.status === 'OK') {
-        AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
+        await AsyncStorage.setItem(
+          'socketToken',
+          socketResponse.data.socketToken,
+        );
+        console.log('소켓 토큰 재발급함..');
       } else {
         console.error('소켓 토큰 발급 실패!');
       }

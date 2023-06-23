@@ -14,6 +14,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {View} from 'react-native-animatable';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as StompJs from '@stomp/stompjs';
 import CameraIcon from '../../../resources/icon/CameraIcon';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import ImageIcon from '../../../resources/icon/ImageIcon';
@@ -21,7 +23,8 @@ import {fontRegular} from '../../common/font';
 import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
-import {Chat, Message} from '../../classes/MessageDto';
+import {Message} from '../../classes/MessageDto';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {getMessageContent, postPhotoMessage} from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
@@ -29,14 +32,27 @@ import Toast from 'react-native-simple-toast';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import DeleteImageIcon from '../../components/ImageDelete';
 import {logout} from '../../common/authApi';
-import {DateBox, formatDate, MyChat, OtherChat} from '../../components/Chat';
+import {getAuthentication} from '../../common/homeApi';
+import {getHundredsDigit} from '../../common/util/statusUtil';
+import {OtherChat, MyChat, DateBox} from '../../components/Chat';
+
+import TextEncodingPolyfill from 'text-encoding';
+import BigInt from 'big-integer';
+
+Object.assign(global, {
+  TextEncoder: TextEncodingPolyfill.TextEncoder,
+  TextDecoder: TextEncodingPolyfill.TextDecoder,
+  BigInt: BigInt,
+});
 
 type RootStackParamList = {
   PostScreen: {postId: number};
 };
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
-const MessageScreen = ({navigation}: ScreenProps) => {
+const MessageScreen = ({navigation, route}: ScreenProps) => {
+  const isFocusedPage = useIsFocused();
+  const messagesClient = useRef<any>({});
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,19 +71,91 @@ const MessageScreen = ({navigation}: ScreenProps) => {
   const [chat, setChat] = useState<Chat[]>();
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
-  useEffect(() => {
-    // 채팅내용 불러오기
-    async function getMessage() {
-      const result = await getMessageContent(roomId, 0);
-      console.log('Message', result.data.chats.content);
-      setChatData(result);
-      setChat(result.data.chats.content.slice().reverse());
-      // console.log(result.data.chats.content.slice().reverse());
-      // console.log(chat);
-    }
-    getMessage();
-    console.log('>>', chat);
 
+  useEffect(() => {
+    async function init() {
+      const response = await getAuthentication();
+      if (response.status === 401) {
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        let socketToken = await AsyncStorage.getItem('socketToken');
+
+        //채팅방 데이터 받아오기
+        let getRoomId = route.params?.roomId;
+        const result = await getMessageContent(getRoomId, page);
+        if (result.status === 'OK') {
+          setRoomId(getRoomId);
+          setChatData(result.data);
+          setChat(result.data.chats.content.slice().reverse());
+        } else {
+          setTimeout(function () {
+            Toast.show(
+              '메세지를 불러오는 중 문제가 발생했습니다.',
+              Toast.SHORT,
+            );
+          }, 100);
+        }
+
+        // TODO: 소켓 오류나면 여기를 실행하시오.. 로직은 나중에 같이 고민해봅시다...
+        //  const socketResponse = await getSocketToken();
+        //  if (socketResponse.status === 'OK') {
+        //    AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
+        //  } else {
+        //    setTimeout(function () {
+        //      Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
+        //    }, 100);
+        //  }
+
+        // 소켓 연결
+        console.log('in connect22');
+        let wsUrl = encodeURI(
+          'ws://34.64.137.61:8787/ws?roomId=' +
+            roomId +
+            '&accessToken=Bearer ' +
+            socketToken,
+        );
+        messagesClient.current = new StompJs.Client({
+          brokerURL: wsUrl,
+          debug: str => console.log('STOMP: ' + str),
+          onConnect: () => {
+            console.log('success22');
+            subscribe(getRoomId);
+          },
+          onStompError: (frame: any) => {
+            console.log('Broker reported error: ' + frame.headers['messages!']);
+            console.log('Additional details: ' + frame.body);
+          },
+          onChangeState: () => {
+            console.log('processing...22', messagesClient.current.connected);
+          },
+          onDisconnect: () => {
+            console.log('disconnected!22');
+            messagesClient.current.unsubscribe();
+          },
+          forceBinaryWSFrames: true,
+          appendMissingNULLonIncoming: true,
+        });
+
+        messagesClient.current.activate();
+
+        setIsLoading(false);
+      }
+    }
+    console.log('init22');
+
+    init();
+
+    return () => messagesClient.current.deactivate();
+  }, [isFocusedPage]);
+
+  useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
@@ -80,7 +168,38 @@ const MessageScreen = ({navigation}: ScreenProps) => {
       ),
       headerTitle: () => <HeaderTitle />,
     });
-  }, [menu, navigation, roomId]);
+  }, [chat]);
+
+  const subscribe = (getRoomId: number) => {
+    try {
+      const room = getRoomId ? getRoomId : roomId;
+      messagesClient.current.subscribe(`/sub/chat/${room}`, (body: any) => {
+        const response = JSON.parse(body.body);
+        console.log('message >>>>>>>>> ', JSON.parse(body.body));
+        setChat(_chat => [response, ..._chat]);
+      });
+    } catch (error) {
+      console.log('erererer');
+      console.error(error);
+    }
+  };
+
+  const publish = (textChat: string) => {
+    console.log('/pub/chat');
+    if (!messagesClient.current.connected) return;
+
+    messagesClient.current.publish({
+      destination: '/pub/chat',
+      body: JSON.stringify({
+        roomId: roomId,
+        chat: textChat,
+        photoURL: null,
+      }),
+    });
+
+    setText('');
+  };
+
   // 다음 페이지 채팅 내역 불러오기
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
@@ -93,12 +212,13 @@ const MessageScreen = ({navigation}: ScreenProps) => {
     // console.log(chat);
     setIsNextPageLoading(false);
   };
+
   // 헤더
   const HeaderTitle = () => {
     return (
       <View style={{flexDirection: 'row'}}>
         <Text style={[{fontSize: 20}]} numberOfLines={1}>
-          {chatData && chatData.data.partnerNickname}
+          {chatData ? chatData.partnerNickname : ''}
         </Text>
       </View>
     );
@@ -185,22 +305,24 @@ const MessageScreen = ({navigation}: ScreenProps) => {
     if (images && photoPath) {
       response = await postPhotoMessage(roomId, images, photoPath);
     } else {
+      publish(text);
       console.log('텍스트 전송');
     }
-    if (response.status === 401) {
-      setTimeout(function () {
-        Toast.show(
-          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-          Toast.SHORT,
-        );
-      }, 100);
-      logout();
-      navigation.reset({routes: [{name: 'SplashHome'}]});
-    } else {
-      setTimeout(function () {
-        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-      }, 100);
-    }
+    // 오류처리 if문 안으로 옮겨놔야되지 않나? textonly는 소켓만 사용하닊가.. 아님말구..
+    // if (response.status === 401) {
+    //   setTimeout(function () {
+    //     Toast.show(
+    //       '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+    //       Toast.SHORT,
+    //     );
+    //   }, 100);
+    //   logout();
+    //   navigation.reset({routes: [{name: 'SplashHome'}]});
+    // } else {
+    //   setTimeout(function () {
+    //     Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+    //   }, 100);
+    // }
     setIsLoading(false);
   };
 
@@ -254,16 +376,16 @@ const MessageScreen = ({navigation}: ScreenProps) => {
           <TouchableOpacity
             onPress={async () => {
               navigation.push('PostScreen', {
-                postId: chatData.data.postId,
+                postId: chatData.postId,
               });
             }}
             style={styles.post}>
-            <Text style={styles.postTitle}>{chatData.data.postBoardName}</Text>
+            <Text style={styles.postTitle}>{chatData.postBoardName}</Text>
             <Text
               ellipsizeMode={'tail'}
               numberOfLines={1}
               style={styles.postContent}>
-              {chatData.data.postContent}
+              {chatData.postContent}
             </Text>
 
             <LeftArrow style={{marginTop: 2}} />
@@ -291,6 +413,7 @@ const MessageScreen = ({navigation}: ScreenProps) => {
                 }
               }
               return (
+                // TODO: 나중에 여기 수정해야될 듯 해요(고정데이터)
                 <View key={index}>
                   {displayDate ? <DateBox time={item.createdAt} /> : null}
                   {item.senderId === 15 ? (
@@ -302,7 +425,9 @@ const MessageScreen = ({navigation}: ScreenProps) => {
               );
             }}
             inverted={true}
-            onEndReached={() => fetchNextPage()}
+            //TODO: 여기 (스크롤이 생기지 않을 만큼)메세지가 몇개 없을 때
+            //      데이터 패치를 무한으로 해와서 무한로딩 걸려서 주석처리 해놨읍니다.. 수정할 방법 찾아야될듯?
+            // onEndReached={() => fetchNextPage()}
           />
 
           <View

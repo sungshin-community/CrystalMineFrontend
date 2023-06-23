@@ -91,16 +91,22 @@ function Post({
 
   const handlePostMessage = async (isAnonymous: boolean) => {
     let messageData = {
-      partnerId: 15,
+      partnerId: data.accountId,
       postId: post.postId,
       isAnonymous: isAnonymous,
     };
 
-    // const response = await postChatRoom(messageData);
-    // if (response.data === 'OK') {
-    navigation.navigate('MessageScreen', {roomId: 4});
-    // navigation.navigate('MessageScreen', {roomId: response.data.roomId});
-    // }
+    const response = await postChatRoom(messageData);
+    if (response.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    } else {
+      setTimeout(function () {
+        Toast.show(
+          '쪽지방을 만들던 중 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.',
+          Toast.SHORT,
+        );
+      }, 100);
+    }
     setMessageModalVisible(false);
   };
 
