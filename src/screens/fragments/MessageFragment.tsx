@@ -24,8 +24,12 @@ import {ModalBottom} from '../../components/ModalBottom';
 import CheckEdit from '../../../resources/icon/CheckEdit';
 import Hamburger from '../../../resources/icon/Hamburger';
 import DownTriangle from '../../../resources/icon/Triangle';
-import {getChatRoom, getSocketToken} from '../../common/messageApi';
-import {MessageRoom} from '../../classes/MessageDto';
+import {
+  getChatRoom,
+  getMessageContent,
+  getSocketToken,
+} from '../../common/messageApi';
+import {MessageRoom, MessageDto} from '../../classes/MessageDto';
 import {getAuthentication} from '../../common/homeApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
@@ -49,7 +53,7 @@ const MessageFragment = ({navigation}: Props) => {
   const messageClient = useRef<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [accountId, setAccountId] = useState<number | null>(null);
-  const [messageList, setMessageList] = useState<MessageRoom[]>([]); //나중에 type 바꿀 것
+  const [messageList, setMessageList] = useState<MessageDto>([]); //나중에 type 바꿀 것
   const [messagePage, setMessagePage] = useState<number>(0);
 
   const [setting, setSetting] = useState<boolean>(false);
@@ -152,6 +156,9 @@ const MessageFragment = ({navigation}: Props) => {
     console.log('init');
     if (isFocused) {
       init();
+      setEdit(false);
+      setSort(false);
+      setSetting(false);
     }
 
     return () => messageClient.current.deactivate();
@@ -181,6 +188,39 @@ const MessageFragment = ({navigation}: Props) => {
     setSetting(false);
   };
 
+  const moveToList = (message: MessageRoom) => {
+    const tempList = messageList.map(m =>
+      m.roomId === message.roomId ? {...m, isChecked: !m.isChecked} : m,
+    );
+    const isAllChecked = tempList.filter(c => !c.isChecked).length === 0;
+    setIsCheckedAll(isAllChecked);
+    setMessageList(tempList);
+  };
+
+  const initList = (isChecked: boolean) => {
+    const tempList = messageList.map((m: MessageRoom) => ({
+      ...m,
+      isChecked: isChecked,
+    }));
+    setMessageList(tempList);
+    setIsCheckedAll(isChecked);
+  };
+
+  // 쪽지방 읽음처리
+  const readMsgRoom = () => {
+    // const tempList = messageList.filter(
+    //   (m: MessageRoom) => m.isChecked === true,
+    // );
+    // tempList.map(async (msgRoom: MessageRoom) => {
+    //   const response = await getMessageContent(msgRoom.roomId, 0);
+    //   // TODO: 확인해보기..
+    //   // console.log(response.data);
+    // });
+    setReadModalVisible(false);
+    setEdit(false);
+    initList(false);
+  };
+
   return (
     <>
       <View
@@ -201,7 +241,7 @@ const MessageFragment = ({navigation}: Props) => {
         />
       </View>
       <WaterMark />
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         {edit && (
           <View
             style={{backgroundColor: '#FFFFFF', height: 45, paddingTop: 15}}>
@@ -209,7 +249,7 @@ const MessageFragment = ({navigation}: Props) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TouchableOpacity
                 onPress={() => {
-                  setIsCheckedAll(!isCheckedAll);
+                  initList(!isCheckedAll);
                 }}
                 style={styles.check}>
                 {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
@@ -259,7 +299,15 @@ const MessageFragment = ({navigation}: Props) => {
             showsVerticalScrollIndicator={false}
             data={messageList}
             renderItem={({item}) => (
-              <MessageItem message={item} edit={edit} navigation={navigation} />
+              <MessageItem
+                message={item}
+                edit={edit}
+                navigation={navigation}
+                isCheckedAll={isCheckedAll}
+                onPressCheck={(message: MessageRoom) => {
+                  moveToList(message);
+                }}
+              />
             )}
             ItemSeparatorComponent={() => (
               <View style={{height: 1, backgroundColor: '#F6F6F6'}} />
@@ -329,7 +377,7 @@ const MessageFragment = ({navigation}: Props) => {
             purpleButtonText="읽음"
             whiteButtonText="취소"
             purpleButtonFunc={() => {
-              console.log('READ OK');
+              readMsgRoom();
             }}
             whiteButtonFunc={() => {
               setReadModalVisible(false);

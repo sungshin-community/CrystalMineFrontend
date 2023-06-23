@@ -17,7 +17,7 @@ export class AgreementWithDate {
   content: string = '';
 }
 export interface AgreementAll {
-  direction: Agreement,
-  agreement: Agreement,
-  policy: Agreement,
+  direction: Agreement;
+  agreement: Agreement;
+  policy: Agreement;
 }

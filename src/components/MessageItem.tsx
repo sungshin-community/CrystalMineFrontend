@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Pressable,
   Dimensions,
   Image,
   StyleSheet,
@@ -18,8 +19,16 @@ interface Props {
   navigation: any;
   message: MessageRoom;
   edit: boolean;
+  isCheckedAll: boolean;
+  onPressCheck: (message: MessageRoom) => void;
 }
-const MessageItem = ({navigation, message, edit}: Props) => {
+const MessageItem = ({
+  navigation,
+  message,
+  edit,
+  isCheckedAll,
+  onPressCheck,
+}: Props) => {
   return (
     <>
       <TouchableOpacity
@@ -33,9 +42,16 @@ const MessageItem = ({navigation, message, edit}: Props) => {
           navigation.navigate('MessageScreen', {roomId: message.roomId});
         }}>
         {edit && (
-          <View style={styles.check}>
-            {message.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
-          </View>
+          <Pressable
+            style={styles.check}
+            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+            onPress={() => onPressCheck(message)}>
+            {message.isChecked || isCheckedAll ? (
+              <RectangleChecked />
+            ) : (
+              <RectangleUnchecked />
+            )}
+          </Pressable>
         )}
         <View>
           {/* <ProfileImage /> */}
