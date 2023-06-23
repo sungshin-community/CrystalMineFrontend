@@ -34,7 +34,7 @@ import DeleteImageIcon from '../../components/ImageDelete';
 import {logout} from '../../common/authApi';
 import {getAuthentication} from '../../common/homeApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
-import {OtherChat, MyChat, DateBox} from '../../components/Chat';
+import {OtherChat, MyChat, DateBox, formatDate} from '../../components/Chat';
 
 import TextEncodingPolyfill from 'text-encoding';
 import BigInt from 'big-integer';
@@ -428,6 +428,9 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
             //TODO: 여기 (스크롤이 생기지 않을 만큼)메세지가 몇개 없을 때
             //      데이터 패치를 무한으로 해와서 무한로딩 걸려서 주석처리 해놨읍니다.. 수정할 방법 찾아야될듯?
             // onEndReached={() => fetchNextPage()}
+            initialNumToRender={20} // 기본적으로 렌더링할 아이템 개수를 지정
+            maxToRenderPerBatch={10} // 각 배치에서 렌더링할 최대 아이템 개수를 지정
+            windowSize={15}
           />
 
           <View
