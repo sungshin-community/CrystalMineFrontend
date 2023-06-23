@@ -302,8 +302,10 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const onSubmitPress = async () => {
     setIsLoading(true);
     let response;
-    if (images && photoPath) {
+    if (images || photoPath) {
+      console.log('image', images, photoPath);
       response = await postPhotoMessage(roomId, images, photoPath);
+      DeleteImage();
     } else {
       publish(text);
       console.log('텍스트 전송');
