@@ -323,7 +323,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       response = await postPhotoMessage(roomId, images, photoPath);
       DeleteImage();
     } else {
-      publish(text);
+      if (text.length !== 0) publish(text);
       console.log('텍스트 전송');
     }
     // 오류처리 if문 안으로 옮겨놔야되지 않나? textonly는 소켓만 사용하닊가.. 아님말구..
