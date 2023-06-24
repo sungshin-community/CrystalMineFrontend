@@ -24,8 +24,13 @@ import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
 import {Message} from '../../classes/MessageDto';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {getMessageContent, postPhotoMessage} from '../../common/messageApi';
+import {CommonActions, useIsFocused} from '@react-navigation/native';
+import {
+  deleteChatRoom,
+  getMessageContent,
+  patchBlockChatRoom,
+  postPhotoMessage,
+} from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
@@ -351,6 +356,23 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       return 0;
     }
   }
+  const deleteHandler = async () => {
+    try {
+      deleteChatRoom(roomId);
+      navigation.dispatch(CommonActions.goBack());
+    } catch (error) {
+      console.error('Failed to leave chat room:', error);
+    }
+  };
+
+  const blockHandler = async () => {
+    try {
+      patchBlockChatRoom(roomId);
+      navigation.dispatch(CommonActions.goBack());
+    } catch (error) {
+      console.error('Failed to leave chat room:', error);
+    }
+  };
   return (
     <>
       {device && showCamera ? (
@@ -568,11 +590,13 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               setModalVisible={setMenu}
               content="쪽지메뉴"
               purpleButtonText="사용자 차단"
-              purpleButtonText2="신고하기"
-              purpleButtonText3="채팅방 나가기"
+              purpleButtonText2="채팅방 나가기"
               whiteButtonText="취소"
               purpleButtonFunc={() => {
-                console.log('READ OK');
+                blockHandler();
+              }}
+              purpleButtonFunc2={() => {
+                deleteHandler();
               }}
               whiteButtonFunc={() => {
                 setMenu(false);

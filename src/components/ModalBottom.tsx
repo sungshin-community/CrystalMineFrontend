@@ -20,8 +20,6 @@ interface Props {
   purpleButtonFunc: any;
   purpleButtonText2?: string;
   purpleButtonFunc2?: any;
-  purpleButtonText3?: string;
-  purpleButtonFunc3?: any;
   whiteButtonText?: string;
   whiteButtonFunc?: any;
   setDim?: boolean;
@@ -37,8 +35,6 @@ export const ModalBottom = ({
   purpleButtonFunc,
   purpleButtonText2,
   purpleButtonFunc2,
-  purpleButtonText3,
-  purpleButtonFunc3,
   whiteButtonText,
   whiteButtonFunc,
   setDim = true,
@@ -110,17 +106,6 @@ export const ModalBottom = ({
                   ]}
                   onPress={() => purpleButtonFunc2()}>
                   <Text style={styles.textStyle}>{purpleButtonText2}</Text>
-                </TouchableOpacity>
-              )}
-              {purpleButtonText3 && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc3()}>
-                  <Text style={styles.textStyle}>{purpleButtonText3}</Text>
                 </TouchableOpacity>
               )}
               {whiteButtonText && (
