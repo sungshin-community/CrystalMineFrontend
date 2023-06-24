@@ -406,14 +406,14 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           <FlatList
             data={chat}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               let displayDate = true;
 
-              if (index !== 0) {
-                const prevChat = chat[index - 1].createdAt;
-                const currentDate = item.createdAt;
+              if (index !== chat.length - 1) {
+                const currentChat = chat[index].createdAt;
+                const nextChat = chat[index + 1].createdAt;
 
-                if (formatDate(currentDate) === formatDate(prevChat)) {
+                if (formatDate(currentChat) === formatDate(nextChat)) {
                   displayDate = false;
                 }
               }
@@ -421,7 +421,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               return (
                 // TODO: 나중에 여기 수정해야될 듯 해요(고정데이터)
                 <View key={index}>
-                  {displayDate && <DateBox time={item.createdAt} />}
+                  {displayDate ? <DateBox time={item.createdAt} /> : null}
                   {item.senderId === 15 ? (
                     <MyChat items={item} />
                   ) : (
