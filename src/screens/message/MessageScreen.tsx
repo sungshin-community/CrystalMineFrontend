@@ -72,6 +72,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const [chat, setChat] = useState<Chat[]>();
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
+  const [hasMoreData, setHasMoreData] = useState<boolean>(false);
 
   useEffect(() => {
     async function init() {
@@ -204,15 +205,26 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
 
   // 다음 페이지 채팅 내역 불러오기
   const fetchNextPage = async () => {
+    console.log(isNextPageLoading);
+    if (isNextPageLoading || !hasMoreData) return;
     setIsNextPageLoading(true);
-    let thisPageMessage: any = await getMessageContent(roomId, page + 1);
-    if (thisPageMessage.data.chats.content.length > 0) {
-      setPage(page + 1);
-      const updatedChat = [...chat, ...thisPageMessage.data.chats.content];
-      setChat(updatedChat);
+    try {
+      let thisPageMessage: any = await getMessageContent(roomId, page + 1);
+      // 무한로딩 오류 처리
+      if (thisPageMessage.data.chats.content.length === 0) {
+        setHasMoreData(false);
+        return;
+      }
+      if (thisPageMessage.data.chats.content.length > 0) {
+        setPage(page + 1);
+        const updatedChat = [...chat, ...thisPageMessage.data.chats.content];
+        setChat(updatedChat);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsNextPageLoading(false);
     }
-    // console.log(chat);
-    setIsNextPageLoading(false);
   };
 
   // 헤더
@@ -339,7 +351,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       return 0;
     }
   }
-  console.log(chat, '?');
   return (
     <>
       {device && showCamera ? (
@@ -442,11 +453,9 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               );
             }}
             inverted={true}
-            //TODO: 여기 (스크롤이 생기지 않을 만큼)메세지가 몇개 없을 때
-            //      데이터 패치를 무한으로 해와서 무한로딩 걸려서 주석처리 해놨읍니다.. 수정할 방법 찾아야될듯?
-            // onEndReached={() => fetchNextPage()}
-            initialNumToRender={20} // 기본적으로 렌더링할 아이템 개수를 지정
-            maxToRenderPerBatch={10} // 각 배치에서 렌더링할 최대 아이템 개수를 지정
+            onEndReached={() => fetchNextPage()}
+            initialNumToRender={20}
+            maxToRenderPerBatch={10}
             windowSize={15}
           />
 
