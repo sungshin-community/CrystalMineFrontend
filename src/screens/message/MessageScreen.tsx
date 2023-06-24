@@ -391,7 +391,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       console.error('Failed to leave chat room:', error);
     }
   };
-  console.log(chat);
   return (
     <>
       {device && showCamera ? (
@@ -573,12 +572,19 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                   </View>
                 ) : (
                   <TextInput
-                    placeholder="메시지를 입력해 주세요."
+                    placeholder={
+                      !chatData.isBlocked
+                        ? '메시지를 입력해 주세요.'
+                        : chatData.isBlockerUser
+                        ? '차단한 상대방에게는 쪽지를 보낼 수 없습니다.'
+                        : '상대방에게 차단 당하여 더이상 쪽지를 보낼 수 없습니다.'
+                    }
                     placeholderTextColor="#87919B"
                     multiline={true}
                     maxLength={500}
                     style={[fontRegular, styles.input]}
                     value={text}
+                    editable={chatData.isBlocked ? false : true}
                     onChangeText={setText}
                     onFocus={(e: any) => {
                       onInputFocus();
@@ -598,7 +604,10 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                         paddingBottom: Platform.OS === 'ios' ? 3 : 5,
                         bottom: 0,
                       }}>
-                      <CommentSendIcon width={28} />
+                      <CommentSendIcon
+                        width={28}
+                        fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
+                      />
                     </Pressable>
                   </Text>
                 </View>

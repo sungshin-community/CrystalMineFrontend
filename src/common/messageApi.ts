@@ -115,7 +115,7 @@ export const deleteChatRoom = async (roomId: number) => {
 // 쪽지방 차단
 export const patchBlockChatRoom = async (roomId: number) => {
   try {
-    const response = await messageClient.delete<AxiosResponse>(
+    const response = await messageClient.patch<AxiosResponse>(
       `/chat-room/block/${roomId}`,
     );
     return response.data;
