@@ -413,6 +413,7 @@ const PostScreen = ({navigation, route}: Props) => {
               renderItem={({item, index}) => (
                 <View key={index}>
                   <Comment
+                    navigation={navigation}
                     comment={item}
                     setParentId={setParentId}
                     handleCommentLike={handleCommentLike}
@@ -428,6 +429,7 @@ const PostScreen = ({navigation, route}: Props) => {
                     item.recomments.map((recomment, index) => (
                       <Recomment
                         key={index}
+                        navigation={navigation}
                         recomment={recomment}
                         handleCommentLike={handleCommentLike}
                         handleCommentDelete={handleCommentDelete}
@@ -435,7 +437,6 @@ const PostScreen = ({navigation, route}: Props) => {
                         componentModalVisible={componentModalVisible}
                         setComponentModalVisible={setComponentModalVisible}
                       />
-                      //recomment 데이터 생긴 후 확인 필요
                     ))}
                 </View>
               )}
@@ -443,31 +444,6 @@ const PostScreen = ({navigation, route}: Props) => {
                 <View style={{height: 1, backgroundColor: '#F0F0F0'}}></View>
               )}
             />
-            {/* {comments?.map((comment, index) => (
-              <View key={index}>
-                <Comment
-                  comment={comment}
-                  setParentId={setParentId}
-                  handleCommentLike={handleCommentLike}
-                  isRecomment={isRecomment}
-                  setIsRecomment={setIsRecomment}
-                  handleCommentDelete={handleCommentDelete}
-                  handleCommentReport={handleCommentReport}
-                  handleFocus={focusCommentInput}
-                />
-                {comment.recomments &&
-                  comment.recomments.map((recomment, index) => (
-                    <Recomment
-                      key={index}
-                      recomment={recomment}
-                      handleCommentLike={handleCommentLike}
-                      handleCommentDelete={handleCommentDelete}
-                      handleCommentReport={handleCommentReport}
-                    />
-                    //recomment 데이터 생긴 후 확인 필요
-                  ))}
-              </View>
-            ))} */}
           </View>
         </ScrollView>
         <View

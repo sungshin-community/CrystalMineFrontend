@@ -1,19 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Animated,
-  TouchableWithoutFeedback,
-  Pressable,
-  Image,
-} from 'react-native';
+import {Text, View, StyleSheet, Animated, Pressable, Image} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import ProfileImage from '../../resources/icon/ProfileImage';
-import EmptyComment from '../../resources/icon/EmptyComment';
-import EmptyHeart from '../../resources/icon/EmptyHeart';
-import ThreeDots from './ThreeDots';
-import Dots from '../../resources/icon/Dots';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
@@ -30,6 +17,7 @@ import Autolink from 'react-native-autolink';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import MessageIcon from '../../resources/icon/Message';
+import {postChatRoom} from '../common/messageApi';
 
 interface Props {
   comment?: any;
@@ -44,6 +32,7 @@ interface Props {
   setComponentModalVisible?: any;
 }
 const Comment = ({
+  navigation,
   comment,
   setParentId,
   handleCommentLike,
@@ -59,10 +48,34 @@ const Comment = ({
   const data: CommentDto = comment;
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
-  const [messageModalVisible, setMessageModalVisible] = useState<boolean>(false);
+  const [messageModalVisible, setMessageModalVisible] =
+    useState<boolean>(false);
+
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
+
+  const handlePostMessage = async (isAnonymous: boolean) => {
+    let messageData = {
+      partnerId: data.accountId,
+      postId: data.postId,
+      isAnonymous: isAnonymous,
+    };
+
+    const response = await postChatRoom(messageData);
+    if (response.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    } else {
+      setTimeout(function () {
+        Toast.show(
+          '쪽지방을 만들던 중 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.',
+          Toast.SHORT,
+        );
+      }, 100);
+    }
+    setMessageModalVisible(false);
+  };
+
   const handleCommentDeleteComponent = (
     <>
       <ModalBottom
@@ -110,7 +123,7 @@ const Comment = ({
         modalVisible={messageModalVisible}
         setModalVisible={setMessageModalVisible}
         purpleButtonText="확인"
-        purpleButtonFunc={() => setMessageModalVisible(false)}
+        purpleButtonFunc={handlePostMessage}
         setDim={false}
       />
       {data?.isReported ? (
@@ -236,7 +249,9 @@ const Comment = ({
                   }}>
                   {data.isLiked ? <PostLike /> : <PostUnlike />}
                 </Pressable>
-                <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
+                <Text style={[fontRegular, styles.postLike]}>
+                  {data?.likeCount}
+                </Text>
                 <Pressable
                   hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
                   onPress={() => {
@@ -276,6 +291,7 @@ const styles = StyleSheet.create({
 });
 
 interface RecommentProps {
+  navigation: any;
   recomment?: any;
   handleCommentLike?: any;
   handleCommentDelete: any;
@@ -285,6 +301,7 @@ interface RecommentProps {
 }
 
 export const Recomment = ({
+  navigation,
   recomment,
   handleCommentLike,
   handleCommentDelete,
@@ -296,7 +313,32 @@ export const Recomment = ({
   const [isLiked, setIsLiked] = useState<boolean>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const [messageModalVisible, setMessageModalVisible] =
+    useState<boolean>(false);
+
   const data: RecommentDto = recomment;
+
+  const handlePostMessage = async (isAnonymous: boolean) => {
+    let messageData = {
+      partnerId: data.accountId,
+      postId: data.postId,
+      isAnonymous: isAnonymous,
+    };
+
+    const response = await postChatRoom(messageData);
+    if (response.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    } else {
+      setTimeout(function () {
+        Toast.show(
+          '쪽지방을 만들던 중 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.',
+          Toast.SHORT,
+        );
+      }, 100);
+    }
+    setMessageModalVisible(false);
+  };
+
   const handleCommentDeleteComponent = (
     <>
       {modalVisible && (
@@ -331,19 +373,24 @@ export const Recomment = ({
   );
   const handleCommentReportComponent = (
     <>
-      {reportModalVisible && (
-        <SelectModalBottom
-          modalVisible={reportModalVisible}
-          setModalVisible={setReportModalVisible}
-          title={`댓글 신고`}
-          purpleButtonText="신고하기"
-          reportId={data.id}
-          reportFunc={handleCommentReport}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setReportModalVisible(false)}
-          setDim={false}
-        />
-      )}
+      <SelectModalBottom
+        modalVisible={reportModalVisible}
+        setModalVisible={setReportModalVisible}
+        title={`댓글 신고`}
+        purpleButtonText="신고하기"
+        reportId={data.id}
+        reportFunc={handleCommentReport}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setReportModalVisible(false)}
+        setDim={false}
+      />
+      <MessageModalBottom
+        modalVisible={messageModalVisible}
+        setModalVisible={setMessageModalVisible}
+        purpleButtonText="확인"
+        purpleButtonFunc={handlePostMessage}
+        setDim={false}
+      />
       {data?.isReported ? (
         <Pressable
           onPress={() => {
@@ -352,13 +399,22 @@ export const Recomment = ({
           <Report style={{marginRight: 14}} />
         </Pressable>
       ) : (
-        <Pressable
-          onPress={() => {
-            setReportModalVisible(true);
-            setComponentModalVisible(reportModalVisible);
-          }}>
-          <NoReport style={{marginRight: 14}} />
-        </Pressable>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Pressable
+            onPress={() => {
+              setReportModalVisible(true);
+              setComponentModalVisible(reportModalVisible);
+            }}>
+            <NoReport style={{marginRight: 14}} />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              setMessageModalVisible(true);
+              setComponentModalVisible(messageModalVisible);
+            }}>
+            <MessageIcon style={{marginRight: 14, marginTop: 4}} />
+          </Pressable>
+        </View>
       )}
     </>
   );
@@ -455,7 +511,9 @@ export const Recomment = ({
                     onPress={() => handleCommentLike(data.id)}>
                     {data.isLiked ? <PostLike /> : <PostUnlike />}
                   </Pressable>
-                  <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
+                  <Text style={[fontRegular, styles.postLike]}>
+                    {data?.likeCount}
+                  </Text>
                 </View>
                 <View>
                   <Text style={[fontRegular, {color: '#949494', fontSize: 13}]}>

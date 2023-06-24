@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Pressable,
   Dimensions,
   Image,
   StyleSheet,
@@ -15,10 +16,19 @@ import {
 } from '../../resources/icon/CheckBox';
 
 interface Props {
+  navigation: any;
   message: MessageRoom;
   edit: boolean;
+  isCheckedAll: boolean;
+  onPressCheck: (message: MessageRoom) => void;
 }
-const MessageItem = ({message, edit}: Props) => {
+const MessageItem = ({
+  navigation,
+  message,
+  edit,
+  isCheckedAll,
+  onPressCheck,
+}: Props) => {
   return (
     <>
       <TouchableOpacity
@@ -27,11 +37,21 @@ const MessageItem = ({message, edit}: Props) => {
           paddingVertical: 18,
           paddingHorizontal: 27,
           backgroundColor: message.unreadCount === 0 ? '#FFFFFF' : '#F6F2FF',
+        }}
+        onPress={() => {
+          navigation.navigate('MessageScreen', {roomId: message.roomId});
         }}>
         {edit && (
-          <View style={styles.check}>
-            {message.isChecked ? <RectangleChecked /> : <RectangleUnchecked />}
-          </View>
+          <Pressable
+            style={styles.check}
+            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+            onPress={() => onPressCheck(message)}>
+            {message.isChecked || isCheckedAll ? (
+              <RectangleChecked />
+            ) : (
+              <RectangleUnchecked />
+            )}
+          </Pressable>
         )}
         <View>
           {/* <ProfileImage /> */}

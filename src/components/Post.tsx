@@ -44,6 +44,7 @@ import {logout} from '../common/authApi';
 import {postChatRoom} from '../common/messageApi';
 import MessageIcon from '../../resources/icon/Message';
 interface Props {
+  navigation: any;
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
@@ -54,6 +55,7 @@ interface Props {
 }
 
 function Post({
+  navigation,
   post,
   handlePostLike,
   handlePostScrap,
@@ -61,7 +63,6 @@ function Post({
   handlePostReport,
   setComponentModalVisible,
 }: Props) {
-  const navigation = useNavigation();
   const data: PostDto = post;
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);

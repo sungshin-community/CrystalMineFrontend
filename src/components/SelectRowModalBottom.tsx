@@ -1,5 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Modal,
   StyleSheet,
@@ -9,9 +8,15 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
+import {useNavigation} from '@react-navigation/native';
+
 import RadioButtonUnChecked, {
   RadioButtonChecked,
 } from '../../resources/icon/RadioButton';
+import {getAuthentication} from '../common/homeApi';
+import {getHundredsDigit} from '../common/util/statusUtil';
+import {logout} from '../common/authApi';
 
 interface Props {
   modalVisible: boolean;
@@ -31,8 +36,28 @@ export const MessageModalBottom = ({
   setDim = true,
   setDisableClose = false,
 }: Props) => {
-  const [isAnonymous, setIsAnonymos] = useState<boolean>(true);
   const navigation = useNavigation();
+  const [isAnonymous, setIsAnonymos] = useState<boolean>(true);
+  const [nickname, setNickname] = useState<string>('');
+
+  useEffect(() => {
+    async function init() {
+      const response = await getAuthentication();
+      if (response.status === 401) {
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(response.status) === 2) {
+        setNickname(response.data.data.nickname);
+      }
+    }
+    init();
+  });
   return (
     <>
       {setDim && modalVisible ? (
@@ -106,7 +131,7 @@ export const MessageModalBottom = ({
                     ) : (
                       <RadioButtonUnChecked style={{marginRight: 10}} />
                     )}
-                    <Text>닉네임(??)</Text>
+                    <Text>닉네임({nickname})</Text>
                   </Pressable>
                 </View>
               </View>

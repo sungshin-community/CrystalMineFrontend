@@ -2,16 +2,16 @@ export default interface MessageDto {
   content: MessageRoom[];
 }
 
-export interface MessageRoom {
-  roomId: number;
-  partnerProfile: string;
-  partnerNickname: string;
-  postBoard: string;
-  lastChat: string;
-  lastPhoto: string | null;
-  lastChatTime: string;
-  unreadCount: number;
-  isChecked: boolean;
+export class MessageRoom {
+  roomId: number = 0;
+  partnerProfile: string = '';
+  partnerNickname: string = '';
+  postBoard: string = '';
+  lastChat: string = '';
+  lastPhoto: string | null = null;
+  lastChatTime: string = '';
+  unreadCount: number = 0;
+  isChecked: boolean = false;
 }
 export interface Chat {
   chatId: number;

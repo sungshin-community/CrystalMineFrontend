@@ -144,7 +144,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           },
           onDisconnect: () => {
             console.log('disconnected!22');
-            messagesClient.current.unsubscribe();
           },
           forceBinaryWSFrames: true,
           appendMissingNULLonIncoming: true,
