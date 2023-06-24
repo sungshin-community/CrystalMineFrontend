@@ -302,7 +302,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const onSubmitPress = async () => {
     setIsLoading(true);
     let response;
-    if (images || photoPath) {
+    if (images.length !== 0 || photoPath !== null) {
       console.log('image', images, photoPath);
       response = await postPhotoMessage(roomId, images, photoPath);
       DeleteImage();
@@ -408,16 +408,20 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => {
               let displayDate = true;
+
               if (index !== 0) {
                 const prevChat = chat[index - 1].createdAt;
-                if (formatDate(item.createdAt) === formatDate(prevChat)) {
+                const currentDate = item.createdAt;
+
+                if (formatDate(currentDate) === formatDate(prevChat)) {
                   displayDate = false;
                 }
               }
+
               return (
                 // TODO: 나중에 여기 수정해야될 듯 해요(고정데이터)
                 <View key={index}>
-                  {displayDate ? <DateBox time={item.createdAt} /> : null}
+                  {displayDate && <DateBox time={item.createdAt} />}
                   {item.senderId === 15 ? (
                     <MyChat items={item} />
                   ) : (
