@@ -97,6 +97,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         //채팅방 데이터 받아오기
         let getRoomId = route.params?.roomId;
         const result = await getMessageContent(getRoomId, page);
+        console.log(result.data.chats.content);
         if (result.status === 'OK') {
           setRoomId(getRoomId);
           setChatData(result.data);
@@ -209,20 +210,18 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
 
   // 다음 페이지 채팅 내역 불러오기
   const fetchNextPage = async () => {
-    console.log(isNextPageLoading);
-    if (isNextPageLoading || !hasMoreData) return;
     setIsNextPageLoading(true);
     try {
-      let thisPageMessage: any = await getMessageContent(roomId, page + 1);
-      // 무한로딩 오류 처리
-      if (thisPageMessage.data.chats.content.length === 0) {
-        setHasMoreData(false);
-        return;
-      }
-      if (thisPageMessage.data.chats.content.length > 0) {
-        setPage(page + 1);
-        const updatedChat = [...chat, ...thisPageMessage.data.chats.content];
-        setChat(updatedChat);
+      console.log(chat?.length);
+      if (chat.length >= 20) {
+        let thisPageMessage: any = await getMessageContent(roomId, page + 1);
+        if (thisPageMessage.data.chats.content.length === 0) {
+          setHasMoreData(false);
+        } else {
+          setPage(page + 1);
+          const updatedChat = [...chat, ...thisPageMessage.data.chats.content];
+          setChat(updatedChat);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -230,7 +229,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       setIsNextPageLoading(false);
     }
   };
-
   // 헤더
   const HeaderTitle = () => {
     return (
@@ -474,7 +472,9 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               );
             }}
             inverted={true}
-            onEndReached={() => fetchNextPage()}
+            onEndReached={() => {
+              fetchNextPage();
+            }}
             initialNumToRender={20}
             maxToRenderPerBatch={10}
             windowSize={15}
