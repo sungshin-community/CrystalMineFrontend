@@ -183,7 +183,12 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       messagesClient.current.subscribe(`/sub/chat/${room}`, (body: any) => {
         const response = JSON.parse(body.body);
         console.log('message >>>>>>>>> ', JSON.parse(body.body));
-        const updatedResponse = {...response, senderId: response.writerId};
+        const createdAt = response.createdAt.replace(' ', 'T') + ':00';
+        const updatedResponse = {
+          ...response,
+          senderId: response.writerId,
+          createdAt: createdAt,
+        };
         setChat(_chat => [updatedResponse, ..._chat]);
       });
     } catch (error) {
@@ -370,6 +375,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       console.error('Failed to leave chat room:', error);
     }
   };
+  console.log(chat);
   return (
     <>
       {device && showCamera ? (
