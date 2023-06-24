@@ -90,7 +90,9 @@ const MessageItem = ({
                 color: '#6E7882',
                 paddingRight: 5,
               }}>
-              {message.lastChat}
+              {message.lastChat !== null
+                ? message.lastChat
+                : '사진을 보냈습니다.'}
             </Text>
             {message.unreadCount === 0 ? null : (
               <View style={styles.count}>

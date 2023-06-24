@@ -169,7 +169,8 @@ const MessageFragment = ({navigation}: Props) => {
       messageClient.current.subscribe(`/sub/list/${accountId}`, (body: any) => {
         console.log('here');
         console.log('message >>>>>>>>> ', JSON.parse(body.body));
-        // console.log('console: ', body); //return messageList
+        // {"lastChat": "하하", "lastPhotoChat": null, "receiverId": 3, "roomId": 19}
+        console.log('console: ', body); //return messageList
       });
     } catch (error) {
       console.log('erererer');
@@ -208,14 +209,14 @@ const MessageFragment = ({navigation}: Props) => {
 
   // 쪽지방 읽음처리
   const readMsgRoom = () => {
-    // const tempList = messageList.filter(
-    //   (m: MessageRoom) => m.isChecked === true,
-    // );
-    // tempList.map(async (msgRoom: MessageRoom) => {
-    //   const response = await getMessageContent(msgRoom.roomId, 0);
-    //   // TODO: 확인해보기..
-    //   // console.log(response.data);
-    // });
+    const tempList = messageList.filter(
+      (m: MessageRoom) => m.isChecked === true,
+    );
+    tempList.map(async (msgRoom: MessageRoom) => {
+      const response = await getMessageContent(msgRoom.roomId, 0);
+      // TODO: 확인해보기..
+      console.log(response.data);
+    });
     setReadModalVisible(false);
     setEdit(false);
     initList(false);
