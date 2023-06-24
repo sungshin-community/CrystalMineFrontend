@@ -65,6 +65,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const [images, setImages] = useState<Asset[]>([]);
   const camera = useRef(null);
   const [text, setText] = useState<string>('');
+  const [userID, setUserId] = useState<number>(0);
   // 채팅내역 조회 API 반환 데이터
   const [chatData, setChatData] = useState<Message>();
   // 채팅만 뽑아낸 데이터
@@ -327,7 +328,16 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     // }
     setIsLoading(false);
   };
-
+  async function getUserId() {
+    try {
+      const userIdString = await AsyncStorage.getItem('id');
+      const userId = userIdString ? parseInt(userIdString, 10) : 0;
+      setUserId(userId);
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  }
   return (
     <>
       {device && showCamera ? (
@@ -417,12 +427,11 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                   displayDate = false;
                 }
               }
-
+              getUserId();
               return (
-                // TODO: 나중에 여기 수정해야될 듯 해요(고정데이터)
                 <View key={index}>
                   {displayDate ? <DateBox time={item.createdAt} /> : null}
-                  {item.senderId === 15 ? (
+                  {item.senderId === userID ? (
                     <MyChat items={item} />
                   ) : (
                     <OtherChat items={item} />
