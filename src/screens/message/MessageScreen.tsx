@@ -78,6 +78,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
   const [hasMoreData, setHasMoreData] = useState<boolean>(false);
+  const [outModalVisible, setOutModalVisible] = useState<boolean>(false);
+  const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     async function init() {
@@ -358,7 +360,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       return 0;
     }
   }
-  const deleteHandler = async () => {
+  const outHandler = async () => {
     try {
       deleteChatRoom(roomId);
       navigation.dispatch(CommonActions.goBack());
@@ -598,13 +600,51 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               purpleButtonText2="채팅방 나가기"
               whiteButtonText="취소"
               purpleButtonFunc={() => {
-                blockHandler();
+                setMenu(false);
+                setTimeout(() => {
+                  setBlockModalVisible(true);
+                }, 10);
               }}
               purpleButtonFunc2={() => {
-                deleteHandler();
+                setMenu(false);
+                setTimeout(() => {
+                  setOutModalVisible(true);
+                }, 10);
               }}
               whiteButtonFunc={() => {
                 setMenu(false);
+              }}
+            />
+          )}
+          {outModalVisible && (
+            <ModalBottom
+              modalVisible={outModalVisible}
+              setModalVisible={setOutModalVisible}
+              content="퇴장 시 쪽지 목록과 내용이 모두 삭제되며 복구할 수 없습니다. 정말로 나가시겠습니까?"
+              purpleButtonText="나가기"
+              whiteButtonText="취소"
+              purpleButtonFunc={() => {
+                outHandler();
+              }}
+              whiteButtonFunc={() => {
+                setOutModalVisible(false);
+              }}
+            />
+          )}
+          {blockModalVisible && (
+            <ModalBottom
+              modalVisible={blockModalVisible}
+              setModalVisible={setBlockModalVisible}
+              content="차단 시 상대방과 더 이상 쪽지를 주고받을 수 없으며,
+              차단 해제가 불가능합니다.
+              정말로 차단하시겠습니까?"
+              purpleButtonText="차단하기"
+              whiteButtonText="취소"
+              purpleButtonFunc={() => {
+                blockHandler();
+              }}
+              whiteButtonFunc={() => {
+                setOutModalVisible(false);
               }}
             />
           )}
