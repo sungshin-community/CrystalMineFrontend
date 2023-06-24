@@ -177,7 +177,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       messagesClient.current.subscribe(`/sub/chat/${room}`, (body: any) => {
         const response = JSON.parse(body.body);
         console.log('message >>>>>>>>> ', JSON.parse(body.body));
-        setChat(_chat => [response, ..._chat]);
+        const updatedResponse = {...response, senderId: response.writerId};
+        setChat(_chat => [updatedResponse, ..._chat]);
       });
     } catch (error) {
       console.log('erererer');
@@ -338,6 +339,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       return 0;
     }
   }
+  console.log(chat, '?');
   return (
     <>
       {device && showCamera ? (
