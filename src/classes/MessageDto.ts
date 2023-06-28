@@ -31,5 +31,7 @@ export interface Message {
   postId: number;
   postBoardName: string;
   postContent: string;
+  isBlocked: boolean;
+  isBlockerUser: boolean;
   chats: Content;
 }
