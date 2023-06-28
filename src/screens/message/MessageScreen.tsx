@@ -117,7 +117,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               );
             }
           }
-          setChat(result.data.chats.content.slice().reverse());
+          // setChat(result.data.chats.content.slice().reverse());
+          setChat(result.data.chats.content);
         } else {
           setTimeout(function () {
             Toast.show(
@@ -469,9 +470,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           <FlatList
             data={chat}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               let displayDate = true;
-
               if (index !== chat.length - 1) {
                 const currentChat = chat[index].createdAt;
                 const nextChat = chat[index + 1].createdAt;
