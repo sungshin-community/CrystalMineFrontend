@@ -182,6 +182,14 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
             {settings.hotBoard ? <AlertOnIcon /> : <AlertOffIcon />}
           </Pressable>
         </View>
+        <View style={styles.menu}>
+          <Text style={styles.menuText}>쪽지 알림</Text>
+          <Pressable
+            style={styles.toggleButton}
+            onPress={() => onPress('message')}>
+            {settings.hotBoard ? <AlertOnIcon /> : <AlertOffIcon />}
+          </Pressable>
+        </View>
       </View>
       <View style={styles.menuContainer}>
         <Text style={styles.menuTitle}>공식 알림</Text>
