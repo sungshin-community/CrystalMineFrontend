@@ -37,6 +37,7 @@ import {fontBold, fontMedium} from '../../common/font';
 
 import TextEncodingPolyfill from 'text-encoding';
 import BigInt from 'big-integer';
+import {fontRegular} from '../../common/font';
 
 Object.assign(global, {
   TextEncoder: TextEncodingPolyfill.TextEncoder,
@@ -59,7 +60,7 @@ const MessageFragment = ({navigation}: Props) => {
 
   const [setting, setSetting] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
-  const [sort, setSort] = useState<boolean>(false);
+  const [sort, setSort] = useState<boolean>(true);
   const [isCheckedAll, setIsCheckedAll] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [readModalVisible, setReadModalVisible] = useState<boolean>(false);
@@ -135,11 +136,10 @@ const MessageFragment = ({navigation}: Props) => {
           appendMissingNULLonIncoming: true,
         });
 
-        messageClient.current.activate();
+        // messageClient.current.activate();
 
         //채팅방 데이터 받아오기
         const messageData = await getChatRoom(messagePage);
-        console.log(messageData.data);
 
         if (messageData.status === 'OK') {
           setMessageList(messageData.data.content);
@@ -157,17 +157,21 @@ const MessageFragment = ({navigation}: Props) => {
     console.log('init');
     if (isFocused) {
       init();
+    }
+
+    return () => {
+      messageClient.current.deactivate();
       setEdit(false);
       setSort(false);
       setSetting(false);
-    }
-
-    return () => messageClient.current.deactivate();
+      setSortBy('createdAt');
+    };
   }, [isFocused]);
 
   const subscribe = () => {
     try {
       messageClient.current.subscribe(`/sub/list/${accountId}`, (body: any) => {
+        console.log(JSON.parse(body.body));
         updateList(JSON.parse(body.body));
       });
     } catch (error) {
@@ -176,18 +180,19 @@ const MessageFragment = ({navigation}: Props) => {
     }
   };
 
-  const updateList = (data: MessageRoomSubscribe) => {
-    const tempList = messageList.map((m: MessageRoom) =>
-      m.roomId === data.roomId
-        ? {
-            ...m,
-            lastChat: data.lastChat,
-            lastPhoto: data.lastPhotoChat,
-            lastChatTime: '방금',
-            unreadCount: data.receiverId === accountId ? 0 : m.unreadCount + 1,
-          }
-        : m,
+  const updateList = (data: MessageRoom) => {
+    let tempList = messageList;
+    const isExistIndex = messageList.findIndex(
+      (m: MessageRoom) => m.roomId === data.roomId,
     );
+    //기존 목록에 있는 쪽지방에 쪽지가 올 경우 splice로 수정만 하고
+    //새로운 쪽지방이면 배열에 추가
+    if (isExistIndex !== -1) {
+      tempList.splice(isExistIndex, 1, data);
+    } else {
+      tempList = [...messageList, data];
+    }
+
     setMessageList(tempList);
   };
 
@@ -202,8 +207,68 @@ const MessageFragment = ({navigation}: Props) => {
     setSetting(false);
   };
 
+  // 최신순 정렬
+  const recentSort = (a: MessageRoom, b: MessageRoom) => {
+    let atime = a.lastChatTime;
+    let btime = b.lastChatTime;
+    if (atime.includes('방금') && btime.includes('방금')) {
+      return 0;
+    } else if (atime.includes('방금') || btime.includes('방금')) {
+      if (atime.includes('방금')) {
+        return -1;
+      } else {
+        return 1;
+      }
+    } else if (atime.includes('분') && btime.includes('분')) {
+      return (
+        parseInt(atime.slice(0, -3), 10) - parseInt(btime.slice(0, -3), 10)
+      );
+    } else if (atime.includes('분') || btime.includes('분')) {
+      if (atime.includes('분')) {
+        return -1;
+      } else {
+        return 1;
+      }
+    } else if (atime.includes(':') && btime.includes(':')) {
+      return (
+        parseInt(atime.slice(0, 2) + atime.slice(3, 2), 10) -
+        parseInt(btime.slice(0, 2) + btime.slice(3, 2), 10)
+      );
+    } else if (atime.includes(':') || btime.includes(':')) {
+      if (atime.includes(':')) {
+        return -1;
+      } else {
+        return 1;
+      }
+    } else if (atime.includes('.') && btime.includes('.')) {
+      return (
+        parseInt(atime.slice(0, 2) + atime.slice(3, 2), 10) -
+        parseInt(btime.slice(0, 2) + btime.slice(3, 2), 10)
+      );
+    }
+    return 0;
+  };
+
+  //안읽은 순 정렬
+  const unreadSort = (a: MessageRoom, b: MessageRoom) => {
+    let aread = a.unreadCount;
+    let bread = b.unreadCount;
+
+    if (aread > 0 && bread > 0) {
+      return recentSort(a, b);
+    } else if (aread > 0 || bread > 0) {
+      if (aread > 0) {
+        return -1;
+      } else {
+        return 1;
+      }
+    } else {
+      return recentSort(a, b);
+    }
+  };
+
   const moveToList = (message: MessageRoom) => {
-    const tempList = messageList.map(m =>
+    const tempList = messageList.map((m: MessageRoom) =>
       m.roomId === message.roomId ? {...m, isChecked: !m.isChecked} : m,
     );
     const isAllChecked = tempList.filter(c => !c.isChecked).length === 0;
@@ -223,10 +288,8 @@ const MessageFragment = ({navigation}: Props) => {
   // 쪽지방 읽음처리
   const readMsgRoom = () => {
     const tempList = messageList.map((m: MessageRoom) => {
-      if (m.isChecked) {
-        //   // const response = await getMessageContent(m.roomId, 0);
-        //   // TODO: 확인해보기..
-        //   // console.log(response.data);
+      if (m.isChecked && m.unreadCount > 0) {
+        getMessageContent(m.roomId, 0);
         return {...m, unreadCount: 0, isChecked: false};
       } else {
         return {...m, isChecked: false};
@@ -302,22 +365,21 @@ const MessageFragment = ({navigation}: Props) => {
           </View>
         )}
         {sort && (
-          <View
-            style={{backgroundColor: '#FFFFFF', height: 45, paddingTop: 15}}>
+          <View style={{backgroundColor: '#FFFFFF', height: 36}}>
             <TouchableOpacity
               style={styles.sortBox}
               onPress={() => {
                 sortBy === 'createdAt'
-                  ? setSortBy('notReat')
+                  ? setSortBy('notread')
                   : setSortBy('createdAt');
               }}>
               <Text
                 style={{
                   color: '#6E7882',
                   fontSize: 13,
-                  marginRight: 8,
+                  marginRight: 4,
                 }}>
-                {sortBy === 'createdAt' ? '최신순' : '안읽은 순'}
+                {sortBy === 'createdAt' ? '최신순' : '안 읽은 순'}
               </Text>
               <DownTriangle style={{paddingTop: 15}} />
             </TouchableOpacity>
@@ -326,7 +388,11 @@ const MessageFragment = ({navigation}: Props) => {
         {messageList.length !== 0 ? (
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={messageList}
+            data={
+              sortBy === 'createdAt'
+                ? [...messageList].sort(recentSort)
+                : [...messageList].sort(unreadSort)
+            }
             renderItem={({item}) => (
               <MessageItem
                 message={item}
@@ -351,14 +417,16 @@ const MessageFragment = ({navigation}: Props) => {
                 alignItems: 'center',
               }}>
               <Text
-                style={{
-                  color: '#6E7882',
-                  fontSize: 15,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                  textAlign: 'center',
-                  lineHeight: 22.5,
-                  marginTop: 20,
-                }}>
+                style={[
+                  fontRegular,
+                  {
+                    color: '#6E7882',
+                    fontSize: 15,
+                    textAlign: 'center',
+                    lineHeight: 22.5,
+                    marginTop: 20,
+                  },
+                ]}>
                 아직 쪽지 내역이 없습니다. {'\n'}수정이와 쪽지를 주고받아
                 보세요.
               </Text>
@@ -423,19 +491,30 @@ const MessageFragment = ({navigation}: Props) => {
 const styles = StyleSheet.create({
   setting: {
     width: 137,
-    height: 84,
+    height: 85,
     borderRadius: 10,
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     right: 2,
     top: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   setItem: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 11,
+    paddingVertical: 10,
   },
   setText: {
+    ...fontRegular,
     paddingLeft: 8,
     fontSize: 16,
     fontWeight: '400',
@@ -456,12 +535,14 @@ const styles = StyleSheet.create({
   },
   sortBox: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#F6F6F6',
     height: 20,
-    width: 82,
-    paddingTop: 2,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 14,
+    marginTop: 6,
     borderRadius: 12,
-    justifyContent: 'center',
     marginLeft: 24,
   },
 });
