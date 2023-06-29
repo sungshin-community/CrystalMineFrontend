@@ -25,6 +25,7 @@ import CheckEdit from '../../../resources/icon/CheckEdit';
 import Hamburger from '../../../resources/icon/Hamburger';
 import DownTriangle from '../../../resources/icon/Triangle';
 import {
+  deleteChatRoom,
   getChatRoom,
   getMessageContent,
   getSocketToken,
@@ -38,6 +39,7 @@ import {fontBold, fontMedium} from '../../common/font';
 import TextEncodingPolyfill from 'text-encoding';
 import BigInt from 'big-integer';
 import {fontRegular} from '../../common/font';
+import AdMob from '../../components/AdMob';
 
 Object.assign(global, {
   TextEncoder: TextEncodingPolyfill.TextEncoder,
@@ -97,17 +99,20 @@ const MessageFragment = ({navigation}: Props) => {
         setAccountId(response.data.data.id);
         let socketToken = await AsyncStorage.getItem('socketToken');
 
-        // if (socketToken === null) {
-        const socketResponse = await getSocketToken();
-        //매번 해야되나?? 로그인 시 로그인토큰이 바뀜 -> 소켓토큰도 바뀜... 그냥 로그인 했을 때 같이 처리해줘야되나?
-        if (socketResponse.status === 'OK') {
-          AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
-        } else {
-          setTimeout(function () {
-            Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
-          }, 100);
+        if (socketToken === null) {
+          const socketResponse = await getSocketToken();
+          //매번 해야되나?? 로그인 시 로그인토큰이 바뀜 -> 소켓토큰도 바뀜... 그냥 로그인 했을 때 같이 처리해줘야되나?
+          if (socketResponse.status === 'OK') {
+            AsyncStorage.setItem(
+              'socketToken',
+              socketResponse.data.socketToken,
+            );
+          } else {
+            setTimeout(function () {
+              Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
+            }, 100);
+          }
         }
-        // }
 
         // 소켓 연결
         console.log('in connect');
@@ -122,9 +127,27 @@ const MessageFragment = ({navigation}: Props) => {
             console.log('success');
             subscribe();
           },
-          onStompError: (frame: any) => {
+          onStompError: async (frame: any) => {
             console.log('Broker reported error: ' + frame.headers['message']);
             console.log('Additional details: ' + frame.body);
+            const socketResponse = await getSocketToken();
+            if (socketResponse.status === 'OK') {
+              AsyncStorage.setItem(
+                'socketToken',
+                socketResponse.data.socketToken,
+              );
+              wsUrl = encodeURI(
+                'ws://34.64.137.61:8787/ws?roomId=0&accessToken=Bearer ' +
+                  socketResponse.data.socketToken,
+              );
+            } else {
+              setTimeout(function () {
+                Toast.show(
+                  '알 수 없는 오류가 발생하였습니다. (33)',
+                  Toast.SHORT,
+                );
+              }, 100);
+            }
           },
           onChangeState: () => {
             console.log('processing...', messageClient.current.connected);
@@ -300,6 +323,18 @@ const MessageFragment = ({navigation}: Props) => {
     setEdit(false);
   };
 
+  const deleteMsgRoom = () => {
+    const tempList = messageList.filter((m: MessageRoom) => {
+      if (m.isChecked) {
+        deleteChatRoom(m.roomId);
+      }
+      return m.isChecked === true;
+    });
+    setMessageList(tempList);
+    setDeleteModalVisible(false);
+    setEdit(false);
+  };
+
   return (
     <>
       <View
@@ -321,73 +356,83 @@ const MessageFragment = ({navigation}: Props) => {
       </View>
       <WaterMark />
       <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-        {edit && (
-          <View
-            style={{
-              backgroundColor: '#FFFFFF',
-              height: 45,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                initList(!isCheckedAll);
-              }}
-              style={styles.check}>
-              {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
-            </TouchableOpacity>
-            <Text style={[{fontSize: 14, color: '#333D4B'}, fontMedium]}>
-              {`${messageList.filter(c => c.isChecked).length}/${
-                messageList.length
-              }`}
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingRight: 24,
-                marginLeft: 'auto',
-                color: 'red',
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setReadModalVisible(true);
-                }}
-                style={{marginRight: 18}}>
-                <Text style={[styles.readDelete, fontBold]}>읽음</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setDeleteModalVisible(true);
-                }}>
-                <Text style={[styles.readDelete, fontBold]}>삭제</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-        {sort && (
-          <View style={{backgroundColor: '#FFFFFF', height: 36}}>
-            <TouchableOpacity
-              style={styles.sortBox}
-              onPress={() => {
-                sortBy === 'createdAt'
-                  ? setSortBy('notread')
-                  : setSortBy('createdAt');
-              }}>
-              <Text
-                style={{
-                  color: '#6E7882',
-                  fontSize: 13,
-                  marginRight: 4,
-                }}>
-                {sortBy === 'createdAt' ? '최신순' : '안 읽은 순'}
-              </Text>
-              <DownTriangle style={{paddingTop: 15}} />
-            </TouchableOpacity>
-          </View>
-        )}
         {messageList.length !== 0 ? (
           <FlatList
             showsVerticalScrollIndicator={false}
+            ListHeaderComponent={
+              <View>
+                <AdMob />
+                {edit && (
+                  <View
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      height: 45,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        initList(!isCheckedAll);
+                      }}
+                      style={styles.check}>
+                      {isCheckedAll ? (
+                        <RectangleChecked />
+                      ) : (
+                        <RectangleUnchecked />
+                      )}
+                    </TouchableOpacity>
+                    <Text
+                      style={[{fontSize: 14, color: '#333D4B'}, fontMedium]}>
+                      {`${messageList.filter(c => c.isChecked).length}/${
+                        messageList.length
+                      }`}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingRight: 24,
+                        marginLeft: 'auto',
+                        color: 'red',
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setReadModalVisible(true);
+                        }}
+                        style={{marginRight: 18}}>
+                        <Text style={[styles.readDelete, fontBold]}>읽음</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setDeleteModalVisible(true);
+                        }}>
+                        <Text style={[styles.readDelete, fontBold]}>삭제</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+                {sort && (
+                  <View style={{backgroundColor: '#FFFFFF', height: 36}}>
+                    <TouchableOpacity
+                      style={styles.sortBox}
+                      onPress={() => {
+                        sortBy === 'createdAt'
+                          ? setSortBy('notread')
+                          : setSortBy('createdAt');
+                      }}>
+                      <Text
+                        style={{
+                          color: '#6E7882',
+                          fontSize: 13,
+                          marginRight: 4,
+                        }}>
+                        {sortBy === 'createdAt' ? '최신순' : '안 읽은 순'}
+                      </Text>
+                      <DownTriangle style={{paddingTop: 15}} />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            }
             data={
               sortBy === 'createdAt'
                 ? [...messageList].sort(recentSort)
@@ -409,29 +454,26 @@ const MessageFragment = ({navigation}: Props) => {
             )}
           />
         ) : (
-          <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={[
-                  fontRegular,
-                  {
-                    color: '#6E7882',
-                    fontSize: 15,
-                    textAlign: 'center',
-                    lineHeight: 22.5,
-                    marginTop: 20,
-                  },
-                ]}>
-                아직 쪽지 내역이 없습니다. {'\n'}수정이와 쪽지를 주고받아
-                보세요.
-              </Text>
-            </View>
-          </SafeAreaView>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  color: '#6E7882',
+                  fontSize: 15,
+                  textAlign: 'center',
+                  lineHeight: 22.5,
+                  marginTop: 20,
+                },
+              ]}>
+              아직 쪽지 내역이 없습니다. {'\n'}수정이와 쪽지를 주고받아 보세요.
+            </Text>
+          </View>
         )}
 
         {setting && (
@@ -459,10 +501,12 @@ const MessageFragment = ({navigation}: Props) => {
             purpleButtonText="삭제"
             whiteButtonText="취소"
             purpleButtonFunc={() => {
-              console.log('DELETE OK');
+              deleteMsgRoom();
             }}
             whiteButtonFunc={() => {
               setDeleteModalVisible(false);
+              setEdit(false);
+              initList(false);
             }}
           />
         )}
