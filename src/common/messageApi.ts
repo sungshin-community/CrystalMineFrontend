@@ -27,7 +27,7 @@ export const getSocketToken = async () => {
 export const getChatRoom = async (page: number, sort: string) => {
   try {
     const response = await messageClient.get<AxiosResponse>(
-      `/chat-room?page=${page}?sort=${sort}`,
+      `/chat-room?page=${page}&sort=${sort}`,
     );
     return response.data;
   } catch (e: any) {

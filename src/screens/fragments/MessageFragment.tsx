@@ -254,7 +254,8 @@ const MessageFragment = ({navigation}: Props) => {
   };
 
   const getSortedRoom = async () => {
-    const messageData2 = await getChatRoom(messagePage, sortBy);
+    let sortin = sortBy === 'createdAt' ? 'unreadCount' : 'createdAt';
+    const messageData2 = await getChatRoom(messagePage, sortin);
 
     if (messageData2.status === 'OK') {
       setMessageList(messageData2.data.content);
