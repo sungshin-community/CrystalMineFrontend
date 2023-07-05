@@ -21,4 +21,5 @@ export interface UserAlertSetting extends IObjectKeys {
   hotBoard: boolean;
   notice: boolean;
   verification: boolean;
+  chat: boolean;
 }

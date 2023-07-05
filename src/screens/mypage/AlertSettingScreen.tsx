@@ -39,6 +39,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
     hotBoard: true,
     notice: true,
     verification: true,
+    chat: true,
   });
 
   useEffect(() => {
@@ -186,8 +187,8 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
           <Text style={styles.menuText}>쪽지 알림</Text>
           <Pressable
             style={styles.toggleButton}
-            onPress={() => onPress('message')}>
-            {settings.hotBoard ? <AlertOnIcon /> : <AlertOffIcon />}
+            onPress={() => onPress('chat')}>
+            {settings.chat ? <AlertOnIcon /> : <AlertOffIcon />}
           </Pressable>
         </View>
       </View>

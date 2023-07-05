@@ -9,4 +9,5 @@ export interface PushSetting {
   hotBoard: boolean;
   notice: boolean;
   verification: boolean;
+  chat: boolean;
 }
