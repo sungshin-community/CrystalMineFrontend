@@ -64,6 +64,7 @@
         "@types/react-native": "^0.64.5",
         "@types/react-native-background-timer": "2.0.0",
         "@types/react-test-renderer": "^16.9.2",
+        "@types/text-encoding": "^0.0.36",
         "babel-jest": "^26.6.3",
         "eslint": "^7.14.0",
         "jest": "^26.6.3",

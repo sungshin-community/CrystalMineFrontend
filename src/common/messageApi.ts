@@ -24,10 +24,10 @@ export const getSocketToken = async () => {
   }
 };
 
-export const getChatRoom = async (page: number) => {
+export const getChatRoom = async (page: number, sort: string) => {
   try {
     const response = await messageClient.get<AxiosResponse>(
-      `/chat-room?page=${page}`,
+      `/chat-room?page=${page}?sort=${sort}`,
     );
     return response.data;
   } catch (e: any) {
@@ -99,5 +99,17 @@ export const postPhotoMessage = async (
   } catch (error: any) {
     console.log('photo 쪽지 보내기 실패', error.response.data);
     return error.response.data;
+  }
+};
+
+//merge할 때 삭제(민형언니 코드임)
+export const deleteChatRoom = async (roomId: number) => {
+  try {
+    const response = await messageClient.delete<AxiosResponse>(
+      `/chat-room/${roomId}`,
+    );
+    return response.data;
+  } catch (e: any) {
+    return e.response;
   }
 };

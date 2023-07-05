@@ -30,7 +30,7 @@ import {
   getMessageContent,
   getSocketToken,
 } from '../../common/messageApi';
-import {MessageRoom, MessageRoomSubscribe} from '../../classes/MessageDto';
+import {MessageRoom} from '../../classes/MessageDto';
 import {getAuthentication} from '../../common/homeApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
@@ -57,7 +57,8 @@ const MessageFragment = ({navigation}: Props) => {
   const messageClient = useRef<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [accountId, setAccountId] = useState<number | null>(null);
-  const [messageList, setMessageList] = useState<MessageDto>([]);
+  const [messagePageData, setMessagePageData] = useState<any>({});
+  const [messageList, setMessageList] = useState<MessageRoom>([]);
   const [messagePage, setMessagePage] = useState<number>(0);
 
   const [setting, setSetting] = useState<boolean>(false);
@@ -159,12 +160,16 @@ const MessageFragment = ({navigation}: Props) => {
           appendMissingNULLonIncoming: true,
         });
 
-        // messageClient.current.activate();
+        messageClient.current.activate();
 
         //채팅방 데이터 받아오기
-        const messageData = await getChatRoom(messagePage);
+        const messageData = await getChatRoom(messagePage, 'createdAt');
 
         if (messageData.status === 'OK') {
+          setMessagePageData({
+            first: messageData.data.first,
+            last: messageData.data.last,
+          });
           setMessageList(messageData.data.content);
         } else {
           setTimeout(function () {
@@ -230,66 +235,6 @@ const MessageFragment = ({navigation}: Props) => {
     setSetting(false);
   };
 
-  // 최신순 정렬
-  const recentSort = (a: MessageRoom, b: MessageRoom) => {
-    let atime = a.lastChatTime;
-    let btime = b.lastChatTime;
-    if (atime.includes('방금') && btime.includes('방금')) {
-      return 0;
-    } else if (atime.includes('방금') || btime.includes('방금')) {
-      if (atime.includes('방금')) {
-        return -1;
-      } else {
-        return 1;
-      }
-    } else if (atime.includes('분') && btime.includes('분')) {
-      return (
-        parseInt(atime.slice(0, -3), 10) - parseInt(btime.slice(0, -3), 10)
-      );
-    } else if (atime.includes('분') || btime.includes('분')) {
-      if (atime.includes('분')) {
-        return -1;
-      } else {
-        return 1;
-      }
-    } else if (atime.includes(':') && btime.includes(':')) {
-      return (
-        parseInt(atime.slice(0, 2) + atime.slice(3, 2), 10) -
-        parseInt(btime.slice(0, 2) + btime.slice(3, 2), 10)
-      );
-    } else if (atime.includes(':') || btime.includes(':')) {
-      if (atime.includes(':')) {
-        return -1;
-      } else {
-        return 1;
-      }
-    } else if (atime.includes('.') && btime.includes('.')) {
-      return (
-        parseInt(atime.slice(0, 2) + atime.slice(3, 2), 10) -
-        parseInt(btime.slice(0, 2) + btime.slice(3, 2), 10)
-      );
-    }
-    return 0;
-  };
-
-  //안읽은 순 정렬
-  const unreadSort = (a: MessageRoom, b: MessageRoom) => {
-    let aread = a.unreadCount;
-    let bread = b.unreadCount;
-
-    if (aread > 0 && bread > 0) {
-      return recentSort(a, b);
-    } else if (aread > 0 || bread > 0) {
-      if (aread > 0) {
-        return -1;
-      } else {
-        return 1;
-      }
-    } else {
-      return recentSort(a, b);
-    }
-  };
-
   const moveToList = (message: MessageRoom) => {
     const tempList = messageList.map((m: MessageRoom) =>
       m.roomId === message.roomId ? {...m, isChecked: !m.isChecked} : m,
@@ -306,6 +251,25 @@ const MessageFragment = ({navigation}: Props) => {
     }));
     setMessageList(tempList);
     setIsCheckedAll(isChecked);
+  };
+
+  const getSortedRoom = async () => {
+    const messageData2 = await getChatRoom(messagePage, sortBy);
+
+    if (messageData2.status === 'OK') {
+      setMessageList(messageData2.data.content);
+      setMessagePageData({
+        first: messageData2.data.first,
+        last: messageData2.data.last,
+      });
+    } else {
+      setTimeout(function () {
+        Toast.show(
+          '메세지 목록을 불러오는 중 오류가 발생했습니다.',
+          Toast.SHORT,
+        );
+      }, 100);
+    }
   };
 
   // 쪽지방 읽음처리
@@ -415,9 +379,14 @@ const MessageFragment = ({navigation}: Props) => {
                     <TouchableOpacity
                       style={styles.sortBox}
                       onPress={() => {
-                        sortBy === 'createdAt'
-                          ? setSortBy('notread')
-                          : setSortBy('createdAt');
+                        getSortedRoom();
+                        setSortBy(prev => {
+                          if (prev === 'createdAt') {
+                            return 'unreadCount';
+                          } else {
+                            return 'createdAt';
+                          }
+                        });
                       }}>
                       <Text
                         style={{
@@ -433,11 +402,7 @@ const MessageFragment = ({navigation}: Props) => {
                 )}
               </View>
             }
-            data={
-              sortBy === 'createdAt'
-                ? [...messageList].sort(recentSort)
-                : [...messageList].sort(unreadSort)
-            }
+            data={messageList}
             renderItem={({item}) => (
               <MessageItem
                 message={item}
@@ -449,6 +414,12 @@ const MessageFragment = ({navigation}: Props) => {
                 }}
               />
             )}
+            onEndReached={() => {
+              if (!messagePageData.last) {
+                setMessagePage(prev => prev + 1);
+                getSortedRoom();
+              }
+            }}
             ItemSeparatorComponent={() => (
               <View style={{height: 1, backgroundColor: '#F6F6F6'}} />
             )}
