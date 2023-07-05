@@ -29,10 +29,11 @@ import {
   getMessageContent,
   getSocketToken,
 } from '../../common/messageApi';
-import {MessageRoom, MessageDto} from '../../classes/MessageDto';
+import {MessageRoom, MessageRoomSubscribe} from '../../classes/MessageDto';
 import {getAuthentication} from '../../common/homeApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
+import {fontBold, fontMedium} from '../../common/font';
 
 import TextEncodingPolyfill from 'text-encoding';
 import BigInt from 'big-integer';
@@ -53,7 +54,7 @@ const MessageFragment = ({navigation}: Props) => {
   const messageClient = useRef<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [accountId, setAccountId] = useState<number | null>(null);
-  const [messageList, setMessageList] = useState<MessageDto>([]); //나중에 type 바꿀 것
+  const [messageList, setMessageList] = useState<MessageDto>([]);
   const [messagePage, setMessagePage] = useState<number>(0);
 
   const [setting, setSetting] = useState<boolean>(false);
@@ -167,14 +168,27 @@ const MessageFragment = ({navigation}: Props) => {
   const subscribe = () => {
     try {
       messageClient.current.subscribe(`/sub/list/${accountId}`, (body: any) => {
-        console.log('here');
-        console.log('message >>>>>>>>> ', JSON.parse(body.body));
-        // console.log('console: ', body); //return messageList
+        updateList(JSON.parse(body.body));
       });
     } catch (error) {
       console.log('erererer');
       console.error(error);
     }
+  };
+
+  const updateList = (data: MessageRoomSubscribe) => {
+    const tempList = messageList.map((m: MessageRoom) =>
+      m.roomId === data.roomId
+        ? {
+            ...m,
+            lastChat: data.lastChat,
+            lastPhoto: data.lastPhotoChat,
+            lastChatTime: '방금',
+            unreadCount: data.receiverId === accountId ? 0 : m.unreadCount + 1,
+          }
+        : m,
+    );
+    setMessageList(tempList);
   };
 
   const clickEdit = () => {
@@ -208,17 +222,19 @@ const MessageFragment = ({navigation}: Props) => {
 
   // 쪽지방 읽음처리
   const readMsgRoom = () => {
-    // const tempList = messageList.filter(
-    //   (m: MessageRoom) => m.isChecked === true,
-    // );
-    // tempList.map(async (msgRoom: MessageRoom) => {
-    //   const response = await getMessageContent(msgRoom.roomId, 0);
-    //   // TODO: 확인해보기..
-    //   // console.log(response.data);
-    // });
+    const tempList = messageList.map((m: MessageRoom) => {
+      if (m.isChecked) {
+        //   // const response = await getMessageContent(m.roomId, 0);
+        //   // TODO: 확인해보기..
+        //   // console.log(response.data);
+        return {...m, unreadCount: 0, isChecked: false};
+      } else {
+        return {...m, isChecked: false};
+      }
+    });
+    setMessageList(tempList);
     setReadModalVisible(false);
     setEdit(false);
-    initList(false);
   };
 
   return (
@@ -244,31 +260,44 @@ const MessageFragment = ({navigation}: Props) => {
       <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         {edit && (
           <View
-            style={{backgroundColor: '#FFFFFF', height: 45, paddingTop: 15}}>
+            style={{
+              backgroundColor: '#FFFFFF',
+              height: 45,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                initList(!isCheckedAll);
+              }}
+              style={styles.check}>
+              {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
+            </TouchableOpacity>
+            <Text style={[{fontSize: 14, color: '#333D4B'}, fontMedium]}>
+              {`${messageList.filter(c => c.isChecked).length}/${
+                messageList.length
+              }`}
+            </Text>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{
+                flexDirection: 'row',
+                paddingRight: 24,
+                marginLeft: 'auto',
+                color: 'red',
+              }}>
               <TouchableOpacity
                 onPress={() => {
-                  initList(!isCheckedAll);
+                  setReadModalVisible(true);
                 }}
-                style={styles.check}>
-                {isCheckedAll ? <RectangleChecked /> : <RectangleUnchecked />}
+                style={{marginRight: 18}}>
+                <Text style={[styles.readDelete, fontBold]}>읽음</Text>
               </TouchableOpacity>
-              <View style={{flexDirection: 'row', paddingRight: 24}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setReadModalVisible(true);
-                  }}
-                  style={{marginRight: 18}}>
-                  <Text>읽음</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setDeleteModalVisible(true);
-                  }}>
-                  <Text>삭제</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setDeleteModalVisible(true);
+                }}>
+                <Text style={[styles.readDelete, fontBold]}>삭제</Text>
+              </TouchableOpacity>
             </View>
           </View>
         )}
@@ -381,6 +410,8 @@ const MessageFragment = ({navigation}: Props) => {
             }}
             whiteButtonFunc={() => {
               setReadModalVisible(false);
+              setEdit(false);
+              initList(false);
             }}
           />
         )}
@@ -410,10 +441,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   check: {
-    flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center',
     paddingLeft: 27,
+    paddingRight: 10,
+  },
+  readDelete: {
+    fontSize: 14,
+    color: '#222222',
   },
   hr: {
     borderBottomColor: '#EFEFEF',

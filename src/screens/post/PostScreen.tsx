@@ -396,6 +396,7 @@ const PostScreen = ({navigation, route}: Props) => {
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
           <Post
+            navigation={navigation}
             post={post}
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}

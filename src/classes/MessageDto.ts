@@ -1,7 +1,3 @@
-export default interface MessageDto {
-  content: MessageRoom[];
-}
-
 export class MessageRoom {
   roomId: number = 0;
   partnerProfile: string = '';
@@ -12,6 +8,13 @@ export class MessageRoom {
   lastChatTime: string = '';
   unreadCount: number = 0;
   isChecked: boolean = false;
+}
+
+export interface MessageRoomSubscribe {
+  roomId: number;
+  receiverId: number;
+  lastChat: string;
+  lastPhotoChat: string | null;
 }
 export interface Chat {
   chatId: number;
