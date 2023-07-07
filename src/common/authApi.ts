@@ -162,7 +162,6 @@ export const login = async (signInRequestDto: SignInRequestDto) => {
       response.data.data.tokenDto.refreshToken,
     );
     await AsyncStorage.setItem('uuid', response.data.data.uuid);
-    await AsyncStorage.setItem('id', response.data.data.id.toString());
     return response;
   } catch (e) {
     console.log('e.response.data는', e.response.data);
