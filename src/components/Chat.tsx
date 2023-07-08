@@ -12,10 +12,13 @@ export const imgUrlCoverting = (arr: string[]) => {
 export const formatTime = (time: string) => {
   var d = new Date(time);
   var h = d.getHours() < 12 ? 1 : 0;
+  var minutes = d.getMinutes();
+  var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
   return h
-    ? '오전 ' + d.getHours() + ':' + d.getMinutes()
-    : '오후 ' + (d.getHours() - 12) + ':' + d.getMinutes();
+    ? '오전 ' + d.getHours() + ':' + formattedMinutes
+    : '오후 ' + d.getHours() + ':' + formattedMinutes;
 };
+
 export const formatDate = (day: string) => {
   var d = new Date(day);
   return (
@@ -36,6 +39,8 @@ export const DateBox = (time: any) => {
 export const MyChat = (items: any) => {
   const navigation = useNavigation();
   var data = items.items;
+  console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+  console.log(formatDate(data.createdAt), 'data');
   return (
     <View style={{alignItems: 'flex-end', marginRight: 24, marginBottom: 6}}>
       <View style={styles.line}>
