@@ -193,7 +193,7 @@ const MessageFragment = ({navigation}: Props) => {
     if (isExistIndex !== -1) {
       tempList.splice(isExistIndex, 1, data);
     } else {
-      tempList = [...messageList, data];
+      tempList = [data, ...messageList];
     }
 
     setMessageList(tempList);
