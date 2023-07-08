@@ -10,13 +10,13 @@ export const imgUrlCoverting = (arr: string[]) => {
 };
 
 export const formatTime = (time: string) => {
-  var d = new Date(time);
-  var h = d.getHours();
-  var minutes = d.getMinutes();
-  var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+  var formattedTime = time.slice(11, 16);
+
+  var h = parseInt(formattedTime.slice(0, 2));
   var formattedHours = h > 12 ? h - 12 : h;
   var period = h >= 12 ? '오후' : '오전';
-  return period + ' ' + formattedHours + ':' + formattedMinutes;
+
+  return period + ' ' + formattedHours + formattedTime.slice(2);
 };
 
 export const formatDate = (day: string) => {
