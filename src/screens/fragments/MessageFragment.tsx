@@ -174,7 +174,6 @@ const MessageFragment = ({navigation}: Props) => {
   const subscribe = () => {
     try {
       messageClient.current.subscribe(`/sub/list/${accountId}`, (body: any) => {
-        console.log(JSON.parse(body.body));
         updateList(JSON.parse(body.body));
       });
     } catch (error) {
@@ -191,12 +190,14 @@ const MessageFragment = ({navigation}: Props) => {
     //기존 목록에 있는 쪽지방에 쪽지가 올 경우 splice로 수정만 하고
     //새로운 쪽지방이면 배열에 추가
     if (isExistIndex !== -1) {
-      tempList.splice(isExistIndex, 1, data);
+      let list = tempList.filter((m: MessageRoom) => m.roomId !== data.roomId);
+      let newList = [data].concat(list);
+
+      setMessageList(newList);
     } else {
       tempList = [data, ...messageList];
+      setMessageList(tempList);
     }
-
-    setMessageList(tempList);
   };
 
   const clickEdit = () => {
