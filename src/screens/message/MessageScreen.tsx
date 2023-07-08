@@ -84,7 +84,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   useEffect(() => {
     async function init() {
       const response = await getAuthentication();
-      setUserId(response.data.id);
+      setUserId(response.data.data.id);
+      console.log(response.data.data.id, '유저아이디');
       if (response.status === 401) {
         setTimeout(function () {
           Toast.show(
