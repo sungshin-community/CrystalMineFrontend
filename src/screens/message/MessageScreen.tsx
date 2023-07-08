@@ -352,11 +352,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else {
-        setTimeout(function () {
-          Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-        }, 100);
+        DeleteImage();
       }
-      DeleteImage();
     } else {
       if (text.length !== 0) publish(text);
       console.log('텍스트 전송');
