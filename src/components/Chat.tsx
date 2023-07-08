@@ -11,12 +11,12 @@ export const imgUrlCoverting = (arr: string[]) => {
 
 export const formatTime = (time: string) => {
   var d = new Date(time);
-  var h = d.getHours() < 12 ? 1 : 0;
+  var h = d.getHours();
   var minutes = d.getMinutes();
   var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-  return h
-    ? '오전 ' + d.getHours() + ':' + formattedMinutes
-    : '오후 ' + d.getHours() + ':' + formattedMinutes;
+  var formattedHours = h > 12 ? h - 12 : h;
+  var period = h >= 12 ? '오후' : '오전';
+  return period + ' ' + formattedHours + ':' + formattedMinutes;
 };
 
 export const formatDate = (day: string) => {
