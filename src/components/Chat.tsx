@@ -39,8 +39,6 @@ export const DateBox = (time: any) => {
 export const MyChat = (items: any) => {
   const navigation = useNavigation();
   var data = items.items;
-  console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-  console.log(formatDate(data.createdAt), 'data');
   return (
     <View style={{alignItems: 'flex-end', marginRight: 24, marginBottom: 6}}>
       <View style={styles.line}>
