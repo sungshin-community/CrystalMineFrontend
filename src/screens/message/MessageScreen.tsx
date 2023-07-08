@@ -85,6 +85,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   useEffect(() => {
     async function init() {
       const response = await getAuthentication();
+      setUserId(response.data.data.id);
+      console.log(response.data.data.id, '유저아이디');
       if (response.status === 401) {
         setTimeout(function () {
           Toast.show(
@@ -365,16 +367,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     // }
     setIsLoading(false);
   };
-  async function getUserId() {
-    try {
-      const userIdString = await AsyncStorage.getItem('id');
-      const userId = userIdString ? parseInt(userIdString, 10) : 0;
-      setUserId(userId);
-    } catch (error) {
-      console.log(error);
-      return 0;
-    }
-  }
   const outHandler = async () => {
     try {
       deleteChatRoom(roomId);
@@ -480,7 +472,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                   displayDate = false;
                 }
               }
-              getUserId();
               return (
                 <View key={index}>
                   {displayDate ? <DateBox time={item.createdAt} /> : null}

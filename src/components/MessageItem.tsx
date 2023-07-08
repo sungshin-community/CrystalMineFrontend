@@ -59,7 +59,7 @@ const MessageItem = ({
         {/* <ProfileImage /> */}
         {message.partnerProfile ? (
           <Image
-            style={{width: 36, height: 36}}
+            style={{width: 36, height: 36, borderRadius: 18}}
             source={{uri: message.partnerProfile}}
           />
         ) : (
