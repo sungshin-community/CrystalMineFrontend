@@ -73,16 +73,6 @@ client.interceptors.response.use(
       client.defaults.headers.common.Authorization = reissuedAccessToken
         ? `Bearer ${reissuedAccessToken}`
         : '';
-      const socketResponse = await getSocketToken();
-      if (socketResponse.status === 'OK') {
-        await AsyncStorage.setItem(
-          'socketToken',
-          socketResponse.data.socketToken,
-        );
-        console.log('소켓 토큰 재발급함..');
-      } else {
-        console.error('소켓 토큰 발급 실패!');
-      }
       // onTokenRefreshed(reissuedAccessToken);
       // }
       // const retryOriginalRequest = new Promise((resolve) => {

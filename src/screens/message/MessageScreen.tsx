@@ -30,6 +30,7 @@ import {
   getMessageContent,
   patchBlockChatRoom,
   postPhotoMessage,
+  getSocketToken,
 } from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
@@ -85,7 +86,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     async function init() {
       const response = await getAuthentication();
       setUserId(response.data.data.id);
-      console.log(response.data.data.id, '유저아이디');
       if (response.status === 401) {
         setTimeout(function () {
           Toast.show(
@@ -96,12 +96,12 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
-        let socketToken = await AsyncStorage.getItem('socketToken');
+        let socketToken;
 
         //채팅방 데이터 받아오기
         let getRoomId = route.params?.roomId;
         const result = await getMessageContent(getRoomId, page);
-        console.log(result.data.chats.content);
+
         if (result.status === 'OK') {
           setRoomId(getRoomId);
           setChatData(result.data);
@@ -130,15 +130,14 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           }, 100);
         }
 
-        // TODO: 소켓 오류나면 여기를 실행하시오.. 로직은 나중에 같이 고민해봅시다...
-        //  const socketResponse = await getSocketToken();
-        //  if (socketResponse.status === 'OK') {
-        //    AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
-        //  } else {
-        //    setTimeout(function () {
-        //      Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
-        //    }, 100);
-        //  }
+        const socketResponse = await getSocketToken();
+        if (socketResponse.status === 'OK') {
+          socketToken = socketResponse.data.socketToken;
+        } else {
+          setTimeout(function () {
+            Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
+          }, 100);
+        }
 
         // 소켓 연결
         console.log('in connect22');
@@ -236,7 +235,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
     try {
-      console.log(chat?.length);
       if (chat.length >= 20) {
         let thisPageMessage: any = await getMessageContent(roomId, page + 1);
         if (thisPageMessage.data.chats.content.length === 0) {
@@ -341,30 +339,29 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   // 전송버튼
   const onSubmitPress = async () => {
     setIsLoading(true);
-    let response;
     if (images.length !== 0 || photoPath !== null) {
       console.log('image', images, photoPath);
-      response = await postPhotoMessage(roomId, images, photoPath);
+      let response = await postPhotoMessage(roomId, images, photoPath);
+      if (response.status === 401) {
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else {
+        setTimeout(function () {
+          Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+        }, 100);
+      }
       DeleteImage();
     } else {
       if (text.length !== 0) publish(text);
       console.log('텍스트 전송');
     }
-    // 오류처리 if문 안으로 옮겨놔야되지 않나? textonly는 소켓만 사용하닊가.. 아님말구..
-    // if (response.status === 401) {
-    //   setTimeout(function () {
-    //     Toast.show(
-    //       '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-    //       Toast.SHORT,
-    //     );
-    //   }, 100);
-    //   logout();
-    //   navigation.reset({routes: [{name: 'SplashHome'}]});
-    // } else {
-    //   setTimeout(function () {
-    //     Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-    //   }, 100);
-    // }
+
     setIsLoading(false);
   };
   const outHandler = async () => {

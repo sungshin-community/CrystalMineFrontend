@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StompJs from '@stomp/stompjs';
 import Toast from 'react-native-simple-toast';
 import WaterMark from '../../components/WaterMark';
@@ -58,7 +57,7 @@ const MessageFragment = ({navigation}: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [accountId, setAccountId] = useState<number | null>(null);
   const [messagePageData, setMessagePageData] = useState<any>({});
-  const [messageList, setMessageList] = useState<MessageRoom>([]);
+  const [messageList, setMessageList] = useState<MessageRoom[]>([]);
   const [messagePage, setMessagePage] = useState<number>(0);
 
   const [setting, setSetting] = useState<boolean>(false);
@@ -98,21 +97,15 @@ const MessageFragment = ({navigation}: Props) => {
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
         setAccountId(response.data.data.id);
-        let socketToken = await AsyncStorage.getItem('socketToken');
+        let socketToken;
 
-        if (socketToken === null) {
-          const socketResponse = await getSocketToken();
-          //매번 해야되나?? 로그인 시 로그인토큰이 바뀜 -> 소켓토큰도 바뀜... 그냥 로그인 했을 때 같이 처리해줘야되나?
-          if (socketResponse.status === 'OK') {
-            AsyncStorage.setItem(
-              'socketToken',
-              socketResponse.data.socketToken,
-            );
-          } else {
-            setTimeout(function () {
-              Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
-            }, 100);
-          }
+        const socketResponse = await getSocketToken();
+        if (socketResponse.status === 'OK') {
+          socketToken = socketResponse.data.socketToken;
+        } else {
+          setTimeout(function () {
+            Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
+          }, 100);
         }
 
         // 소켓 연결
@@ -131,24 +124,6 @@ const MessageFragment = ({navigation}: Props) => {
           onStompError: async (frame: any) => {
             console.log('Broker reported error: ' + frame.headers['message']);
             console.log('Additional details: ' + frame.body);
-            const socketResponse = await getSocketToken();
-            if (socketResponse.status === 'OK') {
-              AsyncStorage.setItem(
-                'socketToken',
-                socketResponse.data.socketToken,
-              );
-              wsUrl = encodeURI(
-                'ws://34.64.137.61:8787/ws?roomId=0&accessToken=Bearer ' +
-                  socketResponse.data.socketToken,
-              );
-            } else {
-              setTimeout(function () {
-                Toast.show(
-                  '알 수 없는 오류가 발생하였습니다. (33)',
-                  Toast.SHORT,
-                );
-              }, 100);
-            }
           },
           onChangeState: () => {
             console.log('processing...', messageClient.current.connected);
@@ -293,8 +268,9 @@ const MessageFragment = ({navigation}: Props) => {
       if (m.isChecked) {
         deleteChatRoom(m.roomId);
       }
-      return m.isChecked === true;
+      return m.isChecked !== true;
     });
+    console.log(tempList);
     setMessageList(tempList);
     setDeleteModalVisible(false);
     setEdit(false);
