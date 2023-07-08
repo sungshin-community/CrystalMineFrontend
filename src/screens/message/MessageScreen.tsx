@@ -30,6 +30,7 @@ import {
   getMessageContent,
   patchBlockChatRoom,
   postPhotoMessage,
+  getSocketToken,
 } from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
@@ -94,7 +95,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(response.status) === 2) {
-        let socketToken = await AsyncStorage.getItem('socketToken');
+        let socketToken;
 
         //채팅방 데이터 받아오기
         let getRoomId = route.params?.roomId;
@@ -128,15 +129,14 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           }, 100);
         }
 
-        // TODO: 소켓 오류나면 여기를 실행하시오.. 로직은 나중에 같이 고민해봅시다...
-        //  const socketResponse = await getSocketToken();
-        //  if (socketResponse.status === 'OK') {
-        //    AsyncStorage.setItem('socketToken', socketResponse.data.socketToken);
-        //  } else {
-        //    setTimeout(function () {
-        //      Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
-        //    }, 100);
-        //  }
+        const socketResponse = await getSocketToken();
+        if (socketResponse.status === 'OK') {
+          socketToken = socketResponse.data.socketToken;
+        } else {
+          setTimeout(function () {
+            Toast.show('알 수 없는 오류가 발생하였습니다. (32)', Toast.SHORT);
+          }, 100);
+        }
 
         // 소켓 연결
         console.log('in connect22');
