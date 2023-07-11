@@ -526,6 +526,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                         style={styles.imageBox}
                       />
                     )}
+
                     <Pressable
                       onPress={() => {
                         DeleteImage();
@@ -573,10 +574,19 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                         paddingBottom: Platform.OS === 'ios' ? 3 : 5,
                         bottom: 0,
                       }}>
-                      <CommentSendIcon
-                        width={28}
-                        fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
-                      />
+                      {isLoading ? (
+                        <ActivityIndicator
+                          size="large"
+                          color={'#A055FF'}
+                          animating={isLoading}
+                          style={{zIndex: 100}}
+                        />
+                      ) : (
+                        <CommentSendIcon
+                          width={28}
+                          fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
+                        />
+                      )}
                     </Pressable>
                   </Text>
                 </View>
