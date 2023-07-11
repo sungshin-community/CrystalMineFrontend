@@ -637,7 +637,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                 blockHandler();
               }}
               whiteButtonFunc={() => {
-                setOutModalVisible(false);
+                setBlockModalVisible(false);
               }}
             />
           )}
