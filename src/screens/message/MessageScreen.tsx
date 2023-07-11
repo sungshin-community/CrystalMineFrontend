@@ -228,6 +228,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           setChat(updatedChat);
           setIsNextPageLoading(false);
         }
+      } else {
+        setIsNextPageLoading(false);
       }
     } catch (error) {
       console.log(error);
