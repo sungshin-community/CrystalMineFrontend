@@ -105,21 +105,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         if (result.status === 'OK') {
           setRoomId(getRoomId);
           setChatData(result.data);
-          if (result.data.isBlocked) {
-            navigation.dispatch(CommonActions.goBack());
-            if (result.data.isBlockerUser) {
-              Toast.show(
-                '차단한 상대방에게는 쪽지를 보낼 수 없습니다..',
-                Toast.SHORT,
-              );
-            } else {
-              Toast.show(
-                '상대방에게 차단 당하여 더이상 쪽지를 보낼 수 없습니다.',
-                Toast.SHORT,
-              );
-            }
-          }
-          // setChat(result.data.chats.content.slice().reverse());
           setChat(result.data.chats.content);
         } else {
           setTimeout(function () {
@@ -561,8 +546,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                       !chatData.isBlocked
                         ? '메시지를 입력해 주세요.'
                         : chatData.isBlockerUser
-                        ? '차단한 상대방에게는 쪽지를 보낼 수 없습니다.'
-                        : '상대방에게 차단 당하여 더이상 쪽지를 보낼 수 없습니다.'
+                        ? '상대방에게 차단 당하여 더이상 쪽지를 보낼 수 없습니다.'
+                        : '차단한 상대방에게는 쪽지를 보낼 수 없습니다.'
                     }
                     placeholderTextColor="#87919B"
                     multiline={true}
