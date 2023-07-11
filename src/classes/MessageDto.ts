@@ -26,6 +26,7 @@ export interface Chat {
 }
 export interface Content {
   content: Chat[];
+  last: boolean;
 }
 
 export interface Message {

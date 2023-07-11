@@ -14,7 +14,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {View} from 'react-native-animatable';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StompJs from '@stomp/stompjs';
 import CameraIcon from '../../../resources/icon/CameraIcon';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
@@ -78,7 +77,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const [chat, setChat] = useState<Chat[]>();
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
-  const [hasMoreData, setHasMoreData] = useState<boolean>(false);
   const [outModalVisible, setOutModalVisible] = useState<boolean>(false);
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
 
@@ -222,18 +220,17 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     try {
       if (chat.length >= 20) {
         let thisPageMessage: any = await getMessageContent(roomId, page + 1);
-        if (thisPageMessage.data.chats.content.length === 0) {
-          setHasMoreData(false);
+        if (thisPageMessage.data.chats.last) {
+          setIsNextPageLoading(false);
         } else {
           setPage(page + 1);
           const updatedChat = [...chat, ...thisPageMessage.data.chats.content];
           setChat(updatedChat);
+          setIsNextPageLoading(false);
         }
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsNextPageLoading(false);
     }
   };
   // 헤더
