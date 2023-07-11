@@ -125,6 +125,7 @@ const Comment = ({
         purpleButtonText="확인"
         purpleButtonFunc={handlePostMessage}
         setDim={false}
+        anonymous={data.isAnonymous}
       />
       {data?.isReported ? (
         <Pressable
@@ -317,7 +318,6 @@ export const Recomment = ({
     useState<boolean>(false);
 
   const data: RecommentDto = recomment;
-
   const handlePostMessage = async (isAnonymous: boolean) => {
     let messageData = {
       partnerId: data.accountId,
@@ -389,6 +389,7 @@ export const Recomment = ({
         setModalVisible={setMessageModalVisible}
         purpleButtonText="확인"
         purpleButtonFunc={handlePostMessage}
+        anonymous={data.isAnonymous}
         setDim={false}
       />
       {data?.isReported ? (

@@ -110,7 +110,6 @@ function Post({
     }
     setMessageModalVisible(false);
   };
-
   const handlePostDeleteComponent = (
     <>
       <ModalBottom
@@ -212,6 +211,7 @@ function Post({
         purpleButtonText="확인"
         purpleButtonFunc={handlePostMessage}
         setDim={false}
+        anonymous={data?.isAnonymous}
       />
       <View style={{flexDirection: 'row'}}>
         <Pressable

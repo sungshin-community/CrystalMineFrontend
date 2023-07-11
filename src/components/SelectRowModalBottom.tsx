@@ -26,6 +26,7 @@ interface Props {
   purpleButtonFunc: any;
   setDim?: boolean;
   setDisableClose?: boolean;
+  anonymous: boolean;
 }
 
 export const MessageModalBottom = ({
@@ -35,6 +36,7 @@ export const MessageModalBottom = ({
   purpleButtonFunc,
   setDim = true,
   setDisableClose = false,
+  anonymous,
 }: Props) => {
   const navigation = useNavigation();
   const [isAnonymous, setIsAnonymos] = useState<boolean>(true);
@@ -58,6 +60,7 @@ export const MessageModalBottom = ({
     }
     init();
   });
+  console.log(anonymous, 'anonymous');
   return (
     <>
       {setDim && modalVisible ? (
@@ -102,6 +105,7 @@ export const MessageModalBottom = ({
                     },
                   ]}>
                   한 번 선택하면 해당 대화방에서는 더이상 변경할 수 없습니다.
+                  익명의 상대에게는 익명으로만 쪽지를 보낼 수 있습니다.
                 </Text>
                 <View
                   style={{
@@ -124,7 +128,12 @@ export const MessageModalBottom = ({
                   <Pressable
                     style={{flexDirection: 'row'}}
                     onPress={() => {
-                      setIsAnonymos(false);
+                      anonymous
+                        ? Toast.show(
+                            '익명으로만 쪽지를 보낼 수 있습니다.',
+                            Toast.SHORT,
+                          )
+                        : setIsAnonymos(false);
                     }}>
                     {!isAnonymous ? (
                       <RadioButtonChecked style={{marginRight: 10}} />
