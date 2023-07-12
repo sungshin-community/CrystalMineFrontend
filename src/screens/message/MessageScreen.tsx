@@ -462,12 +462,10 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               );
             }}
             inverted={true}
+            onEndReachedThreshold={0.1}
             onEndReached={() => {
               fetchNextPage();
             }}
-            initialNumToRender={20}
-            maxToRenderPerBatch={10}
-            windowSize={15}
           />
 
           <View
