@@ -492,12 +492,12 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                   hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
                   <ImageIcon width={24} height={24} />
                 </Pressable>
-                <Pressable
+                {/* <Pressable
                   onPress={() => setShowCamera(true)}
                   style={{marginRight: 15}}
                   hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
                   <CameraIcon />
-                </Pressable>
+                </Pressable> */}
               </View>
               <View
                 style={[
@@ -687,22 +687,23 @@ const styles = StyleSheet.create({
   },
   Icon: {
     flexDirection: 'row',
-    width: 83,
+    width: 50,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-end',
     paddingBottom: 6,
+    marginLeft: 5,
   },
   inputBox: {
     backgroundColor: '#F2F2F2',
-    width: Dimensions.get('window').width - 130,
+    width: Dimensions.get('window').width - 100,
     borderRadius: 25,
     paddingLeft: 14,
     paddingRight: 5,
   },
   input: {
     fontSize: 13,
-    width: Dimensions.get('window').width - 200,
+    width: Dimensions.get('window').width - 170,
     paddingVertical: 5,
     paddingTop: Platform.OS == 'ios' ? 13 : 0,
     minHeight: 44,
