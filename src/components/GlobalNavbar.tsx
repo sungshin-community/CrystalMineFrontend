@@ -41,6 +41,7 @@ type RootStackParamList = {
   SplashHome: undefined;
   ErrorScreen: undefined;
   PostScreen: {postId: number};
+  MessageScreen: {roomId: number};
   Notice: {noticeId: number};
   MyPage: undefined;
   CertifiedMember: undefined;
@@ -86,6 +87,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
       navigation.navigate('UncertifiedMember');
     } else if (data.type === 'WELCOME') {
       navigation.navigate('MyPage');
+    } else if (data.type === 'CHAT') {
+      navigation.navigate('MessageScreen', {roomId: Number(data.contentId)});
     }
     if (
       data.type !== 'BEFORE_EXPIRE' &&
