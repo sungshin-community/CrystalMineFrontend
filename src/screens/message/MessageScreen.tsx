@@ -43,6 +43,7 @@ import {OtherChat, MyChat, DateBox, formatDate} from '../../components/Chat';
 
 import TextEncodingPolyfill from 'text-encoding';
 import BigInt from 'big-integer';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 Object.assign(global, {
   TextEncoder: TextEncodingPolyfill.TextEncoder,
@@ -68,6 +69,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const devices = useCameraDevices();
   const device = devices.back;
   const [images, setImages] = useState<Asset[]>([]);
+  const [imagePermission, setImagePermission] = useState<boolean>(false);
   const camera = useRef(null);
   const [text, setText] = useState<string>('');
   const [userID, setUserId] = useState<number>(0);
@@ -266,24 +268,66 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
+  // const requestImagePermission = () => {
+  //   request(PERMISSIONS.IOS.CAMERA).then(response => {
+  //     console.log(response, 'response');
+  //   });
+  // };
+  const checkImagePermission = async () => {
+    request(PERMISSIONS.IOS.CAMERA).then(response => {
+      console.log(response, 'response');
+    });
+    check(
+      PERMISSIONS.IOS.PHOTO_LIBRARY ||
+        PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+    )
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            Toast.show('사진 사용 권한을 확인해주세요.');
+            break;
+          case RESULTS.DENIED:
+            request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+              if (result !== 'granted') {
+                Toast.show('사진 사용 권한이 거부되었습니다.');
+              } else {
+                setImagePermission(true);
+              }
+            });
+            break;
+          case RESULTS.BLOCKED:
+            Toast.show('사진 사용 권한을 확인해주세요.');
+            break;
+          case RESULTS.GRANTED:
+            setImagePermission(true);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   // 이미지 선택
   const onSelectImage = () => {
-    launchImageLibrary(
-      {
-        mediaType: 'photo',
-        maxWidth: 15000,
-        maxHeight: 15000,
-        selectionLimit: 1,
-      },
-      res => {
-        if (res.didCancel) {
-          return;
-        }
-        let tempImages: Asset[] = [...images, ...res.assets];
-        console.log('>>', res);
-        setImages(tempImages);
-      },
-    );
+    // requestImagePermission();
+    checkImagePermission();
+    if (imagePermission) {
+      launchImageLibrary(
+        {
+          mediaType: 'photo',
+          maxWidth: 15000,
+          maxHeight: 15000,
+          selectionLimit: 1,
+        },
+        res => {
+          if (res.didCancel) {
+            return;
+          }
+          let tempImages: Asset[] = [...images, ...res.assets];
+          console.log('>>', res);
+          setImages(tempImages);
+        },
+      );
+    }
   };
   // 사진 찍기
   const onPressButton = async () => {
@@ -543,9 +587,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                     placeholder={
                       !chatData.isBlocked
                         ? '메시지를 입력해 주세요.'
-                        : chatData.isBlockerUser
-                        ? '상대방에게 차단 당하여 더이상 쪽지를 보낼 수 없습니다.'
-                        : '차단한 상대방에게는 쪽지를 보낼 수 없습니다.'
+                        : '쪽지를 보낼 수 없는 상대입니다.'
                     }
                     placeholderTextColor="#87919B"
                     multiline={true}
@@ -596,7 +638,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               modalVisible={menu}
               setModalVisible={setMenu}
               content="쪽지메뉴"
-              purpleButtonText="사용자 차단"
+              purpleButtonText={chatData.isBlocked ? 'none' : '차단하기'}
               purpleButtonText2="채팅방 나가기"
               whiteButtonText="취소"
               purpleButtonFunc={() => {

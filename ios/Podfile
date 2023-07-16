@@ -50,4 +50,5 @@ target 'CrystalMineFrontend' do
   permissions_path = '../node_modules/react-native-permissions/ios'
 
   pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 end
