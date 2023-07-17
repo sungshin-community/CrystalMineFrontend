@@ -640,7 +640,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               content="쪽지메뉴"
               purpleButtonText={chatData.isBlocked ? 'none' : '차단하기'}
               purpleButtonText2="채팅방 나가기"
-              whiteButtonText="취소"
+              whiteButtonText={chatData.isBlocked ? 'none' : '취소'}
               purpleButtonFunc={() => {
                 setMenu(false);
                 setTimeout(() => {

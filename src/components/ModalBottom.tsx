@@ -88,15 +88,17 @@ export const ModalBottom = ({
                   </Text>
                 )}
               </View>
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  styles.buttonClose,
-                  {marginTop: content ? 20 : 0},
-                ]}
-                onPress={() => purpleButtonFunc()}>
-                <Text style={styles.textStyle}>{purpleButtonText}</Text>
-              </TouchableOpacity>
+              {purpleButtonText !== 'none' && (
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    styles.buttonClose,
+                    {marginTop: content ? 20 : 0},
+                  ]}
+                  onPress={() => purpleButtonFunc()}>
+                  <Text style={styles.textStyle}>{purpleButtonText}</Text>
+                </TouchableOpacity>
+              )}
               {purpleButtonText2 && (
                 <TouchableOpacity
                   style={[
@@ -108,7 +110,7 @@ export const ModalBottom = ({
                   <Text style={styles.textStyle}>{purpleButtonText2}</Text>
                 </TouchableOpacity>
               )}
-              {whiteButtonText && (
+              {whiteButtonText && whiteButtonText !== 'none' && (
                 <TouchableOpacity
                   style={[styles.secondButton, styles.secondButtonClose]}
                   onPress={() => whiteButtonFunc()}>
