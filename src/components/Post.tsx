@@ -41,7 +41,7 @@ import UserMuteIcon from '../../resources/icon/UserMuteIcon';
 import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
-import {postChatRoom} from '../common/messageApi';
+import {getMessageContent, postChatRoom} from '../common/messageApi';
 import MessageIcon from '../../resources/icon/Message';
 interface Props {
   navigation: any;
@@ -70,6 +70,8 @@ function Post({
   const [muteModalVisible, setMuteModalVisible] = useState<boolean>(false);
   const [messageModalVisible, setMessageModalVisible] =
     useState<boolean>(false);
+  const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
+  const [chatResponse, setChatResponse] = useState<any>(null);
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -90,16 +92,27 @@ function Post({
     </View>
   );
 
-  const handlePostMessage = async (isAnonymous: boolean) => {
+  const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
       partnerId: data.accountId,
-      postId: post.postId,
+      postId: data.postId,
       isAnonymous: isAnonymous,
     };
-
     const response = await postChatRoom(messageData);
-    if (response.code === 'CREATE_CHAT_ROOM_SUCCESS') {
-      navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    setChatResponse(response);
+    const block = await getMessageContent(response.data.roomId, 0);
+
+    if (!block.data.isBlocked) {
+      setMessageModalVisible(true);
+    } else {
+      setBlockModalVisible(true);
+      console.log('block', block.data.isBlocked);
+    }
+  };
+
+  const handlePostMessage = async () => {
+    if (chatResponse.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: chatResponse.data.roomId});
     } else {
       setTimeout(function () {
         Toast.show(
@@ -213,6 +226,11 @@ function Post({
         setDim={false}
         anonymous={data?.isAnonymous}
       />
+      <ModalBottom
+        modalVisible={blockModalVisible}
+        setModalVisible={setBlockModalVisible}
+        title="쪽지를 보낼 수 없는 상대입니다."
+      />
       <View style={{flexDirection: 'row'}}>
         <Pressable
           onPress={() => {
@@ -238,8 +256,7 @@ function Post({
         )}
         <Pressable
           onPress={() => {
-            setMessageModalVisible(true);
-            setComponentModalVisible(messageModalVisible);
+            blockedCheck(data.isAnonymous);
           }}>
           <MessageIcon style={{marginRight: 14, marginTop: 5, marginLeft: 3}} />
         </Pressable>

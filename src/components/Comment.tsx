@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Animated, Pressable, Image} from 'react-native';
+import {Text, View, StyleSheet, Pressable, Image} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
@@ -17,7 +17,7 @@ import Autolink from 'react-native-autolink';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import MessageIcon from '../../resources/icon/Message';
-import {postChatRoom} from '../common/messageApi';
+import {getMessageContent, postChatRoom} from '../common/messageApi';
 
 interface Props {
   comment?: any;
@@ -41,7 +41,6 @@ const Comment = ({
   handleCommentDelete,
   handleCommentReport,
   handleFocus,
-  componentModalVisible,
   setComponentModalVisible,
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
@@ -50,21 +49,33 @@ const Comment = ({
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [messageModalVisible, setMessageModalVisible] =
     useState<boolean>(false);
-
+  const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
+  const [chatResponse, setChatResponse] = useState<any>({});
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
 
-  const handlePostMessage = async (isAnonymous: boolean) => {
+  const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
       partnerId: data.accountId,
       postId: data.postId,
       isAnonymous: isAnonymous,
     };
-
     const response = await postChatRoom(messageData);
-    if (response.code === 'CREATE_CHAT_ROOM_SUCCESS') {
-      navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    setChatResponse(response);
+    const block = await getMessageContent(response.data.roomId, 0);
+
+    if (!block.data.isBlocked) {
+      setMessageModalVisible(true);
+    } else {
+      setBlockModalVisible(true);
+      console.log('block', block.data.isBlocked);
+    }
+  };
+
+  const handlePostMessage = async () => {
+    if (chatResponse.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: chatResponse.data.roomId});
     } else {
       setTimeout(function () {
         Toast.show(
@@ -127,6 +138,11 @@ const Comment = ({
         setDim={false}
         anonymous={data.isAnonymous}
       />
+      <ModalBottom
+        modalVisible={blockModalVisible}
+        setModalVisible={setBlockModalVisible}
+        title="쪽지를 보낼 수 없는 상대입니다."
+      />
       {data?.isReported ? (
         <Pressable
           onPress={() => {
@@ -146,8 +162,7 @@ const Comment = ({
           {/* 여기 */}
           <Pressable
             onPress={() => {
-              setMessageModalVisible(true);
-              setComponentModalVisible(messageModalVisible);
+              blockedCheck(data.isAnonymous);
             }}>
             <MessageIcon style={{marginRight: 14, marginTop: 4}} />
           </Pressable>
@@ -307,27 +322,37 @@ export const Recomment = ({
   handleCommentLike,
   handleCommentDelete,
   handleCommentReport,
-  componentModalVisible,
   setComponentModalVisible,
 }: RecommentProps) => {
-  const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
-  const [isLiked, setIsLiked] = useState<boolean>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [messageModalVisible, setMessageModalVisible] =
     useState<boolean>(false);
+  const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
+  const [chatResponse, setChatResponse] = useState<any>({});
 
   const data: RecommentDto = recomment;
-  const handlePostMessage = async (isAnonymous: boolean) => {
+  const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
       partnerId: data.accountId,
       postId: data.postId,
       isAnonymous: isAnonymous,
     };
-
     const response = await postChatRoom(messageData);
-    if (response.code === 'CREATE_CHAT_ROOM_SUCCESS') {
-      navigation.navigate('MessageScreen', {roomId: response.data.roomId});
+    setChatResponse(response);
+    const block = await getMessageContent(response.data.roomId, 0);
+
+    if (!block.data.isBlocked) {
+      setMessageModalVisible(true);
+    } else {
+      setBlockModalVisible(true);
+      console.log('block', block.data.isBlocked);
+    }
+  };
+
+  const handlePostMessage = async () => {
+    if (chatResponse.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: chatResponse.data.roomId});
     } else {
       setTimeout(function () {
         Toast.show(
@@ -392,6 +417,11 @@ export const Recomment = ({
         anonymous={data.isAnonymous}
         setDim={false}
       />
+      <ModalBottom
+        modalVisible={blockModalVisible}
+        setModalVisible={setBlockModalVisible}
+        title="쪽지를 보낼 수 없는 상대입니다."
+      />
       {data?.isReported ? (
         <Pressable
           onPress={() => {
@@ -410,8 +440,7 @@ export const Recomment = ({
           </Pressable>
           <Pressable
             onPress={() => {
-              setMessageModalVisible(true);
-              setComponentModalVisible(messageModalVisible);
+              blockedCheck(data.isAnonymous);
             }}>
             <MessageIcon style={{marginRight: 14, marginTop: 4}} />
           </Pressable>

@@ -17,7 +17,7 @@ interface Props {
   content?: any;
   isContentCenter?: boolean;
   purpleButtonText?: string;
-  purpleButtonFunc: any;
+  purpleButtonFunc?: any;
   purpleButtonText2?: string;
   purpleButtonFunc2?: any;
   whiteButtonText?: string;
@@ -88,7 +88,7 @@ export const ModalBottom = ({
                   </Text>
                 )}
               </View>
-              {purpleButtonText !== 'none' && (
+              {purpleButtonText && purpleButtonText !== 'none' && (
                 <TouchableOpacity
                   style={[
                     styles.button,
