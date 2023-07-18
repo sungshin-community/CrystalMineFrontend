@@ -24,6 +24,7 @@ import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
+import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
@@ -40,7 +41,10 @@ import UserMuteIcon from '../../resources/icon/UserMuteIcon';
 import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
+import {getMessageContent, postChatRoom} from '../common/messageApi';
+import MessageIcon from '../../resources/icon/Message';
 interface Props {
+  navigation: any;
   post: any;
   handlePostLike: any;
   handlePostScrap: any;
@@ -51,6 +55,7 @@ interface Props {
 }
 
 function Post({
+  navigation,
   post,
   handlePostLike,
   handlePostScrap,
@@ -58,13 +63,15 @@ function Post({
   handlePostReport,
   setComponentModalVisible,
 }: Props) {
-  const navigation = useNavigation();
   const data: PostDto = post;
   const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [muteModalVisible, setMuteModalVisible] = useState<boolean>(false);
-
+  const [messageModalVisible, setMessageModalVisible] =
+    useState<boolean>(false);
+  const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
+  const [chatResponse, setChatResponse] = useState<any>(null);
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -85,6 +92,37 @@ function Post({
     </View>
   );
 
+  const blockedCheck = async (isAnonymous: boolean) => {
+    let messageData = {
+      partnerId: data.accountId,
+      postId: data.postId,
+      isAnonymous: isAnonymous,
+    };
+    const response = await postChatRoom(messageData);
+    setChatResponse(response);
+    const block = await getMessageContent(response.data.roomId, 0);
+
+    if (!block.data.isBlocked) {
+      setMessageModalVisible(true);
+    } else {
+      setBlockModalVisible(true);
+      console.log('block', block.data.isBlocked);
+    }
+  };
+
+  const handlePostMessage = async () => {
+    if (chatResponse.code === 'CREATE_CHAT_ROOM_SUCCESS') {
+      navigation.navigate('MessageScreen', {roomId: chatResponse.data.roomId});
+    } else {
+      setTimeout(function () {
+        Toast.show(
+          '쪽지방을 만들던 중 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.',
+          Toast.SHORT,
+        );
+      }, 100);
+    }
+    setMessageModalVisible(false);
+  };
   const handlePostDeleteComponent = (
     <>
       <ModalBottom
@@ -180,6 +218,19 @@ function Post({
         whiteButtonFunc={() => setReportModalVisible(false)}
         setDim={false}
       />
+      <MessageModalBottom
+        modalVisible={messageModalVisible}
+        setModalVisible={setMessageModalVisible}
+        purpleButtonText="확인"
+        purpleButtonFunc={handlePostMessage}
+        setDim={false}
+        anonymous={data?.isAnonymous}
+      />
+      <ModalBottom
+        modalVisible={blockModalVisible}
+        setModalVisible={setBlockModalVisible}
+        title="쪽지를 보낼 수 없는 상대입니다."
+      />
       <View style={{flexDirection: 'row'}}>
         <Pressable
           onPress={() => {
@@ -203,6 +254,12 @@ function Post({
             <NoReport style={{marginRight: 14}} />
           </Pressable>
         )}
+        <Pressable
+          onPress={() => {
+            blockedCheck(data.isAnonymous);
+          }}>
+          <MessageIcon style={{marginRight: 14, marginTop: 5, marginLeft: 3}} />
+        </Pressable>
       </View>
     </>
   );
@@ -247,7 +304,11 @@ function Post({
           </Text>
         )}
         <View style={styles.postBody}>
-          <Text style={[fontRegular, {fontSize: 14, color: '#222222', lineHeight: 22.5}]}>
+          <Text
+            style={[
+              fontRegular,
+              {fontSize: 14, color: '#222222', lineHeight: 22.5},
+            ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
         </View>
@@ -295,7 +356,9 @@ function Post({
           </Pressable>
           <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
           <PostComment />
-          <Text style={[fontRegular, styles.postComment]}>{data?.commentCount}</Text>
+          <Text style={[fontRegular, styles.postComment]}>
+            {data?.commentCount}
+          </Text>
         </View>
       </View>
       {/* <View

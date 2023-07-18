@@ -17,7 +17,9 @@ interface Props {
   content?: any;
   isContentCenter?: boolean;
   purpleButtonText?: string;
-  purpleButtonFunc: any;
+  purpleButtonFunc?: any;
+  purpleButtonText2?: string;
+  purpleButtonFunc2?: any;
   whiteButtonText?: string;
   whiteButtonFunc?: any;
   setDim?: boolean;
@@ -31,6 +33,8 @@ export const ModalBottom = ({
   isContentCenter = true,
   purpleButtonText,
   purpleButtonFunc,
+  purpleButtonText2,
+  purpleButtonFunc2,
   whiteButtonText,
   whiteButtonFunc,
   setDim = true,
@@ -84,16 +88,29 @@ export const ModalBottom = ({
                   </Text>
                 )}
               </View>
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  styles.buttonClose,
-                  {marginTop: content ? 20 : 0},
-                ]}
-                onPress={() => purpleButtonFunc()}>
-                <Text style={styles.textStyle}>{purpleButtonText}</Text>
-              </TouchableOpacity>
-              {whiteButtonText && (
+              {purpleButtonText && purpleButtonText !== 'none' && (
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    styles.buttonClose,
+                    {marginTop: content ? 20 : 0},
+                  ]}
+                  onPress={() => purpleButtonFunc()}>
+                  <Text style={styles.textStyle}>{purpleButtonText}</Text>
+                </TouchableOpacity>
+              )}
+              {purpleButtonText2 && (
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    styles.buttonClose,
+                    {marginTop: content ? 20 : 0},
+                  ]}
+                  onPress={() => purpleButtonFunc2()}>
+                  <Text style={styles.textStyle}>{purpleButtonText2}</Text>
+                </TouchableOpacity>
+              )}
+              {whiteButtonText && whiteButtonText !== 'none' && (
                 <TouchableOpacity
                   style={[styles.secondButton, styles.secondButtonClose]}
                   onPress={() => whiteButtonFunc()}>

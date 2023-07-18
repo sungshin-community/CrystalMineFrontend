@@ -36,10 +36,21 @@ static void InitializeFlipper(UIApplication *application) {
 @implementation AppDelegate
 
 - (void)requestIDFA {
-  [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-    // Tracking authorization completed. Start loading ads here.
-    // [self loadAd];
-  }];
+  if (@available(iOS 14, *)) {
+    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+      // Tracking authorization completed. Start loading ads here.
+      // [self loadAd];
+    }];
+  } else {
+    // Fallback on earlier versions
+  }if (@available(iOS 14, *)) {
+    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+      // Tracking authorization completed. Start loading ads here.
+      // [self loadAd];
+    }];
+  } else {
+    // Fallback on earlier versions
+  }
 }
 
 // Required for the register event.

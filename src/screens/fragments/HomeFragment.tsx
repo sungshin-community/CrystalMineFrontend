@@ -14,7 +14,7 @@ import {
   ActivityIndicator,
   Alert,
   AppState,
-  Platform
+  Platform,
 } from 'react-native';
 import AdMob from '../../components/AdMob';
 import {fontBold, fontMedium, fontRegular} from '../../common/font';
@@ -153,7 +153,7 @@ const HomeFragment = ({navigation}: Props) => {
           'messagePermission',
         );
         const enabled = await messaging().hasPermission();
-        if (messagePermission === null || enabled) {
+        if (messagePermission === null && enabled) {
           await pushTokenLogic();
           if (messagePermission === null) {
             await topicTokenLogic();
@@ -228,15 +228,17 @@ const HomeFragment = ({navigation}: Props) => {
   }, [isFocused, modalBody, blindModalVisible]);
   // console.log(pinBoardContents);
   useEffect(() => {
-    const listener = AppState.addEventListener('change', (status) => {
+    const listener = AppState.addEventListener('change', status => {
       if (Platform.OS === 'ios' && status === 'active') {
         request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
-          .then((result) => console.warn(result))
-          .catch((error) => console.warn(error));
+          .then(result => console.warn(result))
+          .catch(error => console.warn(error));
       }
     });
 
-    return () => {listener.remove()}
+    return () => {
+      listener.remove();
+    };
   }, []);
   return (
     <>

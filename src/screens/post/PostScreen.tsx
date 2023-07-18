@@ -53,7 +53,9 @@ import {logout} from '../../common/authApi';
 import AdMob from '../../components/AdMob';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
-type RootStackParamList = {};
+type RootStackParamList = {
+  MessageScreen: {roomId: number};
+};
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostScreen = ({navigation, route}: Props) => {
@@ -68,9 +70,8 @@ const PostScreen = ({navigation, route}: Props) => {
   const commentInputRef = useRef<TextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const flatListRef = useRef<FlatList>(null);
-  const [componentModalVisible, setComponentModalVisible] = useState<boolean>(
-    false,
-  );
+  const [componentModalVisible, setComponentModalVisible] =
+    useState<boolean>(false);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -395,6 +396,7 @@ const PostScreen = ({navigation, route}: Props) => {
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
           <Post
+            navigation={navigation}
             post={post}
             handlePostLike={handlePostLike}
             handlePostScrap={handlePostScrap}
@@ -412,6 +414,7 @@ const PostScreen = ({navigation, route}: Props) => {
               renderItem={({item, index}) => (
                 <View key={index}>
                   <Comment
+                    navigation={navigation}
                     comment={item}
                     setParentId={setParentId}
                     handleCommentLike={handleCommentLike}
@@ -427,6 +430,7 @@ const PostScreen = ({navigation, route}: Props) => {
                     item.recomments.map((recomment, index) => (
                       <Recomment
                         key={index}
+                        navigation={navigation}
                         recomment={recomment}
                         handleCommentLike={handleCommentLike}
                         handleCommentDelete={handleCommentDelete}
@@ -434,7 +438,6 @@ const PostScreen = ({navigation, route}: Props) => {
                         componentModalVisible={componentModalVisible}
                         setComponentModalVisible={setComponentModalVisible}
                       />
-                      //recomment 데이터 생긴 후 확인 필요
                     ))}
                 </View>
               )}
@@ -442,31 +445,6 @@ const PostScreen = ({navigation, route}: Props) => {
                 <View style={{height: 1, backgroundColor: '#F0F0F0'}}></View>
               )}
             />
-            {/* {comments?.map((comment, index) => (
-              <View key={index}>
-                <Comment
-                  comment={comment}
-                  setParentId={setParentId}
-                  handleCommentLike={handleCommentLike}
-                  isRecomment={isRecomment}
-                  setIsRecomment={setIsRecomment}
-                  handleCommentDelete={handleCommentDelete}
-                  handleCommentReport={handleCommentReport}
-                  handleFocus={focusCommentInput}
-                />
-                {comment.recomments &&
-                  comment.recomments.map((recomment, index) => (
-                    <Recomment
-                      key={index}
-                      recomment={recomment}
-                      handleCommentLike={handleCommentLike}
-                      handleCommentDelete={handleCommentDelete}
-                      handleCommentReport={handleCommentReport}
-                    />
-                    //recomment 데이터 생긴 후 확인 필요
-                  ))}
-              </View>
-            ))} */}
           </View>
         </ScrollView>
         <View

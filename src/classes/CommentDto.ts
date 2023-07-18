@@ -1,5 +1,6 @@
 export default interface CommentDto {
   id: number;
+  accountId: number;
   parentId: number;
   postId: number;
   boardType: string;
@@ -22,6 +23,7 @@ export default interface CommentDto {
 
 export interface RecommentDto {
   id: number;
+  accountId: number;
   parentId: number;
   postId: number;
   boardType: string;
@@ -40,5 +42,5 @@ export interface RecommentDto {
   isReported: boolean;
   isBlind: boolean;
   isDeleted: boolean;
-  recomments: RecommentDto[]
+  recomments: RecommentDto[];
 }

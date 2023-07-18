@@ -1,9 +1,10 @@
 import axios, {AxiosInstance} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {reissueToken} from './authApi';
+import {getSocketToken} from './messageApi';
 
 const client: AxiosInstance = axios.create({
-  baseURL: 'https://api.crystalmine.kr/',
+  baseURL: 'http://34.64.137.61:8080/',
 });
 
 let isRefreshing = false;
@@ -21,7 +22,7 @@ const addRefreshSubscriber = (callback: any) => {
 client.interceptors.request.use(async (request: any) => {
   const accessToken = await AsyncStorage.getItem('accessToken');
   const refreshToken = await AsyncStorage.getItem('refreshToken');
-  console.log(accessToken);
+  // console.log(accessToken);
   // console.log(refreshToken)
   request.headers.Authorization = accessToken ? `Bearer ${accessToken}` : '';
   return request;

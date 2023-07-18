@@ -25,6 +25,8 @@ import messaging from '@react-native-firebase/messaging';
 import {AlertData} from '../classes/AlertDto';
 import {readNotificationOnPush} from '../common/pushApi';
 import {getPostByComment} from '../common/boardApi';
+import {CommonActions} from '@react-navigation/native';
+import BackButtonIcon from '../../resources/icon/BackButtonIcon';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +41,7 @@ type RootStackParamList = {
   SplashHome: undefined;
   ErrorScreen: undefined;
   PostScreen: {postId: number};
+  MessageScreen: {roomId: number};
   Notice: {noticeId: number};
   MyPage: undefined;
   CertifiedMember: undefined;
@@ -84,6 +87,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
       navigation.navigate('UncertifiedMember');
     } else if (data.type === 'WELCOME') {
       navigation.navigate('MyPage');
+    } else if (data.type === 'CHAT') {
+      navigation.navigate('MessageScreen', {roomId: Number(data.contentId)});
     }
     if (
       data.type !== 'BEFORE_EXPIRE' &&
@@ -291,6 +296,20 @@ function GlobalNavbar({navigation}: ScreenProps) {
               <MessageTabIcon size={size} color={color} focused={focused} />
             );
           },
+          headerLeft: () => (
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => navigation.dispatch(CommonActions.goBack())}>
+              <BackButtonIcon />
+            </TouchableHighlight>
+          ),
         }}
       />
       <Tab.Screen

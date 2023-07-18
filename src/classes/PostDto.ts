@@ -1,5 +1,6 @@
 export default interface PostDto {
   postId: number;
+  accountId: number;
   boardId: number;
   boardName: string;
   boardType: string;
