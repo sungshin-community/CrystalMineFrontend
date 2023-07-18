@@ -111,8 +111,7 @@ const MessageFragment = ({navigation}: Props) => {
         // 소켓 연결
         console.log('in connect');
         let wsUrl = encodeURI(
-          'ws://34.64.137.61:8787/ws?roomId=0&accessToken=Bearer ' +
-            socketToken,
+          'ws://3.34.16.137:8787/ws?roomId=0&accessToken=Bearer ' + socketToken,
         );
         messageClient.current = new StompJs.Client({
           brokerURL: wsUrl,
