@@ -41,7 +41,7 @@ const MessageItem = ({
         backgroundColor: message.unreadCount === 0 ? '#FFFFFF' : '#F6F2FF',
       }}
       onPress={() => {
-        navigation.navigate('MessageScreen', {roomId: message.roomId});
+        !edit && navigation.navigate('MessageScreen', {roomId: message.roomId});
       }}>
       {edit && (
         <Pressable

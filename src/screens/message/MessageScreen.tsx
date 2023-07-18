@@ -287,13 +287,26 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
             Toast.show('사진 사용 권한을 확인해주세요.');
             break;
           case RESULTS.DENIED:
-            request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
-              if (result !== 'granted') {
-                Toast.show('사진 사용 권한이 거부되었습니다.');
-              } else {
-                setImagePermission(true);
-              }
-            });
+            if (Platform.OS === 'ios') {
+              request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result2 => {
+                if (result2 !== 'granted') {
+                  Toast.show('사진 사용 권한이 거부되었습니다.');
+                } else {
+                  setImagePermission(true);
+                }
+              });
+            } else {
+              request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(
+                result2 => {
+                  if (result2 !== 'granted') {
+                    Toast.show('사진 사용 권한이 거부되었습니다.');
+                  } else {
+                    setImagePermission(true);
+                  }
+                },
+              );
+            }
+
             break;
           case RESULTS.BLOCKED:
             Toast.show('사진 사용 권한을 확인해주세요.');
