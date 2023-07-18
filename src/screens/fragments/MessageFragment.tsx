@@ -119,7 +119,7 @@ const MessageFragment = ({navigation}: Props) => {
           debug: str => console.log('STOMP: ' + str),
           onConnect: () => {
             console.log('success');
-            subscribe();
+            subscribe(response.data.data.id);
           },
           onStompError: async (frame: any) => {
             console.log('Broker reported error: ' + frame.headers['message']);
@@ -171,11 +171,14 @@ const MessageFragment = ({navigation}: Props) => {
     };
   }, [isFocused]);
 
-  const subscribe = () => {
+  const subscribe = id => {
     try {
-      messageClient.current.subscribe(`/sub/list/${accountId}`, (body: any) => {
-        updateList(JSON.parse(body.body));
-      });
+      messageClient.current.subscribe(
+        `/sub/list/${id ? id : accountId}`,
+        (body: any) => {
+          updateList(JSON.parse(body.body));
+        },
+      );
     } catch (error) {
       console.log('erererer');
       console.error(error);
