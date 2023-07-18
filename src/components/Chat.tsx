@@ -13,7 +13,7 @@ export const formatTime = (time: string) => {
   var formattedTime = time.slice(11, 16);
 
   var h = parseInt(formattedTime.slice(0, 2));
-  var formattedHours = h > 12 ? h - 12 : h;
+  var formattedHours = h === 0 || h === 12 ? 12 : h % 12;
   var period = h >= 12 ? '오후' : '오전';
 
   return period + ' ' + formattedHours + formattedTime.slice(2);
