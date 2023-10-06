@@ -72,6 +72,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [isEmergency, setIsEmergency] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -83,6 +84,9 @@ function PostWriteScreen({navigation, route}: Props) {
   useEffect(() => {
     const userInfo = async () => {
       if (route.params.boardId) {
+        if (route.params.boardId === 272) {
+          setIsAnonymous(false);
+        }
         setBoardId(route.params.boardId);
         let result = await getWritePostInfo(route.params.boardId);
         if (result) {
@@ -308,18 +312,33 @@ function PostWriteScreen({navigation, route}: Props) {
               </View>
             </View>
           </Pressable>
-          <Pressable
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingRight: 30,
-            }}
-            onPress={() => {
-              setIsAnonymous(current => !current);
-            }}>
-            <Text style={{marginRight: 4}}>익명</Text>
-            {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-          </Pressable>
+          {boardId !== 272 ? (
+            <Pressable
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingRight: 30,
+              }}
+              onPress={() => {
+                setIsAnonymous(current => !current);
+              }}>
+              <Text style={{marginRight: 4}}>익명</Text>
+              {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+            </Pressable>
+          ) : (
+            <Pressable
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingRight: 30,
+              }}
+              onPress={() => {
+                setIsEmergency(current => !current);
+              }}>
+              <Text style={{marginRight: 4}}>긴급 공지</Text>
+              {isEmergency ? <RectangleChecked /> : <RectangleUnchecked />}
+            </Pressable>
+          )}
         </View>
         <ScrollView style={[styles.container]}>
           <View

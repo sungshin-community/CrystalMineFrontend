@@ -19,10 +19,10 @@ import {changeAlertSettings, getAlertSettings} from '../../common/myPageApi';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getHundredsDigit} from '../../common/util/statusUtil';
 import {
-  subscribeTopic,
   unsubscribeTopic,
+  unsubscribeChTopic,
+  topicTokenLogic,
 } from '../../common/util/pushRegisterUtil';
 
 type RootStackParamList = {};
@@ -38,6 +38,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
     comment: true,
     hotBoard: true,
     notice: true,
+    chNotice: true,
     verification: true,
     chat: true,
   });
@@ -56,6 +57,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (response.status === 'OK') {
+        // console.log('data!!!!!!!!!!!!!!!!', response.data); TODO: 새로 들어온 속성 여기서 확인
         setSettings(response.data);
         setIsLoading(false);
       } else {
@@ -68,30 +70,19 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
     }
   }, [isFocused]);
 
-  // const getKeyByValue = (obj: UserAlertSetting, value: boolean) => {
-  //   let count: number = 0;
-  //   Object.keys(obj).forEach(key => {
-  //     if (key !== 'allSetting' && obj[key] === value) {
-  //       count++;
-  //     }
-  //   });
-  //   return count;
-  // };
-
   const onPress = async (value: string) => {
     console.log('clicked!');
     if (value === 'notice' && settings.notice) {
       unsubscribeTopic();
     } else if (value === 'notice' && !settings.notice) {
-      subscribeTopic();
+      topicTokenLogic(2);
+    } else if (value === 'chNotice' && settings.chNotice) {
+      unsubscribeChTopic();
+    } else if (value === 'chNotice' && !settings.chNotice) {
+      topicTokenLogic(1);
     }
     const changedStat = await changeAlertSettings(value, !settings[value]);
-    // setSettings(prevState => {
-    //   let obj = Object.assign({}, prevState);
-    //   obj[value] = !settings[value];
-    //   obj.allSetting = getKeyByValue(obj, false) > 0 ? false : true;
-    //   return obj;
-    // });
+
     if (changedStat.status === 'OK') {
       setSettings(changedStat.data);
     } else {
@@ -100,27 +91,6 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
       }, 100);
     }
   };
-
-  // const onAllPress = () => {
-  //   // changeAlertSettings('allSetting', !settings.allSetting);
-  //   if (settings.allSetting) {
-  //     setSettings({
-  //       allSetting: false,
-  //       comment: false,
-  //       hotBoard: false,
-  //       notice: false,
-  //       verification: false,
-  //     });
-  //   } else {
-  //     setSettings({
-  //       allSetting: true,
-  //       comment: true,
-  //       hotBoard: true,
-  //       notice: true,
-  //       verification: true,
-  //     });
-  //   }
-  // };
 
   return (
     <View style={{flex: 1}}>
@@ -203,11 +173,19 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
           </Pressable>
         </View>
         <View style={styles.menu}>
-          <Text style={styles.menuText}>새 공지사항 업로드 알림</Text>
+          <Text style={styles.menuText}>수정광산 공지사항 알림</Text>
           <Pressable
             style={styles.toggleButton}
             onPress={() => onPress('notice')}>
             {settings.notice ? <AlertOnIcon /> : <AlertOffIcon />}
+          </Pressable>
+        </View>
+        <View style={styles.menu}>
+          <Text style={styles.menuText}>총학생회 긴급 공지사항 알림</Text>
+          <Pressable
+            style={styles.toggleButton}
+            onPress={() => onPress('chNotice')}>
+            {settings.chNotice ? <AlertOnIcon /> : <AlertOffIcon />}
           </Pressable>
         </View>
       </View>

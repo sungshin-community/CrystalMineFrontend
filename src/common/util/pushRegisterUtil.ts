@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import Toast from 'react-native-simple-toast';
 import {getReadableTopic, postDeviceToken, postRegisterTopic} from '../pushApi';
-import {getHundredsDigit} from './statusUtil';
 import {createAlertSettings} from '../myPageApi';
 
 export const pushTokenLogic = async () => {
@@ -15,11 +14,6 @@ export const pushTokenLogic = async () => {
   if (settingCreated === null) {
     const createResponse = await createAlertSettings();
     console.log('알림 설정 완료 : ', createResponse);
-    // if (getHundredsDigit(createResponse.status) !== 2) {
-    //   setTimeout(function () {
-    //     Toast.show('알 수 없는 오류가 발생하였습니다. (34)', Toast.SHORT);
-    //   }, 100);
-    // }
   }
 
   await AsyncStorage.setItem('messagePermission', enabled.toString());
@@ -46,32 +40,45 @@ export const pushTokenLogic = async () => {
   }
 };
 
-export const topicTokenLogic = async () => {
+export const subscribeTopic = async (topic: string) => {
+  messaging()
+    .subscribeToTopic(topic)
+    .then(() => {
+      console.log(`${topic} 구독 성공!!`);
+      postRegisterTopic(topic);
+    })
+    .catch(() => {
+      console.log(`${topic} 구독 실패!`);
+    });
+};
+
+// 변수가 0 또는 null일 때에는 전부 구독, 1일 때에는 총학만 구독, 2일 때에는 수광만 구독
+export const topicTokenLogic = async (caseNum: number | null) => {
   console.log('토픽 토큰 발급 로직 들어옴');
   const enabled = await AsyncStorage.getItem('messagePermission');
   if (enabled === 'true') {
-    await subscribeTopic();
-  }
-};
-
-export const subscribeTopic = async () => {
-  const response = await getReadableTopic();
-  console.log(response);
-  if (response.code === 'GET_TOKEN_SUCCESS') {
-    const topic = response.data.topic;
-    messaging()
-      .subscribeToTopic(topic)
-      .then(() => {
-        console.log(`${topic} 구독 성공!!`);
-        postRegisterTopic(topic);
-      })
-      .catch(() => {
-        console.log(`${topic} 구독 실패!`);
-      });
-  } else {
-    setTimeout(function () {
-      Toast.show('알 수 없는 오류가 발생하였습니다. (57)', Toast.SHORT);
-    }, 100);
+    const response = await getReadableTopic();
+    if (response.code === 'GET_TOKEN_SUCCESS') {
+      switch (caseNum) {
+        case 0:
+          await subscribeTopic(response.data.topic);
+        // eslint-disable-next-line no-fallthrough
+        case 1:
+          // await subscribeTopic(response.data.chTopic);
+          break;
+        case 2:
+          await subscribeTopic(response.data.topic);
+          break;
+        default:
+          await subscribeTopic(response.data.topic);
+          // await subscribeTopic(response.data.chTopic);
+          break;
+      }
+    } else {
+      setTimeout(function () {
+        Toast.show('알 수 없는 오류가 발생하였습니다. (57)', Toast.SHORT);
+      }, 100);
+    }
   }
 };
 
@@ -92,6 +99,27 @@ export const unsubscribeTopic = async () => {
   } else {
     setTimeout(function () {
       Toast.show('알 수 없는 오류가 발생하였습니다. (57)', Toast.SHORT);
+    }, 100);
+  }
+};
+
+export const unsubscribeChTopic = async () => {
+  const response = await getReadableTopic();
+  console.log(response);
+  if (response.code === 'GET_TOKEN_SUCCESS') {
+    const chTopic = response.data.chTopic;
+    messaging()
+      .unsubscribeFromTopic(chTopic)
+      .then(() => {
+        console.log(`${chTopic}총학 구독 해제 성공!!`);
+        postRegisterTopic(chTopic);
+      })
+      .catch(() => {
+        console.log(`${chTopic}총학 구독 해제 실패!`);
+      });
+  } else {
+    setTimeout(function () {
+      Toast.show('알 수 없는 오류가 발생하였습니다. (67)', Toast.SHORT);
     }, 100);
   }
 };

@@ -59,6 +59,8 @@ const AlertItem = ({
             navigation.navigate('MyPage');
           } else if (data.type === 'NOTICE') {
             navigation.navigate('Notice', {noticeId: data.postId});
+          } else if (data.type === 'CHNOTICE') {
+            navigation.navigate('PostScreen', {postId: data.postId});
           } else if (
             data.type === 'BEFORE_EXPIRE' ||
             data.type === 'EXPIRE' ||
@@ -92,7 +94,9 @@ const AlertItem = ({
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
                     블라인드 사유
                   </Text>
-                  <Text style={[fontRegular, {width: 143}]}>{data.blind?.reason}</Text>
+                  <Text style={[fontRegular, {width: 143}]}>
+                    {data.blind?.reason}
+                  </Text>
                 </View>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
@@ -108,9 +112,11 @@ const AlertItem = ({
                   </Text>
                   <Text
                     style={[
-                      fontRegular, {
-                      width: Dimensions.get('window').width - 183,
-                    }]}>
+                      fontRegular,
+                      {
+                        width: Dimensions.get('window').width - 183,
+                      },
+                    ]}>
                     {data.blind?.content}
                   </Text>
                 </View>
@@ -175,7 +181,10 @@ const AlertItem = ({
                   <Text
                     ellipsizeMode={'tail'}
                     numberOfLines={3}
-                    style={[fontRegular, {width: Dimensions.get('window').width - 178}]}>
+                    style={[
+                      fontRegular,
+                      {width: Dimensions.get('window').width - 178},
+                    ]}>
                     {data.deleteBlind?.content}
                   </Text>
                 </View>
@@ -213,8 +222,10 @@ const AlertItem = ({
             navigation.navigate('PostScreen', {postId: data.postId});
           }
         }}>
-        {(data.type === 'WELCOME') && <CheckMark />}
-        {(data.type ==='NOTICE') && <AlertNoticeIcon />}
+        {data.type === 'WELCOME' && <CheckMark />}
+        {(data.type === 'NOTICE' || data.type === 'CHNOTICE') && (
+          <AlertNoticeIcon />
+        )}
         {(data.type === 'BEFORE_EXPIRE' ||
           data.type === 'EXPIRE' ||
           data.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
@@ -259,7 +270,11 @@ const AlertItem = ({
               ? data.blind?.content
               : data.deleteBlind?.content}
           </Text>
-          <Text style={[fontRegular, {color: '#A3A3A3', fontSize: 12, marginTop: 5}]}>
+          <Text
+            style={[
+              fontRegular,
+              {color: '#A3A3A3', fontSize: 12, marginTop: 5},
+            ]}>
             {data.createdAt}
           </Text>
         </View>

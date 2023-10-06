@@ -53,6 +53,7 @@ import {logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
 import AdMob from '../../components/AdMob';
+import {getAuthentication} from '../../common/homeApi';
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
@@ -80,6 +81,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
+  const [isCh, setIsCh] = useState<boolean>(false);
   const listHeaderCondition =
     route.params?.boardId !== 5 &&
     route.params?.boardId !== 6 &&
@@ -142,6 +144,14 @@ const PostListScreen = ({navigation, route}: Props) => {
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
       setIsLoading(false);
+
+      if (boardInfo?.id === 272) {
+        const authResponse = await getAuthentication();
+        //닉네임으로 할지 고유아이디로 할지 고민중! id: 7717, 닉네임: 성신총학
+        if (authResponse.data.data.nickname === '성신총학') {
+          setIsCh(true);
+        }
+      }
     }
     init();
   }, [sortBy]);
@@ -553,15 +563,17 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {!isHotBoard && (
-          <FloatingWriteButton
-            onPress={() =>
-              navigation.navigate('PostWriteScreen', {
-                boardId: route.params.boardId,
-              })
-            }
-          />
-        )}
+        {!isLoading &&
+          ((!isHotBoard && boardInfo?.id !== 272) ||
+            (boardInfo?.id === 272 && isCh)) && (
+            <FloatingWriteButton
+              onPress={() =>
+                navigation.navigate('PostWriteScreen', {
+                  boardId: route.params.boardId,
+                })
+              }
+            />
+          )}
       </View>
     </>
   );
