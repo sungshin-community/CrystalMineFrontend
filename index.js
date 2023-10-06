@@ -11,8 +11,8 @@ import PushNotification from 'react-native-push-notification';
 PushNotification.createChannel(
   {
     channelId: 'crystalminepush', // (required)
-    channelName: 'Special messasge', // (required)
-    channelDescription: 'Notification for special message', // (optional) default: undefined.
+    channelName: 'crystalmine messasge', // (required)
+    channelDescription: 'Notification for crystalmine message', // (optional) default: undefined.
     importance: 4, // (optional) default: 4. Int value of the Android notification importance
     vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
   },
