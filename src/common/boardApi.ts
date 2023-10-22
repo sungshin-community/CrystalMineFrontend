@@ -509,6 +509,7 @@ export const postWritePost = async (
   title: string,
   content: string,
   isAnonymous: boolean,
+  isNoticeRequest: boolean,
   images?: any,
 ) => {
   try {
@@ -522,6 +523,8 @@ export const postWritePost = async (
       content,
       'isAnonymous',
       isAnonymous,
+      'isNoticeRequest',
+      isNoticeRequest,
       'images',
       images,
     );
@@ -537,6 +540,7 @@ export const postWritePost = async (
     formData.append('title', title);
     formData.append('content', content);
     formData.append('isAnonymous', isAnonymous);
+    formData.append('isNoticeRequest', isNoticeRequest);
     const response = await client.post<Response<PostWriteDto>>(
       '/posts',
       formData,

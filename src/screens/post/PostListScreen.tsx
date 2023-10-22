@@ -147,8 +147,8 @@ const PostListScreen = ({navigation, route}: Props) => {
 
       if (boardInfo?.id === 272) {
         const authResponse = await getAuthentication();
-        //닉네임으로 할지 고유아이디로 할지 고민중! id: 7717, 닉네임: 성신총학
-        if (authResponse.data.data.nickname === '성신총학') {
+        //총학 아이디로 구분 id: 7717
+        if (authResponse.data.data.id === 7717) {
           setIsCh(true);
         }
       }

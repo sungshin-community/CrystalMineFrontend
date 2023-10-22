@@ -20,7 +20,7 @@ export interface UserAlertSetting extends IObjectKeys {
   comment: boolean;
   hotBoard: boolean;
   notice: boolean;
-  chNotice: boolean;
+  studentCouncil: boolean;
   verification: boolean;
   chat: boolean;
 }

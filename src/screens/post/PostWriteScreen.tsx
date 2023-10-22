@@ -72,7 +72,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
-  const [isEmergency, setIsEmergency] = useState<boolean>(false);
+  const [isNoticeRequest, setIsNoticeRequest] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -112,6 +112,7 @@ function PostWriteScreen({navigation, route}: Props) {
       title,
       content,
       isAnonymous,
+      isNoticeRequest,
       images,
     );
     if (response.status === 401) {
@@ -333,10 +334,10 @@ function PostWriteScreen({navigation, route}: Props) {
                 paddingRight: 30,
               }}
               onPress={() => {
-                setIsEmergency(current => !current);
+                setIsNoticeRequest(current => !current);
               }}>
               <Text style={{marginRight: 4}}>긴급 공지</Text>
-              {isEmergency ? <RectangleChecked /> : <RectangleUnchecked />}
+              {isNoticeRequest ? <RectangleChecked /> : <RectangleUnchecked />}
             </Pressable>
           )}
         </View>

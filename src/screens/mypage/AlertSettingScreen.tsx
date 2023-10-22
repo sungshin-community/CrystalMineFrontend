@@ -38,7 +38,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
     comment: true,
     hotBoard: true,
     notice: true,
-    chNotice: true,
+    studentCouncil: true,
     verification: true,
     chat: true,
   });
@@ -71,14 +71,13 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
   }, [isFocused]);
 
   const onPress = async (value: string) => {
-    console.log('clicked!');
     if (value === 'notice' && settings.notice) {
       unsubscribeTopic();
     } else if (value === 'notice' && !settings.notice) {
       topicTokenLogic(2);
-    } else if (value === 'chNotice' && settings.chNotice) {
+    } else if (value === 'studentCouncil' && settings.studentCouncil) {
       unsubscribeChTopic();
-    } else if (value === 'chNotice' && !settings.chNotice) {
+    } else if (value === 'studentCouncil' && !settings.studentCouncil) {
       topicTokenLogic(1);
     }
     const changedStat = await changeAlertSettings(value, !settings[value]);
@@ -184,8 +183,8 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
           <Text style={styles.menuText}>총학생회 긴급 공지사항 알림</Text>
           <Pressable
             style={styles.toggleButton}
-            onPress={() => onPress('chNotice')}>
-            {settings.chNotice ? <AlertOnIcon /> : <AlertOffIcon />}
+            onPress={() => onPress('studentCouncil')}>
+            {settings.studentCouncil ? <AlertOnIcon /> : <AlertOffIcon />}
           </Pressable>
         </View>
       </View>
