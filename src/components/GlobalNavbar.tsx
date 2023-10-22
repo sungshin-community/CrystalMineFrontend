@@ -80,7 +80,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
     } else if (data.type === 'NOTICE') {
       navigation.navigate('Notice', {noticeId: Number(data.contentId)});
     } // 총학 긴급 공지 페이지로 이동
-    else if (data.type === 'CHNOTICE') {
+    else if (data.type === 'STUDENT_COUNCIL') {
       navigation.navigate('PostScreen', {postId: Number(data?.postId)});
     } else if (data.type === 'BEFORE_EXPIRE') {
       navigation.navigate('CertifiedMember');

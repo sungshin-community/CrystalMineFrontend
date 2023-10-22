@@ -57,7 +57,6 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (response.status === 'OK') {
-        // console.log('data!!!!!!!!!!!!!!!!', response.data); TODO: 새로 들어온 속성 여기서 확인
         setSettings(response.data);
         setIsLoading(false);
       } else {

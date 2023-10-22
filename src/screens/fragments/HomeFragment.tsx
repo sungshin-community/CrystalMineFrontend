@@ -156,6 +156,7 @@ const HomeFragment = ({navigation}: Props) => {
         if (messagePermission === null && enabled) {
           await pushTokenLogic();
           if (messagePermission === null) {
+            //인자 없음 - switch문 default로 가서 fcm 토픽 등록
             await topicTokenLogic();
           }
         }

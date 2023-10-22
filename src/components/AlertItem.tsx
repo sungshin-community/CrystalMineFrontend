@@ -59,7 +59,7 @@ const AlertItem = ({
             navigation.navigate('MyPage');
           } else if (data.type === 'NOTICE') {
             navigation.navigate('Notice', {noticeId: data.postId});
-          } else if (data.type === 'CHNOTICE') {
+          } else if (data.type === 'STUDENT_COUNCIL') {
             navigation.navigate('PostScreen', {postId: data.postId});
           } else if (
             data.type === 'BEFORE_EXPIRE' ||
@@ -223,7 +223,7 @@ const AlertItem = ({
           }
         }}>
         {data.type === 'WELCOME' && <CheckMark />}
-        {(data.type === 'NOTICE' || data.type === 'CHNOTICE') && (
+        {(data.type === 'NOTICE' || data.type === 'STUDENT_COUNCIL') && (
           <AlertNoticeIcon />
         )}
         {(data.type === 'BEFORE_EXPIRE' ||

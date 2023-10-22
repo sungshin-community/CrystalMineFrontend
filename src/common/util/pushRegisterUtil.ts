@@ -40,12 +40,22 @@ export const pushTokenLogic = async () => {
   }
 };
 
+// fcm 토픽 등록
+export const registerTopic = async (topic: string) => {
+  const response = await postRegisterTopic(topic);
+  if (response.code === 'REGISTER_FCM_KEY_SUCCESS') {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// 토픽 구독
 export const subscribeTopic = async (topic: string) => {
   messaging()
     .subscribeToTopic(topic)
     .then(() => {
       console.log(`${topic} 구독 성공!!`);
-      postRegisterTopic(topic);
     })
     .catch(() => {
       console.log(`${topic} 구독 실패!`);
@@ -61,17 +71,25 @@ export const topicTokenLogic = async (caseNum: number | null) => {
     if (response.code === 'GET_TOKEN_SUCCESS') {
       switch (caseNum) {
         case 0:
-          await subscribeTopic(response.data.topic);
+          await subscribeTopic(response.data.noitce);
         // eslint-disable-next-line no-fallthrough
         case 1:
-          // await subscribeTopic(response.data.chTopic);
+          await subscribeTopic(response.data.studentCouncil);
           break;
         case 2:
-          await subscribeTopic(response.data.topic);
+          await subscribeTopic(response.data.notice);
           break;
         default:
-          await subscribeTopic(response.data.topic);
-          // await subscribeTopic(response.data.chTopic);
+          // default - 푸시 알림 설정 관련 인자가 들어오지 않을 때
+          await subscribeTopic(response.data.notice);
+          await subscribeTopic(response.data.studentCouncil);
+          // fcm 토픽 등록 - 토픽 고윳값 기기 토큰 등록 시 최초 한번만 진행하면 됨
+          const registerEnabled = await registerTopic(response.data.topic);
+          if (registerEnabled) {
+            console.log('fcm 토픽 토큰 등록 성공');
+          } else {
+            console.log('fcm 토픽 토큰 등록 실패');
+          }
           break;
       }
     } else {
@@ -91,7 +109,6 @@ export const unsubscribeTopic = async () => {
       .unsubscribeFromTopic(topic)
       .then(() => {
         console.log(`${topic} 구독 해제 성공!!`);
-        postRegisterTopic(topic);
       })
       .catch(() => {
         console.log(`${topic} 구독 해제 실패!`);
@@ -107,15 +124,14 @@ export const unsubscribeChTopic = async () => {
   const response = await getReadableTopic();
   console.log(response);
   if (response.code === 'GET_TOKEN_SUCCESS') {
-    const chTopic = response.data.chTopic;
+    const studentCouncilTopic = response.data.studentCouncil;
     messaging()
-      .unsubscribeFromTopic(chTopic)
+      .unsubscribeFromTopic(studentCouncilTopic)
       .then(() => {
-        console.log(`${chTopic}총학 구독 해제 성공!!`);
-        postRegisterTopic(chTopic);
+        console.log(`${studentCouncilTopic}총학 구독 해제 성공!!`);
       })
       .catch(() => {
-        console.log(`${chTopic}총학 구독 해제 실패!`);
+        console.log(`${studentCouncilTopic}총학 구독 해제 실패!`);
       });
   } else {
     setTimeout(function () {
