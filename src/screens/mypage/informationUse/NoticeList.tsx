@@ -5,7 +5,6 @@ import {
   Text,
   Pressable,
   View,
-  ScrollView,
   Dimensions,
   ActivityIndicator,
   FlatList,
@@ -29,9 +28,8 @@ function NoticeList({navigation}: Props) {
 
   useEffect(() => {
     async function getList() {
-      const list = await getNoticeList(0);
-      setList(list);
-      console.log(list);
+      const response = await getNoticeList(0);
+      setList(response);
     }
     getList();
   }, []);
@@ -52,7 +50,7 @@ function NoticeList({navigation}: Props) {
   };
   return (
     <>
-      <WaterMark/>
+      <WaterMark />
       <View
         style={{
           position: 'absolute',
@@ -79,14 +77,16 @@ function NoticeList({navigation}: Props) {
               alignItems: 'center',
             }}>
             <Text
-              style={{
-                color: '#6E7882',
-                fontSize: 15,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                textAlign: 'center',
-                lineHeight: 22.5,
-                marginTop: 20,
-              }}>
+              style={[
+                fontRegular,
+                {
+                  color: '#6E7882',
+                  fontSize: 15,
+                  textAlign: 'center',
+                  lineHeight: 22.5,
+                  marginTop: 20,
+                },
+              ]}>
               {isLoading ? '' : '회원님께 해당되는\n이용 제한 내역이 없습니다.'}
             </Text>
           </View>
@@ -96,7 +96,7 @@ function NoticeList({navigation}: Props) {
           showsVerticalScrollIndicator={false}
           style={{flex: 1, backgroundColor: '#E5E5E5'}}
           data={list}
-          renderItem={({item, index}) => (
+          renderItem={({item}) => (
             <View key={item.id}>
               <View style={styles.menuContainer}>
                 <Pressable
@@ -138,7 +138,7 @@ function NoticeList({navigation}: Props) {
             </View>
           )}
           ItemSeparatorComponent={() => (
-            <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+            <View style={{height: 1, backgroundColor: '#F6F6F6'}} />
           )}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}

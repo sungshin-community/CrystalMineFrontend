@@ -9,7 +9,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
   KeyboardEvent,
 } from 'react-native';
 import {TwoLineTitle} from '../../../components/Top';
@@ -140,10 +139,10 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
                 paddingBottom: 7,
                 color: '#222222',
               }}
-              onFocus={(e: any) => {
+              onFocus={() => {
                 onInputFocus();
               }}
-              onBlur={(e: any) => {
+              onBlur={() => {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {
@@ -204,7 +203,9 @@ export default function InputNewPasswordConfirm({navigation, route}: Props) {
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        content={`비밀번호가 성공적으로 변경 되었습니다.\n이전 화면으로 이동합니다.`}
+        content={
+          '비밀번호가 성공적으로 변경 되었습니다.\n이전 화면으로 이동합니다.'
+        }
         purpleButtonText="확인"
         purpleButtonFunc={() => {
           navigation.navigate('GlobalNavbar');

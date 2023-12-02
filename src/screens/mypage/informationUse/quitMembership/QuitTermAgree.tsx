@@ -6,9 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  GestureResponderEvent,
   TouchableOpacity,
-  Dimensions,
   Platform,
 } from 'react-native';
 import {
@@ -24,7 +22,7 @@ import {
 } from '../../../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../../../components/HideToggleContainer';
 import Agreement from '../../../../classes/Agreement';
-import {getAgreements, getQuitAgreements} from '../../../../common/authApi';
+import {getQuitAgreements} from '../../../../common/authApi';
 
 type RootStackParamList = {
   SplashHome: undefined;
@@ -35,9 +33,10 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function QuitTermAgree({navigation}: Props) {
   const [agreements, setAgreements] = useState<Agreement[]>([]);
 
-
   const handleChange = (id: number) => {
-    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
+    const agreementList = agreements.map((a, index) =>
+      index === id ? {...a, checked: !a.checked} : a,
+    );
     setAgreements(agreementList);
   };
 
@@ -92,9 +91,9 @@ function QuitTermAgree({navigation}: Props) {
                 marginRight: 24,
                 borderRadius: 10,
                 marginTop: 31,
-                alignItems: 'center'
+                alignItems: 'center',
               }}
-              onPress={(e: any) => {
+              onPress={() => {
                 let agreementList = agreements.slice();
                 agreements.filter(a => a.checked).length === agreements.length
                   ? agreementList.forEach(a => (a.checked = false))
@@ -103,13 +102,9 @@ function QuitTermAgree({navigation}: Props) {
               }}>
               {agreements.length > 0 &&
               agreements.filter(a => a.checked).length == agreements.length ? (
-                <RoundChecked
-                  style={styles.wholeAgreeCheckBox}
-                />
+                <RoundChecked style={styles.wholeAgreeCheckBox} />
               ) : (
-                <RoundUnchecked
-                  style={styles.wholeAgreeCheckBox}
-                />
+                <RoundUnchecked style={styles.wholeAgreeCheckBox} />
               )}
               <Text
                 style={{

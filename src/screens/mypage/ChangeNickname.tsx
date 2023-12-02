@@ -9,7 +9,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
   Text,
   StyleSheet,
   KeyboardEvent,
@@ -22,7 +21,6 @@ import {
   PurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {checkNicknameConflict} from '../../common/authApi';
 import {changeNickname} from '../../common/myPageApi';
 import Toast from 'react-native-simple-toast';
 
@@ -31,11 +29,6 @@ if (Platform.OS === 'android') {
   // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
-`;
 
 const TextContainer = styled.View`
   margin-top: 32;
@@ -115,10 +108,10 @@ export default function ChangeNickname({navigation}: Props) {
                 paddingBottom: 7,
                 color: '#222222',
               }}
-              onFocus={(e: any) => {
+              onFocus={() => {
                 onInputFocus();
               }}
-              onBlur={(e: any) => {
+              onBlur={() => {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {

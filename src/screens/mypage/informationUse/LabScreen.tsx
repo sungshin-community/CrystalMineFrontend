@@ -3,12 +3,11 @@ import {
   SafeAreaView,
   Text,
   View,
-  Dimensions,
   Image,
   Animated,
-  PanResponder
+  PanResponder,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
+import {fontRegular} from '../../../common/font';
 
 const LabScreen = () => {
   const pan = useRef(new Animated.ValueXY()).current;
@@ -30,21 +29,23 @@ const LabScreen = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-          <Text
-          style={{
-            color: '#6E7882',
-            fontSize: 15,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            textAlign: 'center',
-            lineHeight: 22.5,
-          }}>
+        <Text
+          style={[
+            fontRegular,
+            {
+              color: '#6E7882',
+              fontSize: 15,
+              textAlign: 'center',
+              lineHeight: 22.5,
+            },
+          ]}>
           두근두근 수정광산 실험실!{'\n'}
           어떤 기능들이 준비되고 있을까요?
         </Text>
         <Animated.View
           style={{
-            transform: [{ translateX: pan.x }, { translateY: pan.y }],
-            zIndex: 10
+            transform: [{translateX: pan.x}, {translateY: pan.y}],
+            zIndex: 10,
           }}
           {...panResponder.panHandlers}>
           <Image
@@ -57,15 +58,17 @@ const LabScreen = () => {
         </Animated.View>
 
         <Text
-          style={{
-            color: '#6E7882',
-            fontSize: 15,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            textAlign: 'center',
-            lineHeight: 22.5,
-            marginTop: 10,
-            marginBottom: 60
-          }}>
+          style={[
+            fontRegular,
+            {
+              color: '#6E7882',
+              fontSize: 15,
+              textAlign: 'center',
+              lineHeight: 22.5,
+              marginTop: 10,
+              marginBottom: 60,
+            },
+          ]}>
           저를 드래그 해주세요!
         </Text>
       </View>

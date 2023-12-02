@@ -5,7 +5,6 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View,
 } from 'react-native';
 import {fontRegular} from '../../common/font';
 
@@ -20,7 +19,7 @@ function TagSearchResult() {
           height: 150,
         }}
         source={require('../../../resources/images/NoComment.png')}
-        />
+      />
       <Text style={[fontRegular, styles.text]}>
         현재 개발 중인 기능입니다.{'\n'}
         추후 기능 개발 후 사용하실 수 있습니다.

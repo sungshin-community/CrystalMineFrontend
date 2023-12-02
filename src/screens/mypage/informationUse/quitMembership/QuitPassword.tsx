@@ -29,6 +29,7 @@ import {checkPassword} from '../../../../common/myPageApi';
 import {getHundredsDigit} from '../../../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fontRegular} from '../../../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -102,13 +103,15 @@ export default function QuitPassword({navigation}: Props) {
               ]}>
               <TextInput
                 autoFocus={true}
-                style={{
-                  fontSize: 21,
-                  width: '90%',
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                  paddingBottom: 7,
-                  color: '#222222',
-                }}
+                style={[
+                  fontRegular,
+                  {
+                    fontSize: 21,
+                    width: '90%',
+                    paddingBottom: 7,
+                    color: '#222222',
+                  },
+                ]}
                 onFocus={() => {
                   onPasswordFocus();
                 }}

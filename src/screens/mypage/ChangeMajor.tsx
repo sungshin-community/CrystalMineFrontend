@@ -4,7 +4,6 @@ import styled from 'styled-components/native';
 import {
   StatusBar,
   View,
-  Dimensions,
   Text,
   StyleSheet,
   Platform,
@@ -18,7 +17,7 @@ import {
 import {MajorRow} from '../../components/MajorRow';
 import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getMajorList, register} from '../../common/authApi';
+import {getMajorList} from '../../common/authApi';
 import Major from '../../classes/Major';
 import {changeMajor} from '../../common/myPageApi';
 import Toast from 'react-native-simple-toast';
@@ -165,7 +164,7 @@ export default function ChangeMajor({navigation}: Props) {
                     Toast.show('학과 정보를 찾을 수 없습니다.', Toast.SHORT);
                   }, 100);
                 } else {
-                  setTimeout(function () {        
+                  setTimeout(function () {
                     Toast.show('학과 변경에 실패하였습니다.', Toast.SHORT);
                   }, 100);
                 }

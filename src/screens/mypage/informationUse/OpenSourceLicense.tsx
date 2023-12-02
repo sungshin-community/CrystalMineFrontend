@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,17 +6,12 @@ import {
   Pressable,
   View,
   ScrollView,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
   Dimensions,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {fontBold, fontMedium, fontRegular} from '../../../common/font';
-import NoticeListDto from '../../../classes/mypage/NoticeDto';
-import {getNoticeList} from '../../../common/myPageApi';
+import {fontMedium, fontRegular} from '../../../common/font';
 import WaterMark from '../../../components/WaterMark';
 import Markdown from 'react-native-markdown-display';
-import {SpreadList} from './TermsOfService';
 import {
   FoldBlackButton,
   SpreadBlackButton,
@@ -27,7 +22,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function OpenSourceLicense({navigation}: Props) {
+function OpenSourceLicense() {
   return (
     <ScrollView nestedScrollEnabled={true}>
       <SafeAreaView style={{backgroundColor: '#E5E5E5'}}>
@@ -88,9 +83,7 @@ export function LicenseSpreadList({id, title, agreementDate, content}: any) {
               paddingHorizontal: 24,
             }}>
             <View style={{paddingTop: 15, paddingBottom: 15}}>
-              {/* <Text style={fontRegular}> */}
               <Markdown>{content}</Markdown>
-              {/* </Text> */}
             </View>
           </ScrollView>
         </>

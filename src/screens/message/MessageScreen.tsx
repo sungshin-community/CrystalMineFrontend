@@ -15,14 +15,13 @@ import {
 } from 'react-native';
 import {View} from 'react-native-animatable';
 import * as StompJs from '@stomp/stompjs';
-import CameraIcon from '../../../resources/icon/CameraIcon';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import {fontRegular} from '../../common/font';
 import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
-import {Message} from '../../classes/MessageDto';
+import {Message, Chat} from '../../classes/MessageDto';
 import {CommonActions, useIsFocused} from '@react-navigation/native';
 import {
   deleteChatRoom,
@@ -76,7 +75,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   // 채팅내역 조회 API 반환 데이터
   const [chatData, setChatData] = useState<Message>();
   // 채팅만 뽑아낸 데이터
-  const [chat, setChat] = useState<Chat[]>();
+  const [chat, setChat] = useState<Chat[]>([]);
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
   const [outModalVisible, setOutModalVisible] = useState<boolean>(false);
@@ -178,7 +177,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       ),
       headerTitle: () => <HeaderTitle />,
     });
-  }, [chat]);
+  }, [chat, menu, navigation]);
 
   const subscribe = (getRoomId: number) => {
     try {
@@ -220,7 +219,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
     try {
-      if (chat.length >= 20) {
+      if (chat?.length >= 20) {
         let thisPageMessage: any = await getMessageContent(roomId, page + 1);
         if (thisPageMessage.data.chats.last) {
           setIsNextPageLoading(false);
@@ -359,11 +358,13 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     checkPermission();
 
     if (!camera.current) return;
-    const photo = await camera.current.takePhoto({
-      flash: 'off',
-      qualityPrioritization: 'speed',
-    });
-    setPhotoPath(photo.path);
+    else {
+      const photo = await camera.current.takePhoto({
+        flash: 'off',
+        qualityPrioritization: 'speed',
+      });
+      setPhotoPath(photo.path);
+    }
   };
   // 사진 결정
   const onCameraSendButton = () => {
@@ -549,12 +550,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                   hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
                   <ImageIcon width={24} height={24} />
                 </Pressable>
-                {/* <Pressable
-                  onPress={() => setShowCamera(true)}
-                  style={{marginRight: 15}}
-                  hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
-                  <CameraIcon />
-                </Pressable> */}
               </View>
               <View
                 style={[

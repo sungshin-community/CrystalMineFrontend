@@ -1,33 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import Markdown, {renderRules} from 'react-native-markdown-display';
-import {
-  getAgreements,
-  getAllAgreements,
-  getDirectionAgreements,
-} from '../../../common/authApi';
-import Agreement, {
-  AgreementAll,
-  DirectionAgreement,
-} from '../../../classes/Agreement';
-import { fontRegular } from '../../../common/font';
-import { getContractGuide } from '../../../common/contractApi';
+import {Dimensions, ScrollView, View} from 'react-native';
+import Markdown from 'react-native-markdown-display';
+import {AgreementAll} from '../../../classes/Agreement';
+import {getContractGuide} from '../../../common/contractApi';
 import WaterMark from '../../../components/WaterMark';
 
 const Tab = createMaterialTopTabNavigator();
 
 function InformationUse() {
   const [agreements, setAgreements] = useState<AgreementAll>();
-  const [directionUse, setDirectionUse] = useState<string>('');
-  const [termService, setTermService] = useState<string>('');
-  const [privacyPolicy, setPrivacyPolicy] = useState<string>('');
 
   useEffect(() => {
     async function getInfo() {
-      const agreements = await getContractGuide();
-      setAgreements(agreements);
+      const agreementsData = await getContractGuide();
+      setAgreements(agreementsData);
     }
     getInfo();
   }, []);
@@ -38,7 +25,7 @@ function InformationUse() {
           shadowColor: '#000',
           shadowOffset: {width: 0, height: 5},
           shadowRadius: 20,
-          margin: 0
+          margin: 0,
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#A055FF',
@@ -64,34 +51,55 @@ function InformationUse() {
       <Tab.Screen
         name={`수정광산\n이용 방향`}
         children={() => (
-          <ScrollView style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+          <ScrollView
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 20,
+              flex: 1,
+              backgroundColor: '#fff',
+            }}>
             <WaterMark />
-            <Markdown>{agreements ? agreements?.direction.content : ''}</Markdown>
-            <View style={{paddingVertical: 30}}/>
+            <Markdown>
+              {agreements ? agreements?.direction.content : ''}
+            </Markdown>
+            <View style={{paddingVertical: 30}} />
           </ScrollView>
         )}
       />
       <Tab.Screen
         name={`서비스\n이용약관`}
         children={() => (
-          <ScrollView style={{paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+          <ScrollView
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 20,
+              flex: 1,
+              backgroundColor: '#fff',
+            }}>
             <WaterMark />
-            <Markdown>{agreements ? agreements?.agreement.content : ''}</Markdown>
-            <View style={{paddingVertical: 30}}/>
+            <Markdown>
+              {agreements ? agreements?.agreement.content : ''}
+            </Markdown>
+            <View style={{paddingVertical: 30}} />
           </ScrollView>
         )}
       />
       <Tab.Screen
         name={`개인정보\n처리방침`}
         children={() => (
-          <ScrollView style={{ paddingHorizontal: 24, paddingVertical: 20, flex: 1, backgroundColor: '#fff' }}>
+          <ScrollView
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 20,
+              flex: 1,
+              backgroundColor: '#fff',
+            }}>
             <WaterMark />
             <Markdown>{agreements ? agreements?.policy.content : ''}</Markdown>
-            <View style={{paddingVertical: 30}}/>
+            <View style={{paddingVertical: 30}} />
           </ScrollView>
         )}
       />
-      {/* <Tab.Screen name="태그" component={TagSearchResult} /> */}
     </Tab.Navigator>
   );
 }

@@ -1,19 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-import {
-  View,
-  StatusBar,
-  StyleSheet,
-  Platform,
-  Dimensions,
-  Text,
-} from 'react-native';
+import {View, StatusBar, StyleSheet, Platform} from 'react-native';
 import {TwoLineTitle, Description} from '../../../components/Top';
-import {PurpleRoundButton, WhiteRoundButton} from '../../../components/Button';
+import {PurpleRoundButton} from '../../../components/Button';
 import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ModalBottom} from '../../../components/ModalBottom';
 import {fontBold} from '../../../common/font';
 import {getUser} from '../../../common/myPageApi';
 import User from '../../../classes/User';
@@ -83,7 +75,8 @@ export default function UncertifiedMember({navigation}: Props) {
             정회원 인증 필요{'\n'}
           </Description>
           <Description style={styles.textDescription}>
-            {user?.email || 'auth@crystalmine.kr로 \n포탈 시스템 인증 내용을 보내주세요.'}
+            {user?.email ||
+              'auth@crystalmine.kr로 \n포탈 시스템 인증 내용을 보내주세요.'}
           </Description>
         </Animatable.Text>
       </Container>

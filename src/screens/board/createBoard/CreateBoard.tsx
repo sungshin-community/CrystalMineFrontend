@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  FlatList,
-  Image,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -11,17 +9,11 @@ import {
   View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CommonActions} from '@react-navigation/native';
-import BackButton from '../../../components/BackButton';
-import {fontBold, fontMedium, fontRegular} from '../../../common/font';
-import ImageIcon from '../../../../resources/icon/ImageIcon';
-import PhotoIcon from '../../../../resources/icon/PhotoIcon';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {ModalBottom} from '../../../components/ModalBottom';
+import {fontMedium, fontRegular} from '../../../common/font';
+
 import Toast from 'react-native-simple-toast';
 import {createBoard} from '../../../common/boardApi';
 import {
-  Checked,
   RectangleChecked,
   RectangleUnchecked,
 } from '../../../../resources/icon/CheckBox';
@@ -57,10 +49,11 @@ function CreateBoard({navigation}: Props) {
       setTimeout(function () {
         Toast.show('이미 존재하는 게시판 이름입니다. ', Toast.SHORT);
       }, 100);
-    } else
+    } else {
       setTimeout(function () {
         Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
       }, 100);
+    }
   };
 
   useEffect(() => {

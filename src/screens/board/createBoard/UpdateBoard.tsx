@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
-  Image,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -10,18 +8,11 @@ import {
   View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CommonActions} from '@react-navigation/native';
-import BackButton from '../../../components/BackButton';
-import {fontBold, fontMedium, fontRegular} from '../../../common/font';
-import ImageIcon from '../../../../resources/icon/ImageIcon';
-import PhotoIcon from '../../../../resources/icon/PhotoIcon';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {ModalBottom} from '../../../components/ModalBottom';
+import {fontMedium, fontRegular} from '../../../common/font';
 import Toast from 'react-native-simple-toast';
 import {updateBoard, getBoardInfo} from '../../../common/boardApi';
 import Board from '../../../classes/Board';
 import {
-  Checked,
   RectangleChecked,
   RectangleUnchecked,
 } from '../../../../resources/icon/CheckBox';
@@ -83,7 +74,7 @@ function UpdateBoard({navigation, route}: Props) {
         <Pressable
           onPress={() => {
             setIsSubmitState(true);
-            console.log('isSubmitState', isSubmitState)
+            console.log('isSubmitState', isSubmitState);
           }}>
           <Text
             style={[

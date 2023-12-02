@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   Pressable,
   View,
   Image,
   ScrollView,
-  Modal,
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
@@ -15,11 +13,9 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import {NoticeDto} from '../../../classes/mypage/NoticeDto';
 import {getNotice} from '../../../common/myPageApi';
-import PostItem from '../../../components/PostItem';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import WaterMark from '../../../components/WaterMark';
 import Autolink from 'react-native-autolink';
 import {useNavigation} from '@react-navigation/native';
-import WaterMark from '../../../components/WaterMark';
 
 type RootStackParamList = {
   Notice: undefined;
@@ -29,23 +25,18 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 function Notice({route}: Props) {
   const navigation = useNavigation();
   const [data, setData] = useState<NoticeDto>();
-  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function getData() {
       setIsLoading(true);
-      const data = await getNotice(route.params.noticeId);
-      setData(data);
+      const response = await getNotice(route.params?.noticeId);
+      setData(response);
       setIsLoading(false);
     }
     getData();
   }, []);
-  const closePhotoModal = () => {
-    if (isPhotoVisible) {
-      setIsPhotoVisible(false);
-    }
-  };
+
   const imgUrlCoverting = (arr: string[]) => {
     const array = arr.map(url => {
       return {url: url};

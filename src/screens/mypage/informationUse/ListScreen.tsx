@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
-  Pressable,
   View,
   TouchableHighlight,
 } from 'react-native';

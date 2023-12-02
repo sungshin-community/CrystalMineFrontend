@@ -9,7 +9,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
   KeyboardEvent,
 } from 'react-native';
 import {NormalOneLineText, Description} from '../../../components/Top';
@@ -26,6 +25,7 @@ import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
 import {checkNewPassword, logout} from '../../../common/authApi';
 import {getHundredsDigit} from '../../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
+import {fontRegular} from '../../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -75,9 +75,10 @@ export default function InputNewPassword({navigation, route}: Props) {
     Keyboard.dismiss();
   };
 
-  const validatePassword = (password: string) => {
-    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
-    if (regExp.test(password)) {
+  const validatePassword = (passwordData: string) => {
+    let regExp =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+    if (regExp.test(passwordData)) {
       setIsValidate(true);
       setIsWrong(false);
     } else {
@@ -123,17 +124,19 @@ export default function InputNewPassword({navigation, route}: Props) {
           }}>
           <TextInput
             autoFocus={true}
-            style={{
-              width: '90%',
-              fontSize: 21,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-              paddingBottom: 7,
-              color: '#222222',
-            }}
-            onFocus={(e: any) => {
+            style={[
+              fontRegular,
+              {
+                width: '90%',
+                fontSize: 21,
+                paddingBottom: 7,
+                color: '#222222',
+              },
+            ]}
+            onFocus={() => {
               onInputFocus();
             }}
-            onBlur={(e: any) => {
+            onBlur={() => {
               onInputFocusOut();
             }}
             onChangeText={(value: string) => {
@@ -166,13 +169,11 @@ export default function InputNewPassword({navigation, route}: Props) {
         {isWrong && !isValidate && (
           <CautionText text="사용할 수 없는 비밀번호 입니다." />
         )}
-        {!isChangeable && (
-          <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
-        )}
+        {!isChangeable && <CautionText text="기존 비밀번호와 동일합니다." />}
       </ScrollView>
       <View
         style={{
-          bottom: isFocused ? (Platform.OS == 'ios' ? keyboardHeight : 0) : 34,
+          bottom: isFocused ? (Platform.OS === 'ios' ? keyboardHeight : 0) : 34,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -181,7 +182,7 @@ export default function InputNewPassword({navigation, route}: Props) {
             text="다음"
             onClick={async () => {
               let result = await checkNewPassword({
-                username: route.params.username,
+                username: route.params?.username,
                 password: password,
               });
               if (result.status === 401) {
@@ -195,7 +196,7 @@ export default function InputNewPassword({navigation, route}: Props) {
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(result.status) === 2) {
                 navigation.navigate('InputNewPasswordConfirm', {
-                  username: route.params.username,
+                  username: route.params?.username,
                   previousPassword: password,
                 });
               } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {
@@ -213,7 +214,7 @@ export default function InputNewPassword({navigation, route}: Props) {
             text="다음"
             onClick={async () => {
               let result = await checkNewPassword({
-                username: route.params.username,
+                username: route.params?.username,
                 password: password,
               });
               if (result.status === 401) {
@@ -227,7 +228,7 @@ export default function InputNewPassword({navigation, route}: Props) {
                 navigation.reset({routes: [{name: 'SplashHome'}]});
               } else if (getHundredsDigit(result.status) === 2) {
                 navigation.navigate('InputNewPasswordConfirm', {
-                  username: route.params.username,
+                  username: route.params?.username,
                   previousPassword: password,
                 });
               } else if (result.data.code === 'RESET_PASSWORD_FAIL_MATCH') {

@@ -19,7 +19,6 @@ import {changeAlertSettings, getAlertSettings} from '../../common/myPageApi';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {getHundredsDigit} from '../../common/util/statusUtil';
 import {
   subscribeTopic,
   unsubscribeTopic,
@@ -31,7 +30,6 @@ type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 export default function AlertSettingScreen({navigation}: ScreenProps) {
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
 
   const [settings, setSettings] = useState<UserAlertSetting>({
     allSetting: true,
@@ -55,28 +53,16 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
         }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
-      } else if (response.status === 'OK') {
+      } else {
         setSettings(response.data);
         setIsLoading(false);
-      } else {
-        setIsError(true);
       }
     }
 
     if (isFocused) {
       getSettings();
     }
-  }, [isFocused]);
-
-  // const getKeyByValue = (obj: UserAlertSetting, value: boolean) => {
-  //   let count: number = 0;
-  //   Object.keys(obj).forEach(key => {
-  //     if (key !== 'allSetting' && obj[key] === value) {
-  //       count++;
-  //     }
-  //   });
-  //   return count;
-  // };
+  }, [isFocused, navigation]);
 
   const onPress = async (value: string) => {
     console.log('clicked!');
@@ -86,12 +72,7 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
       subscribeTopic();
     }
     const changedStat = await changeAlertSettings(value, !settings[value]);
-    // setSettings(prevState => {
-    //   let obj = Object.assign({}, prevState);
-    //   obj[value] = !settings[value];
-    //   obj.allSetting = getKeyByValue(obj, false) > 0 ? false : true;
-    //   return obj;
-    // });
+
     if (changedStat.status === 'OK') {
       setSettings(changedStat.data);
     } else {
@@ -100,27 +81,6 @@ export default function AlertSettingScreen({navigation}: ScreenProps) {
       }, 100);
     }
   };
-
-  // const onAllPress = () => {
-  //   // changeAlertSettings('allSetting', !settings.allSetting);
-  //   if (settings.allSetting) {
-  //     setSettings({
-  //       allSetting: false,
-  //       comment: false,
-  //       hotBoard: false,
-  //       notice: false,
-  //       verification: false,
-  //     });
-  //   } else {
-  //     setSettings({
-  //       allSetting: true,
-  //       comment: true,
-  //       hotBoard: true,
-  //       notice: true,
-  //       verification: true,
-  //     });
-  //   }
-  // };
 
   return (
     <View style={{flex: 1}}>

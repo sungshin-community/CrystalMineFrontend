@@ -6,34 +6,34 @@ import {
   ScrollView,
   Text,
   View,
-  Switch,
   TouchableHighlight,
   StyleSheet,
   Image,
-  Pressable,
   ActivityIndicator,
   TouchableOpacity,
   Platform,
 } from 'react-native';
 import RightArrow from '../../../resources/icon/Arrow';
 import DefaultProfile from '../../../resources/icon/DefaultProfile';
-import QuestionMark from '../../../resources/icon/QuestionMark';
-import {setDefaultProfileImage, getUser, uploadProfileImage} from '../../common/myPageApi';
-import {PurpleRoundButton} from '../../components/Button';
+import {
+  setDefaultProfileImage,
+  getUser,
+  uploadProfileImage,
+} from '../../common/myPageApi';
 import User from '../../classes/User';
 import {ModalBottom} from '../../components/ModalBottom';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {logout} from '../../common/authApi';
 import PointIcon from '../../../resources/icon/PointIcon';
-import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
-import { useIsFocused } from "@react-navigation/native";
+import {launchImageLibrary} from 'react-native-image-picker';
+import {useIsFocused} from '@react-navigation/native';
 import ExclamationMark from '../../../resources/icon/ExclamationMark';
 import Toast from 'react-native-simple-toast';
-import { getHundredsDigit } from '../../common/util/statusUtil';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 import Error from '../../components/Error';
-import { fontRegular } from '../../common/font';
 import WaterMark from '../../components/WaterMark';
 import messaging from '@react-native-firebase/messaging';
+import {fontBold, fontRegular} from '../../common/font';
 
 const styles = StyleSheet.create({
   menu: {
@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
     fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#6E7882',
     marginLeft: 32,
-    marginBottom: 11
+    marginBottom: 11,
   },
   menuText: {
     fontSize: 15,
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    color: '#222222'
+    color: '#222222',
   },
 });
 
@@ -62,8 +62,8 @@ type RootStackParamList = {
   UncertifiedMember: undefined;
   CertifiedMember: undefined;
   InputPassword: {username: string};
-  ChangeNickname: undefined,
-  ChangeMajor: undefined,
+  ChangeNickname: undefined;
+  ChangeMajor: undefined;
   ExpiredMember: undefined;
   QuestionList: undefined;
   ListScreen: undefined;
@@ -74,9 +74,6 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const MyPageFragment = ({navigation}: Props) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-  const [allowAlert, setAllowAlert] = useState<boolean>(false);
-  const [allowMessage, setAllowMessage] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [profileModalVisible, setProfileModalVisible] =
     useState<boolean>(false);
@@ -87,29 +84,30 @@ const MyPageFragment = ({navigation}: Props) => {
   const [isError, setIsError] = useState<boolean>(false);
   const isFocused = useIsFocused();
   const [errorStatus, setErrorStatus] = useState<number>();
-  
+
   useEffect(() => {
     async function getUserInfo() {
       if (!isInited) {
         setIsLoading(true);
       }
       const userDto = await getUser();
-      console.log(userDto.data)
+      console.log(userDto.data);
       if (userDto.status === 401) {
         setTimeout(function () {
-          Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
         }, 100);
         logout();
         navigation.reset({routes: [{name: 'SplashHome'}]});
-      }
-      else if (getHundredsDigit(userDto.status) === 2) {
+      } else if (getHundredsDigit(userDto.status) === 2) {
         setUser(userDto.data.data);
-      }
-      else {
+      } else {
         setErrorStatus(userDto.status);
         setIsError(true);
       }
-      
+
       if (!isInited) {
         setIsLoading(false);
         setIsInited(true);
@@ -118,87 +116,188 @@ const MyPageFragment = ({navigation}: Props) => {
     if (isFocused) {
       getUserInfo();
     }
-  }, [navigation, isFocused]);
-  
-  return (
-    isError ? <Error status={errorStatus} code={'M001'} /> :
-      <>
-    <WaterMark/>
-    <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
-      <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0}}>
-        <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{zIndex: 100}} />
-      </View>
-      <ScrollView>
-        <View>
-          {!isInited ? skeletonComponent : <View
-            style={{
-              height: 160,
-              flexDirection: 'row',
-              backgroundColor: '#FFFFFF',
-              paddingLeft: 35,
-              paddingTop: 20,
-            }}
-          >
-            {user?.profileImage ?
-            <Image style={{width: 80, height: 80, borderRadius: 10}} source={{uri: user?.profileImage}} /> : <DefaultProfile />}
-            <View style={{height: 80}}>
-              <View style={{marginLeft: 18, marginRight: 24, borderBottomColor: '#EEEEEE', borderBottomWidth: 1, height: 80 }}>
-                <Text style={{color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
-                  {user?.department}
-                </Text>
-                <Text style={{marginTop: 3, fontSize: 17, fontFamily: 'SpoqaHanSansNeo-Bold', marginBottom: Platform.OS === 'ios' ? 5 : 0}}>
-                  {user?.nickname}
-                </Text>
-                <Text style={{marginBottom: 11, color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular'}}>
-                  {user?.username}@sungshin.ac.kr
-                </Text>
-              </View>
-              <View style={{marginLeft: 19, marginTop: 12, flexDirection: 'row', alignItems: 'center'}}>
-                <PointIcon />
-                <Text style={{marginLeft: 8, fontSize: 17, color: '#A055FF', fontFamily: 'SpoqaHanSansNeo-Bold'}}>{user?.point}</Text>
-              </View>
-            </View>
-          </View>}
-          {user && (user?.expireIn <= 0 || !user?.expireIn) && (user?.role !== '블랙리스트') &&
-            <TouchableOpacity onPress={() => {if(!user.expireIn) navigation.navigate('UncertifiedMember');else if (user.expireIn <= 0) navigation.navigate('ExpiredMember');}}>
+  }, [navigation, isFocused, isInited]);
+
+  return isError ? (
+    <Error status={errorStatus} code={'M001'} />
+  ) : (
+    <>
+      <WaterMark />
+      <SafeAreaView style={{backgroundColor: '#F4F4F4'}}>
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}>
+          <ActivityIndicator
+            size="large"
+            color={'#A055FF'}
+            animating={isLoading}
+            style={{zIndex: 100}}
+          />
+        </View>
+        <ScrollView>
+          <View>
+            {!isInited ? (
+              skeletonComponent
+            ) : (
               <View
                 style={{
+                  height: 160,
                   flexDirection: 'row',
-                  marginTop: 20,
-                  marginHorizontal: 24,
-                  paddingLeft: 18,
-                  height: 70,
                   backgroundColor: '#FFFFFF',
-                  borderRadius: 20,
-                  alignItems: 'center'
-                }}
-              >
-                <ExclamationMark style={{ marginRight: 10 }} />
-                <View>
-                  <Text style={{ color: '#222222', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular' }}>정회원 인증이 필요해요!</Text>
-                  <Text style={{ color: '#6E7882', fontSize: 13, fontFamily: 'SpoqaHanSansNeo-Regular' }}>정회원 인증하기</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    paddingRight: 16
-                  }}
-                >
-                  <RightArrow />
+                  paddingLeft: 35,
+                  paddingTop: 20,
+                }}>
+                {user?.profileImage ? (
+                  <Image
+                    style={{width: 80, height: 80, borderRadius: 10}}
+                    source={{uri: user?.profileImage}}
+                  />
+                ) : (
+                  <DefaultProfile />
+                )}
+                <View style={{height: 80}}>
+                  <View
+                    style={{
+                      marginLeft: 18,
+                      marginRight: 24,
+                      borderBottomColor: '#EEEEEE',
+                      borderBottomWidth: 1,
+                      height: 80,
+                    }}>
+                    <Text
+                      style={[
+                        fontRegular,
+                        {
+                          color: '#6E7882',
+                          fontSize: 13,
+                        },
+                      ]}>
+                      {user?.department}
+                    </Text>
+                    <Text
+                      style={[
+                        fontBold,
+                        {
+                          marginTop: 3,
+                          fontSize: 17,
+                          marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                        },
+                      ]}>
+                      {user?.nickname}
+                    </Text>
+                    <Text
+                      style={[
+                        fontBold,
+                        {
+                          marginBottom: 11,
+                          color: '#6E7882',
+                          fontSize: 15,
+                        },
+                      ]}>
+                      {user?.username}@sungshin.ac.kr
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: 19,
+                      marginTop: 12,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <PointIcon />
+                    <Text
+                      style={[
+                        fontBold,
+                        {
+                          marginLeft: 8,
+                          fontSize: 17,
+                          color: '#A055FF',
+                        },
+                      ]}>
+                      {user?.point}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </TouchableOpacity>}
-          <View
-            style={{marginTop: 16, backgroundColor: '#FFFFFF', paddingBottom: 9, paddingTop: 28, borderBottomColor: '#EEEEEE', borderBottomWidth: 1}}>
-            <Text style={styles.menuTitle}>보안 및 인증</Text>
-            <TouchableHighlight
-              underlayColor='#EEEEEE'
-              onPress={() => {
-                
-                if (user) {
+            )}
+            {user &&
+              (user?.expireIn <= 0 || !user?.expireIn) &&
+              user?.role !== '블랙리스트' && (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!user.expireIn)
+                      navigation.navigate('UncertifiedMember');
+                    else if (user.expireIn <= 0)
+                      navigation.navigate('ExpiredMember');
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 20,
+                      marginHorizontal: 24,
+                      paddingLeft: 18,
+                      height: 70,
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: 20,
+                      alignItems: 'center',
+                    }}>
+                    <ExclamationMark style={{marginRight: 10}} />
+                    <View>
+                      <Text
+                        style={[
+                          fontRegular,
+                          {
+                            color: '#222222',
+                            fontSize: 15,
+                          },
+                        ]}>
+                        정회원 인증이 필요해요!
+                      </Text>
+                      <Text
+                        style={[
+                          fontRegular,
+                          {
+                            color: '#6E7882',
+                            fontSize: 13,
+                          },
+                        ]}>
+                        정회원 인증하기
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        paddingRight: 16,
+                      }}>
+                      <RightArrow />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            <View
+              style={{
+                marginTop: 16,
+                backgroundColor: '#FFFFFF',
+                paddingBottom: 9,
+                paddingTop: 28,
+                borderBottomColor: '#EEEEEE',
+                borderBottomWidth: 1,
+              }}>
+              <Text style={styles.menuTitle}>보안 및 인증</Text>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  if (user) {
                     if (!user?.expireIn) {
                       navigation.navigate('UncertifiedMember');
                     } else if (user?.expireIn > 0) {
@@ -206,77 +305,51 @@ const MyPageFragment = ({navigation}: Props) => {
                     } else {
                       navigation.navigate('ExpiredMember');
                     }
-                }
-              }}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  정회원 인증하기
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                  }}>
-                  <Text style={{color: '#6E7882', fontSize: 15, fontFamily: 'SpoqaHanSansNeo-Regular', marginRight: 9}}>
-                    {user?.authenticatedDate}
-                  </Text>
-                  <RightArrow />
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor='#EEEEEE' onPress={()=> navigation.navigate('InputPassword', {username: user?.username})}>
-              <View style={styles.menu}>
-                <Text style={styles.menuText}>
-                  비밀번호 재설정
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <RightArrow />
-                </View>
-              </View>
-            </TouchableHighlight>
-            {/* <View style={[styles.menu, {marginTop: 6}]}>
-              <Text style={styles.menuTitle}>앱 설정</Text>
-            </View>
-            <View style={styles.menu}>
-              <Text style={styles.menuText}>다크 모드</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'flex-end',
+                  }
                 }}>
-                <Switch
-                  trackColor={{false: '#C4C4C4', true: '#A055FF'}}
-                  thumbColor={'#FFFFFF'}
-                  onValueChange={() => setIsDarkMode(!isDarkMode)}
-                  value={isDarkMode}
-                />
-              </View>
-            </View>
-            <View style={styles.menu}>
-              <Text style={styles.menuText}>쪽지 설정</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                  justifyContent: 'flex-end',
-                }}>
-                <Switch
-                  trackColor={{false: '#C4C4C4', true: '#A055FF'}}
-                  thumbColor={'#FFFFFF'}
-                  onValueChange={() => setAllowMessage(!allowMessage)}
-                  value={allowMessage}
-                />
-              </View>
-            </View> */}
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>정회원 인증하기</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        fontRegular,
+                        {
+                          color: '#6E7882',
+                          fontSize: 15,
+                          marginRight: 9,
+                        },
+                      ]}>
+                      {user?.authenticatedDate}
+                    </Text>
+                    <RightArrow />
+                  </View>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() =>
+                  navigation.navigate('InputPassword', {
+                    username: user?.username,
+                  })
+                }>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>비밀번호 재설정</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                    }}>
+                    <RightArrow />
+                  </View>
+                </View>
+              </TouchableHighlight>
             </View>
             <View
               style={{
@@ -470,18 +543,7 @@ const MyPageFragment = ({navigation}: Props) => {
                 </View>
               </TouchableHighlight>
             </View>
-            {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
-                Salty Lab | contact@crystalmine.kr
-              </Text> */}
-        </View>
-        {/* <View style={{paddingVertical: 24, alignItems: 'center'}}>
-          <PurpleRoundButton
-            text="로그아웃"
-            onClick={() => {
-              setModalVisible(true);
-            }}
-          />
-        </View> */}
+          </View>
           <ModalBottom
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}

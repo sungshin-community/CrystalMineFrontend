@@ -1,8 +1,4 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {
-  AlertCheckIcon,
-  AlertWorkIcon,
-} from '../../resources/icon/AlertItemIcon';
+import {AlertCheckIcon} from '../../resources/icon/AlertItemIcon';
 import CheckMark from '../../resources/icon/CheckMark';
 import {useNavigation} from '@react-navigation/native';
 import AlertBlindIcon from '../../resources/icon/AlertBlindIcon';
@@ -12,13 +8,7 @@ import {readNotification} from '../common/homeApi';
 import Toast from 'react-native-simple-toast';
 import {Alert} from '../classes/AlertDto';
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../common/font';
 import {ModalBottom} from './ModalBottom';
 import AlertNoticeIcon from '../../resources/icon/AlertNoticeIcon';
@@ -92,7 +82,9 @@ const AlertItem = ({
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
                     블라인드 사유
                   </Text>
-                  <Text style={[fontRegular, {width: 143}]}>{data.blind?.reason}</Text>
+                  <Text style={[fontRegular, {width: 143}]}>
+                    {data.blind?.reason}
+                  </Text>
                 </View>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
@@ -108,9 +100,11 @@ const AlertItem = ({
                   </Text>
                   <Text
                     style={[
-                      fontRegular, {
-                      width: Dimensions.get('window').width - 183,
-                    }]}>
+                      fontRegular,
+                      {
+                        width: Dimensions.get('window').width - 183,
+                      },
+                    ]}>
                     {data.blind?.content}
                   </Text>
                 </View>
@@ -125,26 +119,27 @@ const AlertItem = ({
             ) {
               setModalBody(itemContent);
               setBlindModalVisible(true);
-            } else if (data.type === 'BOARD_BLIND' && !data.blind)
+            } else if (data.type === 'BOARD_BLIND' && !data.blind) {
               setTimeout(function () {
                 Toast.show('삭제된 게시판입니다.', Toast.SHORT);
               }, 100);
-            else if (data.type === 'PIN_BOARD_BLIND' && !data.blind)
+            } else if (data.type === 'PIN_BOARD_BLIND' && !data.blind) {
               setTimeout(function () {
                 Toast.show('삭제된 게시판입니다.', Toast.SHORT);
               }, 100);
-            else if (data.type === 'POST_BLIND' && !data.blind)
+            } else if (data.type === 'POST_BLIND' && !data.blind) {
               setTimeout(function () {
                 Toast.show('삭제된 게시글입니다.', Toast.SHORT);
               }, 100);
-            else if (data.type === 'COMMENT_BLIND' && !data.blind)
+            } else if (data.type === 'COMMENT_BLIND' && !data.blind) {
               setTimeout(function () {
                 Toast.show('삭제된 댓글입니다.', Toast.SHORT);
               }, 100);
-            else
+            } else {
               setTimeout(function () {
                 Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }, 100);
+            }
           } else if (
             data.type === 'DELETE_BOARD_BLIND' ||
             data.type === 'DELETE_POST_BLIND' ||
@@ -175,7 +170,10 @@ const AlertItem = ({
                   <Text
                     ellipsizeMode={'tail'}
                     numberOfLines={3}
-                    style={[fontRegular, {width: Dimensions.get('window').width - 178}]}>
+                    style={[
+                      fontRegular,
+                      {width: Dimensions.get('window').width - 178},
+                    ]}>
                     {data.deleteBlind?.content}
                   </Text>
                 </View>
@@ -189,22 +187,29 @@ const AlertItem = ({
             ) {
               setModalBody(itemContent);
               setBlindModalVisible(true);
-            } else if (data.type === 'DELETE_BOARD_BLIND' && !data.deleteBlind)
+            } else if (
+              data.type === 'DELETE_BOARD_BLIND' &&
+              !data.deleteBlind
+            ) {
               setTimeout(function () {
                 Toast.show('삭제된 게시판입니다.', Toast.SHORT);
               }, 100);
-            else if (data.type === 'DELETE_POST_BLIND' && !data.deleteBlind)
+            } else if (data.type === 'DELETE_POST_BLIND' && !data.deleteBlind) {
               setTimeout(function () {
                 Toast.show('삭제된 게시글입니다.', Toast.SHORT);
               }, 100);
-            else if (data.type === 'DELETE_COMMENT_BLIND' && !data.deleteBlind)
+            } else if (
+              data.type === 'DELETE_COMMENT_BLIND' &&
+              !data.deleteBlind
+            ) {
               setTimeout(function () {
                 Toast.show('삭제된 댓글입니다.', Toast.SHORT);
               }, 100);
-            else
+            } else {
               setTimeout(function () {
                 Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
               }, 100);
+            }
           } else if (
             data.type === 'HOT_POST' ||
             data.type === 'COMMENT' ||
@@ -213,8 +218,8 @@ const AlertItem = ({
             navigation.navigate('PostScreen', {postId: data.postId});
           }
         }}>
-        {(data.type === 'WELCOME') && <CheckMark />}
-        {(data.type ==='NOTICE') && <AlertNoticeIcon />}
+        {data.type === 'WELCOME' && <CheckMark />}
+        {data.type === 'NOTICE' && <AlertNoticeIcon />}
         {(data.type === 'BEFORE_EXPIRE' ||
           data.type === 'EXPIRE' ||
           data.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
@@ -259,7 +264,11 @@ const AlertItem = ({
               ? data.blind?.content
               : data.deleteBlind?.content}
           </Text>
-          <Text style={[fontRegular, {color: '#A3A3A3', fontSize: 12, marginTop: 5}]}>
+          <Text
+            style={[
+              fontRegular,
+              {color: '#A3A3A3', fontSize: 12, marginTop: 5},
+            ]}>
             {data.createdAt}
           </Text>
         </View>

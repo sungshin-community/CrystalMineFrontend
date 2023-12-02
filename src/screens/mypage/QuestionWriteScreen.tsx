@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  FlatList,
-  Image,
   Keyboard,
   Pressable,
   ScrollView,
@@ -13,8 +11,6 @@ import {
   View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CommonActions} from '@react-navigation/native';
-import BackButton from '../../components/BackButton';
 import {fontMedium, fontRegular} from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
@@ -53,7 +49,9 @@ function RequestWriteScreen({navigation}: Props) {
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (title && content) setModalVisible(true);
+            if (title && content) {
+              setModalVisible(true);
+            }
           }}>
           <Text
             style={[
@@ -96,7 +94,6 @@ function RequestWriteScreen({navigation}: Props) {
 
   const deleteImage = (imageUri: string) => {
     setImages(images.filter(item => item.uri !== imageUri));
-    console.log('>>>', images);
   };
 
   return (
@@ -127,11 +124,12 @@ function RequestWriteScreen({navigation}: Props) {
               value={title}
               onChangeText={value => {
                 setTitle(value);
-                if (value.length === 23)
+                if (value.length === 23) {
                   Toast.show(
                     '문의 제목은 23글자까지만 입력 가능합니다.',
                     Toast.SHORT,
                   );
+                }
               }}
               maxLength={23}
               style={[fontMedium, styles.title]}
@@ -145,11 +143,12 @@ function RequestWriteScreen({navigation}: Props) {
               multiline={true}
               onChangeText={value => {
                 setContent(value);
-                if (value.length === 500)
+                if (value.length === 500) {
                   Toast.show(
                     '문의 내용은 500글자까지만 입력 가능합니다.',
                     Toast.SHORT,
                   );
+                }
               }}
               maxLength={500}
               onBlur={() => {
@@ -199,12 +198,15 @@ function RequestWriteScreen({navigation}: Props) {
         <ModalBottom
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          content={`작성하신 문의글은 답변 대기 상태가 되며,\n답변이 달린 후로는 문의글을\n삭제할 수 없음을 알려드립니다.`}
+          content={
+            '작성하신 문의글은 답변 대기 상태가 되며,\n답변이 달린 후로는 문의글을\n삭제할 수 없음을 알려드립니다.'
+          }
           purpleButtonText="확인"
           purpleButtonFunc={() => {
             onSubmitPress();
             setModalVisible(false);
-          }}></ModalBottom>
+          }}
+        />
       )}
     </>
   );

@@ -9,7 +9,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
   KeyboardEvent,
 } from 'react-native';
 
@@ -24,7 +23,6 @@ import {CautionText} from '../../../components/Input';
 import PasswordShow from '../../../../resources/icon/PasswordShow';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import PasswordNotShow from '../../../../resources/icon/PasswordNotShow';
-import {checkNewPassword} from '../../../common/authApi';
 import {checkPassword} from '../../../common/myPageApi';
 import {getHundredsDigit} from '../../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
@@ -74,9 +72,10 @@ export default function InputPassword({navigation, route}: Props) {
     Keyboard.dismiss();
   };
 
-  const validatePassword = (password: string) => {
-    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
-    if (regExp.test(password)) {
+  const validatePassword = (passwordData: string) => {
+    let regExp =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+    if (regExp.test(passwordData)) {
       setIsValidate(true);
       setIsWrong(false);
     } else {
@@ -163,7 +162,7 @@ export default function InputPassword({navigation, route}: Props) {
           <CautionText text="사용할 수 없는 비밀번호 입니다." />
         )}
         {!isChangeable && (
-          <CautionText text="비밀번호를 정확하게 입력해 주세요."></CautionText>
+          <CautionText text="비밀번호를 정확하게 입력해 주세요." />
         )}
       </ScrollView>
       <View
@@ -179,7 +178,7 @@ export default function InputPassword({navigation, route}: Props) {
               let result = await checkPassword(password);
               if (getHundredsDigit(result.status) === 2) {
                 navigation.navigate('InputNewPassword', {
-                  username: route.params.username,
+                  username: route.params?.username,
                 });
               } else if (result.data.code === 'PASSWORD_NOT_MATCH') {
                 setIsChangeable(false);
@@ -198,7 +197,7 @@ export default function InputPassword({navigation, route}: Props) {
               let result = await checkPassword(password);
               if (getHundredsDigit(result.status) === 2) {
                 navigation.navigate('InputNewPassword', {
-                  username: route.params.username,
+                  username: route.params?.username,
                 });
               } else if (result.data.code === 'PASSWORD_NOT_MATCH') {
                 setIsChangeable(false);

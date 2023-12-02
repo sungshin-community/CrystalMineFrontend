@@ -8,10 +8,7 @@ import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {BigGrayPin, BigPurplePin} from '../../../resources/icon/Pin';
 import {fontMedium} from '../../common/font';
-import SpinningThreeDots from '../../components/SpinningThreeDots';
-import SettingIcon from '../../../resources/icon/SettingIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
-import NoReport, {Report} from '../../../resources/icon/Report';
 import Toast from 'react-native-simple-toast';
 import PostListScreen from '../post/PostListScreen';
 import {logout} from '../../common/authApi';
@@ -31,14 +28,10 @@ var tabWidth = (Dimensions.get('window').width / 4 - 24) / 2; // 한 탭 당 가
 
 function WikiTab({navigation, route}: Props) {
   const [boardInfo, setBoardInfo] = useState<Board>();
-  const [reportCheckModalVisible, setReportCheckModalVisible] = useState<
-    boolean
-  >(false);
-  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     async function init() {
-      const boardData = await getBoardInfo(route.params.boardId);
+      const boardData = await getBoardInfo(route.params?.boardId);
       setBoardInfo(boardData);
     }
     init();
@@ -49,7 +42,7 @@ function WikiTab({navigation, route}: Props) {
       <>
         <Pressable
           onPress={async () => {
-            const response = await toggleBoardPin(route.params.boardId);
+            const response = await toggleBoardPin(route.params?.boardId);
             if (response.status === 401) {
               setTimeout(function () {
                 Toast.show(
@@ -120,7 +113,8 @@ function WikiTab({navigation, route}: Props) {
       headerRight: () => handleBoardSearchComponent,
       headerTitleAlign: 'center',
     });
-  }, [navigation, boardInfo, reportCheckModalVisible, reportModalVisible]);
+  }, [navigation, boardInfo]);
+
   return (
     <>
       <Tab.Navigator

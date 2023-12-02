@@ -7,9 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
-  GestureResponderEvent,
   TouchableOpacity,
-  Dimensions,
   Platform,
 } from 'react-native';
 
@@ -18,19 +16,15 @@ import {
   DisabledPurpleRoundButton,
 } from '../../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TwoLineTitle, SmallText} from '../../../components/Top';
+import {TwoLineTitle} from '../../../components/Top';
 import {Container} from '../../../components/Container';
-import {SpreadButton, FoldButton} from '../../../../resources/icon/Button';
 import {
   RoundChecked,
   RoundUnchecked,
-  Unchecked,
-  Checked,
 } from '../../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../../components/HideToggleContainer';
 import Agreement from '../../../classes/Agreement';
-import {getBoardirectionAgreements} from '../../../common/boardApi';
-import { getContractCreateBoard } from '../../../common/contractApi';
+import {getContractCreateBoard} from '../../../common/contractApi';
 import WaterMark from '../../../components/WaterMark';
 
 type RootStackParamList = {
@@ -42,7 +36,9 @@ function TermAgreeCreateBoard({navigation}: Props) {
   const [agreements, setAgreements] = useState<Agreement[]>([]);
 
   const handleChange = (id: number) => {
-    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
+    const agreementList = agreements.map((a, index) =>
+      index === id ? {...a, checked: !a.checked} : a,
+    );
     setAgreements(agreementList);
   };
 
@@ -99,25 +95,21 @@ function TermAgreeCreateBoard({navigation}: Props) {
                   marginRight: 24,
                   borderRadius: 10,
                   marginTop: 31,
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
-                onPress={(e: any) => {
+                onPress={() => {
                   let agreementList = agreements.slice();
-                  agreements.filter(a => a.checked).length == agreements.length
+                  agreements.filter(a => a.checked).length === agreements.length
                     ? agreementList.forEach(a => (a.checked = false))
                     : agreementList.forEach(a => (a.checked = true));
                   setAgreements(agreementList);
                 }}>
                 {agreements.length > 0 &&
-                agreements.filter(a => a.checked).length ==
+                agreements.filter(a => a.checked).length ===
                   agreements.length ? (
-                  <RoundChecked
-                    style={styles.wholeAgreeCheckBox}
-                  />
+                  <RoundChecked style={styles.wholeAgreeCheckBox} />
                 ) : (
-                  <RoundUnchecked
-                    style={styles.wholeAgreeCheckBox}
-                  />
+                  <RoundUnchecked style={styles.wholeAgreeCheckBox} />
                 )}
                 <Text
                   style={{
@@ -145,7 +137,7 @@ function TermAgreeCreateBoard({navigation}: Props) {
         <View
           style={{bottom: 34, justifyContent: 'center', alignItems: 'center'}}>
           {agreements.length > 0 &&
-          agreements.filter(a => a.checked).length == agreements.length ? (
+          agreements.filter(a => a.checked).length === agreements.length ? (
             <PurpleRoundButton
               text="다음"
               onClick={() => {

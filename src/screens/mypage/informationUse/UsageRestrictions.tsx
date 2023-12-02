@@ -3,15 +3,13 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  Pressable,
   View,
-  ScrollView,
   ActivityIndicator,
   FlatList,
   RefreshControl,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {fontBold, fontMedium, fontRegular} from '../../../common/font';
+import {fontBold, fontRegular} from '../../../common/font';
 import {getUsageRestrictions} from '../../../common/myPageApi';
 import UsageRestrictionsDto from '../../../classes/mypage/UsageRestrictionsDto';
 import WaterMark from '../../../components/WaterMark';
@@ -20,7 +18,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-function UsageRestrictions({navigation}: Props) {
+function UsageRestrictions() {
   const [list, setList] = useState<UsageRestrictionsDto[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -28,49 +26,49 @@ function UsageRestrictions({navigation}: Props) {
 
   useEffect(() => {
     async function getList() {
-      const list = await getUsageRestrictions(0);
-      setList(list);
+      const response = await getUsageRestrictions(0);
+      setList(response);
     }
     getList();
   }, []);
 
   const handleRefresh = async () => {
-      const postList = await getUsageRestrictions(0);
-      setList(postList);
+    const postList = await getUsageRestrictions(0);
+    setList(postList);
   };
 
   const fetchNextPage = async () => {
-      let thisPagePostList: UsageRestrictionsDto[] = await getUsageRestrictions(
-        currentPage + 1,
-      );
-      setList(list?.concat(thisPagePostList));
-      if (thisPagePostList.length > 0) {
-        setCurrentPage(currentPage + 1);
-      }
+    let thisPagePostList: UsageRestrictionsDto[] = await getUsageRestrictions(
+      currentPage + 1,
+    );
+    setList(list?.concat(thisPagePostList));
+    if (thisPagePostList.length > 0) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   return (
     <>
-      <WaterMark/>
-        <View
-          style={{
-            position: 'absolute',
-            alignItems: 'center',
-            justifyContent: 'center',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-          }}>
-          <ActivityIndicator
-            size="large"
-            color={'#A055FF'}
-            animating={isLoading}
-            style={{zIndex: 100}}
-          />
-        </View>
+      <WaterMark />
+      <View
+        style={{
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }}>
+        <ActivityIndicator
+          size="large"
+          color={'#A055FF'}
+          animating={isLoading}
+          style={{zIndex: 100}}
+        />
+      </View>
       {list?.length === 0 ? (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{flex: 1}}>
           <View
             style={{
               flex: 1,
@@ -86,18 +84,16 @@ function UsageRestrictions({navigation}: Props) {
                 lineHeight: 22.5,
                 marginTop: 20,
               }}>
-              {isLoading
-                ? ''
-                : '회원님께 해당되는\n이용 제한 내역이 없습니다.'}
+              {isLoading ? '' : '회원님께 해당되는\n이용 제한 내역이 없습니다.'}
             </Text>
           </View>
         </SafeAreaView>
       ) : (
         <FlatList
           showsVerticalScrollIndicator={false}
-          style={{ flex: 1, backgroundColor: '#F6F6F6' }}
+          style={{flex: 1, backgroundColor: '#F6F6F6'}}
           data={list}
-          renderItem={({ item, index }) => (
+          renderItem={({item, index}) => (
             <View key={index}>
               <View style={styles.menuContainer}>
                 <View style={[styles.menu]}>
@@ -110,7 +106,7 @@ function UsageRestrictions({navigation}: Props) {
                     </Text>
                   </View>
                 </View>
-                <View style={[styles.menu, { marginTop: 5 }]}>
+                <View style={[styles.menu, {marginTop: 5}]}>
                   <Text style={[fontBold, styles.blindTitle]}>
                     {item.type === 'POST' ? '게시글 블라인드' : '댓글 블라인드'}
                   </Text>
@@ -127,7 +123,7 @@ function UsageRestrictions({navigation}: Props) {
             </View>
           )}
           ItemSeparatorComponent={() => (
-            <View style={{ height: 1, backgroundColor: '#F0F0F0' }}></View>
+            <View style={{height: 1, backgroundColor: '#F0F0F0'}}></View>
           )}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
@@ -140,7 +136,8 @@ function UsageRestrictions({navigation}: Props) {
             />
           }
           onEndReached={() => fetchNextPage()}
-          onEndReachedThreshold={0.8} />
+          onEndReachedThreshold={0.8}
+        />
       )}
     </>
   );

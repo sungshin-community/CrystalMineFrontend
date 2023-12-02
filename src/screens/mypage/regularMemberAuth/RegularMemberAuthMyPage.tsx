@@ -1,17 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
   Text,
   View,
-  TouchableOpacity,
   StyleSheet,
-  Button,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
   Keyboard,
-  TouchableWithoutFeedback,
   TouchableHighlight,
   KeyboardEvent,
   ScrollView,
@@ -24,12 +20,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {Description, TwoLineTitle} from '../../../components/Top';
-import CustomButton, {
-  WhiteRoundButton,
+import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
   PurpleFullButton,
-  DisabledWhiteRoundButton,
   DisabledPurpleFullButton,
 } from '../../../components/Button';
 import {ModalBottom} from '../../../components/ModalBottom';
@@ -37,10 +31,8 @@ import {checkAuthNumber, logout, sendEmail} from '../../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import {useIsFocused} from '@react-navigation/native';
 import {getHundredsDigit} from '../../../common/util/statusUtil';
 import BackgroundTimer from 'react-native-background-timer';
-import BackButtonIcon from '../../../../resources/icon/BackButtonIcon';
 import CloseButtonIcon from '../../../../resources/icon/CloseButtonIcon';
 import styled from 'styled-components/native';
 import {fontRegular} from '../../../common/font';
@@ -75,8 +67,6 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] =
-    useState<boolean>(false);
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState(TIME);
   const [timerOn, setTimerOn] = useState(true);
@@ -84,15 +74,6 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   const [sec, setSec] = useState<number>(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-
-  const onInputFocus = () => {
-    setIsFocused(true);
-  };
-
-  const onInputFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
-  };
 
   const onKeyboardDidshow = (e: KeyboardEvent) => {
     setKeyboardHeight(e.endCoordinates.height);
@@ -121,8 +102,6 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             justifyContent: 'center',
           }}
           onPress={() => {
-            console.log('press');
-            // navigation.reset({routes: [{name: 'MyPage'}]});
             navigation.navigate('MyPage');
           }}>
           <CloseButtonIcon />
@@ -134,8 +113,11 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   console.log('시간 가는 중', secondsLeft);
 
   useEffect(() => {
-    if (timerOn) startTimer();
-    else BackgroundTimer.stopBackgroundTimer();
+    if (timerOn) {
+      startTimer();
+    } else {
+      BackgroundTimer.stopBackgroundTimer();
+    }
     return () => {
       BackgroundTimer.stopBackgroundTimer();
     };
@@ -144,8 +126,11 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   const startTimer = () => {
     BackgroundTimer.runBackgroundTimer(() => {
       setSecondsLeft(secs => {
-        if (secs > 0) return secs - 1;
-        else return 0;
+        if (secs > 0) {
+          return secs - 1;
+        } else {
+          return 0;
+        }
       });
     }, 1000);
   };
@@ -182,12 +167,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
   };
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
-    // navigation.reset({routes: [{name: 'MyPage'}]});
     navigation.navigate('MyPage');
-  };
-  const onFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
   };
 
   return (
@@ -205,13 +185,14 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
             </Description>
           </TextContainer>
           <CodeField
-            // autoFocus={true}
             ref={ref}
             {...props}
             value={value}
-            onChangeText={value => {
-              setValue(value);
-              if (value.length !== 6) setIsIncorrect(false);
+            onChangeText={text => {
+              setValue(text);
+              if (text.length !== 6) {
+                setIsIncorrect(false);
+              }
             }}
             cellCount={CELL_COUNT}
             rootStyle={styles.codeFieldRoot}
@@ -300,7 +281,8 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                     );
                   }, 100);
                 }
-              }}></PurpleFullButton>
+              }}
+            />
           )}
           {value.length === 6 && !isFocused && (
             <PurpleRoundButton
@@ -337,13 +319,14 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
                     );
                   }, 100);
                 }
-              }}></PurpleRoundButton>
+              }}
+            />
           )}
           {value.length < 6 && isFocused && (
-            <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
+            <DisabledPurpleFullButton text="인증 완료" />
           )}
           {value.length < 6 && !isFocused && (
-            <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
+            <DisabledPurpleRoundButton text="인증 완료" />
           )}
         </View>
       </KeyboardAvoidingView>
@@ -351,7 +334,7 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
         <ModalBottom
           modalVisible={!modalVisible}
           setModalVisible={setModalVisible}
-          content={`인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.`}
+          content={'인증번호 입력 시간이 초과되어,\n인증번호를 재전송합니다.'}
           purpleButtonText="인증번호 재전송"
           purpleButtonFunc={onResendOtpButtonPress}
           whiteButtonText="인증 취소"
@@ -362,25 +345,31 @@ export default function RegularMemberAuthMyPage({navigation}: Props) {
         <ModalBottom
           modalVisible={!modalIncorrectOverVisble}
           setModalVisible={setModalIncorrectOverVisible}
-          content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
+          content={
+            '인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.'
+          }
           purpleButtonText="확인"
           purpleButtonFunc={() => {
             setModalIncorrectOverVisible(!modalIncorrectOverVisble);
             gotoHome();
             setTimerOn(false);
-          }}></ModalBottom>
+          }}
+        />
       )}
       {isCoolTime && (
         <ModalBottom
           modalVisible={isCoolTime}
           setModalVisible={setIsCoolTime}
-          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          content={
+            '이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.'
+          }
           purpleButtonText="확인"
           purpleButtonFunc={() => {
             setModalIncorrectOverVisible(!modalIncorrectOverVisble);
             gotoHome();
             setTimerOn(false);
-          }}></ModalBottom>
+          }}
+        />
       )}
     </>
   );

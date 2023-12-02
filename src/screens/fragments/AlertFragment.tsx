@@ -18,11 +18,8 @@ const AlertFragment = () => {
   const [alerts, setAlerts] = useState<Alert[]>();
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const isFocused = useIsFocused();
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
-  const [noticeModalVisible, setNoticeModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -32,22 +29,11 @@ const AlertFragment = () => {
       setIsLoading(false);
     };
     if (isFocused) init();
-  }, [isFocused, blindModalVisible, noticeModalVisible]);
+  }, [isFocused, blindModalVisible]);
 
   const handleRefresh = async () => {
     const result = await getAlerts();
-    setCurrentPage(0);
     setAlerts(result);
-  };
-
-  const fetchNextPage = async () => {
-    setIsNextPageLoading(true);
-    let thisPagePostList: Alert[] = await getAlerts(currentPage + 1);
-    setAlerts(alerts.concat(thisPagePostList));
-    if (thisPagePostList.length > 0) {
-      setCurrentPage(currentPage + 1);
-    }
-    setIsNextPageLoading(false);
   };
 
   return (

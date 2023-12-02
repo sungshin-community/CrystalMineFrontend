@@ -1,7 +1,6 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import DeleteIcon from '../../../resources/icon/DeleteIcon';
 import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
@@ -21,8 +20,6 @@ export default function ReplaceEmail({navigation}: Props) {
   const [del, setDel] = useState(false);
   const [firstmail, setFirstmail] = useState('');
   const [secondmail, setSecondmail] = useState(null);
-  // const firstmail = '0000000@sungshin.ac.kr';
-  // const secondmail = 'crystal124@naver.com';
 
   useEffect(() => {
     async function getEmail() {
@@ -48,22 +45,6 @@ export default function ReplaceEmail({navigation}: Props) {
       <View style={styles.wrap}>
         <View style={styles.title}>
           <Text style={styles.purple}>현재 등록된 이메일</Text>
-          {/* 대체 이메일 없을 경우 삭제 버튼 안보임 */}
-          {/* {secondmail == null || secondmail === '' ? null : (
-            <>
-              {del ? (
-                <TouchableOpacity onPress={() => setDel(!del)}>
-                  <View style={styles.delview}>
-                    <Text style={styles.del}>삭제</Text>
-                  </View>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => setDel(true)}>
-                  <DeleteIcon />
-                </TouchableOpacity>
-              )}
-            </>
-          )} */}
         </View>
         <View style={styles.email}>
           {/* 대체 이메일(대표, 삭제가능) */}

@@ -7,9 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
-  GestureResponderEvent,
   TouchableOpacity,
-  Dimensions,
   Platform,
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
@@ -18,32 +16,19 @@ import {
   DisabledPurpleRoundButton,
 } from '../../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TwoLineTitle, SmallText} from '../../../components/Top';
+import {TwoLineTitle} from '../../../components/Top';
 import {Container} from '../../../components/Container';
-import {SpreadButton, FoldButton} from '../../../../resources/icon/Button';
 import {
   RoundChecked,
   RoundUnchecked,
-  Unchecked,
-  Checked,
 } from '../../../../resources/icon/CheckBox';
-import {
-  AgreementContainer,
-  DirectionContainer,
-} from '../../../components/HideToggleContainer';
-import Agreement, {DirectionAgreement} from '../../../classes/Agreement';
-import {
-  getAgreements,
-  getDirectionAgreements,
-  logout,
-  sendEmail,
-} from '../../../common/authApi';
-import {
-  getContractGuide,
-  getSignUpDirection,
-} from '../../../common/contractApi';
+import {AgreementContainer} from '../../../components/HideToggleContainer';
+import {DirectionAgreement} from '../../../classes/Agreement';
+import {logout, sendEmail} from '../../../common/authApi';
+import {getSignUpDirection} from '../../../common/contractApi';
 import {ModalBottom} from '../../../components/ModalBottom';
 import {getHundredsDigit} from '../../../common/util/statusUtil';
+
 type RootStackParamList = {
   SplashHome: undefined;
   SignUpId: {agreementIds: number[]};
@@ -67,8 +52,8 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
 
   useEffect(() => {
     async function init() {
-      const agreementList = await getSignUpDirection();
-      setAgreements(agreementList);
+      const response = await getSignUpDirection();
+      setAgreements(response);
     }
     init();
   }, []);
@@ -118,7 +103,7 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
                   marginTop: 31,
                   alignItems: 'center',
                 }}
-                onPress={(e: any) => {
+                onPress={() => {
                   let agreementList = agreements.slice();
                   agreements.filter(a => a.checked).length == agreements.length
                     ? agreementList.forEach(a => (a.checked = false))
@@ -158,12 +143,12 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
         <View
           style={{bottom: 34, justifyContent: 'center', alignItems: 'center'}}>
           {agreements.length > 0 &&
-          agreements.filter(a => a.checked).length == agreements.length ? (
+          agreements.filter(a => a.checked).length === agreements.length ? (
             <PurpleRoundButton
               text="다음"
               onClick={async () => {
                 const thisYear = new Date().getFullYear();
-                const studentId = route.params.studentId;
+                const studentId = route.params?.studentId;
                 let year: number = 0;
                 year = +studentId.substring(0, 4);
                 if (
@@ -219,9 +204,12 @@ function DirectionAgreeMyPage({navigation, route}: Props) {
         <ModalBottom
           modalVisible={isCoolTime}
           setModalVisible={setIsCoolTime}
-          content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
+          content={
+            '이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.'
+          }
           purpleButtonText="확인"
-          purpleButtonFunc={() => navigation.navigate('MyPage')}></ModalBottom>
+          purpleButtonFunc={() => navigation.navigate('MyPage')}
+        />
       )}
     </>
   );

@@ -1,27 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {
-  SafeAreaView,
   Text,
   View,
   ScrollView,
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
-  FlatList,
   TouchableOpacity,
-  TouchableHighlight,
   Pressable,
   ActivityIndicator,
-  Alert,
   AppState,
   Platform,
 } from 'react-native';
 import AdMob from '../../components/AdMob';
-import {fontBold, fontMedium, fontRegular} from '../../common/font';
+import {fontBold, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {PurpleRoundButton} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
 import RightArrowBold from '../../../resources/icon/RightArrowBold';
@@ -29,7 +23,6 @@ import {PinBoardDto, HotBoardDto, HomeNotification} from '../../classes/Home';
 import {
   getAuthentication,
   getHotBoardContents,
-  getNotification,
   getPinBoardContents,
   getUnreadNotification,
   readNotification,
@@ -46,7 +39,6 @@ import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 import WaterMark from '../../components/WaterMark';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
-import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
 import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 import messaging from '@react-native-firebase/messaging';
@@ -55,6 +47,7 @@ import {
   topicTokenLogic,
 } from '../../common/util/pushRegisterUtil';
 import {request, PERMISSIONS} from 'react-native-permissions';
+
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPage: undefined;
@@ -71,9 +64,7 @@ type RootStackParamList = {
   SplashHome: undefined;
   Notice: {noticeId: number};
 };
-type notiItemDto = {
-  notiItem: HomeNotification;
-};
+
 type Props = NativeStackScreenProps<RootStackParamList>;
 const HomeFragment = ({navigation}: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>([]);
@@ -226,7 +217,7 @@ const HomeFragment = ({navigation}: Props) => {
       getContents();
     }
   }, [isFocused, modalBody, blindModalVisible]);
-  // console.log(pinBoardContents);
+
   useEffect(() => {
     const listener = AppState.addEventListener('change', status => {
       if (Platform.OS === 'ios' && status === 'active') {
@@ -235,11 +226,11 @@ const HomeFragment = ({navigation}: Props) => {
           .catch(error => console.warn(error));
       }
     });
-
     return () => {
       listener.remove();
     };
   }, []);
+
   return (
     <>
       <WaterMark />
@@ -425,13 +416,14 @@ const HomeFragment = ({navigation}: Props) => {
                             setTimeout(function () {
                               Toast.show('삭제된 댓글입니다.', Toast.SHORT);
                             }, 100);
-                          else
+                          else {
                             setTimeout(function () {
                               Toast.show(
                                 '알 수 없는 오류가 발생하였습니다.',
                                 Toast.SHORT,
                               );
                             }, 100);
+                          }
                         } else if (
                           item.type === 'DELETE_BOARD_BLIND' ||
                           item.type === 'DELETE_POST_BLIND' ||
@@ -507,13 +499,14 @@ const HomeFragment = ({navigation}: Props) => {
                             setTimeout(function () {
                               Toast.show('삭제된 댓글입니다.', Toast.SHORT);
                             }, 100);
-                          else
+                          else {
                             setTimeout(function () {
                               Toast.show(
                                 '알 수 없는 오류가 발생하였습니다.',
                                 Toast.SHORT,
                               );
                             }, 100);
+                          }
                         }
                       }}>
                       <View style={{flexDirection: 'row'}}>

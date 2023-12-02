@@ -1,14 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  ScrollView,
-  View,
-  Text
-} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { AgreementAll, DirectionAgreement } from '../../classes/Agreement';
-import { getAllAgreements } from '../../common/authApi';
-import { getContractGuide } from '../../common/contractApi';
-import { fontRegular } from '../../common/font';
+import {AgreementAll} from '../../classes/Agreement';
+import {getContractGuide} from '../../common/contractApi';
 import WaterMark from '../../components/WaterMark';
 
 export const DirectionAgreeScreen = () => {
@@ -19,17 +13,16 @@ export const DirectionAgreeScreen = () => {
       setData(result);
     }
     init();
-  }, [])
+  }, []);
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff',paddingHorizontal: 24, paddingTop: 20}}>
+    <ScrollView
+      style={{backgroundColor: '#fff', paddingHorizontal: 24, paddingTop: 20}}>
       <WaterMark />
-      {/* <Text style={fontRegular}> */}
-        <Markdown >
-          {data?.direction.content ? data?.direction.content : ""}
-        </Markdown>
-      {/* </Text> */}
-      <View style={{paddingVertical: 30}}/>
+      <Markdown>
+        {data?.direction.content ? data?.direction.content : ''}
+      </Markdown>
+      <View style={{paddingVertical: 30}} />
     </ScrollView>
-    );
-}
+  );
+};

@@ -6,18 +6,15 @@ import {
   StatusBar,
   StyleSheet,
   Platform,
-  Dimensions,
   Text,
   TextInput,
 } from 'react-native';
-import {TwoLineTitle, Description} from '../../../components/Top';
+import {Description} from '../../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleRoundButton,
 } from '../../../components/Button';
-import * as Animatable from 'react-native-animatable';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ModalBottom} from '../../../components/ModalBottom';
 import {fontBold, fontMedium, fontRegular} from '../../../common/font';
 import {getUser} from '../../../common/myPageApi';
 import User from '../../../classes/User';

@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 import BoardList, {
   MenuList,
   CustomBoardList,
-  OfficialBoardList
+  OfficialBoardList,
 } from '../../components/BoardList';
 import Board from '../../classes/Board';
-import {OfficialBoardListContainer, BoardListContainer, CustomBoardListContainer} from '../../components/HideToggleContainer';
+import {
+  OfficialBoardListContainer,
+  BoardListContainer,
+  CustomBoardListContainer,
+} from '../../components/HideToggleContainer';
 import {
   getCustomBoardList,
   getDepartmentBoardList,
@@ -17,20 +21,18 @@ import {
   getPinnedOfficialBoardList,
   getPinnedPublicBoardList,
 } from '../../common/boardApi';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { fontRegular } from '../../common/font';
-import { getHundredsDigit } from '../../common/util/statusUtil';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fontRegular} from '../../common/font';
+import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
-import Error from '../../components/Error'
-import { logout } from '../../common/authApi';
+import Error from '../../components/Error';
+import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
 
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
   ScrapedPostList: undefined;
-  PostListScreen: { boardId: number };
+  PostListScreen: {boardId: number};
   TermAgreeCreateBoard: undefined;
   WikiTab: {boardId: number};
   SplashHome: undefined;
@@ -53,7 +55,10 @@ export default function BoardFragment({navigation}: Props) {
     const pinnedOfficialResponse = await getPinnedOfficialBoardList();
     if (pinnedOfficialResponse.status === 401) {
       setTimeout(function () {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
       }, 100);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
@@ -67,7 +72,10 @@ export default function BoardFragment({navigation}: Props) {
     const pinnedDepartmentResponse = await getPinnedDepartmentBoardList();
     if (pinnedDepartmentResponse.status === 401) {
       setTimeout(function () {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
       }, 100);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
@@ -81,7 +89,10 @@ export default function BoardFragment({navigation}: Props) {
     const pinnedPublicResponse = await getPinnedPublicBoardList();
     if (pinnedPublicResponse.status === 401) {
       setTimeout(function () {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
       }, 100);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
@@ -93,13 +104,16 @@ export default function BoardFragment({navigation}: Props) {
       setIsError(true);
       return;
     }
-  }
+  };
 
   const getOfficialBoards = async () => {
     const officialResponse = await getOfficialBoardList();
     if (officialResponse.status === 401) {
       setTimeout(function () {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
       }, 100);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
@@ -109,13 +123,16 @@ export default function BoardFragment({navigation}: Props) {
       setErrorStatus(officialResponse.status);
       setIsError(true);
     }
-  }
+  };
 
   const getPublicBoards = async () => {
     const publicResponse = await getCustomBoardList();
     if (publicResponse.status === 401) {
       setTimeout(function () {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
       }, 100);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
@@ -125,13 +142,16 @@ export default function BoardFragment({navigation}: Props) {
       setErrorStatus(publicResponse.status);
       setIsError(true);
     }
-  }
+  };
 
   const getDepartmentBoards = async () => {
     const departmentResponse = await getDepartmentBoardList();
     if (departmentResponse.status === 401) {
       setTimeout(function () {
-        Toast.show('토큰 정보가 만료되어 로그인 화면으로 이동합니다', Toast.SHORT);
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
       }, 100);
       logout();
       navigation.reset({routes: [{name: 'SplashHome'}]});
@@ -141,37 +161,37 @@ export default function BoardFragment({navigation}: Props) {
       setErrorStatus(departmentResponse.status);
       setIsError(true);
     }
-  }
+  };
 
   const updateOfficialBoardList = async () => {
     getOfficialBoards();
     getPinnedBoardList();
-  }
+  };
 
   const updatePinnedBoardList = async () => {
     getPinnedBoardList();
     getPublicBoards();
     getOfficialBoards();
     getDepartmentBoards();
-  }
+  };
 
   const updateCustomBoardList = async () => {
     getPublicBoards();
     getPinnedBoardList();
-  }
+  };
 
   const updateDepartmentBoardList = async () => {
     getDepartmentBoards();
     getPinnedBoardList();
-  }
+  };
 
   const moveToMyPostList = () => {
-    navigation.navigate('MyPostList')
-  }
+    navigation.navigate('MyPostList');
+  };
 
   const moveToScrapedPostList = () => {
-    navigation.navigate('ScrapedPostList')
-  }
+    navigation.navigate('ScrapedPostList');
+  };
 
   const moveToBoard = (boardId: number) => {
     if (boardId === 5) {
@@ -179,15 +199,15 @@ export default function BoardFragment({navigation}: Props) {
     } else {
       navigation.navigate('PostListScreen', {boardId: boardId});
     }
-  }
+  };
 
   const moveToCreateBoard = () => {
     navigation.navigate('TermAgreeCreateBoard');
-  }
+  };
 
   const moveToMyCommentList = () => {
     navigation.navigate('MyCommentList');
-  }
+  };
 
   useEffect(() => {
     async function init() {
@@ -208,57 +228,118 @@ export default function BoardFragment({navigation}: Props) {
     }
   }, [navigation, isFocused]);
 
-  
-
   return (
     <>
       <WaterMark />
-      {isError ? <Error status={errorStatus} code={'B001'}/> :
+      {isError ? (
+        <Error status={errorStatus} code={'B001'} />
+      ) : (
         <>
-          <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', left: 0, right: 0, top: 0, bottom: 0 }}>
-            <ActivityIndicator size="large" color={'#A055FF'} animating={isLoading} style={{ zIndex: 100 }} />
+          <View
+            style={{
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+            }}>
+            <ActivityIndicator
+              size="large"
+              color={'#A055FF'}
+              animating={isLoading}
+              style={{zIndex: 100}}
+            />
           </View>
-          <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
             <View
-              style={{ flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 16 }}>
-              <BoardListContainer boardCategory="모아보기" component={<MenuList toMyPosting={moveToMyPostList} toMyCommentList={moveToMyCommentList} toScrapedPosting={moveToScrapedPostList} />} />
+              style={{
+                flex: 1,
+                backgroundColor: '#FFFFFF',
+                paddingHorizontal: 16,
+              }}>
+              <BoardListContainer
+                boardCategory="모아보기"
+                component={
+                  <MenuList
+                    toMyPosting={moveToMyPostList}
+                    toMyCommentList={moveToMyCommentList}
+                    toScrapedPosting={moveToScrapedPostList}
+                  />
+                }
+              />
               <BoardListContainer
                 boardCategory="고정게시판"
-                component={<BoardList items={pinnedBoardList} moveToBoard={moveToBoard} isInited={isInited} onUpdate={updatePinnedBoardList} />}
+                component={
+                  <BoardList
+                    items={pinnedBoardList}
+                    moveToBoard={moveToBoard}
+                    isInited={isInited}
+                    onUpdate={updatePinnedBoardList}
+                  />
+                }
               />
-              {/* <BoardListContainer
-            boardCategory="공식게시판"
-            component={<OfficialBoardList items={officialBoardList} />}
-          /> */}
-              <View style={{ height: 60, paddingLeft: 25, alignItems: 'center', flexDirection: 'row' }}>
-                <Text style={[fontRegular, {
-                  fontSize: 17,
-                  lineHeight: 20,
-                  flex: 1,
-                  fontWeight: 'bold',
-                  color: '#222222'
-                }]}>
+              <View
+                style={{
+                  height: 60,
+                  paddingLeft: 25,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={[
+                    fontRegular,
+                    {
+                      fontSize: 17,
+                      lineHeight: 20,
+                      flex: 1,
+                      fontWeight: 'bold',
+                      color: '#222222',
+                    },
+                  ]}>
                   공식게시판
                 </Text>
               </View>
               <OfficialBoardListContainer
                 boardCategory="수정광장"
-                component={<OfficialBoardList items={officialBoardList} onUpdate={updateOfficialBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+                component={
+                  <OfficialBoardList
+                    items={officialBoardList}
+                    onUpdate={updateOfficialBoardList}
+                    moveToBoard={moveToBoard}
+                    isInited={isInited}
+                  />
+                }
               />
               <OfficialBoardListContainer
                 defaultFolded={true}
                 boardCategory="학과게시판"
-                component={<OfficialBoardList items={departmentBoardList} onUpdate={updateDepartmentBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+                component={
+                  <OfficialBoardList
+                    items={departmentBoardList}
+                    onUpdate={updateDepartmentBoardList}
+                    moveToBoard={moveToBoard}
+                    isInited={isInited}
+                  />
+                }
               />
               <CustomBoardListContainer
                 boardCategory="수정게시판"
-                component={<CustomBoardList items={customBoardList} onUpdate={updateCustomBoardList} moveToBoard={moveToBoard} isInited={isInited} />}
+                component={
+                  <CustomBoardList
+                    items={customBoardList}
+                    onUpdate={updateCustomBoardList}
+                    moveToBoard={moveToBoard}
+                  />
+                }
                 moveToCreateBoard={moveToCreateBoard}
               />
-              <View style={{ height: 36, backgroundColor: '#FFFFFF' }}></View>
+              <View style={{height: 36, backgroundColor: '#FFFFFF'}} />
             </View>
           </ScrollView>
-        </>}
-      </>
+        </>
+      )}
+    </>
   );
 }
