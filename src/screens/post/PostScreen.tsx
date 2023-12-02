@@ -3,9 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TouchableOpacity,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -46,7 +43,6 @@ import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import {LogBox} from 'react-native';
 import WaterMark from '../../components/WaterMark';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
-import getCommments from '../../common/CommentApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
@@ -59,7 +55,6 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const PostScreen = ({navigation, route}: Props) => {
-  console.reportErrorsAsExceptions = false;
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
@@ -76,14 +71,6 @@ const PostScreen = ({navigation, route}: Props) => {
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-
-  const onSubmit = useCallback(() => {
-    console.log('익명여부', isAnonymous);
-    if (isRecomment)
-      addRecommentFunc(route.params.postId, parentId, newComment, isAnonymous);
-    else addCommentFunc(route.params.postId, newComment, isAnonymous);
-    setIsSubmitState(false);
-  }, [newComment]);
 
   useEffect(() => {
     console.log('isSubmitState', isSubmitState, 'isAnonymous', isAnonymous);
@@ -210,13 +197,6 @@ const PostScreen = ({navigation, route}: Props) => {
     const result = await deletePosts(postId);
     if (result) return true;
     else return false;
-  };
-  // 이용자 차단, 이용자 뮤트
-  const handleMuteUser = async (postId: number) => {
-    const result = await setUserMute(postId);
-    // if (result) return true;
-    // else return false;
-    return result;
   };
   // 게시글 신고
   const handlePostReport = async (
@@ -501,10 +481,10 @@ const PostScreen = ({navigation, route}: Props) => {
                 autoCorrect={false}
                 style={[fontRegular, styles.input]}
                 maxLength={500}
-                onFocus={(e: any) => {
+                onFocus={() => {
                   onInputFocus();
                 }}
-                onBlur={(e: any) => {
+                onBlur={() => {
                   onInputFocusOut();
                   setIsRecomment(false);
                 }}

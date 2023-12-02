@@ -15,11 +15,10 @@ import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Platform, Pressable, TouchableHighlight} from 'react-native';
+import {Platform, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRole, logout} from '../common/authApi';
-import {useState, useEffect} from 'react';
-import {Authentication} from '../classes/Authentication';
+import {useEffect} from 'react';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import messaging from '@react-native-firebase/messaging';
 import {AlertData} from '../classes/AlertDto';
@@ -55,7 +54,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
         //처리 로직
-        console.log('data :::::::::::::: ', remoteMessage.data);
         onNotificationPress(remoteMessage.data);
       }
     });
@@ -65,7 +63,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
       .then(remoteMessage => {
         if (remoteMessage) {
           //처리 로직
-          console.log('data ;;;;;;;;;;;;;;;;;;; ', remoteMessage.data);
           onNotificationPress(remoteMessage.data);
         }
       });

@@ -3,10 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
-  Alert,
-  ScrollView,
   Pressable,
   Text,
   SafeAreaView,
@@ -26,12 +23,8 @@ import {
   reportBoard,
   toggleBoardPin,
 } from '../../common/boardApi';
-import BoardDetailDto, {
-  BoardHotPostDto,
-  ContentPreviewDto,
-} from '../../classes/BoardDetailDto';
+import {BoardHotPostDto, ContentPreviewDto} from '../../classes/BoardDetailDto';
 import Toast from 'react-native-simple-toast';
-import {getPosts} from '../../common/boardApi';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {fontMedium, fontRegular, fontBold} from '../../common/font';
@@ -46,7 +39,6 @@ import {
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';
-import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
 import {logout} from '../../common/authApi';
@@ -71,8 +63,6 @@ const PostListScreen = ({navigation, route}: Props) => {
     content: null,
     title: null,
   });
-  const [reportCheckModalVisible, setReportCheckModalVisible] =
-    useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -441,7 +431,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               showsVerticalScrollIndicator={false}
               style={{flex: 1, backgroundColor: '#FFFFFF'}}
               data={boardDetail}
-              renderItem={({item, index}) => (
+              renderItem={({item}) => (
                 <TouchableOpacity
                   onPress={async () => {
                     navigation.navigate('PostScreen', {

@@ -1,16 +1,11 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
   View,
-  TouchableOpacity,
   StyleSheet,
-  Button,
-  KeyboardAvoidingView,
   Platform,
   StatusBar,
-  Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
 import {
@@ -20,13 +15,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {Description, TwoLineTitle} from '../../components/Top';
-import styled from 'styled-components';
-import CustomButton, {
-  WhiteRoundButton,
+import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
   PurpleFullButton,
-  DisabledWhiteRoundButton,
   DisabledPurpleFullButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -39,18 +31,12 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {getHundredsDigit} from '../../common/util/statusUtil';
-import { fontRegular } from '../../common/font';
+import {fontRegular} from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
-`;
 
 const CELL_COUNT = 6;
 const RESEND_OTP_TIME_LIMIT = 600;
@@ -72,9 +58,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
     RESEND_OTP_TIME_LIMIT,
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
-    boolean
-  >(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
+    useState<boolean>(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -83,13 +68,7 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const onFocus = () => {
-    setIsFocused(true);
-  };
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
-    false,
-  );
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
 
   const startResendOtpTimer = () => {
@@ -130,10 +109,6 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
   const gotoHome = () => {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
     navigation.navigate('SplashHome');
-  };
-  const onFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
   };
   //타이머 시작
   useEffect(() => {
@@ -321,10 +296,10 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
               }}></PurpleRoundButton>
           )}
           {value.length < 6 && isFocused && (
-            <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
+            <DisabledPurpleFullButton text="인증 완료" />
           )}
           {value.length < 6 && !isFocused && (
-            <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
+            <DisabledPurpleRoundButton text="인증 완료" />
           )}
         </View>
       </SafeAreaView>
@@ -334,7 +309,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
           setModalVisible={setModalIncorrectOverVisible}
           content={`인증번호 입력 최대 횟수를 초과하였습니다.\n5분 뒤 다시 인증을 시도해주세요.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>
+          purpleButtonFunc={gotoHome}
+        />
       )}
       {isCoolTime && (
         <ModalBottom
@@ -342,7 +318,8 @@ export default function ResetPasswordInputRegularMemberAuthNumber({
           setModalVisible={setIsCoolTime}
           content={`이전에 시도하신 인증이 실패하여,\n5분 뒤부터 재인증이 가능합니다.`}
           purpleButtonText="확인"
-          purpleButtonFunc={gotoHome}></ModalBottom>
+          purpleButtonFunc={gotoHome}
+        />
       )}
       {resendButtonDisabledTime === 0 && (
         <ModalBottom

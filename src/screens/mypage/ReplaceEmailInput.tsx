@@ -10,7 +10,6 @@ import {
 import React, {useState, useEffect} from 'react';
 import WaterMark from '../../components/WaterMark';
 import {BigTwoLineText, Description} from '../../components/Top';
-import {getHundredsDigit} from '../../common/util/statusUtil';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   PurpleFullButton,
@@ -91,10 +90,10 @@ export default function ReplaceEmailInput({navigation}: Props) {
                 paddingBottom: 12,
                 color: '#222222',
               }}
-              onFocus={(e: any) => {
+              onFocus={() => {
                 onIdFocus();
               }}
-              onBlur={(e: any) => {
+              onBlur={() => {
                 onIdFocusOut();
               }}
               onChangeText={(value: string) => {
@@ -106,7 +105,6 @@ export default function ReplaceEmailInput({navigation}: Props) {
               keyboardType="email-address"
               selectionColor="#A055FF"
               value={replaceEmail}
-              // maxLength={40}
             />
           </View>
         </ScrollView>
@@ -126,7 +124,6 @@ export default function ReplaceEmailInput({navigation}: Props) {
               text="다음"
               onClick={async () => {
                 //이메일 유효성 검사
-
                 let result = await checkSecondEmailConfilct(replaceEmail);
                 console.log(result);
                 if (result.status === 401) {
@@ -164,7 +161,6 @@ export default function ReplaceEmailInput({navigation}: Props) {
                     });
                   } else if (sendResult.code === 'AUTH_COOL_TIME_LIMIT') {
                     console.log('이메일 발송 실패');
-                    // setIsCoolTime(true);
                   } else {
                     setTimeout(function () {
                       Toast.show(

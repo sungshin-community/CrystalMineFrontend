@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text} from 'react-native';
-import { fontRegular } from '../common/font';
+import {fontRegular} from '../common/font';
 
 const styles = StyleSheet.create({
   cancel: {

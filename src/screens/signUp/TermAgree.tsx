@@ -1,13 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect } from 'react';
-
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
-  GestureResponderEvent,
   TouchableOpacity,
   Dimensions,
   Platform,
@@ -18,22 +15,16 @@ import {
   DisabledPurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TwoLineTitle, SmallText} from '../../components/Top';
+import {TwoLineTitle} from '../../components/Top';
 import {Container} from '../../components/Container';
-import {SpreadButton, FoldButton} from '../../../resources/icon/Button';
-import {
-  RoundChecked,
-  RoundUnchecked,
-  Unchecked,
-  Checked,
-} from '../../../resources/icon/CheckBox';
+import {RoundChecked, RoundUnchecked} from '../../../resources/icon/CheckBox';
 import {AgreementContainer} from '../../components/HideToggleContainer';
 import Agreement from '../../classes/Agreement';
-import { getSignUpContract } from '../../common/contractApi';
+import {getSignUpContract} from '../../common/contractApi';
 
 type RootStackParamList = {
   SplashHome: undefined;
-  SignUpId: {agreementIds: number[];};
+  SignUpId: {agreementIds: number[]};
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -41,14 +32,16 @@ function TermAgree({navigation}: Props) {
   const [agreements, setAgreements] = useState<Agreement[]>([]);
 
   const handleChange = (id: number) => {
-    const agreementList = agreements.map((a, index) => index === id ? {...a, checked: !a.checked} : a);
+    const agreementList = agreements.map((a, index) =>
+      index === id ? {...a, checked: !a.checked} : a,
+    );
     setAgreements(agreementList);
   };
 
   useEffect(() => {
     async function init() {
       const agreementList = await getSignUpContract();
-      agreementList.map(a => a.checked = false);
+      agreementList.map(a => (a.checked = false));
       setAgreements(agreementList);
     }
     init();
@@ -56,7 +49,6 @@ function TermAgree({navigation}: Props) {
 
   if (Platform.OS === 'android') {
     StatusBar.setBackgroundColor('white');
-    // StatusBar.setTranslucent(true);
     StatusBar.setBarStyle('dark-content');
   }
 
@@ -104,26 +96,22 @@ function TermAgree({navigation}: Props) {
                   marginRight: 24,
                   borderRadius: 10,
                   marginTop: 31,
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
-                onPress={(e: any) => {
+                onPress={() => {
                   let agreementList = agreements.slice();
-                  agreements.filter(a => a.checked).length == agreements.length ? agreementList.forEach(a => a.checked = false) : agreementList.forEach(a => a.checked = true);
+                  agreements.filter(a => a.checked).length == agreements.length
+                    ? agreementList.forEach(a => (a.checked = false))
+                    : agreementList.forEach(a => (a.checked = true));
                   setAgreements(agreementList);
-                }
-                }>
-                  {
-                    agreements.length > 0 && agreements.filter(a => a.checked).length == agreements.length ?
-                    <RoundChecked
-                      style={styles.wholeAgreeCheckBox}
-                      // onPress={(e: any) => onClick(e, 'wholeAgree')}
-                    />
-                    :
-                    <RoundUnchecked
-                      style={styles.wholeAgreeCheckBox}
-                      // onPress={(e: any) => onClick(e, 'wholeAgree')}
-                    />
-                  }
+                }}>
+                {agreements.length > 0 &&
+                agreements.filter(a => a.checked).length ==
+                  agreements.length ? (
+                  <RoundChecked style={styles.wholeAgreeCheckBox} />
+                ) : (
+                  <RoundUnchecked style={styles.wholeAgreeCheckBox} />
+                )}
                 <Text
                   style={{
                     fontSize: 15,
@@ -133,18 +121,30 @@ function TermAgree({navigation}: Props) {
                   약관 전체 동의
                 </Text>
               </TouchableOpacity>
-              {agreements.map((a, index) => <AgreementContainer key={index} id={index} title={a.title} content={a.content} checked={a.checked} onChange={handleChange} />)}
+              {agreements.map((a, index) => (
+                <AgreementContainer
+                  key={index}
+                  id={index}
+                  title={a.title}
+                  content={a.content}
+                  checked={a.checked}
+                  onChange={handleChange}
+                />
+              ))}
             </View>
           </View>
         </ScrollView>
 
         <View
           style={{bottom: 34, justifyContent: 'center', alignItems: 'center'}}>
-          {agreements.length > 0 && agreements.filter(a => a.checked).length == agreements.length ? (
+          {agreements.length > 0 &&
+          agreements.filter(a => a.checked).length == agreements.length ? (
             <PurpleRoundButton
               text="다음"
               onClick={() => {
-                navigation.navigate('SignUpId', {agreementIds: agreements.map(a => a.id)});
+                navigation.navigate('SignUpId', {
+                  agreementIds: agreements.map(a => a.id),
+                });
               }}
             />
           ) : (

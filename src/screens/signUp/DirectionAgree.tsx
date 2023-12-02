@@ -1,15 +1,11 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
-  GestureResponderEvent,
   TouchableOpacity,
-  Dimensions,
   Platform,
 } from 'react-native';
 import Toast from 'react-native-simple-toast';
@@ -18,27 +14,13 @@ import {
   DisabledPurpleRoundButton,
 } from '../../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {TwoLineTitle, SmallText} from '../../components/Top';
+import {TwoLineTitle} from '../../components/Top';
 import {Container} from '../../components/Container';
-import {SpreadButton, FoldButton} from '../../../resources/icon/Button';
-import {
-  RoundChecked,
-  RoundUnchecked,
-  Unchecked,
-  Checked,
-} from '../../../resources/icon/CheckBox';
-import {
-  AgreementContainer,
-  DirectionContainer,
-} from '../../components/HideToggleContainer';
-import Agreement, {DirectionAgreement} from '../../classes/Agreement';
-import {
-  getAgreements,
-  getDirectionAgreements,
-  logout,
-  sendEmail,
-} from '../../common/authApi';
-import {getContractGuide, getSignUpDirection} from '../../common/contractApi';
+import {RoundChecked, RoundUnchecked} from '../../../resources/icon/CheckBox';
+import {AgreementContainer} from '../../components/HideToggleContainer';
+import Agreement from '../../classes/Agreement';
+import {logout, sendEmail} from '../../common/authApi';
+import {getSignUpDirection} from '../../common/contractApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
@@ -73,7 +55,6 @@ function DirectionAgree({navigation, route}: Props) {
 
   if (Platform.OS === 'android') {
     StatusBar.setBackgroundColor('white');
-    // StatusBar.setTranslucent(true);
     StatusBar.setBarStyle('dark-content');
   }
 
@@ -117,7 +98,7 @@ function DirectionAgree({navigation, route}: Props) {
                   marginTop: 31,
                   alignItems: 'center',
                 }}
-                onPress={(e: any) => {
+                onPress={() => {
                   let agreementList = agreements.slice();
                   agreements.filter(a => a.checked).length == agreements.length
                     ? agreementList.forEach(a => (a.checked = false))

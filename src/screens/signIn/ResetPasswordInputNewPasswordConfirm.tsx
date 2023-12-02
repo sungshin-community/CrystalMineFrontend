@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -9,7 +8,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
   KeyboardEvent,
 } from 'react-native';
 import {TwoLineTitle} from '../../components/Top';
@@ -30,7 +28,6 @@ import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 

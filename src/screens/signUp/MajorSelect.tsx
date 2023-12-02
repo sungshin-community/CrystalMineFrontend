@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -25,7 +24,6 @@ import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 

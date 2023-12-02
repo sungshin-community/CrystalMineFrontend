@@ -1,13 +1,6 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Animated,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, Animated, TouchableWithoutFeedback} from 'react-native';
 import Dots from '../../resources/icon/Dots';
-import { NoScrap } from '../../resources/icon/Scrap';
 
 function ThreeDots(icons: any) {
   const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
@@ -20,7 +13,7 @@ function ThreeDots(icons: any) {
       rotateAnimation.setValue(1);
     });
   };
-  
+
   const animatedStyle = {
     transform: [
       {
@@ -32,7 +25,6 @@ function ThreeDots(icons: any) {
     ],
   };
 
-
   return (
     <>
       <View style={{flexDirection: 'row'}}>
@@ -40,7 +32,6 @@ function ThreeDots(icons: any) {
         <TouchableWithoutFeedback
           onPress={async () => {
             handleAnimation();
-           
           }}>
           <Animated.View style={animatedStyle}>
             <Dots />

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
@@ -11,10 +10,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
   TouchableHighlight,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   NativeModules,
   ActivityIndicator,
@@ -27,12 +24,10 @@ import PhotoIcon from '../../../resources/icon/PhotoIcon';
 import {
   RectangleChecked,
   RectangleUnchecked,
-  Checked,
 } from '../../../resources/icon/CheckBox';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {getWritePostInfo, postWritePost} from '../../common/boardApi';
-import ProfileImage from '../../../resources/icon/ProfileImage';
 import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
@@ -49,15 +44,6 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-interface ImageResponse {
-  fileName: string;
-  fileSize: number;
-  height: number;
-  type: string;
-  uri: string;
-  width: number;
-}
-
 interface Direction {
   content: string[];
   id: number;
@@ -65,7 +51,6 @@ interface Direction {
 }
 
 function PostWriteScreen({navigation, route}: Props) {
-  const formData = new FormData();
   const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -73,9 +58,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
-  const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [statusBarHeight, setStatusBarHeight] = useState(0);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -93,14 +76,6 @@ function PostWriteScreen({navigation, route}: Props) {
     userInfo();
   }, []);
 
-  const onFocus = () => {
-    setIsFocus(true);
-  };
-
-  const onFocusOut = () => {
-    setIsFocus(false);
-    Keyboard.dismiss();
-  };
   const onSubmitPress = async () => {
     setIsLoading(true);
     const response = await postWritePost(
@@ -225,14 +200,6 @@ function PostWriteScreen({navigation, route}: Props) {
     setImages(images.filter(item => item.uri !== imageUri));
     console.log('>>>', images);
   };
-
-  useEffect(() => {
-    Platform.OS == 'ios'
-      ? StatusBarManager.getHeight((statusBarFrameData: any) => {
-          setStatusBarHeight(statusBarFrameData.height);
-        })
-      : null;
-  }, []);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -382,10 +349,10 @@ function PostWriteScreen({navigation, route}: Props) {
                   },
                 ]}
                 autoCorrect={false}
-                onFocus={(e: any) => {
+                onFocus={() => {
                   onInputFocus();
                 }}
-                onBlur={(e: any) => {
+                onBlur={() => {
                   onInputFocusOut();
                 }}
               />
@@ -482,9 +449,7 @@ const styles = StyleSheet.create({
     color: '#222222',
   },
   input: {
-    // minHeight: Dimensions.get('window').height - 400,
     minHeight: 400,
-    // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
     fontSize: 15,
     paddingTop: 14,
     paddingHorizontal: 24,

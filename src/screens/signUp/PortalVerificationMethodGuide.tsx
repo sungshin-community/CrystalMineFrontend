@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
+import React from 'react';
+import {ScrollView, View, Text, Image} from 'react-native';
 import {fontMedium, fontRegular} from '../../common/font';
 
 export const PortalVerificationMethodGuide = () => {
@@ -74,28 +74,29 @@ export const PortalVerificationMethodGuide = () => {
           </View>
         </View>
         <View style={{alignSelf: 'center'}}>
-        <Text
-          style={[
-            fontRegular,
-            {fontSize: 13, marginBottom: 35, color: '#A155FF'},
-          ]}>
-          *성을 제외한 이름/ 생년월일은 가려서 제출해 주세요.{`\n`}*학번과
-          학과로 확인을 진행하므로 꼭 보이게 캡쳐해 주세요.
-        </Text>
-        <Text style={[fontRegular, {fontSize: 13, marginBottom: 15}]}>
-          a. [성신여대 포탈 시스템]의 메인 화면 캡쳐
-        </Text>
-        <Image
-          style={{width: 302, height: 135, marginBottom: 35}}
-          source={require('../../../resources/images/regular-member-verification-guide1.jpg')}
-        />
-        <Text style={[fontRegular, {fontSize: 13, marginBottom: 15}]}>
-          {`b. [성신여대 포탈 시스템 - 통합정보시스템 - 학적관리 -\n     학적변동조회] 의 상단에 위치한 [학생기초정보] 부분 캡쳐`}
-        </Text>
-        <Image
-          style={{width: 303, height: 55, marginBottom: 35}}
-          source={require('../../../resources/images/regular-member-verification-guide2.jpg')}
-        /></View>
+          <Text
+            style={[
+              fontRegular,
+              {fontSize: 13, marginBottom: 35, color: '#A155FF'},
+            ]}>
+            *성을 제외한 이름/ 생년월일은 가려서 제출해 주세요.{`\n`}*학번과
+            학과로 확인을 진행하므로 꼭 보이게 캡쳐해 주세요.
+          </Text>
+          <Text style={[fontRegular, {fontSize: 13, marginBottom: 15}]}>
+            a. [성신여대 포탈 시스템]의 메인 화면 캡쳐
+          </Text>
+          <Image
+            style={{width: 302, height: 135, marginBottom: 35}}
+            source={require('../../../resources/images/regular-member-verification-guide1.jpg')}
+          />
+          <Text style={[fontRegular, {fontSize: 13, marginBottom: 15}]}>
+            {`b. [성신여대 포탈 시스템 - 통합정보시스템 - 학적관리 -\n     학적변동조회] 의 상단에 위치한 [학생기초정보] 부분 캡쳐`}
+          </Text>
+          <Image
+            style={{width: 303, height: 55, marginBottom: 35}}
+            source={require('../../../resources/images/regular-member-verification-guide2.jpg')}
+          />
+        </View>
       </View>
     </ScrollView>
   );

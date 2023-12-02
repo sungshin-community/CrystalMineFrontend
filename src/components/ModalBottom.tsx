@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {fontBold, fontMedium, fontRegular} from '../common/font';
+import {fontBold, fontRegular} from '../common/font';
 
 interface Props {
   modalVisible: boolean;
@@ -129,8 +129,6 @@ export const ModalBottom = ({
 
 const styles = StyleSheet.create({
   centeredView: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     position: 'absolute',
     bottom: Dimensions.get('window').width * 0.15,
     left: '50%',
@@ -143,7 +141,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 24,
     paddingHorizontal: 24,
-    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

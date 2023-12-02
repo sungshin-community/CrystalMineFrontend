@@ -32,7 +32,6 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import {getHundredsDigit} from '../../common/util/statusUtil';
 import BackgroundTimer from 'react-native-background-timer';
 import styled from 'styled-components/native';
 import {fontRegular} from '../../common/font';
@@ -41,7 +40,6 @@ LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by mes
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 
@@ -94,7 +92,6 @@ export default function ReplaceEmailCheck({navigation, route}: Props) {
       showSubscription.remove();
     };
   }, []);
-  // console.log('시간 가는 중', secondsLeft);
 
   useEffect(() => {
     if (timerOn) startTimer();
@@ -207,7 +204,6 @@ export default function ReplaceEmailCheck({navigation, route}: Props) {
           </Pressable>
         </ScrollView>
         <View
-          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             paddingBottom: isFocused
               ? Platform.OS === 'ios'

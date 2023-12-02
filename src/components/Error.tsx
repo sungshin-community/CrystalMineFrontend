@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text, View, Dimensions, Image} from 'react-native';
+import {SafeAreaView, Text, View, Image} from 'react-native';
 interface Props {
   status?: number;
   code?: string;

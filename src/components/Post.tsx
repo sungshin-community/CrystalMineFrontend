@@ -3,40 +3,26 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
   Image,
   ScrollView,
-  Modal,
 } from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import styled from 'styled-components';
-import ProfileImage from '../../resources/icon/ProfileImage';
-import EmptyHeart from '../../resources/icon/EmptyHeart';
-import EmptyComment from '../../resources/icon/EmptyComment';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import PostComment from '../../resources/icon/PostComment';
-import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
-import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
 import TrashIcon from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
 import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
-import {useNavigation} from '@react-navigation/native';
 import {SelectModalBottom} from '../components/SelectModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
-import ImageViewer from 'react-native-image-zoom-viewer';
-import {useEffect} from 'react';
-import {BackHandler} from 'react-native';
 import {fontMedium, fontRegular} from '../common/font';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import Autolink from 'react-native-autolink';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
-import Markdown from 'react-native-markdown-display';
 import UserMuteIcon from '../../resources/icon/UserMuteIcon';
 import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
@@ -64,7 +50,6 @@ function Post({
   setComponentModalVisible,
 }: Props) {
   const data: PostDto = post;
-  const [isPhotoVisible, setIsPhotoVisible] = useState<boolean>(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [muteModalVisible, setMuteModalVisible] = useState<boolean>(false);
@@ -72,11 +57,6 @@ function Post({
     useState<boolean>(false);
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>(null);
-  const closePhotoModal = () => {
-    if (isPhotoVisible) {
-      setIsPhotoVisible(false);
-    }
-  };
   const imgUrlCoverting = (arr: string[]) => {
     const array = arr.map(url => {
       return {url: url};
@@ -128,7 +108,7 @@ function Post({
       <ModalBottom
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
-        content={`작성한 게시글을 삭제하시겠습니까?`}
+        content={'작성한 게시글을 삭제하시겠습니까?'}
         purpleButtonText="삭제"
         purpleButtonFunc={() => {
           if (handlePostDelete(data.postId)) {
@@ -139,7 +119,6 @@ function Post({
                 Toast.SHORT,
               );
             }, 100);
-            // navigation.goBack();
             navigation.pop();
             navigation.pop();
             navigation.navigate('PostListScreen', {boardId: data.boardId});
@@ -210,7 +189,7 @@ function Post({
       <SelectModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
-        title={`게시글 신고`}
+        title={'게시글 신고'}
         purpleButtonText="신고하기"
         reportId={data?.postId}
         reportFunc={handlePostReport}
@@ -361,8 +340,6 @@ function Post({
           </Text>
         </View>
       </View>
-      {/* <View
-        style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 28}}></View> */}
     </>
   );
 }

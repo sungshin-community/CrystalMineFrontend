@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
+import React from 'react';
+import {ScrollView, View, Text} from 'react-native';
 import {fontMedium, fontRegular} from '../../common/font';
 
 export const CreateMailGuide = () => {

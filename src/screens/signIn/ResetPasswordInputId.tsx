@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 
@@ -12,8 +11,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  Dimensions,
-  TouchableWithoutFeedback,
   KeyboardEvent,
 } from 'react-native';
 import {NormalOneLineText, Description} from '../../components/Top';
@@ -27,13 +24,10 @@ import {
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
 import {logout, sendResetPasswordEmail} from '../../common/authApi';
-import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
-import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 
@@ -95,7 +89,7 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-export default function ResetPasswordInputId({navigation, route}: Props) {
+export default function ResetPasswordInputId({navigation}: Props) {
   const [studentId, setStudentId] = useState<string>('');
   const [isFocused, setIsIdFocused] = useState<boolean>(false);
   const [isNotExisted, setIsNotExisted] = useState<boolean>(false);
@@ -156,10 +150,10 @@ export default function ResetPasswordInputId({navigation, route}: Props) {
                 paddingBottom: 7,
                 color: '#222222',
               }}
-              onFocus={(e: any) => {
+              onFocus={() => {
                 onIdFocus();
               }}
-              onBlur={(e: any) => {
+              onBlur={() => {
                 onIdFocusOut();
               }}
               onChangeText={(value: string) => {

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -12,7 +11,6 @@ import {
   ScrollView,
   Platform,
   Dimensions,
-  TouchableWithoutFeedback,
   Pressable,
   KeyboardEvent,
 } from 'react-native';
@@ -24,7 +22,6 @@ import {
   DisabledPurpleFullButton,
   PurpleRoundButton,
 } from '../../components/Button';
-import {ModalBottom} from '../../components/ModalBottom';
 import {checkEmailConflict, logout} from '../../common/authApi';
 import {SignUpQuestionMark} from '../../../resources/icon/QuestionMark';
 import {fontRegular} from '../../common/font';
@@ -33,14 +30,8 @@ import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
-`;
 
 const TextContainer = styled.View`
   margin: 55px 0px 52px 0px;
@@ -178,10 +169,10 @@ export default function SignUpId({navigation, route}: Props) {
                 paddingBottom: 7,
                 color: '#222222',
               }}
-              onFocus={(e: any) => {
+              onFocus={() => {
                 onIdFocus();
               }}
-              onBlur={(e: any) => {
+              onBlur={() => {
                 onIdFocusOut();
               }}
               onChangeText={(value: string) => {

@@ -11,7 +11,7 @@ import {
   Platform,
   KeyboardEvent,
 } from 'react-native';
-import {Description, NormalOneLineText} from '../../components/Top';
+import {NormalOneLineText} from '../../components/Top';
 import {
   DisabledPurpleRoundButton,
   PurpleFullButton,
@@ -21,11 +21,10 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Toast from 'react-native-simple-toast';
 import styled from 'styled-components/native';
-import { fontRegular } from '../../common/font';
+import {fontRegular} from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 const MiddleInputContainerStyle = styled.View`
@@ -93,7 +92,9 @@ export default function SignInId({navigation}: Props) {
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
-            <Text style={[fontRegular, {marginTop: 47, color: '#A055FF'}]}>아이디</Text>
+            <Text style={[fontRegular, {marginTop: 47, color: '#A055FF'}]}>
+              아이디
+            </Text>
             <View style={{marginTop: 12}}>
               <MiddleInputContainerStyle
                 style={{borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'}}>
@@ -106,10 +107,10 @@ export default function SignInId({navigation}: Props) {
                     paddingBottom: 7,
                     color: '#222222',
                   }}
-                  onFocus={(e: any) => {
+                  onFocus={() => {
                     onIdFocus();
                   }}
-                  onBlur={(e: any) => {
+                  onBlur={() => {
                     onIdFocusOut();
                   }}
                   onChangeText={(value: string) => {
@@ -128,9 +129,7 @@ export default function SignInId({navigation}: Props) {
                 />
                 <Text style={styles.suffix}>@sungshin.ac.kr</Text>
 
-                <View style={{marginTop: 10}}>
-                  {/* <Description>존재하지 않는 아이디입니다</Description> */}
-                </View>
+                <View style={{marginTop: 10}} />
               </MiddleInputContainerStyle>
             </View>
           </View>

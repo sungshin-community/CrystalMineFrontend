@@ -3,7 +3,6 @@ import {
   TouchableOpacity,
   Text,
   View,
-  TouchableWithoutFeedback,
   ScrollView,
   Dimensions,
   TouchableHighlight,
@@ -51,7 +50,6 @@ export function BoardListContainer({boardCategory, component}: Props) {
         style={{
           flexDirection: 'row',
           paddingLeft: 25,
-          // paddingVertical: 24,
           height: 60,
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
@@ -62,14 +60,16 @@ export function BoardListContainer({boardCategory, component}: Props) {
         onPress={() => setIsSpread(!isSpread)}>
         <Text
           style={[
-            fontBold, {
-            fontSize: 17,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            lineHeight: 20,
-            flex: 1,
-            fontWeight: 'bold',
-            color: '#222222',
-          }]}>
+            fontBold,
+            {
+              fontSize: 17,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              lineHeight: 20,
+              flex: 1,
+              fontWeight: 'bold',
+              color: '#222222',
+            },
+          ]}>
           {boardCategory}
         </Text>
         {isSpread ? (
@@ -84,7 +84,6 @@ export function BoardListContainer({boardCategory, component}: Props) {
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
-              // backgroundColor: '#FF0000',
               borderTopRightRadius: 16,
               borderTopLeftRadius: 16,
             }}
@@ -94,7 +93,6 @@ export function BoardListContainer({boardCategory, component}: Props) {
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
-              // backgroundColor: '#FF0000',
               borderBottomRightRadius: 16,
               borderBottomLeftRadius: 16,
             }}
@@ -105,9 +103,8 @@ export function BoardListContainer({boardCategory, component}: Props) {
   );
 }
 
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Markdown from 'react-native-markdown-display';
-import { fontBold, fontRegular } from '../common/font';
+import {fontBold} from '../common/font';
 export function CustomBoardListContainer({
   boardCategory,
   component,
@@ -120,7 +117,6 @@ export function CustomBoardListContainer({
         style={{
           flexDirection: 'row',
           paddingLeft: 25,
-          // paddingVertical: 24,
           height: 60,
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
@@ -149,7 +145,7 @@ export function CustomBoardListContainer({
       {isSpread && (
         <>
           <TouchableHighlight
-            underlayColor='#EEEEEE'
+            underlayColor="#EEEEEE"
             onPress={() => moveToCreateBoard()}
             style={{
               flexDirection: 'row',
@@ -177,7 +173,6 @@ export function CustomBoardListContainer({
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
-              // backgroundColor: '#FF0000',
               borderTopRightRadius: 16,
               borderTopLeftRadius: 16,
             }}
@@ -187,7 +182,6 @@ export function CustomBoardListContainer({
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
-              // backgroundColor: '#FF0000',
               borderBottomRightRadius: 16,
               borderBottomLeftRadius: 16,
             }}
@@ -212,7 +206,6 @@ export function OfficialBoardListContainer({
         style={{
           flexDirection: 'row',
           paddingLeft: 25,
-          // paddingVertical: 24,
           height: 32,
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
@@ -244,7 +237,6 @@ export function OfficialBoardListContainer({
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
-              // backgroundColor: '#FF0000',
               borderTopRightRadius: 16,
               borderTopLeftRadius: 16,
             }}
@@ -254,7 +246,6 @@ export function OfficialBoardListContainer({
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
-              // backgroundColor: '#FF0000',
               borderBottomRightRadius: 16,
               borderBottomLeftRadius: 16,
             }}
@@ -290,32 +281,33 @@ export function AgreementContainer({
           flexDirection: 'row',
           alignItems: 'center',
           height: 24,
-      }}>
-        <TouchableOpacity 
+        }}>
+        <TouchableOpacity
           style={{flexDirection: 'row'}}
-          onPress={(e: any) => {
+          onPress={() => {
             onChange(id);
             setIsChecked(!isChecked);
-        }}>
+          }}>
           <View
             style={{
               height: 24,
               alignItems: 'center',
               flexDirection: 'row',
               paddingLeft: 13,
-          }}>
+            }}>
             {isChecked ? (
-              <Checked
-                style={{marginRight: 16}}
-              />
+              <Checked style={{marginRight: 16}} />
             ) : (
-              <Unchecked
-                style={{marginRight: 16}}
-              />
+              <Unchecked style={{marginRight: 16}} />
             )}
           </View>
           <View style={{height: 24, justifyContent: 'center'}}>
-            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: Dimensions.get('window').width - 150}} >{title}</SmallText>
+            <SmallText
+              ellipsizeMode={'tail'}
+              numberOfLines={1}
+              style={{width: Dimensions.get('window').width - 150}}>
+              {title}
+            </SmallText>
           </View>
         </TouchableOpacity>
         <Pressable
@@ -343,12 +335,8 @@ export function AgreementContainer({
             paddingHorizontal: 24,
           }}
           nestedScrollEnabled={true}>
-          <View style={{ paddingTop: 15, paddingBottom: 15 }}>
-            {/* <Text style={fontRegular}> */}
-            <Markdown>
-              {content}
-              </Markdown>
-            {/* </Text> */}
+          <View style={{paddingTop: 15, paddingBottom: 15}}>
+            <Markdown>{content}</Markdown>
           </View>
         </ScrollView>
       )}
@@ -379,32 +367,33 @@ export function DirectionContainer({
           flexDirection: 'row',
           alignItems: 'center',
           height: 24,
-      }}>
-        <TouchableOpacity 
+        }}>
+        <TouchableOpacity
           style={{flexDirection: 'row'}}
-          onPress={(e: any) => {
+          onPress={() => {
             onChange(id);
             setIsChecked(!isChecked);
-        }}>
+          }}>
           <View
             style={{
               height: 24,
               alignItems: 'center',
               flexDirection: 'row',
               paddingLeft: 13,
-          }}>
+            }}>
             {isChecked ? (
-              <Checked
-                style={{marginRight: 16}}
-              />
+              <Checked style={{marginRight: 16}} />
             ) : (
-              <Unchecked
-                style={{marginRight: 16}}
-              />
+              <Unchecked style={{marginRight: 16}} />
             )}
           </View>
           <View style={{height: 24, justifyContent: 'center'}}>
-            <SmallText ellipsizeMode={'tail'} numberOfLines={1} style={{width: 252}} >{title}</SmallText>
+            <SmallText
+              ellipsizeMode={'tail'}
+              numberOfLines={1}
+              style={{width: 252}}>
+              {title}
+            </SmallText>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -431,10 +420,8 @@ export function DirectionContainer({
             paddingHorizontal: 24,
           }}
           nestedScrollEnabled={true}>
-          <View style={{ paddingTop: 15, paddingBottom: 15}}>
-            <Markdown>
-              {content}
-            </Markdown>
+          <View style={{paddingTop: 15, paddingBottom: 15}}>
+            <Markdown>{content}</Markdown>
           </View>
         </ScrollView>
       )}

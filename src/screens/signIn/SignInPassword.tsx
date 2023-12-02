@@ -9,7 +9,6 @@ import {
   Platform,
   ScrollView,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   KeyboardEvent,
   Pressable,
   ActivityIndicator,
@@ -22,15 +21,13 @@ import {
 } from '../../components/Button';
 import {login, logout} from '../../common/authApi';
 import PasswordShow from '../../../resources/icon/PasswordShow';
-import LoginCheckBoxOn from '../../../resources/icon/LoginCheckBoxOn';
 import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
-import { fontRegular } from '../../common/font';
+import {fontRegular} from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 
@@ -61,9 +58,8 @@ export default function SignInPassword({navigation, route}: Props) {
   const [password, setPassword] = useState<string>('');
   const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isPasswordInCorrect, setIsPasswordInCorrect] = useState<boolean>(
-    false,
-  );
+  const [isPasswordInCorrect, setIsPasswordInCorrect] =
+    useState<boolean>(false);
   const [isValidate, setIsValidate] = useState<boolean>(false);
   const [isBlackList, setIsBlackList] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -98,7 +94,7 @@ export default function SignInPassword({navigation, route}: Props) {
 
   return (
     <>
-      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <View
           style={{
             position: 'absolute',
@@ -121,10 +117,12 @@ export default function SignInPassword({navigation, route}: Props) {
           <View>
             <Text
               style={[
-                fontRegular,{
-                marginTop: 36,
-                color: isPasswordInCorrect ? '#E64646' : '#A055FF',
-              }]}>
+                fontRegular,
+                {
+                  marginTop: 36,
+                  color: isPasswordInCorrect ? '#E64646' : '#A055FF',
+                },
+              ]}>
               비밀번호
             </Text>
             <View style={{marginTop: 12}}>
@@ -148,16 +146,17 @@ export default function SignInPassword({navigation, route}: Props) {
                     paddingBottom: 7,
                     color: '#222222',
                   }}
-                  onFocus={(e: any) => {
+                  onFocus={() => {
                     onPasswordFocus();
                   }}
-                  onBlur={(e: any) => {
+                  onBlur={() => {
                     onPasswordFocusOut();
                   }}
                   onChangeText={(value: string) => {
                     setIsPasswordInCorrect(false);
                     setPassword(value);
-                    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+                    let regExp =
+                      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
                     if (regExp.test(value)) {
                       setIsValidate(true);
                     } else {
@@ -184,7 +183,7 @@ export default function SignInPassword({navigation, route}: Props) {
                   <PasswordNotShow onPress={letShowPassword} />
                 )}
               </View>
-              <Text style={[fontRegular,styles.errorMessage]}>
+              <Text style={[fontRegular, styles.errorMessage]}>
                 {isPasswordInCorrect
                   ? '아이디 및 비밀번호를 정확하게 입력해주세요.'
                   : isBlackList

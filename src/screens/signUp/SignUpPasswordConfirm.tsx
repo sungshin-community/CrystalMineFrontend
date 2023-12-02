@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -27,14 +26,8 @@ import PasswordNotShow from '../../../resources/icon/PasswordNotShow';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
-`;
 
 const TextContainer = styled.View`
   margin: 55px 0px 47px 0px;
@@ -132,10 +125,10 @@ export default function SignUpPasswordConfirm({navigation, route}: Props) {
                 paddingBottom: 7,
                 color: '#222222',
               }}
-              onFocus={(e: any) => {
+              onFocus={() => {
                 onInputFocus();
               }}
-              onBlur={(e: any) => {
+              onBlur={() => {
                 onInputFocusOut();
               }}
               onChangeText={(value: string) => {

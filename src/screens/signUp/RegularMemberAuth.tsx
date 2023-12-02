@@ -1,17 +1,12 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
   Text,
   View,
-  TouchableOpacity,
   StyleSheet,
-  Button,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
   Keyboard,
-  TouchableWithoutFeedback,
   ScrollView,
   Pressable,
   KeyboardEvent,
@@ -23,12 +18,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {Description, TwoLineTitle} from '../../components/Top';
-import CustomButton, {
-  WhiteRoundButton,
+import {
   PurpleRoundButton,
   DisabledPurpleRoundButton,
   PurpleFullButton,
-  DisabledWhiteRoundButton,
   DisabledPurpleFullButton,
 } from '../../components/Button';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -36,18 +29,16 @@ import {checkAuthNumber, logout, sendEmail} from '../../common/authApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Dimensions} from 'react-native';
 import Toast from 'react-native-simple-toast';
-import {useIsFocused} from '@react-navigation/native';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import BackgroundTimer from 'react-native-background-timer';
 import {LogBox} from 'react-native';
 import styled from 'styled-components/native';
-import { fontRegular } from '../../common/font';
+import {fontRegular} from '../../common/font';
 
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 
@@ -66,9 +57,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 export default function RegularMemberAuth({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] = useState<
-    boolean
-  >(false);
+  const [modalIncorrectOverVisble, setModalIncorrectOverVisible] =
+    useState<boolean>(false);
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -77,9 +67,6 @@ export default function RegularMemberAuth({navigation}: Props) {
   });
   const [tryCnt, setTryCnt] = useState(5);
   const [IsIncorrect, setIsIncorrect] = useState<boolean>(false);
-  const [errorMessageVisible, setErrorMessageVisible] = useState<boolean>(
-    false,
-  );
   const [isCoolTime, setIsCoolTime] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState(TIME);
   const [timerOn, setTimerOn] = useState(true);
@@ -87,15 +74,6 @@ export default function RegularMemberAuth({navigation}: Props) {
   const [sec, setSec] = useState<number>(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-
-  const onInputFocus = () => {
-    setIsFocused(true);
-  };
-
-  const onInputFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
-  };
 
   const onKeyboardDidshow = (e: KeyboardEvent) => {
     setKeyboardHeight(e.endCoordinates.height);
@@ -163,10 +141,6 @@ export default function RegularMemberAuth({navigation}: Props) {
     setModalIncorrectOverVisible(!modalIncorrectOverVisble);
     navigation.reset({routes: [{name: 'GlobalNavbar'}]});
   };
-  const onFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
-  };
 
   return (
     <>
@@ -182,7 +156,6 @@ export default function RegularMemberAuth({navigation}: Props) {
             </Description>
           </TextContainer>
           <CodeField
-            // autoFocus={true}
             ref={ref}
             {...props}
             value={value}
@@ -317,10 +290,10 @@ export default function RegularMemberAuth({navigation}: Props) {
               }}></PurpleRoundButton>
           )}
           {value.length < 6 && isFocused && (
-            <DisabledPurpleFullButton text="인증 완료"></DisabledPurpleFullButton>
+            <DisabledPurpleFullButton text="인증 완료" />
           )}
           {value.length < 6 && !isFocused && (
-            <DisabledPurpleRoundButton text="인증 완료"></DisabledPurpleRoundButton>
+            <DisabledPurpleRoundButton text="인증 완료" />
           )}
         </View>
       </KeyboardAvoidingView>

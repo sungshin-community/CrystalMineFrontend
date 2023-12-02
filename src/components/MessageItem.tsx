@@ -56,7 +56,6 @@ const MessageItem = ({
         </Pressable>
       )}
       <View>
-        {/* <ProfileImage /> */}
         {message.partnerProfile ? (
           <Image
             style={{width: 36, height: 36, borderRadius: 18}}

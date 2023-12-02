@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -16,7 +15,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ModalBottom} from '../../components/ModalBottom';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 

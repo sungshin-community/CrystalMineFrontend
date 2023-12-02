@@ -136,10 +136,10 @@ export const MiddleActiveInputID = ({
           }}>
           <TextInput
             style={{width: '60%'}}
-            onFocus={(e: any) => {
+            onFocus={() => {
               onInputFocus();
             }}
-            onBlur={(e: any) => {
+            onBlur={() => {
               onInputFocusOut();
             }}
             onChangeText={(value: string) => {
@@ -195,7 +195,6 @@ export const MiddleActiveInputPassword = ({
   maxLength,
   keyboardType,
 }: Props) => {
-  const [password, setPassword] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const onInputFocus = () => {
@@ -218,14 +217,11 @@ export const MiddleActiveInputPassword = ({
         }}>
         <TextInput
           style={{width: '60%'}}
-          onFocus={(e: any) => {
+          onFocus={() => {
             onInputFocus();
           }}
-          onBlur={(e: any) => {
+          onBlur={() => {
             onInputFocusOut();
-          }}
-          onChangeText={(value: string) => {
-            setPassword(value.replace(/\s/g, ''));
           }}
           maxLength={maxLength}
           placeholder={placeholder}
@@ -267,10 +263,10 @@ export const MiddleActiveInputNickname = ({
           }}>
           <TextInput
             style={{width: '60%'}}
-            onFocus={(e: any) => {
+            onFocus={() => {
               onInputFocus();
             }}
-            onBlur={(e: any) => {
+            onBlur={() => {
               onInputFocusOut();
             }}
             onChangeText={(value: string) => {

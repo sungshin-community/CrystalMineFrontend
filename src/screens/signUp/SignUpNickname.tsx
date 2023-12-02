@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -25,18 +24,12 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {checkNicknameConflict, logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
-import { fontRegular } from '../../common/font';
+import {fontRegular} from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #ffffff;
-`;
 
 const TextContainer = styled.View`
   margin: 55px 0px 52px 0px;

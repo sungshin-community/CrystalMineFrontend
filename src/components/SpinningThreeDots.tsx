@@ -1,14 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Animated,
-  TouchableWithoutFeedback,
-  Pressable,
-  Easing,
-  TouchableHighlight,
-} from 'react-native';
+import {View, Animated, Pressable} from 'react-native';
 import Dots from '../../resources/icon/Dots';
 interface Props {
   handleDefaultModeComponent?: any;
@@ -20,29 +11,24 @@ function SpinningThreeDots({
   handleDefaultModeComponent,
   isMine,
   handleOptionModeIsMineComponent,
-  handleOptionModeIsNotMineComponent
+  handleOptionModeIsNotMineComponent,
 }: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
-  const [toggle, setToggle] = useState<boolean>(false);
-  const rotateAnimation= useRef(new Animated.Value(0)).current;
+  const rotateAnimation = useRef(new Animated.Value(0)).current;
   const handleAnimation = () => {
-  if(!isOptionState)
-    Animated.timing(rotateAnimation, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setToggle((prev)=>!prev)
-    });
-  else
-    Animated.timing(rotateAnimation, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setToggle((prev)=>!prev)
-    });
-  }
+    if (!isOptionState)
+      Animated.timing(rotateAnimation, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {});
+    else
+      Animated.timing(rotateAnimation, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {});
+  };
   const animatedStyle = {
     transform: [
       {
@@ -56,15 +42,19 @@ function SpinningThreeDots({
 
   return (
     <>
-      <View style={{flexDirection: 'row', alignItems: 'center', padding: 0, margin: 0}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 0,
+          margin: 0,
+        }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {!isOptionState && handleDefaultModeComponent}
           {isOptionState &&
-            (isMine ? (
-              handleOptionModeIsMineComponent
-            ) : (
-              handleOptionModeIsNotMineComponent
-            ))}
+            (isMine
+              ? handleOptionModeIsMineComponent
+              : handleOptionModeIsNotMineComponent)}
         </View>
         <View style={{flexDirection: 'row'}}>
           <Pressable

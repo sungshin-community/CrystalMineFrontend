@@ -12,7 +12,6 @@ import {
   KeyboardEvent,
   Keyboard,
 } from 'react-native';
-import {Checked} from '../../resources/icon/CheckBox';
 import RadioButtonUnChecked, {
   RadioButtonChecked,
 } from '../../resources/icon/RadioButton';
@@ -42,8 +41,6 @@ export const SelectModalBottom = ({
   modalVisible,
   setModalVisible,
   title,
-  content,
-  isContentCenter = true,
   purpleButtonText,
   reportId,
   reportFunc,
@@ -54,7 +51,6 @@ export const SelectModalBottom = ({
   const [reason, setReason] = useState<Reason[]>([]);
   const [isCheckedReportNum, setIsCheckedReportNum] = useState<number>(1);
   const [detail, setDetail] = useState<string>('');
-  const inputRef = useRef(null);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
 

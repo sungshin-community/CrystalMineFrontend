@@ -1,12 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PurpleRoundButton, WhiteRoundButton} from '../components/Button';
 import Logo from '../../resources/icon/Logo';
 import * as Animatable from 'react-native-animatable';
-import {fontRegular} from '../common/font';
 import QuestionMark from '../../resources/icon/QuestionMark';
 import {ModalBottom} from '../components/ModalBottom';
 

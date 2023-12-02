@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
@@ -9,7 +8,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
   KeyboardEvent,
 } from 'react-native';
 
@@ -30,7 +28,6 @@ import Toast from 'react-native-simple-toast';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
-  // StatusBar.setTranslucent(true);
   StatusBar.setBarStyle('dark-content');
 }
 
@@ -83,7 +80,8 @@ export default function ResetPasswordInputNewPassword({
   };
 
   const validatePassword = (password: string) => {
-    let regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
+    let regExp =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{10,25}$/;
     if (regExp.test(password)) {
       setIsValidate(true);
       setIsWrong(false);
@@ -94,14 +92,6 @@ export default function ResetPasswordInputNewPassword({
 
   const letShowPassword = () => {
     setShowPassword(!showPassword);
-  };
-
-  const resetPasswordConfirm = async () => {
-    let result: number = await checkNewPassword({
-      username: route.params.userId,
-      password: password,
-    });
-    return result;
   };
 
   const onKeyboardDidshow = (e: KeyboardEvent) => {
@@ -149,10 +139,10 @@ export default function ResetPasswordInputNewPassword({
                   paddingBottom: 7,
                   color: '#222222',
                 }}
-                onFocus={(e: any) => {
+                onFocus={() => {
                   onInputFocus();
                 }}
-                onBlur={(e: any) => {
+                onBlur={() => {
                   onInputFocusOut();
                 }}
                 onChangeText={(value: string) => {
@@ -191,7 +181,7 @@ export default function ResetPasswordInputNewPassword({
               <CautionText text="사용할 수 없는 비밀번호 입니다." />
             )}
             {!isChangeable && (
-              <CautionText text="기존 비밀번호와 동일합니다."></CautionText>
+              <CautionText text="기존 비밀번호와 동일합니다." />
             )}
           </ScrollView>
           <View
