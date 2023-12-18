@@ -1,7 +1,4 @@
 {
-  "cSpell.words": [
-    "Dtos",
-    "ellipsize",
-    "Suryong"
-  ]
+  "cSpell.words": ["Dtos", "ellipsize", "Suryong"],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

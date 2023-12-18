@@ -6392,6 +6392,11 @@ react-native-fit-image@^1.5.5:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-google-analytics-bridge@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-analytics-bridge/-/react-native-google-analytics-bridge-7.1.0.tgz#f950ad05907467fbd0703649b46dc6ddf5ceb1b0"
+  integrity sha512-HtFrsTk9fGXumYUKCxS8gzFobAS+vcBMzSgpYN+YQGPAvK4xgogTpz1u19BxzjsjV85xm+aaIA/t0SkRDXVjEQ==
+
 react-native-google-mobile-ads@^9.1.1:
   version "9.1.2"
   resolved "https://registry.npmjs.org/react-native-google-mobile-ads/-/react-native-google-mobile-ads-9.1.2.tgz"

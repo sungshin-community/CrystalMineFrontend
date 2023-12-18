@@ -1,10 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Pressable, TouchableHighlight} from 'react-native';
+import {TouchableHighlight} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
-import WaterMark from './src/components/WaterMark';
+import analytics from '@react-native-firebase/analytics';
+import {firebase} from '@react-native-firebase/analytics';
 // screens
 import ErrorScreen from './src/screens/errorScreen/ErrorScreen';
 // signIn
@@ -101,13 +105,14 @@ const App = () => {
     .initialize()
     .then(adapterStatuses => {
       // Initialization complete!
-  });
+    });
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreAllLogs();
   console.reportErrorsAsExceptions = false;
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+  firebase.analytics().setAnalyticsCollectionEnabled(true);
   if (Platform.OS === 'android') {
     StatusBar.setBackgroundColor('white');
     // StatusBar.setTranslucent(true);
@@ -136,11 +141,36 @@ const App = () => {
   //   }, 1);
   // }, []);
 
+  type RootStackParamList = {
+    [key: string]: undefined | {[key: string]: any};
+  };
+
+  const navigationRef =
+    useRef<NavigationContainerRef<RootStackParamList>>(null);
+  const routeNameRef = useRef<string>();
   return (
     <>
       <StatusBar barStyle="dark-content" />
       {isLoaded && (
-        <NavigationContainer>
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() => {
+            const currentRoute = navigationRef.current?.getCurrentRoute();
+            routeNameRef.current = currentRoute?.name || 'DefaultScreenName';
+          }}
+          onStateChange={async () => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName =
+              navigationRef.current?.getCurrentRoute.name;
+
+            if (previousRouteName !== currentRouteName) {
+              await analytics().logScreenView({
+                screen_name: currentRouteName,
+                screen_class: currentRouteName,
+              });
+            }
+            routeNameRef.current = currentRouteName;
+          }}>
           {!isLoggedIn ? (
             <Stack.Navigator
               screenOptions={{
