@@ -6,6 +6,7 @@ import BoardFragment from '../screens/fragments/BoardFragment';
 import AlertFragment from '../screens/fragments/AlertFragment';
 import MessageFragment from '../screens/fragments/MessageFragment';
 import MyPageFragment from '../screens/fragments/MyPageFragment';
+import TestAlertFragment from '../screens/fragments/TestAlertFragment';
 
 import HomeTabIcon from '../../resources/icon/HomeTabIcon';
 import BoardTabIcon from '../../resources/icon/BoardTabIcon';
@@ -314,7 +315,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
       />
       <Tab.Screen
         name="Alert"
-        component={AlertFragment}
+        component={TestAlertFragment}
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
