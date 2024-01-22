@@ -94,6 +94,9 @@ import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 import {MobileAds} from 'react-native-google-mobile-ads';
 import MessageScreen from './src/screens/message/MessageScreen';
 
+//alert test
+import AlertTestScreen from './src/screens/AlertTestScreen';
+import Toast from 'react-native-toast-message'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -3573,10 +3576,19 @@ const App = () => {
                   ),
                 })}
               />
+             {/* 스터디 - 알림 화면 */}
+             <Stack.Screen
+                name = "AlertTestScreen"
+                component = {AlertTestScreen}
+                options={({navigation}) => ({
+                    title: '알림 화면',
+                    })}
+            />
             </Stack.Navigator>
           )}
         </NavigationContainer>
       )}
+      <Toast />
     </>
   );
 };

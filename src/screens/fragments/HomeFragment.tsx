@@ -70,6 +70,7 @@ type RootStackParamList = {
   ErrorScreen: {status: number; code: string};
   SplashHome: undefined;
   Notice: {noticeId: number};
+  AlertTestScreen: undefined;
 };
 type notiItemDto = {
   notiItem: HomeNotification;
@@ -576,7 +577,7 @@ const HomeFragment = ({navigation}: Props) => {
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        ? navigation.navigate('Board')
+                        ? navigation.navigate('AlertTestScreen')
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
