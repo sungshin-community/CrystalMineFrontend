@@ -6,54 +6,95 @@ import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import ProfileImage from '../../resources/icon/ProfileImage';
-import { SmallOrangeFlag } from '../../resources/icon/SmallOrangeFlag';
-import { SmallPurpleFlag } from '../../resources/icon/SmallPurpleFlag';
-import { ContentPreviewDto } from '../classes/BoardDetailDto';
-import { fontMedium, fontRegular } from '../common/font';
+import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
+import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
+import {ContentPreviewDto} from '../classes/BoardDetailDto';
+import {fontMedium, fontRegular} from '../common/font';
 
 interface Props {
   post: ContentPreviewDto;
   boardId: number;
 }
 
-function PostItem({ post, boardId }: Props) {
+function PostItem({post, boardId}: Props) {
   return (
     <View style={styles.container}>
-      {boardId === 2 &&
-        <View style={{ marginTop: 10, height: 28, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }}>
-          <SmallBoard style={{ marginLeft: 11 }} />
-          <Text style={[{ color: '#87919B', marginLeft: 8, fontSize: 14 }, fontRegular]}>{post.boardName}</Text>
+      {boardId === 2 && (
+        <View
+          style={{
+            marginTop: 10,
+            height: 28,
+            backgroundColor: '#F7F7F7',
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderRadius: 10,
+          }}>
+          <SmallBoard style={{marginLeft: 11}} />
+          <Text
+            style={[
+              {color: '#87919B', marginLeft: 8, fontSize: 14},
+              fontRegular,
+            ]}>
+            {post.boardName}
+          </Text>
         </View>
-      }
+      )}
       <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={{ width: 24, height: 24, borderRadius: 12 }}
-              source={{uri: post.profileImage}}/>
+            <Image
+              style={{width: 24, height: 24, borderRadius: 12}}
+              source={{uri: post.profileImage}}
+            />
             <Text style={styles.name}>{post.displayName}</Text>
-            { boardId !== 2 && !post.isAnonymous && ( post.isOwner && (post.boardType === 'PUBLIC' ? <SmallOrangeFlag style={{ marginLeft: 5 }}/>: <SmallPurpleFlag style={{marginLeft: 5}}/>))}
+            {/* boardId가 93, 94, 95인 경우 -> 교내 게시판*/}
+            {!(boardId === 93 || boardId === 94 || boardId === 95) &&
+              !post.isAnonymous &&
+              post.isOwner &&
+              (post.boardType === 'PUBLIC' ? (
+                <SmallOrangeFlag style={{marginLeft: 5}} />
+              ) : (
+                <SmallPurpleFlag style={{marginLeft: 5}} />
+              ))}
           </View>
-          <Text style={[styles.textSmall, styles.timeStamp]}>{post.createdAt}</Text>
+          <Text style={[styles.textSmall, styles.timeStamp]}>
+            {post.createdAt}
+          </Text>
         </View>
-        {post.hasTitle ? <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>{post.title}</Text>:<></>}
-        <Text numberOfLines={post.title ? 2 : 5} ellipsizeMode="tail" style={[styles.text, styles.content, fontRegular]}>{post.content}</Text>
+        {post.hasTitle ? (
+          <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>
+            {post.title}
+          </Text>
+        ) : (
+          <></>
+        )}
+        <Text
+          numberOfLines={post.title ? 2 : 5}
+          ellipsizeMode="tail"
+          style={[styles.text, styles.content, fontRegular]}>
+          {post.content}
+        </Text>
         <View style={styles.icon}>
-          {post.isLiked ? <PostLike /> : <PostUnlike />}
-          <Text style={[styles.textSmall, styles.iconCount]}>
-            {post.likeCount}
-          </Text>
-          {post.imageCount > 0 &&
+          {!(boardId === 93 || boardId === 94 || boardId === 95) && (
             <>
-            <PostImage />
-            <Text style={[styles.textSmall, styles.iconCount]}>
-              {post.imageCount}
-            </Text>
+              {post.isLiked ? <PostLike /> : <PostUnlike />}
+              <Text style={[styles.textSmall, styles.iconCount]}>
+                {post.likeCount}
+              </Text>
+              {post.imageCount > 0 && (
+                <>
+                  <PostImage />
+                  <Text style={[styles.textSmall, styles.iconCount]}>
+                    {post.imageCount}
+                  </Text>
+                </>
+              )}
+              <PostComment />
+              <Text style={[styles.textSmall, styles.iconCount]}>
+                {post.commentCount}
+              </Text>
             </>
-          }
-          <PostComment />
-          <Text style={[styles.textSmall, styles.iconCount]}>
-            {post.commentCount}
-          </Text>
+          )}
         </View>
       </View>
     </View>

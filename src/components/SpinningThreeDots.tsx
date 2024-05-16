@@ -20,29 +20,29 @@ function SpinningThreeDots({
   handleDefaultModeComponent,
   isMine,
   handleOptionModeIsMineComponent,
-  handleOptionModeIsNotMineComponent
+  handleOptionModeIsNotMineComponent,
 }: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
-  const rotateAnimation= useRef(new Animated.Value(0)).current;
+  const rotateAnimation = useRef(new Animated.Value(0)).current;
   const handleAnimation = () => {
-  if(!isOptionState)
-    Animated.timing(rotateAnimation, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setToggle((prev)=>!prev)
-    });
-  else
-    Animated.timing(rotateAnimation, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      setToggle((prev)=>!prev)
-    });
-  }
+    if (!isOptionState)
+      Animated.timing(rotateAnimation, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        setToggle(prev => !prev);
+      });
+    else
+      Animated.timing(rotateAnimation, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        setToggle(prev => !prev);
+      });
+  };
   const animatedStyle = {
     transform: [
       {
@@ -56,15 +56,19 @@ function SpinningThreeDots({
 
   return (
     <>
-      <View style={{flexDirection: 'row', alignItems: 'center', padding: 0, margin: 0}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 0,
+          margin: 0,
+        }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {!isOptionState && handleDefaultModeComponent}
           {isOptionState &&
-            (isMine ? (
-              handleOptionModeIsMineComponent
-            ) : (
-              handleOptionModeIsNotMineComponent
-            ))}
+            (isMine
+              ? handleOptionModeIsMineComponent
+              : handleOptionModeIsNotMineComponent)}
         </View>
         <View style={{flexDirection: 'row'}}>
           <Pressable
