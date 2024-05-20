@@ -339,6 +339,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       )}
     </>
   );
+
   return (
     <>
       <WaterMark />
@@ -474,69 +475,74 @@ const PostListScreen = ({navigation, route}: Props) => {
                     <View style={{marginTop: -16}}>
                       <AdMob />
                     </View>
-                    <View style={{flexDirection: 'row', paddingHorizontal: 24}}>
-                      <TouchableOpacity
-                        style={[
-                          styles.grayButtonStyle,
-                          {
-                            flex: 1,
-                            marginRight: 10,
-                            paddingLeft: 6,
-                          },
-                        ]}
-                        onPress={() => {
-                          boardHotPost?.isExist
-                            ? navigation.navigate('PostScreen', {
-                                postId: boardHotPost.postId,
-                              })
-                            : {};
-                        }}>
-                        {boardHotPost?.isExist ? (
-                          <Text style={[styles.popularButtonText, fontBold]}>
-                            인기
-                          </Text>
-                        ) : null}
-                        <Text
-                          style={[
-                            styles.grayButtonText,
-                            fontRegular,
-                            {flex: 1},
-                          ]}
-                          numberOfLines={1}
-                          ellipsizeMode="tail">
-                          {boardHotPost?.isExist === false
-                            ? '현재 실시간 인기글이 없습니다.'
-                            : boardHotPost?.title !== null
-                            ? boardHotPost?.title
-                            : boardHotPost.content}
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (sortBy === 'createdAt') {
-                            setSortBy('likeCount');
-                          } else {
-                            setSortBy('createdAt');
-                          }
-                        }}
-                        style={[
-                          styles.grayButtonStyle,
-                          {
-                            width: 78,
-                            justifyContent: 'center',
-                          },
-                        ]}>
-                        <Text
-                          style={{
-                            marginRight: 5,
-                            color: '#6E7882',
-                            fontSize: 12,
-                          }}>
-                          {sortBy === 'createdAt' ? '최신순' : '공감순'}
-                        </Text>
-                        <SortIcon />
-                      </TouchableOpacity>
-                    </View>
+                    {!isHotBoard &&
+                      ![93, 94, 95].includes(route.params.boardId) && (
+                        <View
+                          style={{flexDirection: 'row', paddingHorizontal: 24}}>
+                          <TouchableOpacity
+                            style={[
+                              styles.grayButtonStyle,
+                              {
+                                flex: 1,
+                                marginRight: 10,
+                                paddingLeft: 6,
+                              },
+                            ]}
+                            onPress={() => {
+                              boardHotPost?.isExist
+                                ? navigation.navigate('PostScreen', {
+                                    postId: boardHotPost.postId,
+                                  })
+                                : {};
+                            }}>
+                            {boardHotPost?.isExist ? (
+                              <Text
+                                style={[styles.popularButtonText, fontBold]}>
+                                인기
+                              </Text>
+                            ) : null}
+                            <Text
+                              style={[
+                                styles.grayButtonText,
+                                fontRegular,
+                                {flex: 1},
+                              ]}
+                              numberOfLines={1}
+                              ellipsizeMode="tail">
+                              {boardHotPost?.isExist === false
+                                ? '현재 실시간 인기글이 없습니다.'
+                                : boardHotPost?.title !== null
+                                ? boardHotPost?.title
+                                : boardHotPost.content}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => {
+                              if (sortBy === 'createdAt') {
+                                setSortBy('likeCount');
+                              } else {
+                                setSortBy('createdAt');
+                              }
+                            }}
+                            style={[
+                              styles.grayButtonStyle,
+                              {
+                                width: 78,
+                                justifyContent: 'center',
+                              },
+                            ]}>
+                            <Text
+                              style={{
+                                marginRight: 5,
+                                color: '#6E7882',
+                                fontSize: 12,
+                              }}>
+                              {sortBy === 'createdAt' ? '최신순' : '공감순'}
+                            </Text>
+                            <SortIcon />
+                          </TouchableOpacity>
+                        </View>
+                      )}
                   </View>
                 )
               }
@@ -553,7 +559,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {!isHotBoard && (
+        {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) && (
           <FloatingWriteButton
             onPress={() =>
               navigation.navigate('PostWriteScreen', {

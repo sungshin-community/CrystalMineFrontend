@@ -447,95 +447,102 @@ const PostScreen = ({navigation, route}: Props) => {
             />
           </View>
         </ScrollView>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            paddingBottom: isFocused
-              ? Platform.OS == 'ios'
-                ? keyboardHeight
-                : 0
-              : Platform.OS === 'ios'
-              ? 20
-              : 0,
-          }}>
+
+        {![
+          '창업지원팀 공식 게시판',
+          '국제교류팀 공식 게시판',
+          '현장실습팀 공식 게시판',
+        ].includes(post?.boardName) && (
           <View
             style={{
-              flexDirection: 'row',
-              paddingVertical: 5,
+              backgroundColor: '#fff',
+              paddingBottom: isFocused
+                ? Platform.OS == 'ios'
+                  ? keyboardHeight
+                  : 0
+                : Platform.OS === 'ios'
+                ? 20
+                : 0,
             }}>
             <View
               style={{
                 flexDirection: 'row',
-                width: 83,
-                justifyContent: 'center',
-                alignItems: 'center',
+                paddingVertical: 5,
               }}>
-              <Text style={[fontRegular, {marginRight: 5}]}>익명</Text>
-              <Pressable
-                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => {
-                  setIsAnonymous(isAnonymous => !isAnonymous);
-                }}>
-                {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-              </Pressable>
-            </View>
-            <View
-              style={[
-                styles.inputBox,
-                {flexDirection: 'row', justifyContent: 'space-between'},
-              ]}>
-              <TextInput
-                ref={commentInputRef}
-                placeholder="댓글을 입력해 주세요."
-                placeholderTextColor="#87919B"
-                multiline={true}
-                onChangeText={value => {
-                  setNewComment(value);
-                  if (value.length === 500)
-                    Toast.show(
-                      '댓글 내용은 500글자까지만 입력 가능합니다.',
-                      Toast.SHORT,
-                    );
-                }}
-                value={newComment}
-                autoCorrect={false}
-                style={[fontRegular, styles.input]}
-                maxLength={500}
-                onFocus={(e: any) => {
-                  onInputFocus();
-                }}
-                onBlur={(e: any) => {
-                  onInputFocusOut();
-                  setIsRecomment(false);
-                }}
-              />
               <View
-                style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
-                <Text>
-                  {newComment &&
-                    (isSubmitState ? (
-                      <></>
-                    ) : (
-                      <Pressable
-                        style={{
-                          paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                          bottom: 0,
-                        }}
-                        onPress={() => {
-                          setIsSubmitState(true);
-                          console.log(
-                            '댓글 작성 버튼 클릭, isSubmitState',
-                            isSubmitState,
-                          );
-                        }}>
-                        <CommentSendIcon />
-                      </Pressable>
-                    ))}
-                </Text>
+                style={{
+                  flexDirection: 'row',
+                  width: 83,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={[fontRegular, {marginRight: 5}]}>익명</Text>
+                <Pressable
+                  hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                  onPress={() => {
+                    setIsAnonymous(isAnonymous => !isAnonymous);
+                  }}>
+                  {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+                </Pressable>
+              </View>
+              <View
+                style={[
+                  styles.inputBox,
+                  {flexDirection: 'row', justifyContent: 'space-between'},
+                ]}>
+                <TextInput
+                  ref={commentInputRef}
+                  placeholder="댓글을 입력해 주세요."
+                  placeholderTextColor="#87919B"
+                  multiline={true}
+                  onChangeText={value => {
+                    setNewComment(value);
+                    if (value.length === 500)
+                      Toast.show(
+                        '댓글 내용은 500글자까지만 입력 가능합니다.',
+                        Toast.SHORT,
+                      );
+                  }}
+                  value={newComment}
+                  autoCorrect={false}
+                  style={[fontRegular, styles.input]}
+                  maxLength={500}
+                  onFocus={(e: any) => {
+                    onInputFocus();
+                  }}
+                  onBlur={(e: any) => {
+                    onInputFocusOut();
+                    setIsRecomment(false);
+                  }}
+                />
+                <View
+                  style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
+                  <Text>
+                    {newComment &&
+                      (isSubmitState ? (
+                        <></>
+                      ) : (
+                        <Pressable
+                          style={{
+                            paddingBottom: Platform.OS === 'ios' ? 3 : 5,
+                            bottom: 0,
+                          }}
+                          onPress={() => {
+                            setIsSubmitState(true);
+                            console.log(
+                              '댓글 작성 버튼 클릭, isSubmitState',
+                              isSubmitState,
+                            );
+                          }}>
+                          <CommentSendIcon />
+                        </Pressable>
+                      ))}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        )}
       </KeyboardAvoidingView>
       <ModalBottom
         modalVisible={goBackWarning}

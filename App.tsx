@@ -29,7 +29,6 @@ import {CreateMailGuide} from './src/screens/signUp/CreateMailGuide';
 import DirectionAgree from './src/screens/signUp/DirectionAgree';
 import RegularMemberAuth from './src/screens/signUp/RegularMemberAuth';
 import PostScreen from './src/screens/post/PostScreen';
-import AdminPostScreen from './src/screens/post/AdminPostScreen';
 
 import GlobalNavbar from './src/components/GlobalNavbar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,7 +41,6 @@ import CreateBoard from './src/screens/board/createBoard/CreateBoard';
 import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
-import AdminPostListScreen from './src/screens/post/AdminPostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
 import PostWriteScreen from './src/screens/post/PostWriteScreen';
 // myPage
@@ -103,7 +101,7 @@ const App = () => {
     .initialize()
     .then(adapterStatuses => {
       // Initialization complete!
-  });
+    });
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreAllLogs();
   console.reportErrorsAsExceptions = false;
@@ -925,29 +923,7 @@ const App = () => {
                   ),
                 })}
               />
-              <Stack.Screen
-                              name="AdminPostListScreen"
-                              component={AdminPostListScreen}
-                              options={({navigation}) => ({
-                                title: '',
-                                headerLeft: () => (
-                                  <TouchableHighlight
-                                    underlayColor="#EEEEEE"
-                                    style={{
-                                      width: 40,
-                                      height: 40,
-                                      borderRadius: 20,
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                    }}
-                                    onPress={() =>
-                                      navigation.dispatch(CommonActions.goBack())
-                                    }>
-                                    <BackButtonIcon />
-                                  </TouchableHighlight>
-                                ),
-                              })}
-                            />
+
               <Stack.Screen
                 name="PostWriteScreen"
                 component={PostWriteScreen}
@@ -1060,18 +1036,7 @@ const App = () => {
                   },
                 })}
               />
-              <Stack.Screen
-                              name="AdminPostScreen"
-                              component={AdminPostScreen}
-                              options={({navigation}) => ({
-                                title: '',
-                                headerTitleAlign: 'center',
-                                headerTintColor: '#000000',
-                                headerTitleStyle: {
-                                  fontFamily: 'SpoqaHanSansNeo-Medium',
-                                },
-                              })}
-                            />
+
               <Stack.Screen
                 name="ImageViewerScreen"
                 component={ImageViewerScreen}
@@ -2675,29 +2640,7 @@ const App = () => {
                   ),
                 })}
               />
-              <Stack.Screen
-                              name="AdminPostListScreen"
-                              component={AdminPostListScreen}
-                              options={({navigation}) => ({
-                                title: '',
-                                headerLeft: () => (
-                                  <TouchableHighlight
-                                    underlayColor="#EEEEEE"
-                                    style={{
-                                      width: 40,
-                                      height: 40,
-                                      borderRadius: 20,
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                    }}
-                                    onPress={() =>
-                                      navigation.dispatch(CommonActions.goBack())
-                                    }>
-                                    <BackButtonIcon />
-                                  </TouchableHighlight>
-                                ),
-                              })}
-                            />
+
               <Stack.Screen
                 name="PostWriteScreen"
                 component={PostWriteScreen}
@@ -2810,18 +2753,7 @@ const App = () => {
                   },
                 })}
               />
-              <Stack.Screen
-                              name="AdminPostScreen"
-                              component={AdminPostScreen}
-                              options={({navigation}) => ({
-                                title: '',
-                                headerTitleAlign: 'center',
-                                headerTintColor: '#000000',
-                                headerTitleStyle: {
-                                  fontFamily: 'SpoqaHanSansNeo-Medium',
-                                },
-                              })}
-                            />
+
               <Stack.Screen
                 name="ImageViewerScreen"
                 component={ImageViewerScreen}
