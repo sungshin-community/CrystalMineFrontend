@@ -123,6 +123,7 @@ function Post({
     }
     setMessageModalVisible(false);
   };
+
   const handlePostDeleteComponent = (
     <>
       <ModalBottom
@@ -291,6 +292,7 @@ function Post({
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <SpinningThreeDots
+              boardId={data?.boardId}
               isMine={data?.isAuthor}
               handleDefaultModeComponent={handlePostScrapComponent}
               handleOptionModeIsMineComponent={handlePostDeleteComponent}
@@ -347,19 +349,23 @@ function Post({
             </ScrollView>
           </View>
         )}
-        <View
-          style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-          <Pressable
-            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-            onPress={() => handlePostLike(data.postId)}>
-            {data?.isLiked ? <PostLike /> : <PostUnlike />}
-          </Pressable>
-          <Text style={[fontRegular, styles.postLike]}>{data?.likeCount}</Text>
-          <PostComment />
-          <Text style={[fontRegular, styles.postComment]}>
-            {data?.commentCount}
-          </Text>
-        </View>
+        {data?.boardId !== 93 && data?.boardId !== 94 && data?.boardId !== 95 && (
+          <View
+            style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+            <Pressable
+              hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+              onPress={() => handlePostLike(data.postId)}>
+              {data?.isLiked ? <PostLike /> : <PostUnlike />}
+            </Pressable>
+            <Text style={[fontRegular, styles.postLike]}>
+              {data?.likeCount}
+            </Text>
+            <PostComment />
+            <Text style={[fontRegular, styles.postComment]}>
+              {data?.commentCount}
+            </Text>
+          </View>
+        )}
       </View>
       {/* <View
         style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 28}}></View> */}

@@ -15,8 +15,10 @@ interface Props {
   isMine?: boolean;
   handleOptionModeIsMineComponent?: any;
   handleOptionModeIsNotMineComponent?: any;
+  boardId: number;
 }
 function SpinningThreeDots({
+  boardId,
   handleDefaultModeComponent,
   isMine,
   handleOptionModeIsMineComponent,
@@ -70,19 +72,19 @@ function SpinningThreeDots({
               ? handleOptionModeIsMineComponent
               : handleOptionModeIsNotMineComponent)}
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Pressable
-            // style={{width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}
-            // underlayColor='#EEEEEE'
-            onPress={() => {
-              handleAnimation();
-              setIsOptionState(!isOptionState);
-            }}>
-            <Animated.View style={animatedStyle}>
-              <Dots />
-            </Animated.View>
-          </Pressable>
-        </View>
+        {![93, 94, 95].includes(boardId) && (
+          <View style={{flexDirection: 'row'}}>
+            <Pressable
+              onPress={() => {
+                handleAnimation();
+                setIsOptionState(!isOptionState);
+              }}>
+              <Animated.View style={animatedStyle}>
+                <Dots />
+              </Animated.View>
+            </Pressable>
+          </View>
+        )}
       </View>
     </>
   );

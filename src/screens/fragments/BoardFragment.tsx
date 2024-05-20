@@ -6,6 +6,7 @@ import BoardList, {
   MenuList,
   CustomBoardList,
   OfficialBoardList,
+  TeamBoardList,
 } from '../../components/BoardList';
 import Board from '../../classes/Board';
 import {
@@ -35,7 +36,6 @@ type RootStackParamList = {
   MyCommentList: undefined;
   ScrapedPostList: undefined;
   PostListScreen: {boardId: number};
-  AdminPostListScreen: {boardId: number};
   TermAgreeCreateBoard: undefined;
   WikiTab: {boardId: number};
   SplashHome: undefined;
@@ -214,6 +214,11 @@ export default function BoardFragment({navigation}: Props) {
     getPinnedBoardList();
   };
 
+  const updateTeamBoardList = async () => {
+    getTeamBoards();
+    getPinnedBoardList();
+  };
+
   const moveToMyPostList = () => {
     navigation.navigate('MyPostList');
   };
@@ -225,12 +230,7 @@ export default function BoardFragment({navigation}: Props) {
   const moveToBoard = (boardId: number) => {
     if (boardId === 5) {
       navigation.navigate('WikiTab', {boardId: boardId});
-    }
-     else if (boardId === 93 || boardId === 94 || boardId === 95) {
-          navigation.navigate('AdminPostListScreen', {boardId: boardId});
-          console.log("어드민")
-        }
-    else {
+    } else {
       navigation.navigate('PostListScreen', {boardId: boardId});
     }
   };
@@ -371,7 +371,7 @@ export default function BoardFragment({navigation}: Props) {
                   <OfficialBoardList
                     items={teamBoardList}
                     moveToBoard={moveToBoard}
-                    onUpdate={updateOfficialBoardList}
+                    onUpdate={updateTeamBoardList}
                     isInited={isInited}
                   />
                 }
