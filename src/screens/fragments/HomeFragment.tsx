@@ -55,6 +55,12 @@ import {
   topicTokenLogic,
 } from '../../common/util/pushRegisterUtil';
 import {request, PERMISSIONS} from 'react-native-permissions';
+import SungshinPortal from '../../../resources/icon/SungshinPortal';
+import Notice from '../../../resources/icon/Notice';
+import Calendar from '../../../resources/icon/Calendar';
+import StudentCafeteria from '../../../resources/icon/StudentCafeteria';
+import SchoolBus from '../../../resources/SchoolBus';
+
 type RootStackParamList = {
   PostListScreen: {boardId: number};
   MyPage: undefined;
@@ -265,440 +271,37 @@ const HomeFragment = ({navigation}: Props) => {
             />
           </View>
           <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-            <View
-              style={{
-                backgroundColor: '#F6F6F6',
-                paddingTop: 32,
-              }}>
-              <Text
-                style={[
-                  fontRegular,
-                  {
-                    fontSize: 22,
-                    marginLeft: 40,
-                    marginBottom: noti?.length && 26,
-                  },
-                ]}>
-                <Text
-                  style={[fontRegular, {fontWeight: 'bold', color: '#A055FF'}]}>
-                  {user?.nickname}
-                </Text>
-                {` 님, `}
-                {user && user?.nickname.length > 8 ? (
-                  <Text>{`\n`}</Text>
-                ) : (
-                  <></>
-                )}
-                {`안녕하세요!`}
-              </Text>
-              <View
-                style={{
-                  borderRadius: 20,
-                }}>
-                <View
-                  style={{
-                    borderRadius: 20,
-                    marginHorizontal: 24,
-                    paddingHorizontal: 18,
-                    backgroundColor: '#fff',
-                  }}>
-                  {noti?.map((item, index) => (
-                    <Pressable
-                      key={index}
-                      style={[
-                        {
-                          borderTopWidth: index === 0 ? 0 : 1,
-                          borderTopColor: '#F6F6F6',
-                          backgroundColor: 'yellow',
-                        },
-                        styles.newsContainer,
-                      ]}
-                      onPress={async () => {
-                        if (
-                          item.type !== 'BEFORE_EXPIRE' &&
-                          item.type !== 'EXPIRE' &&
-                          item.type !== 'NOT_AUTHENTICATED'
-                        ) {
-                          await readNotification(item.id);
-                        }
-                        if (item.type === 'WELCOME') {
-                          navigation.navigate('MyPage');
-                        } else if (item.type === 'NOTICE') {
-                          navigation.navigate('Notice', {
-                            noticeId: item.postId,
-                          });
-                        } else if (
-                          item.type === 'BEFORE_EXPIRE' ||
-                          item.type === 'EXPIRE' ||
-                          item.type === 'NOT_AUTHENTICATED'
-                        ) {
-                          if (item.type === 'BEFORE_EXPIRE')
-                            navigation.navigate('CertifiedMember');
-                          else if (item.type === 'EXPIRE')
-                            navigation.navigate('ExpiredMember');
-                          else if (item.type === 'NOT_AUTHENTICATED')
-                            navigation.navigate('UncertifiedMember');
-                        } else if (
-                          item.type === 'BOARD_BLIND' ||
-                          item.type === 'PIN_BOARD_BLIND' ||
-                          item.type === 'POST_BLIND' ||
-                          item.type === 'COMMENT_BLIND'
-                        ) {
-                          const itemContent = (
-                            <View>
-                              <Text
-                                style={[
-                                  fontRegular,
-                                  {
-                                    marginBottom: 15,
-                                    width: Dimensions.get('window').width - 100,
-                                  },
-                                ]}>
-                                {item.blind?.message}
-                              </Text>
-                              <View style={{flexDirection: 'row'}}>
-                                <Text
-                                  style={[
-                                    fontBold,
-                                    {width: 93, marginRight: 7},
-                                  ]}>
-                                  블라인드 사유
-                                </Text>
-                                <Text style={[fontRegular, {width: 143}]}>
-                                  {item.blind?.reason}
-                                </Text>
-                              </View>
-                              <View style={{flexDirection: 'row'}}>
-                                <Text
-                                  style={[
-                                    fontBold,
-                                    {width: 93, marginRight: 7},
-                                  ]}>
-                                  {item.type === 'BOARD_BLIND'
-                                    ? '게시판 이름'
-                                    : item.type === 'PIN_BOARD_BLIND'
-                                    ? '게시판 이름'
-                                    : item.type === 'POST_BLIND'
-                                    ? '작성 내용'
-                                    : item.type === 'COMMENT_BLIND'
-                                    ? '작성 내용:'
-                                    : ''}
-                                </Text>
-                                <Text
-                                  style={[
-                                    fontRegular,
-                                    {
-                                      width:
-                                        Dimensions.get('window').width - 183,
-                                    },
-                                  ]}>
-                                  {item.blind?.content}
-                                </Text>
-                              </View>
-                            </View>
-                          );
-                          if (
-                            (item.type === 'BOARD_BLIND' ||
-                              item.type === 'PIN_BOARD_BLIND' ||
-                              item.type === 'POST_BLIND' ||
-                              item.type === 'COMMENT_BLIND') &&
-                            item.blind
-                          ) {
-                            setModalBody(itemContent);
-                            setBlindModalVisible(true);
-                          } else if (item.type === 'BOARD_BLIND' && !item.blind)
-                            setTimeout(function () {
-                              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-                            }, 100);
-                          else if (
-                            item.type === 'PIN_BOARD_BLIND' &&
-                            !item.blind
-                          )
-                            setTimeout(function () {
-                              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-                            }, 100);
-                          else if (item.type === 'POST_BLIND' && !item.blind)
-                            setTimeout(function () {
-                              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
-                            }, 100);
-                          else if (item.type === 'COMMENT_BLIND' && !item.blind)
-                            setTimeout(function () {
-                              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
-                            }, 100);
-                          else
-                            setTimeout(function () {
-                              Toast.show(
-                                '알 수 없는 오류가 발생하였습니다.',
-                                Toast.SHORT,
-                              );
-                            }, 100);
-                        } else if (
-                          item.type === 'DELETE_BOARD_BLIND' ||
-                          item.type === 'DELETE_POST_BLIND' ||
-                          item.type === 'DELETE_COMMENT_BLIND'
-                        ) {
-                          const itemContent = (
-                            <View>
-                              <Text
-                                style={[
-                                  fontRegular,
-                                  {
-                                    marginBottom: 15,
-                                    width: Dimensions.get('window').width - 100,
-                                  },
-                                ]}>
-                                {item.deleteBlind?.message}
-                              </Text>
-                              <View style={{flexDirection: 'row'}}>
-                                <Text
-                                  style={[
-                                    fontBold,
-                                    {width: 88, marginRight: 7},
-                                  ]}>
-                                  {item.type === 'DELETE_BOARD_BLIND'
-                                    ? '게시판 이름'
-                                    : item.type === 'DELETE_POST_BLIND'
-                                    ? '작성 내용'
-                                    : item.type === 'DELETE_COMMENT_BLIND'
-                                    ? '작성 내용'
-                                    : ''}
-                                </Text>
-                                <Text
-                                  ellipsizeMode={'tail'}
-                                  numberOfLines={3}
-                                  style={[
-                                    fontRegular,
-                                    {
-                                      width:
-                                        Dimensions.get('window').width - 178,
-                                    },
-                                  ]}>
-                                  {item.deleteBlind?.content}
-                                </Text>
-                              </View>
-                            </View>
-                          );
-                          if (
-                            (item.type === 'DELETE_BOARD_BLIND' ||
-                              item.type === 'DELETE_POST_BLIND' ||
-                              item.type === 'DELETE_COMMENT_BLIND') &&
-                            item.deleteBlind
-                          ) {
-                            setModalBody(itemContent);
-                            setBlindModalVisible(true);
-                          } else if (
-                            item.type === 'DELETE_BOARD_BLIND' &&
-                            !item.deleteBlind
-                          )
-                            setTimeout(function () {
-                              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-                            }, 100);
-                          else if (
-                            item.type === 'DELETE_POST_BLIND' &&
-                            !item.deleteBlind
-                          )
-                            setTimeout(function () {
-                              Toast.show('삭제된 게시글입니다.', Toast.SHORT);
-                            }, 100);
-                          else if (
-                            item.type === 'DELETE_COMMENT_BLIND' &&
-                            !item.deleteBlind
-                          )
-                            setTimeout(function () {
-                              Toast.show('삭제된 댓글입니다.', Toast.SHORT);
-                            }, 100);
-                          else
-                            setTimeout(function () {
-                              Toast.show(
-                                '알 수 없는 오류가 발생하였습니다.',
-                                Toast.SHORT,
-                              );
-                            }, 100);
-                        }
-                      }}>
-                      <View style={{flexDirection: 'row'}}>
-                        {item.type === 'WELCOME' && <CheckMark />}
-                        {item.type === 'NOTICE' && <AlertNoticeIcon />}
-                        {(item.type === 'BEFORE_EXPIRE' ||
-                          item.type === 'EXPIRE' ||
-                          item.type === 'NOT_AUTHENTICATED') && (
-                          <AlertCheckIcon />
-                        )}
-                        {(item.type === 'BOARD_BLIND' ||
-                          item.type === 'PIN_BOARD_BLIND' ||
-                          item.type === 'POST_BLIND' ||
-                          item.type === 'COMMENT_BLIND') && <AlertBlindIcon />}
-                        {(item.type === 'DELETE_BOARD_BLIND' ||
-                          item.type === 'DELETE_POST_BLIND' ||
-                          item.type === 'DELETE_COMMENT_BLIND') && (
-                          <AlertBlindIcon />
-                        )}
-                        {item.type === 'COMMENT' && <AlertCommentIcon />}
-                        {item.type === 'HOT_POST' && <AlertHotPostIcon />}
-                        <View
-                          style={{width: Dimensions.get('window').width - 160}}>
-                          <Text
-                            ellipsizeMode={'tail'}
-                            numberOfLines={1}
-                            style={[fontRegular, styles.newsTitle]}>
-                            {item.title}
-                          </Text>
-                          <Text
-                            ellipsizeMode={'tail'}
-                            numberOfLines={1}
-                            style={[fontRegular, styles.newsMore]}>
-                            {item.content
-                              ? item.content
-                              : item.blind?.content
-                              ? item.blind?.content
-                              : item.deleteBlind?.content}
-                          </Text>
-                        </View>
-                      </View>
-                      <View>
-                        <RightArrowBold />
-                      </View>
-                    </Pressable>
-                  ))}
-                </View>
+            <View style={styles.portalContainer}>
+              <View style={styles.iconContainer}>
+                <SungshinPortal />
+                <Text style={styles.iconLabel}>성신 포탈</Text>
               </View>
-              <AdMob />
+              <View style={styles.iconContainer}>
+                <Notice />
+                <Text style={styles.iconLabel}>학사 공지</Text>
+              </View>
+              <View style={styles.iconContainer}>
+                <Calendar />
+                <Text style={styles.iconLabel}>학사 일정</Text>
+              </View>
+              <View style={styles.iconContainer}>
+                <StudentCafeteria />
+                <Text style={styles.iconLabel}>학식</Text>
+              </View>
+              <View style={styles.iconContainer}>
+                <SchoolBus />
+                <Text style={styles.iconLabel}>셔틀버스</Text>
+              </View>
             </View>
             <View
               style={{
                 padding: 24,
               }}>
+              {/* 게시판 글 목록 */}
               <View style={styles.rowContainer}>
                 <Text style={[fontRegular, styles.boardTitle]}>
-                  고정 게시판
+                  지금 인기있는 글
                 </Text>
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    {
-                      user?.isAuthenticated
-                        ? navigation.navigate('Board')
-                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                    }
-                  }}>
-                  <Text style={[fontRegular, styles.more]}>더보기</Text>
-                </TouchableWithoutFeedback>
-              </View>
-              {/* 게시판 글 목록 */}
-              {!isInited ? (
-                // true?
-                skeletonComponent
-              ) : user?.isAuthenticated ? (
-                pinBoardContents?.length === 0 ? (
-                  <View
-                    style={{
-                      backgroundColor: '#F7F7F7',
-                      paddingVertical: 27,
-                      borderRadius: 20,
-                    }}>
-                    <Text
-                      style={[
-                        fontRegular,
-                        {
-                          textAlign: 'center',
-                          fontSize: 15,
-                          color: '#6E7882',
-                        },
-                      ]}>
-                      고정된 게시판이 없습니다.
-                    </Text>
-                  </View>
-                ) : (
-                  pinBoardContents?.map((item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() => {
-                        if (
-                          item.boardId === 5 ||
-                          item.boardId === 6 ||
-                          item.boardId === 7 ||
-                          item.boardId === 8 ||
-                          item.boardId === 9
-                        ) {
-                          navigation.navigate('WikiTab', {
-                            boardId: item.boardId,
-                          });
-                        } else
-                          navigation.navigate('PostListScreen', {
-                            boardId: item.boardId,
-                          });
-                      }}>
-                      <View style={styles.pinBoardContainer}>
-                        <View style={styles.postTitleSummaryContainer}>
-                          <Text
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={[fontRegular, styles.postTitleSummary]}>
-                            {item.boardName.slice(0, numOfBoardTitle)}
-                          </Text>
-                        </View>
-                        <View style={styles.postSummaryContainer}>
-                          <Text
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={[
-                              fontRegular,
-                              styles.postSummary,
-                              {
-                                color: item.recentPostContent
-                                  ? '#6E7882'
-                                  : '#CBD0D8',
-                              },
-                            ]}>
-                            {item.recentPostContent
-                              ? item.recentPostContent
-                              : '아직 작성된 글이 없습니다!'}
-                          </Text>
-                        </View>
-                        <View style={styles.postNewLabelContainer}>
-                          {item.todayNewPost ? (
-                            <Text style={[fontRegular, styles.postNewLabel]}>
-                              N
-                            </Text>
-                          ) : (
-                            <></>
-                          )}
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  ))
-                )
-              ) : (
-                <View
-                  style={{
-                    backgroundColor: '#F7F7F7',
-                    paddingVertical: 27,
-                    borderRadius: 20,
-                  }}>
-                  <Text
-                    style={[
-                      fontRegular,
-                      {
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      },
-                    ]}>
-                    정회원 인증 후 확인하실 수 있습니다.
-                  </Text>
-                </View>
-              )}
-
-              {/* 게시판 글 목록 */}
-              <View
-                style={{
-                  borderBottomColor: '#F0F0F0',
-                  borderBottomWidth: 1,
-                  marginBottom: 24,
-                  marginTop: 24,
-                }}
-              />
-              <View style={styles.rowContainer}>
-                <Text style={[fontRegular, styles.boardTitle]}>HOT 게시글</Text>
                 <TouchableWithoutFeedback
                   onPress={() => {
                     {
@@ -788,7 +391,129 @@ const HomeFragment = ({navigation}: Props) => {
                   </Text>
                 </View>
               )}
+              <View style={{marginVertical: 20}}>
+                <View style={styles.rowContainer}>
+                  <Text style={[fontRegular, styles.boardTitle]}>
+                    고정 게시판
+                  </Text>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      {
+                        user?.isAuthenticated
+                          ? navigation.navigate('Board')
+                          : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                      }
+                    }}>
+                    <Text style={[fontRegular, styles.more]}>더보기</Text>
+                  </TouchableWithoutFeedback>
+                </View>
+                {/* 게시판 글 목록 */}
+                {!isInited ? (
+                  // true?
+                  skeletonComponent
+                ) : user?.isAuthenticated ? (
+                  pinBoardContents?.length === 0 ? (
+                    <View
+                      style={{
+                        backgroundColor: '#F7F7F7',
+                        paddingVertical: 27,
+                        borderRadius: 20,
+                      }}>
+                      <Text
+                        style={[
+                          fontRegular,
+                          {
+                            textAlign: 'center',
+                            fontSize: 15,
+                            color: '#6E7882',
+                          },
+                        ]}>
+                        고정된 게시판이 없습니다.
+                      </Text>
+                    </View>
+                  ) : (
+                    pinBoardContents?.map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                          if (
+                            item.boardId === 5 ||
+                            item.boardId === 6 ||
+                            item.boardId === 7 ||
+                            item.boardId === 8 ||
+                            item.boardId === 9
+                          ) {
+                            navigation.navigate('WikiTab', {
+                              boardId: item.boardId,
+                            });
+                          } else
+                            navigation.navigate('PostListScreen', {
+                              boardId: item.boardId,
+                            });
+                        }}>
+                        <View style={styles.pinBoardContainer}>
+                          <View style={styles.postTitleSummaryContainer}>
+                            <Text
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={[fontRegular, styles.postTitleSummary]}>
+                              {item.boardName.slice(0, numOfBoardTitle)}
+                            </Text>
+                          </View>
+                          <View style={styles.postSummaryContainer}>
+                            <Text
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                              style={[
+                                fontRegular,
+                                styles.postSummary,
+                                {
+                                  color: item.recentPostContent
+                                    ? '#6E7882'
+                                    : '#CBD0D8',
+                                },
+                              ]}>
+                              {item.recentPostContent
+                                ? item.recentPostContent
+                                : '아직 작성된 글이 없습니다!'}
+                            </Text>
+                          </View>
+                          <View style={styles.postNewLabelContainer}>
+                            {item.todayNewPost ? (
+                              <Text style={[fontRegular, styles.postNewLabel]}>
+                                N
+                              </Text>
+                            ) : (
+                              <></>
+                            )}
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    ))
+                  )
+                ) : (
+                  <View
+                    style={{
+                      backgroundColor: '#F7F7F7',
+                      paddingVertical: 27,
+                      borderRadius: 20,
+                    }}>
+                    <Text
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: 'center',
+                          fontSize: 15,
+                          color: '#6E7882',
+                        },
+                      ]}>
+                      정회원 인증 후 확인하실 수 있습니다.
+                    </Text>
+                  </View>
+                )}
+              </View>
             </View>
+            <AdMob />
           </ScrollView>
           <ModalBottom
             modalVisible={blacklistblindModalVisible}
@@ -834,6 +559,24 @@ const HomeFragment = ({navigation}: Props) => {
 export default HomeFragment;
 
 const styles = StyleSheet.create({
+  portalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginVertical: 16,
+    paddingHorizontal: 10,
+  },
+  iconContainer: {
+    alignItems: 'center',
+  },
+  iconLabel: {
+    fontFamily: 'Pretendard',
+    fontSize: 12,
+    fontWeight: '500',
+    lineHeight: 14.32,
+    textAlign: 'center',
+    marginTop: 8,
+  },
   rowContainer: {
     flex: 1,
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import {View, Text} from 'react-native';
 import HomeFragment from '../screens/fragments/HomeFragment';
 import BoardFragment from '../screens/fragments/BoardFragment';
 import AlertFragment from '../screens/fragments/AlertFragment';
@@ -13,6 +13,7 @@ import AlertTabIcon from '../../resources/icon/AlertTabIcon';
 import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
+import MenuIcon from '../../resources/icon/MenuIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Platform, Pressable, TouchableHighlight} from 'react-native';
@@ -27,7 +28,7 @@ import {readNotificationOnPush} from '../common/pushApi';
 import {getPostByComment} from '../common/boardApi';
 import {CommonActions} from '@react-navigation/native';
 import BackButtonIcon from '../../resources/icon/BackButtonIcon';
-
+import {pretendard} from '../common/font';
 const Tab = createBottomTabNavigator();
 
 interface Props {
@@ -38,6 +39,7 @@ interface Props {
 type RootStackParamList = {
   BoardSearch: undefined;
   TotalSearch: undefined;
+  BoardScreen: undefined;
   SplashHome: undefined;
   ErrorScreen: undefined;
   PostScreen: {postId: number};
@@ -133,6 +135,39 @@ function GlobalNavbar({navigation}: ScreenProps) {
     }
   };
 
+  const onMenuIcon = async () => {
+    const response = await checkRole();
+    if (response.status === 401) {
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      const user = response.data.data;
+      if (user?.isAuthenticated && !user?.blacklist) {
+        navigation.navigate('BoardScreen');
+      } else {
+        setTimeout(function () {
+          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+        }, 100);
+      }
+    } else {
+      logout();
+      navigation.reset({
+        routes: [
+          {
+            name: 'ErrorScreen',
+            params: {status: response.status, code: 'G001'},
+          },
+        ],
+      });
+    }
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -159,28 +194,67 @@ function GlobalNavbar({navigation}: ScreenProps) {
         name="Home"
         component={HomeFragment}
         options={{
-          headerTitle: () => <SmallLogo />,
-          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: 10,
+              }}>
+              <SmallLogo />
+              <Text
+                style={
+                  (pretendard,
+                  {
+                    marginLeft: 10,
+                    fontSize: 20,
+                    fontWeight: '700',
+                    textAlign: 'left',
+                    color: '#A055FF',
+                  })
+                }>
+                수정광산
+              </Text>
+            </View>
+          ),
+          headerTitleAlign: 'left',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <HomeTabIcon size={size} color={color} focused={focused} />;
           },
           headerRight: () => (
-            <TouchableHighlight
+            <View
               style={{
-                marginRight: 11,
-                width: 40,
-                height: 40,
-                borderRadius: 20,
+                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              underlayColor="#EEEEEE"
-              onPress={onSearchPress}>
-              <SearchIcon />
-            </TouchableHighlight>
+                marginRight: 11,
+              }}>
+              <TouchableHighlight
+                style={{
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onSearchPress}>
+                <SearchIcon />
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: 10,
+                  marginRight: 13,
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onMenuIcon}>
+                <MenuIcon />
+              </TouchableHighlight>
+            </View>
           ),
         }}
       />
+
       <Tab.Screen
         name="Board"
         component={BoardFragment}
