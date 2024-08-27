@@ -1,54 +1,37 @@
 import React, {useEffect, useState} from 'react';
 import {
-  SafeAreaView,
   Text,
   View,
   ScrollView,
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
-  FlatList,
   TouchableOpacity,
-  TouchableHighlight,
-  Pressable,
   ActivityIndicator,
-  Alert,
   AppState,
   Platform,
 } from 'react-native';
 import AdMob from '../../components/AdMob';
-import {fontBold, fontMedium, fontRegular} from '../../common/font';
+import {fontBold, fontRegular} from '../../common/font';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {PurpleRoundButton} from '../../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NewsExclamationMarkIcon from '../../../resources/icon/NewsExclamationMarkIcon';
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
-import RightArrowBold from '../../../resources/icon/RightArrowBold';
 import {PinBoardDto, HotBoardDto, HomeNotification} from '../../classes/Home';
 import {
   getAuthentication,
   getHotBoardContents,
-  getNotification,
   getPinBoardContents,
   getUnreadNotification,
-  readNotification,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import {useIsFocused} from '@react-navigation/native';
-import CheckMark from '../../../resources/icon/CheckMark';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
-import {AlertCheckIcon} from '../../../resources/icon/AlertItemIcon';
-import AlertBlindIcon from '../../../resources/icon/AlertBlindIcon';
-import AlertCommentIcon from '../../../resources/icon/AlertCommentIcon';
-import AlertHotPostIcon from '../../../resources/icon/AlertHotPostIcon';
 import WaterMark from '../../components/WaterMark';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
-import ErrorScreen from '../errorScreen/ErrorScreen';
 import Error from '../../components/Error';
-import AlertNoticeIcon from '../../../resources/icon/AlertNoticeIcon';
 import messaging from '@react-native-firebase/messaging';
 import {
   pushTokenLogic,
@@ -60,6 +43,9 @@ import Notice from '../../../resources/icon/Notice';
 import Calendar from '../../../resources/icon/Calendar';
 import StudentCafeteria from '../../../resources/icon/StudentCafeteria';
 import SchoolBus from '../../../resources/SchoolBus';
+import HotPost from '../../../resources/icon/HotPost';
+import PinPost from '../../../resources/icon/PinPost';
+import RightArrow from '../../../resources/icon/Arrow';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -299,9 +285,12 @@ const HomeFragment = ({navigation}: Props) => {
               }}>
               {/* 게시판 글 목록 */}
               <View style={styles.rowContainer}>
-                <Text style={[fontRegular, styles.boardTitle]}>
-                  지금 인기있는 글
-                </Text>
+                <View style={styles.boardTitleContainer}>
+                  <HotPost />
+                  <Text style={[fontRegular, styles.boardTitle]}>
+                    지금 인기있는 글
+                  </Text>
+                </View>
                 <TouchableWithoutFeedback
                   onPress={() => {
                     {
@@ -310,7 +299,7 @@ const HomeFragment = ({navigation}: Props) => {
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
-                  <Text style={[fontRegular, styles.more]}>더보기</Text>
+                  <RightArrow />
                 </TouchableWithoutFeedback>
               </View>
               {!isInited ? (
@@ -393,9 +382,13 @@ const HomeFragment = ({navigation}: Props) => {
               )}
               <View style={{marginVertical: 20}}>
                 <View style={styles.rowContainer}>
-                  <Text style={[fontRegular, styles.boardTitle]}>
-                    고정 게시판
-                  </Text>
+                  <View style={styles.boardTitleContainer}>
+                    <PinPost />
+                    <Text style={[fontRegular, styles.boardTitle]}>
+                      고정한 커뮤니티
+                    </Text>
+                  </View>
+
                   <TouchableWithoutFeedback
                     onPress={() => {
                       {
@@ -404,7 +397,7 @@ const HomeFragment = ({navigation}: Props) => {
                           : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                       }
                     }}>
-                    <Text style={[fontRegular, styles.more]}>더보기</Text>
+                    <RightArrow />
                   </TouchableWithoutFeedback>
                 </View>
                 {/* 게시판 글 목록 */}
@@ -564,7 +557,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginVertical: 16,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   },
   iconContainer: {
     alignItems: 'center',
@@ -582,10 +575,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  boardTitleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   boardTitle: {
+    fontFamily: 'Pretendard',
     fontWeight: 'bold',
-    fontSize: 17,
+    fontSize: 18,
     marginBottom: 16,
+    marginLeft: 8,
   },
   more: {
     fontSize: 13,

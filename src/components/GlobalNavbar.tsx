@@ -208,7 +208,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
                   {
                     marginLeft: 10,
                     fontSize: 20,
-                    fontWeight: '700',
+                    fontWeight: 'bold',
                     textAlign: 'left',
                     color: '#A055FF',
                   })
