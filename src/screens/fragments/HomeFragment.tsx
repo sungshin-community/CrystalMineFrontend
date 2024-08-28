@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   AppState,
   Platform,
+  Linking,
 } from 'react-native';
 import AdMob from '../../components/AdMob';
 import {fontBold, fontRegular} from '../../common/font';
@@ -25,6 +26,7 @@ import {
   getUnreadNotification,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
+import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import {Authentication} from '../../classes/Authentication';
@@ -44,6 +46,7 @@ import Calendar from '../../../resources/icon/Calendar';
 import StudentCafeteria from '../../../resources/icon/StudentCafeteria';
 import SchoolBus from '../../../resources/SchoolBus';
 import HotPost from '../../../resources/icon/HotPost';
+import RecentPost from '../../../resources/icon/RecentPost';
 import PinPost from '../../../resources/icon/PinPost';
 import RightArrow from '../../../resources/icon/Arrow';
 import NewPost from '../../../resources/icon/NewPost';
@@ -73,6 +76,8 @@ const HomeFragment = ({navigation}: Props) => {
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
   const [blacklistblindModalVisible, setBlacklistblindModalVisible] =
     useState<boolean>(false);
+  const [isCafeteriaModalVisible, setIsCafeteriaModalVisible] =
+    useState<boolean>(false); // 학식 운캠/수캠 선택 모달
   const [blindModalVisible, setBlindModalVisible] = useState<boolean>(false);
   const [modalBody, setModalBody] = useState<JSX.Element>();
   const [user, setUser] = useState<Authentication>();
@@ -85,6 +90,17 @@ const HomeFragment = ({navigation}: Props) => {
   const [isPinBoardError, setIsPinBoardError] = useState<boolean>(false);
   const [isHotBoardError, setIsHotBoardError] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  // 학식 운캠/수캠 선택 토글
+  const toggleCafeteriaModal = () => {
+    console.log('눌려요');
+    setIsCafeteriaModalVisible(prev => !prev);
+  };
+
+  const openUrl = (url: string) => {
+    Linking.openURL(url).catch(err =>
+      console.error('링크 이동 시 오류 발생: ', err),
+    );
+  };
 
   const blacklistModalContent = (
     <>
@@ -233,6 +249,7 @@ const HomeFragment = ({navigation}: Props) => {
       listener.remove();
     };
   }, []);
+
   return (
     <>
       <WaterMark />
@@ -259,26 +276,54 @@ const HomeFragment = ({navigation}: Props) => {
           </View>
           <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
             <View style={styles.portalContainer}>
-              <View style={styles.iconContainer}>
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() =>
+                  Linking.openURL('https://portal.sungshin.ac.kr/portal')
+                }>
                 <SungshinPortal />
                 <Text style={styles.iconLabel}>성신 포탈</Text>
-              </View>
-              <View style={styles.iconContainer}>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() =>
+                  Linking.openURL(
+                    'https://portal.sungshin.ac.kr/portal/ssu/menu/notice/ssuboard02.page',
+                  )
+                }>
                 <Notice />
                 <Text style={styles.iconLabel}>학사 공지</Text>
-              </View>
-              <View style={styles.iconContainer}>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() =>
+                  Linking.openURL(
+                    'https://www.sungshin.ac.kr/main_kor/11000/subview.do',
+                  )
+                }>
                 <Calendar />
                 <Text style={styles.iconLabel}>학사 일정</Text>
-              </View>
-              <View style={styles.iconContainer}>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={toggleCafeteriaModal}>
                 <StudentCafeteria />
                 <Text style={styles.iconLabel}>학식</Text>
-              </View>
-              <View style={styles.iconContainer}>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() =>
+                  Linking.openURL(
+                    'https://www.sungshin.ac.kr/main_kor/10963/subview.do',
+                  )
+                }>
                 <SchoolBus />
                 <Text style={styles.iconLabel}>셔틀버스</Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -381,6 +426,25 @@ const HomeFragment = ({navigation}: Props) => {
                   </Text>
                 </View>
               )}
+              {/* 방금 올라온 글 목록 */}
+              <View style={styles.rowContainer}>
+                <View style={styles.boardTitleContainer}>
+                  <RecentPost />
+                  <Text style={[fontRegular, styles.boardTitle]}>
+                    방금 올라온 글
+                  </Text>
+                </View>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    {
+                      user?.isAuthenticated
+                        ? navigation.navigate('PostListScreen', {boardId: 2})
+                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                    }
+                  }}>
+                  <RightArrow />
+                </TouchableWithoutFeedback>
+              </View>
               <View style={{marginVertical: 20}}>
                 <View style={styles.rowContainer}>
                   <View style={styles.boardTitleContainer}>
@@ -540,6 +604,29 @@ const HomeFragment = ({navigation}: Props) => {
           />
         </>
       )}
+      <Modal
+        isVisible={isCafeteriaModalVisible}
+        onBackdropPress={toggleCafeteriaModal}
+        style={styles.modal}>
+        <View style={styles.modalContent}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              openUrl('https://www.sungshin.ac.kr/main_kor/11095/subview.do');
+              toggleCafeteriaModal();
+            }}>
+            <Text style={styles.buttonText}>운캠</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              openUrl('https://www.sungshin.ac.kr/main_kor/11076/subview.do');
+              toggleCafeteriaModal();
+            }}>
+            <Text style={styles.buttonText}>수캠</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -569,6 +656,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginVertical: 20,
   },
   boardTitleContainer: {
     flex: 1,
@@ -663,6 +751,30 @@ const styles = StyleSheet.create({
     height: 12,
     backgroundColor: '#E1E4EA',
     marginLeft: 16,
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  button: {
+    fontFamily: 'Pretendard',
+    backgroundColor: '#A055FF',
+    borderRadius: 20,
+    padding: 15,
+    marginVertical: 5,
+    width: Dimensions.get('window').width * 0.8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
