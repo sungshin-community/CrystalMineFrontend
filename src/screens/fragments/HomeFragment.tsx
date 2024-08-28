@@ -46,6 +46,7 @@ import SchoolBus from '../../../resources/SchoolBus';
 import HotPost from '../../../resources/icon/HotPost';
 import PinPost from '../../../resources/icon/PinPost';
 import RightArrow from '../../../resources/icon/Arrow';
+import NewPost from '../../../resources/icon/NewPost';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -472,13 +473,7 @@ const HomeFragment = ({navigation}: Props) => {
                             </Text>
                           </View>
                           <View style={styles.postNewLabelContainer}>
-                            {item.todayNewPost ? (
-                              <Text style={[fontRegular, styles.postNewLabel]}>
-                                N
-                              </Text>
-                            ) : (
-                              <></>
-                            )}
+                            {item.todayNewPost ? <NewPost /> : <></>}
                           </View>
                         </View>
                       </TouchableOpacity>
