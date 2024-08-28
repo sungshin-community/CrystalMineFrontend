@@ -179,7 +179,7 @@ const Comment = ({
           backgroundColor: isRecommentState
             ? '#F3E7FF'
             : data?.isOfReader
-            ? '#F8F8F8'
+            ? '#fff'
             : '#FFF',
         }}>
         <View
@@ -193,17 +193,26 @@ const Comment = ({
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-            <Text
-              style={[
-                fontMedium,
-                {
-                  fontSize: 15,
-                  paddingLeft: 8,
-                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                },
-              ]}>
-              {data?.displayName}
-            </Text>
+            <View style={{flexDirection: 'column'}}>
+              <Text
+                style={[
+                  fontMedium,
+                  {
+                    fontSize: 15,
+                    paddingLeft: 8,
+                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                  },
+                ]}>
+                {data?.displayName}
+              </Text>
+              <Text
+                style={[
+                  fontRegular,
+                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 10},
+                ]}>
+                {data?.createdAt}
+              </Text>
+            </View>
             {data.isAnonymous ? (
               <></>
             ) : data.isOfBoardOwner ? (
@@ -255,7 +264,7 @@ const Comment = ({
               style={{
                 flexDirection: 'row',
                 marginTop: 15,
-                justifyContent: 'space-between',
+                justifyContent: 'flex-start',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Pressable
@@ -265,9 +274,22 @@ const Comment = ({
                   }}>
                   {data.isLiked ? <PostLike /> : <PostUnlike />}
                 </Pressable>
+                <Text
+                  style={[
+                    fontRegular,
+                    {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                  ]}>
+                  좋아요
+                </Text>
                 <Text style={[fontRegular, styles.postLike]}>
                   {data?.likeCount}
                 </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
                 <Pressable
                   hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
                   onPress={() => {
@@ -278,10 +300,16 @@ const Comment = ({
                   }}>
                   <PostComment />
                 </Pressable>
-              </View>
-              <View>
-                <Text style={[fontRegular, {color: '#949494', fontSize: 13}]}>
-                  {data?.createdAt}
+                <Text
+                  style={[
+                    fontRegular,
+                    {
+                      color: '#9DA4AB',
+                      marginRight: 1,
+                      marginLeft: 5,
+                    },
+                  ]}>
+                  대댓글
                 </Text>
               </View>
             </View>
@@ -296,6 +324,7 @@ export default Comment;
 const styles = StyleSheet.create({
   postLike: {
     fontSize: 13,
+    color: '#9DA4AB',
     marginLeft: 5,
     marginRight: 11,
   },

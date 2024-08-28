@@ -15,7 +15,13 @@ import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Platform, Pressable, TouchableHighlight} from 'react-native';
+import {
+  Platform,
+  Pressable,
+  TouchableHighlight,
+  View,
+  StyleSheet,
+} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRole, logout} from '../common/authApi';
 import {useState, useEffect} from 'react';
@@ -219,28 +225,49 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '게시판',
-          headerTitleAlign: 'center',
+          title: '모든 게시판',
+          headerTitleAlign: 'left',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <BoardTabIcon size={size} color={color} focused={focused} />;
           },
           headerRight: () => (
-            <TouchableHighlight
+            <View
               style={{
-                marginRight: 11,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <TouchableHighlight
+                style={{
+                  marginRight: 11,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onSearchPress}>
+                <SearchIcon />
+              </TouchableHighlight>
+            </View>
+          ),
+          headerLeft: () => (
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              style={{
                 width: 40,
                 height: 40,
                 borderRadius: 20,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              underlayColor="#EEEEEE"
-              onPress={onSearchPress}>
-              <SearchIcon />
+              onPress={() => navigation.dispatch(CommonActions.goBack())}>
+              <BackButtonIcon />
             </TouchableHighlight>
           ),
           headerTitleStyle: {
-            fontSize: 19,
+            fontSize: 20,
+            fontWeight: '700',
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
         }}
@@ -288,7 +315,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
           title: '쪽지',
           headerTitleAlign: 'center',
           headerTitleStyle: {
-            fontSize: 19,
+            fontSize: 20,
+            fontWeight: '700',
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
           tabBarIcon: ({size, color, focused}: Props) => {
@@ -354,7 +382,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
           title: '알림',
           headerTitleAlign: 'center',
           headerTitleStyle: {
-            fontSize: 19,
+            fontSize: 20,
+            fontWeight: '700',
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
           tabBarIcon: ({size, color, focused}: Props) => {
@@ -408,7 +437,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
             return <MyPageGNB size={size} color={color} focused={focused} />;
           },
           headerTitleStyle: {
-            fontSize: 19,
+            fontSize: 20,
+            fontWeight: '700',
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
         }}

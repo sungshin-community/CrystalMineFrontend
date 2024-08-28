@@ -27,7 +27,7 @@ import {ModalBottom} from '../components/ModalBottom';
 import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
-import {SelectModalBottom} from '../components/SelectModalBottom';
+import {ReportModalBottom} from '../components/ReportModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useEffect} from 'react';
@@ -208,7 +208,7 @@ function Post({
         whiteButtonFunc={() => setMuteModalVisible(false)}
         setDim={false}
       />
-      <SelectModalBottom
+      <ReportModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
         title={`게시글 신고`}
@@ -264,6 +264,7 @@ function Post({
       </View>
     </>
   );
+  console.log(post);
   return (
     <>
       <View style={styles.postContainer}>
@@ -277,9 +278,16 @@ function Post({
               <Text
                 style={[
                   fontMedium,
-                  {fontSize: 16, paddingLeft: 8, fontWeight: `500`},
+                  {fontSize: 14, paddingLeft: 8, fontWeight: `500`},
                 ]}>
                 {data?.displayName}
+              </Text>
+              <Text
+                style={[
+                  fontRegular,
+                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 8},
+                ]}>
+                {data?.createdAt}
               </Text>
             </View>
             {!data?.isAnonymous &&
@@ -291,13 +299,13 @@ function Post({
               ))}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <SpinningThreeDots
+            {/* <SpinningThreeDots
               boardId={data?.boardId}
               isMine={data?.isAuthor}
               handleDefaultModeComponent={handlePostScrapComponent}
               handleOptionModeIsMineComponent={handlePostDeleteComponent}
               handleOptionModeIsNotMineComponent={handleOthersPostComponent}
-            />
+            /> */}
           </View>
         </View>
         {data?.hasTitle && (
@@ -314,13 +322,6 @@ function Post({
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
         </View>
-        <Text
-          style={[
-            fontRegular,
-            {color: '#949494', fontSize: 12, marginTop: 12},
-          ]}>
-          {data?.createdAt}
-        </Text>
         {data?.thumbnails.length !== 0 && (
           <View style={{flexDirection: 'row', marginTop: 16}}>
             <ScrollView
@@ -349,24 +350,99 @@ function Post({
             </ScrollView>
           </View>
         )}
-        {data?.boardId !== 93 && data?.boardId !== 94 && data?.boardId !== 95 && (
+      </View>
+      {data?.boardId !== 93 && data?.boardId !== 94 && data?.boardId !== 95 && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: 15,
+            height: 44,
+            borderTopWidth: 1,
+            borderTopColor: '#EFEFF3',
+            //backgroundColor: '#EFEFF3',
+          }}>
           <View
-            style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: 20,
+            }}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
               onPress={() => handlePostLike(data.postId)}>
               {data?.isLiked ? <PostLike /> : <PostUnlike />}
             </Pressable>
+            <Text
+              style={[
+                fontRegular,
+                {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+              ]}>
+              좋아요
+            </Text>
             <Text style={[fontRegular, styles.postLike]}>
               {data?.likeCount}
             </Text>
             <PostComment />
+            <Text
+              style={[
+                fontRegular,
+                {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+              ]}>
+              댓글
+            </Text>
             <Text style={[fontRegular, styles.postComment]}>
               {data?.commentCount}
             </Text>
           </View>
-        )}
-      </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            {data?.isReported ? (
+              <Pressable
+                onPress={() => {
+                  Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+                }}>
+                <Report style={{marginRight: 16}} />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  setReportModalVisible(true);
+                  setComponentModalVisible(reportModalVisible);
+                }}>
+                <NoReport style={{marginRight: 16}} />
+              </Pressable>
+            )}
+            <ReportModalBottom
+              modalVisible={reportModalVisible}
+              setModalVisible={setReportModalVisible}
+              title="해당 게시글을 신고하시겠어요?"
+              purpleButtonText="네, 신고할게요."
+              reportId={data?.postId}
+              reportFunc={handlePostReport}
+              whiteButtonText="아니요."
+              whiteButtonFunc={() => setReportModalVisible(false)}
+              setDim={false}
+            />
+            <Pressable
+              onPress={() => {
+                blockedCheck(data.isAnonymous);
+              }}>
+              <MessageIcon style={{marginRight: 16, marginTop: 5}} />
+            </Pressable>
+            <Pressable
+              hitSlop={10}
+              onPress={() => handlePostScrap(data.postId)}>
+              {data?.isScraped ? (
+                <Scrap style={{marginRight: 20, marginTop: 5}} />
+              ) : (
+                <NoScrap style={{marginRight: 20, marginTop: 5}} />
+              )}
+            </Pressable>
+          </View>
+        </View>
+      )}
+
       {/* <View
         style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 28}}></View> */}
     </>
@@ -387,14 +463,16 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   postLike: {
-    fontSize: 13,
-    marginLeft: 5,
-    marginRight: 11,
+    marginLeft: 2,
+    fontSize: 14,
+    marginRight: 16,
+    color: '#9DA4AB',
   },
   postComment: {
-    fontSize: 13,
-    marginLeft: 5,
+    fontSize: 14,
+    marginLeft: 2,
     width: 35,
+    color: '#9DA4AB',
   },
 });
 

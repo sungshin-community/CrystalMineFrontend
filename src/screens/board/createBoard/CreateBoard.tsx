@@ -25,7 +25,7 @@ import {
   RectangleChecked,
   RectangleUnchecked,
 } from '../../../../resources/icon/CheckBox';
-
+import {PurpleRoundButton, CustomButton} from '../../../components/Button';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
 };
@@ -70,7 +70,7 @@ function CreateBoard({navigation}: Props) {
     setIsSubmitState(false);
   }, [hotable, boardIntroduction, isSubmitState]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
@@ -91,7 +91,7 @@ function CreateBoard({navigation}: Props) {
         </Pressable>
       ),
     });
-  }, [navigation, boardName, boardIntroduction]);
+  }, [navigation, boardName, boardIntroduction]); */
 
   return (
     <>
@@ -104,6 +104,7 @@ function CreateBoard({navigation}: Props) {
           right: 0,
           top: 0,
           bottom: 0,
+          backgroundColor: '#000',
         }}>
         <ActivityIndicator
           size="large"
@@ -114,9 +115,10 @@ function CreateBoard({navigation}: Props) {
       </View>
       <View style={styles.container}>
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
-          <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
+          <Text style={[fontMedium, {fontSize: 15, paddingBottom: 12}]}>
+            게시판 명을 입력해 주세요.
+          </Text>
           <TextInput
-            placeholder="게시판 이름은 공백포함 15글자까지 입력 가능합니다."
             placeholderTextColor="#D5DBE1"
             value={boardName}
             autoCorrect={false}
@@ -129,22 +131,29 @@ function CreateBoard({navigation}: Props) {
                 );
             }}
             maxLength={15}
-            style={{fontSize: 15, paddingVertical: 20}}
+            style={{
+              fontSize: 15,
+              paddingVertical: 5,
+              borderColor: '#E2E4E8',
+              borderWidth: 1,
+              width: 343,
+              height: 44,
+            }}
             numberOfLines={1}
           />
           <View
             style={{
               borderBottomColor: '#F6F6F6',
               borderBottomWidth: 1,
-              marginBottom: 15,
+              marginBottom: 40,
             }}
           />
-          <Text style={[fontMedium, {fontSize: 15}]}>게시판 설명</Text>
+          <Text style={[fontMedium, {fontSize: 15, paddingBottom: 12}]}>
+            게시판을 소개해 주세요.
+          </Text>
           <View style={{height: 149}}>
             <TextInput
               textAlignVertical="top"
-              placeholder="게시판 설명은 공백포함 22글자까지 입력 가능합니다."
-              placeholderTextColor="#D5DBE1"
               value={boardIntroduction}
               autoCorrect={false}
               onChangeText={value => {
@@ -165,18 +174,39 @@ function CreateBoard({navigation}: Props) {
         </View>
         <View
           style={{
-            paddingHorizontal: 24,
+            height: 44,
+            borderRadius: 4,
+            //paddingHorizontal: 24,
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#A055FF',
+            bottom: 0,
+            marginBottom: 34,
+            marginHorizontal: 16,
+            position: 'absolute',
           }}>
           <Pressable
+            onPress={() => {
+              setIsSubmitState(true);
+              console.log('isSubmitState', isSubmitState);
+            }}>
+            <PurpleRoundButton
+              text="완료"
+              onClick={() =>
+                onSubmitPress(boardName, boardIntroduction, hotable)
+              }
+              style={{color: '#fff'}}
+            />
+          </Pressable>
+          {/* <Pressable
             onPress={() => {
               setHotable(!hotable);
             }}
             style={{flexDirection: 'row'}}>
             {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
             <Text style={[{marginLeft: 5}]}>HOT 게시판 전송 허용</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     </>
@@ -193,6 +223,10 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     textAlignVertical: 'top',
+    borderColor: '#E2E4E8',
+    borderWidth: 1,
+    width: 343,
+    height: 86,
   },
   option: {
     marginTop: 19,
