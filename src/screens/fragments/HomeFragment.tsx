@@ -11,6 +11,7 @@ import {
   AppState,
   Platform,
   Linking,
+  Image,
 } from 'react-native';
 import AdMob from '../../components/AdMob';
 import {fontBold, fontRegular} from '../../common/font';
@@ -24,6 +25,7 @@ import {
   getHotBoardContents,
   getPinBoardContents,
   getUnreadNotification,
+  getNewPosts,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import Modal from 'react-native-modal';
@@ -90,6 +92,9 @@ const HomeFragment = ({navigation}: Props) => {
   const [isPinBoardError, setIsPinBoardError] = useState<boolean>(false);
   const [isHotBoardError, setIsHotBoardError] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+
+  const [newPosts, setNewPosts] = useState<any[]>([]); // 방금 올라온 글 데이터
+  const [isLoadingNewPosts, setIsLoadingNewPosts] = useState<boolean>(true);
   // 학식 운캠/수캠 선택 토글
   const toggleCafeteriaModal = () => {
     console.log('눌려요');
@@ -248,6 +253,17 @@ const HomeFragment = ({navigation}: Props) => {
     return () => {
       listener.remove();
     };
+  }, []);
+  // 방금 올라온 글 데이터 불러오기
+  useEffect(() => {
+    const fetchNewPosts = async () => {
+      setIsLoadingNewPosts(true);
+      const data = await getNewPosts();
+      setNewPosts(data);
+      setIsLoadingNewPosts(false);
+    };
+
+    fetchNewPosts();
   }, []);
 
   return (
@@ -427,7 +443,7 @@ const HomeFragment = ({navigation}: Props) => {
                 </View>
               )}
               {/* 방금 올라온 글 목록 */}
-              <View style={styles.rowContainer}>
+              <View style={styles.rowNewPostContainer}>
                 <View style={styles.boardTitleContainer}>
                   <RecentPost />
                   <Text style={[fontRegular, styles.boardTitle]}>
@@ -445,6 +461,64 @@ const HomeFragment = ({navigation}: Props) => {
                   <RightArrow />
                 </TouchableWithoutFeedback>
               </View>
+              {isLoadingNewPosts ? (
+                <ActivityIndicator size="large" color="#A055FF" />
+              ) : newPosts.length === 0 ? (
+                <View
+                  style={{
+                    backgroundColor: '#F7F7F7',
+                    paddingVertical: 27,
+                    borderRadius: 20,
+                  }}>
+                  <Text
+                    style={[
+                      fontRegular,
+                      {
+                        textAlign: 'center',
+                        fontSize: 15,
+                        color: '#6E7882',
+                      },
+                    ]}>
+                    방금 올라온 글이 없습니다.
+                  </Text>
+                </View>
+              ) : (
+                newPosts.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate('PostScreen', {postId: item.postId})
+                    }>
+                    <View style={styles.newPostContainer}>
+                      <View style={styles.hotPostContainer}>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={[
+                            styles.newPostTitle,
+                            {
+                              width: Dimensions.get('window').width - 150,
+                              color: '#000',
+                            },
+                          ]}>
+                          {item.postContent.slice(0, 30)}
+                        </Text>
+                      </View>
+                      <Text style={styles.newPostTime}>
+                        {item.minute}분전 ·{' '}
+                        <Text style={styles.newPostBoard}>
+                          {item.boardName}
+                        </Text>
+                      </Text>
+                      <Image
+                        source={{uri: item.imageUrl}}
+                        style={styles.newPostImage}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                ))
+              )}
+              {/* 고정된 커뮤니티 */}
               <View style={{marginVertical: 20}}>
                 <View style={styles.rowContainer}>
                   <View style={styles.boardTitleContainer}>
@@ -658,6 +732,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 20,
   },
+  rowNewPostContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    marginBottom: 5,
+  },
   boardTitleContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -666,7 +747,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontWeight: 'bold',
     fontSize: 18,
-    marginBottom: 16,
     marginLeft: 8,
   },
   more: {
@@ -702,12 +782,10 @@ const styles = StyleSheet.create({
     width: 10,
     marginLeft: 12,
   },
-  postTitleSummaryContainer: {},
   postSummaryContainer: {
     alignItems: 'stretch',
     flex: 1,
   },
-  postNewLabelContainer: {},
   HOTpostLike: {
     fontSize: 9,
     marginLeft: 5,
@@ -737,6 +815,30 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 10,
     marginTop: 4,
+  },
+  newPostContainer: {
+    marginVertical: 8,
+    justifyContent: 'center',
+  },
+  newPostTitle: {
+    fontSize: 14,
+    fontFamily: 'Pretendard',
+  },
+  newPostTime: {
+    fontSize: 12,
+    fontFamily: 'Pretendard',
+  },
+  newPostBoard: {
+    fontSize: 12,
+    fontFamily: 'Pretendard',
+    color: '#89919A',
+  },
+  newPostImage: {
+    width: 44,
+    height: 44,
+    position: 'absolute',
+    right: 16,
+    borderRadius: 6,
   },
   skeletonRow: {
     flexDirection: 'row',
