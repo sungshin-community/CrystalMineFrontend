@@ -93,7 +93,10 @@ import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
 import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 import {MobileAds} from 'react-native-google-mobile-ads';
 import MessageScreen from './src/screens/message/MessageScreen';
-
+import PointScreen from './src/screens/mypage/point/PointScreen';
+import ProfileModify from './src/screens/mypage/ProfileModify';
+import ProfileModifySujeonggu from './src/screens/mypage/ProfileModifySujeonggu';
+import MyActivity from './src/screens/mypage/MyActivity';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -1225,6 +1228,7 @@ const App = () => {
                   ),
                 })}
               />
+
               {/* 마이페이지 - 비밀번호 재설정 */}
               <Stack.Screen
                 name="InputPassword"
@@ -1770,6 +1774,64 @@ const App = () => {
                 options={() => ({
                   title: '',
                 })}
+              />
+              {/* 마이페이지 - 포인트 */}
+
+              <Stack.Screen
+                name="PointScreen"
+                component={PointScreen}
+                options={({navigation}) => ({
+                  title: '포인트 정보',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="MyActivity"
+                component={MyActivity}
+                options={{title: '내 활동'}}
+              />
+              <Stack.Screen
+                name="ProfileModify"
+                component={ProfileModify}
+                options={{
+                  title: '기본프로필수정',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                  headerTitleAlign: 'left',
+                }}
+              />
+              <Stack.Screen
+                name="ProfileModifySujeonggu"
+                component={ProfileModifySujeonggu}
+                options={{
+                  title: '수정구 전용 프로필수정',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                  headerTitleAlign: 'left',
+                }}
               />
               {/* 마이페이지 - 문의하기 */}
               <Stack.Screen
@@ -3488,6 +3550,65 @@ const App = () => {
                 options={() => ({
                   title: '',
                 })}
+              />
+
+              {/* 마이페이지 - 포인트 */}
+
+              <Stack.Screen
+                name="PointScreen"
+                component={PointScreen}
+                options={({navigation}) => ({
+                  title: '포인트 내역',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  // headerLeft: () => (
+                  //   <TouchableHighlight
+                  //     underlayColor="#EEEEEE"
+                  //     style={{
+                  //       width: 40,
+                  //       height: 40,
+                  //       borderRadius: 20,
+                  //       alignItems: 'center',
+                  //       justifyContent: 'center',
+                  //     }}
+                  //     onPress={() =>
+                  //       navigation.dispatch(CommonActions.goBack())
+                  //     }>
+                  //     <BackButtonIcon />
+                  //   </TouchableHighlight>
+                  // ),
+                })}
+              />
+              <Stack.Screen
+                name="MyActivity"
+                component={MyActivity}
+                options={{title: '내 활동'}}
+              />
+              <Stack.Screen
+                name="ProfileModify"
+                component={ProfileModify}
+                options={{
+                  title: '기본프로필수정',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                  headerTitleAlign: 'left',
+                }}
+              />
+              <Stack.Screen
+                name="ProfileModifySujeonggu"
+                component={ProfileModifySujeonggu}
+                options={{
+                  title: '수정구 전용 프로필수정',
+                  headerTitleStyle: {
+                    fontWeight: 'bold',
+                  },
+                  headerTitleAlign: 'left',
+                }}
               />
               {/* 마이페이지 - 문의하기 */}
               <Stack.Screen

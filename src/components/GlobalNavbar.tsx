@@ -402,7 +402,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '마이페이지',
+          title: '설정',
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
             return <MyPageGNB size={size} color={color} focused={focused} />;
