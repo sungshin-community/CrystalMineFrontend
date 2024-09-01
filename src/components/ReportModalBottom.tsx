@@ -20,6 +20,7 @@ import {getReportReason} from '../common/boardApi';
 import {fontBold, fontMedium, fontRegular} from '../common/font';
 import Toast from 'react-native-simple-toast';
 import CancelButton from '../../resources/icon/Cancel';
+import {ReportCheckModal} from './ReportCheckModal';
 
 interface Reason {
   id: number;
@@ -58,6 +59,7 @@ export const ReportModalBottom = ({
   const inputRef = useRef(null);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [checkModalVisible, setCheckModalVisible] = useState(false);
 
   const onInputFocus = () => {
     setIsFocused(true);
@@ -125,7 +127,7 @@ export const ReportModalBottom = ({
             setModalVisible(!modalVisible);
           }}>
           <Pressable
-            style={{flex: 1}}
+            style={{flex: 1, backgroundColor: 'rgba(34, 34, 34, 0.5)'}}
             onPress={() => setModalVisible(!modalVisible)}
           />
           <View
@@ -144,13 +146,17 @@ export const ReportModalBottom = ({
               <View style={{alignSelf: 'flex-start'}}>
                 <View
                   style={{
+                    width: '100%',
                     justifyContent: 'space-between',
                     flexDirection: 'row',
                   }}>
                   {title && (
                     <Text style={[fontBold, styles.title]}>{title}</Text>
                   )}
-                  {<CancelButton />}
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <CancelButton />
+                  </TouchableOpacity>
                 </View>
                 <Text
                   style={[
@@ -193,7 +199,7 @@ export const ReportModalBottom = ({
                 style={{
                   justifyContent: 'space-between',
                   flexDirection: 'row',
-                  marginTop: 20,
+                  marginVertical: 20,
                   //backgroundColor: '#000',
                 }}>
                 {whiteButtonText && (
@@ -207,64 +213,9 @@ export const ReportModalBottom = ({
                 )}
                 <TouchableOpacity
                   style={[styles.button, styles.buttonClose]}
-                  onPress={async () => {
-                    const result = await reportFunc(
-                      reportId,
-                      isCheckedReportNum,
-                      detail,
-                    );
-                    if (
-                      result.code === 'CREATE_BOARD_REPORT_SUCCESS' ||
-                      result.code === 'CREATE_POST_REPORT_SUCCESS' ||
-                      result.code === 'CREATE_COMMENT_REPORT_SUCCESS'
-                    ) {
-                      setModalVisible(false);
-                      setTimeout(function () {
-                        Toast.show(
-                          '신고하신 내용이 정상적으로 접수되었습니다.',
-                          Toast.SHORT,
-                        );
-                      }, 100);
-                    } else if (
-                      result.code === 'BOARD_REPORT_FAIL_POINT_NOT_ENOUGH' ||
-                      result.code === 'POST_REPORT_FAIL_POINT_NOT_ENOUGH' ||
-                      result.code === 'COMMENT_REPORT_FAIL_POINT_NOT_ENOUGH'
-                    ) {
-                      setModalVisible(false);
-                      setTimeout(function () {
-                        Toast.show(
-                          '보유 포인트가 부족하여 신고가 불가능합니다.',
-                          Toast.SHORT,
-                        );
-                      }, 100);
-                    } else if (
-                      result.code === 'BOARD_REPORT_DUPLICATION' ||
-                      result.code === 'POST_REPORT_DUPLICATION' ||
-                      result.code === 'COMMENT_REPORT_DUPLICATION'
-                    ) {
-                      setModalVisible(false);
-                      setTimeout(function () {
-                        Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
-                      }, 100);
-                    } else if (
-                      result.code === 'REPORT_FAIL_REASON_DETAIL_NECESSARY'
-                    ) {
-                      setModalVisible(false);
-                      setTimeout(function () {
-                        Toast.show(
-                          '기타 사유에 대한 내용이 필요합니다',
-                          Toast.SHORT,
-                        );
-                      }, 100);
-                    } else {
-                      setModalVisible(false);
-                      setTimeout(function () {
-                        Toast.show(
-                          '알 수 없는 오류가 발생하였습니다.',
-                          Toast.SHORT,
-                        );
-                      }, 100);
-                    }
+                  onPress={() => {
+                    setCheckModalVisible(true);
+                    setModalVisible(false);
                   }}>
                   <Text style={styles.textStyle}>{purpleButtonText}</Text>
                 </TouchableOpacity>
@@ -273,6 +224,14 @@ export const ReportModalBottom = ({
           </View>
         </Modal>
       </View>
+      <ReportCheckModal
+        modalVisible={checkModalVisible}
+        setModalVisible={setCheckModalVisible}
+        isCheckedReportNum={isCheckedReportNum}
+        detail={detail}
+        reportFunc={reportFunc}
+        reportId={reportId}
+      />
     </>
   );
 };
@@ -395,34 +354,36 @@ const styles = StyleSheet.create({
     position: 'absolute',
     //left: '50%',
     //transform: [{translateX: -Dimensions.get('window').width * 0.445}],
+    transform: [{translateY: Dimensions.get('window').height * 0.1}],
     // bottom: 15
   },
   modalView: {
     //margin: 2,
     width: Dimensions.get('window').width,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     paddingVertical: 24,
     paddingHorizontal: Dimensions.get('window').width * 0.05,
     // alignSelf: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    //shadowColor: '#000',
+    /* shadowOffset: {
+      //width: 0,
+      //height: 0,
+    }, */
+    //shadowOpacity: 0.25,
+    //shadowRadius: 4,
+    //elevation: 5,
   },
   button: {
-    width: 167,
+    width: 169,
     height: 44,
     borderRadius: 4,
     padding: 12,
     //marginTop: 20,
   },
   secondButton: {
-    width: 167,
+    width: 169,
     height: 44,
     borderRadius: 4,
     padding: 12,
