@@ -26,7 +26,7 @@ export const Report = (props: any) => (
   <Svg
     width={18}
     height={21}
-    fill="none"
+    fill="#9DA4AB"
     xmlns="http://www.w3.org/2000/svg"
     {...props}>
     <Path

@@ -43,6 +43,7 @@ import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
 import {getMessageContent, postChatRoom} from '../common/messageApi';
 import MessageIcon from '../../resources/icon/Message';
+import CustomToast from './CustomToast';
 interface Props {
   navigation: any;
   post: any;
@@ -72,6 +73,15 @@ function Post({
     useState<boolean>(false);
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000); // Hide after 3 seconds
+  };
+
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -396,49 +406,54 @@ function Post({
               {data?.commentCount}
             </Text>
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {data?.isReported ? (
-              <Pressable
-                onPress={() => {
-                  Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
-                }}>
-                <Report style={{marginRight: 16}} />
-              </Pressable>
-            ) : (
-              <Pressable
-                onPress={() => {
-                  setReportModalVisible(true);
-                  setComponentModalVisible(reportModalVisible);
-                }}>
-                <NoReport style={{marginRight: 16}} />
-              </Pressable>
-            )}
-            <ReportModalBottom
-              modalVisible={reportModalVisible}
-              setModalVisible={setReportModalVisible}
-              title="해당 게시글을 신고하시겠어요?"
-              purpleButtonText="네, 신고할게요."
-              reportId={data?.postId}
-              reportFunc={handlePostReport}
-              whiteButtonText="아니요."
-              whiteButtonFunc={() => setReportModalVisible(false)}
-              setDim={false}
-            />
-            <Pressable
-              onPress={() => {
-                blockedCheck(data.isAnonymous);
-              }}>
-              <MessageIcon style={{marginRight: 16, marginTop: 5}} />
-            </Pressable>
-            <Pressable
-              hitSlop={10}
-              onPress={() => handlePostScrap(data.postId)}>
-              {data?.isScraped ? (
-                <Scrap style={{marginRight: 20, marginTop: 5}} />
+          <View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              {data?.isReported ? (
+                <Pressable
+                  onPress={() => showToast('이미 신고한 게시글입니다.')}>
+                  <Report style={{marginRight: 16}} />
+                </Pressable>
               ) : (
-                <NoScrap style={{marginRight: 20, marginTop: 5}} />
+                <Pressable
+                  onPress={() => {
+                    setReportModalVisible(true);
+                    setComponentModalVisible(reportModalVisible);
+                  }}>
+                  <NoReport style={{marginRight: 16}} />
+                </Pressable>
               )}
-            </Pressable>
+              <ReportModalBottom
+                modalVisible={reportModalVisible}
+                setModalVisible={setReportModalVisible}
+                title="해당 게시글을 신고하시겠어요?"
+                purpleButtonText="네, 신고할게요."
+                reportId={data?.postId}
+                reportFunc={handlePostReport}
+                whiteButtonText="아니요."
+                whiteButtonFunc={() => setReportModalVisible(false)}
+                setDim={false}
+              />
+              <Pressable
+                onPress={() => {
+                  blockedCheck(data.isAnonymous);
+                }}>
+                <MessageIcon style={{marginRight: 16, marginTop: 5}} />
+              </Pressable>
+              <Pressable
+                hitSlop={10}
+                onPress={() => handlePostScrap(data.postId)}>
+                {data?.isScraped ? (
+                  <Scrap style={{marginRight: 20, marginTop: 5}} />
+                ) : (
+                  <NoScrap style={{marginRight: 20, marginTop: 5}} />
+                )}
+              </Pressable>
+            </View>
+            <CustomToast
+              visible={toastVisible}
+              message={toastMessage}
+              onClose={() => setToastVisible(false)}
+            />
           </View>
         </View>
       )}
