@@ -26,6 +26,7 @@ import {
   getPinBoardContents,
   getUnreadNotification,
   getNewPosts,
+  getBanner,
 } from '../../common/homeApi';
 import {ModalBottom} from '../../components/ModalBottom';
 import Modal from 'react-native-modal';
@@ -95,6 +96,14 @@ const HomeFragment = ({navigation}: Props) => {
 
   const [newPosts, setNewPosts] = useState<any[]>([]); // 방금 올라온 글 데이터
   const [isLoadingNewPosts, setIsLoadingNewPosts] = useState<boolean>(true);
+
+  // 총학생회 배너 데이터
+  const [bannerData, setBannerData] = useState<{
+    imageUrl: string;
+    postTitle: string;
+    postContent: string;
+  } | null>(null);
+
   // 학식 운캠/수캠 선택 토글
   const toggleCafeteriaModal = () => {
     console.log('눌려요');
@@ -254,6 +263,7 @@ const HomeFragment = ({navigation}: Props) => {
       listener.remove();
     };
   }, []);
+
   // 방금 올라온 글 데이터 불러오기
   useEffect(() => {
     const fetchNewPosts = async () => {
@@ -264,6 +274,20 @@ const HomeFragment = ({navigation}: Props) => {
     };
 
     fetchNewPosts();
+  }, []);
+
+  // 총학생회 배너 데이터 불러오기
+  useEffect(() => {
+    const fetchBannerData = async () => {
+      try {
+        const bannerData = await getBanner();
+        setBannerData(bannerData);
+      } catch (error) {
+        console.error('베너 데이터 오류: ', error);
+      }
+    };
+
+    fetchBannerData();
   }, []);
 
   return (
@@ -341,6 +365,28 @@ const HomeFragment = ({navigation}: Props) => {
                 <Text style={styles.iconLabel}>셔틀버스</Text>
               </TouchableOpacity>
             </View>
+            {/* 배너 영역 */}
+            {bannerData && (
+              <View style={styles.bannerContainer}>
+                <Image
+                  source={
+                    bannerData.imageUrl ? {uri: bannerData.imageUrl} : null
+                  }
+                  style={styles.bannerImage}
+                  resizeMode="cover"
+                />
+                {!bannerData.imageUrl && (
+                  <View style={styles.bannerPlaceholder} />
+                )}
+                <Text style={styles.studenCouncilBox}>총학생회</Text>
+                <View style={styles.bannerTextContainer}>
+                  <Text style={styles.bannerTitle}>{bannerData.postTitle}</Text>
+                  <Text style={styles.bannerContent}>
+                    {bannerData.postContent}
+                  </Text>
+                </View>
+              </View>
+            )}
             <View
               style={{
                 padding: 24,
@@ -877,6 +923,60 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+  },
+  // 배너
+  bannerContainer: {
+    width: '100%',
+    height: 200,
+    position: 'relative',
+    marginTop: 20,
+  },
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+  },
+  bannerPlaceholder: {
+    backgroundColor: '#b4b4b4',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  bannerTextContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 16,
+  },
+  bannerTitle: {
+    fontFamily: 'Pretendard',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  bannerContent: {
+    fontFamily: 'Pretendard',
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '400',
+  },
+  studenCouncilBox: {
+    fontFamily: 'Pretendard',
+    position: 'absolute',
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    top: 16,
+    left: 16,
+    borderRadius: 6,
+    color: '#fff',
+    fontSize: 12,
+    borderWidth: 1,
+    borderColor: 'white',
+    borderStyle: 'solid',
+    textAlign: 'center',
+    justifyContent: 'center',
+    display: 'flex',
   },
 });
 

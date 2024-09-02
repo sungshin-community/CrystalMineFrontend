@@ -91,3 +91,13 @@ export async function getNewPosts() {
     return [];
   }
 }
+export async function getBanner() {
+  try {
+    const response = await client.get('/home/banner');
+    console.log('배너: ', response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error('배너 오류 발생: ', error);
+    return [];
+  }
+}
