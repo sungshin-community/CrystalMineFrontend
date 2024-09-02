@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import HomeFragment from '../screens/fragments/HomeFragment';
 import BoardFragment from '../screens/fragments/BoardFragment';
 import AlertFragment from '../screens/fragments/AlertFragment';
@@ -16,11 +16,10 @@ import SearchIcon from '../../resources/icon/SearchIcon';
 import MenuIcon from '../../resources/icon/MenuIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Platform, Pressable, TouchableHighlight} from 'react-native';
+import {Platform, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRole, logout} from '../common/authApi';
 import {useState, useEffect} from 'react';
-import {Authentication} from '../classes/Authentication';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import messaging from '@react-native-firebase/messaging';
 import {AlertData} from '../classes/AlertDto';
@@ -168,12 +167,20 @@ function GlobalNavbar({navigation}: ScreenProps) {
     }
   };
 
+  // 글씨 색상 결정 함수
+  const getTextColor = (color: string) => {
+    if (color === '#E2E4E8') {
+      return '#6E7882'; // 비활성 색상일 때 글씨 색상
+    }
+    return color; // 활성 색상일 때 글씨 색상
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
-          height: Platform.OS === 'android' ? 60 : 94,
+          height: Platform.OS === 'android' ? 78 : 112,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           shadowColor: '#000000',
@@ -187,7 +194,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           justifyContent: 'space-between',
         },
         tabBarShowLabel: false,
-        tabBarInactiveTintColor: '#6E7882',
+        tabBarInactiveTintColor: '#E2E4E8',
         tabBarActiveTintColor: '#A055FF',
       }}>
       <Tab.Screen
@@ -219,7 +226,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
           ),
           headerTitleAlign: 'left',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <HomeTabIcon size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <HomeTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  광산
+                </Text>
+              </View>
+            );
           },
           headerRight: () => (
             <View
@@ -296,7 +313,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
           title: '게시판',
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <BoardTabIcon size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <BoardTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  수정구
+                </Text>
+              </View>
+            );
           },
           headerRight: () => (
             <TouchableHighlight
@@ -367,7 +394,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
-              <MessageTabIcon size={size} color={color} focused={focused} />
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <MessageTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  대화
+                </Text>
+              </View>
             );
           },
           headerLeft: () => (
@@ -432,7 +467,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <AlertTabIcon size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <AlertTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  알림
+                </Text>
+              </View>
+            );
           },
         }}
       />
@@ -479,7 +524,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
           title: '마이페이지',
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <MyPageGNB size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <MyPageGNB size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  MY
+                </Text>
+              </View>
+            );
           },
           headerTitleStyle: {
             fontSize: 19,
@@ -490,5 +545,25 @@ function GlobalNavbar({navigation}: ScreenProps) {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    marginBottom: 15,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+  },
+  tabIconText: {
+    fontFamily: 'Pretendard',
+    fontSize: 13,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 10,
+  },
+});
 
 export default GlobalNavbar;
