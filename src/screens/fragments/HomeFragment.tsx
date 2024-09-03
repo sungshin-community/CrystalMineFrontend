@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   Text,
   View,
@@ -12,6 +12,7 @@ import {
   Platform,
   Linking,
   Image,
+  FlatList,
 } from 'react-native';
 import AdMob from '../../components/AdMob';
 import {fontBold, fontRegular} from '../../common/font';
@@ -53,6 +54,7 @@ import RecentPost from '../../../resources/icon/RecentPost';
 import PinPost from '../../../resources/icon/PinPost';
 import RightArrow from '../../../resources/icon/Arrow';
 import NewPost from '../../../resources/icon/NewPost';
+import {ViewToken} from 'react-native';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -74,6 +76,14 @@ type notiItemDto = {
   notiItem: HomeNotification;
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
+
+interface HotPostItem {
+  commentCount: number;
+  likeCount: number;
+  postContent: string;
+  postId: number;
+}
+
 const HomeFragment = ({navigation}: Props) => {
   const [pinBoardContents, setPinBoardContents] = useState<PinBoardDto[]>([]);
   const [hotBoardContents, setHotBoardContents] = useState<HotBoardDto>();
@@ -96,7 +106,8 @@ const HomeFragment = ({navigation}: Props) => {
 
   const [newPosts, setNewPosts] = useState<any[]>([]); // 방금 올라온 글 데이터
   const [isLoadingNewPosts, setIsLoadingNewPosts] = useState<boolean>(true);
-
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
   // 총학생회 배너 데이터
   const [bannerData, setBannerData] = useState<{
     imageUrl: string;
@@ -229,7 +240,7 @@ const HomeFragment = ({navigation}: Props) => {
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(hotBoardData.status) === 2) {
-              setHotBoardContents(hotBoardData.data.data);
+              // setHotBoardContents(hotBoardData.data.data);
             } else {
               setIsHotBoardError(true);
             }
@@ -264,6 +275,44 @@ const HomeFragment = ({navigation}: Props) => {
     };
   }, []);
 
+  // 인기있는 게시글 테스트
+  useEffect(() => {
+    const testData = {
+      boardId: 0,
+      boardName: 'string',
+      hotPosts: [
+        {
+          commentCount: 2,
+          likeCount: 3,
+          postContent: '지금 인기있는 게시글입니당',
+          postId: 0,
+        },
+        {
+          commentCount: 2,
+          likeCount: 3,
+          postContent: '지금 인기있는 게시글입니당222',
+          postId: 1,
+        },
+        {
+          commentCount: 22,
+          likeCount: 31,
+          postContent:
+            '내가 진짜 대박인거 알려줄까? 나 취준생일 때 알바하던 곳 사장님이 인사팀 부장이셨단 말이야. 그래서 그 당시에 자소서 쓰면 사장님한테 보여드리기도 했었는데 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. .',
+          postId: 2,
+        },
+        {
+          commentCount: 44,
+          likeCount: 4,
+          postContent: '지금 인기있는 게시글입니당',
+          postId: 3,
+        },
+      ],
+    };
+
+    // 테스트 데이터를 설정합니다.
+    setHotBoardContents(testData);
+  }, []);
+
   // 방금 올라온 글 데이터 불러오기
   useEffect(() => {
     const fetchNewPosts = async () => {
@@ -289,6 +338,43 @@ const HomeFragment = ({navigation}: Props) => {
 
     fetchBannerData();
   }, []);
+
+  // 인기있는 글
+  const renderHotPostItem = ({item}: {item: HotPostItem}) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('PostScreen', {postId: item.postId})}>
+      <View style={styles.slideContainer}>
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={styles.hotPostSummary}>
+          {item.postContent.slice(0, 30)}
+        </Text>
+        <Text style={styles.hotPostBoardName}>게시판 이름</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            position: 'absolute',
+            right: 16,
+            bottom: 19,
+          }}>
+          <EmptyHeart />
+          <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
+          <EmptyComment />
+          <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+  // 인기있는 글 하단 인덱스 조정
+  const handleViewableItemsChanged = useRef(
+    ({viewableItems}: {viewableItems: ViewToken[]}) => {
+      if (viewableItems.length > 0) {
+        setCurrentIndex(viewableItems[0].index || 0);
+      }
+    },
+  );
 
   return (
     <>
@@ -393,6 +479,7 @@ const HomeFragment = ({navigation}: Props) => {
               }}>
               {/* 게시판 글 목록 */}
               <View style={styles.rowContainer}>
+                {/* 지금 인기있는 글 영역 */}
                 <View style={styles.boardTitleContainer}>
                   <HotPost />
                   <Text style={[fontRegular, styles.boardTitle]}>
@@ -433,40 +520,33 @@ const HomeFragment = ({navigation}: Props) => {
                     </Text>
                   </View>
                 ) : (
-                  hotBoardContents?.hotPosts.map((item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() =>
-                        navigation.navigate('PostScreen', {postId: item.postId})
-                      }>
-                      <View style={styles.hotPostContainer}>
-                        <Text
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={[
-                            fontRegular,
-                            styles.postSummary,
-                            {
-                              width: Dimensions.get('window').width - 150,
-                              color: '#000',
-                            },
-                          ]}>
-                          {item.postContent.slice(0, 30)}
-                        </Text>
+                  <View>
+                    <FlatList
+                      data={hotBoardContents?.hotPosts}
+                      renderItem={renderHotPostItem}
+                      horizontal
+                      pagingEnabled
+                      keyExtractor={item => item.postId.toString()}
+                      showsHorizontalScrollIndicator={false}
+                      onViewableItemsChanged={
+                        handleViewableItemsChanged.current
+                      }
+                      viewabilityConfig={viewabilityConfig.current}
+                    />
+                    <View style={styles.paginationContainer}>
+                      {hotBoardContents?.hotPosts.map((_, index) => (
                         <View
-                          style={{flexDirection: 'row', alignItems: 'center'}}>
-                          <EmptyHeart />
-                          <Text style={[fontRegular, styles.HOTpostLike]}>
-                            {item.likeCount}
-                          </Text>
-                          <EmptyComment />
-                          <Text style={[fontRegular, styles.HOTpostComment]}>
-                            {item.commentCount}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  ))
+                          key={index}
+                          style={[
+                            styles.paginationDot,
+                            index === currentIndex
+                              ? styles.activeDot
+                              : styles.inactiveDot,
+                          ]}
+                        />
+                      ))}
+                    </View>
+                  </View>
                 )
               ) : (
                 <View
@@ -777,6 +857,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 20,
+    alignItems: 'center',
   },
   rowNewPostContainer: {
     flex: 1,
@@ -788,6 +869,7 @@ const styles = StyleSheet.create({
   boardTitleContainer: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   boardTitle: {
     fontFamily: 'Pretendard',
@@ -821,6 +903,12 @@ const styles = StyleSheet.create({
   postSummary: {
     fontSize: 13,
   },
+  hotPostSummary: {
+    fontSize: 14,
+    lineHeight: 22,
+    fontFamily: 'Pretendard',
+    marginBottom: 25,
+  },
   postNewLabel: {
     color: '#FF6060',
     fontSize: 12,
@@ -834,14 +922,21 @@ const styles = StyleSheet.create({
   },
   HOTpostLike: {
     fontSize: 9,
-    marginLeft: 5,
-    marginRight: 5,
-    width: 22,
+    marginLeft: 4,
+    marginRight: 10,
   },
   HOTpostComment: {
     fontSize: 9,
-    marginLeft: 5,
-    width: 22,
+    marginLeft: 4,
+  },
+  hotPostBoardName: {
+    lineHeight: 14.32,
+    color: '#6E7882',
+    fontSize: 12,
+    fontFamily: 'Pretendard',
+    position: 'absolute',
+    left: 20,
+    bottom: 20,
   },
   newsContainer: {
     flexWrap: 'wrap',
@@ -977,6 +1072,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     display: 'flex',
+  },
+  slideContainer: {
+    width: Dimensions.get('window').width - 50,
+    backgroundColor: '#FAFAFA',
+    borderRadius: 10,
+    padding: 20,
+    justifyContent: 'center',
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  paginationDot: {
+    height: 6,
+    width: 6,
+    borderRadius: 4,
+    marginHorizontal: 3,
+  },
+  activeDot: {
+    backgroundColor: '#A055FF',
+    width: 12,
+  },
+  inactiveDot: {
+    backgroundColor: '#E1E4EA',
   },
 });
 
