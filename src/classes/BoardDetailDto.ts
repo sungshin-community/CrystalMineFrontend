@@ -22,6 +22,7 @@ export interface ContentPreviewDto {
   createdAt: string;
   isScraped: boolean;
   scrapCount: number;
+  thumbnail: string;
 }
 
 export interface BoardHotPostDto {

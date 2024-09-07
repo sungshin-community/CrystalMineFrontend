@@ -70,12 +70,44 @@ function PostItem({post, boardId}: Props) {
         ) : (
           <></>
         )}
-        <Text
-          numberOfLines={post.title ? 2 : 5}
-          ellipsizeMode="tail"
-          style={[styles.text, styles.content, fontRegular]}>
-          {post.content}
-        </Text>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View>
+            <Text
+              numberOfLines={post.title ? 2 : 5}
+              ellipsizeMode="tail"
+              style={[styles.text, styles.content, fontRegular]}>
+              {post.content}
+            </Text>
+          </View>
+          <Image
+            style={{width: 60, height: 60, borderRadius: 8}}
+            source={{uri: post.thumbnail}}
+          />
+          {post.imageCount > 1 && (
+            <Text
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                color: 'white',
+                fontSize: 10,
+                paddingHorizontal: 6,
+                paddingVertical: 2,
+                marginHorizontal: 4,
+                marginVertical: 4,
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}>
+              {`+${post.imageCount - 1}`}
+            </Text>
+          )}
+        </View>
         <View style={styles.icon}>
           {!(boardId === 93 || boardId === 94 || boardId === 95) && (
             <>
