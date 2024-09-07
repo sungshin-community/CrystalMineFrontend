@@ -161,13 +161,15 @@ function Post({
         whiteButtonFunc={() => setDeleteModalVisible(false)}
         setDim={false}
       />
-      <Pressable
-        onPress={() => {
-          setDeleteModalVisible(true);
-          setComponentModalVisible(deleteModalVisible);
-        }}>
-        <TrashIcon style={{marginRight: 12}} />
-      </Pressable>
+      {data?.isAuthor && (
+        <Pressable
+          onPress={() => {
+            setDeleteModalVisible(true);
+            setComponentModalVisible(deleteModalVisible);
+          }}>
+          <TrashIcon style={{marginRight: 12}} />
+        </Pressable>
+      )}
     </>
   );
   const handleOthersPostComponent = (
@@ -398,7 +400,11 @@ function Post({
             <Text
               style={[
                 fontRegular,
-                {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                {
+                  color: '#9DA4AB',
+                  marginRight: 1,
+                  marginLeft: 5,
+                },
               ]}>
               댓글
             </Text>
@@ -407,7 +413,12 @@ function Post({
             </Text>
           </View>
           <View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                //backgroundColor: 'skyblue',
+              }}>
               {data?.isReported ? (
                 <Pressable
                   onPress={() => showToast('이미 신고한 게시글입니다.')}>
@@ -437,17 +448,26 @@ function Post({
                 onPress={() => {
                   blockedCheck(data.isAnonymous);
                 }}>
-                <MessageIcon style={{marginRight: 16, marginTop: 5}} />
+                <MessageIcon
+                  style={{
+                    marginRight: 16,
+                  }}
+                />
               </Pressable>
               <Pressable
                 hitSlop={10}
                 onPress={() => handlePostScrap(data.postId)}>
                 {data?.isScraped ? (
-                  <Scrap style={{marginRight: 20, marginTop: 5}} />
+                  <Scrap style={{marginRight: 16}} />
                 ) : (
-                  <NoScrap style={{marginRight: 20, marginTop: 5}} />
+                  <NoScrap
+                    style={{
+                      marginRight: 16,
+                    }}
+                  />
                 )}
               </Pressable>
+              {data?.isAuthor ? handlePostDeleteComponent : null}
             </View>
             <CustomToast
               visible={toastVisible}

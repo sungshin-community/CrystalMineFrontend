@@ -1,34 +1,48 @@
 import * as React from 'react';
-import Svg, {Path} from 'react-native-svg';
+import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
 
-const Scrap = (props: any) => (
+const Scrap = (props: SvgProps) => (
   <Svg
-    width={14}
-    height={18}
-    viewBox="0 0 14 18"
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    fill="none"
     {...props}>
-    <Path
-      d="M12 0H2C0.9 0 0.0100002 0.9 0.0100002 2L0 18L7 15L14 18V2C14 0.9 13.1 0 12 0Z"
-      fill="#9DA4AB"
-    />
+    <G clipPath="url(#a)">
+      <Path
+        stroke="#9DA4AB"
+        strokeWidth={1.5}
+        d="M5.76 5c0-.69.56-1.25 1.24-1.25h10c.686 0 1.25.564 1.25 1.25v14.863l-5.955-2.552-.295-.127-.295.127-5.954 2.551L5.76 5Z"
+      />
+    </G>
+    <Defs>
+      <ClipPath id="a">
+        <Path fill="#fff" d="M0 0h24v24H0z" />
+      </ClipPath>
+    </Defs>
   </Svg>
 );
 
 export default Scrap;
 
-export const NoScrap = (props: any) => (
+export const NoScrap = (props: SvgProps) => (
   <Svg
-    width={14}
-    height={18}
-    viewBox="0 0 14 18"
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    fill="none"
     {...props}>
-    <Path
-      d="M12 0H2C0.9 0 0.0100002 0.9 0.0100002 2L0 18L7 15L14 18V2C14 0.9 13.1 0 12 0ZM12 15L7 12.82L2 15V2H12V15Z"
-      fill="#9DA4AB"
-    />
+    <G clipPath="url(#a)">
+      <Path
+        stroke="#9DA4AB"
+        strokeWidth={1.5}
+        d="M5.76 5c0-.69.56-1.25 1.24-1.25h10c.686 0 1.25.564 1.25 1.25v14.863l-5.955-2.552-.295-.127-.295.127-5.954 2.551L5.76 5Z"
+      />
+    </G>
+    <Defs>
+      <ClipPath id="a">
+        <Path fill="#9DA4AB" d="M0 0h24v24H0z" />
+      </ClipPath>
+    </Defs>
   </Svg>
 );
