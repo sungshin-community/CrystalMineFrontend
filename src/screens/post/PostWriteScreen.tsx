@@ -39,7 +39,7 @@ import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import {ModalBottom} from '../../components/ModalBottom';
-import {ImageDelete} from '../../components/ImageDelete';
+import {DeleteImageIcon} from '../../components/ImageDelete';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
 const {StatusBarManager} = NativeModules;
@@ -228,6 +228,31 @@ function PostWriteScreen({navigation, route}: Props) {
     console.log('>>>', images);
   };
 
+  const renderImages = () => {
+    return images.map(image => (
+      <View key={image.uri} style={{position: 'relative', margin: 5}}>
+        <Image
+          source={{uri: image.uri}}
+          style={{
+            width: 90,
+            height: 90,
+            borderRadius: 8,
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            margin: 5,
+          }}
+          onPress={() => deleteImage(image.uri)}>
+          <DeleteImageIcon />
+        </TouchableOpacity>
+      </View>
+    ));
+  };
+
   useEffect(() => {
     Platform.OS == 'ios'
       ? StatusBarManager.getHeight((statusBarFrameData: any) => {
@@ -287,13 +312,11 @@ function PostWriteScreen({navigation, route}: Props) {
       <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={[styles.inputTitle]}>
           {/* <Image
-                style={{width: 24, height: 24, borderRadius: 12}}
-                source={{
-                  uri: isAnonymous
-                    ? info?.defaultProfileImage
-                    : info?.profileImage,
-                }}
-              /> */}
+            style={{width: 24, height: 24, borderRadius: 12}}
+            source={{
+              uri: isAnonymous ? info?.defaultProfileImage : info?.profileImage,
+            }}
+          /> */}
           <Text
             style={{
               color: '#B9BAC1',
@@ -384,30 +407,40 @@ function PostWriteScreen({navigation, route}: Props) {
               }}
             />
             {/*             )} */}
-            <Pressable
-              onPress={() => navigation.navigate('DirectionAgreeScreen')}
-              style={{
-                borderRadius: 25,
-                backgroundColor: '#F6F6F6',
-                alignSelf: 'center',
-                width: 'auto',
-                paddingTop: 6,
-                paddingRight: 12,
-                paddingBottom: 6,
-                paddingLeft: 12,
-              }}>
-              <Text
-                style={{
-                  fontWeight: '400',
-                  color: '#9DA4AB',
-                  textAlign: 'center',
-                  paddingHorizontal: 4,
-                  paddingVertical: 4,
-                }}>
-                수정광산 이용 방향 전문 보기
-              </Text>
-            </Pressable>
+            <View style={{marginVertical: 10}}>
+              {images.length > 0 && (
+                <View>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {renderImages()}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
           </View>
+          <Pressable
+            onPress={() => navigation.navigate('DirectionAgreeScreen')}
+            style={{
+              borderRadius: 25,
+              backgroundColor: '#F6F6F6',
+              alignSelf: 'center',
+              width: 'auto',
+              paddingTop: 6,
+              paddingRight: 12,
+              paddingBottom: 6,
+              paddingLeft: 12,
+              marginBottom: 80,
+            }}>
+            <Text
+              style={{
+                fontWeight: '400',
+                color: '#9DA4AB',
+                textAlign: 'center',
+                paddingHorizontal: 4,
+                paddingVertical: 4,
+              }}>
+              수정광산 이용 방향 전문 보기
+            </Text>
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
       <SafeAreaView style={styles.bottomBar}>
@@ -482,20 +515,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 15,
+    fontSize: 16,
+    fontWeight: '600',
     paddingVertical: 15,
     paddingHorizontal: 24,
-    color: '#222222',
+    color: '#3A424E',
   },
   input: {
     // minHeight: Dimensions.get('window').height - 400,
-    minHeight: 450,
+    minHeight: 100,
     // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
-    fontSize: 15,
+    fontSize: 14,
     paddingTop: 14,
+    fontWeight: '400',
     paddingHorizontal: 24,
     textAlignVertical: 'top',
-    color: '#222222',
+    color: '#3A424E',
+    //backgroundColor: 'skyblue',
   },
   image: {
     marginTop: 19,
