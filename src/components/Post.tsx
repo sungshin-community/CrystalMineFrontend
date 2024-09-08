@@ -139,17 +139,19 @@ function Post({
       <ModalBottom
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
-        content={`작성한 게시글을 삭제하시겠습니까?`}
-        purpleButtonText="삭제"
+        title={`작성한 게시글을 삭제하시겠어요?`}
+        content={`- 삭제 후에는 되돌릴 수 없습니다.`}
+        purpleButtonText="삭제할게요."
         purpleButtonFunc={() => {
           if (handlePostDelete(data.postId)) {
             setDeleteModalVisible(false);
-            setTimeout(function () {
+            showToast('작성하신 게시글이 삭제되었습니다.');
+            /* setTimeout(function () {
               Toast.show(
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
                 Toast.SHORT,
               );
-            }, 100);
+            }, 100); */
             // navigation.goBack();
             navigation.pop();
             navigation.pop();
@@ -157,9 +159,9 @@ function Post({
             console.log('게시글 삭제 성공');
           }
         }}
-        whiteButtonText="취소"
+        /* whiteButtonText="취소"
         whiteButtonFunc={() => setDeleteModalVisible(false)}
-        setDim={false}
+        setDim={false} */
       />
       {data?.isAuthor && (
         <Pressable
