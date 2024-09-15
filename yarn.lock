@@ -6600,6 +6600,11 @@
   dependencies:
     "react-native-image-pan-zoom" "^2.1.12"
 
+"react-native-linear-gradient@^2.8.3":
+  "integrity" "sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA=="
+  "resolved" "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
+  "version" "2.8.3"
+
 "react-native-markdown-display@7.0.0-alpha.2":
   "integrity" "sha512-Od1a4wJEcVGwO1bh02sHivsEkKKpu99+ew/OtmVTPRmfT8V3B0aTut7k7ICV0Vej9F4ZjylRHvm28/maYUBeGw=="
   "resolved" "https://registry.npmjs.org/react-native-markdown-display/-/react-native-markdown-display-7.0.0-alpha.2.tgz"

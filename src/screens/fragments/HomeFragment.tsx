@@ -20,6 +20,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyComment from '../../../resources/icon/EmptyComment';
 import EmptyHeart from '../../../resources/icon/EmptyHeart';
+import FilledHeart from '../../../resources/icon/FilledHeart';
 import {PinBoardDto, HotBoardDto, HomeNotification} from '../../classes/Home';
 import {
   getAuthentication,
@@ -54,7 +55,9 @@ import RecentPost from '../../../resources/icon/RecentPost';
 import PinPost from '../../../resources/icon/PinPost';
 import RightArrow from '../../../resources/icon/Arrow';
 import NewPost from '../../../resources/icon/NewPost';
+import BannerBasicImg from '../../../resources/images/BannerBasicImg.png';
 import {ViewToken} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -240,7 +243,7 @@ const HomeFragment = ({navigation}: Props) => {
               logout();
               navigation.reset({routes: [{name: 'SplashHome'}]});
             } else if (getHundredsDigit(hotBoardData.status) === 2) {
-              // setHotBoardContents(hotBoardData.data.data);
+              setHotBoardContents(hotBoardData.data.data);
             } else {
               setIsHotBoardError(true);
             }
@@ -275,44 +278,6 @@ const HomeFragment = ({navigation}: Props) => {
     };
   }, []);
 
-  // 인기있는 게시글 테스트
-  useEffect(() => {
-    const testData = {
-      boardId: 0,
-      boardName: 'string',
-      hotPosts: [
-        {
-          commentCount: 2,
-          likeCount: 3,
-          postContent: '지금 인기있는 게시글입니당',
-          postId: 0,
-        },
-        {
-          commentCount: 2,
-          likeCount: 3,
-          postContent: '지금 인기있는 게시글입니당222',
-          postId: 1,
-        },
-        {
-          commentCount: 22,
-          likeCount: 31,
-          postContent:
-            '내가 진짜 대박인거 알려줄까? 나 취준생일 때 알바하던 곳 사장님이 인사팀 부장이셨단 말이야. 그래서 그 당시에 자소서 쓰면 사장님한테 보여드리기도 했었는데 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. 부장이셨단 말이야. .',
-          postId: 2,
-        },
-        {
-          commentCount: 44,
-          likeCount: 4,
-          postContent: '지금 인기있는 게시글입니당',
-          postId: 3,
-        },
-      ],
-    };
-
-    // 테스트 데이터를 설정합니다.
-    setHotBoardContents(testData);
-  }, []);
-
   // 방금 올라온 글 데이터 불러오기
   useEffect(() => {
     const fetchNewPosts = async () => {
@@ -338,8 +303,7 @@ const HomeFragment = ({navigation}: Props) => {
 
     fetchBannerData();
   }, []);
-
-  // 인기있는 글
+  //인기있는 글
   const renderHotPostItem = ({item}: {item: HotPostItem}) => (
     <TouchableOpacity
       onPress={() => navigation.navigate('PostScreen', {postId: item.postId})}>
@@ -350,7 +314,7 @@ const HomeFragment = ({navigation}: Props) => {
           style={styles.hotPostSummary}>
           {item.postContent.slice(0, 30)}
         </Text>
-        <Text style={styles.hotPostBoardName}>게시판 이름</Text>
+        <Text style={styles.hotPostBoardName}>{item.boardName}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -359,7 +323,7 @@ const HomeFragment = ({navigation}: Props) => {
             right: 16,
             bottom: 19,
           }}>
-          <EmptyHeart />
+          {item.liked ? <FilledHeart /> : <EmptyHeart />}
           <Text style={styles.HOTpostLike}>{item.likeCount}</Text>
           <EmptyComment />
           <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
@@ -456,15 +420,24 @@ const HomeFragment = ({navigation}: Props) => {
               <View style={styles.bannerContainer}>
                 <Image
                   source={
-                    bannerData.imageUrl ? {uri: bannerData.imageUrl} : null
+                    bannerData.imageUrl
+                      ? {uri: bannerData.imageUrl}
+                      : BannerBasicImg // 기본 이미지 사용
                   }
                   style={styles.bannerImage}
                   resizeMode="cover"
                 />
-                {!bannerData.imageUrl && (
-                  <View style={styles.bannerPlaceholder} />
-                )}
+
+                {/* 그라데이션 레이어 */}
+                <LinearGradient
+                  colors={['rgba(74, 74, 74, 0)', '#4A4A4A']} // 위는 투명, 아래는 #4A4A4A
+                  style={styles.gradient}
+                />
+
+                {/* 총학생회 텍스트 */}
                 <Text style={styles.studenCouncilBox}>총학생회</Text>
+
+                {/* 배너 텍스트 영역 */}
                 <View style={styles.bannerTextContainer}>
                   <Text style={styles.bannerTitle}>{bannerData.postTitle}</Text>
                   <Text style={styles.bannerContent}>
@@ -921,12 +894,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   HOTpostLike: {
-    fontSize: 9,
+    fontSize: 12,
     marginLeft: 4,
     marginRight: 10,
   },
   HOTpostComment: {
-    fontSize: 9,
+    fontSize: 12,
     marginLeft: 4,
   },
   hotPostBoardName: {
@@ -1029,6 +1002,13 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: '100%',
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   bannerPlaceholder: {
     backgroundColor: '#b4b4b4',
