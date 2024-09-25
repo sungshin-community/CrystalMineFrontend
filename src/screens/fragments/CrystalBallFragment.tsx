@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
 import BoardList, {
@@ -53,6 +60,7 @@ export default function CrystalBallFragment({navigation}: Props) {
   const [isInited, setIsInited] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [errorStatus, setErrorStatus] = useState<number>();
+  const [activeTab, setActiveTab] = useState<'lounge' | 'explore'>('lounge'); // 선택된 탭
 
   const getPinnedBoardList = async () => {
     let boardList: Board[] = [];
@@ -237,10 +245,88 @@ export default function CrystalBallFragment({navigation}: Props) {
               style={{zIndex: 100}}
             />
           </View>
-          <ScrollView
-            style={{flex: 1, backgroundColor: '#FFFFFF'}}></ScrollView>
+          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+            {/* 1px height와 색상이 #EFEFF3인 구분선 */}
+            <View style={styles.divider} />
+            {/* 선택 탭 (라운지, 살펴보기) */}
+            <View style={styles.tabContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.tabButton,
+                  activeTab === 'lounge' && styles.activeTabButton,
+                ]}
+                onPress={() => setActiveTab('lounge')}>
+                <Text
+                  style={[
+                    styles.tabText,
+                    activeTab === 'lounge' && styles.activeTabText,
+                  ]}>
+                  라운지
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.tabButton,
+                  activeTab === 'explore' && styles.activeTabButton,
+                ]}
+                onPress={() => setActiveTab('explore')}>
+                <Text
+                  style={[
+                    styles.tabText,
+                    activeTab === 'explore' && styles.activeTabText,
+                  ]}>
+                  살펴보기
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* 선택된 탭에 맞는 컴포넌트 렌더링 */}
+            {activeTab === 'lounge' ? (
+              <View>
+                {/* 라운지 컴포넌트 */}
+                <Text>라운지 내용</Text>
+              </View>
+            ) : (
+              <View>
+                {/* 살펴보기 컴포넌트 */}
+                <Text>살펴보기 내용</Text>
+              </View>
+            )}
+          </ScrollView>
         </>
       )}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  divider: {
+    height: 1,
+    backgroundColor: '#EFEFF3',
+    marginVertical: 10,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderBottomWidth: 1,
+    borderBottomColor: '#EFEFF3',
+    marginBottom: 20,
+  },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  activeTabButton: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#A055FF',
+  },
+  tabText: {
+    color: '#CECFD6',
+    fontSize: 16,
+  },
+  activeTabText: {
+    color: '#222222',
+    fontWeight: 'bold',
+  },
+});

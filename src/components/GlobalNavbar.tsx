@@ -328,11 +328,13 @@ function GlobalNavbar({navigation}: ScreenProps) {
               </View>
             );
           },
+          headerStyle: {
+            height: 40,
+          },
           headerRight: () => (
             <TouchableHighlight
               style={{
                 marginRight: 16,
-                height: 48,
                 borderRadius: 20,
                 alignItems: 'center',
                 justifyContent: 'center',
