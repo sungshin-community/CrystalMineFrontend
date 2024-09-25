@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Text, StyleSheet} from 'react-native';
 import HomeFragment from '../screens/fragments/HomeFragment';
 import BoardFragment from '../screens/fragments/BoardFragment';
+import CrystalBallFragment from '../screens/fragments/CrystalBallFragment';
 import AlertFragment from '../screens/fragments/AlertFragment';
 import MessageFragment from '../screens/fragments/MessageFragment';
 import MyPageFragment from '../screens/fragments/MyPageFragment';
@@ -14,6 +15,7 @@ import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
 import MenuIcon from '../../resources/icon/MenuIcon';
+import MyIcon from '../../resources/icon/MyIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Platform, TouchableHighlight} from 'react-native';
@@ -206,16 +208,18 @@ function GlobalNavbar({navigation}: ScreenProps) {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginLeft: 10,
+                justifyContent: 'center',
+                height: 48,
+                marginLeft: 16,
               }}>
               <SmallLogo />
               <Text
                 style={
                   (pretendard,
                   {
-                    marginLeft: 10,
+                    marginLeft: 8,
                     fontSize: 20,
-                    fontWeight: 'bold',
+                    fontWeight: '900',
                     textAlign: 'left',
                     color: '#A055FF',
                   })
@@ -273,8 +277,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
       />
 
       <Tab.Screen
-        name="Board"
-        component={BoardFragment}
+        name="CrystalBall"
+        component={CrystalBallFragment}
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
@@ -291,7 +295,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             } else if (getHundredsDigit(response.status) === 2) {
               const user = response.data.data;
               if (user?.isAuthenticated && !user?.blacklist) {
-                navigation.navigate('Board');
+                navigation.navigate('CrystalBall');
               } else
                 setTimeout(function () {
                   Toast.show('접근 권한이 없습니다.', Toast.SHORT);
@@ -310,8 +314,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '게시판',
-          headerTitleAlign: 'center',
+          title: '수정구',
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <View style={styles.iconContainer}>
@@ -328,21 +331,29 @@ function GlobalNavbar({navigation}: ScreenProps) {
           headerRight: () => (
             <TouchableHighlight
               style={{
-                marginRight: 11,
-                width: 40,
-                height: 40,
+                marginRight: 16,
+                height: 48,
                 borderRadius: 20,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
               underlayColor="#EEEEEE"
               onPress={onSearchPress}>
-              <SearchIcon />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <SearchIcon style={{marginRight: 10}} />
+                <MyIcon />
+              </View>
             </TouchableHighlight>
           ),
           headerTitleStyle: {
-            fontSize: 19,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
+            fontSize: 20,
+            marginLeft: 5,
+            fontFamily: 'Pretendard-Bold',
+            fontWeight: '900',
           },
         }}
       />
@@ -557,7 +568,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   tabIconText: {
-    fontFamily: 'Pretendard',
+    fontFamily: 'pretendard',
     fontSize: 13,
     fontWeight: 'bold',
     textAlign: 'center',
