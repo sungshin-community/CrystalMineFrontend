@@ -281,7 +281,6 @@
 		};
 		50BB842BEB5D3ACC3C65D029 /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -295,7 +294,6 @@
 		};
 		5973EFCB4D7A8B1CD07FDF9D /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

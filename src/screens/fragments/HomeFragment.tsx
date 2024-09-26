@@ -62,6 +62,7 @@ type RootStackParamList = {
   RegularMemberAuthMyPage: undefined;
   TermsOfService: undefined;
   Board: undefined;
+  Alert: undefined; // 알람화면으로 갈 수 있는 장치
   InformationUse: undefined;
   DirectionAgreeScreen: undefined;
   ExpiredMember: undefined;
@@ -576,11 +577,13 @@ const HomeFragment = ({navigation}: Props) => {
                   onPress={() => {
                     {
                       user?.isAuthenticated
-                        ? navigation.navigate('Board')
+                        ? navigation.navigate('Alert') // 알림 화면으로 이동
                         : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                     }
                   }}>
-                  <Text style={[fontRegular, styles.more]}>더보기</Text>
+                  <Text style={[fontRegular, styles.more]}>
+                    알림창으로 가는 더보기
+                  </Text>
                 </TouchableWithoutFeedback>
               </View>
               {/* 게시판 글 목록 */}
