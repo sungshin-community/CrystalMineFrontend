@@ -311,7 +311,7 @@ const Comment = ({
                       marginLeft: 5,
                     },
                   ]}>
-                  대댓글
+                  댓글달기
                 </Text>
                 <Text style={[fontRegular, styles.postLike]}>
                   {data?.recomments.length}개
@@ -486,8 +486,8 @@ export const Recomment = ({
     <>
       <View
         style={{
-          paddingHorizontal: 24,
-          backgroundColor: data.isOfReader ? '#F8F8F8' : '#FFF',
+          paddingHorizontal: 50,
+          backgroundColor: data.isOfReader ? '#fff' : '#FFF',
           paddingBottom: 12,
           borderTopColor: '#F0F0F0',
           borderTopWidth: 1,
@@ -499,22 +499,31 @@ export const Recomment = ({
             justifyContent: 'space-between',
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Reply style={{marginRight: 8}} />
+            {/* <Reply style={{marginRight: 8}} /> */}
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-            <Text
-              style={[
-                fontMedium,
-                {
-                  fontSize: 15,
-                  paddingLeft: 8,
-                  color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                },
-              ]}>
-              {data.displayName}
-            </Text>
+            <View style={{flexDirection: 'column'}}>
+              <Text
+                style={[
+                  fontMedium,
+                  {
+                    fontSize: 15,
+                    paddingLeft: 8,
+                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                  },
+                ]}>
+                {data.displayName}
+              </Text>
+              <Text
+                style={[
+                  fontRegular,
+                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 10},
+                ]}>
+                {data?.createdAt}
+              </Text>
+            </View>
             {data.isAnonymous ? (
               <></>
             ) : data.isOfBoardOwner ? (
@@ -548,7 +557,7 @@ export const Recomment = ({
             />
           )}
         </View>
-        <View style={{marginLeft: 20}}>
+        <View style={{marginLeft: 35}}>
           <Text
             style={[
               {
@@ -559,10 +568,12 @@ export const Recomment = ({
             ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
-          <Image
-            source={{uri: data.emoticonUrl}}
-            style={{width: 40, height: 40, marginTop: 10}}
-          />
+          {data.emoticonUrl ? (
+            <Image
+              source={{uri: data.emoticonUrl}}
+              style={{width: 40, height: 40, marginTop: 10}}
+            />
+          ) : null}
           {data.isDeleted || data.isBlind ? (
             <></>
           ) : (
@@ -579,13 +590,15 @@ export const Recomment = ({
                     onPress={() => handleCommentLike(data.id)}>
                     {data.isLiked ? <PostLike /> : <PostUnlike />}
                   </Pressable>
-                  <Text style={[fontRegular, styles.postLike]}>
-                    {data?.likeCount}
+                  <Text
+                    style={[
+                      fontRegular,
+                      {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                    ]}>
+                    좋아요
                   </Text>
-                </View>
-                <View>
-                  <Text style={[fontRegular, {color: '#949494', fontSize: 13}]}>
-                    {data?.createdAt}
+                  <Text style={[fontRegular, styles.postLike]}>
+                    {data?.likeCount}개
                   </Text>
                 </View>
               </View>

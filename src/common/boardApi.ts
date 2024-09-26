@@ -408,8 +408,8 @@ export const deletePosts = async (postId: number) => {
 export const getEmoticons = async () => {
   try {
     const response = await client.get<AxiosResponse>(`/emoticons/my`);
-    console.log('이모티콘list', response.data.data.content);
-    return response.data.data.content;
+    console.log('이모티콘list', response.data.data);
+    return response.data.data;
   } catch (e) {
     console.log('getEmoticons 함수', e);
   }
@@ -468,7 +468,7 @@ export const addRecomment = async (
         parentId: parentId,
         content: content,
         isAnonymous: isAnonymous,
-        emoticonId: emoticonId,
+        emoticonId: 1,
       },
     );
     console.log('addRecomment 함수 성공', response.data);
