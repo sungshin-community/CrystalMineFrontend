@@ -67,6 +67,7 @@ const PostScreen = ({navigation, route}: Props) => {
   const [comments, setComments] = useState<CommentDto[]>();
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const [parentId, setParentId] = useState<number>();
+  const [emoticonId, setEmoticonId] = useState<number>();
   const [newComment, setNewComment] = useState<string>('');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -83,8 +84,15 @@ const PostScreen = ({navigation, route}: Props) => {
   const onSubmit = useCallback(() => {
     console.log('익명여부', isAnonymous);
     if (isRecomment)
-      addRecommentFunc(route.params.postId, parentId, newComment, isAnonymous);
-    else addCommentFunc(route.params.postId, newComment, isAnonymous);
+      addRecommentFunc(
+        route.params.postId,
+        parentId,
+        newComment,
+        isAnonymous,
+        emoticonId,
+      );
+    else
+      addCommentFunc(route.params.postId, newComment, isAnonymous, emoticonId);
     setIsSubmitState(false);
   }, [newComment]);
 
@@ -97,9 +105,15 @@ const PostScreen = ({navigation, route}: Props) => {
           parentId,
           newComment,
           isAnonymous,
+          emoticonId,
         );
       else {
-        addCommentFunc(route.params.postId, newComment, isAnonymous);
+        addCommentFunc(
+          route.params.postId,
+          newComment,
+          isAnonymous,
+          emoticonId,
+        );
       }
       setIsSubmitState(false);
     }
@@ -234,9 +248,19 @@ const PostScreen = ({navigation, route}: Props) => {
   };
   // 댓글 생성
   const addCommentFunc = useCallback(
-    async (postId: number, newComment: string, isAnonymous: boolean) => {
+    async (
+      postId: number,
+      newComment: string,
+      isAnonymous: boolean,
+      emoticonId: number,
+    ) => {
       setIsLoading(true);
-      const response = await addComment(postId, newComment, isAnonymous);
+      const response = await addComment(
+        postId,
+        newComment,
+        isAnonymous,
+        emoticonId,
+      );
       if (response.status === 401) {
         setTimeout(function () {
           Toast.show(
@@ -251,6 +275,7 @@ const PostScreen = ({navigation, route}: Props) => {
         getPostsFunc();
         const commentData = await getComments(route.params.postId);
         setComments(commentData);
+        console.log(commentData);
         scrollViewRef.current?.scrollToEnd({animated: true});
       } else {
         setTimeout(function () {
@@ -268,6 +293,7 @@ const PostScreen = ({navigation, route}: Props) => {
       parentId: number,
       newComment: string,
       isAnonymous: boolean,
+      emoticonId: number,
     ) => {
       setIsLoading(true);
       const response = await addRecomment(
@@ -275,6 +301,7 @@ const PostScreen = ({navigation, route}: Props) => {
         parentId,
         newComment,
         isAnonymous,
+        emoticonId,
       );
       setIsLoading(false);
       if (response.status === 401) {
@@ -582,6 +609,7 @@ const PostScreen = ({navigation, route}: Props) => {
                   alignItems: 'flex-end',
                   marginBottom: 15,
                   marginLeft: 15,
+                  marginRight: 15,
                 }}>
                 <Text>
                   <Pressable
@@ -603,17 +631,17 @@ const PostScreen = ({navigation, route}: Props) => {
       <ModalBottom
         modalVisible={goBackWarning}
         setModalVisible={setGoBackWarning}
-        content={`작성한 댓글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        content={`작성한 댓글이 삭제됩니다. 뒤로 가시겠습니까?`}
         isContentCenter={true}
         purpleButtonText="확인"
         purpleButtonFunc={() => {
           setGoBackWarning(!goBackWarning);
           navigation.goBack();
         }}
-        whiteButtonText="취소"
+        /* whiteButtonText="취소"
         whiteButtonFunc={() => {
           setGoBackWarning(!goBackWarning);
-        }}
+        }} */
       />
     </>
   );

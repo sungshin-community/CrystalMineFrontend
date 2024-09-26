@@ -251,6 +251,7 @@ const Comment = ({
             {
               color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
               fontSize: 14,
+              marginLeft: 35,
             },
             fontRegular,
           ]}>
@@ -264,6 +265,7 @@ const Comment = ({
               style={{
                 flexDirection: 'row',
                 marginTop: 15,
+                marginLeft: 35,
                 justifyContent: 'flex-start',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -282,7 +284,7 @@ const Comment = ({
                   좋아요
                 </Text>
                 <Text style={[fontRegular, styles.postLike]}>
-                  {data?.likeCount}
+                  {data?.likeCount}개
                 </Text>
               </View>
               <View
@@ -310,6 +312,9 @@ const Comment = ({
                     },
                   ]}>
                   대댓글
+                </Text>
+                <Text style={[fontRegular, styles.postLike]}>
+                  {data?.recomments.length}개
                 </Text>
               </View>
             </View>
@@ -554,6 +559,10 @@ export const Recomment = ({
             ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
+          <Image
+            source={{uri: data.emoticonUrl}}
+            style={{width: 40, height: 40, marginTop: 10}}
+          />
           {data.isDeleted || data.isBlind ? (
             <></>
           ) : (
