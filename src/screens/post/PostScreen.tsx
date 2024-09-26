@@ -25,6 +25,7 @@ import PostDto from '../../classes/PostDto';
 import {
   deleteComment,
   deletePosts,
+  getEmoticons,
   getComments,
   getPosts,
   reportPost,
@@ -213,6 +214,16 @@ const PostScreen = ({navigation, route}: Props) => {
     }
     init();
   }, [componentModalVisible]);
+  // 이모티콘
+  const handleEmojiIconPress = async () => {
+    try {
+      const emoticons = await getEmoticons();
+      console.log('이모티콘 성공:', emoticons);
+    } catch (error) {
+      console.error('이모티콘 패치 실패', error);
+      Toast.show('이모티콘 패치 실패', Toast.SHORT);
+    }
+  };
   // 게시글 공감
   const handlePostLike = async (postId: number) => {
     const result = await setPostLike(postId);
@@ -570,10 +581,7 @@ const PostScreen = ({navigation, route}: Props) => {
                   }}
                 />
                 <View style={{marginBottom: 10}}>
-                  <Pressable
-                    onPress={() => {
-                      console.log('이모지 버튼 클릭');
-                    }}>
+                  <Pressable onPress={handleEmojiIconPress}>
                     <EmojiIcon />
                   </Pressable>
                 </View>

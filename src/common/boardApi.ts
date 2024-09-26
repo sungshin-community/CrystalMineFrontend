@@ -404,6 +404,17 @@ export const deletePosts = async (postId: number) => {
   }
 };
 
+// 이모티콘
+export const getEmoticons = async () => {
+  try {
+    const response = await client.get<AxiosResponse>(`/emoticons/my`);
+    console.log('이모티콘list', response.data.data.content);
+    return response.data.data.content;
+  } catch (e) {
+    console.log('getEmoticons 함수', e);
+  }
+};
+
 // 댓글
 export const getComments = async (postId: number /*, page: number*/) => {
   try {
