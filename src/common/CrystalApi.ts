@@ -21,3 +21,14 @@ export async function getQuestionCrystalball() {
     return [];
   }
 }
+
+export async function geRecruiting() {
+  try {
+    const response = await client.get('/pantheon-common/recruiting-posts');
+    console.log('수정이들은 지금: ', response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error('수정이들은 지금 에러 발생: ', error);
+    return [];
+  }
+}

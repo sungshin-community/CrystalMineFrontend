@@ -24,8 +24,13 @@ import {useNavigation} from '@react-navigation/native';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import FilledHeart from '../../resources/icon/FilledHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
-import {getSaengSaeng, getQuestionCrystalball} from '../common/CrystalApi';
+import {
+  getSaengSaeng,
+  getQuestionCrystalball,
+  geRecruiting,
+} from '../common/CrystalApi';
 import LinearGradient from 'react-native-linear-gradient';
+import testImg from '../../resources/images/Happy.png';
 
 const Lounge = () => {
   const navigation = useNavigation();
@@ -36,6 +41,8 @@ const Lounge = () => {
   const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
   const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(true);
   const [questionCrystalball, setQuestionCrystalball] = useState<any[]>([]); // 수정구에게 물어봐 데이터
+  const [recruitingData, setRecruitingData] = useState<any[]>([]); // 수정구에게 물어봐 데이터
+  const [isLoadingRecruiting, setIsLoadingRecruiting] = useState<boolean>(true);
 
   useEffect(() => {
     // 사용자 정보를 가져오는 함수 정의
@@ -93,6 +100,49 @@ const Lounge = () => {
     },
   );
 
+  // 수정이들은 지금
+  const renderRecruitingtItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.nowBox}
+      onPress={() => console.log(`Post ID: ${item.postId}`)}>
+      <View style={styles.thumbnailImgContainer}>
+        <Image
+          source={{uri: item.thumbnail}}
+          style={styles.thumbnailImg}
+          resizeMode="cover"
+        />
+      </View>
+      <View style={styles.contentContainer}>
+        <View style={styles.profileContainer}>
+          <View style={styles.profileImgContainer}>
+            <Image
+              source={{uri: item.profileImage}}
+              style={styles.profileImg}
+              resizeMode="cover"
+            />
+          </View>
+          <Text style={styles.nickName}>{item.displayName}</Text>
+        </View>
+        <Text
+          style={styles.recruitingTitle}
+          numberOfLines={2}
+          ellipsizeMode="tail">
+          {item.title}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          {item.isLiked ? <FilledHeart /> : <EmptyHeart />}
+          <Text style={styles.HOTpostLike}>좋아요 {item.likeCount} </Text>
+          <EmptyComment />
+          <Text style={styles.HOTpostComment}>{item.commentCount}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
   // 방금 올라온 글 데이터 불러오기
   useEffect(() => {
     const fetchNewPosts = async () => {
@@ -115,6 +165,18 @@ const Lounge = () => {
     };
 
     fetchQuestionCrystalball();
+  }, []);
+
+  // 수정이들은 지금 데이터 불러오기
+  useEffect(() => {
+    const fetcRecruiting = async () => {
+      setIsLoadingQuestion(true);
+      const data = await geRecruiting();
+      // setRecruitingData(data);
+      setIsLoadingRecruiting(false);
+    };
+
+    fetcRecruiting();
   }, []);
 
   // 테스트 데이터
@@ -185,6 +247,44 @@ const Lounge = () => {
     ];
 
     // setQuestionCrystalball(testData);
+  }, []);
+
+  // 테스트 데이터
+  useEffect(() => {
+    const testData = [
+      {
+        commentCount: 12,
+        displayName: '수정광산',
+        isLiked: true,
+        likeCount: 35,
+        postId: 1,
+        profileImage: 'https://example.com/profile1.jpg',
+        thumbnail: 'https://example.com/thumbnail1.jpg',
+        title: '어플리케이션 서비스 수정광산 2기 팀원 모집',
+      },
+      {
+        commentCount: 8,
+        displayName: '나래필름',
+        isLiked: false,
+        likeCount: 20,
+        postId: 2,
+        profileImage: 'https://example.com/profile2.jpg',
+        thumbnail: 'https://example.com/thumbnail2.jpg',
+        title: '미디어 프로덕션 크루 ‘나래필름’의 새로운 날...',
+      },
+      {
+        commentCount: 5,
+        displayName: '안녕',
+        isLiked: true,
+        likeCount: 50,
+        postId: 3,
+        profileImage: 'https://example.com/profile3.jpg',
+        thumbnail: 'https://example.com/thumbnail3.jpg',
+        title: '제목어쩌구저쩌구',
+      },
+    ];
+
+    setRecruitingData(testData);
   }, []);
 
   function getMinutesAgo(createdAt) {
@@ -280,7 +380,7 @@ const Lounge = () => {
         )}
         <View
           style={{
-            marginBottom: 44,
+            marginBottom: 24,
           }}>
           <View style={styles.boardContainer}>
             <View style={styles.boardTitleContainer}>
@@ -301,7 +401,14 @@ const Lounge = () => {
           <Text style={[fontRegular, styles.boardText]}>
             인원 모집 중인 교내 활동 및 동아리들을 살펴보세요!
           </Text>
-          <View style={styles.nowBox}></View>
+          <FlatList
+            data={recruitingData}
+            renderItem={renderRecruitingtItem}
+            keyExtractor={item => item.postId.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.flatList}
+          />
         </View>
         <View style={styles.boardContainer}>
           <View style={styles.boardTitleContainer}>
@@ -461,10 +568,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 4,
     marginRight: 10,
+    color: '#9DA4AB',
   },
   HOTpostComment: {
     fontSize: 12,
     marginLeft: 4,
+    color: '#9DA4AB',
   },
   paginationContainer: {
     flexDirection: 'row',
@@ -533,12 +642,54 @@ const styles = StyleSheet.create({
   },
   nowBox: {
     width: 160,
-    height: 258,
     borderColor: '#EFEFF3',
     borderRadius: 10,
     borderWidth: 1,
     marginTop: 16,
   },
+  thumbnailImg: {
+    width: '100%',
+    height: '100%',
+  },
+  thumbnailImgContainer: {
+    width: '100%',
+    height: 140,
+    overflow: 'hidden',
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+  },
+  contentContainer: {
+    padding: 12,
+  },
+  profileContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 9,
+  },
+  profileImgContainer: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  profileImg: {
+    width: '100%',
+    height: '100%',
+  },
+  nickName: {
+    color: '#3A424E',
+    fontSize: 12,
+    marginLeft: 6,
+  },
+  recruitingTitle: {
+    color: '#222222',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    height: 45,
+  },
+  flatList: {},
 });
 
 export default Lounge;
