@@ -9,18 +9,7 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
-import BoardList, {
-  MenuList,
-  CustomBoardList,
-  OfficialBoardList,
-  TeamBoardList,
-} from '../../components/BoardList';
 import Board from '../../classes/Board';
-import {
-  OfficialBoardListContainer,
-  BoardListContainer,
-  CustomBoardListContainer,
-} from '../../components/HideToggleContainer';
 import {
   getCustomBoardList,
   getDepartmentBoardList,
@@ -29,15 +18,12 @@ import {
   getPinnedOfficialBoardList,
   getPinnedPublicBoardList,
 } from '../../common/boardApi';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {fontRegular} from '../../common/font';
 import {getHundredsDigit} from '../../common/util/statusUtil';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import WaterMark from '../../components/WaterMark';
 import Error from '../../components/Error';
 import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
-
+import Lounge from '../../components/Lounge';
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -283,8 +269,7 @@ export default function CrystalBallFragment({navigation}: Props) {
             {/* 선택된 탭에 맞는 컴포넌트 렌더링 */}
             {activeTab === 'lounge' ? (
               <View>
-                {/* 라운지 컴포넌트 */}
-                <Text>라운지 내용</Text>
+                <Lounge />
               </View>
             ) : (
               <View>
@@ -303,22 +288,23 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: '#EFEFF3',
-    marginVertical: 10,
+    alignItems: 'center',
   },
   tabContainer: {
+    paddingTop: 13,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-around',
     borderBottomWidth: 1,
-    borderBottomColor: '#EFEFF3',
-    marginBottom: 20,
+    borderBottomColor: '#ffffff',
   },
   tabButton: {
     flex: 1,
-    paddingVertical: 10,
     alignItems: 'center',
+    paddingBottom: 12,
   },
   activeTabButton: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: '#A055FF',
   },
   tabText: {

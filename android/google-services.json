@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "939681572281",
+    "project_id": "crystalmine-17dad",
+    "storage_bucket": "crystalmine-17dad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939681572281:android:b81d2c6717d7b9c7694268",
+        "android_client_info": {
+          "package_name": "com.crystalminefrontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjEBSOZRYah1cpwIXGJ0AixE-sDwMDmcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
