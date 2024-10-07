@@ -54,7 +54,7 @@ import {logout} from '../../common/authApi';
 import AdMob from '../../components/AdMob';
 import PostSend from '../../../resources/icon/PostSend';
 import PurplePostSend from '../../../resources/icon/PurplePostSend';
-import EmojiIcon from '../../../resources/icon/EmojiIcon';
+import {EmojiIcon, ClickedEmojiIcon} from '../../../resources/icon/EmojiIcon';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {
@@ -69,7 +69,9 @@ const PostScreen = ({navigation, route}: Props) => {
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const [parentId, setParentId] = useState<number>();
   const [emoticonId, setEmoticonId] = useState<number>();
+  const [isContainerVisible, setIsContainerVisible] = useState(false);
   const [newComment, setNewComment] = useState<string>('');
+  const [emojiClicked, setEmojiClicked] = useState<boolean>(false);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const commentInputRef = useRef<TextInput>(null);
@@ -218,6 +220,13 @@ const PostScreen = ({navigation, route}: Props) => {
   const handleEmojiIconPress = async () => {
     try {
       const emoticons = await getEmoticons();
+      const newEmojiClicked = !emojiClicked;
+      setEmojiClicked(newEmojiClicked); // 상태 변경
+
+      // 이모티콘 클릭 후 키보드 활성화
+      if (!newEmojiClicked) {
+        commentInputRef.current.focus();
+      }
       console.log('이모티콘 성공:', emoticons);
     } catch (error) {
       console.error('이모티콘 패치 실패', error);
@@ -516,6 +525,7 @@ const PostScreen = ({navigation, route}: Props) => {
               style={{
                 flexDirection: 'row',
                 paddingVertical: 5,
+                backgroundColor: '#fff',
                 //alignItems: 'center',
                 //backgroundColor: 'red',
               }}>
@@ -523,12 +533,14 @@ const PostScreen = ({navigation, route}: Props) => {
                 style={{
                   position: 'relative',
                   justifyContent: 'flex-end',
+                  backgroundColor: '#fff',
                 }}>
                 <View
                   style={{
                     flexDirection: 'row',
                     marginHorizontal: 15,
                     marginVertical: 25,
+                    backgroundColor: '#fff',
                     //backgroundColor: '#EFEFF3',
                   }}>
                   <Text style={[fontRegular, {marginRight: 5}]}>익명</Text>
@@ -582,9 +594,10 @@ const PostScreen = ({navigation, route}: Props) => {
                 />
                 <View style={{marginBottom: 10}}>
                   <Pressable onPress={handleEmojiIconPress}>
-                    <EmojiIcon />
+                    {emojiClicked ? <ClickedEmojiIcon /> : <EmojiIcon />}
                   </Pressable>
                 </View>
+
                 {/* <View
                   style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
                   <Text>
@@ -633,6 +646,64 @@ const PostScreen = ({navigation, route}: Props) => {
                 </Text>
               </View>
             </View>
+            {emojiClicked && (
+              <View
+                style={{
+                  flexDirection: 'column',
+                  position: 'relative',
+                  height: 291,
+                  width: '100%',
+                  borderTopWidth: 1,
+                  borderTopColor: '#EFEFF3',
+                  backgroundColor: '#fff',
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    position: 'relative',
+                    marginHorizontal: 16,
+                    marginVertical: 16,
+                  }}>
+                  <Text style={{fontWeight: '400', fontSize: 12}}>
+                    수정광산 이모티콘
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: '100%',
+                    paddingHorizontal: 16,
+                    paddingVertical: 16,
+                    //backgroundColor: 'pink',
+                  }}>
+                  <Text>여기에 이모티콘</Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    //justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                  }}>
+                  <View
+                    style={{
+                      width: 134,
+                      height: 61,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      backgroundColor: '#A055FF',
+                      borderRadius: 4,
+                      marginBottom: 20,
+                      paddingHorizontal: 10,
+                    }}>
+                    <Text
+                      style={{fontSize: 14, fontWeight: '700', color: '#fff'}}>
+                      이모티콘 구매하기
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         )}
       </KeyboardAvoidingView>

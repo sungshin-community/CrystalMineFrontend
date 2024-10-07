@@ -51,6 +51,7 @@ const Comment = ({
     useState<boolean>(false);
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>({});
+  const [dotsModalVisible, setDotsModalVisible] = useState<boolean>(false);
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
@@ -311,7 +312,7 @@ const Comment = ({
                       marginLeft: 5,
                     },
                   ]}>
-                  댓글달기
+                  대댓글
                 </Text>
                 <Text style={[fontRegular, styles.postLike]}>
                   {data?.recomments.length}개
@@ -486,7 +487,8 @@ export const Recomment = ({
     <>
       <View
         style={{
-          paddingHorizontal: 50,
+          paddingHorizontal: 24,
+          paddingLeft: 48,
           backgroundColor: data.isOfReader ? '#fff' : '#FFF',
           paddingBottom: 12,
           borderTopColor: '#F0F0F0',
