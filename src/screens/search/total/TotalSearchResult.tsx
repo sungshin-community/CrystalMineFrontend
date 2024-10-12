@@ -107,40 +107,45 @@ function TotalSearchResult({navigation, route}: Props) {
           initialRouteName="BoardSearch"
           screenOptions={{
             tabBarStyle: {
+              backgroundColor: '#FFFFFF',
               shadowColor: '#000',
               shadowOffset: {width: 0, height: 5},
               shadowRadius: 20,
             },
             tabBarIndicatorStyle: {
               backgroundColor: '#A055FF',
-              height: 8,
-              width: 24,
-              bottom: -4,
-              borderRadius: 10,
-              marginHorizontal: tabWidth,
+              height: 3,
+              width: '50%',
+              //bottom: -4,
+              //borderRadius: 10,
+              //marginHorizontal: tabWidth,
             },
             tabBarShowLabel: true,
             tabBarLabelStyle: {
               fontFamily: 'SpoqaHanSansNeo-Regular',
-              fontSize: 14,
-              marginTop: 14,
-              marginBottom: 6,
+              backgroundColor: '#FFFFFF',
+              fontSize: 16,
+              fontWeight: '700',
+              justifyContent: 'center',
+              alignContent: 'center',
             },
-            tabBarActiveTintColor: '#000',
-            tabBarInactiveTintColor: '#717171',
+            tabBarActiveTintColor: '#222222',
+            tabBarInactiveTintColor: '#9DA4AB',
           }}
           keyboardDismissMode="on-drag"
           initialLayout={{width: Dimensions.get('window').width}}>
+          {/* 게시판 */}
           <Tab.Screen
-            name="게시글"
+            name="광산"
             component={() => <PostSearchResult searchWord={searchWord} />}
             initialParams={{searchWord: searchWord}}
           />
+          {/* 게시글 */}
           <Tab.Screen
-            name="게시판"
+            name="수정구"
             children={() => <BoardSearchResult searchWord={searchWord} />}
           />
-          <Tab.Screen name="태그" component={TagSearchResult} />
+          {/* <Tab.Screen name="태그" component={TagSearchResult} /> */}
         </Tab.Navigator>
       }
     </>
