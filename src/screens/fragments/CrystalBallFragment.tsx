@@ -24,6 +24,7 @@ import Error from '../../components/Error';
 import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
 import Lounge from '../../components/Lounge';
+import CrystalReview from '../../components/CrystalReview';
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -274,7 +275,7 @@ export default function CrystalBallFragment({navigation}: Props) {
             ) : (
               <View>
                 {/* 살펴보기 컴포넌트 */}
-                <Text>살펴보기 내용</Text>
+                <CrystalReview />
               </View>
             )}
           </ScrollView>
