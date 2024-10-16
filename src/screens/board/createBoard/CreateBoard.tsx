@@ -144,7 +144,7 @@ function CreateBoard({navigation}: Props) {
               setIsSpread(!isSpread);
             }}>
             <Text style={{color: '#B9BAC1', fontSize: 14}}>{boardType}</Text>
-            {isSpread ? <GreyBigSpreadButton /> : <GreyBigFoldButton />}
+            {isSpread ? <GreyBigFoldButton /> : <GreyBigSpreadButton />}
           </TouchableOpacity>
           {isDropdownVisible && (
             <View style={styles.dropdownContainer}>
@@ -189,7 +189,7 @@ function CreateBoard({navigation}: Props) {
               borderColor: '#E2E4E8',
               borderRadius: 4,
               borderWidth: 1,
-              width: 343,
+              //width: 343,
               height: 44,
             }}
             numberOfLines={1}
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     borderColor: '#E2E4E8',
     borderWidth: 1,
-    width: 343,
+    //width: 343,
     height: 86,
   },
   option: {
