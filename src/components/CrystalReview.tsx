@@ -18,6 +18,8 @@ import {getCrystalReview} from '../common/CrystalApi';
 import Scrap from '../../resources/icon/Scrap';
 import {NoScrap} from '../../resources/icon/Scrap';
 
+import ReviewJobDetail from './ReviewJobDetail';
+
 const CrystalReview = () => {
   const navigation = useNavigation();
 
