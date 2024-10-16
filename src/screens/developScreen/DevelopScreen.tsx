@@ -1,4 +1,4 @@
-import React from 'react'; // 이 줄을 추가하세요
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import FixDevelop from '../../../resources/icon/FixDevelop';
 
@@ -14,9 +14,9 @@ export default function DevelopScreen() {
 }
 
 const styles = StyleSheet.create({
+  // 배경 색깔 재확인
   container: {
-    // 크기, 배경 색깔 수정
-    flex: 1,
+    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
