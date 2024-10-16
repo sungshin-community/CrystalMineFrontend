@@ -46,8 +46,7 @@ export default function SphereTabNav({
           <TouchableOpacity
             key={index}
             style={styles.tabButton}
-            onPress={() => onTabPress(index)}
-            activeOpacity={1}>
+            onPress={() => onTabPress(index)}>
             <View
               style={[
                 styles.iconWrapper,
