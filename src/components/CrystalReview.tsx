@@ -6,32 +6,41 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {getAuthentication} from '../common/homeApi';
 import {fontBold, fontRegular} from '../common/font';
 import {useNavigation} from '@react-navigation/native';
 import RightArrow from '../../resources/icon/Arrow';
 import Hot from '../../resources/icon/Hot';
+import {getCrystalReview} from '../common/CrystalApi';
+import Scrap from '../../resources/icon/Scrap';
+import {NoScrap} from '../../resources/icon/Scrap';
+
 const CrystalReview = () => {
   const navigation = useNavigation();
 
-  const [user, setUser] = useState<Authentication | null>(null); // 사용자 정보 상태 추가
+  const [user, setUser] = useState<Authentication | null>(null); // 사용자 정보
   const [hotPost, setHotPost] = useState<any[]>([]); // 인기글 데이터
+  const [reviewList, setReviewList] = useState<any[]>([]); // 수정후기 글 목록 데이터
+  const [isLoadingReviewList, setIsLoadingReviewList] =
+    useState<boolean>(false);
 
   useEffect(() => {
-    // 사용자 정보를 가져오는 함수 정의
+    // 사용자 정보를 가져오기
     const fetchUser = async () => {
       try {
-        const response = await getAuthentication(); // 인증 API 호출
+        const response = await getAuthentication();
         if (response.status === 200) {
-          setUser(response.data.data); // 성공적으로 받아온 사용자 정보를 상태에 저장
+          setUser(response.data.data);
         }
       } catch (error) {
         console.error('사용자 정보를 불러오는데 실패', error);
       }
     };
 
-    fetchUser(); // 컴포넌트가 렌더링될 때 사용자 정보를 가져옴
+    fetchUser();
   }, []);
 
   // 테스트 데이터
@@ -46,6 +55,7 @@ const CrystalReview = () => {
         title: '테스트 타이틀 1',
         year: '신입',
         scraped: true,
+        scrapCount: 111,
       },
       {
         content: '두 번째 테스트 데이터입니다.',
@@ -56,6 +66,7 @@ const CrystalReview = () => {
         title: '테스트 타이틀 2',
         year: '신입',
         scraped: false,
+        scrapCount: 2,
       },
       {
         content:
@@ -67,10 +78,12 @@ const CrystalReview = () => {
         title: '테스트 타이틀 3',
         year: '경력',
         scraped: true,
+        scrapCount: 0,
       },
     ];
 
     setHotPost(testData);
+    setReviewList(testData);
   }, []);
 
   // 인기글
@@ -106,8 +119,21 @@ const CrystalReview = () => {
       </View>
     </TouchableOpacity>
   );
+
+  // 수정 후기 글 목록 불러오기
+  useEffect(() => {
+    const fetcReviewList = async () => {
+      setIsLoadingReviewList(true);
+      const data = await getCrystalReview();
+      //setReviewList(data);
+      setIsLoadingReviewList(false);
+    };
+
+    fetcReviewList();
+  }, []);
+
   return (
-    <View>
+    <ScrollView>
       {user?.isAuthenticated ? (
         hotPost.length === 0 ? (
           <View style={styles.contentBox}>
@@ -121,40 +147,95 @@ const CrystalReview = () => {
                   marginVertical: 15,
                 },
               ]}>
-              생생 수정 후기가 없습니다.
+              인기글이 없습니다.
             </Text>
           </View>
         ) : (
-          <View>
+          <>
             <FlatList
               data={hotPost}
-              renderItem={renderHotItem}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('PostScreen', {postId: item.ptPostId})
+                  }>
+                  <View style={styles.contentBox}>
+                    <View style={styles.hotTagBox}>
+                      <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={styles.hotTag}>
+                          <Hot style={{marginTop: 5}} />
+                          HOT
+                        </Text>
+                        <Text style={styles.yearJob}>{item.category} </Text>
+                        <Text style={styles.yearJob}>·</Text>
+                        <Text style={styles.yearJob}>{item.job} </Text>
+                        <Text style={styles.yearJob}>·</Text>
+                        <Text style={styles.yearJob}>{item.year} </Text>
+                      </View>
+                      <RightArrow />
+                    </View>
+                    <Text style={styles.contentTitle}>{item.title}</Text>
+                    <Text
+                      numberOfLines={2}
+                      ellipsizeMode="tail"
+                      style={styles.contentText}>
+                      {item.content}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
               horizontal
               pagingEnabled
               keyExtractor={item => item.ptPostId.toString()}
               showsHorizontalScrollIndicator={false}
             />
-            <View>
-              <Text>저스펙 쌩신입 디자이너 취뽀후기</Text>
-              <Text>
-                안녕하세요. 저는 글로벌 키즈 콘텐츠 기업의 인턴으로 첫 회사...
-              </Text>
-              <Text style={styles.yearJob}>"디자인" </Text>
-              <Text style={styles.yearJob}>·</Text>
-              <Text style={styles.yearJob}>"취업 후기" </Text>
-              <Text style={styles.yearJob}>·</Text>
-              <Text style={styles.yearJob}>"신입" </Text>
+
+            <View style={{marginTop: 4}}>
+              {isLoadingReviewList ? (
+                <ActivityIndicator size="large" color="#A055FF" />
+              ) : (
+                reviewList.map((item, index) => (
+                  <View key={index} style={styles.postListContainer}>
+                    <View>
+                      <Text style={styles.contentTitle}>{item.title}</Text>
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        style={styles.contentText}>
+                        {item.content}
+                      </Text>
+                      <View style={styles.hotTagBox}>
+                        <View style={styles.yearJobBox}>
+                          <Text style={styles.yearJobContent}>
+                            {item.category}
+                          </Text>
+                          <Text style={styles.yearJobContent}>·</Text>
+                          <Text style={styles.yearJobContent}>{item.job} </Text>
+                          <Text style={styles.yearJobContent}>·</Text>
+                          <Text style={styles.yearJobContent}>{item.year}</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={styles.scrapBox}>
+                      {item.scraped ? <Scrap /> : <NoScrap />}
+                      <Text style={styles.scrapCount}>{item.scrapCount}</Text>
+                    </View>
+                  </View>
+                ))
+              )}
             </View>
-          </View>
+          </>
         )
       ) : (
         <Text style={[fontRegular, styles.boardText]}>
           정회원 인증 후 확인하실 수 있습니다.
         </Text>
       )}
-    </View>
+    </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   contentBox: {
     width: Dimensions.get('window').width - 32,
@@ -200,13 +281,56 @@ const styles = StyleSheet.create({
     color: '#6E7882',
     fontSize: 14,
     fontFamily: 'Pretendard-Regular',
-    marginBottom: 12,
+    width: Dimensions.get('window').width - 70,
   },
   boardText: {
     fontFamily: 'Pretendard-Regular',
     color: '#6E7882',
     fontSize: 12,
     marginTop: 6,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    lineHeight: 20,
+    color: '#222222',
+  },
+  content: {
+    fontSize: 12,
+    lineHeight: 20,
+    color: '#89919A',
+  },
+  yearJobBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 16,
+  },
+  yearJobContent: {
+    color: '#89919A',
+    marginRight: 8,
+    fontSize: 13,
+  },
+  scrapBox: {
+    width: 25,
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: 'auto',
+    marginTop: 5,
+  },
+  scrapCount: {
+    fontSize: 12,
+    marginBottom: 3,
+    color: '#6E7882',
+  },
+  postListContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 16,
+    borderBottomColor: '#F6F6F6',
+    borderBottomWidth: 4,
+    justifyContent: 'space-between',
   },
 });
 

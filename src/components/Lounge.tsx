@@ -148,7 +148,7 @@ const Lounge = () => {
     const fetchNewPosts = async () => {
       setIsLoadingNewPosts(true);
       const data = await getSaengSaeng();
-      // setSaengSaeng(data);
+      setSaengSaeng(data);
       setIsLoadingNewPosts(false);
     };
 
@@ -170,9 +170,9 @@ const Lounge = () => {
   // 수정이들은 지금 데이터 불러오기
   useEffect(() => {
     const fetcRecruiting = async () => {
-      setIsLoadingQuestion(true);
+      setIsLoadingRecruiting(true);
       const data = await geRecruiting();
-      // setRecruitingData(data);
+      setRecruitingData(data);
       setIsLoadingRecruiting(false);
     };
 
@@ -214,7 +214,7 @@ const Lounge = () => {
       },
     ];
 
-    setSaengSaeng(testData);
+    // setSaengSaeng(testData);
   }, []);
 
   // 테스트 데이터
@@ -284,7 +284,7 @@ const Lounge = () => {
       },
     ];
 
-    setRecruitingData(testData);
+    //setRecruitingData(testData);
   }, []);
 
   function getMinutesAgo(createdAt) {
@@ -330,7 +330,9 @@ const Lounge = () => {
         <Text style={[fontRegular, styles.boardText]}>
           찐 수정이들이 들려주는 이야기들을 살펴보세요!
         </Text>
-        {user?.isAuthenticated ? (
+        {isLoadingNewPosts ? (
+          <ActivityIndicator size="large" color="#A055FF" />
+        ) : user?.isAuthenticated ? (
           saengSaeng.length === 0 ? (
             <View style={styles.contentBox}>
               <Text
@@ -382,33 +384,44 @@ const Lounge = () => {
           style={{
             marginBottom: 24,
           }}>
-          <View style={styles.boardContainer}>
-            <View style={styles.boardTitleContainer}>
-              <Loudspeaker style={{marginTop: 2}} />
-              <Text style={[fontRegular, styles.boardTitle]}>
-                수정이들은 지금...
-              </Text>
+          <View style={{marginBottom: 24}}>
+            <View style={styles.boardContainer}>
+              <View style={styles.boardTitleContainer}>
+                <Loudspeaker style={{marginTop: 2}} />
+                <Text style={[fontRegular, styles.boardTitle]}>
+                  수정이들은 지금...
+                </Text>
+              </View>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  user?.isAuthenticated
+                    ? navigation.navigate('PostListScreen', {boardId: 2}) // 이동할 페이지 수정하기
+                    : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                }}>
+                <RightArrow />
+              </TouchableWithoutFeedback>
             </View>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                user?.isAuthenticated
-                  ? navigation.navigate('PostListScreen', {boardId: 2}) // 이동할 페이지 수정하기
-                  : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-              }}>
-              <RightArrow />
-            </TouchableWithoutFeedback>
+            <Text style={[fontRegular, styles.boardText]}>
+              인원 모집 중인 교내 활동 및 동아리들을 살펴보세요!
+            </Text>
+            {isLoadingRecruiting ? (
+              <ActivityIndicator size="large" color="#A055FF" />
+            ) : recruitingData.length === 0 ? (
+              <Text
+                style={{textAlign: 'center', marginTop: 50, color: '#6E7882'}}>
+                교내활동 / 동아리 정보가 없습니다
+              </Text>
+            ) : (
+              <FlatList
+                data={recruitingData}
+                renderItem={renderRecruitingtItem}
+                keyExtractor={item => item.postId.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.flatList}
+              />
+            )}
           </View>
-          <Text style={[fontRegular, styles.boardText]}>
-            인원 모집 중인 교내 활동 및 동아리들을 살펴보세요!
-          </Text>
-          <FlatList
-            data={recruitingData}
-            renderItem={renderRecruitingtItem}
-            keyExtractor={item => item.postId.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.flatList}
-          />
         </View>
         <View style={styles.boardContainer}>
           <View style={styles.boardTitleContainer}>

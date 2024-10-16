@@ -32,3 +32,14 @@ export async function geRecruiting() {
     return [];
   }
 }
+
+export async function getCrystalReview() {
+  try {
+    const response = await client.get('/pantheon-reviews');
+    console.log('수정 후기 글 목록 조회: ', response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error('수정 후기 글 목록 조회 에러 발생: ', error);
+    return [];
+  }
+}
