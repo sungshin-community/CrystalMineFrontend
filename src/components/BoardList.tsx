@@ -25,6 +25,7 @@ import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {logout} from '../common/authApi';
 import {FoldButton, SpreadButton} from '../../resources/icon/Button';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface Props {
   items: Board[];
@@ -126,6 +127,7 @@ export default function BoardList({
           </Pressable>
         </View>
       </TouchableOpacity>
+
       /* <TouchableOpacity
         key={index}
         onPress={() => moveToBoard(item.id)}
@@ -364,7 +366,8 @@ export function CustomBoardList({
             height: 55,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: '#fff',
+            position: 'relative',
+            //backgroundColor: '#A055FF',
           }}>
           <View style={{flex: 7, marginLeft: 15, marginRight: 5}}>
             <Text
@@ -439,33 +442,29 @@ export function CustomBoardList({
               </Text>
             </Pressable>
           </View>
+          {index === 4 && !isExpanded && (
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 20, // 그라데이션 높이
+                backgroundColor: 'rgba(255, 255, 255, 0.6)', // 반투명 색상
+              }}
+            />
+          )}
         </TouchableOpacity>
       ))}
       {items.length > 5 && !isExpanded && (
         <View style={{position: 'relative'}}>
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 50, // 높이 조정
-              backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              borderBottomColor: 'transparent',
-              borderBottomWidth: 1,
-            }}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-              }}
-            />
-          </View>
           <TouchableOpacity
             onPress={() => onUpdate({expand: true})}
             style={{alignItems: 'center', paddingVertical: 10}}>
+            <View style={styles.overlay} />
             <View
               style={{
+                zIndex: 99,
                 width: 343,
                 height: 44,
                 borderRadius: 8,
@@ -710,6 +709,15 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     alignItems: 'center',
     backgroundColor: '#F6F6F6',
+  },
+  overlay: {
+    zIndex: 98,
+    position: 'absolute', // 부모 뷰를 기준으로 위치 지정
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    //backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색과 투명도 설정
   },
 });
 
