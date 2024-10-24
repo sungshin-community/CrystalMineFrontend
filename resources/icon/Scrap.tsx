@@ -6,7 +6,7 @@ const Scrap = (props: SvgProps) => (
     xmlns="http://www.w3.org/2000/svg"
     width={24}
     height={24}
-    fill="none"
+    fill="#9DA4AB"
     {...props}>
     <G clipPath="url(#a)">
       <Path
@@ -17,7 +17,7 @@ const Scrap = (props: SvgProps) => (
     </G>
     <Defs>
       <ClipPath id="a">
-        <Path fill="#fff" d="M0 0h24v24H0z" />
+        <Path fill="#9DA4AB" d="M0 0h24v24H0z" />
       </ClipPath>
     </Defs>
   </Svg>
@@ -41,7 +41,7 @@ export const NoScrap = (props: SvgProps) => (
     </G>
     <Defs>
       <ClipPath id="a">
-        <Path fill="#9DA4AB" d="M0 0h24v24H0z" />
+        <Path fill="#ffffff" d="M0 0h24v24H0z" />
       </ClipPath>
     </Defs>
   </Svg>

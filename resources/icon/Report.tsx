@@ -66,3 +66,48 @@ export const Report = (props: any) => (
     />
   </Svg>
 );
+
+export const BlackReport = (props: SvgProps) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={20}
+    fill="none"
+    {...props}>
+    <Path
+      stroke="#3A424E"
+      strokeWidth={1.5}
+      d="M15.085 10.416v4.25H4.918v-4.25a5.083 5.083 0 0 1 10.167 0Z"
+    />
+    <Path
+      stroke="#3A424E"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M4.167 14.499h11.666c.507 0 .917.41.917.917v.833c0 .506-.41.917-.917.917H4.167a.917.917 0 0 1-.917-.917v-.833c0-.507.41-.917.917-.917Z"
+    />
+    <Rect
+      width={1.667}
+      height={2.5}
+      x={9.168}
+      y={0.416}
+      fill="#3A424E"
+      rx={0.833}
+    />
+    <Rect
+      width={1.667}
+      height={2.5}
+      x={15}
+      y={2.083}
+      fill="#3A424E"
+      rx={0.833}
+      transform="rotate(44.41 15 2.083)"
+    />
+    <Rect
+      width={1.667}
+      height={2.5}
+      fill="#3A424E"
+      rx={0.833}
+      transform="scale(-1 1) rotate(44.41 -5.051 -5.083)"
+    />
+  </Svg>
+);

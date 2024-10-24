@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
 
-const MessageIcon = (props: SvgProps) => (
+export const MessageIcon = (props: SvgProps) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -20,4 +20,23 @@ const MessageIcon = (props: SvgProps) => (
     />
   </Svg>
 );
-export default MessageIcon;
+
+export const BlackMessageIcon = (props: SvgProps) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={20}
+    fill="none"
+    {...props}>
+    <Path
+      stroke="#3A424E"
+      strokeWidth={1.25}
+      d="M4.063 4.375h12.5c.514 0 .937.423.937.938v9.375a.942.942 0 0 1-.938.937h-12.5a.942.942 0 0 1-.937-.938V5.313c0-.515.423-.938.938-.938Z"
+    />
+    <Path
+      stroke="#3A424E"
+      strokeWidth={1.25}
+      d="m10.81 9.735-.003.002a.93.93 0 0 1-.358.133l.195-.122 5.231-3.271a.045.045 0 0 1 .024-.008.044.044 0 0 1 .035.018c0 .001.004.006.004.02 0 .005-.002.01-.005.016a.057.057 0 0 1-.018.02l-5.106 3.192Zm-.634.135a.93.93 0 0 1-.358-.133l-.002-.002L4.71 6.543a.057.057 0 0 1-.02-.02.032.032 0 0 1-.003-.016c0-.014.003-.019.003-.02a.037.037 0 0 1 .014-.012.044.044 0 0 1 .021-.006c.004 0 .011 0 .024.008L9.98 9.748l.195.122Z"
+    />
+  </Svg>
+);
