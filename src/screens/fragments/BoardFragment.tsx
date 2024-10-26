@@ -346,7 +346,7 @@ export default function BoardFragment({navigation}: Props) {
                 defaultFolded={false}
                 component={
                   <OfficialBoardList
-                    items={pinnedBoardList}
+                    items={officialBoardList}
                     moveToBoard={moveToBoard}
                     isInited={isInited}
                     onUpdate={updatePinnedBoardList}
@@ -365,7 +365,7 @@ export default function BoardFragment({navigation}: Props) {
             boardCategory="공식게시판"
             component={<OfficialBoardList items={officialBoardList} />}
           /> */}
-              <CustomBoardListContainer
+              <OfficialBoardListContainer
                 boardCategory="학과 게시판"
                 defaultFolded={false}
                 component={

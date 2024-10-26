@@ -417,9 +417,11 @@ export function CustomBoardList({
               style={{
                 height: 30,
                 justifyContent: 'center',
+                alignItems: 'center',
                 marginLeft: 10,
-                width: 44,
+                //width: 44,
               }}>
+              {/* 게시판장인 경우 분리 문의 필요 */}
               {!item.isPinned ? (
                 item.isOwner ? (
                   <GrayFlag />
@@ -427,9 +429,11 @@ export function CustomBoardList({
                   <GrayPin />
                 )
               ) : item.isOwner ? (
-                <OrangeFlag />
+                <PurplePin />
               ) : (
-                <OrangePin />
+                /* <OrangeFlag /> */
+                <PurplePin />
+                /* <OrangePin /> */
               )}
               <Text
                 style={{
@@ -438,7 +442,7 @@ export function CustomBoardList({
                   fontWeight: '500',
                   fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}>
-                999+
+                {item.pinCount}
               </Text>
             </Pressable>
           </View>
@@ -449,10 +453,18 @@ export function CustomBoardList({
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: 20, // 그라데이션 높이
-                backgroundColor: 'rgba(255, 255, 255, 0.6)', // 반투명 색상
-              }}
-            />
+                height: 50,
+                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+              }}>
+              <LinearGradient
+                colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']} // 빨간색에서 투명으로 변화
+                start={{x: 0.5, y: 1}}
+                end={{x: 0.5, y: 0}}
+                style={{
+                  flex: 1,
+                }}
+              />
+            </View>
           )}
         </TouchableOpacity>
       ))}
@@ -712,12 +724,11 @@ const styles = StyleSheet.create({
   },
   overlay: {
     zIndex: 98,
-    position: 'absolute', // 부모 뷰를 기준으로 위치 지정
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    //backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색과 투명도 설정
   },
 });
 

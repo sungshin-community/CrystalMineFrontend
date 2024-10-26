@@ -21,7 +21,11 @@ import {Checked, Unchecked} from '../../resources/icon/CheckBox';
 import PlusIcon from '../../resources/icon/PlusIcon';
 import {SmallText} from '../components/Top';
 import Board from '../classes/Board';
-import getPinnedBoardList from '../../src/screens/fragments/BoardFragment';
+import {
+  getOfficialBoardList,
+  getDepartmentBoardList,
+  getCustomBoardList,
+} from '../common/boardApi';
 
 interface Props {
   boardCategory: string;
@@ -46,23 +50,62 @@ interface DirectionProps {
   onChange: (key: number) => void;
 }
 
+/* 공식 게시판 */
 export function BoardListContainer({
   boardCategory,
   component,
   pinBoard,
 }: Props) {
   const [isSpread, setIsSpread] = useState<boolean>(true);
-  const [boards, setBoards] = useState<Board[]>([]);
-  const itemsDescription =
-    boards.length > 0 ? `${boards.length} boards` : 'No boards available';
+  const [allBoards, setAllBoards] = useState<Board[]>([]);
+  const [officialBoards, setOfficialBoards] = useState<Board[]>([]);
 
   useEffect(() => {
-    const pinnedBoards = async () => {
-      const boardList = await getPinnedBoardList();
-      setBoards(boardList);
+    /* const pinnedAllBoards = async () => {
+      const boardList = await getCustomBoardList();
+      //console.log('getCustomBoardList 전체:', boardList);
+      const boardsData = boardList.data.data;
+
+      if (Array.isArray(boardsData)) {
+        const boardNames = boardsData.map(
+          (board: {name: string}) => board.name,
+        );
+        console.log('getCustomBoardList전체 게시판 명:', boardNames);
+        const boardNamesString = boardNames.join(', ');
+        const truncatedBoardNamesString =
+          boardNamesString.length > 30
+            ? boardNamesString.slice(0, 30) + '...'
+            : boardNamesString;
+        setAllBoards(truncatedBoardNamesString);
+      } else {
+        console.log('boardsData가 배열이 아님:', boardsData);
+      }
+    }; */
+    const pinnedOfficialBoards = async () => {
+      const boardList = await getOfficialBoardList();
+      const boardsData = boardList.data.data;
+      console.log('공식 게시판:', boardsData);
+
+      if (Array.isArray(boardsData)) {
+        const boardNames = boardsData.map(
+          (board: {name: string}) => board.name,
+        );
+        //console.log('getOfficialBoardList공식 게시판 명:', boardNames);
+        const boardNamesString = boardNames.join(', ');
+        const truncatedBoardNamesString =
+          boardNamesString.length > 30
+            ? boardNamesString.slice(0, 30) + '...'
+            : boardNamesString;
+        setOfficialBoards(truncatedBoardNamesString);
+        console.log(officialBoards);
+      } else {
+        console.log('boardsData가 배열이 아님:', boardsData);
+      }
     };
-    pinnedBoards();
+    //pinnedAllBoards();
+    pinnedOfficialBoards();
   }, []);
+
   return (
     <>
       <TouchableOpacity
@@ -74,30 +117,28 @@ export function BoardListContainer({
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
           paddingTop: 10,
-          paddingBottom: 10,
+          paddingBottom: 5,
           borderBottomLeftRadius: !isSpread ? 16 : 0,
           borderBottomRightRadius: !isSpread ? 16 : 0,
         }}
         onPress={() => setIsSpread(!isSpread)}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-          <Text
-            style={[
-              fontBold,
-              {
-                fontSize: 17,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                lineHeight: 20,
-                fontWeight: 'bold',
-                color: '#222222',
-              },
-            ]}>
-            {boardCategory}
-          </Text>
+        <Text
+          style={[
+            fontBold,
+            {
+              fontSize: 17,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              lineHeight: 20,
+              flex: 1,
+              fontWeight: 'bold',
+              color: '#222222',
+            },
+          ]}>
+          {boardCategory}
+        </Text>
+        {isSpread ? (
+          <></>
+        ) : (
           <Text
             style={{
               fontSize: 12,
@@ -106,9 +147,9 @@ export function BoardListContainer({
               fontWeight: '500',
               marginLeft: 10,
             }}>
-            {itemsDescription}
+            {officialBoards}
           </Text>
-        </View>
+        )}
         {isSpread ? (
           <View style={{marginRight: 15}}>
             <BigFoldButton />
@@ -150,6 +191,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Markdown from 'react-native-markdown-display';
 import {fontBold, fontRegular} from '../common/font';
 
+/* 전체 게시판 */
 export function CustomBoardListContainer({
   boardCategory,
   component,
@@ -157,15 +199,41 @@ export function CustomBoardListContainer({
 }: Props) {
   const [isSpread, setIsSpread] = useState<boolean>(true);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [majorBoards, setMajorBoards] = useState<Board[]>([]);
+
+  useEffect(() => {
+    const pinnedMajorBoards = async () => {
+      const boardList = await getCustomBoardList();
+      //console.log('전체 게시판:', boardList.data);
+      const boardsData = boardList.data.data;
+
+      if (Array.isArray(boardsData)) {
+        const boardNames = boardsData.map(
+          (board: {name: string}) => board.name,
+        );
+        //console.log('getCustomBoardList 게시판 명:', boardNames);
+        const boardNamesString = boardNames.join(', ');
+        const truncatedBoardNamesString =
+          boardNamesString.length > 30
+            ? boardNamesString.slice(0, 33) + '...'
+            : boardNamesString;
+
+        setMajorBoards(truncatedBoardNamesString);
+      } else {
+        console.log('boardsData가 배열이 아님:', boardsData);
+      }
+    };
+    pinnedMajorBoards();
+  }, []);
 
   const handleExpand = ({expand}) => {
     setIsExpanded(expand);
   };
   const toggleSpread = () => {
+    setIsSpread(prev => !prev);
     if (isSpread) {
       setIsExpanded(false);
     }
-    setIsSpread(!isSpread);
   };
   return (
     <>
@@ -194,6 +262,20 @@ export function CustomBoardListContainer({
           }}>
           {boardCategory}
         </Text>
+        {isSpread ? (
+          <></>
+        ) : (
+          <Text
+            style={{
+              fontSize: 12,
+              color: '#6E7882',
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontWeight: '500',
+              marginLeft: 10,
+            }}>
+            {majorBoards}
+          </Text>
+        )}
         {isSpread ? (
           <BigFoldButton style={{marginRight: 15}} />
         ) : (
@@ -231,7 +313,7 @@ export function CustomBoardListContainer({
     </>
   );
 }
-
+/* 학과 게시판 */
 export function OfficialBoardListContainer({
   boardCategory,
   component,
@@ -240,41 +322,91 @@ export function OfficialBoardListContainer({
   const [isSpread, setIsSpread] = useState<boolean>(
     defaultFolded ? false : true,
   );
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [majorBoards, setMajorBoards] = useState<Board[]>([]);
+
+  useEffect(() => {
+    const pinnedMajorBoards = async () => {
+      const boardList = await getDepartmentBoardList();
+      //console.log('학과 게시판:', boardList);
+      const boardsData = boardList.data.data;
+
+      if (Array.isArray(boardsData)) {
+        const boardNames = boardsData.map(
+          (board: {name: string}) => board.name,
+        );
+        //console.log('getDepartmentBoardList 게시판 명:', boardNames);
+        const boardNamesString = boardNames.join(', ');
+        const truncatedBoardNamesString =
+          boardNamesString.length > 30
+            ? boardNamesString.slice(0, 30) + '...'
+            : boardNamesString;
+        setMajorBoards(truncatedBoardNamesString);
+      } else {
+        console.log('boardsData가 배열이 아님:', boardsData);
+      }
+    };
+    pinnedMajorBoards();
+  }, []);
+  const handleExpand = ({expand}) => {
+    setIsExpanded(expand);
+  };
+  const toggleSpread = () => {
+    if (isSpread) {
+      setIsExpanded(false);
+    }
+    setIsSpread(!isSpread);
+  };
   return (
     <>
       <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingLeft: 25,
+          paddingLeft: 15,
           // paddingVertical: 24,
-          height: 32,
+          height: 55,
           alignItems: 'center',
-          backgroundColor: '#FFFFFF',
-          marginTop: 10,
+          backgroundColor: '#ffffff',
+          paddingTop: 10,
+          paddingBottom: 5,
           borderBottomLeftRadius: !isSpread ? 16 : 0,
           borderBottomRightRadius: !isSpread ? 16 : 0,
         }}
         onPress={() => setIsSpread(!isSpread)}>
         <Text
           style={{
-            fontSize: 15,
-            fontFamily: 'SpoqaHanSansNeo-Medium',
+            fontSize: 17,
+            fontFamily: 'SpoqaHanSansNeo-Regular',
             lineHeight: 20,
             flex: 1,
-            fontWeight: '500',
-            color: '#6E7882',
+            fontWeight: 'bold',
+            color: '#222222',
           }}>
           {boardCategory}
         </Text>
         {isSpread ? (
-          <GreyBigFoldButton style={{marginRight: 30}} />
+          <></>
         ) : (
-          <GreyBigSpreadButton style={{marginRight: 30}} />
+          <Text
+            style={{
+              fontSize: 12,
+              color: '#6E7882',
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontWeight: '500',
+              marginLeft: 10,
+            }}>
+            {majorBoards}
+          </Text>
+        )}
+        {isSpread ? (
+          <GreyBigFoldButton style={{marginRight: 15}} />
+        ) : (
+          <GreyBigSpreadButton style={{marginRight: 15}} />
         )}
       </TouchableOpacity>
       {isSpread && (
         <>
-          <View
+          {/* <View
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
@@ -282,9 +414,14 @@ export function OfficialBoardListContainer({
               borderTopRightRadius: 16,
               borderTopLeftRadius: 16,
             }}
-          />
-          <View style={{flexBasis: 'auto'}}>{component}</View>
-          <View
+          /> */}
+          <View style={{flexBasis: 'auto'}}>
+            {React.cloneElement(component, {
+              isExpanded,
+              onUpdate: handleExpand,
+            })}
+          </View>
+          {/* <View
             style={{
               height: 17,
               backgroundColor: '#F6F6F6',
@@ -292,7 +429,7 @@ export function OfficialBoardListContainer({
               borderBottomRightRadius: 16,
               borderBottomLeftRadius: 16,
             }}
-          />
+          /> */}
         </>
       )}
     </>
