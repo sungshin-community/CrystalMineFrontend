@@ -16,7 +16,7 @@ import {Checked} from '../../resources/icon/CheckBox';
 import RadioButtonUnChecked, {
   RadioButtonChecked,
 } from '../../resources/icon/RadioButton';
-import {getReportReason} from '../common/boardApi';
+import {getReportReason, getSecondReportReason} from '../common/boardApi';
 import {fontBold, fontMedium, fontRegular} from '../common/font';
 import Toast from 'react-native-simple-toast';
 import CancelButton from '../../resources/icon/Cancel';
@@ -39,6 +39,7 @@ interface Props {
   whiteButtonText?: string;
   whiteButtonFunc?: any;
   setDim?: boolean;
+  modalType?: string;
 }
 export const ReportModalBottom = ({
   modalVisible,
@@ -52,6 +53,7 @@ export const ReportModalBottom = ({
   whiteButtonText,
   whiteButtonFunc,
   setDim = true,
+  modalType = '게시글',
 }: Props) => {
   const [reason, setReason] = useState<Reason[]>([]);
   const [isCheckedReportNum, setIsCheckedReportNum] = useState<number>(1);
@@ -86,7 +88,10 @@ export const ReportModalBottom = ({
   useEffect(() => {
     async function init() {
       const result = await getReportReason();
+      const resultTwo = await getSecondReportReason();
       setReason(result.data);
+      console.log('reason', reason);
+      console.log('resultTwo', resultTwo.data);
     }
     init();
   }, []);
@@ -231,6 +236,7 @@ export const ReportModalBottom = ({
         detail={detail}
         reportFunc={reportFunc}
         reportId={reportId}
+        modalType={modalType}
       />
     </>
   );
@@ -258,7 +264,7 @@ export const ReportItem = ({
   const numofETC = 10; // 기타 사유 id
   return (
     <>
-      {list.slice(0, list.length - 1).map(item => (
+      {list.slice(0, list.length).map(item => (
         <View
           style={{
             flexDirection: 'row',
@@ -274,7 +280,16 @@ export const ReportItem = ({
             ) : (
               <RadioButtonUnChecked style={{marginRight: 10}} />
             )}
-            <Text style={[fontRegular, {marginRight: 12}]}>{item.num}</Text>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  marginRight: 12,
+                  fontWeight: '500',
+                },
+              ]}>
+              {item.num}
+            </Text>
             <Text style={[fontRegular]}>{item.reason}</Text>
           </Pressable>
         </View>

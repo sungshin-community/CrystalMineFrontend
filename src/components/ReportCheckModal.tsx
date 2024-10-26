@@ -13,7 +13,7 @@ import Toast from 'react-native-simple-toast';
 interface ConfirmModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
-  oisCheckedReportNum: number;
+  isCheckedReportNum: number;
   detail: string;
   reportFunc: (
     reportId: number,
@@ -21,6 +21,7 @@ interface ConfirmModalProps {
     detail: string,
   ) => Promise<any>;
   reportId: number;
+  modalType: string;
 }
 
 export const ReportCheckModal = ({
@@ -30,6 +31,7 @@ export const ReportCheckModal = ({
   detail,
   reportFunc,
   reportId,
+  modalType,
 }: ConfirmModalProps) => {
   const handleConfirm = async () => {
     try {
@@ -62,7 +64,7 @@ export const ReportCheckModal = ({
       ) {
         setModalVisible(false);
         setTimeout(() => {
-          Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
+          Toast.show('이미 신고한 {modalType}입니다.', Toast.SHORT);
         }, 100);
       } else if (result.code === 'REPORT_FAIL_REASON_DETAIL_NECESSARY') {
         setModalVisible(false);
@@ -94,7 +96,7 @@ export const ReportCheckModal = ({
         <View style={confirmStyles.modalView}>
           <View>
             <Text style={[fontBold, confirmStyles.modalText]}>
-              해당 게시글을 신고하시겠어요?
+              해당 {modalType}을 신고하시겠어요?
             </Text>
           </View>
           <View>

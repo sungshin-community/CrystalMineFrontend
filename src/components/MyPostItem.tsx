@@ -5,7 +5,7 @@ import {
   RectangleChecked,
   RectangleUnchecked,
 } from '../../resources/icon/CheckBox';
-import PostComment from '../../resources/icon/PostComment';
+import {PostComment} from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';

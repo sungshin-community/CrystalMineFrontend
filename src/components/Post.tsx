@@ -16,13 +16,13 @@ import EmptyHeart from '../../resources/icon/EmptyHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
-import PostComment from '../../resources/icon/PostComment';
+import {PostComment} from '../../resources/icon/PostComment';
 import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
-import TrashIcon from '../../resources/icon/TrashIcon';
+import {TrashIcon} from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
 import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
@@ -42,7 +42,7 @@ import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
 import {getMessageContent, postChatRoom} from '../common/messageApi';
-import MessageIcon from '../../resources/icon/Message';
+import {MessageIcon, BlackMessageIcon} from '../../resources/icon/Message';
 import CustomToast from './CustomToast';
 interface Props {
   navigation: any;
@@ -94,13 +94,13 @@ function Post({
     return array;
   };
 
-  const handlePostScrapComponent = (
+  /* const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
       </Pressable>
     </View>
-  );
+  ); */
 
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
@@ -108,9 +108,13 @@ function Post({
       postId: data.postId,
       isAnonymous: isAnonymous,
     };
+    console.log('messageData', messageData);
+
     const response = await postChatRoom(messageData);
+    console.log('response', response);
     setChatResponse(response);
     const block = await getMessageContent(response.data.roomId, 0);
+    console.log('block', block);
 
     if (!block.data.isBlocked) {
       setMessageModalVisible(true);
@@ -445,6 +449,7 @@ function Post({
                 whiteButtonText="아니요."
                 whiteButtonFunc={() => setReportModalVisible(false)}
                 setDim={false}
+                modalType="게시글"
               />
               <Pressable
                 onPress={() => {

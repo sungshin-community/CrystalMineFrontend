@@ -1,23 +1,31 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Pressable, Image} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
-import PostComment from '../../resources/icon/PostComment';
+import {PostComment, BigPostComment} from '../../resources/icon/PostComment';
 import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import SpinningThreeDots from './SpinningThreeDots';
-import TrashIcon from '../../resources/icon/TrashIcon';
+import {TrashIcon, BlackTrashIcon} from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
 import {SelectModalBottom} from './SelectModalBottom';
 import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
-import NoReport, {Report} from '../../resources/icon/Report';
+import NoReport, {BlackReport, Report} from '../../resources/icon/Report';
 import {fontMedium, fontRegular} from '../common/font';
 import Autolink from 'react-native-autolink';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
-import MessageIcon from '../../resources/icon/Message';
+import {BlackMessageIcon, MessageIcon} from '../../resources/icon/Message';
 import {getMessageContent, postChatRoom} from '../common/messageApi';
+import {ReportModalBottom} from './ReportModalBottom';
 
 interface Props {
   comment?: any;
@@ -52,6 +60,7 @@ const Comment = ({
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>({});
   const [dotsModalVisible, setDotsModalVisible] = useState<boolean>(false);
+
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
@@ -62,9 +71,13 @@ const Comment = ({
       postId: data.postId,
       isAnonymous: isAnonymous,
     };
+    console.log('messageData', messageData);
+
     const response = await postChatRoom(messageData);
+    console.log('blockedCheck1', response);
     setChatResponse(response);
     const block = await getMessageContent(response.data.roomId, 0);
+    console.log('blockedCheck2', block);
 
     if (!block.data.isBlocked) {
       setMessageModalVisible(true);
@@ -88,6 +101,7 @@ const Comment = ({
     setMessageModalVisible(false);
   };
 
+  /* Comment : 내 댓글 */
   const handleCommentDeleteComponent = (
     <>
       <ModalBottom
@@ -109,27 +123,98 @@ const Comment = ({
         whiteButtonFunc={() => setModalVisible(false)}
         setDim={false}
       />
-      <Pressable
-        onPress={() => {
-          setModalVisible(true);
-          setComponentModalVisible(modalVisible);
+
+      <View
+        style={{
+          position: 'absolute',
+          top: -20,
+          right: 0,
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 150,
+          height: 90,
+          zIndex: 150,
         }}>
-        <TrashIcon style={{marginRight: 12}} />
-      </Pressable>
+        <Pressable
+          onPress={() => {
+            setComponentModalVisible(modalVisible);
+          }}>
+          <View
+            style={{
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              backgroundColor: '#FFFFFF',
+              borderColor: '#EFEFF3',
+              borderWidth: 1,
+              borderRadius: 8,
+              //iOS
+              shadowColor: '#A6AAAE',
+              shadowOffset: {width: 0, height: 4},
+              shadowOpacity: 0.4,
+              shadowRadius: 18,
+              // Android
+              elevation: 18,
+              width: 130,
+              height: '100%',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                handleFocus();
+                setParentId(data.id);
+                setIsRecomment(true);
+                setIsRecommentState(true);
+                setDotsModalVisible(false);
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
+                  zIndex: 999,
+                }}>
+                <BigPostComment style={{marginRight: 8}} />
+                <Text
+                  style={{paddingVertical: 8, fontSize: 14, color: '#3A424E'}}>
+                  대댓글 달기
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+                setComponentModalVisible(modalVisible);
+                setDotsModalVisible(false);
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
+                  zIndex: 120,
+                }}>
+                <BlackTrashIcon style={{marginRight: 8}} />
+                <Text style={{paddingVertical: 8, fontSize: 14}}>삭제하기</Text>
+              </View>
+            </Pressable>
+          </View>
+        </Pressable>
+      </View>
     </>
   );
+  /* Comment : 상대방 댓글 */
   const handleCommentReportComponent = (
     <>
-      <SelectModalBottom
+      <ReportModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
-        title={`댓글 신고`}
-        purpleButtonText="신고하기"
-        reportId={data.id}
+        title="해당 댓글을 신고하시겠어요?"
+        purpleButtonText="네, 신고할게요."
+        reportId={data?.id}
         reportFunc={handleCommentReport}
-        whiteButtonText="취소"
+        whiteButtonText="아니요."
         whiteButtonFunc={() => setReportModalVisible(false)}
         setDim={false}
+        modalType="댓글"
       />
       <MessageModalBottom
         modalVisible={messageModalVisible}
@@ -152,7 +237,96 @@ const Comment = ({
           <Report style={{marginRight: 14}} />
         </Pressable>
       ) : (
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            position: 'absolute',
+            top: -20,
+            right: 0,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: 150,
+            height: 120,
+            zIndex: 150,
+          }}>
+          <Pressable
+            onPress={() => {
+              setComponentModalVisible(modalVisible);
+            }}>
+            <View
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                backgroundColor: '#FFFFFF',
+                borderColor: '#EFEFF3',
+                borderWidth: 1,
+                borderRadius: 8,
+                //iOS
+                shadowColor: '#A6AAAE',
+                shadowOffset: {width: 0, height: 4},
+                shadowOpacity: 0.4,
+                shadowRadius: 18,
+                // Android
+                elevation: 18,
+                width: 130,
+                height: '100%',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleFocus();
+                  setParentId(data.id);
+                  setIsRecomment(true);
+                  setIsRecommentState(true);
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    zIndex: 999,
+                  }}>
+                  <BigPostComment style={{marginRight: 8}} />
+                  <Text
+                    style={{
+                      paddingVertical: 8,
+                      fontSize: 14,
+                      color: '#3A424E',
+                    }}>
+                    대댓글 달기
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => blockedCheck(data.isAnonymous)}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    zIndex: 120,
+                  }}>
+                  <BlackMessageIcon style={{marginRight: 8}} />
+                  <Text style={{paddingVertical: 8, fontSize: 14}}>
+                    쪽지하기
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setReportModalVisible(true)}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    zIndex: 120,
+                  }}>
+                  <BlackReport style={{marginRight: 8}} />
+                  <Text style={{paddingVertical: 8, fontSize: 14}}>
+                    신고하기
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </View>
+        /* <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Pressable
             onPress={() => {
               setReportModalVisible(true);
@@ -160,14 +334,14 @@ const Comment = ({
             }}>
             <NoReport style={{marginRight: 14}} />
           </Pressable>
-          {/* 여기 */}
+
           <Pressable
             onPress={() => {
               blockedCheck(data.isAnonymous);
             }}>
             <MessageIcon style={{marginRight: 14, marginTop: 4}} />
           </Pressable>
-        </View>
+        </View> */
       )}
     </>
   );
@@ -177,6 +351,7 @@ const Comment = ({
       <View
         style={{
           paddingHorizontal: 24,
+          overflow: 'visible',
           backgroundColor: isRecommentState
             ? '#F3E7FF'
             : data?.isOfReader
@@ -185,6 +360,8 @@ const Comment = ({
         }}>
         <View
           style={{
+            position: 'relative',
+            overflow: 'visible',
             flexDirection: 'row',
             marginVertical: 15,
             justifyContent: 'space-between',
@@ -235,6 +412,7 @@ const Comment = ({
                 handleOptionModeIsNotMineComponent={
                   handleCommentReportComponent
                 }
+                isGrey={true}
               />
             )
           ) : data.isBlind ? (
@@ -244,6 +422,7 @@ const Comment = ({
               isMine={data.isOfReader}
               handleOptionModeIsMineComponent={handleCommentDeleteComponent}
               handleOptionModeIsNotMineComponent={handleCommentReportComponent}
+              isGrey={true}
             />
           )}
         </View>
@@ -253,6 +432,7 @@ const Comment = ({
               color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
               fontSize: 14,
               marginLeft: 35,
+              zIndex: 98,
             },
             fontRegular,
           ]}>
@@ -268,6 +448,7 @@ const Comment = ({
                 marginTop: 15,
                 marginLeft: 35,
                 justifyContent: 'flex-start',
+                zIndex: 99,
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Pressable
@@ -365,7 +546,8 @@ export const Recomment = ({
     useState<boolean>(false);
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>({});
-
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const data: RecommentDto = recomment;
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
@@ -385,6 +567,12 @@ export const Recomment = ({
     }
   };
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000); // Hide after 3 seconds
+  };
+
   const handlePostMessage = async () => {
     if (chatResponse.code === 'CREATE_CHAT_ROOM_SUCCESS') {
       navigation.navigate('MessageScreen', {roomId: chatResponse.data.roomId});
@@ -398,59 +586,106 @@ export const Recomment = ({
     }
     setMessageModalVisible(false);
   };
-
+  /* Recomment : 내 댓글 */
   const handleCommentDeleteComponent = (
     <>
-      {modalVisible && (
-        <ModalBottom
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          content={`작성한 댓글을 삭제하시겠습니까?`}
-          purpleButtonText="삭제"
-          purpleButtonFunc={() => {
-            handleCommentDelete(data.id);
-            setModalVisible(false);
-            setTimeout(function () {
-              Toast.show(
-                '작성하신 댓글이 성공적으로 삭제되었습니다.',
-                Toast.SHORT,
-              );
-            }, 100);
-          }}
-          whiteButtonText="취소"
-          whiteButtonFunc={() => setModalVisible(false)}
-          setDim={false}
-        />
-      )}
-      <Pressable
-        onPress={() => {
-          setModalVisible(true);
-          setComponentModalVisible(modalVisible);
+      <ModalBottom
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        content={`작성한 댓글을 삭제하시겠습니까?`}
+        purpleButtonText="삭제"
+        purpleButtonFunc={() => {
+          handleCommentDelete(data.id);
+          setModalVisible(false);
+          setTimeout(function () {
+            Toast.show(
+              '작성하신 댓글이 성공적으로 삭제되었습니다.',
+              Toast.SHORT,
+            );
+          }, 100);
+        }}
+        whiteButtonText="취소"
+        whiteButtonFunc={() => setModalVisible(false)}
+        setDim={false}
+      />
+
+      <View
+        style={{
+          position: 'absolute',
+          top: -20,
+          right: 0,
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 150,
+          height: '100%',
+          zIndex: 150,
         }}>
-        <TrashIcon style={{marginRight: 12}} />
-      </Pressable>
+        <Pressable
+          onPress={() => {
+            setComponentModalVisible(modalVisible);
+          }}>
+          <View
+            style={{
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              backgroundColor: '#FFFFFF',
+              borderColor: '#EFEFF3',
+              borderWidth: 1,
+              borderRadius: 8,
+              //iOS
+              shadowColor: '#A6AAAE',
+              shadowOffset: {width: 0, height: 4},
+              shadowOpacity: 0.4,
+              shadowRadius: 18,
+              // Android
+              elevation: 18,
+              width: 130,
+              height: 50,
+            }}>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+                setComponentModalVisible(modalVisible);
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
+                  zIndex: 120,
+                }}>
+                <BlackTrashIcon style={{marginRight: 8}} />
+                <Text style={{paddingVertical: 6, fontSize: 14}}>삭제하기</Text>
+              </View>
+            </Pressable>
+          </View>
+        </Pressable>
+      </View>
     </>
   );
+
+  /* Recomment : 상대방 댓글 */
   const handleCommentReportComponent = (
     <>
-      <SelectModalBottom
+      <ReportModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
-        title={`댓글 신고`}
-        purpleButtonText="신고하기"
-        reportId={data.id}
+        title="해당 댓글을 신고하시겠어요?"
+        purpleButtonText="네, 신고할게요."
+        reportId={data?.id}
         reportFunc={handleCommentReport}
-        whiteButtonText="취소"
+        whiteButtonText="아니요."
         whiteButtonFunc={() => setReportModalVisible(false)}
         setDim={false}
+        modalType="댓글"
       />
       <MessageModalBottom
         modalVisible={messageModalVisible}
         setModalVisible={setMessageModalVisible}
         purpleButtonText="확인"
         purpleButtonFunc={handlePostMessage}
-        anonymous={data.isAnonymous}
         setDim={false}
+        anonymous={data.isAnonymous}
       />
       <ModalBottom
         modalVisible={blockModalVisible}
@@ -465,19 +700,68 @@ export const Recomment = ({
           <Report style={{marginRight: 14}} />
         </Pressable>
       ) : (
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            position: 'absolute',
+            top: -20,
+            right: 0,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: 150,
+            height: 90,
+            zIndex: 150,
+          }}>
           <Pressable
             onPress={() => {
-              setReportModalVisible(true);
-              setComponentModalVisible(reportModalVisible);
+              setComponentModalVisible(modalVisible);
             }}>
-            <NoReport style={{marginRight: 14}} />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              blockedCheck(data.isAnonymous);
-            }}>
-            <MessageIcon style={{marginRight: 14, marginTop: 4}} />
+            <View
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                backgroundColor: '#FFFFFF',
+                borderColor: '#EFEFF3',
+                borderWidth: 1,
+                borderRadius: 8,
+                //iOS
+                shadowColor: '#A6AAAE',
+                shadowOffset: {width: 0, height: 4},
+                shadowOpacity: 0.4,
+                shadowRadius: 18,
+                // Android
+                elevation: 18,
+                width: 130,
+                height: '100%',
+              }}>
+              <TouchableOpacity onPress={() => blockedCheck(data.isAnonymous)}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    zIndex: 120,
+                  }}>
+                  <BlackMessageIcon style={{marginRight: 8}} />
+                  <Text style={{paddingVertical: 8, fontSize: 14}}>
+                    쪽지하기
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setReportModalVisible(true)}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF',
+                    zIndex: 120,
+                  }}>
+                  <BlackReport style={{marginRight: 8}} />
+                  <Text style={{paddingVertical: 8, fontSize: 14}}>
+                    신고하기
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </Pressable>
         </View>
       )}
@@ -493,12 +777,15 @@ export const Recomment = ({
           paddingBottom: 12,
           borderTopColor: '#F0F0F0',
           borderTopWidth: 1,
+          zIndex: 1,
+          overflow: 'visible',
         }}>
         <View
           style={{
             flexDirection: 'row',
             marginVertical: 15,
             justifyContent: 'space-between',
+            overflow: 'visible',
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {/* <Reply style={{marginRight: 8}} /> */}
@@ -547,6 +834,7 @@ export const Recomment = ({
                 handleOptionModeIsNotMineComponent={
                   handleCommentReportComponent
                 }
+                isGrey={true}
               />
             )
           ) : data.isBlind ? (
@@ -556,6 +844,7 @@ export const Recomment = ({
               isMine={data.isOfReader}
               handleOptionModeIsMineComponent={handleCommentDeleteComponent}
               handleOptionModeIsNotMineComponent={handleCommentReportComponent}
+              isGrey={true}
             />
           )}
         </View>
