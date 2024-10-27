@@ -17,7 +17,7 @@ import {cancelScrapedPosts, getScrapedPostList} from '../../common/boardApi';
 import {MyPostContentDto} from '../../classes/board/MyPostDto';
 import CancelButton from '../../../resources/icon/Cancel';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
-import TrashIcon from '../../../resources/icon/TrashIcon';
+import {TrashIcon} from '../../../resources/icon/TrashIcon';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import {ModalBottom} from '../../components/ModalBottom';
 import {

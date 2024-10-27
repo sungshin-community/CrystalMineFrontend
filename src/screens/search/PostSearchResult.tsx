@@ -1,14 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Dimensions, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { View } from 'react-native-animatable';
+import {View} from 'react-native-animatable';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import TagSearchResult from '../board/TagSearchResult';
 import CancelButton from '../../../resources/icon/Cancel';
-import { fontBold, fontRegular } from '../../common/font';
+import {fontBold, fontRegular} from '../../common/font';
 import PostList from './PostList';
-import { saveRecentSearchWord } from '../../common/util/recentSearchWordsUtil';
+import {saveRecentSearchWord} from '../../common/util/recentSearchWordsUtil';
+import InputDeleteButton from './total/InputDeleteButton';
 
 type RootStackParamList = {
   SearchResult: {
@@ -30,83 +38,90 @@ const Tab = createMaterialTopTabNavigator();
 let tabWidth = (Dimensions.get('window').width / 2 - 24) / 2;
 
 function PostSearchResult({navigation, route}: Props) {
-  const [searchWord, setSearchWord] = useState<string>(route.params.searchWord);
+  const [searchWord, setSearchWord] = useState<string>(
+    route.params.searchWord || '',
+  );
   const boardName = route.params.boardName ? route.params.boardName : '';
+  const inputRef = useRef<TextInput>(null);
 
   const search = (text: string) => {
     setSearchWord(text);
     saveRecentSearchWord(text, 'recentPostSearch' + route.params.boardId);
-  }
+  };
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: (): React.ReactNode => (
         <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder={`[${boardName.length <= 5 ? boardName : boardName.substring(0, 5) + "..."}] 게시판에서 검색`}
-          placeholderTextColor="#898989"
-          returnKeyType="search"
-          autoCorrect={false}
-          autoCapitalize="none"
-          onSubmitEditing={(e) => {search(e.nativeEvent.text)}}
-          keyboardType="default"
-          enablesReturnKeyAutomatically
-          defaultValue={route.params.searchWord}
-        />
-        <View style={styles.icon}>
-          <SearchIcon />
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            /* placeholder={`[${
+              boardName.length <= 5
+                ? boardName
+                : boardName.substring(0, 5) + '...'
+            }] 게시판에서 검색`} */
+            placeholder="검색"
+            placeholderTextColor="#898989"
+            returnKeyType="search"
+            autoCorrect={false}
+            autoCapitalize="none"
+            onSubmitEditing={e => {
+              search(e.nativeEvent.text);
+            }}
+            keyboardType="default"
+            enablesReturnKeyAutomatically
+            value={searchWord}
+            onChangeText={setSearchWord}
+            //defaultValue={route.params.searchWord}
+          />
+          <View style={styles.icon}>
+            <SearchIcon />
+          </View>
+          <View style={styles.delete}>
+            <InputDeleteButton
+              onPress={() => {
+                setSearchWord('');
+                inputRef.current?.focus();
+              }}
+            />
+          </View>
         </View>
-      </View>
       ),
       headerRight: (): React.ReactNode => (
-        <TouchableHighlight style={{width: 50, borderRadius: 20, alignItems: 'center', height: 40, justifyContent: 'center'}} underlayColor='#EEEEEE' onPress={() => {navigation.goBack()}}>
-          <Text style={[fontRegular, {fontSize: 17}]}>닫기</Text>
+        <TouchableHighlight
+          style={{
+            width: 50,
+            borderRadius: 20,
+            alignItems: 'center',
+            height: 40,
+            justifyContent: 'center',
+          }}
+          underlayColor="#EEEEEE"
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Text style={[fontRegular, {fontSize: 17}]}>취소</Text>
         </TouchableHighlight>
       ),
     });
-  }, []);
+  }, [navigation, searchWord]);
 
   return (
     <>
-    {
-    <Tab.Navigator
-      initialRouteName="BoardSearch"
-      screenOptions={{
-        tabBarStyle: {
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 5},
-          shadowRadius: 20,
-        },
-        tabBarIndicatorStyle: {
-          backgroundColor: '#A055FF',
-          height: 8,
-          width: 24,
-          bottom: -4,
-          borderRadius: 10,
-          marginHorizontal: tabWidth,
-        },
-        tabBarShowLabel: true,
-        tabBarLabelStyle: {
-          fontFamily: 'SpoqaHanSansNeo-Regular',
-          fontSize: 14,
-          marginTop: 14,
-          marginBottom: 6,
-        },
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#717171',
-      }}
-      keyboardDismissMode="on-drag"
-      initialLayout={{width: Dimensions.get('window').width}}>
-      <Tab.Screen
-        name="게시글"
-        component={() => <PostList searchWord={searchWord} boardId={route.params.boardId} boardName={route.params.boardName} />}
-        initialParams={{searchWord: searchWord}}
-        
-      />
-      <Tab.Screen name="태그" component={TagSearchResult} />
-    </Tab.Navigator>
-}
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            borderBottomColor: '#EFEFF3',
+          }}
+        />
+        <PostList
+          searchWord={searchWord}
+          boardId={route.params.boardId}
+          boardName={route.params.boardName}
+        />
+      </View>
     </>
   );
 }
@@ -119,23 +134,29 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   input: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: '#F6F6F6',
     width: Dimensions.get('window').width - 100,
-    height: 40,
-    borderRadius: 20,
-    paddingLeft: 57,
+    height: 35,
+    borderRadius: 8,
+    paddingLeft: 36,
+    paddingVertical: 8,
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    fontSize: 15,
-    color: '#222222'
+    fontSize: 16,
+    color: '#222222',
   },
   icon: {
     position: 'absolute',
-    top: 9,
-    left: 24,
+    top: 6,
+    left: 12,
+  },
+  delete: {
+    position: 'absolute',
+    top: 8,
+    right: 12,
   },
   title: {
     color: '#222222',
     fontSize: 17,
-    marginTop: 20
+    marginTop: 20,
   },
 });

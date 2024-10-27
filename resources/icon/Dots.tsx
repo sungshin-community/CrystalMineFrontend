@@ -3,26 +3,31 @@ import Svg, {Circle} from 'react-native-svg';
 
 const Dots = (props: any) => (
   <Svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={20}
+    fill="none"
     {...props}>
     <Circle
-      cx="19"
-      cy="12"
-      r="2"
-      transform="rotate(-180 19 12)"
-      fill="#333D4B"
+      cx={9.978}
+      cy={15.209}
+      r={1.458}
+      fill="#3A424E"
+      transform="rotate(-90 9.978 15.209)"
     />
-    <Circle cx="5" cy="12" r="2" transform="rotate(-180 5 12)" fill="#333D4B" />
     <Circle
-      cx="12"
-      cy="12"
-      r="2"
-      transform="rotate(-180 12 12)"
-      fill="#333D4B"
+      cx={9.978}
+      cy={4.839}
+      r={1.458}
+      fill="#3A424E"
+      transform="rotate(-90 9.978 4.839)"
+    />
+    <Circle
+      cx={9.978}
+      cy={10.024}
+      r={1.458}
+      fill="#3A424E"
+      transform="rotate(-90 9.978 10.024)"
     />
   </Svg>
 );

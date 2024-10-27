@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
-import PostComment from '../../resources/icon/PostComment';
+import {PostComment} from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';

@@ -1,16 +1,6 @@
 import * as React from 'react';
-import Svg, {SvgProps, Path, Defs, Circle, G} from 'react-native-svg';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import Svg, {Path, Circle} from 'react-native-svg';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 const StyledFloatingButton = (props: any) => (
   <Svg
@@ -26,19 +16,19 @@ const StyledFloatingButton = (props: any) => (
     />
   </Svg>
 );
-const FloatingWriteButton = ({ onPress }: any) => {
+const FloatingWriteButton = ({onPress}: any) => {
   return (
     <TouchableOpacity
       hitSlop={{top: 20, right: 20, left: 20, bottom: 20}}
       activeOpacity={0.5}
       onPress={onPress}
-      style={styles.touchableOpacityStyle}
-      hitSlop={{top: 20, bottom: 20, right: 20, left: 20}}>
+      style={styles.touchableOpacityStyle}>
       <View style={styles.floatingButtonStyle}>
         <Text>
-        <StyledFloatingButton/></Text>
+          <StyledFloatingButton />
+        </Text>
       </View>
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 
@@ -53,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     right: 50,
     bottom: 50,
-    zIndex: 9999
+    zIndex: 9999,
   },
 
   floatingButtonStyle: {

@@ -53,6 +53,8 @@ import {logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
 import AdMob from '../../components/AdMob';
+import PurpleArrow from '../../../resources/icon/PurpleArrow';
+import HotIcon from '../../../resources/icon/HotIcon';
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
@@ -186,7 +188,9 @@ const PostListScreen = ({navigation, route}: Props) => {
     return (
       <>
         {boardInfo?.id === 1 ? (
-          <BigDarkPin />
+          {
+            /* <BigDarkPin /> */
+          }
         ) : (
           <Pressable
             onPress={async () => {
@@ -213,7 +217,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 }, 100);
               }
             }}>
-            {boardInfo?.isOwner ? (
+            {/* {boardInfo?.isOwner ? (
               boardInfo?.isPinned ? (
                 <BigOrangeFlag />
               ) : (
@@ -227,14 +231,14 @@ const PostListScreen = ({navigation, route}: Props) => {
               )
             ) : (
               <BigGrayPin />
-            )}
+            )} */}
           </Pressable>
         )}
         <Text
           style={[
             fontMedium,
             {
-              marginLeft: 8,
+              marginLeft: 0,
               fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
               maxWidth: 180,
             },
@@ -264,7 +268,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           )}
         </>
       ),
-      headerTitleAlign: 'center',
+      headerTitleAlign: 'left',
     });
   }, [navigation, boardInfo, reportModalVisible]);
 
@@ -356,6 +360,12 @@ const PostListScreen = ({navigation, route}: Props) => {
       <View style={{flex: 1}}>
         <View
           style={{
+            borderBottomWidth: 1,
+            borderBottomColor: '#EFEFF3',
+          }}
+        />
+        <View
+          style={{
             position: 'absolute',
             alignItems: 'center',
             justifyContent: 'center',
@@ -390,7 +400,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                     }
                   }}
                   style={[
-                    styles.grayButtonStyle,
+                    styles.purpleButtonStyle,
                     {
                       width: 78,
                       justifyContent: 'center',
@@ -472,19 +482,18 @@ const PostListScreen = ({navigation, route}: Props) => {
                 route.params?.boardId !== 2 &&
                 listHeaderCondition && (
                   <View>
-                    <View style={{marginTop: -16}}>
+                    {/* <View style={{marginTop: -16}}>
                       <AdMob />
-                    </View>
+                    </View> */}
                     {!isHotBoard &&
                       ![93, 94, 95].includes(route.params.boardId) && (
                         <View
                           style={{flexDirection: 'row', paddingHorizontal: 24}}>
                           <TouchableOpacity
                             style={[
-                              styles.grayButtonStyle,
+                              styles.purpleButtonStyle,
                               {
                                 flex: 1,
-                                marginRight: 10,
                                 paddingLeft: 6,
                               },
                             ]}
@@ -496,10 +505,13 @@ const PostListScreen = ({navigation, route}: Props) => {
                                 : {};
                             }}>
                             {boardHotPost?.isExist ? (
-                              <Text
-                                style={[styles.popularButtonText, fontBold]}>
-                                인기
-                              </Text>
+                              <>
+                                <HotIcon style={{marginLeft: 6}} />
+                                <Text
+                                  style={[styles.popularButtonText, fontBold]}>
+                                  인기
+                                </Text>
+                              </>
                             ) : null}
                             <Text
                               style={[
@@ -515,8 +527,15 @@ const PostListScreen = ({navigation, route}: Props) => {
                                 ? boardHotPost?.title
                                 : boardHotPost.content}
                             </Text>
+                            {boardHotPost?.isExist ? (
+                              <PurpleArrow
+                                style={{
+                                  marginRight: 6,
+                                }}
+                              />
+                            ) : null}
                           </TouchableOpacity>
-                          <TouchableOpacity
+                          {/* <TouchableOpacity
                             onPress={() => {
                               if (sortBy === 'createdAt') {
                                 setSortBy('likeCount');
@@ -525,7 +544,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                               }
                             }}
                             style={[
-                              styles.grayButtonStyle,
+                              styles.purpleButtonStyle,
                               {
                                 width: 78,
                                 justifyContent: 'center',
@@ -540,7 +559,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                               {sortBy === 'createdAt' ? '최신순' : '공감순'}
                             </Text>
                             <SortIcon />
-                          </TouchableOpacity>
+                          </TouchableOpacity> */}
                         </View>
                       )}
                   </View>
@@ -615,5 +634,13 @@ const styles = StyleSheet.create({
     color: '#A055FF',
     paddingLeft: 10,
     lineHeight: 15,
+  },
+  purpleButtonStyle: {
+    backgroundColor: '#F6F2FF',
+    borderRadius: 4,
+    height: 36,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
   },
 });

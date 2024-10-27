@@ -13,6 +13,8 @@ export interface ContentPreviewDto {
   isAnonymous: boolean;
   isLiked: boolean;
   likeCount: number;
+  newCommentAuthor: string;
+  newCommentContent: string;
   imageCount: number;
   commentCount: number;
   isDeleted: number;
@@ -22,6 +24,7 @@ export interface ContentPreviewDto {
   createdAt: string;
   isScraped: boolean;
   scrapCount: number;
+  thumbnail: string;
 }
 
 export interface BoardHotPostDto {

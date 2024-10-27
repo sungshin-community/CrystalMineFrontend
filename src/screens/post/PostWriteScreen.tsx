@@ -19,10 +19,12 @@ import {
   NativeModules,
   ActivityIndicator,
   KeyboardEvent,
+  SafeAreaView,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontMedium, fontRegular} from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
+import PostVoteIcon from '../../../resources/icon/PostVoteIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
 import {
   RectangleChecked,
@@ -37,7 +39,7 @@ import {PostWriteInfoDto} from '../../classes/PostDto';
 import {OrangeFlag} from '../../../resources/icon/OrangeFlag';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
 import {ModalBottom} from '../../components/ModalBottom';
-import {ImageDelete} from '../../components/ImageDelete';
+import {DeleteImageIcon} from '../../components/ImageDelete';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
 const {StatusBarManager} = NativeModules;
@@ -64,6 +66,8 @@ interface Direction {
   title: string;
 }
 
+/* boardId 전달 필요(제목 유/무) */
+
 function PostWriteScreen({navigation, route}: Props) {
   const formData = new FormData();
   const [boardId, setBoardId] = useState<number>(0);
@@ -71,7 +75,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [content, setContent] = useState<string>('');
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -226,6 +230,31 @@ function PostWriteScreen({navigation, route}: Props) {
     console.log('>>>', images);
   };
 
+  const renderImages = () => {
+    return images.map(image => (
+      <View key={image.uri} style={{position: 'relative', margin: 5}}>
+        <Image
+          source={{uri: image.uri}}
+          style={{
+            width: 90,
+            height: 90,
+            borderRadius: 8,
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            margin: 5,
+          }}
+          onPress={() => deleteImage(image.uri)}>
+          <DeleteImageIcon />
+        </TouchableOpacity>
+      </View>
+    ));
+  };
+
   useEffect(() => {
     Platform.OS == 'ios'
       ? StatusBarManager.getHeight((statusBarFrameData: any) => {
@@ -276,26 +305,28 @@ function PostWriteScreen({navigation, route}: Props) {
           style={{zIndex: 100}}
         />
       </View>
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: '#EFEFF3',
+        }}
+      />
       <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Pressable
-            onPress={() => Keyboard.dismiss()}
+        <View style={[styles.inputTitle]}>
+          {/* <Image
+            style={{width: 24, height: 24, borderRadius: 12}}
+            source={{
+              uri: isAnonymous ? info?.defaultProfileImage : info?.profileImage,
+            }}
+          /> */}
+          <Text
             style={{
-              paddingHorizontal: 24,
-              paddingVertical: 12,
-              flex: 1,
+              color: '#B9BAC1',
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                style={{width: 24, height: 24, borderRadius: 12}}
-                source={{
-                  uri: isAnonymous
-                    ? info?.defaultProfileImage
-                    : info?.profileImage,
-                }}
-              />
-              <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-                <Text
+            제목
+          </Text>
+          <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+            {/* <Text
                   style={{
                     fontSize: 16,
                     paddingLeft: 8,
@@ -303,153 +334,153 @@ function PostWriteScreen({navigation, route}: Props) {
                     fontWeight: '500',
                   }}>
                   {isAnonymous ? '수정' : info?.nickname}
-                </Text>
-                {info?.isOwner && !isAnonymous && <OrangeFlag />}
-              </View>
-            </View>
-          </Pressable>
-          <Pressable
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingRight: 30,
-            }}
-            onPress={() => {
-              setIsAnonymous(current => !current);
-            }}>
-            <Text style={{marginRight: 4}}>익명</Text>
-            {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-          </Pressable>
+                </Text> */}
+            {/* {info?.isOwner && !isAnonymous && <OrangeFlag />} */}
+          </View>
         </View>
-        <ScrollView style={[styles.container]}>
+        <View style={[styles.container]}>
           <View
             style={{
               flex: 1,
             }}>
-            {info?.hasTitle && (
-              <View style={{height: 50}}>
-                <TextInput
-                  placeholder="제목을 입력하세요."
-                  placeholderTextColor="#D5DBE1"
-                  value={title}
-                  onChangeText={value => {
-                    setTitle(value);
-                    if (value.length === 20)
-                      Toast.show(
-                        '게시글 제목은 20글자까지만 입력 가능합니다.',
-                        Toast.SHORT,
-                      );
-                  }}
-                  maxLength={20}
-                  style={[fontMedium, styles.title]}
-                />
-                <View
-                  style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
-                />
-              </View>
-            )}
-            {info?.direction.content && (
+            {/*             {info?.hasTitle && ( */}
+            <View style={{height: 50}}>
               <TextInput
-                autoFocus={false}
-                placeholder={info?.direction.content}
+                placeholder="제목을 입력하세요."
                 placeholderTextColor="#D5DBE1"
-                value={content}
-                multiline={true}
+                value={title}
                 onChangeText={value => {
-                  setContent(value);
-                  if (value.length === 5000)
+                  setTitle(value);
+                  if (value.length === 20)
                     Toast.show(
-                      '게시글 내용은 5000글자까지만 입력 가능합니다.',
+                      '게시글 제목은 20글자까지만 입력 가능합니다.',
                       Toast.SHORT,
                     );
                 }}
-                maxLength={5000}
-                style={[
-                  fontRegular,
-                  styles.input,
-                  {
-                    maxHeight: isFocused
-                      ? Platform.OS == 'ios'
-                        ? info?.hasTitle
-                          ? Dimensions.get('window').height -
-                            keyboardHeight -
-                            500
-                          : Dimensions.get('window').height -
-                            keyboardHeight -
-                            250
-                        : 100000
-                      : 400,
-                  },
-                ]}
-                autoCorrect={false}
-                onFocus={(e: any) => {
-                  onInputFocus();
-                }}
-                onBlur={(e: any) => {
-                  onInputFocusOut();
-                }}
+                maxLength={20}
+                style={[fontMedium, styles.title]}
               />
-            )}
-            <Pressable
-              onPress={() => navigation.navigate('DirectionAgreeScreen')}
-              style={{
-                borderRadius: 50,
-                borderColor: '#D6D6D6',
-                borderWidth: 1,
-                alignSelf: 'center',
-                width: 'auto',
-              }}>
+              <View
+                style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
+              />
+            </View>
+            <View style={[styles.inputTitle]}>
               <Text
                 style={{
-                  color: '#6E7882',
-                  textAlign: 'center',
-                  paddingHorizontal: 12,
-                  paddingVertical: 4,
+                  color: '#B9BAC1',
                 }}>
-                수정광산 이용 방향 전문 보기
+                본문
               </Text>
-            </Pressable>
-            <View
-              style={{
-                paddingHorizontal: 24,
-                paddingVertical: 20,
-              }}>
-              <View style={styles.image}>
-                <ImageIcon />
-                <Text style={[fontMedium, styles.imageText]}>
-                  이미지 ({images.length} / 10)
-                </Text>
-              </View>
-              <ScrollView horizontal={true}>
-                <View style={{flexDirection: 'row'}}>
-                  {images?.length !== 0 &&
-                    images?.map((asset, index) => (
-                      <ImageDelete
-                        key={index}
-                        imageUri={asset.uri}
-                        deleteImage={deleteImage}
-                      />
-                    ))}
-                  <TouchableOpacity
-                    onPress={onSelectImage}
-                    style={[
-                      styles.imageSelectBox,
-                      styles.imageBox,
-                      {marginTop: 5},
-                    ]}>
-                    <View>
-                      <PhotoIcon />
-                      <Text style={[fontMedium, styles.count]}>
-                        {images?.length}/10
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+            </View>
+            <TextInput
+              autoFocus={false}
+              placeholder={`본문 내용을 입력해주세요. \n\n즐거운 수정광산 환경을 만들어 나가는 데에 동참해주세요! 이용 규정을 위반하거나, 일정 수 이상의 신고를 받을 경우 수정광산 이용이 제한될 수 있습니다.`}
+              placeholderTextColor="#D5DBE1"
+              value={content}
+              multiline={true}
+              onChangeText={value => {
+                setContent(value);
+                if (value.length === 5000)
+                  Toast.show(
+                    '게시글 내용은 5000글자까지만 입력 가능합니다.',
+                    Toast.SHORT,
+                  );
+              }}
+              maxLength={5000}
+              style={[
+                fontRegular,
+                styles.input,
+                {
+                  maxHeight: isFocused
+                    ? Platform.OS == 'ios'
+                      ? info?.hasTitle
+                        ? Dimensions.get('window').height - keyboardHeight - 500
+                        : Dimensions.get('window').height - keyboardHeight - 250
+                      : 100000
+                    : 400,
+                },
+              ]}
+              autoCorrect={false}
+              onFocus={(e: any) => {
+                onInputFocus();
+              }}
+              onBlur={(e: any) => {
+                onInputFocusOut();
+              }}
+            />
+            {/*             )} */}
+            <View style={{marginVertical: 10}}>
+              {images.length > 0 && (
+                <View>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {renderImages()}
+                  </ScrollView>
                 </View>
-              </ScrollView>
+              )}
             </View>
           </View>
-        </ScrollView>
+          <Pressable
+            onPress={() => navigation.navigate('DirectionAgreeScreen')}
+            style={{
+              borderRadius: 25,
+              backgroundColor: '#F6F6F6',
+              alignSelf: 'center',
+              width: 'auto',
+              paddingTop: 6,
+              paddingRight: 12,
+              paddingBottom: 6,
+              paddingLeft: 12,
+              marginBottom: 80,
+            }}>
+            <Text
+              style={{
+                fontWeight: '400',
+                color: '#9DA4AB',
+                textAlign: 'center',
+                paddingHorizontal: 4,
+                paddingVertical: 4,
+              }}>
+              수정광산 이용 방향 전문 보기
+            </Text>
+          </Pressable>
+        </View>
       </KeyboardAvoidingView>
+      <SafeAreaView style={styles.bottomBar}>
+        {/* <Text style={styles.bottomBarText}>Bottom Fixed Bar</Text> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            flex: 1,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity onPress={onSelectImage}>
+              <ImageIcon style={{marginLeft: 20}} />
+            </TouchableOpacity>
+            <PostVoteIcon style={{marginHorizontal: 20}} />
+          </View>
+          <Pressable
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingRight: 20,
+            }}
+            onPress={() => {
+              setIsAnonymous(current => !current);
+            }}>
+            <Text style={{fontSize: 14, fontWeight: '500', marginRight: 4}}>
+              익명
+            </Text>
+            {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+          </Pressable>
+        </View>
+      </SafeAreaView>
       <ModalBottom
         modalVisible={goBackWarning}
         setModalVisible={setGoBackWarning}
@@ -470,26 +501,39 @@ function PostWriteScreen({navigation, route}: Props) {
 }
 
 const styles = StyleSheet.create({
-  submit: {fontSize: 17, marginRight: 8},
+  submit: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginRight: 8,
+  },
+  inputTitle: {
+    fontSize: 12,
+    fontWeight: '500',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 15,
+    fontSize: 16,
+    fontWeight: '600',
     paddingVertical: 15,
     paddingHorizontal: 24,
-    color: '#222222',
+    color: '#3A424E',
   },
   input: {
     // minHeight: Dimensions.get('window').height - 400,
-    minHeight: 400,
+    minHeight: 100,
     // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
-    fontSize: 15,
+    fontSize: 14,
     paddingTop: 14,
+    fontWeight: '400',
     paddingHorizontal: 24,
     textAlignVertical: 'top',
-    color: '#222222',
+    color: '#3A424E',
+    //backgroundColor: 'skyblue',
   },
   image: {
     marginTop: 19,
@@ -514,6 +558,22 @@ const styles = StyleSheet.create({
   count: {
     fontSize: 8,
     color: '#d1d1d1',
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 52,
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFF3',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bottomBarText: {
+    color: 'white',
+    fontSize: 18,
   },
 });
 

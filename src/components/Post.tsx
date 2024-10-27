@@ -16,18 +16,18 @@ import EmptyHeart from '../../resources/icon/EmptyHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
-import PostComment from '../../resources/icon/PostComment';
+import {PostComment} from '../../resources/icon/PostComment';
 import ThreeDots from './ThreeDots';
 import Scrap, {NoScrap} from '../../resources/icon/Scrap';
 import PostItem from './PostItem';
 import PostDto from '../classes/PostDto';
 import SpinningThreeDots from './SpinningThreeDots';
-import TrashIcon from '../../resources/icon/TrashIcon';
+import {TrashIcon} from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
 import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
-import {SelectModalBottom} from '../components/SelectModalBottom';
+import {ReportModalBottom} from '../components/ReportModalBottom';
 import NoReport, {Report} from '../../resources/icon/Report';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {useEffect} from 'react';
@@ -42,7 +42,8 @@ import {setUserMute} from '../common/boardApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import {logout} from '../common/authApi';
 import {getMessageContent, postChatRoom} from '../common/messageApi';
-import MessageIcon from '../../resources/icon/Message';
+import {MessageIcon, BlackMessageIcon} from '../../resources/icon/Message';
+import CustomToast from './CustomToast';
 interface Props {
   navigation: any;
   post: any;
@@ -72,6 +73,15 @@ function Post({
     useState<boolean>(false);
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000); // Hide after 3 seconds
+  };
+
   const closePhotoModal = () => {
     if (isPhotoVisible) {
       setIsPhotoVisible(false);
@@ -84,13 +94,13 @@ function Post({
     return array;
   };
 
-  const handlePostScrapComponent = (
+  /* const handlePostScrapComponent = (
     <View style={{marginRight: 16}}>
       <Pressable hitSlop={10} onPress={() => handlePostScrap(data.postId)}>
         {data?.isScraped ? <Scrap /> : <NoScrap />}
       </Pressable>
     </View>
-  );
+  ); */
 
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
@@ -98,9 +108,13 @@ function Post({
       postId: data.postId,
       isAnonymous: isAnonymous,
     };
+    console.log('messageData', messageData);
+
     const response = await postChatRoom(messageData);
+    console.log('response', response);
     setChatResponse(response);
     const block = await getMessageContent(response.data.roomId, 0);
+    console.log('block', block);
 
     if (!block.data.isBlocked) {
       setMessageModalVisible(true);
@@ -129,17 +143,19 @@ function Post({
       <ModalBottom
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
-        content={`작성한 게시글을 삭제하시겠습니까?`}
-        purpleButtonText="삭제"
+        title={`작성한 게시글을 삭제하시겠어요?`}
+        content={`- 삭제 후에는 되돌릴 수 없습니다.`}
+        purpleButtonText="삭제할게요."
         purpleButtonFunc={() => {
           if (handlePostDelete(data.postId)) {
             setDeleteModalVisible(false);
-            setTimeout(function () {
+            showToast('작성하신 게시글이 삭제되었습니다.');
+            /* setTimeout(function () {
               Toast.show(
                 '작성하신 게시글이 성공적으로 삭제되었습니다.',
                 Toast.SHORT,
               );
-            }, 100);
+            }, 100); */
             // navigation.goBack();
             navigation.pop();
             navigation.pop();
@@ -147,17 +163,19 @@ function Post({
             console.log('게시글 삭제 성공');
           }
         }}
-        whiteButtonText="취소"
+        /* whiteButtonText="취소"
         whiteButtonFunc={() => setDeleteModalVisible(false)}
-        setDim={false}
+        setDim={false} */
       />
-      <Pressable
-        onPress={() => {
-          setDeleteModalVisible(true);
-          setComponentModalVisible(deleteModalVisible);
-        }}>
-        <TrashIcon style={{marginRight: 12}} />
-      </Pressable>
+      {data?.isAuthor && (
+        <Pressable
+          onPress={() => {
+            setDeleteModalVisible(true);
+            setComponentModalVisible(deleteModalVisible);
+          }}>
+          <TrashIcon style={{marginRight: 12}} />
+        </Pressable>
+      )}
     </>
   );
   const handleOthersPostComponent = (
@@ -208,7 +226,7 @@ function Post({
         whiteButtonFunc={() => setMuteModalVisible(false)}
         setDim={false}
       />
-      <SelectModalBottom
+      <ReportModalBottom
         modalVisible={reportModalVisible}
         setModalVisible={setReportModalVisible}
         title={`게시글 신고`}
@@ -264,6 +282,7 @@ function Post({
       </View>
     </>
   );
+  console.log(post);
   return (
     <>
       <View style={styles.postContainer}>
@@ -277,9 +296,16 @@ function Post({
               <Text
                 style={[
                   fontMedium,
-                  {fontSize: 16, paddingLeft: 8, fontWeight: `500`},
+                  {fontSize: 14, paddingLeft: 8, fontWeight: `500`},
                 ]}>
                 {data?.displayName}
+              </Text>
+              <Text
+                style={[
+                  fontRegular,
+                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 8},
+                ]}>
+                {data?.createdAt}
               </Text>
             </View>
             {!data?.isAnonymous &&
@@ -291,13 +317,13 @@ function Post({
               ))}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <SpinningThreeDots
+            {/* <SpinningThreeDots
               boardId={data?.boardId}
               isMine={data?.isAuthor}
               handleDefaultModeComponent={handlePostScrapComponent}
               handleOptionModeIsMineComponent={handlePostDeleteComponent}
               handleOptionModeIsNotMineComponent={handleOthersPostComponent}
-            />
+            /> */}
           </View>
         </View>
         {data?.hasTitle && (
@@ -314,13 +340,6 @@ function Post({
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
         </View>
-        <Text
-          style={[
-            fontRegular,
-            {color: '#949494', fontSize: 12, marginTop: 12},
-          ]}>
-          {data?.createdAt}
-        </Text>
         {data?.thumbnails.length !== 0 && (
           <View style={{flexDirection: 'row', marginTop: 16}}>
             <ScrollView
@@ -349,24 +368,123 @@ function Post({
             </ScrollView>
           </View>
         )}
-        {data?.boardId !== 93 && data?.boardId !== 94 && data?.boardId !== 95 && (
+      </View>
+      {data?.boardId !== 93 && data?.boardId !== 94 && data?.boardId !== 95 && (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: 15,
+            height: 44,
+            borderTopWidth: 1,
+            borderTopColor: '#EFEFF3',
+            //backgroundColor: '#EFEFF3',
+          }}>
           <View
-            style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: 20,
+            }}>
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
               onPress={() => handlePostLike(data.postId)}>
               {data?.isLiked ? <PostLike /> : <PostUnlike />}
             </Pressable>
+            <Text
+              style={[
+                fontRegular,
+                {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+              ]}>
+              좋아요
+            </Text>
             <Text style={[fontRegular, styles.postLike]}>
               {data?.likeCount}
             </Text>
             <PostComment />
+            <Text
+              style={[
+                fontRegular,
+                {
+                  color: '#9DA4AB',
+                  marginRight: 1,
+                  marginLeft: 5,
+                },
+              ]}>
+              댓글
+            </Text>
             <Text style={[fontRegular, styles.postComment]}>
               {data?.commentCount}
             </Text>
           </View>
-        )}
-      </View>
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                //backgroundColor: 'skyblue',
+              }}>
+              {data?.isReported ? (
+                <Pressable
+                  onPress={() => showToast('이미 신고한 게시글입니다.')}>
+                  <Report style={{marginRight: 16}} />
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={() => {
+                    setReportModalVisible(true);
+                    setComponentModalVisible(reportModalVisible);
+                  }}>
+                  <NoReport style={{marginRight: 16}} />
+                </Pressable>
+              )}
+              <ReportModalBottom
+                modalVisible={reportModalVisible}
+                setModalVisible={setReportModalVisible}
+                title="해당 게시글을 신고하시겠어요?"
+                purpleButtonText="네, 신고할게요."
+                reportId={data?.postId}
+                reportFunc={handlePostReport}
+                whiteButtonText="아니요."
+                whiteButtonFunc={() => setReportModalVisible(false)}
+                setDim={false}
+                modalType="게시글"
+              />
+              <Pressable
+                onPress={() => {
+                  blockedCheck(data.isAnonymous);
+                }}>
+                <MessageIcon
+                  style={{
+                    marginRight: 16,
+                  }}
+                />
+              </Pressable>
+              <Pressable
+                hitSlop={10}
+                onPress={() => handlePostScrap(data.postId)}>
+                {data?.isScraped ? (
+                  <Scrap style={{marginRight: 16}} />
+                ) : (
+                  <NoScrap
+                    style={{
+                      marginRight: 16,
+                    }}
+                  />
+                )}
+              </Pressable>
+              {data?.isAuthor ? handlePostDeleteComponent : null}
+            </View>
+            <CustomToast
+              visible={toastVisible}
+              message={toastMessage}
+              onClose={() => setToastVisible(false)}
+            />
+          </View>
+        </View>
+      )}
+
       {/* <View
         style={{borderWidth: 1, borderColor: '#F4F4F4', marginTop: 28}}></View> */}
     </>
@@ -387,14 +505,16 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   postLike: {
-    fontSize: 13,
-    marginLeft: 5,
-    marginRight: 11,
+    marginLeft: 2,
+    fontSize: 14,
+    marginRight: 16,
+    color: '#9DA4AB',
   },
   postComment: {
-    fontSize: 13,
-    marginLeft: 5,
+    fontSize: 14,
+    marginLeft: 2,
     width: 35,
+    color: '#9DA4AB',
   },
 });
 
