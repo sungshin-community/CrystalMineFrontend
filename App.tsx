@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Pressable, TouchableHighlight} from 'react-native';
+import {
+  Pressable,
+  TouchableHighlight,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {StatusBar, Platform} from 'react-native';
 import WaterMark from './src/components/WaterMark';
@@ -1815,13 +1822,13 @@ const App = () => {
                 name="ProfileModify"
                 component={ProfileModify}
                 options={{
-                  title: '기본프로필수정',
-                  headerTitleStyle: {
-                    fontWeight: 'bold',
-                  },
+                  headerTitle: () => (
+                    <Text style={styles.headerTitle}>기본프로필수정</Text>
+                  ),
                   headerTitleAlign: 'left',
                 }}
               />
+
               <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}
@@ -3592,13 +3599,13 @@ const App = () => {
                 name="ProfileModify"
                 component={ProfileModify}
                 options={{
-                  title: '기본프로필수정',
-                  headerTitleStyle: {
-                    fontWeight: 'bold',
-                  },
+                  headerTitle: () => (
+                    <Text style={styles.headerTitle}>기본프로필수정</Text>
+                  ),
                   headerTitleAlign: 'left',
                 }}
               />
+
               <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}
@@ -3706,3 +3713,15 @@ const App = () => {
   );
 };
 export default App;
+const styles = StyleSheet.create({
+  headerTitle: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    textAlign: 'left',
+    marginLeft: -16,
+  },
+  backButton: {
+    marginLeft: 16,
+    color: '#007AFF',
+  },
+});

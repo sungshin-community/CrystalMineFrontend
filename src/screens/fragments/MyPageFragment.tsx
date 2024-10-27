@@ -281,7 +281,7 @@ const MyPageFragment = ({navigation}: Props) => {
                             fontFamily: 'SpoqaHanSansNeo-Regular',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
-                          기본프로필
+                          기본 프로필
                         </Text>
                         <Text
                           style={{
@@ -296,9 +296,48 @@ const MyPageFragment = ({navigation}: Props) => {
                       </View>
                     </View>
                     <View style={{width: 20}} />
-                    <TouchableOpacity onPress={handleProfileModifySujeonggu}>
-                      <ProfileIcon />
-                    </TouchableOpacity>
+                    {/* 수정구 프로필 */}
+                    <View style={{position: 'relative'}}>
+                      <TouchableOpacity onPress={handleProfileModifySujeonggu}>
+                        <ProfileIcon />
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          position: 'absolute',
+                          top: 70,
+                          left: 0,
+                          right: 0,
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 17,
+                            fontFamily: 'SpoqaHanSansNeo-Bold',
+                            marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                          }}>
+                          {user?.nickname}
+                        </Text>
+                        <Text
+                          style={{
+                            marginTop: 3,
+                            fontSize: 13,
+                            fontFamily: 'SpoqaHanSansNeo-Regular',
+                            marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                          }}>
+                          수정구 전용 프로필
+                        </Text>
+                        <Text
+                          style={{
+                            marginTop: 3,
+                            fontSize: 13,
+                            fontFamily: 'SpoqaHanSansNeo-Regular',
+                            marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                            color: '#89919A',
+                          }}>
+                          {user?.department}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                   {/* 내 활동 부분 */}
                   <Text
@@ -381,7 +420,7 @@ const MyPageFragment = ({navigation}: Props) => {
                           fontSize: 13,
                           fontFamily: 'SpoqaHanSansNeo-Regular',
                         }}>
-                        정회원 인증하기
+                        정회원 인증
                       </Text>
                     </View>
                     <View
@@ -476,7 +515,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   }
                 }}>
                 <View style={styles.menu}>
-                  <Text style={styles.menuText}>정회원 인증하기</Text>
+                  <Text style={styles.menuText}>정회원 인증</Text>
                   <View
                     style={{
                       flexDirection: 'row',
