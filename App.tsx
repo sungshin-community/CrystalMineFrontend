@@ -94,6 +94,8 @@ import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 import {MobileAds} from 'react-native-google-mobile-ads';
 import MessageScreen from './src/screens/message/MessageScreen';
 
+import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -104,7 +106,7 @@ const App = () => {
     });
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreAllLogs();
-  console.reportErrorsAsExceptions = false;
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -1867,6 +1869,34 @@ const App = () => {
                 headerBackVisible: false,
               }}
               initialRouteName="GlobalNavbar">
+              <Stack.Screen
+                name="SpherePostScreen"
+                component={SpherePostScreen}
+                options={({navigation}) => ({
+                  title: '수정구',
+                  headerTintColor: '#222222',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               <Stack.Screen
                 name="ErrorScreen"
                 component={ErrorScreen}
