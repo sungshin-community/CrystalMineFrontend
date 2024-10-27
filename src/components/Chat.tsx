@@ -29,9 +29,25 @@ export const formatDate = (day: string) => {
 export const DateBox = (time: any) => {
   return (
     <View style={{alignItems: 'center', marginBottom: 14, marginTop: 20}}>
-      <Text style={{fontSize: 12, fontWeight: '500', color: '#3A424E'}}>
-        {formatDate(time.time)}
-      </Text>
+      <View
+        style={{
+          backgroundColor: '#EFEFF3',
+          paddingVertical: 8,
+          paddingHorizontal: 12,
+          borderRadius: 15,
+          overflow: 'hidden',
+          elevation: 0,
+        }}>
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: '500',
+            color: '#89919A',
+            textAlign: 'center',
+          }}>
+          {formatDate(time.time)}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -59,7 +75,7 @@ export const MyChat = (items: any) => {
             />
           </Pressable>
         ) : (
-          <View style={[styles.chat, {backgroundColor: '#E5D2FC'}]}>
+          <View style={[styles.chat, {backgroundColor: '#F3EBFC'}]}>
             <Text>{data.chat}</Text>
           </View>
         )}

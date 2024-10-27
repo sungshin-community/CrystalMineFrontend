@@ -17,7 +17,7 @@ import {View} from 'react-native-animatable';
 import * as StompJs from '@stomp/stompjs';
 import CameraIcon from '../../../resources/icon/CameraIcon';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
-import ImageIcon from '../../../resources/icon/ImageIcon';
+import Plus from '../../../resources/icon/Plus';
 import {fontRegular} from '../../common/font';
 import {LeftArrow} from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
@@ -73,9 +73,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const camera = useRef(null);
   const [text, setText] = useState<string>('');
   const [userID, setUserId] = useState<number>(0);
-  // 채팅내역 조회 API 반환 데이터
   const [chatData, setChatData] = useState<Message>();
-  // 채팅만 뽑아낸 데이터
   const [chat, setChat] = useState<Chat[]>();
   const [roomId, setRoomId] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
@@ -98,7 +96,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       } else if (getHundredsDigit(response.status) === 2) {
         let socketToken;
 
-        //채팅방 데이터 받아오기
         let getRoomId = route.params?.roomId;
         const result = await getMessageContent(getRoomId, page);
 
@@ -124,10 +121,9 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           }, 100);
         }
 
-        // 소켓 연결
         console.log('in connect22');
         let wsUrl = encodeURI(
-          'ws://3.34.16.137:8787/ws?roomId=' +
+          'ws://15.165.252.35:8787/ws?roomId=' +
             getRoomId +
             '&accessToken=Bearer ' +
             socketToken,
@@ -216,7 +212,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     setText('');
   };
 
-  // 다음 페이지 채팅 내역 불러오기
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
     try {
@@ -237,7 +232,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       console.log(error);
     }
   };
-  // 헤더
+
   const HeaderTitle = () => {
     return (
       <View style={{flexDirection: 'row'}}>
@@ -247,10 +242,11 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       </View>
     );
   };
-  // 키보드
+
   const onKeyboardDidshow = (e: KeyboardEvent) => {
     setKeyboardHeight(e.endCoordinates.height);
   };
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       'keyboardDidShow',
@@ -260,19 +256,16 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       showSubscription.remove();
     };
   }, []);
-  // Input Focus
+
   const onInputFocus = () => {
     setIsFocused(true);
   };
+
   const onInputFocusOut = () => {
     setIsFocused(false);
     Keyboard.dismiss();
   };
-  // const requestImagePermission = () => {
-  //   request(PERMISSIONS.IOS.CAMERA).then(response => {
-  //     console.log(response, 'response');
-  //   });
-  // };
+
   const checkImagePermission = async () => {
     request(PERMISSIONS.IOS.CAMERA).then(response => {
       console.log(response, 'response');
@@ -306,7 +299,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                 },
               );
             }
-
             break;
           case RESULTS.BLOCKED:
             Toast.show('사진 사용 권한을 확인해주세요.');
@@ -319,9 +311,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         console.log(error);
       });
   };
-  // 이미지 선택
+
   const onSelectImage = () => {
-    // requestImagePermission();
     checkImagePermission();
     if (imagePermission) {
       launchImageLibrary(
@@ -342,9 +333,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       );
     }
   };
-  // 사진 찍기
+
   const onPressButton = async () => {
-    // 카메라 사용을 위한 권한 확인
     const checkPermission = async () => {
       const cameraPermission = await Camera.getCameraPermissionStatus();
       if (cameraPermission === 'not-determined') {
@@ -365,19 +355,19 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     });
     setPhotoPath(photo.path);
   };
-  // 사진 결정
+
   const onCameraSendButton = () => {
     if (photoPath) {
       setShowCamera(false);
       console.log('사진을 보냈습니다.');
     }
   };
-  // 선택한 사진 취소
+
   const DeleteImage = () => {
     setImages([]);
     setPhotoPath(null);
   };
-  // 전송버튼
+
   const onSubmitPress = async () => {
     setIsLoading(true);
     if (images.length !== 0 || photoPath !== null) {
@@ -402,6 +392,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
 
     setIsLoading(false);
   };
+
   const outHandler = async () => {
     try {
       deleteChatRoom(roomId);
@@ -419,10 +410,10 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       console.error('Failed to leave chat room:', error);
     }
   };
+
   return (
     <>
       {device && showCamera ? (
-        // 카메라 화면
         <>
           <Camera
             style={StyleSheet.absoluteFill}
@@ -467,21 +458,28 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       ) : chatData ? (
         <View style={styles.container}>
           <TouchableOpacity
-            onPress={async () => {
-              navigation.push('PostScreen', {
-                postId: chatData.postId,
-              });
-            }}
-            style={styles.post}>
-            <Text style={styles.postTitle}>{chatData.postBoardName}</Text>
-            <Text
-              ellipsizeMode={'tail'}
-              numberOfLines={1}
-              style={styles.postContent}>
-              {chatData.postContent}
-            </Text>
-
-            <LeftArrow style={{marginTop: 2}} />
+            onPress={() =>
+              navigation.push('PostScreen', {postId: chatData.postId})
+            }
+            style={styles.postInfo}>
+            <View
+              style={[
+                styles.postInfoContent,
+                {flexDirection: 'row', alignItems: 'center'},
+              ]}>
+              <Text style={[styles.postInfoBoardName, {marginRight: 8}]}>
+                {chatData.postBoardName}
+              </Text>
+              <Text
+                style={styles.postInfoTitle}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {chatData.postContent}
+              </Text>
+            </View>
+            <View style={styles.arrowContainer}>
+              <LeftArrow style={styles.arrow} />
+            </View>
           </TouchableOpacity>
           <View style={{backgroundColor: '#FFFFFF'}}>
             {isNextPageLoading && (
@@ -493,7 +491,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               />
             )}
           </View>
-          {/* 채팅 내역 */}
           <FlatList
             data={chat}
             keyExtractor={(item, index) => index.toString()}
@@ -545,23 +542,13 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               <View style={styles.Icon}>
                 <Pressable
                   onPress={onSelectImage}
-                  style={{marginRight: 17}}
+                  style={{marginRight: 17, marginTop: -40}}
                   hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
-                  <ImageIcon width={24} height={24} />
+                  <Plus />
                 </Pressable>
-                {/* <Pressable
-                  onPress={() => setShowCamera(true)}
-                  style={{marginRight: 15}}
-                  hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
-                  <CameraIcon />
-                </Pressable> */}
               </View>
-              <View
-                style={[
-                  styles.inputBox,
-                  {flexDirection: 'row', justifyContent: 'space-between'},
-                ]}>
-                {/* 사진 전송 전 미리보기 */}
+
+              <View style={styles.inputBox}>
                 {photoPath || images.length > 0 ? (
                   <View
                     style={{
@@ -581,7 +568,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                         style={styles.imageBox}
                       />
                     )}
-
                     <Pressable
                       onPress={() => {
                         DeleteImage();
@@ -596,56 +582,53 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                     </Pressable>
                   </View>
                 ) : (
-                  <TextInput
-                    placeholder={
-                      !chatData.isBlocked
-                        ? '메시지를 입력해 주세요.'
-                        : '쪽지를 보낼 수 없는 상대입니다.'
-                    }
-                    placeholderTextColor="#87919B"
-                    multiline={true}
-                    maxLength={500}
-                    style={[fontRegular, styles.input]}
-                    value={text}
-                    editable={chatData.isBlocked ? false : true}
-                    onChangeText={setText}
-                    onFocus={(e: any) => {
-                      onInputFocus();
-                    }}
-                    onBlur={(e: any) => {
-                      onInputFocusOut();
-                    }}
-                  />
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      placeholder={
+                        !chatData.isBlocked
+                          ? ''
+                          : '쪽지를 보낼 수 없는 상대입니다.'
+                      }
+                      placeholderTextColor="#87919B"
+                      multiline={true}
+                      maxLength={500}
+                      style={[fontRegular, styles.input]}
+                      value={text}
+                      editable={chatData.isBlocked ? false : true}
+                      onChangeText={setText}
+                      onFocus={onInputFocus}
+                      onBlur={onInputFocusOut}
+                    />
+                  </View>
                 )}
 
                 <View
                   style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
-                  <Text>
-                    <Pressable
-                      onPress={() => onSubmitPress()}
-                      style={{
-                        paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                        bottom: 0,
-                      }}>
-                      {isLoading ? (
-                        <ActivityIndicator
-                          size="large"
-                          color={'#A055FF'}
-                          animating={isLoading}
-                          style={{zIndex: 100}}
-                        />
-                      ) : (
-                        <CommentSendIcon
-                          width={28}
-                          fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
-                        />
-                      )}
-                    </Pressable>
-                  </Text>
+                  <Pressable
+                    onPress={() => onSubmitPress()}
+                    style={{
+                      paddingBottom: Platform.OS === 'ios' ? 3 : 5,
+                      bottom: 0,
+                    }}>
+                    {isLoading ? (
+                      <ActivityIndicator
+                        size="large"
+                        color={'#A055FF'}
+                        animating={isLoading}
+                        style={{zIndex: 100}}
+                      />
+                    ) : (
+                      <CommentSendIcon
+                        width={28}
+                        fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
+                      />
+                    )}
+                  </Pressable>
                 </View>
               </View>
             </View>
           </View>
+
           {menu && (
             <ModalBottom
               modalVisible={menu}
@@ -691,8 +674,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               modalVisible={blockModalVisible}
               setModalVisible={setBlockModalVisible}
               content="차단 시 상대방과 더 이상 쪽지를 주고받을 수 없으며,
-              차단 해제가 불가능합니다.
-              정말로 차단하시겠습니까?"
+             차단 해제가 불가능합니다.
+             정말로 차단하시겠습니까?"
               purpleButtonText="차단하기"
               whiteButtonText="취소"
               purpleButtonFunc={() => {
@@ -708,8 +691,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     </>
   );
 };
-
-export default MessageScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -752,13 +733,20 @@ const styles = StyleSheet.create({
   inputBox: {
     backgroundColor: '#F2F2F2',
     width: Dimensions.get('window').width - 100,
-    borderRadius: 25,
+    borderRadius: 12,
     paddingLeft: 14,
     paddingRight: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    flex: 1,
+    marginRight: 10,
   },
   input: {
     fontSize: 13,
-    width: Dimensions.get('window').width - 170,
+    width: Dimensions.get('window').width - 200,
     paddingVertical: 5,
     paddingTop: Platform.OS == 'ios' ? 13 : 0,
     minHeight: 44,
@@ -818,4 +806,33 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginBottom: 8,
   },
+  postInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 9,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EAEAEA',
+    backgroundColor: '#F7F5FC',
+  },
+  postInfoContent: {
+    flex: 1,
+  },
+  postInfoBoardName: {
+    fontSize: 12,
+    color: '#666666',
+    // marginBottom: 4,
+  },
+  postInfoTitle: {
+    fontSize: 14,
+    color: '#3A424E',
+    fontWeight: '500',
+    flex: 1,
+  },
+  arrowContainer: {
+    marginLeft: 8,
+  },
 });
+
+export default MessageScreen;
