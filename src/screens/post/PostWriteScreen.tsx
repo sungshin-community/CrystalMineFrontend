@@ -66,6 +66,8 @@ interface Direction {
   title: string;
 }
 
+/* boardId 전달 필요(제목 유/무) */
+
 function PostWriteScreen({navigation, route}: Props) {
   const formData = new FormData();
   const [boardId, setBoardId] = useState<number>(0);
@@ -73,7 +75,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [content, setContent] = useState<string>('');
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);

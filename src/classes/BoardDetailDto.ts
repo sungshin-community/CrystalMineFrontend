@@ -13,6 +13,8 @@ export interface ContentPreviewDto {
   isAnonymous: boolean;
   isLiked: boolean;
   likeCount: number;
+  newCommentAuthor: string;
+  newCommentContent: string;
   imageCount: number;
   commentCount: number;
   isDeleted: number;
