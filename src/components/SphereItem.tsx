@@ -10,9 +10,9 @@ import {useNavigation} from '@react-navigation/native';
 
 interface SphereItemProps {
   isQuestion?: boolean;
-  time: string;
   post: {
     content: string;
+    createdAt: string;
     department: string;
     likeCount: number;
     liked: boolean;
@@ -20,8 +20,8 @@ interface SphereItemProps {
     profileImage: string;
     ptCommentCount: number;
     ptPostId: number;
-    thumbnail: string | null; //처리 수정
-    title: string | null; //처리 수정
+    thumbnail: string;
+    title: string;
     userJob: string;
     userYear: number;
     isSelected?: boolean;
@@ -32,7 +32,6 @@ interface SphereItemProps {
 export default function SphereItem({
   isQuestion = false,
   post,
-  time,
 }: SphereItemProps) {
   const {
     content,
@@ -42,6 +41,7 @@ export default function SphereItem({
     nickname,
     profileImage,
     ptCommentCount,
+    createdAt,
     ptPostId,
     thumbnail,
     title,
@@ -59,7 +59,7 @@ export default function SphereItem({
     <View style={{paddingHorizontal: 16}}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('SpherePostScreen', {isQuestion}); // router 로직 수정 필요
+          navigation.navigate('SpherePostScreen', {isQuestion, ptPostId});
         }}>
         <View
           style={{
