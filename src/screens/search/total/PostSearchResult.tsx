@@ -16,7 +16,7 @@ import MyPostItem from '../../../components/MyPostItem';
 import {MyPostContentDto} from '../../../classes/board/MyPostDto';
 import SpinningThreeDots from '../../../components/SpinningThreeDots';
 import SearchIcon from '../../../../resources/icon/SearchIcon';
-import TrashIcon from '../../../../resources/icon/TrashIcon';
+import {TrashIcon} from '../../../../resources/icon/TrashIcon';
 import CancelButton from '../../../../resources/icon/Cancel';
 import {ModalBottom} from '../../../components/ModalBottom';
 import {
