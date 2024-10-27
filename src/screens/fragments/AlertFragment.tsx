@@ -14,7 +14,7 @@ const AlertFragment = () => {
       case 1:
         return <LookScreen />;
       case 2:
-        return <LookScreen isQuestion />;
+        return <LookScreen isQuestion={true} />;
       case 3:
         return <Text>소희 개발 파트</Text>;
       case 4:
@@ -34,5 +34,3 @@ const AlertFragment = () => {
 };
 
 export default AlertFragment;
-
-// 스크롤 범위 문의하기
