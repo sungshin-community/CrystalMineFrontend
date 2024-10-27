@@ -39,6 +39,7 @@ import TotalSearchResult from './src/screens/search/total/TotalSearchResult';
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
 import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
+import BoardScreen from './src/screens/board/BoardScreen';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
@@ -850,6 +851,35 @@ const App = () => {
                 component={UpdateBoard}
                 options={({navigation}) => ({
                   title: '게시판 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="BoardScreen"
+                component={BoardScreen}
+                options={({navigation}) => ({
+                  title: '게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {

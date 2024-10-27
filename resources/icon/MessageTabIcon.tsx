@@ -1,18 +1,31 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
+import tinycolor from 'tinycolor2'; // 색상 조정 라이브러리
 
-const MessageTabIcon = (props: any) => (
-  <Svg
-    width={26}
-    height={21}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}>
-    <Path
-      d="M23.058.502H2.768A2.542 2.542 0 0 0 .232 3.035v15.2a2.542 2.542 0 0 0 2.536 2.532h20.29a2.542 2.542 0 0 0 2.536-2.533V3.035A2.542 2.542 0 0 0 23.058.502Zm-.508 5.383-8.293 5.18c-.824.52-1.864.52-2.688 0l-8.294-5.18a1.083 1.083 0 0 1-.507-.912c0-.849.926-1.355 1.648-.912l8.497 5.307 8.496-5.307c.723-.443 1.649.063 1.649.912 0 .367-.19.71-.508.912Z"
-      fill={props.color}
-    />
-  </Svg>
-);
+const MessageTabIcon = (props: any) => {
+  const darkenColor = (color: string, amount: number) => {
+    return tinycolor(color).darken(amount).toString();
+  };
+
+  const fillColor = props.color;
+  const darkFillColor = darkenColor(fillColor, 5);
+
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="24"
+      fill="none"
+      viewBox="0 0 25 24"
+      {...props}>
+      <Path
+        fill={darkFillColor}
+        d="M24.998 21.579V10.2a3.947 3.947 0 00-3.947-3.947H9.23a3.968 3.968 0 00-3.968 3.968V17.355a2.646 2.646 0 002.645 2.646h10.868l4.186 2.69a1.323 1.323 0 002.038-1.112z"></Path>
+      <Path
+        fill={fillColor}
+        d="M17.084 0H3.968A3.968 3.968 0 000 3.968v12.44a1.323 1.323 0 002.065 1.095l3.198-2.169V10.221a3.968 3.968 0 013.968-3.968h11.821V3.968A3.968 3.968 0 0017.084 0z"></Path>
+    </Svg>
+  );
+};
 
 export default MessageTabIcon;

@@ -162,7 +162,9 @@ const MessageFragment = ({navigation}: Props) => {
     }
 
     return () => {
-      messageClient.current.deactivate();
+      if (messageClient.current && messageClient.current.deactivate) {
+        messageClient.current.deactivate();
+      }
       setEdit(false);
       setSort(false);
       setSetting(false);
