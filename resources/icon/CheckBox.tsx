@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Svg, { Circle, Path, Rect } from 'react-native-svg';
+import Svg, {Circle, Path, Rect} from 'react-native-svg';
 
 export function RoundUnchecked(props: any) {
   return (
@@ -83,9 +83,16 @@ export function RectangleUnchecked(props: any) {
       height={18}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <Rect x={0.5} y={0.5} width={17} height={17} rx={4.5} stroke="#A055FF" />
+      {...props}>
+      <Rect
+        x={0.5}
+        y={0.5}
+        width={17}
+        height={17}
+        rx={4.5}
+        stroke="#CECFD6"
+        strokeWidth={1.5}
+      />
     </Svg>
   );
 }
@@ -97,8 +104,7 @@ export function RectangleChecked(props: any) {
       height={18}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+      {...props}>
       <Path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -10,12 +10,14 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import Dots from '../../resources/icon/Dots';
+import GreyDots from '../../resources/icon/GreyDots';
 interface Props {
   handleDefaultModeComponent?: any;
   isMine?: boolean;
   handleOptionModeIsMineComponent?: any;
   handleOptionModeIsNotMineComponent?: any;
   boardId: number;
+  isGrey?: boolean;
 }
 function SpinningThreeDots({
   boardId,
@@ -23,6 +25,7 @@ function SpinningThreeDots({
   isMine,
   handleOptionModeIsMineComponent,
   handleOptionModeIsNotMineComponent,
+  isGrey,
 }: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
@@ -80,7 +83,7 @@ function SpinningThreeDots({
                 setIsOptionState(!isOptionState);
               }}>
               <Animated.View style={animatedStyle}>
-                <Dots />
+                {isGrey ? <GreyDots /> : <Dots />}
               </Animated.View>
             </Pressable>
           </View>

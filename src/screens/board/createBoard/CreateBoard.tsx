@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CommonActions} from '@react-navigation/native';
@@ -25,7 +26,11 @@ import {
   RectangleChecked,
   RectangleUnchecked,
 } from '../../../../resources/icon/CheckBox';
-
+import {
+  GreyBigFoldButton,
+  GreyBigSpreadButton,
+} from '../../../../resources/icon/Button';
+import {PurpleRoundButton, CustomButton} from '../../../components/Button';
 type RootStackParamList = {
   PostListScreen: {boardId: number};
 };
@@ -37,6 +42,20 @@ function CreateBoard({navigation}: Props) {
   const [hotable, setHotable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [boardType, setBoardType] = useState('제목 + 본문');
+  const [isSpread, setIsSpread] = useState(false);
+
+  const boardTypes = [
+    {id: '1', label: '제목 + 본문'},
+    {id: '2', label: '본문'},
+  ];
+
+  const handleSelectBoardType = type => {
+    setBoardType(type);
+    setIsDropdownVisible(false);
+    setIsSpread(true);
+  };
 
   const onSubmitPress = async (
     boardName: string,
@@ -70,7 +89,7 @@ function CreateBoard({navigation}: Props) {
     setIsSubmitState(false);
   }, [hotable, boardIntroduction, isSubmitState]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
@@ -91,7 +110,7 @@ function CreateBoard({navigation}: Props) {
         </Pressable>
       ),
     });
-  }, [navigation, boardName, boardIntroduction]);
+  }, [navigation, boardName, boardIntroduction]); */
 
   return (
     <>
@@ -104,6 +123,7 @@ function CreateBoard({navigation}: Props) {
           right: 0,
           top: 0,
           bottom: 0,
+          backgroundColor: '#000',
         }}>
         <ActivityIndicator
           size="large"
@@ -114,10 +134,43 @@ function CreateBoard({navigation}: Props) {
       </View>
       <View style={styles.container}>
         <View style={{marginHorizontal: 24, paddingTop: 20}}>
-          <Text style={[fontMedium, {fontSize: 15}]}>게시판 이름</Text>
+          <Text style={[fontMedium, {fontSize: 16, paddingBottom: 12}]}>
+            게시판 형태<Text style={styles.asterisk}> *</Text>
+          </Text>
+          <TouchableOpacity
+            style={styles.selectButton}
+            onPress={() => {
+              setIsDropdownVisible(!isDropdownVisible);
+              setIsSpread(!isSpread);
+            }}>
+            <Text style={{color: '#B9BAC1', fontSize: 14}}>{boardType}</Text>
+            {isSpread ? <GreyBigFoldButton /> : <GreyBigSpreadButton />}
+          </TouchableOpacity>
+          {isDropdownVisible && (
+            <View style={styles.dropdownContainer}>
+              <FlatList
+                data={boardTypes}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    style={styles.optionButton}
+                    onPress={() => handleSelectBoardType(item.label)}>
+                    <Text style={styles.optionText}>{item.label}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          )}
+          <Text
+            style={[
+              fontMedium,
+              {fontSize: 16, paddingBottom: 12, marginTop: 24},
+            ]}>
+            게시판 명<Text style={styles.asterisk}> *</Text>
+          </Text>
           <TextInput
-            placeholder="게시판 이름은 공백포함 15글자까지 입력 가능합니다."
-            placeholderTextColor="#D5DBE1"
+            placeholderTextColor="#B9BAC1"
+            placeholder="게시판 명을 입력해 주세요."
             value={boardName}
             autoCorrect={false}
             onChangeText={value => {
@@ -129,22 +182,33 @@ function CreateBoard({navigation}: Props) {
                 );
             }}
             maxLength={15}
-            style={{fontSize: 15, paddingVertical: 20}}
+            style={{
+              fontSize: 14,
+              paddingVertical: 5,
+              paddingHorizontal: 12,
+              borderColor: '#E2E4E8',
+              borderRadius: 4,
+              borderWidth: 1,
+              //width: 343,
+              height: 44,
+            }}
             numberOfLines={1}
           />
           <View
             style={{
               borderBottomColor: '#F6F6F6',
               borderBottomWidth: 1,
-              marginBottom: 15,
+              marginBottom: 24,
             }}
           />
-          <Text style={[fontMedium, {fontSize: 15}]}>게시판 설명</Text>
+          <Text style={[fontMedium, {fontSize: 16, paddingBottom: 12}]}>
+            게시판 소개<Text style={styles.asterisk}> *</Text>
+          </Text>
           <View style={{height: 149}}>
             <TextInput
+              placeholderTextColor="#B9BAC1"
+              placeholder="게시판 소개를 입력해 주세요."
               textAlignVertical="top"
-              placeholder="게시판 설명은 공백포함 22글자까지 입력 가능합니다."
-              placeholderTextColor="#D5DBE1"
               value={boardIntroduction}
               autoCorrect={false}
               onChangeText={value => {
@@ -159,24 +223,73 @@ function CreateBoard({navigation}: Props) {
               onBlur={() => {
                 Keyboard.dismiss();
               }}
-              style={[styles.input, {fontSize: 15}]}
+              style={[
+                styles.input,
+                {fontSize: 14, borderRadius: 4, paddingHorizontal: 12},
+              ]}
             />
           </View>
         </View>
+        <Pressable
+          onPress={() => navigation.navigate('DirectionAgreeScreen')}
+          style={{
+            borderRadius: 25,
+            backgroundColor: '#F6F6F6',
+            alignSelf: 'center',
+            width: 'auto',
+            paddingTop: 6,
+            paddingRight: 12,
+            paddingBottom: 6,
+            paddingLeft: 12,
+            position: 'absolute',
+            bottom: 110,
+          }}>
+          <Text
+            style={{
+              fontWeight: '400',
+              color: '#9DA4AB',
+              textAlign: 'center',
+              paddingHorizontal: 4,
+              paddingVertical: 4,
+            }}>
+            수정광산 이용 방향 전문 보기
+          </Text>
+        </Pressable>
         <View
           style={{
-            paddingHorizontal: 24,
+            height: 44,
+            borderRadius: 4,
+            //paddingHorizontal: 24,
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#A055FF',
+            bottom: 0,
+            marginBottom: 34,
+            marginHorizontal: 16,
+            position: 'absolute',
           }}>
           <Pressable
+            onPress={() => {
+              setIsSubmitState(true);
+              console.log('isSubmitState', isSubmitState);
+            }}>
+            <PurpleRoundButton
+              text="완료"
+              onClick={() =>
+                onSubmitPress(boardName, boardIntroduction, hotable)
+              }
+              style={{color: '#fff'}}
+            />
+          </Pressable>
+          {/* <Pressable
             onPress={() => {
               setHotable(!hotable);
             }}
             style={{flexDirection: 'row'}}>
             {hotable ? <RectangleChecked /> : <RectangleUnchecked />}
             <Text style={[{marginLeft: 5}]}>HOT 게시판 전송 허용</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     </>
@@ -193,6 +306,10 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     textAlignVertical: 'top',
+    borderColor: '#E2E4E8',
+    borderWidth: 1,
+    //width: 343,
+    height: 86,
   },
   option: {
     marginTop: 19,
@@ -200,6 +317,42 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  selectButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderColor: '#E2E4E8',
+    borderWidth: 1,
+    borderRadius: 4,
+    height: 44,
+  },
+  dropdownContainer: {
+    borderColor: '#E2E4E8',
+    borderWidth: 1,
+    borderRadius: 4,
+    maxHeight: 100,
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    zIndex: 1,
+  },
+  optionButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E4E8',
+    fontSize: 14,
+    height: 44,
+  },
+  optionText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  asterisk: {
+    color: '#A055FF',
+    fontSize: 16,
   },
 });
 

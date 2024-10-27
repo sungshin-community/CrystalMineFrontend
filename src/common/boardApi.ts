@@ -403,6 +403,18 @@ export const deletePosts = async (postId: number) => {
     return false;
   }
 };
+
+// 이모티콘
+export const getEmoticons = async () => {
+  try {
+    const response = await client.get<AxiosResponse>(`/emoticons/my`);
+    console.log('이모티콘list', response.data.data);
+    return response.data.data;
+  } catch (e) {
+    console.log('getEmoticons 함수', e);
+  }
+};
+
 // 댓글
 export const getComments = async (postId: number /*, page: number*/) => {
   try {
@@ -411,6 +423,7 @@ export const getComments = async (postId: number /*, page: number*/) => {
     const response = await client.get<AxiosResponse>(
       `/posts/${postId}/comments`,
     );
+    console.log('댓글', response.data.data.content);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getComments 함수', e);
@@ -421,6 +434,7 @@ export const addComment = async (
   postId: number,
   content: string,
   isAnonymous: boolean,
+  emoticonId: number,
 ) => {
   try {
     console.log(postId, content, '익명여부:', isAnonymous);
@@ -428,6 +442,7 @@ export const addComment = async (
       postId: postId,
       content: content,
       isAnonymous: isAnonymous,
+      emoticonId: 1,
     });
     console.log('addComment 함수 성공', response.data);
     return response;
@@ -442,6 +457,7 @@ export const addRecomment = async (
   parentId: number,
   content: string,
   isAnonymous: boolean,
+  emoticonId: number,
 ) => {
   try {
     console.log(postId, content, parentId, '익명여부:', isAnonymous);
@@ -452,6 +468,7 @@ export const addRecomment = async (
         parentId: parentId,
         content: content,
         isAnonymous: isAnonymous,
+        emoticonId: 1,
       },
     );
     console.log('addRecomment 함수 성공', response.data);

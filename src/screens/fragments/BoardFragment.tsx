@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableHighlight,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
 import BoardList, {
@@ -30,6 +36,7 @@ import WaterMark from '../../components/WaterMark';
 import Error from '../../components/Error';
 import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
+import PlusIcon from '../../../resources/icon/PlusIcon';
 
 type RootStackParamList = {
   MyPostList: undefined;
@@ -44,6 +51,7 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function BoardFragment({navigation}: Props) {
   const [pinnedBoardList, setPinnedBoardList] = useState<Board[]>([]);
+  const [boards, setBoards] = useState<Board[]>([]);
   const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
   const [departmentBoardList, setDepartmentBoardList] = useState<Board[]>([]);
@@ -289,95 +297,22 @@ export default function BoardFragment({navigation}: Props) {
             />
           </View>
           <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+            {/* Header 아래 선 */}
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#EFEFF3',
+              }}
+            />
             <View
               style={{
                 flex: 1,
-                backgroundColor: '#FFFFFF',
-                paddingHorizontal: 16,
+                /* backgroundColor: '#FFFFFF',
+                paddingHorizontal: 16, */
               }}>
-              <BoardListContainer
-                boardCategory="모아보기"
-                component={
-                  <MenuList
-                    toMyPosting={moveToMyPostList}
-                    toMyCommentList={moveToMyCommentList}
-                    toScrapedPosting={moveToScrapedPostList}
-                  />
-                }
-              />
-              <BoardListContainer
-                boardCategory="고정게시판"
-                component={
-                  <BoardList
-                    items={pinnedBoardList}
-                    moveToBoard={moveToBoard}
-                    isInited={isInited}
-                    onUpdate={updatePinnedBoardList}
-                  />
-                }
-              />
-              {/* <BoardListContainer
-            boardCategory="공식게시판"
-            component={<OfficialBoardList items={officialBoardList} />}
-          /> */}
-              <View
-                style={{
-                  height: 60,
-                  paddingLeft: 25,
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                }}>
-                <Text
-                  style={[
-                    fontRegular,
-                    {
-                      fontSize: 17,
-                      lineHeight: 20,
-                      flex: 1,
-                      fontWeight: 'bold',
-                      color: '#222222',
-                    },
-                  ]}>
-                  공식게시판
-                </Text>
-              </View>
-              <OfficialBoardListContainer
-                boardCategory="수정광장"
-                component={
-                  <OfficialBoardList
-                    items={officialBoardList}
-                    onUpdate={updateOfficialBoardList}
-                    moveToBoard={moveToBoard}
-                    isInited={isInited}
-                  />
-                }
-              />
-              <OfficialBoardListContainer
-                defaultFolded={true}
-                boardCategory="학과게시판"
-                component={
-                  <OfficialBoardList
-                    items={departmentBoardList}
-                    onUpdate={updateDepartmentBoardList}
-                    moveToBoard={moveToBoard}
-                    isInited={isInited}
-                  />
-                }
-              />
-              <OfficialBoardListContainer
-                defaultFolded={true}
-                boardCategory="교내게시판"
-                component={
-                  <OfficialBoardList
-                    items={teamBoardList}
-                    moveToBoard={moveToBoard}
-                    onUpdate={updateTeamBoardList}
-                    isInited={isInited}
-                  />
-                }
-              />
               <CustomBoardListContainer
-                boardCategory="수정게시판"
+                boardCategory="전체 게시판"
+                defaultFolded={false}
                 component={
                   <CustomBoardList
                     items={customBoardList}
@@ -388,8 +323,118 @@ export default function BoardFragment({navigation}: Props) {
                 }
                 moveToCreateBoard={moveToCreateBoard}
               />
-              <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View>
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#EFEFF3',
+                  marginLeft: 16,
+                  marginRight: 16,
+                }}
+              />
+              {/* <BoardListContainer
+                boardCategory="모아보기"
+                component={
+                  <MenuList
+                    toMyPosting={moveToMyPostList}
+                    toMyCommentList={moveToMyCommentList}
+                    toScrapedPosting={moveToScrapedPostList}
+                  />
+                }
+              /> */}
+              <BoardListContainer
+                boardCategory="공식 게시판"
+                defaultFolded={false}
+                component={
+                  <OfficialBoardList
+                    items={officialBoardList}
+                    moveToBoard={moveToBoard}
+                    isInited={isInited}
+                    onUpdate={updatePinnedBoardList}
+                  />
+                }
+              />
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#EFEFF3',
+                  marginLeft: 16,
+                  marginRight: 16,
+                }}
+              />
+              {/* <BoardListContainer
+            boardCategory="공식게시판"
+            component={<OfficialBoardList items={officialBoardList} />}
+          /> */}
+              <OfficialBoardListContainer
+                boardCategory="학과 게시판"
+                defaultFolded={false}
+                component={
+                  <OfficialBoardList
+                    items={departmentBoardList}
+                    onUpdate={updateDepartmentBoardList}
+                    moveToBoard={moveToBoard}
+                    isInited={isInited}
+                  />
+                }
+                moveToCreateBoard={moveToCreateBoard}
+              />
+              {/* <OfficialBoardListContainer
+                defaultFolded={true}
+                boardCategory="교내게시판"
+                component={
+                  <OfficialBoardList
+                    items={teamBoardList}
+                    moveToBoard={moveToBoard}
+                    onUpdate={updateTeamBoardList}
+                    isInited={isInited}
+                  />
+                }
+              /> */}
+              {/* <CustomBoardListContainer
+                boardCategory="수정게시판"
+                component={
+                  <CustomBoardList
+                    items={customBoardList}
+                    onUpdate={updateCustomBoardList}
+                    moveToBoard={moveToBoard}
+                    isInited={isInited}
+                  />
+                }
+                moveToCreateBoard={moveToCreateBoard}
+              /> */}
+              {/* <View style={{height: 36, backgroundColor: '#FFFFFF'}}></View> */}
             </View>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#EFEFF3',
+                marginLeft: 16,
+                marginRight: 16,
+              }}
+            />
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => moveToCreateBoard()}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#F6F6F6',
+                height: 46,
+                borderRadius: 8,
+                margin: 16,
+              }}>
+              <>
+                <PlusIcon style={{marginLeft: 18, marginRight: 12}} />
+                <Text
+                  style={{
+                    color: '#89919A',
+                    fontSize: 14,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                  }}>
+                  새 게시판 만들기
+                </Text>
+              </>
+            </TouchableHighlight>
           </ScrollView>
         </>
       )}
