@@ -47,6 +47,7 @@ type RootStackParamList = {
   CertifiedMember: undefined;
   ExpiredMember: undefined;
   UncertifiedMember: undefined;
+  SpherePostScreen: {isQuestion: boolean; ptPostId: number};
 };
 type ScreenProps = NativeStackScreenProps<RootStackParamList>;
 
