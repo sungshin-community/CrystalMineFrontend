@@ -244,3 +244,24 @@ export const changeAlertSettings = async (type: string, setting: boolean) => {
     return error.response.data;
   }
 };
+export const updateProfile = async (data: {
+  departmentId: number;
+  nickname: string;
+}) => {
+  try {
+    const formData = new FormData();
+    // JSON 형태의 문자열을 'data' 필드에 추가
+    formData.append('data', JSON.stringify(data));
+
+    const response = await client.patch<Response<User>>('/user/profile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.code;
+  } catch (error) {
+    console.log(error.response);
+    const errorCode = error.response?.data?.code;
+    return errorCode;
+  }
+};

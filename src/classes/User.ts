@@ -10,6 +10,7 @@ export default interface User {
   role: string;
   point: number;
   email: string;
+  yearOfEntrance : string;
 }
 
 export interface IObjectKeys {
