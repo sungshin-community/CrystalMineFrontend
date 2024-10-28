@@ -13,6 +13,7 @@ export default interface CommentDto {
   isOfBlacklist: boolean;
   isOfDeletedUser: boolean;
   content: string;
+  emoticonUrl: string;
   createdAt: string;
   likeCount: number;
   isLiked: boolean;
@@ -36,6 +37,7 @@ export interface RecommentDto {
   isOfBlacklist: boolean;
   isOfDeletedUser: boolean;
   content: string;
+  emoticonUrl: string;
   createdAt: string;
   likeCount: number;
   isLiked: boolean;

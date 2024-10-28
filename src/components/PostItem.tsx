@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
-import PostComment from '../../resources/icon/PostComment';
+import {PostComment, BigPostComment} from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
@@ -10,6 +10,7 @@ import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import {ContentPreviewDto} from '../classes/BoardDetailDto';
 import {fontMedium, fontRegular} from '../common/font';
+import CommentArrow from '../../resources/icon/CommentArrow';
 
 interface Props {
   post: ContentPreviewDto;
@@ -17,6 +18,8 @@ interface Props {
 }
 
 function PostItem({post, boardId}: Props) {
+  console.log('post', post);
+  console.log('boardId', boardId);
   return (
     <View style={styles.container}>
       {boardId === 2 && (
@@ -56,10 +59,10 @@ function PostItem({post, boardId}: Props) {
               ) : (
                 <SmallPurpleFlag style={{marginLeft: 5}} />
               ))}
+            <Text style={[styles.textSmall, styles.timeStamp]}>
+              {post.createdAt}
+            </Text>
           </View>
-          <Text style={[styles.textSmall, styles.timeStamp]}>
-            {post.createdAt}
-          </Text>
         </View>
         {post.hasTitle ? (
           <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>
@@ -68,28 +71,74 @@ function PostItem({post, boardId}: Props) {
         ) : (
           <></>
         )}
-        <Text
-          numberOfLines={post.title ? 2 : 5}
-          ellipsizeMode="tail"
-          style={[styles.text, styles.content, fontRegular]}>
-          {post.content}
-        </Text>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View>
+            <Text
+              numberOfLines={post.title ? 2 : 3}
+              ellipsizeMode="tail"
+              style={[styles.text, styles.content, fontRegular]}>
+              {post.content}
+            </Text>
+          </View>
+          <Image
+            style={{width: 60, height: 60, borderRadius: 8}}
+            source={{uri: post.thumbnail}}
+          />
+          {post.imageCount > 1 && (
+            <Text
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                color: 'white',
+                fontSize: 10,
+                paddingHorizontal: 6,
+                paddingVertical: 2,
+                marginHorizontal: 4,
+                marginVertical: 4,
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}>
+              {`+${post.imageCount - 1}`}
+            </Text>
+          )}
+        </View>
         <View style={styles.icon}>
           {!(boardId === 93 || boardId === 94 || boardId === 95) && (
             <>
               {post.isLiked ? <PostLike /> : <PostUnlike />}
+              <Text
+                style={[
+                  fontRegular,
+                  {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                ]}>
+                좋아요
+              </Text>
               <Text style={[styles.textSmall, styles.iconCount]}>
                 {post.likeCount}
               </Text>
-              {post.imageCount > 0 && (
+              {/* {post.imageCount > 0 && (
                 <>
                   <PostImage />
                   <Text style={[styles.textSmall, styles.iconCount]}>
                     {post.imageCount}
                   </Text>
                 </>
-              )}
+              )} */}
               <PostComment />
+              <Text
+                style={[
+                  fontRegular,
+                  {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                ]}>
+                댓글달기
+              </Text>
               <Text style={[styles.textSmall, styles.iconCount]}>
                 {post.commentCount}
               </Text>
@@ -97,6 +146,40 @@ function PostItem({post, boardId}: Props) {
           )}
         </View>
       </View>
+
+      {post.newCommentAuthor === null ? (
+        <></>
+      ) : (
+        <View style={{marginBottom: 10}}>
+          <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
+            <CommentArrow style={{marginHorizontal: 10}} />
+            <View
+              style={{
+                backgroundColor: '#F6F6F6',
+                width: 343,
+                height: 38,
+                borderRadius: 8,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                flexDirection: 'row',
+                paddingHorizontal: 12,
+              }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '600',
+                  color: '#3A424E',
+                  paddingRight: 12,
+                }}>
+                {post.newCommentAuthor}
+              </Text>
+              <Text style={{fontSize: 12, color: '#3A424E'}}>
+                {post.newCommentContent}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -104,9 +187,9 @@ function PostItem({post, boardId}: Props) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 14,
-    borderBottomColor: '#f4f4f4',
+    borderBottomColor: '#F6F6F6',
     borderStyle: 'solid',
-    borderBottomWidth: 1,
+    borderBottomWidth: 4,
   },
   nameContainer: {
     flexDirection: 'row',
@@ -118,22 +201,29 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingLeft: 8,
     fontFamily: 'SpoqaHanSansNeo-Medium',
-    fontSize: 15,
+    fontSize: 14,
+    color: '#3A424E',
   },
   text: {
     fontSize: 14,
+    color: '#222222',
   },
   textSmall: {
+    color: '#9DA4AB',
     fontSize: 13,
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   timeStamp: {
-    paddingTop: 6,
-    color: '#949494',
+    fontSize: 12,
+    paddingLeft: 10,
+    paddingTop: 2,
+    color: '#B9BAC1',
   },
   content: {
+    fontSize: 14,
     marginBottom: 16,
     lineHeight: 22.5,
+    color: '#222222',
   },
   icon: {
     flexDirection: 'row',
@@ -141,7 +231,8 @@ const styles = StyleSheet.create({
   },
   iconCount: {
     marginLeft: 5,
-    marginRight: 14,
+    marginRight: 12,
+    color: '#9DA4AB',
   },
 });
 

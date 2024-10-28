@@ -67,13 +67,13 @@ export const ModalBottom = ({
           }}>
           {!setDisableClose && (
             <Pressable
-              style={{flex: 1}}
+              style={{flex: 1, backgroundColor: 'rgba(34, 34, 34, 0.5)'}}
               onPress={() => setModalVisible(!modalVisible)}
             />
           )}
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <View style={{alignItems: 'center'}}>
+              <View style={{alignSelf: 'flex-start'}}>
                 {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
                 {content && (
                   <Text
@@ -81,7 +81,8 @@ export const ModalBottom = ({
                       fontRegular,
                       {
                         textAlign: isContentCenter ? 'center' : 'left',
-                        fontSize: 15,
+                        fontSize: 14,
+                        color: '#89919A',
                       },
                     ]}>
                     {content}
@@ -129,39 +130,42 @@ export const ModalBottom = ({
 
 const styles = StyleSheet.create({
   centeredView: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
     bottom: Dimensions.get('window').width * 0.15,
-    left: '50%',
-    transform: [{translateX: -Dimensions.get('window').width * 0.445}],
+    //left: '50%',
+    //transform: [{translateX: -Dimensions.get('window').width * 0.445}],
+    transform: [{translateY: Dimensions.get('window').height * 0.1}],
   },
   modalView: {
-    margin: 2,
-    width: Dimensions.get('window').width - 48,
+    width: Dimensions.get('window').width,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     paddingVertical: 24,
-    paddingHorizontal: 24,
+    marginBottom: 20,
+    paddingHorizontal: Dimensions.get('window').width * 0.05,
+    //paddingHorizontal: 24,
     // alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
+    //shadowColor: '#000',
+    /* shadowOffset: {
       width: 0,
       height: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    }, */
+    //shadowOpacity: 0.25,
+    //shadowRadius: 4,
+    //elevation: 5,
   },
   button: {
-    borderRadius: 10,
+    borderRadius: 4,
     padding: 12,
-    height: 42,
+    height: 44,
   },
   secondButton: {
-    borderRadius: 10,
+    borderRadius: 4,
     padding: 12,
-    height: 42,
+    height: 44,
     marginTop: 8,
   },
   buttonClose: {
@@ -175,16 +179,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontWeight: '700',
   },
   secondButtonTextStyle: {
-    color: '#222222',
+    color: '#6E7882',
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   title: {
     textAlign: 'center',
-    fontSize: 17,
-    marginBottom: 20,
+    fontSize: 16,
+    marginBottom: 10,
   },
 });

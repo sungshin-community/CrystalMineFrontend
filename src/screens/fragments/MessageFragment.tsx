@@ -99,9 +99,11 @@ const MessageFragment = ({navigation}: Props) => {
     }
 
     return () => {
+
       if (messageClient.current && messageClient.current.active) {
         messageClient.current.deactivate();
       }
+
     };
   }, [isFocused, navigation]);
 

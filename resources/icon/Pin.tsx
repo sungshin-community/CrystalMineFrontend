@@ -1,5 +1,5 @@
-import * as React from "react"
-import Svg, { SvgProps, Path } from "react-native-svg"
+import * as React from 'react';
+import Svg, {SvgProps, Path} from 'react-native-svg';
 
 export const PurplePin = (props: any) => (
   <Svg
@@ -7,8 +7,7 @@ export const PurplePin = (props: any) => (
     height={24}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -17,32 +16,28 @@ export const PurplePin = (props: any) => (
     />
   </Svg>
 );
-
 export const OrangePin = (props: any) => (
   <Svg
     width={24}
     height={24}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
       d="M19 12.87c0-.47-.34-.85-.8-.98A2.997 2.997 0 0 1 16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.38-.93 2.54-2.2 2.89-.46.13-.8.51-.8.98V13c0 .55.45 1 1 1h4.98l.02 7c0 .55.45 1 1 1s1-.45 1-1l-.02-7H18c.55 0 1-.45 1-1v-.13Z"
-      fill="#FFA767"
+      fill="#A055FF"
     />
   </Svg>
 );
-
 export const GrayPin = (props: any) => (
   <Svg
     width={24}
     height={24}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -50,7 +45,7 @@ export const GrayPin = (props: any) => (
       fill="#D6D6D6"
     />
   </Svg>
-)
+);
 
 export const DarkPin = (props: any) => (
   <Svg
@@ -58,16 +53,15 @@ export const DarkPin = (props: any) => (
     height={24}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
       d="M19 12.87c0-.47-.34-.85-.8-.98A2.997 2.997 0 0 1 16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.38-.93 2.54-2.2 2.89-.46.13-.8.51-.8.98V13c0 .55.45 1 1 1h4.98l.02 7c0 .55.45 1 1 1s1-.45 1-1l-.02-7H18c.55 0 1-.45 1-1v-.13Z"
-      fill="#333D4B"
+      fill="#A055FF"
     />
   </Svg>
-)
+);
 
 export const BigPurplePin = (props: any) => (
   <Svg
@@ -75,8 +69,7 @@ export const BigPurplePin = (props: any) => (
     height={22}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -84,15 +77,14 @@ export const BigPurplePin = (props: any) => (
       fill="#A055FF"
     />
   </Svg>
-)
+);
 export const BigOrangePin = (props: any) => (
   <Svg
     width={16}
     height={22}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -100,15 +92,14 @@ export const BigOrangePin = (props: any) => (
       fill="#FFA767"
     />
   </Svg>
-)
+);
 export const BigGrayPin = (props: any) => (
   <Svg
     width={16}
     height={22}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -116,15 +107,14 @@ export const BigGrayPin = (props: any) => (
       fill="#87919B"
     />
   </Svg>
-)
+);
 export const BigDarkPin = (props: any) => (
   <Svg
     width={16}
     height={22}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    {...props}>
     <Path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -132,6 +122,4 @@ export const BigDarkPin = (props: any) => (
       fill="#333D4B"
     />
   </Svg>
-)
-
-
+);

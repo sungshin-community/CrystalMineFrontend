@@ -46,6 +46,7 @@ import TotalSearchResult from './src/screens/search/total/TotalSearchResult';
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
 import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
+import BoardScreen from './src/screens/board/BoardScreen';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
@@ -100,10 +101,14 @@ import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
 import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 import {MobileAds} from 'react-native-google-mobile-ads';
 import MessageScreen from './src/screens/message/MessageScreen';
+
 import PointScreen from './src/screens/mypage/point/PointScreen';
 import ProfileModify from './src/screens/mypage/ProfileModify';
 import ProfileModifySujeonggu from './src/screens/mypage/ProfileModifySujeonggu';
 import MyActivity from './src/screens/mypage/MyActivity';
+import CancelButton from './resources/icon/Cancel';
+
+import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -114,7 +119,7 @@ const App = () => {
     });
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreAllLogs();
-  console.reportErrorsAsExceptions = false;
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -827,7 +832,36 @@ const App = () => {
                 name="CreateBoard"
                 component={CreateBoard}
                 options={({navigation}) => ({
-                  title: '게시판 생성',
+                  title: '새 게시판 만들기',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="UpdateBoard"
+                component={UpdateBoard}
+                options={({navigation}) => ({
+                  title: '게시판 수정',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -853,10 +887,10 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="UpdateBoard"
-                component={UpdateBoard}
+                name="BoardScreen"
+                component={BoardScreen}
                 options={({navigation}) => ({
-                  title: '게시판 수정',
+                  title: '게시판',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -915,6 +949,7 @@ const App = () => {
                 component={PostListScreen}
                 options={({navigation}) => ({
                   title: '',
+                  headerTitleAlign: 'left',
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"
@@ -931,6 +966,10 @@ const App = () => {
                       <BackButtonIcon />
                     </TouchableHighlight>
                   ),
+                  headerTitleContainerStyle: {
+                    left: 0, // 제목을 왼쪽으로 이동
+                    paddingLeft: 20, // 제목과 화면 왼쪽 사이의 간격 설정
+                  },
                 })}
               />
 
@@ -939,10 +978,11 @@ const App = () => {
                 component={PostWriteScreen}
                 options={({navigation}) => ({
                   title: '게시글 작성',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#222222',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 20,
+                    fontWeight: '700',
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                 })}
@@ -1039,10 +1079,14 @@ const App = () => {
                 component={PostScreen}
                 options={({navigation}) => ({
                   title: '',
-                  headerTitleAlign: 'center',
+                  headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerTitleContainerStyle: {
+                    left: 0, // 제목을 왼쪽으로 이동
+                    paddingLeft: 20, // 제목과 화면 왼쪽 사이의 간격 설정
                   },
                 })}
               />
@@ -1937,6 +1981,34 @@ const App = () => {
               }}
               initialRouteName="GlobalNavbar">
               <Stack.Screen
+                name="SpherePostScreen"
+                component={SpherePostScreen}
+                options={({navigation}) => ({
+                  title: '수정구',
+                  headerTintColor: '#222222',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
                 name="ErrorScreen"
                 component={ErrorScreen}
                 options={({navigation}) => ({
@@ -2603,8 +2675,8 @@ const App = () => {
                 name="CreateBoard"
                 component={CreateBoard}
                 options={({navigation}) => ({
-                  title: '게시판 생성',
-                  headerTitleAlign: 'center',
+                  title: '새 게시판 만들기',
+                  headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
@@ -2623,7 +2695,7 @@ const App = () => {
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
                       }>
-                      <BackButtonIcon />
+                      <CloseButtonIcon />
                     </TouchableHighlight>
                   ),
                 })}
@@ -2691,6 +2763,7 @@ const App = () => {
                 component={PostListScreen}
                 options={({navigation}) => ({
                   title: '',
+                  headerTitleAlign: 'left',
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"
@@ -2715,10 +2788,11 @@ const App = () => {
                 component={PostWriteScreen}
                 options={({navigation}) => ({
                   title: '게시글 작성',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#222222',
                   headerTitleStyle: {
-                    fontSize: 19,
+                    fontSize: 20,
+                    fontWeight: '700',
                     fontFamily: 'SpoqaHanSansNeo-Medium',
                   },
                 })}

@@ -37,7 +37,7 @@ import {
   RectangleChecked,
   RectangleUnchecked,
 } from '../../../resources/icon/CheckBox';
-import TrashIcon from '../../../resources/icon/TrashIcon';
+import {TrashIcon} from '../../../resources/icon/TrashIcon';
 import CancelButton from '../../../resources/icon/Cancel';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {ModalBottom} from '../../components/ModalBottom';
@@ -57,9 +57,8 @@ function QuestionList({navigation, route}: Props) {
   const [questionList, setQuestionList] = useState<QuestionListDto[]>([]);
   const [deleteMode, setDeleteMode] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
-  const [deleteButtonEnabled, setDeleteButtonEnabled] = useState<boolean>(
-    false,
-  );
+  const [deleteButtonEnabled, setDeleteButtonEnabled] =
+    useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
@@ -128,11 +127,13 @@ function QuestionList({navigation, route}: Props) {
               hitSlop={{top: 5, bottom: 5, left: 10, right: 10}}>
               <Text
                 style={[
-                  fontRegular, {
-                  color: '#FF6060',
-                  opacity: deleteButtonEnabled ? 1 : 0.3,
-                  fontSize: 17,
-                }]}>
+                  fontRegular,
+                  {
+                    color: '#FF6060',
+                    opacity: deleteButtonEnabled ? 1 : 0.3,
+                    fontSize: 17,
+                  },
+                ]}>
                 삭제
               </Text>
             </TouchableOpacity>
@@ -187,7 +188,7 @@ function QuestionList({navigation, route}: Props) {
 
   return (
     <>
-      <WaterMark/>
+      <WaterMark />
       <View style={{flex: 1}}>
         <View
           style={{
@@ -216,14 +217,16 @@ function QuestionList({navigation, route}: Props) {
             }}>
             <Text
               style={[
-                fontRegular, {
-                color: '#6E7882',
-                fontSize: 15,
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-                textAlign: 'center',
-                lineHeight: 22.5,
-                marginTop: 20,
-              }]}>
+                fontRegular,
+                {
+                  color: '#6E7882',
+                  fontSize: 15,
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  textAlign: 'center',
+                  lineHeight: 22.5,
+                  marginTop: 20,
+                },
+              ]}>
               {isLoading
                 ? ''
                 : '아직 작성된 문의사항이 없습니다.\n첫 문의사항을 작성해주세요.'}
@@ -256,12 +259,14 @@ function QuestionList({navigation, route}: Props) {
                     paddingBottom: 10,
                   }}>
                   <Text
-                      style={[
-                      fontRegular, {
-                      marginRight: 9,
-                      fontSize: 13,
-                      fontFamily: 'SpoqaHanSansNeo-Medium',
-                    }]}>
+                    style={[
+                      fontRegular,
+                      {
+                        marginRight: 9,
+                        fontSize: 13,
+                        fontFamily: 'SpoqaHanSansNeo-Medium',
+                      },
+                    ]}>
                     {`${questionList?.filter(c => c.isChecked).length}/${
                       questionList?.length
                     }`}
@@ -434,11 +439,13 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
               ]}>
               <Text
                 style={[
-                  fontRegular, {
-                  color: questionItem.status ? '#A055FF' : '#6E7882',
-                  fontSize: 13,
-                  textAlign: 'center',
-                }]}>
+                  fontRegular,
+                  {
+                    color: questionItem.status ? '#A055FF' : '#6E7882',
+                    fontSize: 13,
+                    textAlign: 'center',
+                  },
+                ]}>
                 {questionItem.status ? '답변 완료' : '답변 대기'}
               </Text>
             </View>
@@ -487,7 +494,9 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
             <Text style={[fontRegular, {marginBottom: 10}]}>
               <Autolink text={data ? (data.content ? data.content : '') : ''} />
             </Text>
-            <Text style={[fontRegular, styles.date, {marginTop: 5}]}>{data?.createdAt}</Text>
+            <Text style={[fontRegular, styles.date, {marginTop: 5}]}>
+              {data?.createdAt}
+            </Text>
 
             {data?.images.length !== 0 && (
               <View style={{flexDirection: 'row', marginTop: 16}}>
@@ -532,9 +541,18 @@ export function SpreadList({questionItem, deleteMode, moveToPost}: any) {
                     운영진
                   </Text>
                 </View>
-                <View style={[{marginTop: 8, marginLeft: 30, marginBottom: 10}]}>
+                <View
+                  style={[{marginTop: 8, marginLeft: 30, marginBottom: 10}]}>
                   <Text style={fontRegular}>
-                    <Autolink text={data ? (data?.answer.content ? data?.answer.content : '') : ''} />
+                    <Autolink
+                      text={
+                        data
+                          ? data?.answer.content
+                            ? data?.answer.content
+                            : ''
+                          : ''
+                      }
+                    />
                   </Text>
                 </View>
                 <Text style={[fontRegular, styles.date, {marginLeft: 30}]}>

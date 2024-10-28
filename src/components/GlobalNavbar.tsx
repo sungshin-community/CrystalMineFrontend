@@ -1,8 +1,9 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import {View, Text, StyleSheet} from 'react-native';
 import HomeFragment from '../screens/fragments/HomeFragment';
 import BoardFragment from '../screens/fragments/BoardFragment';
+import CrystalBallFragment from '../screens/fragments/CrystalBallFragment';
 import AlertFragment from '../screens/fragments/AlertFragment';
 import MessageFragment from '../screens/fragments/MessageFragment';
 import MyPageFragment from '../screens/fragments/MyPageFragment';
@@ -13,13 +14,14 @@ import AlertTabIcon from '../../resources/icon/AlertTabIcon';
 import MessageTabIcon from '../../resources/icon/MessageTabIcon';
 import MyPageGNB from '../../resources/icon/MypageTabIcon';
 import SearchIcon from '../../resources/icon/SearchIcon';
+import MenuIcon from '../../resources/icon/MenuIcon';
+import MyIcon from '../../resources/icon/MyIcon';
 import {SmallLogo} from '../../resources/icon/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Platform, Pressable, TouchableHighlight} from 'react-native';
+import {Platform, TouchableHighlight} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import {checkRole, logout} from '../common/authApi';
 import {useState, useEffect} from 'react';
-import {Authentication} from '../classes/Authentication';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import messaging from '@react-native-firebase/messaging';
 import {AlertData} from '../classes/AlertDto';
@@ -27,7 +29,7 @@ import {readNotificationOnPush} from '../common/pushApi';
 import {getPostByComment} from '../common/boardApi';
 import {CommonActions} from '@react-navigation/native';
 import BackButtonIcon from '../../resources/icon/BackButtonIcon';
-
+import {pretendard} from '../common/font';
 const Tab = createBottomTabNavigator();
 
 interface Props {
@@ -38,6 +40,7 @@ interface Props {
 type RootStackParamList = {
   BoardSearch: undefined;
   TotalSearch: undefined;
+  BoardScreen: undefined;
   SplashHome: undefined;
   ErrorScreen: undefined;
   PostScreen: {postId: number};
@@ -133,12 +136,53 @@ function GlobalNavbar({navigation}: ScreenProps) {
     }
   };
 
+  const onMenuIcon = async () => {
+    const response = await checkRole();
+    if (response.status === 401) {
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      const user = response.data.data;
+      if (user?.isAuthenticated && !user?.blacklist) {
+        navigation.navigate('BoardScreen');
+      } else {
+        setTimeout(function () {
+          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+        }, 100);
+      }
+    } else {
+      logout();
+      navigation.reset({
+        routes: [
+          {
+            name: 'ErrorScreen',
+            params: {status: response.status, code: 'G001'},
+          },
+        ],
+      });
+    }
+  };
+
+  // 글씨 색상 결정 함수
+  const getTextColor = (color: string) => {
+    if (color === '#E2E4E8') {
+      return '#6E7882'; // 비활성 색상일 때 글씨 색상
+    }
+    return color; // 활성 색상일 때 글씨 색상
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
-          height: Platform.OS === 'android' ? 60 : 94,
+          height: Platform.OS === 'android' ? 78 : 112,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           shadowColor: '#000000',
@@ -152,38 +196,89 @@ function GlobalNavbar({navigation}: ScreenProps) {
           justifyContent: 'space-between',
         },
         tabBarShowLabel: false,
-        tabBarInactiveTintColor: '#6E7882',
+        tabBarInactiveTintColor: '#E2E4E8',
         tabBarActiveTintColor: '#A055FF',
       }}>
       <Tab.Screen
         name="Home"
         component={HomeFragment}
         options={{
-          headerTitle: () => <SmallLogo />,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({size, color, focused}: Props) => {
-            return <HomeTabIcon size={size} color={color} focused={focused} />;
-          },
-          headerRight: () => (
-            <TouchableHighlight
+          headerTitle: () => (
+            <View
               style={{
-                marginRight: 11,
-                width: 40,
-                height: 40,
-                borderRadius: 20,
+                flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}
-              underlayColor="#EEEEEE"
-              onPress={onSearchPress}>
-              <SearchIcon />
-            </TouchableHighlight>
+                height: 48,
+                marginLeft: 16,
+              }}>
+              <SmallLogo />
+              <Text
+                style={
+                  (pretendard,
+                  {
+                    marginLeft: 8,
+                    fontSize: 20,
+                    fontWeight: '900',
+                    textAlign: 'left',
+                    color: '#A055FF',
+                  })
+                }>
+                수정광산
+              </Text>
+            </View>
+          ),
+          headerTitleAlign: 'left',
+          tabBarIcon: ({size, color, focused}: Props) => {
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <HomeTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  광산
+                </Text>
+              </View>
+            );
+          },
+          headerRight: () => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginRight: 11,
+              }}>
+              <TouchableHighlight
+                style={{
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onSearchPress}>
+                <SearchIcon />
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: 10,
+                  marginRight: 13,
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onMenuIcon}>
+                <MenuIcon />
+              </TouchableHighlight>
+            </View>
           ),
         }}
       />
+
       <Tab.Screen
-        name="Board"
-        component={BoardFragment}
+        name="CrystalBall"
+        component={CrystalBallFragment}
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
@@ -200,7 +295,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             } else if (getHundredsDigit(response.status) === 2) {
               const user = response.data.data;
               if (user?.isAuthenticated && !user?.blacklist) {
-                navigation.navigate('Board');
+                navigation.navigate('CrystalBall');
               } else
                 setTimeout(function () {
                   Toast.show('접근 권한이 없습니다.', Toast.SHORT);
@@ -219,29 +314,48 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '게시판',
-          headerTitleAlign: 'center',
+          title: '수정구',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <BoardTabIcon size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <BoardTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  수정구
+                </Text>
+              </View>
+            );
+          },
+          headerStyle: {
+            height: 40,
           },
           headerRight: () => (
             <TouchableHighlight
               style={{
-                marginRight: 11,
-                width: 40,
-                height: 40,
+                marginRight: 16,
                 borderRadius: 20,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
               underlayColor="#EEEEEE"
               onPress={onSearchPress}>
-              <SearchIcon />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <SearchIcon style={{marginRight: 10}} />
+                <MyIcon />
+              </View>
             </TouchableHighlight>
           ),
           headerTitleStyle: {
-            fontSize: 19,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
+            fontSize: 20,
+            marginLeft: 5,
+            fontFamily: 'Pretendard-Bold',
+            fontWeight: '900',
           },
         }}
       />
@@ -293,7 +407,15 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
-              <MessageTabIcon size={size} color={color} focused={focused} />
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <MessageTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  대화
+                </Text>
+              </View>
             );
           },
           headerLeft: () => (
@@ -358,7 +480,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
             fontFamily: 'SpoqaHanSansNeo-Regular',
           },
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <AlertTabIcon size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <AlertTabIcon size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  알림
+                </Text>
+              </View>
+            );
           },
         }}
       />
@@ -405,7 +537,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
           title: '설정',
           headerTitleAlign: 'center',
           tabBarIcon: ({size, color, focused}: Props) => {
-            return <MyPageGNB size={size} color={color} focused={focused} />;
+            return (
+              <View style={styles.iconContainer}>
+                <View style={styles.icon}>
+                  <MyPageGNB size={size} color={color} focused={focused} />
+                </View>
+                <Text
+                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                  MY
+                </Text>
+              </View>
+            );
           },
           headerTitleStyle: {
             fontSize: 19,
@@ -416,5 +558,25 @@ function GlobalNavbar({navigation}: ScreenProps) {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    marginBottom: 15,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+  },
+  tabIconText: {
+    fontFamily: 'pretendard',
+    fontSize: 13,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 10,
+  },
+});
 
 export default GlobalNavbar;

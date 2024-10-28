@@ -54,11 +54,13 @@
 	<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Fonts/SpoqaHanSansNeo-Bold.ttf</string>
-		<string>Fonts/SpoqaHanSansNeo-Thin.ttf</string>
-		<string>Fonts/SpoqaHanSansNeo-Light.ttf</string>
-		<string>Fonts/SpoqaHanSansNeo-Medium.ttf</string>
-		<string>Fonts/SpoqaHanSansNeo-Regular.ttf</string>
+		<string>Fonts/Pretendard-Bold.ttf</string>
+		<string>Fonts/Pretendard-Thin.ttf</string>
+		<string>Fonts/Pretendard-Light.ttf</string>
+		<string>Fonts/Pretendard-Medium.ttf</string>
+		<string>Fonts/Pretendard-Regular.ttf</string>
+    <string>Fonts/PretendardVariable.ttf</string>
+
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>

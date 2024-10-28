@@ -33,11 +33,11 @@ function InputComment({
   isRecomment,
   onClickAddRecomment,
   content,
-  setContent
+  setContent,
 }: Props) {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const onSubmit = useCallback(() => {
-    console.log('익명여부', isAnonymous)
+    console.log('익명여부', isAnonymous);
     if (isRecomment)
       onClickAddRecomment(postId, parentId, content, isAnonymous);
     else onClickAddComment(postId, content, isAnonymous);
@@ -76,9 +76,10 @@ function InputComment({
           onChangeText={value => {
             setContent(value);
             if (value.length === 500)
-               Toast.show(
+              Toast.show(
                 '댓글 내용은 500글자까지만 입력 가능합니다.',
-                Toast.SHORT,)
+                Toast.SHORT,
+              );
           }}
           value={content}
           autoCorrect={false}
@@ -86,15 +87,16 @@ function InputComment({
           maxLength={500}
         />
         <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
-        <Text>
-          {content && (
-            <Pressable
-              style={{paddingBottom: Platform.OS === 'ios' ? 3: 5, bottom: 0}}
-              onPress={() => {
-                onSubmit();
-              }}>
-              <CommentSendIcon />
-            </Pressable>
+          <Text>
+            {content && (
+              <Pressable
+                style={{
+                  paddingBottom: Platform.OS === 'ios' ? 3 : 5,
+                  bottom: 0,
+                }}
+                onPress={() => {
+                  onSubmit();
+                }}></Pressable>
             )}
           </Text>
         </View>
@@ -117,10 +119,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
     width: Dimensions.get('window').width - 150,
     paddingVertical: 5,
-    paddingTop: Platform.OS == 'ios' ? 13: 0,
+    paddingTop: Platform.OS == 'ios' ? 13 : 0,
     minHeight: 44,
     maxHeight: 230,
     color: '#222222',
-    lineHeight: 22.5
+    lineHeight: 22.5,
   },
 });
