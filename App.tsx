@@ -42,11 +42,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // search
 import TotalSearch from './src/screens/search/total/TotalSearch';
 import TotalSearchResult from './src/screens/search/total/TotalSearchResult';
+import BoardSearch from './src/screens/search/BoardSearch';
+import BoardSearchResult from './src/screens/search/total/BoardSearchResult';
+
 // board
 import TermAgreeCreateBoard from './src/screens/board/createBoard/DirectionAgree';
 import CreateBoard from './src/screens/board/createBoard/CreateBoard';
 import UpdateBoard from './src/screens/board/createBoard/UpdateBoard';
 import BoardScreen from './src/screens/board/BoardScreen';
+import BoardFragment from './src/screens/fragments/BoardFragment';
 // post
 import PostListScreen from './src/screens/post/PostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
@@ -107,6 +111,8 @@ import ProfileModify from './src/screens/mypage/ProfileModify';
 import ProfileModifySujeonggu from './src/screens/mypage/ProfileModifySujeonggu';
 import MyActivity from './src/screens/mypage/MyActivity';
 import CancelButton from './resources/icon/Cancel';
+import SearchIcon from './resources/icon/SearchIcon';
+import SpinningThreeDots from './src/components/SpinningThreeDots';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 const Stack = createNativeStackNavigator();
@@ -737,6 +743,21 @@ const App = () => {
                   title: '',
                 })}
               />
+              {/* 게시판 검색 */}
+              <Stack.Screen
+                name="BoardSearch"
+                component={BoardSearch}
+                options={({navigation}) => ({
+                  title: '',
+                })}
+              />
+              <Stack.Screen
+                name="BoardSearchResult"
+                component={BoardSearchResult}
+                options={({navigation}) => ({
+                  title: '',
+                })}
+              />
               <Stack.Screen
                 name="PostSearch"
                 component={PostSearch}
@@ -887,11 +908,11 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="BoardScreen"
-                component={BoardScreen}
+                name="BoardFragment"
+                component={BoardFragment}
                 options={({navigation}) => ({
                   title: '게시판',
-                  headerTitleAlign: 'center',
+                  headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
@@ -2021,6 +2042,49 @@ const App = () => {
                 component={SplashHome}
                 options={{title: ''}}
               />
+              <Stack.Screen
+                name="BoardFragment"
+                component={BoardFragment}
+                options={({navigation}) => ({
+                  title: '모든 게시판',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.navigate('BoardSearch')}>
+                      <SearchIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               {/* [F-1 회원가입] */}
               <Stack.Screen
                 name="TermAgree"
@@ -2576,6 +2640,21 @@ const App = () => {
               <Stack.Screen
                 name="TotalSearchResult"
                 component={TotalSearchResult}
+                options={({navigation}) => ({
+                  title: '',
+                })}
+              />
+              {/* 게시판 검색 */}
+              <Stack.Screen
+                name="BoardSearch"
+                component={BoardSearch}
+                options={({navigation}) => ({
+                  title: '',
+                })}
+              />
+              <Stack.Screen
+                name="BoardSearchResult"
+                component={BoardSearchResult}
                 options={({navigation}) => ({
                   title: '',
                 })}
