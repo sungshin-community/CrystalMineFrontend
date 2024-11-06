@@ -14,9 +14,11 @@ import {
   FlatList,
   RefreshControl,
   TouchableHighlight,
+  TextInput,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
+
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   getBoardDetail,
@@ -55,6 +57,16 @@ import WaterMark from '../../components/WaterMark';
 import AdMob from '../../components/AdMob';
 import PurpleArrow from '../../../resources/icon/PurpleArrow';
 import HotIcon from '../../../resources/icon/HotIcon';
+import ImageIcon from '../../../resources/icon/ImageIcon';
+import PostVoteIcon from '../../../resources/icon/PostVoteIcon';
+import {
+  RectangleChecked,
+  RectangleUnchecked,
+} from '../../../resources/icon/CheckBox';
+import ExpandIcon from '../../../resources/icon/ExpandIcon';
+import PostAdItem from '../../components/PostAdItem';
+import PostWriteBCase from '../../components/PostWriteBCase';
+
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
@@ -82,6 +94,10 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
+  const [titleInput, setTitleInput] = useState('');
+  const [contentInput, setContentInput] = useState('');
+
   const listHeaderCondition =
     route.params?.boardId !== 5 &&
     route.params?.boardId !== 6 &&
@@ -278,6 +294,12 @@ const PostListScreen = ({navigation, route}: Props) => {
       boardName: boardInfo?.name,
     });
   };
+
+  const toPostWriteScreen = () => {
+    navigation.navigate('PostWriteScreen', {
+      boardId: route.params.boardId,
+    });
+  };
   const handleBoardSearchComponent = (
     <TouchableHighlight
       style={{
@@ -381,6 +403,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             style={{zIndex: 100}}
           />
         </View>
+
+        {/* 게시글 목록 */}
         {boardDetail.length !== 0 &&
           route.params?.boardId !== 2 &&
           !listHeaderCondition && (
@@ -459,7 +483,11 @@ const PostListScreen = ({navigation, route}: Props) => {
                       postId: item.postId,
                     });
                   }}>
-                  <PostItem post={item} boardId={boardInfo?.id} />
+                  {boardInfo?.id === 98 ? (
+                    <PostAdItem post={item} boardId={boardInfo?.id} />
+                  ) : (
+                    <PostItem post={item} boardId={boardInfo?.id} />
+                  )}
                 </TouchableOpacity>
               )}
               ItemSeparatorComponent={() => (
@@ -535,6 +563,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                               />
                             ) : null}
                           </TouchableOpacity>
+
                           {/* <TouchableOpacity
                             onPress={() => {
                               if (sortBy === 'createdAt') {
@@ -562,6 +591,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </TouchableOpacity> */}
                         </View>
                       )}
+                    <PostWriteBCase navigation={navigation} route={route} />
                   </View>
                 )
               }
@@ -642,5 +672,79 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 15,
+  },
+  container: {
+    position: 'relative',
+    paddingHorizontal: 14,
+    borderBottomColor: '#F6F6F6',
+    borderStyle: 'solid',
+    borderBottomWidth: 4,
+    height: 'auto',
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  name: {
+    paddingTop: 2,
+    paddingLeft: 8,
+    fontFamily: 'SpoqaHanSansNeo-Medium',
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#3A424E',
+  },
+  textContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  text: {
+    fontSize: 14,
+    color: '#222222',
+  },
+  textSmall: {
+    color: '#9DA4AB',
+    fontSize: 13,
+    fontFamily: 'SpoqaHanSansNeo-Regular',
+  },
+  timeStamp: {
+    fontSize: 12,
+    paddingLeft: 10,
+    paddingTop: 2,
+    color: '#B9BAC1',
+  },
+  title: {
+    fontSize: 14,
+    lineHeight: 19.6,
+    fontWeight: '600',
+    color: '#222222',
+    borderBottomColor: '#EFEFF3',
+    borderBottomWidth: 1,
+  },
+  content: {
+    fontSize: 14,
+    //marginBottom: 30,
+    lineHeight: 19.6,
+    fontWeight: '400',
+    color: '#222222',
+  },
+  icon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconCount: {
+    marginLeft: 5,
+    marginRight: 12,
+    color: '#9DA4AB',
+  },
+  bottomBar: {
+    position: 'relative',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    marginTop: 10,
+    //height: 52,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
