@@ -109,6 +109,8 @@ export const getBoardirectionAgreements = async () => {
 export const getBoardInfo = async (boardId: number) => {
   try {
     const response = await client.get<Response<Board>>(`/boards/${boardId}`);
+    console.log('여기는 getBoardInfo 함수', response.data.data);
+
     return response.data.data;
   } catch (e) {
     console.log('여기는 getBoardInfo 함수', e);
@@ -128,6 +130,7 @@ export const getBoardDetail = async (
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/${boardId}/posts?${params}`,
     );
+    console.log('여기는 getBoardInfo 함수', response.data.data);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getCustomBoardList 함수', e.response.data);
@@ -141,6 +144,7 @@ export const getBoardHotPost = async (boardId: number) => {
     const response = await client.get<Response<BoardHotPostDto>>(
       `/boards/${boardId}/hot-post`,
     );
+    console.log('여기는 getBoardHotPost 함수', response.data);
     return response.data;
   } catch (e) {
     console.log('여기는 getBoardHotPost 함수', e.response.data);
@@ -161,16 +165,36 @@ export const getReportReason = async () => {
   }
 };
 
+export const getSecondReportReason = async () => {
+  try {
+    const response = await client.get<Response<Board>>(`/report`);
+    console.log('getSecondReportReason', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('여기는 getSecondReportReason 함수', e.responde.data);
+    return e.response.data;
+  }
+};
+
+export enum BoardContentType {
+  TYPE1 = 'TYPE1', // 제목 + 본문
+  TYPE2 = 'TYPE2', // 제목 + 본문 + 사진
+  TYPE3 = 'TYPE3', // 제목 + 사진
+  TYPE4 = 'TYPE4', // 기존 게시글용
+}
+
 export const createBoard = async (
   name: string,
   introduction: string,
   hotable: boolean,
+  type: BoardContentType,
 ) => {
   try {
     const response = await client.post<Response<Board>>('/boards', {
       name: name,
       introduction: introduction,
       hotable: hotable,
+      type: type,
     });
     console.log('게시판 생성 hotable', hotable);
     console.log('createBoard 함수 성공', response.data);
@@ -408,8 +432,8 @@ export const deletePosts = async (postId: number) => {
 export const getEmoticons = async () => {
   try {
     const response = await client.get<AxiosResponse>(`/emoticons/my`);
-    console.log('이모티콘list', response.data.data);
-    return response.data.data;
+    console.log('이모티콘list', response.data);
+    return response.data;
   } catch (e) {
     console.log('getEmoticons 함수', e);
   }

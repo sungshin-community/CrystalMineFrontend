@@ -613,6 +613,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             onPress={() =>
               navigation.navigate('PostWriteScreen', {
                 boardId: route.params.boardId,
+                contentType: boardInfo?.contentType,
               })
             }
           />
