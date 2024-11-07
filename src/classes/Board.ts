@@ -7,4 +7,5 @@ export default interface Board {
   isOwner: boolean;
   isPinned: boolean;
   isReported: boolean;
+  todayNewPost: boolean;
 }

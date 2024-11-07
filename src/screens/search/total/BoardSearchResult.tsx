@@ -149,6 +149,7 @@ export default function BoardSearchResult({route, navigation}: Props) {
     const postList = response.data.content;
     setCurrentPage(0);
     setBoardList(postList);
+    console.log('response', response);
   };
 
   const fetchNextPage = async () => {
@@ -309,12 +310,11 @@ export default function BoardSearchResult({route, navigation}: Props) {
                         fontSize: 14,
                         color: '#3A424E',
                         fontWeight: '500',
+                        marginRight: 8,
                       }}>
                       {item.name}
                     </Text>
-                    <View style={{marginLeft: 5}}>
-                      <NewIcon />
-                    </View>
+                    {item.todayNewPost && <NewIcon />}
                   </View>
                   <Text
                     numberOfLines={1}
