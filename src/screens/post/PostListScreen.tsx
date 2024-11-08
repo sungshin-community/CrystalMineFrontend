@@ -3,10 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
-  Alert,
-  ScrollView,
   Pressable,
   Text,
   SafeAreaView,
@@ -14,7 +11,6 @@ import {
   FlatList,
   RefreshControl,
   TouchableHighlight,
-  TextInput,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
@@ -22,18 +18,19 @@ import PostItem from '../../components/PostItem';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   getBoardDetail,
+  getAdBoardPost,
   getBoardHotPost,
   getBoardInfo,
   getHotBoardPosts,
   reportBoard,
   toggleBoardPin,
+  checkIsAdminForAdBoardPost,
 } from '../../common/boardApi';
 import BoardDetailDto, {
   BoardHotPostDto,
   ContentPreviewDto,
 } from '../../classes/BoardDetailDto';
 import Toast from 'react-native-simple-toast';
-import {getPosts} from '../../common/boardApi';
 import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {fontMedium, fontRegular, fontBold} from '../../common/font';
@@ -54,18 +51,12 @@ import SortIcon from '../../../resources/icon/SortIcon';
 import {logout} from '../../common/authApi';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
-import AdMob from '../../components/AdMob';
 import PurpleArrow from '../../../resources/icon/PurpleArrow';
 import HotIcon from '../../../resources/icon/HotIcon';
-import ImageIcon from '../../../resources/icon/ImageIcon';
 import PostVoteIcon from '../../../resources/icon/PostVoteIcon';
-import {
-  RectangleChecked,
-  RectangleUnchecked,
-} from '../../../resources/icon/CheckBox';
-import ExpandIcon from '../../../resources/icon/ExpandIcon';
 import PostAdItem from '../../components/PostAdItem';
 import PostWriteBCase from '../../components/PostWriteBCase';
+import GlobalNavbar from '../../components/GlobalNavbar';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -85,8 +76,6 @@ const PostListScreen = ({navigation, route}: Props) => {
     content: null,
     title: null,
   });
-  const [reportCheckModalVisible, setReportCheckModalVisible] =
-    useState<boolean>(false);
   const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -94,9 +83,7 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
-  const [titleInput, setTitleInput] = useState('');
-  const [contentInput, setContentInput] = useState('');
+  const [isAdBoard, setIsAdBoard] = useState<boolean>(false);
 
   const listHeaderCondition =
     route.params?.boardId !== 5 &&
@@ -111,6 +98,9 @@ const PostListScreen = ({navigation, route}: Props) => {
       if (route.params.boardId === 2) {
         const hotBoardData = await getHotBoardPosts(0);
         setBoardDetail(hotBoardData);
+      } else if (route.params.boardId === 98) {
+        const adBoardData = await getAdBoardPost(98, 0);
+        setBoardDetail(adBoardData);
       } else {
         setIsHotBoard(false);
         const boardDetail = await getBoardDetail(
@@ -159,14 +149,36 @@ const PostListScreen = ({navigation, route}: Props) => {
       }
       const boardInfo = await getBoardInfo(route.params.boardId);
       setBoardInfo(boardInfo);
+      console.log('boardInfo', boardInfo);
+      if (boardInfo?.id) {
+        const fetchAdminStatus = async () => {
+          try {
+            const response = await checkIsAdminForAdBoardPost(boardInfo.id);
+            setIsAdBoard(response.data);
+            console.log(isAdBoard);
+          } catch (error) {
+            console.error('관리자 권한 확인', error);
+          }
+        };
+
+        fetchAdminStatus();
+      }
       setIsLoading(false);
     }
     init();
   }, [sortBy]);
+  useEffect(() => {
+    // boardInfo가 업데이트될 때만 fetchAdminStatus 호출
+    console.log('!!!!', boardInfo);
+  }, []);
 
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
+      setCurrentPage(0);
+      setBoardDetail(postList);
+    } else if (route.params.boardId === 98) {
+      const postList = await getAdBoardPost(98, 0);
       setCurrentPage(0);
       setBoardDetail(postList);
     } else {
@@ -472,99 +484,120 @@ const PostListScreen = ({navigation, route}: Props) => {
           </SafeAreaView>
         ) : (
           <>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              style={{flex: 1, backgroundColor: '#FFFFFF'}}
-              data={boardDetail}
-              renderItem={({item, index}) => (
-                <TouchableOpacity
-                  onPress={async () => {
-                    navigation.navigate('PostScreen', {
-                      postId: item.postId,
-                    });
-                  }}>
-                  {boardInfo?.id === 98 ? (
-                    <PostAdItem post={item} boardId={boardInfo?.id} />
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#A055FF" />
+            ) : (
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                style={{flex: 1, backgroundColor: '#FFFFFF'}}
+                data={boardDetail}
+                renderItem={({item, index}) =>
+                  boardInfo?.id === 98 ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('PostScreen', {
+                          postId: item.postId,
+                        });
+                      }}>
+                      <PostAdItem
+                        post={item}
+                        boardId={boardInfo?.id}
+                        navigation={navigation}
+                        route={route}
+                      />
+                    </TouchableOpacity>
                   ) : (
-                    <PostItem post={item} boardId={boardInfo?.id} />
-                  )}
-                </TouchableOpacity>
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-              )}
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={handleRefresh}
-                  colors={['#A055FF']} // for android
-                  tintColor={'#A055FF'} // for ios
-                />
-              }
-              onEndReached={() => fetchNextPage()}
-              onEndReachedThreshold={0.8}
-              ListHeaderComponent={
-                boardDetail.length !== 0 &&
-                route.params?.boardId !== 2 &&
-                listHeaderCondition && (
-                  <View>
-                    {/* <View style={{marginTop: -16}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('PostScreen', {
+                          postId: item.postId,
+                        });
+                      }}>
+                      <PostItem post={item} boardId={boardInfo?.id} />
+                    </TouchableOpacity>
+                  )
+                }
+                ItemSeparatorComponent={() => (
+                  <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+                )}
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={handleRefresh}
+                    colors={['#A055FF']} // for android
+                    tintColor={'#A055FF'} // for ios
+                  />
+                }
+                onEndReached={() => fetchNextPage()}
+                onEndReachedThreshold={0.8}
+                ListHeaderComponent={
+                  boardDetail.length !== 0 &&
+                  route.params?.boardId !== 2 &&
+                  listHeaderCondition && (
+                    <View>
+                      {/* <View style={{marginTop: -16}}>
                       <AdMob />
                     </View> */}
-                    {!isHotBoard &&
-                      ![93, 94, 95].includes(route.params.boardId) && (
-                        <View
-                          style={{flexDirection: 'row', paddingHorizontal: 24}}>
-                          <TouchableOpacity
-                            style={[
-                              styles.purpleButtonStyle,
-                              {
-                                flex: 1,
-                                paddingLeft: 6,
-                              },
-                            ]}
-                            onPress={() => {
-                              boardHotPost?.isExist
-                                ? navigation.navigate('PostScreen', {
-                                    postId: boardHotPost.postId,
-                                  })
-                                : {};
+                      {!isHotBoard &&
+                        ![93, 94, 95, 98].includes(route.params.boardId) && (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              paddingHorizontal: 24,
                             }}>
-                            {boardHotPost?.isExist ? (
-                              <>
-                                <HotIcon style={{marginLeft: 6}} />
-                                <Text
-                                  style={[styles.popularButtonText, fontBold]}>
-                                  인기
-                                </Text>
-                              </>
-                            ) : null}
-                            <Text
+                            <TouchableOpacity
                               style={[
-                                styles.grayButtonText,
-                                fontRegular,
-                                {flex: 1},
+                                styles.purpleButtonStyle,
+                                {
+                                  flex: 1,
+                                  paddingLeft: 6,
+                                },
                               ]}
-                              numberOfLines={1}
-                              ellipsizeMode="tail">
-                              {boardHotPost?.isExist === false
-                                ? '현재 실시간 인기글이 없습니다.'
-                                : boardHotPost?.title !== null
-                                ? boardHotPost?.title
-                                : boardHotPost.content}
-                            </Text>
-                            {boardHotPost?.isExist ? (
-                              <PurpleArrow
-                                style={{
-                                  marginRight: 6,
-                                }}
-                              />
-                            ) : null}
-                          </TouchableOpacity>
+                              onPress={() => {
+                                boardHotPost?.isExist
+                                  ? navigation.navigate('PostScreen', {
+                                      postId: boardHotPost.postId,
+                                    })
+                                  : {};
+                              }}>
+                              {boardHotPost?.isExist ? (
+                                <>
+                                  <HotIcon style={{marginLeft: 6}} />
+                                  <Text
+                                    style={[
+                                      styles.popularButtonText,
+                                      fontBold,
+                                    ]}>
+                                    인기
+                                  </Text>
+                                </>
+                              ) : null}
+                              <Text
+                                style={[
+                                  styles.grayButtonText,
+                                  fontRegular,
+                                  {flex: 1},
+                                ]}
+                                numberOfLines={1}
+                                ellipsizeMode="tail">
+                                {boardHotPost?.isExist === false
+                                  ? '현재 실시간 인기글이 없습니다.'
+                                  : boardHotPost?.title !== null
+                                  ? boardHotPost?.title
+                                  : boardHotPost.content}
+                              </Text>
+                              {boardHotPost?.isExist ? (
+                                <PurpleArrow
+                                  style={{
+                                    marginRight: 6,
+                                  }}
+                                />
+                              ) : null}
+                            </TouchableOpacity>
 
-                          {/* <TouchableOpacity
+                            {/* <TouchableOpacity
                             onPress={() => {
                               if (sortBy === 'createdAt') {
                                 setSortBy('likeCount');
@@ -589,13 +622,16 @@ const PostListScreen = ({navigation, route}: Props) => {
                             </Text>
                             <SortIcon />
                           </TouchableOpacity> */}
-                        </View>
+                          </View>
+                        )}
+                      {route.params.boardId !== 98 && (
+                        <PostWriteBCase navigation={navigation} route={route} />
                       )}
-                    <PostWriteBCase navigation={navigation} route={route} />
-                  </View>
-                )
-              }
-            />
+                    </View>
+                  )
+                }
+              />
+            )}
             <View style={{backgroundColor: '#FFFFFF'}}>
               {isNextPageLoading && (
                 <ActivityIndicator
@@ -608,7 +644,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) && (
+        {(!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
+          (route.params?.boardId === 98 && isAdBoard)) && (
           <FloatingWriteButton
             onPress={() =>
               navigation.navigate('PostWriteScreen', {

@@ -138,6 +138,36 @@ export const getBoardDetail = async (
   }
 };
 
+// 광고 게시글 목록
+export const getAdBoardPost = async (boardId: number, page: number) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<Response<BoardDetailDto>>(
+      `/boards/${boardId}/ad-board/posts?${params}`,
+    );
+    console.log('여기는 getAdBoardPost 함수', response.data.data);
+    return response.data.data.content;
+  } catch (e) {
+    console.log('여기는 getAdBoardPost 함수', e.response.data);
+    return e.response.data;
+  }
+};
+
+// 광고 게시글 관리자 여부 확인
+export const checkIsAdminForAdBoardPost = async (boardId: number) => {
+  try {
+    const response = await client.get<Response<boolean>>(
+      `/boards/${boardId}/ad-board/posts/is-admin`,
+    );
+    console.log('여기는 checkIsAdminForAdBoardPost 함수', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('여기는 checkIsAdminForAdBoardPost 함수', e.response.data);
+    return e.response.data;
+  }
+};
+
 //게시판 내 인기 게시물
 export const getBoardHotPost = async (boardId: number) => {
   try {
@@ -320,6 +350,7 @@ export const getHotBoardPosts = async (page: number) => {
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/hot-board/posts?${params}`,
     );
+    console.log('getHotBoardPosts', response.data.data);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getHotBoardPosts 함수', e.response.data);
