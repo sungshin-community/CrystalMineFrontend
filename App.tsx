@@ -109,6 +109,7 @@ import MyActivity from './src/screens/mypage/MyActivity';
 import CancelButton from './resources/icon/Cancel';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
+import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -2007,6 +2008,14 @@ const App = () => {
                     </TouchableHighlight>
                   ),
                 })}
+              />
+              <Stack.Screen
+                name="Onboarding"
+                component={OnboardingScreen}
+                options={{
+                  title: 'Onboarding',
+                  headerShown: false,
+                }}
               />
               <Stack.Screen
                 name="ErrorScreen"
