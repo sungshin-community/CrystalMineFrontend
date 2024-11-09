@@ -8,28 +8,68 @@ const OnboardingScreen = ({navigation}) => {
   const contentList = [
     {
       title: 'WELCOME!',
-      description: '궁금했던, 궁금한, 궁금할 모든 것. \n수정구에 물어봐!',
+      description: (
+        <Text style={styles.subheadingText}>
+          궁금했던, 궁금한, 궁금할 모든 것. {'\n'}
+          <View style={styles.customUnderlineWrapper}>
+            <Text style={styles.highlightText}>수정구</Text>
+            <View style={styles.customUnderline} />
+          </View>
+          에 물어봐!
+        </Text>
+      ),
       image: require('../../../resources/images/CrystalOnboadingImg.png'),
       imageStyle: {marginTop: 40},
     },
     {
-      title: '', // 2페이지: 제목 없음
-      description:
-        '취준, 스펙, 직장 토크?\n커리어와 관련된 모든 이야기\n수정이들과 도란도란 나누며\n묻고 답할 수도 있어요',
+      title: '', // 2페이지
+      description: (
+        <View style={styles.nextPage}>
+          <Text style={styles.subheadingNextText}>취준, 스펙, 직장 토크?</Text>
+          <Text style={styles.highlightedDescription}>
+            커리어와 관련된 모든 이야기
+          </Text>
+          <Text style={styles.subheadingNextText}>
+            수정이들과 도란도란 나누며{'\n'} 묻고 답할 수도 있어요
+          </Text>
+        </View>
+      ),
       image: require('../../../resources/images/Onboading1.png'),
       imageStyle: {width: '100%'},
     },
     {
-      title: '', // 3페이지: 제목 없음
-      description:
-        '궁금했던 활동들의 생생후기\n수정이들이 작성한 실제 후기를 통해\n궁금했던 정보를 얻어요',
+      title: '', // 3페이지
+      description: (
+        <View style={styles.nextPage}>
+          <Text style={styles.subheadingNextText}>
+            <Text style={[styles.subheadingNextText]}>
+              궁금했던 활동들의{' '}
+              <Text style={styles.highlightedDescription}>생생후기</Text>
+              {'\n'}
+            </Text>
+            <Text style={styles.highlightedDescription}>
+              수정이들이 작성한 실제 후기
+            </Text>
+            를 통해{'\n'}
+            궁금했던 정보를 얻어요
+          </Text>
+        </View>
+      ),
       image: require('../../../resources/images/Onboading2.png'),
       imageStyle: {width: '100%'},
     },
     {
-      title: '', // 4페이지: 제목 없음
-      description:
-        '수정이들과 함께하고 싶다면?\n채팅방에 입장해\n스터디나 모임, 사이드 프로젝트를\n만들어 모두와 진행해봐요',
+      title: '', // 4페이지
+      description: (
+        <View style={styles.nextPage}>
+          <Text style={styles.subheadingNextText}>
+            수정이들과 함께하고 싶다면?{'\n'}
+            채팅방에 입장해{'\n'}
+            스터디나 모임, 사이드 프로젝트를{'\n'}
+            만들어 모두와 진행해봐요
+          </Text>
+        </View>
+      ),
       image: require('../../../resources/images/Onboading3.png'),
       imageStyle: {width: '100%'},
     },
@@ -65,9 +105,9 @@ const OnboardingScreen = ({navigation}) => {
       ) : null}
 
       {/* 설명 */}
-      <Text style={styles.subheadingText}>
+      <View style={styles.descriptionBox}>
         {contentList[currentIndex].description}
-      </Text>
+      </View>
 
       {/* 하단 네비게이션 버튼 */}
       <View style={styles.bottomNavigation}>
@@ -112,6 +152,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  descriptionBox: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
   subheadingText: {
     fontFamily: 'Pretendard',
     fontSize: 20,
@@ -121,8 +167,44 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
+  nextPage: {
+    marginRight: 70,
+  },
+  subheadingNextText: {
+    fontFamily: 'Pretendard',
+    fontSize: 18,
+    color: '#222222',
+    fontWeight: '100',
+    lineHeight: 30,
+  },
+  highlightedDescription: {
+    fontFamily: 'Pretendard',
+    fontSize: 18,
+    color: '#A055FF',
+    fontWeight: 'bold',
+    lineHeight: 30,
+    marginTop: 10,
+  },
+  marginBottomText: {
+    marginBottom: 10,
+  },
+  customUnderlineWrapper: {
+    position: 'relative',
+    display: 'flex',
+  },
+  highlightText: {
+    fontSize: 20,
+    top: 15,
+    color: '#A055FF',
+    fontWeight: 'bold',
+    zIndex: 1,
+  },
+  customUnderline: {
+    fontSize: 20,
+    backgroundColor: '#FFF176',
+    height: 10,
+  },
   bottomNavigation: {
-    position: 'absolute',
     bottom: 30,
     flexDirection: 'row',
     alignItems: 'center',

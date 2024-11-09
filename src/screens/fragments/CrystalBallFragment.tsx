@@ -25,7 +25,7 @@ import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
 import Lounge from '../../components/Lounge';
 import CrystalReview from '../../components/CrystalReview';
-
+import SphereTabNav from '../../components/SphereTabNav';
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -276,7 +276,7 @@ export default function CrystalBallFragment({navigation}: Props) {
             ) : (
               <View>
                 {/* 살펴보기 컴포넌트 */}
-                <CrystalReview />
+                <SphereTabNav />
               </View>
             )}
           </ScrollView>

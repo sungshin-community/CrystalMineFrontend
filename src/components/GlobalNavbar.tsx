@@ -286,7 +286,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
             e.preventDefault();
             try {
               const profileData = await getPantheonProfile();
-              if (profileData.isNew) {
+              if (!profileData.isNew) {
                 navigation.navigate('CrystalBall');
               } else {
                 navigation.navigate('Onboarding'); // 온보딩
