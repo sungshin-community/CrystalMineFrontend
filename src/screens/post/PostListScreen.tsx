@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 
 import {
   StyleSheet,
@@ -64,8 +64,11 @@ type RootStackParamList = {
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
   PostSearch: {boardId: number; boardName: string};
+  PostListScreen: {boardId: number};
 };
-type Props = NativeStackScreenProps<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList> & {
+  contentType: 'TYPE1' | 'TYPE2' | 'TYPE3' | 'TYPE4';
+};
 
 const PostListScreen = ({navigation, route}: Props) => {
   const [boardDetail, setBoardDetail] = useState<ContentPreviewDto[]>([]);
@@ -91,7 +94,14 @@ const PostListScreen = ({navigation, route}: Props) => {
     route.params?.boardId !== 7 &&
     route.params?.boardId !== 8 &&
     route.params?.boardId !== 9; // 광고/인기글 제외 게시판 목록
-
+  const fetchAdminStatus = useCallback(async (boardId: number) => {
+    try {
+      const response = await checkIsAdminForAdBoardPost(boardId);
+      setIsAdBoard(response.data);
+    } catch (error) {
+      console.error('관리자 권한 확인', error);
+    }
+  }, []);
   useEffect(() => {
     async function init() {
       setIsLoading(true);
@@ -122,6 +132,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           }, 100);
           navigation.goBack();
         } else setBoardDetail(boardDetail);
+        console.log('boardDetail', boardDetail);
 
         //인기 게시물 설정
         const hotPost = await getBoardHotPost(route.params.boardId);
@@ -151,26 +162,12 @@ const PostListScreen = ({navigation, route}: Props) => {
       setBoardInfo(boardInfo);
       console.log('boardInfo', boardInfo);
       if (boardInfo?.id) {
-        const fetchAdminStatus = async () => {
-          try {
-            const response = await checkIsAdminForAdBoardPost(boardInfo.id);
-            setIsAdBoard(response.data);
-            console.log(isAdBoard);
-          } catch (error) {
-            console.error('관리자 권한 확인', error);
-          }
-        };
-
-        fetchAdminStatus();
+        await fetchAdminStatus(boardInfo.id);
       }
       setIsLoading(false);
     }
     init();
-  }, [sortBy]);
-  useEffect(() => {
-    // boardInfo가 업데이트될 때만 fetchAdminStatus 호출
-    console.log('!!!!', boardInfo);
-  }, []);
+  }, [route.params.boardId, sortBy, fetchAdminStatus]);
 
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
@@ -625,7 +622,12 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </View>
                         )}
                       {route.params.boardId !== 98 && (
-                        <PostWriteBCase navigation={navigation} route={route} />
+                        <PostWriteBCase
+                          navigation={navigation}
+                          route={route}
+                          contentType={boardInfo?.contentType || 'TYPE1'}
+                          hasTitle={boardDetail?.hasTitle}
+                        />
                       )}
                     </View>
                   )

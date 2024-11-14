@@ -28,20 +28,24 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import DeleteImageIcon from './ImageDelete';
 type RootStackParamList = {
   PostScreen: {postId: number};
-  PostWriteScreen: {boardId: number};
+  PostWriteScreen: {boardId: number; contentType: string};
   UpdateBoard: {boardId: number};
   BoardSearch: {boardName: string; boardId: number};
   PostSearch: {boardId: number; boardName: string};
-  PostListScreen: {boardId: number};
+  PostListScreen: {boardId: number; contentType: string};
   WikiTab: {boardId: number};
   DirectionAgreeScreen: undefined;
 };
 import {PostWriteInfoDto} from '../classes/PostDto';
 import {getWritePostInfo, postWritePost} from '../common/boardApi';
+import BPostSend from '../../resources/icon/BPostSend';
 
-type Props = NativeStackScreenProps<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList> & {
+  contentType: 'TYPE1' | 'TYPE2' | 'TYPE3' | 'TYPE4';
+  hasTitle: boolean;
+};
 
-const PostWriteBCase = ({navigation, route}: Props) => {
+const PostWriteBCase = ({navigation, route, contentType, hasTitle}: Props) => {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [titleInput, setTitleInput] = useState('');
   const [contentInput, setContentInput] = useState('');
@@ -55,67 +59,29 @@ const PostWriteBCase = ({navigation, route}: Props) => {
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [boardId, setBoardId] = useState<number>(0);
 
-  const onSubmitPress = async () => {
-    setIsLoading(true);
-    const response = await postWritePost(
-      boardId,
-      titleInput,
-      contentInput,
-      isAnonymous,
-      images,
-    );
-    if (response.status === 401) {
-      setTimeout(function () {
-        Toast.show(
-          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-          Toast.SHORT,
-        );
-      }, 100);
-      logout();
-      navigation.reset({routes: [{name: 'SplashHome'}]});
-    } else if (getHundredsDigit(response.status) === 2) {
-      if (boardId >= 5 && boardId < 10) {
-        navigation.pop();
-        navigation.pop();
-        navigation.navigate('WikiTab', {boardId: boardId});
-      } else {
-        navigation.pop();
-        navigation.pop();
-        navigation.navigate('PostListScreen', {boardId: boardId});
-      }
-      setTimeout(function () {
-        Toast.show('게시글이 등록되었습니다.', Toast.SHORT);
-      }, 100);
-    } else {
-      setTimeout(function () {
-        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-      }, 100);
-    }
-    setIsLoading(false);
-  };
+  // TYPE1: 제목 + 본문, TYPE2: 제목 + 본문+ 사진, TYPE3: 제목 + 사진, TYPE4: 기존 게시글용
+  const showImageIcon = contentType !== 'TYPE1';
+  const showContent = contentType !== 'TYPE3';
+  const showTitle =
+    contentType !== 'TYPE4' || (contentType === 'TYPE4' && hasTitle);
 
   useEffect(() => {
-    const userInfo = async () => {
+    const fetchData = async () => {
       if (route.params.boardId) {
         setBoardId(route.params.boardId);
-        let result = await getWritePostInfo(route.params.boardId);
+        const result = await getWritePostInfo(route.params.boardId);
         if (result) {
           setInfo(result);
         }
       }
-    };
-    userInfo();
-  }, []);
 
-  useEffect(() => {
-    async function getUserInfo() {
       if (!isInited) {
         setIsLoading(true);
       }
+
       const userDto = await getUser();
-      console.log(userDto.data);
       if (userDto.status === 401) {
-        setTimeout(function () {
+        setTimeout(() => {
           Toast.show(
             '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
             Toast.SHORT,
@@ -134,9 +100,52 @@ const PostWriteBCase = ({navigation, route}: Props) => {
         setIsLoading(false);
         setIsInited(true);
       }
+    };
+
+    fetchData();
+  }, [navigation, route.params.boardId]);
+
+  const onSubmitPress = async () => {
+    setIsLoading(true);
+    const response = await postWritePost(
+      boardId,
+      titleInput,
+      contentInput,
+      isAnonymous,
+      images,
+    );
+    if (response.status === 401) {
+      setTimeout(() => {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      if (boardId >= 5 && boardId < 10) {
+        navigation.pop();
+        navigation.pop();
+        navigation.navigate('WikiTab', {boardId: boardId});
+      } else {
+        navigation.pop();
+        navigation.pop();
+        navigation.navigate('PostListScreen', {
+          boardId: boardId,
+          contentType: contentType,
+        });
+      }
+      setTimeout(() => {
+        Toast.show('게시글이 등록되었습니다.', Toast.SHORT);
+      }, 100);
+    } else {
+      setTimeout(() => {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
     }
-    getUserInfo();
-  }, [navigation]);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (isSubmitState) {
@@ -147,8 +156,10 @@ const PostWriteBCase = ({navigation, route}: Props) => {
   const toPostWriteScreen = () => {
     navigation.navigate('PostWriteScreen', {
       boardId: route.params.boardId,
+      contentType: contentType,
     });
   };
+
   const onSelectImage = () => {
     launchImageLibrary(
       {
@@ -163,7 +174,7 @@ const PostWriteBCase = ({navigation, route}: Props) => {
         }
         let tempImages: Asset[] = [...images, ...res.assets];
         if (tempImages.length > 10) {
-          setTimeout(function () {
+          setTimeout(() => {
             Toast.show('이미지는 최대 10개까지 첨부 가능합니다.', Toast.SHORT);
           }, 100);
           setImages(tempImages?.slice(0, 10));
@@ -180,8 +191,8 @@ const PostWriteBCase = ({navigation, route}: Props) => {
         <Image
           source={{uri: image.uri}}
           style={{
-            width: 90,
-            height: 90,
+            width: 40,
+            height: 40,
             borderRadius: 8,
           }}
         />
@@ -221,54 +232,28 @@ const PostWriteBCase = ({navigation, route}: Props) => {
           </View>
           <TouchableOpacity onPress={toPostWriteScreen}>
             <ExpandIcon />
-            <Pressable
-              onPress={() => {
-                if (info?.hasTitle) {
-                  if (titleInput && contentInput) setIsSubmitState(true);
-                  else setIsSubmitState(false);
-                } else if (contentInput) setIsSubmitState(true);
-                else setIsSubmitState(false);
-              }}>
-              <Text
-                style={[
-                  styles.submit,
-                  fontRegular,
-                  {
-                    color: info?.hasTitle
-                      ? titleInput && contentInput
-                        ? '#A055FF'
-                        : '#d8b9ff'
-                      : contentInput
-                      ? '#A055FF'
-                      : '#d8b9ff',
-                  },
-                ]}>
-                완료
-              </Text>
-            </Pressable>
           </TouchableOpacity>
         </View>
         <View style={[styles.textContainer]}>
-          <TextInput
-            style={[styles.title]}
-            placeholder="제목을 작성해 주세요!"
-            placeholderTextColor="#9DA4AB"
-            multiline={true}
-            numberOfLines={2}
-            ellipsizeMode="tail"
-            onChangeText={setTitleInput}
-            value={titleInput}
-          />
-          <TextInput
-            style={[styles.content, fontRegular]}
-            placeholder="게시글을 작성해 주세요!"
-            placeholderTextColor="#9DA4AB"
-            multiline={true}
-            numberOfLines={2}
-            ellipsizeMode="tail"
-            onChangeText={setContentInput}
-            value={contentInput}
-          />
+          <View>
+            {showTitle && (
+              <TextInput
+                style={styles.titleInput}
+                placeholder="제목을 입력하세요"
+                value={titleInput}
+                onChangeText={setTitleInput}
+              />
+            )}
+            {showContent && (
+              <TextInput
+                style={styles.contentInput}
+                placeholder="내용을 입력하세요"
+                value={contentInput}
+                onChangeText={setContentInput}
+                multiline
+              />
+            )}
+          </View>
           <View style={{marginVertical: 10}}>
             {images.length > 0 && (
               <View>
@@ -292,29 +277,81 @@ const PostWriteBCase = ({navigation, route}: Props) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <TouchableOpacity onPress={onSelectImage}>
-                  <ImageIcon />
-                </TouchableOpacity>
-                {/* <PostVoteIcon style={{marginHorizontal: 20}} /> */}
+                {showImageIcon && (
+                  <TouchableOpacity onPress={onSelectImage}>
+                    <ImageIcon />
+                  </TouchableOpacity>
+                )}
               </View>
-              <Pressable
+              <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                }}
-                onPress={() => {
-                  setIsAnonymous(current => !current);
                 }}>
-                <Text
+                <Pressable
                   style={{
-                    fontSize: 14,
-                    fontWeight: '500',
-                    marginRight: 4,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginRight: 10,
+                  }}
+                  onPress={() => {
+                    setIsAnonymous(current => !current);
                   }}>
-                  익명
-                </Text>
-                {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-              </Pressable>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '500',
+                      marginRight: 4,
+                    }}>
+                    익명
+                  </Text>
+                  {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    if (info?.hasTitle) {
+                      if (titleInput && contentInput) setIsSubmitState(true);
+                      else setIsSubmitState(false);
+                    } else if (contentInput) setIsSubmitState(true);
+                    else setIsSubmitState(false);
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: 67,
+                      height: 37,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 4,
+                      backgroundColor: info?.hasTitle
+                        ? titleInput && contentInput
+                          ? '#A055FF'
+                          : '#E2E4E8'
+                        : contentInput
+                        ? '#A055FF'
+                        : '#E2E4E8',
+                    }}>
+                    <Text
+                      style={[
+                        styles.submit,
+
+                        {
+                          color: info?.hasTitle
+                            ? titleInput && contentInput
+                              ? '#fff'
+                              : '#fff'
+                            : contentInput
+                            ? '#fff'
+                            : '#fff',
+                          fontSize: 14,
+                        },
+                      ]}>
+                      완료
+                    </Text>
+                    <BPostSend />
+                  </View>
+                </Pressable>
+              </View>
             </View>
           </SafeAreaView>
         </View>
@@ -375,7 +412,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'relative',
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     borderBottomColor: '#F6F6F6',
     borderStyle: 'solid',
     borderBottomWidth: 4,
@@ -420,8 +457,11 @@ const styles = StyleSheet.create({
     color: '#222222',
     borderBottomColor: '#EFEFF3',
     borderBottomWidth: 1,
+    padding: 0,
   },
   content: {
+    padding: 0,
+
     fontSize: 14,
     //marginBottom: 30,
     lineHeight: 19.6,
