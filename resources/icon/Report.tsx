@@ -111,3 +111,49 @@ export const BlackReport = (props: SvgProps) => (
     />
   </Svg>
 );
+
+export const FooterReport = (props: SvgProps) => (
+  <Svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M6.15767 11.6791C6.15767 8.45115 8.7744 5.83442 12.0023 5.83442C15.2302 5.83442 17.8469 8.45115 17.8469 11.6791V15.8571H6.15767V11.6791Z"
+      stroke="#9DA4AB"
+      stroke-width="1.64346"
+    />
+    <Path
+      d="M4.25142 17.3926C4.25142 16.7947 4.73611 16.31 5.33401 16.31H18.6674C19.2653 16.31 19.75 16.7947 19.75 17.3926V18.3456C19.75 18.9435 19.2653 19.4282 18.6674 19.4282H5.33401C4.73611 19.4282 4.25142 18.9435 4.25142 18.3456V17.3926Z"
+      stroke="#9DA4AB"
+      stroke-width="1.64346"
+      stroke-linejoin="round"
+    />
+    <Rect
+      x="11.0469"
+      y="0.25"
+      width="1.90467"
+      height="2.85701"
+      rx="0.952337"
+      fill="#9DA4AB"
+    />
+    <Rect
+      x="17.7109"
+      y="2.15234"
+      width="1.90467"
+      height="2.85701"
+      rx="0.952337"
+      transform="rotate(44.4105 17.7109 2.15234)"
+      fill="#9DA4AB"
+    />
+    <Rect
+      width="1.90467"
+      height="2.85701"
+      rx="0.952337"
+      transform="matrix(-0.714345 0.699794 0.699794 0.714345 6.28906 2.15332)"
+      fill="#9DA4AB"
+    />
+  </Svg>
+);

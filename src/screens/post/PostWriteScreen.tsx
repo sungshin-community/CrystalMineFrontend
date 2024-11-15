@@ -42,6 +42,8 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {DeleteImageIcon} from '../../components/ImageDelete';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
+import {getUser} from '../../common/myPageApi';
+import {postPantheonFree, postPantheonQurious} from '../../common/pantheonApi';
 const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
@@ -66,12 +68,17 @@ interface Direction {
   title: string;
 }
 
+interface PostWriteScreenProps {
+  isPantheon?: 'free' | 'question' | 'false';
+}
 /* boardId 전달 필요(제목 유/무) */
 
-function PostWriteScreen({navigation, route}: Props) {
+function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
   const formData = new FormData();
   const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
+  const [point, setPoint] = useState<string>('');
+  const [pointNum, setPointNum] = useState<number>(0);
   const [content, setContent] = useState<string>('');
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
@@ -83,6 +90,7 @@ function PostWriteScreen({navigation, route}: Props) {
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const isPantheon = route.params.isPantheon ?? 'false';
 
   useEffect(() => {
     const userInfo = async () => {
@@ -94,6 +102,16 @@ function PostWriteScreen({navigation, route}: Props) {
         }
       }
     };
+
+    const userPoint = async () => {
+      if (isPantheon === 'question') {
+        const user = await getUser();
+        if (user) {
+          setPointNum(user.data.data.point);
+        }
+      }
+    };
+    userPoint();
     userInfo();
   }, []);
 
@@ -105,6 +123,7 @@ function PostWriteScreen({navigation, route}: Props) {
     setIsFocus(false);
     Keyboard.dismiss();
   };
+
   const onSubmitPress = async () => {
     setIsLoading(true);
     const response = await postWritePost(
@@ -141,6 +160,31 @@ function PostWriteScreen({navigation, route}: Props) {
         Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
       }, 100);
     }
+    setIsLoading(false);
+  };
+
+  const onSubmitFreePress = async () => {
+    setIsLoading(true);
+    const response = await postPantheonFree(
+      content,
+      title,
+      isAnonymous,
+      images,
+    );
+    navigation.goBack();
+    setIsLoading(false);
+  };
+
+  const onSubmitQuriousPress = async () => {
+    setIsLoading(true);
+    const response = await postPantheonQurious(
+      content,
+      title,
+      Number(point),
+      isAnonymous,
+      images,
+    );
+    navigation.goBack();
     setIsLoading(false);
   };
 
@@ -195,8 +239,14 @@ function PostWriteScreen({navigation, route}: Props) {
   }, [navigation, title, content, images]);
 
   useEffect(() => {
-    if (isSubmitState) {
+    if (isSubmitState && isPantheon === 'false') {
       onSubmitPress();
+    }
+    if (isSubmitState && isPantheon === 'question') {
+      onSubmitQuriousPress();
+    }
+    if (isSubmitState && isPantheon === 'free') {
+      onSubmitFreePress();
     }
   }, [isAnonymous, isSubmitState, images]);
 
@@ -312,6 +362,46 @@ function PostWriteScreen({navigation, route}: Props) {
         }}
       />
       <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
+        {isPantheon === 'question' && (
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 10,
+                paddingHorizontal: 24,
+              }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '500',
+                  color: '#B9BAC1',
+                  marginRight: 8,
+                }}>
+                채택포인트
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '500',
+                  color: '#A055FF',
+                }}>
+                사용 가능 포인트 {pointNum}P
+              </Text>
+            </View>
+            <TextInput
+              placeholder="채택 답변에 제공될 포인트를 작성해주세요."
+              placeholderTextColor="#D5DBE1"
+              value={point}
+              onChangeText={value => {
+                setPoint(value);
+              }}
+              style={[fontMedium, styles.title]}
+            />
+            <View
+              style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
+            />
+          </View>
+        )}
         <View style={[styles.inputTitle]}>
           {/* <Image
             style={{width: 24, height: 24, borderRadius: 12}}
