@@ -4,8 +4,12 @@ import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import ThumbNone, {ThumbFill} from '../../resources/icon/ThumbIcon';
 import SelectBottomSheet from './SelectBottomSheet';
+import SpinningThreeDots from './SpinningThreeDots';
+import {BigPostComment} from '../../resources/icon/PostComment';
+import {BlackMessageIcon} from '../../resources/icon/Message';
 
 interface SphereReplyItemProps {
+  handleClick?: () => void;
   isQuestion?: boolean;
   isReply?: boolean;
   time: string;
@@ -22,6 +26,8 @@ interface SphereReplyItemProps {
     profileImageUrl: string;
     ptCommentId: number;
     selected?: boolean;
+    isOfReader?: boolean;
+    displayName?: string;
   };
 }
 
@@ -31,9 +37,11 @@ export default function SphereItem({
   time,
   replyCount,
   reply,
+  handleClick,
 }: SphereReplyItemProps) {
   const {
     content,
+    displayName,
     authorDepartment,
     authorJob,
     authorYear,
@@ -41,6 +49,7 @@ export default function SphereItem({
     likeCount,
     liked,
     nickname,
+    isOfReader,
     profileImageUrl,
     ptCommentId,
     selected,
@@ -62,6 +71,76 @@ export default function SphereItem({
   const handleSelect = () => {
     setPopVisible(false);
   };
+
+  const handleCommentReportComponent = (
+    <>
+      <View
+        style={{
+          position: 'absolute',
+          top: -20,
+          right: 0,
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 150,
+          height: 120,
+          zIndex: 150,
+        }}>
+        <View
+          style={{
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            backgroundColor: '#FFFFFF',
+            borderColor: '#EFEFF3',
+            borderWidth: 1,
+            borderRadius: 8,
+            //iOS
+            shadowColor: '#A6AAAE',
+            shadowOffset: {width: 0, height: 4},
+            shadowOpacity: 0.4,
+            shadowRadius: 18,
+            // Android
+            elevation: 18,
+            width: 130,
+            height: '100%',
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log('신고하기');
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                zIndex: 999,
+              }}>
+              <BigPostComment style={{marginRight: 8}} />
+              <Text
+                style={{
+                  paddingVertical: 8,
+                  fontSize: 14,
+                  color: '#3A424E',
+                }}>
+                대댓글 달기
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log('안되는 기능')}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                zIndex: 120,
+              }}>
+              <BlackMessageIcon style={{marginRight: 8}} />
+              <Text style={{paddingVertical: 8, fontSize: 14}}>쪽지하기</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
+  );
 
   return (
     <View style={[{flexDirection: 'row'}, {marginLeft: isReply ? 32 : 0}]}>
@@ -94,7 +173,7 @@ export default function SphereItem({
                   fontWeight: '600',
                   color: nickname === '글쓴이' ? '#A055FF' : '#3A424E',
                 }}>
-                {nickname}
+                {displayName || nickname}
               </Text>
               <Text
                 style={{
@@ -115,7 +194,13 @@ export default function SphereItem({
               // 비공개 함수 처리
             </Text>
           </View>
-          <Text>threedots</Text>
+          <SpinningThreeDots
+            isMine={isOfReader}
+            handleOptionModeIsMineComponent={handleCommentReportComponent}
+            handleDefaultModeComponent={<></>}
+            isGrey={true}
+            boardId={3}
+          />
         </View>
 
         {emoticonUrl && (
@@ -152,6 +237,7 @@ export default function SphereItem({
           </TouchableOpacity>
           {!isReply && (
             <TouchableOpacity
+              onPress={handleClick}
               style={{flexDirection: 'row', alignItems: 'center'}}>
               <ChatIcon />
               <Text style={styles.footerText}>대댓글 {replyCount}</Text>
