@@ -91,9 +91,14 @@ export async function getNewPosts() {
     return [];
   }
 }
-export async function getBanner() {
+export async function getBanner(prevAdPostId = null) {
   try {
-    const response = await client.get('/home/banner');
+    // prevAdPostId가 있을 경우
+    const endpoint = prevAdPostId
+      ? `/home/banner?prevAdPostId=${prevAdPostId}`
+      : '/home/banner';
+
+    const response = await client.get(endpoint);
     console.log('배너: ', response.data.data);
     return response.data.data;
   } catch (error) {
