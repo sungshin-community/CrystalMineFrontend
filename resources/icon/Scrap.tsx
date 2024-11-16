@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Svg, {Path} from 'react-native-svg';
+import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg';
 
 const Scrap = (props: any) => (
   <Svg
@@ -33,3 +33,30 @@ export const NoScrap = (props: any) => (
     />
   </Svg>
 );
+
+interface ScrapIconProps {
+  fill?: string;
+  stroke?: string;
+}
+
+export const FooterScrap = ({
+  fill = 'none',
+  stroke = '#9DA4AB',
+}: ScrapIconProps) => {
+  return (
+    <Svg width="24" height="24" viewBox="0 0 24 24" fill={fill}>
+      <G clip-path="url(#clip0_1431_29478)">
+        <Path
+          d="M5.76 5.00047V5C5.76 4.30931 6.3191 3.75 7 3.75H17C17.6858 3.75 18.25 4.31421 18.25 5V19.8626L12.2954 17.3106L12 17.184L11.7046 17.3106L5.75071 19.8623L5.76 5.00047Z"
+          stroke={stroke}
+          stroke-width="1.5"
+        />
+      </G>
+      <Defs>
+        <ClipPath id="clip0_1431_29478">
+          <Rect width="24" height="24" fill={fill} />
+        </ClipPath>
+      </Defs>
+    </Svg>
+  );
+};

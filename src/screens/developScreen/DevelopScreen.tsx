@@ -16,7 +16,7 @@ export default function DevelopScreen() {
 const styles = StyleSheet.create({
   // 배경 색깔 재확인
   container: {
-    height: '100%',
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',

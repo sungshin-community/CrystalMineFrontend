@@ -11,98 +11,60 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from 'react-native';
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
-
-const replyData = [
-  {
-    content: '이것은 첫 번째 댓글입니다!',
-    authorDepartment: '컴퓨터공학과',
-    authorJob: '학생',
-    authorYear: 2,
-    likeCount: 5,
-    liked: true,
-    nickname: '댓글 작성자1',
-    profileImageUrl: 'https://example.com/profile1.png',
-    ptCommentId: 101,
-    selected: false,
-    replyComments: [
-      {
-        content: '첫 번째 댓글의 대댓글입니다.',
-        authorDepartment: '컴퓨터공학과',
-        authorJob: '조교',
-        authorYear: 1,
-        likeCount: 2,
-        liked: false,
-        nickname: '대댓글 작성자1',
-        profileImageUrl: 'https://example.com/profile_reply1.png',
-        ptCommentId: 201,
-        selected: false,
-      },
-      {
-        content: '또 다른 대댓글입니다.',
-        authorDepartment: '정보통신학과',
-        authorJob: '연구원',
-        authorYear: 3,
-        emoticonUrl: 'https://example.com/emoticon2_reply.png',
-        likeCount: 1,
-        liked: true,
-        nickname: '대댓글 작성자2',
-        profileImageUrl: 'https://example.com/profile_reply2.png',
-        ptCommentId: 202,
-        selected: true,
-      },
-    ],
-  },
-  {
-    content: '두 번째 댓글 예시입니다.',
-    authorDepartment: '정보통신학과',
-    authorJob: '학생',
-    authorYear: 3,
-    likeCount: 8,
-    liked: false,
-    nickname: '댓글 작성자2',
-    profileImageUrl: 'https://example.com/profile2.png',
-    ptCommentId: 102,
-    selected: true,
-    replyComments: [],
-  },
-  {
-    content: '마지막으로 세 번째 댓글입니다.',
-    authorDepartment: '소프트웨어학과',
-    authorJob: '연구원',
-    authorYear: 1,
-    emoticonUrl: 'https://example.com/emoticon3.png',
-    likeCount: 12,
-    liked: true,
-    nickname: '댓글 작성자3',
-    profileImageUrl: 'https://example.com/profile3.png',
-    ptCommentId: 103,
-    selected: false,
-    replyComments: [
-      {
-        content: '세 번째 댓글의 대댓글입니다.',
-        authorDepartment: '소프트웨어학과',
-        authorJob: '학생',
-        authorYear: 2,
-        likeCount: 3,
-        liked: false,
-        nickname: '대댓글 작성자3',
-        profileImageUrl: 'https://example.com/profile_reply3.png',
-        ptCommentId: 203,
-        selected: false,
-      },
-    ],
-  },
-];
+import {getCuriousComment, getFreeComment} from '../common/pantheonApi';
+import CommentInputBox from '../screens/crystalBall/imshi';
 
 interface ReplySheetProps {
+  ptPostId: number;
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }
 
-export default function ReplySheet({visible, setVisible}: ReplySheetProps) {
+export default function ReplySheet({
+  visible,
+  setVisible,
+  ptPostId,
+}: ReplySheetProps) {
+  interface Comment {
+    content: string;
+    authorDepartment: string;
+    authorJob: string;
+    authorYear: number;
+    emoticonUrl?: string | null;
+    likeCount: number;
+    liked: boolean;
+    nickname: string;
+    profileImageUrl: string;
+    ptCommentId: number;
+    selected?: boolean;
+    reComments: Comment[];
+  }
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  const fetchCommentData = async () => {
+    try {
+      let data = [];
+      data = await getFreeComment(ptPostId);
+      if (!data) {
+        data = await getCuriousComment(ptPostId);
+      }
+      setComments(data);
+      console.log('댓글 조회 성공');
+    } catch (error) {
+      console.error('댓글 조회 실패', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCommentData();
+  }, [ptPostId]);
+
   const screenHeight = Dimensions.get('screen').height;
   const bottomSheetHeight = screenHeight * 0.75; // 초기 높이 75%
   const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
@@ -185,6 +147,7 @@ export default function ReplySheet({visible, setVisible}: ReplySheetProps) {
   const closeModal = () => {
     closeBottomSheet.start(() => {
       setVisible(false);
+      Keyboard.dismiss();
     });
   };
 
@@ -194,117 +157,129 @@ export default function ReplySheet({visible, setVisible}: ReplySheetProps) {
       animationType="fade"
       transparent
       statusBarTranslucent>
-      <View style={styles.overlay}>
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.background} />
-        </TouchableWithoutFeedback>
-        <Animated.View
-          style={[
-            styles.bottomSheetContainer,
-            {transform: [{translateY: translateY}]},
-          ]}
-          {...panResponder.panHandlers}>
-          <View style={styles.homeIndicator} />
-          <View></View>
-          <FlatList
-            style={{width: '100%', flex: 1}}
-            data={replyData}
-            renderItem={({item, index}) => (
-              <View style={{flexDirection: 'row', padding: 16}}>
-                <Image
-                  source={{uri: item.profileImageUrl}}
-                  style={{
-                    borderRadius: 14,
-                    marginRight: 10,
-                    width: 28,
-                    height: 28,
-                  }}
-                  resizeMode="cover"
-                />
-                <View style={{flex: 1}}>
-                  <View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginBottom: 2,
-                      }}>
-                      <Text
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="padding" // iOS에서는 padding, Android에서는 height 사용
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}>
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <View style={styles.background} />
+          </TouchableWithoutFeedback>
+          <Animated.View
+            style={[
+              styles.bottomSheetContainer,
+              {transform: [{translateY: translateY}]},
+            ]}
+            {...panResponder.panHandlers}>
+            <View style={styles.homeIndicator} />
+            <View></View>
+            <FlatList
+              style={{width: '100%', flex: 1}}
+              data={comments}
+              renderItem={({item, index}) => (
+                <View style={{flexDirection: 'row', padding: 16}}>
+                  <Image
+                    source={{uri: item.profileImageUrl}}
+                    style={{
+                      borderRadius: 14,
+                      marginRight: 10,
+                      width: 28,
+                      height: 28,
+                    }}
+                    resizeMode="cover"
+                  />
+                  <View style={{flex: 1}}>
+                    <View>
+                      <View
                         style={{
-                          fontSize: 14,
-                          marginRight: 6,
-                          fontWeight: '600',
-                          color:
-                            item.nickname === '글쓴이' ? '#A055FF' : '#3A424E',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginBottom: 2,
                         }}>
-                        {item.nickname}
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginRight: 6,
+                            fontWeight: '600',
+                            color:
+                              item.nickname === '글쓴이'
+                                ? '#A055FF'
+                                : '#3A424E',
+                          }}>
+                          {item.nickname}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: '#B9BAC1',
+                            fontWeight: '500',
+                          }}>
+                          // time 함수 필요
+                        </Text>
+                      </View>
                       <Text
                         style={{
                           fontSize: 12,
-                          color: '#B9BAC1',
                           fontWeight: '500',
+                          color: '#89919A',
                         }}>
-                        // time 함수 필요
+                        {item.authorDepartment} · {item.authorJob} ·{' '}
+                        {item.authorYear}
+                        // 비공개 함수 처리
                       </Text>
                     </View>
+
+                    {item.emoticonUrl && (
+                      <Image
+                        source={{uri: item.emoticonUrl}}
+                        style={{
+                          marginTop: 10,
+                          width: 100,
+                          height: 100,
+                        }}
+                        resizeMode="cover"
+                      />
+                    )}
+
                     <Text
                       style={{
-                        fontSize: 12,
-                        fontWeight: '500',
-                        color: '#89919A',
-                      }}>
-                      {item.authorDepartment} · {item.authorJob} ·{' '}
-                      {item.authorYear}
-                      // 비공개 함수 처리
-                    </Text>
-                  </View>
-
-                  {item.emoticonUrl && (
-                    <Image
-                      source={{uri: item.emoticonUrl}}
-                      style={{
+                        fontSize: 14,
+                        fontWeight: '400',
+                        color: '#222222',
                         marginTop: 10,
-                        width: 100,
-                        height: 100,
-                      }}
-                      resizeMode="cover"
-                    />
-                  )}
+                      }}>
+                      {item.content}
+                    </Text>
 
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '400',
-                      color: '#222222',
-                      marginTop: 10,
-                    }}>
-                    {item.content}
-                  </Text>
-
-                  <View style={{flexDirection: 'row', marginTop: 12}}>
-                    <TouchableOpacity
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <HeartIcon
-                        fill={item.liked ? '#FF6376' : 'white'}
-                        stroke={item.liked ? '#FF6376' : '#9DA4AB'}
-                      />
-                      <Text style={styles.footerText}>
-                        좋아요 {item.likeCount}개
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <ChatIcon />
-                      <Text style={styles.footerText}>댓글달기 3개</Text>
-                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row', marginTop: 12}}>
+                      <TouchableOpacity
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <HeartIcon
+                          fill={item.liked ? '#FF6376' : 'white'}
+                          stroke={item.liked ? '#FF6376' : '#9DA4AB'}
+                        />
+                        <Text style={styles.footerText}>
+                          좋아요 {item.likeCount}개
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <ChatIcon />
+                        <Text style={styles.footerText}>댓글달기 3개</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )}
-          />
-        </Animated.View>
-      </View>
+              )}
+            />
+          </Animated.View>
+        </View>
+        <CommentInputBox
+          onSubmit={function (comment: string, isAnonymous: boolean): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

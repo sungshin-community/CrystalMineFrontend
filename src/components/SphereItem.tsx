@@ -4,12 +4,14 @@ import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import ReplyIcon from '../../resources/icon/ReplyIcon';
 import ReplySheet from './ReplySheet';
+import timeCalculate from '../common/util/timeCalculate';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 
 interface SphereItemProps {
   isQuestion?: boolean;
+  isFree?: boolean;
   post: {
     content: string;
     createdAt: string;
@@ -21,16 +23,18 @@ interface SphereItemProps {
     ptCommentCount: number;
     ptPostId: number;
     thumbnail: string;
+    scrapCount: number;
     title: string;
     userJob: string;
     userYear: number;
-    isSelected?: boolean;
-    point?: number;
+    isSelected: boolean;
+    point: number;
   };
 }
 
 export default function SphereItem({
   isQuestion = false,
+  isFree = false,
   post,
 }: SphereItemProps) {
   const {
@@ -41,6 +45,7 @@ export default function SphereItem({
     nickname,
     profileImage,
     ptCommentCount,
+    scrapCount,
     createdAt,
     ptPostId,
     thumbnail,
@@ -51,6 +56,10 @@ export default function SphereItem({
     userYear,
   } = post;
 
+  type RootStackParamList = {
+    SpherePostScreen: {ptPostId: number; isFree: boolean; isQuestion: boolean};
+  };
+
   // 수정 필요
   const navigation = useNavigation<NativeStackScreenProps<any>['navigation']>();
   const [replyVisible, setReplyVisible] = useState(false);
@@ -59,7 +68,12 @@ export default function SphereItem({
     <View style={{paddingHorizontal: 16}}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('SpherePostScreen', {isQuestion, ptPostId});
+          console.log('ptPostId', isFree, ptPostId, isQuestion);
+          navigation.navigate('SpherePostScreen', {
+            ptPostId,
+            isFree,
+            isQuestion,
+          });
         }}>
         <View
           style={{
@@ -104,7 +118,7 @@ export default function SphereItem({
                     color: '#B9BAC1',
                     fontWeight: '500',
                   }}>
-                  // time 계산
+                  {timeCalculate(createdAt)}
                 </Text>
               </View>
               <Text
@@ -113,7 +127,8 @@ export default function SphereItem({
                   fontWeight: '500',
                   color: '#89919A',
                 }}>
-                {department} · {userJob} · {userYear}
+                {department} · {userJob} ·{' '}
+                {userYear === 0 ? '신입' : `${userYear}년`}
               </Text>
             </View>
           </View>
@@ -156,6 +171,7 @@ export default function SphereItem({
               color: '#222222',
               fontSize: 16,
               fontWeight: '600',
+              marginBottom: 8,
             }}
             numberOfLines={1}
             ellipsizeMode="tail">
@@ -244,7 +260,11 @@ export default function SphereItem({
           </View>
         </TouchableOpacity>
       )}
-      <ReplySheet visible={replyVisible} setVisible={setReplyVisible} />
+      <ReplySheet
+        visible={replyVisible}
+        setVisible={setReplyVisible}
+        ptPostId={ptPostId}
+      />
     </View>
   );
 }
