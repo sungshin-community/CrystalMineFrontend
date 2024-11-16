@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import {PostComment, BigPostComment} from '../../resources/icon/PostComment';
+import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
+import ProfileImage from '../../resources/icon/ProfileImage';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import {ContentPreviewDto} from '../classes/BoardDetailDto';
@@ -24,7 +26,7 @@ interface Props {
   route: any;
 }
 
-function PostItem({post, boardId, navigation, route}: Props) {
+function PostAdItem({post, boardId, navigation, route}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
   const handleCommentContainerPress = () => {
     setModalVisible(true);
@@ -33,7 +35,8 @@ function PostItem({post, boardId, navigation, route}: Props) {
   const closeModal = () => {
     setModalVisible(false);
   };
-
+  console.log('post', post);
+  console.log('boardId', boardId);
   return (
     <View style={styles.container}>
       {boardId === 2 && (
@@ -56,7 +59,10 @@ function PostItem({post, boardId, navigation, route}: Props) {
           </Text>
         </View>
       )}
-      <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={{uri: post.thumbnail}} />
+      </View>
+      <View style={styles.infoContainer}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
@@ -73,15 +79,15 @@ function PostItem({post, boardId, navigation, route}: Props) {
               ) : (
                 <SmallPurpleFlag style={{marginLeft: 5}} />
               ))}
-            <Text style={[styles.textSmall, styles.timeStamp]}>
-              {post.createdAt}
-            </Text>
+            {boardId !== 98 && (
+              <Text style={[styles.textSmall, styles.timeStamp]}>
+                {post.createdAt}
+              </Text>
+            )}
           </View>
         </View>
         {post.hasTitle ? (
-          <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>
-            {post.title}
-          </Text>
+          <Text style={[fontMedium, styles.title]}>{post.title}</Text>
         ) : (
           <></>
         )}
@@ -99,10 +105,13 @@ function PostItem({post, boardId, navigation, route}: Props) {
               {post.content}
             </Text>
           </View>
-          <Image
-            style={{width: 60, height: 60, borderRadius: 8}}
-            source={{uri: post.thumbnail}}
-          />
+          {boardId !== 98 && (
+            <Image
+              style={{width: 60, height: 60, borderRadius: 8}}
+              source={{uri: post.thumbnail}}
+            />
+          )}
+
           {post.imageCount > 1 && (
             <Text
               style={{
@@ -197,16 +206,40 @@ function PostItem({post, boardId, navigation, route}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 14,
-    borderBottomColor: '#F6F6F6',
-    borderStyle: 'solid',
-    borderBottomWidth: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    width: '100%',
+    //backgroundColor: 'red',
+  },
+  imageContainer: {
+    height: 120,
+    width: '100%',
+    backgroundColor: '#EFEFF3',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    borderColor: '#EFEFF3',
+    borderWidth: 1,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+  infoContainer: {
+    width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderColor: '#EFEFF3',
+    borderWidth: 1,
   },
   nameContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginVertical: 8,
+    //backgroundColor: 'blue',
   },
   name: {
     paddingTop: 2,
@@ -230,15 +263,20 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     color: '#B9BAC1',
   },
+  title: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
   content: {
     fontSize: 14,
-    marginBottom: 16,
+    //marginBottom: 8,
     lineHeight: 22.5,
     color: '#222222',
   },
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 8,
   },
   iconCount: {
     marginLeft: 5,
@@ -257,4 +295,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostItem;
+export default PostAdItem;

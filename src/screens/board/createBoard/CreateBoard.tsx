@@ -35,6 +35,11 @@ type RootStackParamList = {
   PostListScreen: {boardId: number};
 };
 type Props = NativeStackScreenProps<RootStackParamList>;
+enum BoardContentType {
+  TYPE1 = 'TYPE1', // 제목 + 본문
+  TYPE2 = 'TYPE2', // 제목 + 본문 + 사진
+  TYPE3 = 'TYPE3', // 제목 + 사진
+}
 
 function CreateBoard({navigation}: Props) {
   const [boardName, setBoardName] = useState<string>('');
@@ -43,15 +48,21 @@ function CreateBoard({navigation}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitState, setIsSubmitState] = useState<boolean>(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [boardType, setBoardType] = useState('제목 + 본문');
+  const [boardType, setBoardType] = useState<BoardContentType>(
+    BoardContentType.TYPE1,
+  );
   const [isSpread, setIsSpread] = useState(false);
 
   const boardTypes = [
-    {id: '1', label: '제목 + 본문'},
-    {id: '2', label: '본문'},
+    {id: BoardContentType.TYPE1, label: '제목 + 본문'},
+    {id: BoardContentType.TYPE2, label: '제목 + 본문 + 사진'},
+    {id: BoardContentType.TYPE3, label: '제목 + 사진'},
   ];
 
-  const handleSelectBoardType = type => {
+  const selectedBoardType =
+    boardTypes.find(item => item.id === boardType)?.label || '제목 + 본문';
+
+  const handleSelectBoardType = (type: BoardContentType) => {
     setBoardType(type);
     setIsDropdownVisible(false);
     setIsSpread(true);
@@ -61,9 +72,15 @@ function CreateBoard({navigation}: Props) {
     boardName: string,
     boardIntroduction: string,
     hotable: boolean,
+    type: BoardContentType,
   ) => {
     setIsLoading(true);
-    const result = await createBoard(boardName, boardIntroduction, hotable);
+    const result = await createBoard(
+      boardName,
+      boardIntroduction,
+      hotable,
+      type,
+    );
     setIsLoading(false);
     if (result.code === 'CREATE_BOARD_SUCCESS') {
       setTimeout(function () {
@@ -84,7 +101,7 @@ function CreateBoard({navigation}: Props) {
 
   useEffect(() => {
     if (isSubmitState) {
-      onSubmitPress(boardName, boardIntroduction, hotable);
+      onSubmitPress(boardName, boardIntroduction, hotable, boardType);
     }
     setIsSubmitState(false);
   }, [hotable, boardIntroduction, isSubmitState]);
@@ -143,7 +160,9 @@ function CreateBoard({navigation}: Props) {
               setIsDropdownVisible(!isDropdownVisible);
               setIsSpread(!isSpread);
             }}>
-            <Text style={{color: '#B9BAC1', fontSize: 14}}>{boardType}</Text>
+            <Text style={{color: '#B9BAC1', fontSize: 14}}>
+              {selectedBoardType}
+            </Text>
             {isSpread ? <GreyBigFoldButton /> : <GreyBigSpreadButton />}
           </TouchableOpacity>
           {isDropdownVisible && (
@@ -154,7 +173,7 @@ function CreateBoard({navigation}: Props) {
                 renderItem={({item}) => (
                   <TouchableOpacity
                     style={styles.optionButton}
-                    onPress={() => handleSelectBoardType(item.label)}>
+                    onPress={() => handleSelectBoardType(item.id)}>
                     <Text style={styles.optionText}>{item.label}</Text>
                   </TouchableOpacity>
                 )}
@@ -277,7 +296,7 @@ function CreateBoard({navigation}: Props) {
             <PurpleRoundButton
               text="완료"
               onClick={() =>
-                onSubmitPress(boardName, boardIntroduction, hotable)
+                onSubmitPress(boardName, boardIntroduction, hotable, boardType)
               }
               style={{color: '#fff'}}
             />
@@ -333,7 +352,7 @@ const styles = StyleSheet.create({
     borderColor: '#E2E4E8',
     borderWidth: 1,
     borderRadius: 4,
-    maxHeight: 100,
+    maxHeight: 132,
     overflow: 'hidden',
     backgroundColor: 'white',
     zIndex: 1,

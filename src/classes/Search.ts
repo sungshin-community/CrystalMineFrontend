@@ -1,6 +1,6 @@
-import Board from "./Board";
-import { MyPostContentDto } from "./board/MyPostDto";
-import MyCommentDto from "./MyCommentDto";
+import Board from './Board';
+import {MyPostContentDto, PtContentDto} from './board/MyPostDto';
+import MyCommentDto from './MyCommentDto';
 
 export interface BoardContent {
   id: number;
@@ -32,11 +32,15 @@ export interface BoardSearchResult {
   content: Board[];
 }
 
+export interface PtSearchResult {
+  content: PtContentDto[];
+}
+
 export interface PostContent {
   postId: number;
   boardName: string;
   profileImage: string;
-  displayName: string; /////
+  displayName: string;
   isAuthor: boolean;
   title: string;
   content: string;

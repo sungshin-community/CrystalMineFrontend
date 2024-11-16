@@ -631,7 +631,7 @@ const HomeFragment = ({navigation}: Props) => {
                     onPress={() => {
                       {
                         user?.isAuthenticated
-                          ? navigation.navigate('Board')
+                          ? navigation.navigate('BoardFragment')
                           : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                       }
                     }}>

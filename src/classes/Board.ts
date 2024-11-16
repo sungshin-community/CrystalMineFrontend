@@ -1,4 +1,5 @@
 export default interface Board {
+  contentType: string;
   id: number;
   name: string;
   introduction: string;
@@ -7,4 +8,5 @@ export default interface Board {
   isOwner: boolean;
   isPinned: boolean;
   isReported: boolean;
+  todayNewPost: boolean;
 }
