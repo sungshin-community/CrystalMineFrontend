@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {ForwardArrow} from '../../resources/icon/Arrow';
+import ForwardArrow from '../../resources/icon/Arrow';
 
 interface UpFirstButtonProps {
   onPress: () => void;
