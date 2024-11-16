@@ -1,25 +1,39 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import {PostComment, BigPostComment} from '../../resources/icon/PostComment';
-import PostImage from '../../resources/icon/PostImage';
 import PostLike from '../../resources/icon/PostLike';
 import PostUnlike from '../../resources/icon/PostUnlike';
-import ProfileImage from '../../resources/icon/ProfileImage';
 import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import {ContentPreviewDto} from '../classes/BoardDetailDto';
 import {fontMedium, fontRegular} from '../common/font';
 import CommentArrow from '../../resources/icon/CommentArrow';
+import CommentsModal from './CommentsModal';
 
 interface Props {
   post: ContentPreviewDto;
   boardId: number;
+  navigation: any;
+  route: any;
 }
 
-function PostItem({post, boardId}: Props) {
-  console.log('post', post);
-  console.log('boardId', boardId);
+function PostItem({post, boardId, navigation, route}: Props) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleCommentContainerPress = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
       {boardId === 2 && (
@@ -147,39 +161,36 @@ function PostItem({post, boardId}: Props) {
         </View>
       </View>
 
-      {post.newCommentAuthor === null ? (
-        <></>
-      ) : (
+      {post.newCommentAuthor && (
         <View style={{marginBottom: 10}}>
           <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
             <CommentArrow style={{marginHorizontal: 10}} />
-            <View
-              style={{
-                backgroundColor: '#F6F6F6',
-                width: 343,
-                height: 38,
-                borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
-                paddingHorizontal: 12,
-              }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '600',
-                  color: '#3A424E',
-                  paddingRight: 12,
-                }}>
-                {post.newCommentAuthor}
-              </Text>
-              <Text style={{fontSize: 12, color: '#3A424E'}}>
-                {post.newCommentContent}
-              </Text>
-            </View>
+            <TouchableWithoutFeedback onPress={handleCommentContainerPress}>
+              <View style={styles.commentContainer}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: '600',
+                    color: '#3A424E',
+                    paddingRight: 12,
+                  }}>
+                  {post.newCommentAuthor}
+                </Text>
+                <Text style={{fontSize: 12, color: '#3A424E'}}>
+                  {post.newCommentContent}
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       )}
+      <CommentsModal
+        modalVisible={modalVisible}
+        closeModal={closeModal}
+        navigation={navigation}
+        route={route}
+        postId={post.postId}
+      />
     </View>
   );
 }
@@ -233,6 +244,16 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 12,
     color: '#9DA4AB',
+  },
+  commentContainer: {
+    backgroundColor: '#F6F6F6',
+    width: 343,
+    height: 38,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    paddingHorizontal: 12,
   },
 });
 
