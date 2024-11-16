@@ -18,7 +18,7 @@ import {getCrystalReview} from '../common/CrystalApi';
 import Scrap from '../../resources/icon/Scrap';
 import {NoScrap} from '../../resources/icon/Scrap';
 
-import ReviewJobDetail from './ReviewJobDetail';
+import JobFilterTab from './JobFilterTab';
 
 const CrystalReview = () => {
   const navigation = useNavigation();
@@ -136,6 +136,7 @@ const CrystalReview = () => {
 
   return (
     <ScrollView>
+      <JobFilterTab />
       {user?.isAuthenticated ? (
         hotPost.length === 0 ? (
           <View style={styles.contentBox}>
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
   postListContainer: {
     display: 'flex',
     flexDirection: 'row',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 16,
     borderBottomColor: '#F6F6F6',

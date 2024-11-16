@@ -296,7 +296,7 @@ const Lounge = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{marginBottom: 30}}>
       <View style={styles.bannerContainer}>
         <Image
           source={
