@@ -291,7 +291,6 @@ export async function deleteMyComments(commendIds: number[]) {
     const response = await client.delete<AxiosResponse>(
       `/comments/${commendIdListStr}`,
     );
-    console.log(response.data.data);
     return response.data;
   } catch (e) {
     console.log('여기는 deleteMyComments 함수', e);
@@ -459,14 +458,29 @@ export const deletePosts = async (postId: number) => {
   }
 };
 
-// 이모티콘
-export const getEmoticons = async () => {
+// 내 이모티콘 조회
+export const getMyEmoticons = async () => {
   try {
     const response = await client.get<AxiosResponse>(`/emoticons/my`);
     console.log('이모티콘list', response.data);
     return response.data;
   } catch (e) {
-    console.log('getEmoticons 함수', e);
+    console.log('getMyEmoticons 함수', e);
+  }
+};
+
+// 수정광산 이모티콘 구매하기
+export const buyEmoticons = async (emoticonId: number) => {
+  try {
+    console.log('이모티콘 구매하기', emoticonId);
+    const response = await client.post<AxiosResponse>(
+      `/emoticons/${emoticonId}`,
+    );
+    console.log('이모티콘 구매', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('buyEmoticons 함수', e.response.status);
+    return e.response;
   }
 };
 
@@ -481,7 +495,7 @@ export const getComments = async (postId: number /*, page: number*/) => {
     console.log('댓글', response.data.data.content);
     return response.data.data.content;
   } catch (e) {
-    console.log('여기는 getComments 함수', e);
+    console.log('여기는 getComments 함수', e.response.data);
   }
 };
 // 댓글 생성
@@ -492,12 +506,19 @@ export const addComment = async (
   emoticonId: number,
 ) => {
   try {
-    console.log(postId, content, '익명여부:', isAnonymous);
+    console.log(
+      '댓글 달기',
+      postId,
+      content,
+      '익명여부:',
+      isAnonymous,
+      emoticonId,
+    );
     const response = await client.post<Response<CommentDto>>('/comments', {
       postId: postId,
       content: content,
       isAnonymous: isAnonymous,
-      emoticonId: 1,
+      emoticonId: emoticonId,
     });
     console.log('addComment 함수 성공', response.data);
     return response;
@@ -515,7 +536,15 @@ export const addRecomment = async (
   emoticonId: number,
 ) => {
   try {
-    console.log(postId, content, parentId, '익명여부:', isAnonymous);
+    console.log(
+      '대댓글 추가',
+      postId,
+      content,
+      parentId,
+      '익명여부:',
+      isAnonymous,
+      emoticonId,
+    );
     const response = await client.post<Response<RecommentDto>>(
       `/comments/${parentId}`,
       {
@@ -523,7 +552,7 @@ export const addRecomment = async (
         parentId: parentId,
         content: content,
         isAnonymous: isAnonymous,
-        emoticonId: 1,
+        emoticonId: emoticonId,
       },
     );
     console.log('addRecomment 함수 성공', response.data);
