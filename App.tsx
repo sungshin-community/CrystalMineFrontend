@@ -111,6 +111,7 @@ import CancelButton from './resources/icon/Cancel';
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
 import ProfileSetup from './src/screens/crystalBall/ProfileSetup';
+import ProfileCompleteScreen from './src/screens/crystalBall/ProfileCompleteScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -2023,6 +2024,14 @@ const App = () => {
                 component={ProfileSetup}
                 options={{
                   title: 'ProfileSetup',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ProfileCompleteScreen"
+                component={ProfileCompleteScreen}
+                options={{
+                  title: 'ProfileCompleteScreen',
                   headerShown: false,
                 }}
               />

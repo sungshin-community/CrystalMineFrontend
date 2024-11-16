@@ -1,22 +1,114 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
+import {postPantheonOnboarding} from '../../common/CrystalApi';
+import Toast from 'react-native-simple-toast';
 
 const ProfileSetup = ({navigation}) => {
   const [page, setPage] = useState(1); // 페이지 상태 관리
   const [yearExperience, setYearExperience] = useState(''); // 경력 선택
   const [selectedButton, setSelectedButton] = useState(null); // 선택된 버튼 상태 관리
+  const [ptJob, setPtJob] = useState('');
+  const [graduate, setGraduate] = useState(false); // 졸업 여부 상태 관리
+  const [isPickerEnabled, setIsPickerEnabled] = useState(true); // Picker 활성화 상태 관리
 
-  const nextPage = () => {
-    if (page < 3) setPage(page + 1);
+  const nextPage = async () => {
+    if (page < 3) {
+      setPage(prevPage => prevPage + 1);
+
+      if (page === 1) {
+        setSelectedButton(null);
+      }
+      if (page === 2) {
+        setSelectedButton(null);
+      }
+    } else if (page === 3) {
+      const experienceYears = yearExperience || 0;
+
+      try {
+        const response = await postPantheonOnboarding(
+          experienceYears,
+          graduate,
+          ptJob,
+        );
+
+        // 요청이 성공한 경우 (예: 201 Created)
+        if (response && response.status === 201) {
+          navigation.navigate('ProfileCompleteScreen');
+        } else {
+          // 예상치 못한 상태 코드 처리
+          Toast.show(
+            `요청이 실패했습니다: ${response?.status || '알 수 없는 오류'}`,
+            Toast.LONG,
+          );
+        }
+      } catch (error) {
+        console.error('온보딩 API 에러: ', error);
+
+        // 에러 객체에 response가 있는 경우 처리
+        if (error.response) {
+          const {status, data} = error.response;
+          switch (status) {
+            case 409:
+              if (data?.code === 'PANTHEON_ACCOUNT_DUPLICATION') {
+                Toast.show(
+                  '이미 판테온 계정이 존재하는 사용자입니다.',
+                  Toast.LONG,
+                );
+              } else {
+                Toast.show(
+                  `충돌 오류 발생: ${data?.detail || '상세 정보 없음'}`,
+                  Toast.LONG,
+                );
+              }
+              break;
+            case 404:
+              Toast.show('존재하지 않는 직무입니다.', Toast.LONG);
+              break;
+            case 401:
+              Toast.show(
+                '인증에 실패했습니다. 다시 로그인해주세요.',
+                Toast.LONG,
+              );
+              break;
+            case 403:
+              Toast.show('접근이 금지되었습니다.', Toast.LONG);
+              break;
+            default:
+              Toast.show(
+                `오류 발생: ${data?.detail || '알 수 없는 오류'}`,
+                Toast.LONG,
+              );
+              break;
+          }
+        } else {
+          // 네트워크 오류 또는 기타 예외 처리
+          Toast.show(
+            '네트워크 오류가 발생했습니다. 다시 시도해주세요.',
+            Toast.LONG,
+          );
+        }
+      }
+    }
   };
 
   const handleButtonPress = buttonValue => {
     setSelectedButton(buttonValue);
+    if (buttonValue === 'student') {
+      setGraduate(false);
+    } else if (buttonValue === 'graduate') {
+      setGraduate(true);
+    }
     if (buttonValue === 'noJob') {
-      setYearExperience('직군 없음');
+      setPtJob('직군 없음'); // '아직 고민중이에요'를 선택할 경우 기본값
+    }
+    if (buttonValue === 'noExperience') {
+      setYearExperience(0);
+      setIsPickerEnabled(false); // Picker 비활성화
+    } else if (buttonValue === 'experience') {
+      setYearExperience(''); // 초기화
+      setIsPickerEnabled(true); // Picker 활성화
     }
   };
-
   const renderPageContent = () => {
     switch (page) {
       case 1:
@@ -109,6 +201,7 @@ const ProfileSetup = ({navigation}) => {
             <Picker
               selectedValue={yearExperience}
               style={styles.picker}
+              enabled={isPickerEnabled} // Picker 활성화 상태
               onValueChange={itemValue => setYearExperience(itemValue)}>
               <Picker.Item label="년차를 선택해주세요." value="" />
               <Picker.Item label="1년차" value="1" />
@@ -166,9 +259,9 @@ const ProfileSetup = ({navigation}) => {
               아직 결정한 직군이 없다면 ‘직군 없음’을 선택해주세요!
             </Text>
             <Picker
-              selectedValue={yearExperience}
+              selectedValue={ptJob}
               style={styles.picker}
-              onValueChange={itemValue => setYearExperience(itemValue)}>
+              onValueChange={itemValue => setPtJob(itemValue)}>
               <Picker.Item label="직군을 선택해주세요." value="" />
               <Picker.Item label="직군 없음" value="직군 없음" />
               <Picker.Item label="개발" value="개발" />
@@ -199,12 +292,25 @@ const ProfileSetup = ({navigation}) => {
         return null;
     }
   };
+  // "다음으로" 버튼 비활성화 조건 설정
+  const isNextButtonDisabled =
+    (page === 1 && !selectedButton) ||
+    (page === 2 &&
+      (!selectedButton || // 선택된 버튼 없음
+        (selectedButton === 'experience' && !yearExperience))) || // 경력 선택 필요
+    (page === 3 && !ptJob); // 직군 선택 필요
 
   return (
     <View style={styles.container}>
       {renderPageContent()}
       {page <= 3 && (
-        <TouchableOpacity style={styles.nextButton} onPress={nextPage}>
+        <TouchableOpacity
+          style={[
+            styles.nextButton,
+            isNextButtonDisabled && styles.nextButtonDisabled,
+          ]}
+          onPress={nextPage}
+          disabled={isNextButtonDisabled}>
           <Text style={styles.nextButtonText}>
             {page === 3 ? '완료' : '다음으로'}
           </Text>
@@ -281,6 +387,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     alignSelf: 'center',
+  },
+  nextButtonDisabled: {
+    backgroundColor: '#CCCCCC',
   },
   nextButtonText: {
     color: '#FFFFFF',

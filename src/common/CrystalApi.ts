@@ -55,3 +55,23 @@ export async function getPantheonProfile() {
     return [];
   }
 }
+
+// 판테온 온보딩
+export async function postPantheonOnboarding(
+  experienceYears,
+  graduated,
+  ptJob,
+) {
+  try {
+    const response = await client.post('/pantheon/onboarding', {
+      experienceYears,
+      graduated,
+      ptJob,
+    });
+    console.log('판테온 온보딩 응답: ', response.data);
+    return response;
+  } catch (error) {
+    console.error('판테온 온보딩 오류 발생: ', error);
+    throw error;
+  }
+}
