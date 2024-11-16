@@ -302,6 +302,7 @@ const PostWriteBCase = ({navigation, route, contentType, hasTitle}: Props) => {
                       fontSize: 14,
                       fontWeight: '500',
                       marginRight: 4,
+                      color: '#3A424E',
                     }}>
                     익명
                   </Text>
@@ -417,6 +418,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderBottomWidth: 4,
     height: 'auto',
+    //backgroundColor: 'red',
   },
   nameContainer: {
     flexDirection: 'row',
@@ -482,8 +484,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    marginTop: 10,
-    //height: 52,
+    width: '100%',
+    height: 52,
     justifyContent: 'space-between',
     alignItems: 'center',
   },

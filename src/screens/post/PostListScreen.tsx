@@ -455,30 +455,42 @@ const PostListScreen = ({navigation, route}: Props) => {
           )}
 
         {boardDetail.length === 0 ? (
-          <SafeAreaView style={{flex: 1}}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: '#6E7882',
-                  fontSize: 15,
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                  textAlign: 'center',
-                  lineHeight: 22.5,
-                  marginTop: 20,
-                }}>
-                {isLoading
-                  ? ''
-                  : route.params.boardId === 2
-                  ? '공감을 10개 이상 받은 게시글이 없습니다.'
-                  : '아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요.'}
-              </Text>
+          <>
+            <View style={{backgroundColor: 'white'}}>
+              {!isLoading && (
+                <PostWriteBCase
+                  navigation={navigation}
+                  route={route}
+                  contentType={boardInfo?.contentType || 'TYPE1'}
+                  hasTitle={boardDetail?.hasTitle}
+                />
+              )}
             </View>
-          </SafeAreaView>
+            <SafeAreaView style={{flex: 1}}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: '#6E7882',
+                    fontSize: 15,
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                    textAlign: 'center',
+                    lineHeight: 22.5,
+                    //marginTop: 20,
+                  }}>
+                  {isLoading
+                    ? ''
+                    : route.params.boardId === 2
+                    ? '공감을 10개 이상 받은 게시글이 없습니다.'
+                    : '아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요.'}
+                </Text>
+              </View>
+            </SafeAreaView>
+          </>
         ) : (
           <>
             {isLoading ? (
@@ -534,9 +546,6 @@ const PostListScreen = ({navigation, route}: Props) => {
                   route.params?.boardId !== 2 &&
                   listHeaderCondition && (
                     <View>
-                      {/* <View style={{marginTop: -16}}>
-                      <AdMob />
-                    </View> */}
                       {!isHotBoard &&
                         ![93, 94, 95, 98].includes(route.params.boardId) && (
                           <View
