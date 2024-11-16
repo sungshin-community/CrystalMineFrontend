@@ -29,6 +29,25 @@ const CrystalReview = () => {
   const [isLoadingReviewList, setIsLoadingReviewList] =
     useState<boolean>(false);
 
+  const [selectedJobList, setSelectedJobList] = useState<string>('all');
+  const [sortParam, setSortParam] = useState<string>('');
+
+  // 필터 변경 핸들러
+  const handleFilterChange = (filterNames: string) => {
+    if (filterNames === '전체') {
+      setSelectedJobList('all');
+    } else {
+      setSelectedJobList(filterNames);
+    }
+
+    if (filterNames.includes('인기글')) {
+      setSortParam('likeCount');
+      setSelectedJobList('all');
+    } else {
+      setSortParam('');
+    }
+  };
+
   useEffect(() => {
     // 사용자 정보를 가져오기
     const fetchUser = async () => {
@@ -122,21 +141,26 @@ const CrystalReview = () => {
     </TouchableOpacity>
   );
 
-  // 수정 후기 글 목록 불러오기
+  // 후기 글 목록 API 호출
   useEffect(() => {
-    const fetcReviewList = async () => {
+    const fetchReviewList = async () => {
       setIsLoadingReviewList(true);
-      const data = await getCrystalReview();
-      //setReviewList(data);
-      setIsLoadingReviewList(false);
+      try {
+        const data = await getCrystalReview(selectedJobList, sortParam);
+        setReviewList(data);
+      } catch (error) {
+        console.error('후기 목록 불러오기 실패:', error);
+      } finally {
+        setIsLoadingReviewList(false);
+      }
     };
 
-    fetcReviewList();
-  }, []);
+    fetchReviewList();
+  }, [selectedJobList, sortParam]);
 
   return (
     <ScrollView>
-      <JobFilterTab />
+      <JobFilterTab onFilterChange={handleFilterChange} />
       {user?.isAuthenticated ? (
         hotPost.length === 0 ? (
           <View style={styles.contentBox}>
@@ -194,7 +218,7 @@ const CrystalReview = () => {
               showsHorizontalScrollIndicator={false}
             />
 
-            <View style={{marginTop: 4}}>
+            <View>
               {isLoadingReviewList ? (
                 <ActivityIndicator size="large" color="#A055FF" />
               ) : (
@@ -248,7 +272,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: '#FFF',
     padding: 16,
-    marginTop: 16,
     marginHorizontal: 16,
   },
   hotTagBox: {

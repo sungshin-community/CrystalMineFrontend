@@ -33,10 +33,22 @@ export async function geRecruiting() {
   }
 }
 
-export async function getCrystalReview() {
+// 수정후기 글 목록 조회
+export async function getCrystalReview(jobList = 'all', sort = '') {
   try {
-    const response = await client.get('/pantheon-reviews');
-    console.log('수정 후기 글 목록 조회: ', response.data.data);
+    const response = await client.get('/pantheon-reviews', {
+      params: {
+        jobList,
+        sort,
+      },
+    });
+    console.log(
+      '수정 후기 글 목록 조회: ',
+      jobList,
+      sort,
+      ': ',
+      response.data.data,
+    );
     return response.data.data;
   } catch (error) {
     console.error('수정 후기 글 목록 조회 에러 발생: ', error);
