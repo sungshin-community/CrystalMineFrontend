@@ -30,6 +30,8 @@ import {getPostByComment} from '../common/boardApi';
 import {CommonActions} from '@react-navigation/native';
 import BackButtonIcon from '../../resources/icon/BackButtonIcon';
 import {pretendard} from '../common/font';
+import OnboardingScreen from '../screens/crystalBall/OnboardingScreen';
+import {getPantheonProfile} from '../common/CrystalApi';
 const Tab = createBottomTabNavigator();
 
 interface Props {
@@ -316,34 +318,11 @@ function GlobalNavbar({navigation}: ScreenProps) {
         listeners={({navigation}) => ({
           tabPress: async e => {
             e.preventDefault();
-            const response = await checkRole();
-            if (response.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(response.status) === 2) {
-              const user = response.data.data;
-              if (user?.isAuthenticated && !user?.blacklist) {
-                navigation.navigate('CrystalBall');
-              } else
-                setTimeout(function () {
-                  Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                }, 100);
-            } else {
-              logout();
-              navigation.reset({
-                routes: [
-                  {
-                    name: 'ErrorScreen',
-                    params: {status: response.status, code: 'G001'},
-                  },
-                ],
-              });
+            try {
+              // Push 하기 전에 반드시 수정
+              navigation.navigate('CrystalBall');
+            } catch (error) {
+              console.error('판테온 프로필 조회 오류:', error);
             }
           },
         })}

@@ -60,7 +60,7 @@
 		<string>Fonts/Pretendard-Medium.ttf</string>
 		<string>Fonts/Pretendard-Regular.ttf</string>
     <string>Fonts/PretendardVariable.ttf</string>
-
+	<string>Fonts/Montserrat-VariableFont.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -13,6 +13,7 @@ import CheckBox from '@react-native-community/checkbox';
 
 interface JobFilterTabProps {
   isQuestion?: boolean;
+  onFilterChange?: (filterNames: string) => void;
 }
 
 const data = [
@@ -82,8 +83,11 @@ const data = [
   },
 ];
 
-export default function JobFilterTab({isQuestion = false}: JobFilterTabProps) {
-  const [selected, setSelected] = useState<number[]>([]);
+export default function JobFilterTab({
+  isQuestion = false,
+  onFilterChange,
+}: JobFilterTabProps) {
+  const [selected, setSelected] = useState<number[]>([1]);
   const [modalVisible, setModalVisible] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
 
@@ -128,6 +132,22 @@ export default function JobFilterTab({isQuestion = false}: JobFilterTabProps) {
   const handleCheckboxChange = (value: boolean) => {
     setCheckboxChecked(value);
   };
+
+  useEffect(() => {
+    const selectedTitles = selected
+      .map(index => data[index].title)
+      .filter(Boolean)
+      .join(',');
+    if (onFilterChange) {
+      onFilterChange(selectedTitles);
+    }
+  }, [selected]);
+
+  useEffect(() => {
+    if (selected.length === 0) {
+      setSelected([1]);
+    }
+  }, [selected]);
 
   return (
     <View>
@@ -232,6 +252,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// 아무것도 클릭 안되었을 때 전체 클릭되게 하기
-// SphereItem 이랑 엮는 작업
 // CheckBox 스타일링 + 클릭 후 작업 구현

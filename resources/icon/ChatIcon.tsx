@@ -19,3 +19,19 @@ const ChatIcon = ({width = 16, height = 16}: ChatIconProps) => {
 };
 
 export default ChatIcon;
+
+export const FooterChat = (props: any) => (
+  <Svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M3.75 3.75H16.25C16.9404 3.75 17.5 4.30965 17.5 5V12.4C17.5 13.0904 16.9404 13.65 16.25 13.65H10.5274C10.1902 13.65 9.86729 13.7863 9.63199 14.0278L6.89363 16.8392C6.65886 17.0802 6.25 16.914 6.25 16.5776V14.9C6.25 14.2096 5.69036 13.65 5 13.65H3.75C3.05964 13.65 2.5 13.0904 2.5 12.4V5C2.5 4.30964 3.05964 3.75 3.75 3.75Z"
+      stroke="#9DA4AB"
+      stroke-width="1.5"
+    />
+  </Svg>
+);

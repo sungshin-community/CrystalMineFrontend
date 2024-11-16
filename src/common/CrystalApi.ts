@@ -43,3 +43,15 @@ export async function getCrystalReview() {
     return [];
   }
 }
+
+// 판테온 프로필 존재 여부 조회
+export async function getPantheonProfile() {
+  try {
+    const response = await client.get('/pantheon/profile');
+    console.log('판테온 프로필 존재 여부 : ', response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error('판테온 프로필 존재 여부 :  ', error);
+    return [];
+  }
+}

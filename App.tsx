@@ -115,6 +115,7 @@ import SearchIcon from './resources/icon/SearchIcon';
 import SpinningThreeDots from './src/components/SpinningThreeDots';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
+import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -2028,6 +2029,14 @@ const App = () => {
                     </TouchableHighlight>
                   ),
                 })}
+              />
+              <Stack.Screen
+                name="Onboarding"
+                component={OnboardingScreen}
+                options={{
+                  title: 'Onboarding',
+                  headerShown: false,
+                }}
               />
               <Stack.Screen
                 name="ErrorScreen"

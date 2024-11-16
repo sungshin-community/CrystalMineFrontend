@@ -25,7 +25,9 @@ import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
 import Lounge from '../../components/Lounge';
 import CrystalReview from '../../components/CrystalReview';
-import ReviewPostWriteSelect from '../../components/ReviewPostWrteSelect';
+import SphereTabNav from '../../components/SphereTabNav';
+import DevelopScreen from '../developScreen/DevelopScreen';
+import LookScreen from '../crystalBall/LookScreen';
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -209,6 +211,23 @@ export default function CrystalBallFragment({navigation}: Props) {
     }
   }, [navigation, isFocused]);
 
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const renderContent = () => {
+    switch (tabIndex) {
+      case 0:
+        return <LookScreen isFree={false} isQuestion={false} />;
+      case 1:
+        return <LookScreen isFree={true} isQuestion={false} />;
+      case 2:
+        return <LookScreen isQuestion={true} isFree={false} />;
+      case 3:
+        return <CrystalReview />;
+      case 4:
+        return <DevelopScreen />;
+    }
+  };
+
   return (
     <>
       <WaterMark />
@@ -233,7 +252,7 @@ export default function CrystalBallFragment({navigation}: Props) {
               style={{zIndex: 100}}
             />
           </View>
-          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+          <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
             {/* 1px height와 색상이 #EFEFF3인 구분선 */}
             <View style={styles.divider} />
             {/* 선택 탭 (라운지, 살펴보기) */}
@@ -274,12 +293,15 @@ export default function CrystalBallFragment({navigation}: Props) {
                 <Lounge />
               </View>
             ) : (
-              <View>
-                {/* 살펴보기 컴포넌트 */}
-                <CrystalReview />
+              <View style={{flex: 1}}>
+                <SphereTabNav
+                  onTabPress={index => setTabIndex(index)}
+                  activeTabIndex={tabIndex}
+                />
+                <View style={{flex: 1}}>{renderContent()}</View>
               </View>
             )}
-          </ScrollView>
+          </View>
         </>
       )}
     </>
