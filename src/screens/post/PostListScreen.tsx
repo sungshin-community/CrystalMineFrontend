@@ -102,72 +102,95 @@ const PostListScreen = ({navigation, route}: Props) => {
       console.error('관리자 권한 확인', error);
     }
   }, []);
+
+  // 게시글 목록 업데이트 함수를 별도로 분리
+  const updateBoardDetail = useCallback(async () => {
+    if (route.params.boardId !== 2 && route.params.boardId !== 98) {
+      const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
+      if (!boardDetail.code) {
+        setBoardDetail(boardDetail);
+      }
+    }
+  }, [route.params.boardId, sortBy]);
+
+  // 초기 데이터 로딩
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      if (route.params.boardId === 2) {
-        const hotBoardData = await getHotBoardPosts(0);
-        setBoardDetail(hotBoardData);
-      } else if (route.params.boardId === 98) {
-        const adBoardData = await getAdBoardPost(98, 0);
-        setBoardDetail(adBoardData);
-      } else {
-        setIsHotBoard(false);
-        const boardDetail = await getBoardDetail(
-          route.params.boardId,
-          0,
-          sortBy,
-        );
-        if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
-          setTimeout(function () {
-            Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
-          }, 100);
-          navigation.goBack();
-        } else if (
-          boardDetail.code === 'BOARD_NOT_FOUND' ||
-          boardDetail.code === 'BOARD_ALREADY_DELETED'
-        ) {
-          setTimeout(function () {
-            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-          }, 100);
-          navigation.goBack();
-        } else setBoardDetail(boardDetail);
-        console.log('boardDetail', boardDetail);
-
-        //인기 게시물 설정
-        const hotPost = await getBoardHotPost(route.params.boardId);
-        console.log(hotPost);
-        if (hotPost.code === 'BOARD_ALREADY_BLIND') {
-          setTimeout(function () {
-            Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
-          }, 100);
-          navigation.goBack();
-        } else if (
-          hotPost.code === 'BOARD_NOT_FOUND' ||
-          hotPost.code === 'BOARD_ALREADY_DELETED'
-        ) {
-          setTimeout(function () {
-            Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-          }, 100);
-          navigation.goBack();
-        } else if (hotPost.code === 'READ_HOT_POST_IN_BOARD_SUCCESS') {
-          setBoardHotPost(hotPost.data);
+      try {
+        if (route.params.boardId === 2) {
+          const hotBoardData = await getHotBoardPosts(0);
+          setBoardDetail(hotBoardData);
+        } else if (route.params.boardId === 98) {
+          const adBoardData = await getAdBoardPost(98, 0);
+          setBoardDetail(adBoardData);
         } else {
-          setTimeout(function () {
-            Toast.show('인기 게시글 생성 중 오류가 발생했습니다.', Toast.SHORT);
-          }, 100);
+          setIsHotBoard(false);
+          const boardDetail = await getBoardDetail(
+            route.params.boardId,
+            0,
+            sortBy,
+          );
+          if (boardDetail.code === 'BOARD_ALREADY_BLIND') {
+            setTimeout(function () {
+              Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+            }, 100);
+            navigation.goBack();
+          } else if (
+            boardDetail.code === 'BOARD_NOT_FOUND' ||
+            boardDetail.code === 'BOARD_ALREADY_DELETED'
+          ) {
+            setTimeout(function () {
+              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+            }, 100);
+            navigation.goBack();
+          } else setBoardDetail(boardDetail);
+
+          //인기 게시물 설정
+          const hotPost = await getBoardHotPost(route.params.boardId);
+          if (hotPost.code === 'BOARD_ALREADY_BLIND') {
+            setTimeout(function () {
+              Toast.show('시스템에 의해 블라인드된 게시판입니다.', Toast.SHORT);
+            }, 100);
+            navigation.goBack();
+          } else if (
+            hotPost.code === 'BOARD_NOT_FOUND' ||
+            hotPost.code === 'BOARD_ALREADY_DELETED'
+          ) {
+            setTimeout(function () {
+              Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+            }, 100);
+            navigation.goBack();
+          } else if (hotPost.code === 'READ_HOT_POST_IN_BOARD_SUCCESS') {
+            setBoardHotPost(hotPost.data);
+          } else {
+            setTimeout(function () {
+              Toast.show(
+                '인기 게시글 생성 중 오류가 발생했습니다.',
+                Toast.SHORT,
+              );
+            }, 100);
+          }
         }
+        const boardInfo = await getBoardInfo(route.params.boardId);
+        setBoardInfo(boardInfo);
+        if (boardInfo?.id) {
+          await fetchAdminStatus(boardInfo.id);
+        }
+      } catch (error) {
+        console.error('초기 데이터 로딩 실패:', error);
+        Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
+      } finally {
+        setIsLoading(false);
       }
-      const boardInfo = await getBoardInfo(route.params.boardId);
-      setBoardInfo(boardInfo);
-      console.log('boardInfo', boardInfo);
-      if (boardInfo?.id) {
-        await fetchAdminStatus(boardInfo.id);
-      }
-      setIsLoading(false);
     }
     init();
-  }, [route.params.boardId, sortBy, fetchAdminStatus]);
+  }, [route.params.boardId]);
+
+  // 정렬 기준 변경시 게시글 목록만 업데이트
+  useEffect(() => {
+    updateBoardDetail();
+  }, [sortBy]);
 
   const handleRefresh = async () => {
     if (route.params.boardId === 2) {
