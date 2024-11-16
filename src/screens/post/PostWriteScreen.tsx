@@ -167,9 +167,9 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
     setIsLoading(true);
     const response = await postPantheonFree(
       content,
-      title,
       isAnonymous,
       images,
+      title,
     );
     navigation.goBack();
     setIsLoading(false);
@@ -179,9 +179,9 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
     setIsLoading(true);
     const response = await postPantheonQurious(
       content,
-      title,
       Number(point),
       isAnonymous,
+      title,
       images,
     );
     navigation.goBack();
