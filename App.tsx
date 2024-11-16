@@ -110,6 +110,7 @@ import CancelButton from './resources/icon/Cancel';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
+import ProfileSetup from './src/screens/crystalBall/ProfileSetup';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -2018,6 +2019,14 @@ const App = () => {
                 }}
               />
               <Stack.Screen
+                name="ProfileSetup"
+                component={ProfileSetup}
+                options={{
+                  title: 'ProfileSetup',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
                 name="ErrorScreen"
                 component={ErrorScreen}
                 options={({navigation}) => ({
@@ -2791,7 +2800,6 @@ const App = () => {
                   ),
                 })}
               />
-
               <Stack.Screen
                 name="PostWriteScreen"
                 component={PostWriteScreen}
@@ -2905,7 +2913,6 @@ const App = () => {
                   },
                 })}
               />
-
               <Stack.Screen
                 name="ImageViewerScreen"
                 component={ImageViewerScreen}
@@ -3641,9 +3648,7 @@ const App = () => {
                   title: '',
                 })}
               />
-
               {/* 마이페이지 - 포인트 */}
-
               <Stack.Screen
                 name="PointScreen"
                 component={PointScreen}
@@ -3688,7 +3693,6 @@ const App = () => {
                   headerTitleAlign: 'left',
                 }}
               />
-
               <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}
