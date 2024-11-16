@@ -15,7 +15,6 @@ import CommentDto, {RecommentDto} from '../classes/CommentDto';
 import SpinningThreeDots from './SpinningThreeDots';
 import {TrashIcon, BlackTrashIcon} from '../../resources/icon/TrashIcon';
 import {ModalBottom} from '../components/ModalBottom';
-import {SelectModalBottom} from './SelectModalBottom';
 import {MessageModalBottom} from './SelectRowModalBottom';
 import Toast from 'react-native-simple-toast';
 import NoReport, {BlackReport, Report} from '../../resources/icon/Report';
@@ -28,6 +27,7 @@ import {getMessageContent, postChatRoom} from '../common/messageApi';
 import {ReportModalBottom} from './ReportModalBottom';
 
 interface Props {
+  navigation: any;
   comment?: any;
   setParentId?: any;
   handleCommentLike?: any;
@@ -49,6 +49,7 @@ const Comment = ({
   handleCommentDelete,
   handleCommentReport,
   handleFocus,
+  componentModalVisible,
   setComponentModalVisible,
 }: Props) => {
   const [isRecommentState, setIsRecommentState] = useState<boolean>(false);
@@ -101,6 +102,15 @@ const Comment = ({
     setMessageModalVisible(false);
   };
 
+  const handleRecomment = (id: number) => {
+    handleFocus();
+    setParentId(id);
+    setIsRecomment(true);
+    setIsRecommentState(true);
+    setDotsModalVisible(false);
+    setComponentModalVisible(false);
+  };
+
   /* Comment : 내 댓글 */
   const handleCommentDeleteComponent = (
     <>
@@ -112,15 +122,14 @@ const Comment = ({
         purpleButtonFunc={() => {
           handleCommentDelete(data.id);
           setModalVisible(false);
-          setTimeout(function () {
-            Toast.show(
-              '작성하신 댓글이 성공적으로 삭제되었습니다.',
-              Toast.SHORT,
-            );
-          }, 100);
+          setComponentModalVisible(false);
+          setDotsModalVisible(false);
         }}
         whiteButtonText="취소"
-        whiteButtonFunc={() => setModalVisible(false)}
+        whiteButtonFunc={() => {
+          setModalVisible(false);
+          setComponentModalVisible(false);
+        }}
         setDim={false}
       />
 
@@ -143,7 +152,7 @@ const Comment = ({
             style={{
               paddingHorizontal: 12,
               paddingVertical: 8,
-              backgroundColor: '#FFFFFF',
+              backgroundColor: '#ffffff',
               borderColor: '#EFEFF3',
               borderWidth: 1,
               borderRadius: 8,
@@ -159,10 +168,7 @@ const Comment = ({
             }}>
             <TouchableOpacity
               onPress={() => {
-                handleFocus();
-                setParentId(data.id);
-                setIsRecomment(true);
-                setIsRecommentState(true);
+                handleRecomment(data.id);
                 setDotsModalVisible(false);
               }}>
               <View
@@ -270,13 +276,7 @@ const Comment = ({
                 width: 130,
                 height: '100%',
               }}>
-              <TouchableOpacity
-                onPress={() => {
-                  handleFocus();
-                  setParentId(data.id);
-                  setIsRecomment(true);
-                  setIsRecommentState(true);
-                }}>
+              <TouchableOpacity onPress={() => handleRecomment(data.id)}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -352,6 +352,8 @@ const Comment = ({
         style={{
           paddingHorizontal: 24,
           overflow: 'visible',
+          borderTopColor: '#F0F0F0',
+          borderTopWidth: 1,
           backgroundColor: isRecommentState
             ? '#F3E7FF'
             : data?.isOfReader
@@ -438,6 +440,12 @@ const Comment = ({
           ]}>
           <Autolink text={data ? (data.content ? data.content : '') : ''} />
         </Text>
+        {data?.emoticonUrl && data.isDeleted === false ? (
+          <Image
+            source={{uri: data?.emoticonUrl}}
+            style={{width: 80, height: 80, marginTop: 10, marginLeft: 35}}
+          />
+        ) : null}
         {data.isDeleted || data.isBlind ? (
           <></>
         ) : (
@@ -476,12 +484,7 @@ const Comment = ({
                 }}>
                 <Pressable
                   hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
-                  onPress={() => {
-                    handleFocus();
-                    setParentId(data.id);
-                    setIsRecomment(!isRecomment);
-                    setIsRecommentState(!isRecommentState);
-                  }}>
+                  onPress={() => handleRecomment(data.id)}>
                   <PostComment />
                 </Pressable>
                 <Text
@@ -859,10 +862,10 @@ export const Recomment = ({
             ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
-          {data.emoticonUrl ? (
+          {data?.emoticonUrl && data.isDeleted === false ? (
             <Image
-              source={{uri: data.emoticonUrl}}
-              style={{width: 40, height: 40, marginTop: 10}}
+              source={{uri: data?.emoticonUrl}}
+              style={{width: 80, height: 80, marginTop: 10}}
             />
           ) : null}
           {data.isDeleted || data.isBlind ? (

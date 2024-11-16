@@ -5,11 +5,9 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   TextInput,
   Dimensions,
   FlatList,
@@ -39,11 +37,6 @@ import {useCallback} from 'react';
 import {setCommentLike} from '../../common/boardApi';
 import {fontMedium, fontRegular} from '../../common/font';
 import Toast from 'react-native-simple-toast';
-import {
-  RectangleChecked,
-  RectangleUnchecked,
-} from '../../../resources/icon/CheckBox';
-import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import {LogBox} from 'react-native';
 import WaterMark from '../../components/WaterMark';
 import BackButtonIcon from '../../../resources/icon/BackButtonIcon';
@@ -52,9 +45,9 @@ import {ModalBottom} from '../../components/ModalBottom';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
 import AdMob from '../../components/AdMob';
-import PostSend from '../../../resources/icon/PostSend';
-import PurplePostSend from '../../../resources/icon/PurplePostSend';
-import {EmojiIcon, ClickedEmojiIcon} from '../../../resources/icon/EmojiIcon';
+import CommentWriteContainer from '../../components/CommentWriteContainer';
+import CloseIcon from '../../../resources/icon/CloseIcon';
+
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 type RootStackParamList = {
@@ -72,6 +65,7 @@ const PostScreen = ({navigation, route}: Props) => {
   const [isContainerVisible, setIsContainerVisible] = useState(false);
   const [newComment, setNewComment] = useState<string>('');
   const [emojiClicked, setEmojiClicked] = useState<boolean>(false);
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const commentInputRef = useRef<TextInput>(null);
@@ -83,21 +77,9 @@ const PostScreen = ({navigation, route}: Props) => {
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-
-  const onSubmit = useCallback(() => {
-    console.log('익명여부', isAnonymous);
-    if (isRecomment)
-      addRecommentFunc(
-        route.params.postId,
-        parentId,
-        newComment,
-        isAnonymous,
-        emoticonId,
-      );
-    else
-      addCommentFunc(route.params.postId, newComment, isAnonymous, emoticonId);
-    setIsSubmitState(false);
-  }, [newComment]);
+  const [emojiVisible, setEmojiVisible] = useState<boolean>(true);
+  const [showSelectedEmoji, setShowSelectedEmoji] = useState(false);
+  const [selectedEmojiId, setSelectedEmojiId] = useState<number | null>(null);
 
   useEffect(() => {
     console.log('isSubmitState', isSubmitState, 'isAnonymous', isAnonymous);
@@ -212,19 +194,21 @@ const PostScreen = ({navigation, route}: Props) => {
       getPostsFunc();
       const commentData = await getComments(route.params.postId);
       setComments(commentData);
+      console.log('commentData', commentData);
       setIsLoading(false);
     }
     init();
   }, [componentModalVisible]);
-  // 이모티콘
+
   const handleEmojiIconPress = async () => {
     try {
       const emoticons = await getEmoticons();
-      const newEmojiClicked = !emojiClicked;
-      setEmojiClicked(newEmojiClicked); // 상태 변경
 
-      // 이모티콘 클릭 후 키보드 활성화
-      if (!newEmojiClicked) {
+      setEmojiVisible(prev => !prev);
+      setEmojiClicked(!emojiClicked);
+      console.log('emojiClicked', emojiClicked);
+
+      if (commentInputRef.current) {
         commentInputRef.current.focus();
       }
       console.log('이모티콘 성공:', emoticons);
@@ -241,6 +225,7 @@ const PostScreen = ({navigation, route}: Props) => {
   // 게시글 스크랩
   const handlePostScrap = async (postId: number) => {
     const result = await setPostScrap(postId);
+    console.log('result', result);
     getPostsFunc();
   };
   // 게시글 삭제
@@ -274,6 +259,8 @@ const PostScreen = ({navigation, route}: Props) => {
       isAnonymous: boolean,
       emoticonId: number,
     ) => {
+      const emojiId = selectedEmojiId;
+      console.log('selectedEmojiId', selectedEmojiId);
       setIsLoading(true);
       const response = await addComment(
         postId,
@@ -297,6 +284,7 @@ const PostScreen = ({navigation, route}: Props) => {
         setComments(commentData);
         console.log(commentData);
         scrollViewRef.current?.scrollToEnd({animated: true});
+        setComponentModalVisible(false);
       } else {
         setTimeout(function () {
           Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
@@ -304,7 +292,7 @@ const PostScreen = ({navigation, route}: Props) => {
       }
       setIsLoading(false);
     },
-    [],
+    [selectedEmojiId],
   );
   // 대댓글 생성
   const addRecommentFunc = useCallback(
@@ -346,6 +334,7 @@ const PostScreen = ({navigation, route}: Props) => {
           animated: true,
           viewPosition: 0,
         });
+        setComponentModalVisible(false);
       } else {
         setTimeout(function () {
           Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
@@ -380,6 +369,7 @@ const PostScreen = ({navigation, route}: Props) => {
   ) => {
     const result = await reportComment(recommentId, reasonId, detail);
     const commentData = await getComments(route.params.postId);
+    console.log(result);
     setComments(commentData);
     return result;
   };
@@ -405,6 +395,22 @@ const PostScreen = ({navigation, route}: Props) => {
     Keyboard.dismiss();
   };
 
+  const refreshComments = async () => {
+    const commentData = await getComments(route.params.postId);
+    setComments(commentData);
+  };
+
+  const handleEmojiSelect = (emoji: {imageUrl: string; id: number}) => {
+    setSelectedEmoji({uri: emoji.imageUrl});
+    setSelectedEmojiId(emoji.id);
+    setShowSelectedEmoji(true);
+    setEmoticonId(emoji.id);
+  };
+
+  const handleCloseEmoji = () => {
+    setShowSelectedEmoji(false);
+  };
+
   return (
     <>
       {componentModalVisible ? (
@@ -416,7 +422,7 @@ const PostScreen = ({navigation, route}: Props) => {
             height: '100%',
             top: 0,
             left: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
             zIndex: 100,
             elevation: 1,
           }}
@@ -462,250 +468,65 @@ const PostScreen = ({navigation, route}: Props) => {
               style={{flex: 1}}
               ref={flatListRef}
               data={comments}
-              renderItem={({item, index}) => (
-                <View key={index}>
-                  <Comment
-                    navigation={navigation}
-                    comment={item}
-                    setParentId={setParentId}
-                    handleCommentLike={handleCommentLike}
-                    isRecomment={isRecomment}
-                    setIsRecomment={setIsRecomment}
-                    handleCommentDelete={handleCommentDelete}
-                    handleCommentReport={handleCommentReport}
-                    handleFocus={focusCommentInput}
-                    componentModalVisible={componentModalVisible}
-                    setComponentModalVisible={setComponentModalVisible}
-                  />
-                  {item.recomments &&
-                    item.recomments.map((recomment, index) => (
-                      <Recomment
-                        key={index}
-                        navigation={navigation}
-                        recomment={recomment}
-                        handleCommentLike={handleCommentLike}
-                        handleCommentDelete={handleCommentDelete}
-                        handleCommentReport={handleCommentReport}
-                        componentModalVisible={componentModalVisible}
-                        setComponentModalVisible={setComponentModalVisible}
-                      />
-                    ))}
-                </View>
-              )}
-              ItemSeparatorComponent={() => (
-                <View style={{height: 1, backgroundColor: '#F0F0F0'}}></View>
-              )}
+              renderItem={({item, index}) => {
+                return (
+                  <View key={index}>
+                    <Comment
+                      navigation={navigation}
+                      comment={item}
+                      setParentId={setParentId}
+                      handleCommentLike={handleCommentLike}
+                      isRecomment={isRecomment}
+                      setIsRecomment={setIsRecomment}
+                      handleCommentDelete={handleCommentDelete}
+                      handleCommentReport={handleCommentReport}
+                      handleFocus={focusCommentInput}
+                      componentModalVisible={componentModalVisible}
+                      setComponentModalVisible={setComponentModalVisible}
+                    />
+                    {item.recomments &&
+                      item.recomments.map((recomment, index) => (
+                        <Recomment
+                          key={index}
+                          navigation={navigation}
+                          recomment={recomment}
+                          handleCommentLike={handleCommentLike}
+                          handleCommentDelete={handleCommentDelete}
+                          handleCommentReport={handleCommentReport}
+                          componentModalVisible={componentModalVisible}
+                          setComponentModalVisible={setComponentModalVisible}
+                        />
+                      ))}
+                  </View>
+                );
+              }}
+              ItemSeparatorComponent={() => <View style={{height: 1}}></View>}
             />
           </View>
         </ScrollView>
-
-        {![
-          '창업지원팀 공식 게시판',
-          '국제교류팀 공식 게시판',
-          '현장실습팀 공식 게시판',
-        ].includes(post?.boardName) && (
-          <View
-            style={{
-              minHeight: 72,
-              maxHeight: 172,
-              backgroundColor: '#fff',
-              borderTopColor: '#EFEFF3',
-              borderTopWidth: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingBottom: isFocused
-                ? Platform.OS == 'ios'
-                  ? keyboardHeight
-                  : 0
-                : Platform.OS === 'ios'
-                ? 20
-                : 0,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingVertical: 5,
-                backgroundColor: '#fff',
-                //alignItems: 'center',
-                //backgroundColor: 'red',
-              }}>
-              <View
-                style={{
-                  position: 'relative',
-                  justifyContent: 'flex-end',
-                  backgroundColor: '#fff',
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginHorizontal: 15,
-                    marginVertical: 25,
-                    backgroundColor: '#fff',
-                    //backgroundColor: '#EFEFF3',
-                  }}>
-                  <Text style={[fontRegular, {marginRight: 5}]}>익명</Text>
-                  <Pressable
-                    hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                    onPress={() => {
-                      setIsAnonymous(isAnonymous => !isAnonymous);
-                    }}>
-                    {isAnonymous ? (
-                      <RectangleChecked />
-                    ) : (
-                      <RectangleUnchecked />
-                    )}
-                  </Pressable>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.inputBox,
-                  {
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-end',
-                    position: 'relative',
-                  },
-                ]}>
-                <TextInput
-                  ref={commentInputRef}
-                  placeholder="댓글을 입력해 주세요."
-                  placeholderTextColor="#87919B"
-                  multiline={true}
-                  onChangeText={value => {
-                    setNewComment(value);
-                    if (value.length === 500)
-                      Toast.show(
-                        '댓글 내용은 500글자까지만 입력 가능합니다.',
-                        Toast.SHORT,
-                      );
-                  }}
-                  value={newComment}
-                  autoCorrect={false}
-                  style={[fontRegular, styles.input]}
-                  maxLength={500}
-                  onFocus={(e: any) => {
-                    onInputFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onInputFocusOut();
-                    setIsRecomment(false);
-                  }}
-                />
-                <View style={{marginBottom: 10}}>
-                  <Pressable onPress={handleEmojiIconPress}>
-                    {emojiClicked ? <ClickedEmojiIcon /> : <EmojiIcon />}
-                  </Pressable>
-                </View>
-
-                {/* <View
-                  style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
-                  <Text>
-                    {newComment &&
-                      (isSubmitState ? (
-                        <></>
-                      ) : (
-                        <Pressable
-                          style={{
-                            paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                            bottom: 0,
-                          }}
-                          onPress={() => {
-                            setIsSubmitState(true);
-                            console.log(
-                              '댓글 작성 버튼 클릭, isSubmitState',
-                              isSubmitState,
-                            );
-                          }}>
-                        </Pressable>
-                      ))}
-                  </Text>
-                </View> */}
-              </View>
-              {/* PostSend 아이콘 */}
-              <View
-                style={{
-                  flexDirection: 'row',
-                  position: 'relative',
-                  alignItems: 'flex-end',
-                  marginBottom: 15,
-                  marginLeft: 15,
-                  marginRight: 15,
-                }}>
-                <Text>
-                  <Pressable
-                    style={{
-                      paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                      bottom: 0,
-                    }}
-                    onPress={() => {
-                      onSubmit();
-                    }}>
-                    {newComment ? <PurplePostSend /> : <PostSend />}
-                  </Pressable>
-                </Text>
-              </View>
+        {showSelectedEmoji && selectedEmoji && (
+          <View style={styles.selectedEmojiContainer}>
+            <Image source={selectedEmoji} style={styles.selectedEmoji} />
+            <View style={{position: 'absolute', top: 0, right: 0, margin: 16}}>
+              <TouchableOpacity onPress={() => setShowSelectedEmoji(false)}>
+                <CloseIcon />
+              </TouchableOpacity>
             </View>
-            {emojiClicked && (
-              <View
-                style={{
-                  flexDirection: 'column',
-                  position: 'relative',
-                  height: 291,
-                  width: '100%',
-                  borderTopWidth: 1,
-                  borderTopColor: '#EFEFF3',
-                  backgroundColor: '#fff',
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    position: 'relative',
-                    marginHorizontal: 16,
-                    marginVertical: 16,
-                  }}>
-                  <Text style={{fontWeight: '400', fontSize: 12}}>
-                    수정광산 이모티콘
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: '100%',
-                    paddingHorizontal: 16,
-                    paddingVertical: 16,
-                    //backgroundColor: 'pink',
-                  }}>
-                  <Text>여기에 이모티콘</Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    //justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                  }}>
-                  <View
-                    style={{
-                      width: 134,
-                      height: 61,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      alignContent: 'center',
-                      backgroundColor: '#A055FF',
-                      borderRadius: 4,
-                      marginBottom: 20,
-                      paddingHorizontal: 10,
-                    }}>
-                    <Text
-                      style={{fontSize: 14, fontWeight: '700', color: '#fff'}}>
-                      이모티콘 구매하기
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            )}
           </View>
         )}
+        <CommentWriteContainer
+          navigation={navigation}
+          route={route}
+          addComment={addCommentFunc}
+          addRecomment={addRecommentFunc}
+          onEmojiSelect={handleEmojiSelect}
+          showSelectedEmoji={showSelectedEmoji}
+          setShowSelectedEmoji={handleCloseEmoji}
+          setParentId={setParentId}
+          isRecomment={isRecomment}
+          setIsRecomment={setIsRecomment}
+          parentId={parentId}
+        />
       </KeyboardAvoidingView>
       <ModalBottom
         modalVisible={goBackWarning}
@@ -746,5 +567,19 @@ const styles = StyleSheet.create({
     minHeight: 40,
     maxHeight: 230,
     color: '#222222',
+  },
+  selectedEmojiContainer: {
+    position: 'relative',
+    zIndex: 1,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  selectedEmoji: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
   },
 });
