@@ -10,11 +10,11 @@ const AlertFragment = () => {
   const renderContent = () => {
     switch (tabIndex) {
       case 0:
-        return <LookScreen />;
+        return <LookScreen isQuestion={false} isFree={false} />;
       case 1:
-        return <LookScreen />;
+        return <LookScreen isQuestion={false} isFree={false} />;
       case 2:
-        return <LookScreen isQuestion={true} />;
+        return <LookScreen isQuestion={true} isFree={false} />;
       case 3:
         return <Text>소희 개발 파트</Text>;
       case 4:

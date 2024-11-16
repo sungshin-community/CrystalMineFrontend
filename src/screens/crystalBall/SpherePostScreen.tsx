@@ -18,9 +18,8 @@ import {
   getFreeDetail,
   postPantheonComment,
   postPantheonLike,
-  postPantheonReport,
   postPantheonScrap,
-  postPantheonUnScrap,
+  deletePantheonScrap,
   postCommentAdopt,
   postPantheonReComment,
   postPurchaseAdopt,
@@ -30,7 +29,7 @@ import PostFooter from '../../components/PostFooter';
 import timeCalculate from '../../common/util/timeCalculate';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-// 광산으로 연결 예정 import CommentInputBox, {CommentInputBoxRef} from './imshi';
+import CommentInputBox, {CommentInputBoxRef} from './imshi';
 
 const selectData = {
   content:
@@ -96,13 +95,13 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   }
 
   const [comments, setComments] = useState<Comment[]>([]);
-  //  const commentInputRef = useRef<CommentInputBoxRef>(null);
+  const commentInputRef = useRef<CommentInputBoxRef>(null);
   const [paraentId, setParentId] = useState<number>(0);
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
 
-  /*const handleFocus = () => {
+  const handleFocus = () => {
     commentInputRef.current?.focusInput();
-  };*/
+  };
 
   const fetchDetailData = async () => {
     try {
@@ -178,7 +177,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const handlePostScrap = async (postId: number) => {
     try {
       if (postData?.isScraped) {
-        await postPantheonUnScrap(postId);
+        await deletePantheonScrap(postId);
       } else {
         await postPantheonScrap(postId);
       }
@@ -203,6 +202,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     }
   };
 
+  /*
   const handlePostReport = async (reasonId: number, detail?: string) => {
     try {
       await postPantheonReport(ptPostId, reasonId, detail);
@@ -211,7 +211,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     } catch (error) {
       console.error('게시글 신고 실패:', error);
     }
-  };
+  };*/
 
   const handlePostComment = async (
     content: string,
@@ -233,7 +233,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     //emoticonId: number,
   ) => {
     try {
-      await postPantheonReComment(paraentId, content, 1, isAnonymous, ptPostId);
+      await postPantheonReComment(paraentId, content, isAnonymous, ptPostId, 1);
       await fetchCommentData();
       console.log('대댓글 생성 성공');
     } catch (error) {
@@ -252,12 +252,12 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     setIsRecomment(false);
   };
 
-  /*const handleCommentClick = (ptCommentId: number) => {
+  const handleCommentClick = (ptCommentId: number) => {
     handleFocus();
     setParentId(ptCommentId);
     setIsRecomment(true);
     console.log(ptCommentId);
-  };*/
+  };
 
   const handlePurchaseAdopt = async (ptCommentId: number) => {
     try {
@@ -444,8 +444,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
           postId={0}
           isScraped={isScraped}
           handlePostLike={() => handlePostLike(ptPostId)}
-          //handlePostComment={handleFocus}
-          handlePostReport={handlePostReport}
+          handlePostComment={handleFocus}
+          handlePostReport={() => console.log('신고하기')}
           handlePostScrap={() => handlePostScrap(ptPostId)}
         />
         <AdMob />
@@ -478,9 +478,9 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                 reply={item}
                 isQuestion={isQuestion}
                 replyCount={item.reComments.length}
-                /*handleClick={() =>
+                handleClick={() =>
                   handleCommentClick(item.ptCommentId || item.id)
-                }*/
+                }
               />
               {item.reComments && item.reComments.length > 0 && (
                 <View style={{marginTop: 24}}>

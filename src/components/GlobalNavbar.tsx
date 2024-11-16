@@ -285,12 +285,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
             try {
-              const profileData = await getPantheonProfile();
-              if (!profileData.isNew) {
-                navigation.navigate('CrystalBall');
-              } else {
-                navigation.navigate('Onboarding'); // 온보딩
-              }
+              // Push 하기 전에 반드시 수정
+              navigation.navigate('CrystalBall');
             } catch (error) {
               console.error('판테온 프로필 조회 오류:', error);
             }
