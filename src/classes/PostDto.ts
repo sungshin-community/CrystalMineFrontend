@@ -42,4 +42,5 @@ export interface PostWriteInfoDto {
     title: string;
     content: string;
   };
+  boardContentType: string;
 }

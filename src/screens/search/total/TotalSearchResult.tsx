@@ -15,6 +15,7 @@ import TagSearchResult from '../../board/TagSearchResult';
 import CancelButton from '../../../../resources/icon/Cancel';
 import {fontBold, fontRegular} from '../../../common/font';
 import PostSearchResult from './PostSearchResult';
+import CrystalSearchResult from './CrystalSearchResult';
 import BoardSearchResult from './BoardSearchResult';
 import {saveRecentSearchWord} from '../../../common/util/recentSearchWordsUtil';
 import InputDeleteButton from './InputDeleteButton';
@@ -39,49 +40,50 @@ const Tab = createMaterialTopTabNavigator();
 let tabWidth = (Dimensions.get('window').width / 3 - 24) / 2;
 
 function TotalSearchResult({navigation, route}: Props) {
-  const [searchWord, setSearchWord] = useState<string>(
-    route.params.searchWord || '',
+  // 검색어 상태 관리
+  const [inputText, setInputText] = useState<string>(
+    route.params?.searchWord || '',
   );
-  const inputRef = useRef<TextInput>(null);
-  const search = (text: string) => {
-    if (text.trim() !== '') {
-      setSearchWord(text);
-      saveRecentSearchWord(text, 'recentTotalSearch');
-    }
+  const [searchWord, setSearchWord] = useState<string>(
+    route.params?.searchWord || '',
+  );
+
+  const handleSearch = (text: string) => {
+    setSearchWord(text);
+  };
+
+  const handleClear = () => {
+    setInputText('');
+    setSearchWord('');
   };
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: (): React.ReactNode => (
+      headerTitle: () => (
         <View style={styles.container}>
           <TextInput
-            ref={inputRef}
+            autoFocus={true}
             style={styles.input}
             placeholder="검색"
-            placeholderTextColor="#898989"
+            placeholderTextColor="#89919A"
             returnKeyType="search"
             autoCorrect={false}
             autoCapitalize="none"
-            onSubmitEditing={e => search(e.nativeEvent.text)}
-            keyboardType="default"
-            enablesReturnKeyAutomatically
-            value={searchWord}
-            onChangeText={setSearchWord}
+            value={inputText}
+            onChangeText={setInputText}
+            onSubmitEditing={e => handleSearch(e.nativeEvent.text)}
           />
           <View style={styles.icon}>
             <SearchIcon />
           </View>
-          <View style={styles.delete}>
-            <InputDeleteButton
-              onPress={() => {
-                setSearchWord('');
-                inputRef.current?.focus();
-              }}
-            />
-          </View>
+          {inputText.length > 0 && (
+            <View style={styles.delete}>
+              <InputDeleteButton onPress={handleClear} />
+            </View>
+          )}
         </View>
       ),
-      headerRight: (): React.ReactNode => (
+      headerRight: () => (
         <TouchableHighlight
           style={{
             width: 50,
@@ -91,14 +93,13 @@ function TotalSearchResult({navigation, route}: Props) {
             justifyContent: 'center',
           }}
           underlayColor="#EEEEEE"
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Text style={[fontRegular, {fontSize: 17}]}>취소</Text>
+          onPress={() => navigation.goBack()}>
+          <Text style={{fontSize: 17}}>취소</Text>
         </TouchableHighlight>
       ),
+      headerBackVisible: false,
     });
-  }, [navigation, searchWord]);
+  }, [inputText, navigation]);
 
   return (
     <>
@@ -143,7 +144,8 @@ function TotalSearchResult({navigation, route}: Props) {
           {/* 게시글 */}
           <Tab.Screen
             name="수정구"
-            children={() => <BoardSearchResult searchWord={searchWord} />}
+            children={() => <CrystalSearchResult searchWord={searchWord} />}
+            initialParams={{searchWord: searchWord}}
           />
           {/* <Tab.Screen name="태그" component={TagSearchResult} /> */}
         </Tab.Navigator>

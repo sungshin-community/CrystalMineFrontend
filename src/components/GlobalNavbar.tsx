@@ -43,6 +43,7 @@ type RootStackParamList = {
   BoardSearch: undefined;
   TotalSearch: undefined;
   BoardScreen: undefined;
+  BoardFragment: undefined;
   SplashHome: undefined;
   ErrorScreen: undefined;
   PostScreen: {postId: number};
@@ -152,7 +153,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
     } else if (getHundredsDigit(response.status) === 2) {
       const user = response.data.data;
       if (user?.isAuthenticated && !user?.blacklist) {
-        navigation.navigate('BoardScreen');
+        navigation.navigate('BoardFragment');
       } else {
         setTimeout(function () {
           Toast.show('접근 권한이 없습니다.', Toast.SHORT);
@@ -177,6 +178,39 @@ function GlobalNavbar({navigation}: ScreenProps) {
       return '#6E7882'; // 비활성 색상일 때 글씨 색상
     }
     return color; // 활성 색상일 때 글씨 색상
+  };
+
+  const onBoardSearchPress = async () => {
+    const response = await checkRole();
+    if (response.status === 401) {
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      const user = response.data.data;
+      if (user?.isAuthenticated && !user?.blacklist) {
+        navigation.navigate('BoardSearch');
+      } else {
+        setTimeout(function () {
+          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+        }, 100);
+      }
+    } else {
+      logout();
+      navigation.reset({
+        routes: [
+          {
+            name: 'ErrorScreen',
+            params: {status: response.status, code: 'G001'},
+          },
+        ],
+      });
+    }
   };
 
   return (
@@ -285,7 +319,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
             try {
-              // Push 하기 전에 반드시 수정
+              // Push 하기 전에 반드시 수정 <참고>
               navigation.navigate('CrystalBall');
             } catch (error) {
               console.error('판테온 프로필 조회 오류:', error);
@@ -311,6 +345,27 @@ function GlobalNavbar({navigation}: ScreenProps) {
             height: 40,
           },
           headerRight: () => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <TouchableHighlight
+                style={{
+                  marginRight: 11,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onSearchPress}>
+                <SearchIcon />
+              </TouchableHighlight>
+            </View>
+          ),
+          headerLeft: () => (
             <TouchableHighlight
               style={{
                 marginRight: 16,

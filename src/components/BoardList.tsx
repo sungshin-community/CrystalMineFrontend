@@ -26,6 +26,7 @@ import {useNavigation} from '@react-navigation/native';
 import {logout} from '../common/authApi';
 import {FoldButton, SpreadButton} from '../../resources/icon/Button';
 import LinearGradient from 'react-native-linear-gradient';
+import NewIcon from '../../resources/icon/NewIcon';
 
 interface Props {
   items: Board[];
@@ -268,15 +269,22 @@ export function OfficialBoardList({
           backgroundColor: '#fff',
         }}>
         <View style={{flex: 1, marginLeft: 15, marginRight: 15}}>
-          <Text
+          <View
             style={{
-              fontSize: 14,
-              color: '#3A424E',
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              flexDirection: 'row',
+              alignItems: 'center',
             }}>
-            {item.name}
-          </Text>
-          {/* <Text
+            <Text
+              style={{
+                fontSize: 14,
+                color: '#3A424E',
+                fontFamily: 'SpoqaHanSansNeo-Regular',
+                marginRight: 8,
+              }}>
+              {item.name}
+            </Text>
+            {item.todayNewPost && <NewIcon />}
+            {/* <Text
             numberOfLines={1}
             ellipsizeMode="tail"
             style={{
@@ -286,6 +294,7 @@ export function OfficialBoardList({
             }}>
             {item.introduction}
           </Text> */}
+          </View>
         </View>
         <Pressable
           onPress={async () => {
@@ -370,14 +379,18 @@ export function CustomBoardList({
             //backgroundColor: '#A055FF',
           }}>
           <View style={{flex: 7, marginLeft: 15, marginRight: 5}}>
-            <Text
-              style={{
-                fontSize: 14,
-                color: '#3A424E',
-                fontFamily: 'SpoqaHanSansNeo-Regular',
-              }}>
-              {item.name}
-            </Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: '#3A424E',
+                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  marginRight: 8,
+                }}>
+                {item.name}
+              </Text>
+              {item.todayNewPost && <NewIcon />}
+            </View>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"

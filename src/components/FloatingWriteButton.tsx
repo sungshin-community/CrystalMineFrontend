@@ -23,11 +23,7 @@ const FloatingWriteButton = ({onPress}: any) => {
       activeOpacity={0.5}
       onPress={onPress}
       style={styles.touchableOpacityStyle}>
-      <View style={styles.floatingButtonStyle}>
-        <Text>
-          <StyledFloatingButton />
-        </Text>
-      </View>
+      <StyledFloatingButton />
     </TouchableOpacity>
   );
 };
@@ -41,19 +37,16 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    right: 50,
-    bottom: 50,
+    right: 30,
+    bottom: 110,
     zIndex: 9999,
-  },
-
-  floatingButtonStyle: {
+    backgroundColor: '#A055FF',
+    borderRadius: 20,
+    // iOS
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    // Android
     elevation: 5,
   },
 });

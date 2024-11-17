@@ -109,6 +109,8 @@ export const getBoardirectionAgreements = async () => {
 export const getBoardInfo = async (boardId: number) => {
   try {
     const response = await client.get<Response<Board>>(`/boards/${boardId}`);
+    console.log('여기는 getBoardInfo 함수', response.data.data);
+
     return response.data.data;
   } catch (e) {
     console.log('여기는 getBoardInfo 함수', e);
@@ -128,9 +130,40 @@ export const getBoardDetail = async (
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/${boardId}/posts?${params}`,
     );
+    console.log('여기는 getBoardInfo 함수', response.data.data);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getCustomBoardList 함수', e.response.data);
+    return e.response.data;
+  }
+};
+
+// 광고 게시글 목록
+export const getAdBoardPost = async (boardId: number, page: number) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<Response<BoardDetailDto>>(
+      `/boards/${boardId}/ad-board/posts?${params}`,
+    );
+    console.log('여기는 getAdBoardPost 함수', response.data.data);
+    return response.data.data.content;
+  } catch (e) {
+    console.log('여기는 getAdBoardPost 함수', e.response.data);
+    return e.response.data;
+  }
+};
+
+// 광고 게시글 관리자 여부 확인
+export const checkIsAdminForAdBoardPost = async (boardId: number) => {
+  try {
+    const response = await client.get<Response<boolean>>(
+      `/boards/${boardId}/ad-board/posts/is-admin`,
+    );
+    console.log('여기는 checkIsAdminForAdBoardPost 함수', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('여기는 checkIsAdminForAdBoardPost 함수', e.response.data);
     return e.response.data;
   }
 };
@@ -141,6 +174,7 @@ export const getBoardHotPost = async (boardId: number) => {
     const response = await client.get<Response<BoardHotPostDto>>(
       `/boards/${boardId}/hot-post`,
     );
+    console.log('여기는 getBoardHotPost 함수', response.data);
     return response.data;
   } catch (e) {
     console.log('여기는 getBoardHotPost 함수', e.response.data);
@@ -161,16 +195,36 @@ export const getReportReason = async () => {
   }
 };
 
+export const getSecondReportReason = async () => {
+  try {
+    const response = await client.get<Response<Board>>(`/report`);
+    console.log('getSecondReportReason', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('여기는 getSecondReportReason 함수', e.responde.data);
+    return e.response.data;
+  }
+};
+
+export enum BoardContentType {
+  TYPE1 = 'TYPE1', // 제목 + 본문
+  TYPE2 = 'TYPE2', // 제목 + 본문 + 사진
+  TYPE3 = 'TYPE3', // 제목 + 사진
+  TYPE4 = 'TYPE4', // 기존 게시글용
+}
+
 export const createBoard = async (
   name: string,
   introduction: string,
   hotable: boolean,
+  type: BoardContentType,
 ) => {
   try {
     const response = await client.post<Response<Board>>('/boards', {
       name: name,
       introduction: introduction,
       hotable: hotable,
+      type: type,
     });
     console.log('게시판 생성 hotable', hotable);
     console.log('createBoard 함수 성공', response.data);
@@ -237,7 +291,6 @@ export async function deleteMyComments(commendIds: number[]) {
     const response = await client.delete<AxiosResponse>(
       `/comments/${commendIdListStr}`,
     );
-    console.log(response.data.data);
     return response.data;
   } catch (e) {
     console.log('여기는 deleteMyComments 함수', e);
@@ -296,6 +349,7 @@ export const getHotBoardPosts = async (page: number) => {
     const response = await client.get<Response<BoardDetailDto>>(
       `/boards/hot-board/posts?${params}`,
     );
+    console.log('getHotBoardPosts', response.data.data);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getHotBoardPosts 함수', e.response.data);
@@ -404,14 +458,29 @@ export const deletePosts = async (postId: number) => {
   }
 };
 
-// 이모티콘
-export const getEmoticons = async () => {
+// 내 이모티콘 조회
+export const getMyEmoticons = async () => {
   try {
     const response = await client.get<AxiosResponse>(`/emoticons/my`);
-    console.log('이모티콘list', response.data.data);
-    return response.data.data;
+    console.log('이모티콘list', response.data);
+    return response.data;
   } catch (e) {
-    console.log('getEmoticons 함수', e);
+    console.log('getMyEmoticons 함수', e);
+  }
+};
+
+// 수정광산 이모티콘 구매하기
+export const buyEmoticons = async (emoticonId: number) => {
+  try {
+    console.log('이모티콘 구매하기', emoticonId);
+    const response = await client.post<AxiosResponse>(
+      `/emoticons/${emoticonId}`,
+    );
+    console.log('이모티콘 구매', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('buyEmoticons 함수', e.response.status);
+    return e.response;
   }
 };
 
@@ -426,7 +495,7 @@ export const getComments = async (postId: number /*, page: number*/) => {
     console.log('댓글', response.data.data.content);
     return response.data.data.content;
   } catch (e) {
-    console.log('여기는 getComments 함수', e);
+    console.log('여기는 getComments 함수', e.response.data);
   }
 };
 // 댓글 생성
@@ -437,12 +506,19 @@ export const addComment = async (
   emoticonId: number,
 ) => {
   try {
-    console.log(postId, content, '익명여부:', isAnonymous);
+    console.log(
+      '댓글 달기',
+      postId,
+      content,
+      '익명여부:',
+      isAnonymous,
+      emoticonId,
+    );
     const response = await client.post<Response<CommentDto>>('/comments', {
       postId: postId,
       content: content,
       isAnonymous: isAnonymous,
-      emoticonId: 1,
+      emoticonId: emoticonId,
     });
     console.log('addComment 함수 성공', response.data);
     return response;
@@ -460,7 +536,15 @@ export const addRecomment = async (
   emoticonId: number,
 ) => {
   try {
-    console.log(postId, content, parentId, '익명여부:', isAnonymous);
+    console.log(
+      '대댓글 추가',
+      postId,
+      content,
+      parentId,
+      '익명여부:',
+      isAnonymous,
+      emoticonId,
+    );
     const response = await client.post<Response<RecommentDto>>(
       `/comments/${parentId}`,
       {
@@ -468,7 +552,7 @@ export const addRecomment = async (
         parentId: parentId,
         content: content,
         isAnonymous: isAnonymous,
-        emoticonId: 1,
+        emoticonId: emoticonId,
       },
     );
     console.log('addRecomment 함수 성공', response.data);

@@ -18,6 +18,21 @@ export class MyPostContentDto {
   isBoardBlinded: boolean = false;
 }
 
+export class PtContentDto {
+  commentCount: number = 0;
+  content: string = '';
+  createdAt: string = '';
+  displayName: string = '';
+  hasTitle: boolean = false;
+  isAnonymous: boolean = false;
+  isLiked: boolean = false;
+  likeCount: number = 0;
+  profileImage: string = '';
+  ptPostId: number = 0;
+  ptPostType: string = '';
+  title: string = '';
+}
+
 export default interface MyPostDto {
   content: MyPostContentDto[];
 }
