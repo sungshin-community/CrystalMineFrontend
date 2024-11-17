@@ -82,9 +82,11 @@ export default function JobFilterModal({
           ? prevSelected.filter(i => i !== index)
           : [...prevSelected, index];
 
-        return newSelected.includes(0)
+        const filteredSelected = newSelected.includes(0)
           ? newSelected.filter(i => i !== 0)
           : newSelected;
+
+        return filteredSelected.length === 0 ? [0] : filteredSelected;
       });
     }
   };
@@ -196,7 +198,7 @@ export default function JobFilterModal({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', //색깔 수정
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   background: {
     flex: 1,
