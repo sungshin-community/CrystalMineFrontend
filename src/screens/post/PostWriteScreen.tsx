@@ -373,48 +373,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
         }}
       />
       <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
-        {isPantheon === 'question' && (
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                paddingHorizontal: 24,
-              }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '500',
-                  color: '#B9BAC1',
-                  marginRight: 8,
-                }}>
-                채택포인트
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '500',
-                  color: '#A055FF',
-                }}>
-                사용 가능 포인트 {pointNum}P
-              </Text>
-            </View>
-            <TextInput
-              placeholder="채택 답변에 제공될 포인트를 작성해주세요."
-              placeholderTextColor="#D5DBE1"
-              value={point}
-              onChangeText={value => {
-                setPoint(value);
-              }}
-              style={[fontMedium, styles.title]}
-            />
-            <View
-              style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
-            />
-          </View>
-        )}
-        <View style={[styles.inputTitle]}>
-          {/* <Image
+        {/* <Image
             style={{width: 24, height: 24, borderRadius: 12}}
             source={{
               uri: isAnonymous ? info?.defaultProfileImage : info?.profileImage,
@@ -440,7 +399,49 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             style={{
               flex: 1,
             }}>
-            {info?.hasTitle && (
+            {isPantheon === 'question' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 10,
+                    paddingHorizontal: 24,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '500',
+                      color: '#B9BAC1',
+                      marginRight: 8,
+                    }}>
+                    채택포인트
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '500',
+                      color: '#A055FF',
+                    }}>
+                    사용 가능 포인트 {pointNum}P
+                  </Text>
+                </View>
+                <TextInput
+                  placeholder="채택 답변에 제공될 포인트를 작성해주세요."
+                  placeholderTextColor="#D5DBE1"
+                  value={point}
+                  onChangeText={value => {
+                    setPoint(value);
+                  }}
+                  style={[fontMedium, styles.title]}
+                />
+                <View
+                  style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
+                />
+              </View>
+            )}
+            {(info?.hasTitle ||
+              isPantheon === 'question' ||
+              isPantheon === 'free') && (
               <>
                 <View style={[styles.inputTitle]}>
                   <Text
