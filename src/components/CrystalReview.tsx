@@ -103,8 +103,23 @@ const CrystalReview = () => {
       },
     ];
 
-    setHotPost(testData);
-    setReviewList(testData);
+    //setHotPost(testData);
+    //setReviewList(testData);
+  }, []);
+
+  useEffect(() => {
+    const fetchHotPosts = async () => {
+      try {
+        const data = await getCrystalReview('all', 'likeCount');
+
+        const topFivePosts = data.slice(0, 5);
+        setHotPost(topFivePosts);
+      } catch (error) {
+        console.error('Failed to fetch hot posts:', error);
+      }
+    };
+
+    fetchHotPosts();
   }, []);
 
   // 인기글
@@ -255,9 +270,7 @@ const CrystalReview = () => {
           </>
         )
       ) : (
-        <Text style={[fontRegular, styles.boardText]}>
-          정회원 인증 후 확인하실 수 있습니다.
-        </Text>
+        <ActivityIndicator size="large" color="#A055FF" />
       )}
     </ScrollView>
   );
