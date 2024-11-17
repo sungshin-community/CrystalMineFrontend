@@ -4,75 +4,38 @@ import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import ReplyIcon from '../../resources/icon/ReplyIcon';
 import ReplySheet from './ReplySheet';
-import timeCalculate from '../common/util/timeCalculate';
-
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
+import {pantheonList} from '../classes/Pantheon';
+import timeCalculate from '../common/util/timeCalculate';
 
 interface SphereItemProps {
   isQuestion?: boolean;
   isFree?: boolean;
-  post: {
-    content: string;
-    createdAt: string;
-    department: string;
-    likeCount: number;
-    liked: boolean;
-    nickname: string;
-    profileImage: string;
-    ptCommentCount: number;
-    ptPostId: number;
-    thumbnail: string;
-    scrapCount: number;
-    title: string;
-    userJob: string;
-    userYear: number;
-    isSelected: boolean;
-    point: number;
-  };
+  post: pantheonList;
 }
+
+type RootStackParamList = {
+  SpherePostScreen: {ptPostId: number; isFree: boolean; isQuestion: boolean};
+};
 
 export default function SphereItem({
   isQuestion = false,
   isFree = false,
   post,
 }: SphereItemProps) {
-  const {
-    content,
-    department,
-    likeCount,
-    liked,
-    nickname,
-    profileImage,
-    ptCommentCount,
-    scrapCount,
-    createdAt,
-    ptPostId,
-    thumbnail,
-    title,
-    userJob,
-    point,
-    isSelected,
-    userYear,
-  } = post;
-
-  type RootStackParamList = {
-    SpherePostScreen: {ptPostId: number; isFree: boolean; isQuestion: boolean};
-  };
-
-  // 수정 필요
-  const navigation = useNavigation<NativeStackScreenProps<any>['navigation']>();
+  const navigation =
+    useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
   const [replyVisible, setReplyVisible] = useState(false);
 
   return (
     <View style={{paddingHorizontal: 16}}>
       <TouchableOpacity
         onPress={() => {
-          console.log('ptPostId', isFree, ptPostId, isQuestion);
           navigation.navigate('SpherePostScreen', {
-            ptPostId,
-            isFree,
-            isQuestion,
+            ptPostId: post.ptPostId,
+            isFree: isFree,
+            isQuestion: isQuestion,
           });
         }}>
         <View
@@ -87,7 +50,7 @@ export default function SphereItem({
               flexDirection: 'row',
             }}>
             <Image
-              source={{uri: profileImage}}
+              source={{uri: post.profileImage}}
               style={{
                 width: 24,
                 height: 24,
@@ -110,7 +73,7 @@ export default function SphereItem({
                     fontWeight: '600',
                     color: '#3A424E',
                   }}>
-                  {nickname}
+                  {post.displayName}
                 </Text>
                 <Text
                   style={{
@@ -118,7 +81,7 @@ export default function SphereItem({
                     color: '#B9BAC1',
                     fontWeight: '500',
                   }}>
-                  {timeCalculate(createdAt)}
+                  {timeCalculate(post.createdAt)}
                 </Text>
               </View>
               <Text
@@ -127,17 +90,20 @@ export default function SphereItem({
                   fontWeight: '500',
                   color: '#89919A',
                 }}>
-                {department} · {userJob} ·{' '}
-                {userYear === 0 ? '신입' : `${userYear}년`}
+                {post.isBlind
+                  ? '비공개'
+                  : `${post.department} · ${post.userJob} · ${
+                      post.userYear === 0 ? '신입' : `${post.userYear}년`
+                    }`}
               </Text>
             </View>
           </View>
-          {isQuestion && (
+          {(isQuestion || post.ptPostType === 'QUESTION') && (
             <View style={{flexDirection: 'row'}}>
               <View style={styles.pointView}>
                 <Text
                   style={{fontSize: 12, fontWeight: '700', color: '#89919A'}}>
-                  {point}P
+                  {post.point}P
                 </Text>
               </View>
               <View
@@ -148,24 +114,24 @@ export default function SphereItem({
                     borderRadius: 4,
                   },
                   {
-                    backgroundColor: isSelected ? '#F3E9FF' : '#EFEFF3',
+                    backgroundColor: post.isSelected ? '#F3E9FF' : '#EFEFF3',
                   },
                 ]}>
                 <Text
                   style={[
                     {fontSize: 12, fontWeight: '700'},
                     {
-                      color: isSelected ? '#A055FF' : '#89919A',
+                      color: post.isSelected ? '#A055FF' : '#89919A',
                     },
                   ]}>
-                  {isSelected ? '채택완료' : '답변대기'}
+                  {post.isSelected ? '채택완료' : '답변대기'}
                 </Text>
               </View>
             </View>
           )}
         </View>
 
-        {title && (
+        {typeof post.title === 'string' && (
           <Text
             style={{
               color: '#222222',
@@ -175,7 +141,7 @@ export default function SphereItem({
             }}
             numberOfLines={1}
             ellipsizeMode="tail">
-            {title}
+            {post.title}
           </Text>
         )}
 
@@ -185,19 +151,19 @@ export default function SphereItem({
             fontWeight: '400',
             color: '#222222',
           }}>
-          {content.length > 100 ? ( // 글자 수 확인
+          {post.content.length > 100 ? (
             <>
-              {content.slice(0, 94)}...
+              {post.content.slice(0, 94)}...
               <Text style={{color: '#9DA4AB'}}> 더보기</Text>
             </>
           ) : (
-            content
+            post.content
           )}
         </Text>
 
-        {thumbnail && (
+        {typeof post.thumbnail === 'string' && (
           <Image
-            source={{uri: thumbnail}}
+            source={{uri: post.thumbnail}}
             style={{
               marginTop: 12,
               height: 160,
@@ -206,64 +172,68 @@ export default function SphereItem({
             resizeMode="cover"
           />
         )}
+
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 12}}>
           <HeartIcon
-            fill={liked ? '#FF6376' : 'white'}
-            stroke={liked ? '#FF6376' : '#9DA4AB'}
+            fill={post.isLiked ? '#FF6376' : 'white'}
+            stroke={post.isLiked ? '#FF6376' : '#9DA4AB'}
           />
-          <Text style={styles.footerText}>좋아요 {likeCount}</Text>
+          <Text style={styles.footerText}>좋아요 {post.likeCount}</Text>
           <ChatIcon />
-          <Text style={styles.footerText}>댓글달기 {ptCommentCount}</Text>
+          <Text style={styles.footerText}>댓글달기 {post.ptCommentCount}</Text>
         </View>
       </TouchableOpacity>
-      {ptCommentCount > 0 && (
-        <TouchableOpacity
-          style={{
-            marginTop: 20,
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}
-          onPress={() => setReplyVisible(true)}>
-          <ReplyIcon />
-          <View style={styles.commentBox}>
-            <View style={{flexDirection: 'row'}}>
+      {post.ptCommentCount > 0 &&
+        isQuestion === false &&
+        (isFree === true ||
+          (post.ptPostType === 'GENERAL' && isFree === false)) && (
+          <TouchableOpacity
+            style={{
+              marginTop: 20,
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}
+            onPress={() => setReplyVisible(true)}>
+            <ReplyIcon />
+            <View style={styles.commentBox}>
+              <View style={{flexDirection: 'row'}}>
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    fontSize: 12,
+                    color: '#3A424E',
+                    marginRight: 8,
+                  }}>
+                  {post.newCommentAuthor}
+                </Text>
+                <Text
+                  style={{
+                    fontWeight: '400',
+                    fontSize: 12,
+                    color: '#3A424E',
+                  }}
+                  numberOfLines={1}
+                  ellipsizeMode="tail">
+                  {post.newCommentContent}
+                </Text>
+              </View>
               <Text
                 style={{
-                  fontWeight: '600',
+                  fontWeight: '500',
                   fontSize: 12,
-                  color: '#3A424E',
-                  marginRight: 8,
+                  color: '#9DA4AB',
+                  textDecorationLine: 'underline',
                 }}>
-                props 설정
-              </Text>
-              <Text
-                style={{
-                  fontWeight: '400',
-                  fontSize: 12,
-                  color: '#3A424E',
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                props 설정
+                댓글 {post.ptCommentCount - 1}개 +
               </Text>
             </View>
-            <Text
-              style={{
-                fontWeight: '500',
-                fontSize: 12,
-                color: '#9DA4AB',
-                textDecorationLine: 'underline', // 수정 필요
-              }}>
-              댓글 {ptCommentCount - 1}개 +
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )}
+          </TouchableOpacity>
+        )}
       <ReplySheet
         visible={replyVisible}
         setVisible={setReplyVisible}
-        ptPostId={ptPostId}
+        ptPostId={post.ptPostId}
       />
     </View>
   );

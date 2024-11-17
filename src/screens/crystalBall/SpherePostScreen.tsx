@@ -12,10 +12,10 @@ import SphereReplyItem from '../../components/SphereReplyItem';
 import SelectAnswer from '../../components/SelectAnswer';
 import {
   deleltePantheonLike,
-  getCuriousComment,
-  getCuriousDetail,
-  getFreeComment,
-  getFreeDetail,
+  getPantheonCuriousComment,
+  getPantheonCuriousDetail,
+  getPantheonFreeComment,
+  getPantheonFreeDetail,
   postPantheonComment,
   postPantheonLike,
   postPantheonScrap,
@@ -23,13 +23,15 @@ import {
   postCommentAdopt,
   postPantheonReComment,
   postPurchaseAdopt,
+  deleltePantheonCommentLike,
+  postPantheonCommentLike,
 } from '../../common/pantheonApi';
 import AdMob from '../../components/AdMob';
 import PostFooter from '../../components/PostFooter';
-import timeCalculate from '../../common/util/timeCalculate';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import CommentInputBox, {CommentInputBoxRef} from './imshi';
+import {pantheonComment, pantheonDetail} from '../../classes/Pantheon';
 
 const selectData = {
   content:
@@ -59,42 +61,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const {ptPostId, isQuestion, isFree} = route.params;
   const [postData, setPostData] = useState<any>({});
   const [questioning, setQuestioning] = useState(isQuestion);
-  interface Comment {
-    content: string;
-    authorDepartment: string;
-    authorJob: string;
-    authorYear: number;
-    emoticonUrl?: string | null;
-    likeCount: number;
-    liked: boolean;
-    nickname: string;
-    profileImageUrl: string;
-    id: number;
-    ptCommentId: number;
-    selected?: boolean;
-    reComments: Comment[];
-  }
 
-  interface PostData {
-    content: string;
-    createdAt: string;
-    department: string;
-    images: string[];
-    likeCount: number;
-    isLiked: boolean;
-    nickname: string;
-    thumbnails: string[];
-    profileImage: string;
-    userJob: string;
-    userYear: number;
-    isSelected?: boolean;
-    point?: number;
-    title: string;
-    isReported: boolean;
-    isScraped: boolean;
-  }
-
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<pantheonComment[]>([]);
   const commentInputRef = useRef<CommentInputBoxRef>(null);
   const [paraentId, setParentId] = useState<number>(0);
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
@@ -105,15 +73,15 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
 
   const fetchDetailData = async () => {
     try {
-      let data: PostData | any = {};
+      let data: pantheonDetail | any = {};
       if (isQuestion) {
-        data = await getCuriousDetail(ptPostId);
+        data = await getPantheonCuriousDetail(ptPostId);
       } else if (isFree) {
-        data = await getFreeDetail(ptPostId);
+        data = await getPantheonFreeDetail(ptPostId);
       } else {
-        data = await getCuriousDetail(ptPostId);
+        data = await getPantheonCuriousDetail(ptPostId);
         if (!data) {
-          data = await getFreeDetail(ptPostId);
+          data = await getPantheonFreeDetail(ptPostId);
         }
       }
       setPostData(data);
@@ -127,13 +95,14 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     try {
       let data = [];
       if (isQuestion) {
-        data = await getCuriousComment(ptPostId);
+        data = await getPantheonCuriousComment(ptPostId);
+        console.log('data', data);
       } else if (isFree) {
-        data = await getFreeComment(ptPostId);
+        data = await getPantheonFreeComment(ptPostId);
       } else {
-        data = await getFreeComment(ptPostId);
+        data = await getPantheonFreeComment(ptPostId);
         if (!data) {
-          data = await getCuriousComment(ptPostId);
+          data = await getPantheonCuriousComment(ptPostId);
         }
       }
       setComments(data);
@@ -272,8 +241,25 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     try {
       await postCommentAdopt(ptCommentId, ptPostId);
       console.log('채택 성공');
+      await fetchDetailData();
+      await fetchCommentData();
     } catch (error) {
       console.error('채택 실패:', error);
+    }
+  };
+
+  const handleCommentLike = async (isLiked: boolean, commentId: number) => {
+    try {
+      if (isLiked) {
+        await deleltePantheonCommentLike(commentId);
+        console.log('좋아요 취소 성공');
+      } else {
+        await postPantheonCommentLike(commentId);
+        console.log('좋아요 누르기 성공');
+      }
+      await fetchCommentData();
+    } catch (error) {
+      console.error('좋아요 상태 변경 실패:', error);
     }
   };
 
@@ -335,7 +321,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       color: '#B9BAC1',
                       fontWeight: '400',
                     }}>
-                    {timeCalculate(createdAt)}
+                    createdAt
                   </Text>
                 </View>
                 <Text
@@ -386,7 +372,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             )}
           </View>
 
-          {title && (
+          {typeof title === 'string' && (
             <Text
               style={{
                 color: '#222222',
@@ -441,7 +427,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
           likeCount={likeCount}
           commentCount={0}
           isReported={isReported}
-          postId={0}
+          ptPostId={0}
           isScraped={isScraped}
           handlePostLike={() => handlePostLike(ptPostId)}
           handlePostComment={handleFocus}
@@ -474,39 +460,25 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                 },
               ]}>
               <SphereReplyItem
-                time={'1분전'}
                 reply={item}
                 isQuestion={isQuestion}
-                replyCount={item.reComments.length}
-                handleClick={() =>
-                  handleCommentClick(item.ptCommentId || item.id)
-                }
+                handleReplyClick={() => handleCommentClick(item.ptCommentId)}
+                handleLikePress={handleCommentLike}
+                postIsSelected={isSelected}
+                handleAdoptComment={handleAdoptComment}
               />
               {item.reComments && item.reComments.length > 0 && (
                 <View style={{marginTop: 24}}>
                   {item.reComments.map(
-                    (
-                      reComment: {
-                        content: string;
-                        authorDepartment: string;
-                        authorJob: string;
-                        authorYear: number;
-                        emoticonUrl?: string | null;
-                        likeCount: number;
-                        liked: boolean;
-                        nickname: string;
-                        profileImageUrl: string;
-                        ptCommentId: number;
-                        selected?: boolean;
-                      },
-                      idx: number,
-                    ) => (
+                    (reComment: pantheonComment, idx: number) => (
                       <View>
                         <SphereReplyItem
-                          time={'1분전'}
                           reply={reComment}
                           isReply
                           isQuestion={isQuestion}
+                          postIsSelected={isSelected}
+                          handleLikePress={handleCommentLike}
+                          handleAdoptComment={handleAdoptComment}
                         />
                       </View>
                     ),

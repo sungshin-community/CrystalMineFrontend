@@ -319,7 +319,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
             try {
-              // Push 하기 전에 반드시 수정
+              // Push 하기 전에 반드시 수정 <참고>
               navigation.navigate('CrystalBall');
             } catch (error) {
               console.error('판테온 프로필 조회 오류:', error);
