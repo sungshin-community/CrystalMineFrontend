@@ -198,9 +198,13 @@ const CrystalReview = () => {
               data={hotPost}
               renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('PostScreen', {postId: item.ptPostId})
-                  }>
+                  onPress={() => {
+                    navigation.navigate('SpherePostScreen', {
+                      ptPostId: item.ptPostId,
+                      isFree: false,
+                      isQuestion: false,
+                    });
+                  }}>
                   <View style={styles.contentBox}>
                     <View style={styles.hotTagBox}>
                       <View
@@ -240,24 +244,37 @@ const CrystalReview = () => {
                 reviewList.map((item, index) => (
                   <View key={index} style={styles.postListContainer}>
                     <View>
-                      <Text style={styles.contentTitle}>{item.title}</Text>
-                      <Text
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={styles.contentText}>
-                        {item.content}
-                      </Text>
-                      <View style={styles.hotTagBox}>
-                        <View style={styles.yearJobBox}>
-                          <Text style={styles.yearJobContent}>
-                            {item.category}
-                          </Text>
-                          <Text style={styles.yearJobContent}>·</Text>
-                          <Text style={styles.yearJobContent}>{item.job} </Text>
-                          <Text style={styles.yearJobContent}>·</Text>
-                          <Text style={styles.yearJobContent}>{item.year}</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('SpherePostScreen', {
+                            ptPostId: item.ptPostId,
+                            isFree: false,
+                            isQuestion: false,
+                          });
+                        }}>
+                        <Text style={styles.contentTitle}>{item.title}</Text>
+                        <Text
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          style={styles.contentText}>
+                          {item.content}
+                        </Text>
+                        <View style={styles.hotTagBox}>
+                          <View style={styles.yearJobBox}>
+                            <Text style={styles.yearJobContent}>
+                              {item.category}
+                            </Text>
+                            <Text style={styles.yearJobContent}>·</Text>
+                            <Text style={styles.yearJobContent}>
+                              {item.job}{' '}
+                            </Text>
+                            <Text style={styles.yearJobContent}>·</Text>
+                            <Text style={styles.yearJobContent}>
+                              {item.year}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
+                      </TouchableOpacity>
                     </View>
                     <View style={styles.scrapBox}>
                       {item.scraped ? <Scrap /> : <NoScrap />}

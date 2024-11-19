@@ -432,6 +432,8 @@ const HomeFragment = ({navigation}: Props) => {
               <View style={styles.bannerContainer}>
                 <Image
                   source={
+                    bannerData &&
+                    bannerData.length > 0 &&
                     bannerData[0].imageUrl
                       ? {uri: bannerData[0].imageUrl}
                       : BannerBasicImg // 기본 이미지 사용
@@ -452,10 +454,10 @@ const HomeFragment = ({navigation}: Props) => {
                 {/* 배너 텍스트 영역 */}
                 <View style={styles.bannerTextContainer}>
                   <Text style={styles.bannerTitle}>
-                    {bannerData[0].postTitle}
+                    {bannerData[0]?.postTitle}
                   </Text>
                   <Text style={styles.bannerContent}>
-                    {bannerData[0].postContent}
+                    {bannerData[0]?.postContent}
                   </Text>
                 </View>
               </View>

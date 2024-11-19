@@ -2032,6 +2032,7 @@ const App = () => {
                   ),
                 })}
               />
+
               <Stack.Screen
                 name="Onboarding"
                 component={OnboardingScreen}
