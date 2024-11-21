@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fff', // 배경 색깔 수정
+    backgroundColor: '#fff',
     paddingVertical: 16,
     paddingHorizontal: 26,
     borderBottomWidth: 4,

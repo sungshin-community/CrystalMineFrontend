@@ -12,7 +12,6 @@ import {
   Image,
 } from 'react-native';
 import CloseIcon from '../../resources/icon/CloseIcon';
-import Toast from 'react-native-simple-toast';
 import {pantheonComment} from '../classes/Pantheon';
 
 interface SelectBottomSheetProps {
@@ -150,14 +149,14 @@ export default function SelectBottomSheet({
                       fontWeight: '500',
                       color: '#89919A',
                     }}>
-                    {reply?.authorDepartment} · {reply?.authorJob} ·{' '}
-                    {reply?.authorYear}
-                    // 비공개 함수 처리
+                    {reply?.isBlind
+                      ? '비공개'
+                      : `${reply?.authorDepartment} · ${reply?.authorJob} ·${reply?.authorYear}`}
                   </Text>
                 </View>
               </View>
 
-              {reply?.emoticonUrl && (
+              {typeof reply?.emoticonUrl === 'string' && (
                 <Image
                   source={{uri: reply?.emoticonUrl}}
                   style={{
@@ -179,6 +178,7 @@ export default function SelectBottomSheet({
                 {reply?.content}
               </Text>
             </View>
+
             <View
               style={{
                 flexDirection: 'row',
@@ -259,5 +259,3 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
 });
-
-// overlay 클릭 오류 수정

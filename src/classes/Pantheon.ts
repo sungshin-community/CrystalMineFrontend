@@ -24,7 +24,8 @@ interface pantheonDetail {
   content: string;
   createdAt: string;
   department: string;
-  thumbnails?: string[];
+  images: string[];
+  thumbnails: string[];
   isBlind: boolean;
   isLiked: boolean;
   isOwner: boolean;
@@ -55,10 +56,11 @@ interface pantheonComment {
   isReported: boolean;
   isOfReader: boolean;
   likeCount: number;
-  isSelcted?: boolean;
+  isSelected?: boolean;
+  isOfPtPostAuthor: boolean;
   profileImageUrl: string;
   canReadSelectedComment?: boolean;
-  reComments?: pantheonComment[];
+  reComments: pantheonComment[];
 }
 
 export type {pantheonList, pantheonDetail, pantheonComment};
