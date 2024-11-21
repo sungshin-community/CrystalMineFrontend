@@ -16,9 +16,9 @@ interface PostFooterProps {
   isReported: boolean;
   ptPostId: number;
   isScraped: boolean;
-  handlePostLike: (postId: number) => void;
-  handlePostComment: (postId: number) => void;
-  handlePostScrap: (postId: number) => void;
+  handlePostLike: () => void;
+  handlePostComment: () => void;
+  handlePostScrap: () => void;
   handlePostReport: any; // 신고 로직 수정
 }
 
@@ -60,7 +60,7 @@ export default function PostFooter({
         }}>
         <TouchableOpacity
           style={{flexDirection: 'row', marginRight: 16, alignItems: 'center'}}
-          onPress={() => handlePostLike(ptPostId)}>
+          onPress={handlePostLike}>
           <FooterHeart
             fill={isLiked ? '#FF6376' : 'white'}
             stroke={isLiked ? '#FF6376' : '#9DA4AB'}
@@ -79,7 +79,7 @@ export default function PostFooter({
         </TouchableOpacity>
         <TouchableOpacity
           style={{flexDirection: 'row', alignItems: 'center'}}
-          onPress={() => handlePostComment(ptPostId)}>
+          onPress={handlePostComment}>
           <FooterChat />
           <Text
             style={{
@@ -131,7 +131,7 @@ export default function PostFooter({
           }>
           <FooterMessage style={{marginRight: 16}} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handlePostScrap(ptPostId)}>
+        <TouchableOpacity onPress={handlePostScrap}>
           <FooterScrap
             fill={isScraped ? '#A055FF' : 'white'}
             stroke={isScraped ? '#A055FF' : '#9DA4AB'}

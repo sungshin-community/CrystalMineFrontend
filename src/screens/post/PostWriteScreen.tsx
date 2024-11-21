@@ -78,7 +78,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
   const [boardId, setBoardId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
   const [point, setPoint] = useState<string>('');
-  const [pointNum, setPointNum] = useState<number>(0);
+  const [myPoint, setMyPoint] = useState<number>(0);
   const [content, setContent] = useState<string>('');
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
@@ -112,7 +112,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
       if (isPantheon === 'question') {
         const user = await getUser();
         if (user) {
-          setPointNum(user.data.data.point);
+          setMyPoint(user.data.data.point);
         }
       }
     };
@@ -176,19 +176,27 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
 
   const onSubmitFreePress = async () => {
     setIsLoading(true);
-    const response = await postPantheonFree(
-      content,
-      isAnonymous,
-      images,
-      title,
-    );
+    await postPantheonFree(content, isAnonymous, images, title);
     navigation.goBack();
     setIsLoading(false);
   };
 
   const onSubmitQuriousPress = async () => {
+    if (!Number.isInteger(Number(point))) {
+      setTimeout(function () {
+        Toast.show('포인트는 숫자만 가능합니다.', Toast.SHORT);
+      }, 100);
+      return;
+    }
+
+    if (Number(point) > myPoint) {
+      setTimeout(function () {
+        Toast.show('현재 포인트보다 큰 값을 설정할 수 없습니다.', Toast.SHORT);
+      }, 100);
+      return;
+    }
     setIsLoading(true);
-    const response = await postPantheonQurious(
+    await postPantheonQurious(
       content,
       Number(point),
       isAnonymous,
@@ -205,10 +213,22 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
         <Pressable
           onPress={() => {
             if (info?.hasTitle) {
-              if (title) setIsSubmitState(true);
-              else setIsSubmitState(false);
-            } else if (content) setIsSubmitState(true);
-            else setIsSubmitState(false);
+              if (title) {
+                setIsSubmitState(true);
+              } else {
+                setIsSubmitState(false);
+              }
+            } else if (isPantheon === 'question') {
+              if (content && point) {
+                setIsSubmitState(true);
+              } else {
+                setIsSubmitState(false);
+              }
+            } else if (content) {
+              setIsSubmitState(true);
+            } else {
+              setIsSubmitState(false);
+            }
           }}>
           <Text
             style={[
@@ -217,6 +237,10 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               {
                 color: info?.hasTitle
                   ? title
+                    ? '#A055FF'
+                    : '#d8b9ff'
+                  : isPantheon === 'question'
+                  ? content && point
                     ? '#A055FF'
                     : '#d8b9ff'
                   : content
@@ -247,7 +271,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
         </TouchableHighlight>
       ),
     });
-  }, [navigation, title, content, images]);
+  }, [navigation, title, content, images, point]);
 
   useEffect(() => {
     if (isSubmitState && isPantheon === 'false') {
@@ -422,7 +446,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                       fontWeight: '500',
                       color: '#A055FF',
                     }}>
-                    사용 가능 포인트 {pointNum}P
+                    사용 가능 포인트 {myPoint}P
                   </Text>
                 </View>
                 <TextInput
@@ -432,6 +456,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                   onChangeText={value => {
                     setPoint(value);
                   }}
+                  keyboardType="numeric"
                   style={[fontMedium, styles.title]}
                 />
                 <View
@@ -473,7 +498,9 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                 </View>
               </>
             )}
-            {!isType3 && (
+            {(!isType3 ||
+              isPantheon === 'question' ||
+              isPantheon === 'free') && (
               <>
                 <View style={[styles.inputTitle]}>
                   <Text
@@ -582,7 +609,9 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            {!isType1 && (
+            {(!isType1 ||
+              isPantheon === 'question' ||
+              isPantheon === 'free') && (
               <TouchableOpacity onPress={onSelectImage}>
                 <ImageIcon style={{marginLeft: 20}} />
               </TouchableOpacity>

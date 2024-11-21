@@ -6,10 +6,6 @@ import ThumbNone, {ThumbFill} from '../../resources/icon/ThumbIcon';
 import SelectBottomSheet from './SelectBottomSheet';
 import SpinningThreeDots from './SpinningThreeDots';
 import {pantheonComment} from '../classes/Pantheon';
-import {
-  deleltePantheonCommentLike,
-  postPantheonCommentLike,
-} from '../common/pantheonApi';
 
 interface SphereReplyItemProps {
   reply: pantheonComment;
@@ -18,7 +14,7 @@ interface SphereReplyItemProps {
   isReply?: boolean;
   postIsSelected?: boolean;
   handleReplyClick?: () => void;
-  handleAdoptComment?: (ptCommentId: number) => void;
+  handleAdoptComment?: (ptCommentId: number, comment: pantheonComment) => void;
 }
 
 export default function SphereItem({
@@ -42,7 +38,7 @@ export default function SphereItem({
 
   const handleSelect = () => {
     setPopVisible(false);
-    handleAdoptComment && handleAdoptComment(reply.ptCommentId);
+    handleAdoptComment && handleAdoptComment(reply.ptCommentId, reply);
   };
 
   return (
@@ -172,7 +168,7 @@ export default function SphereItem({
             </TouchableOpacity>
           )}
 
-          {isQuestion && reply.isSelcted && (
+          {isQuestion && reply.isSelected && (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <ThumbFill />
               <Text

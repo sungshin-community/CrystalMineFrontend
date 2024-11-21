@@ -14,7 +14,6 @@ export default function DevelopScreen() {
 }
 
 const styles = StyleSheet.create({
-  // 배경 색깔 재확인
   container: {
     flex: 1,
     backgroundColor: '#fff',
