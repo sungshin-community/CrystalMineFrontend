@@ -1,3 +1,4 @@
+import {AxiosResponse} from 'axios';
 import client from './client';
 
 export async function getPantheonAllList(
@@ -272,24 +273,13 @@ export const postCommentAdopt = async (
   ptPostId: number,
 ) => {
   try {
-    const response = await client.post('/pantheon-comments/select', {
+    await client.post('/pantheon-comments/select', {
       ptCommentId,
       ptPostId,
     });
-    console.log(response);
-    console.log('판테온 궁금해요 댓글 채택');
+    console.log('판테온 댓글 채택');
   } catch (error: any) {
-    // 에러 객체가 Response 객체인지 확인하고 그에 맞는 정보 출력
-    if (error.response) {
-      console.error('응답 에러:', error.response);
-      console.error('상태 코드:', error.response.status);
-      console.error('응답 데이터:', error.response.data);
-      console.error('헤더:', error.response.headers);
-    } else if (error.request) {
-      console.error('요청 에러:', error.request);
-    } else {
-      console.error('기타 에러:', error.message);
-    }
+    console.log('판테온 댓글 채택 에러', error);
   }
 };
 

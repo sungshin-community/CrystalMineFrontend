@@ -7,7 +7,6 @@ import ReplySheet from './ReplySheet';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {pantheonList} from '../classes/Pantheon';
-import timeCalculate from '../common/util/timeCalculate';
 
 interface SphereItemProps {
   isQuestion?: boolean;
@@ -27,6 +26,15 @@ export default function SphereItem({
   const navigation =
     useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
   const [replyVisible, setReplyVisible] = useState(false);
+
+  React.useEffect(() => {
+    if (post.ptPostType === 'QUESTION') {
+      isQuestion = true;
+    }
+    if (post.ptPostType === 'FREE') {
+      isFree = true;
+    }
+  }, [post.ptPostType]);
 
   return (
     <View style={{paddingHorizontal: 16}}>
@@ -81,7 +89,7 @@ export default function SphereItem({
                     color: '#B9BAC1',
                     fontWeight: '500',
                   }}>
-                  {timeCalculate(post.createdAt)}
+                  {post.createdAt}
                 </Text>
               </View>
               <Text
@@ -98,7 +106,7 @@ export default function SphereItem({
               </Text>
             </View>
           </View>
-          {(isQuestion || post.ptPostType === 'QUESTION') && (
+          {isQuestion && (
             <View style={{flexDirection: 'row'}}>
               <View style={styles.pointView}>
                 <Text
@@ -184,52 +192,49 @@ export default function SphereItem({
           <Text style={styles.footerText}>댓글달기 {post.ptCommentCount}</Text>
         </View>
       </TouchableOpacity>
-      {post.ptCommentCount > 0 &&
-        isQuestion === false &&
-        (isFree === true ||
-          (post.ptPostType === 'GENERAL' && isFree === false)) && (
-          <TouchableOpacity
-            style={{
-              marginTop: 20,
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-            }}
-            onPress={() => setReplyVisible(true)}>
-            <ReplyIcon />
-            <View style={styles.commentBox}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 12,
-                    color: '#3A424E',
-                    marginRight: 8,
-                  }}>
-                  {post.newCommentAuthor}
-                </Text>
-                <Text
-                  style={{
-                    fontWeight: '400',
-                    fontSize: 12,
-                    color: '#3A424E',
-                  }}
-                  numberOfLines={1}
-                  ellipsizeMode="tail">
-                  {post.newCommentContent}
-                </Text>
-              </View>
+      {post.ptCommentCount > 0 && isQuestion === false && isFree === true && (
+        <TouchableOpacity
+          style={{
+            marginTop: 20,
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+          }}
+          onPress={() => setReplyVisible(true)}>
+          <ReplyIcon />
+          <View style={styles.commentBox}>
+            <View style={{flexDirection: 'row'}}>
               <Text
                 style={{
-                  fontWeight: '500',
+                  fontWeight: '600',
                   fontSize: 12,
-                  color: '#9DA4AB',
-                  textDecorationLine: 'underline',
+                  color: '#3A424E',
+                  marginRight: 8,
                 }}>
-                댓글 {post.ptCommentCount - 1}개 +
+                {post.newCommentAuthor}
+              </Text>
+              <Text
+                style={{
+                  fontWeight: '400',
+                  fontSize: 12,
+                  color: '#3A424E',
+                }}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {post.newCommentContent}
               </Text>
             </View>
-          </TouchableOpacity>
-        )}
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 12,
+                color: '#9DA4AB',
+                textDecorationLine: 'underline',
+              }}>
+              댓글 {post.ptCommentCount - 1}개 +
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
       <ReplySheet
         visible={replyVisible}
         setVisible={setReplyVisible}
