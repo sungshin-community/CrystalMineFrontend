@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   FlatList,
@@ -15,7 +15,7 @@ import {
   getPantheonCuriousList,
   getPantheonFreeList,
 } from '../../common/pantheonApi';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {pantheonList} from '../../classes/Pantheon';
 
@@ -88,12 +88,14 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
     }
   };
 
-  useEffect(() => {
-    setCursor(0);
-    setHasMoreData(true);
-    setPostData([]);
-    fetchPostList(0);
-  }, [filters, isFree, isQuestion, sortBy]);
+  useFocusEffect(
+    useCallback(() => {
+      setCursor(0);
+      setHasMoreData(true);
+      setPostData([]);
+      fetchPostList(0);
+    }, [filters, isFree, isQuestion, sortBy]),
+  );
 
   const handleRefresh = async () => {
     setHasMoreData(true);
