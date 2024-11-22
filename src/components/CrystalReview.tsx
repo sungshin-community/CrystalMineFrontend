@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import RightArrow from '../../resources/icon/Arrow';
 import Hot from '../../resources/icon/Hot';
 import {getCrystalReview} from '../common/CrystalApi';
+import {postPantheonScrap, deletePantheonScrap} from '../common/pantheonApi';
 import Scrap from '../../resources/icon/Scrap';
 import {NoScrap} from '../../resources/icon/Scrap';
 import JobFilterTab from './JobFilterTab';
@@ -45,6 +46,30 @@ const CrystalReview = () => {
       setSelectedJobList('all');
     } else {
       setSortParam('');
+    }
+  };
+
+  // 스크랩
+  const handleScrapToggle = async (postId: number, isScraped: boolean) => {
+    try {
+      if (isScraped) {
+        await deletePantheonScrap(postId);
+      } else {
+        await postPantheonScrap(postId);
+      }
+      setReviewList(prevList =>
+        prevList.map(post =>
+          post.ptPostId === postId
+            ? {
+                ...post,
+                scraped: !isScraped,
+                scrapCount: post.scrapCount + (isScraped ? -1 : 1),
+              }
+            : post,
+        ),
+      );
+    } catch (error) {
+      console.error('스크랩 토글 에러:', error);
     }
   };
 
@@ -280,7 +305,12 @@ const CrystalReview = () => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.scrapBox}>
-                        {item.scraped ? <Scrap /> : <NoScrap />}
+                        <TouchableOpacity
+                          onPress={() =>
+                            handleScrapToggle(item.ptPostId, item.scraped)
+                          }>
+                          {item.scraped ? <Scrap /> : <NoScrap />}
+                        </TouchableOpacity>
                         <Text style={styles.scrapCount}>{item.scrapCount}</Text>
                       </View>
                     </View>
