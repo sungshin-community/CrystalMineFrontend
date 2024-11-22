@@ -30,10 +30,8 @@ const ReviewJobDetail = ({job, category, size, year}) => {
 
 const styles = StyleSheet.create({
   detailBox: {
-    width: Dimensions.get('window').width - 32,
     backgroundColor: '#F5F5F9',
-    marginHorizontal: 16,
-    marginVertical: 12,
+    marginBottom: 20,
     borderRadius: 6,
   },
   row: {

@@ -35,6 +35,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import CommentInputBox, {CommentInputBoxRef} from './imshi';
 import {pantheonComment, pantheonDetail} from '../../classes/Pantheon';
 import CustomToast from '../../components/CustomToast';
+import ReviewJobDetail from '../../components/ReviewJobDetail';
 
 interface SpherePostScreenProps {
   route: {
@@ -378,6 +379,15 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
               </View>
             )}
           </View>
+
+          {isReview && postData && (
+            <ReviewJobDetail
+              job={postData.job}
+              category={postData.category}
+              size={postData.scale}
+              year={postData.year}
+            />
+          )}
 
           {typeof postData?.title === 'string' && (
             <Text
