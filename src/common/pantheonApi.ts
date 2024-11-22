@@ -176,12 +176,53 @@ export const postPantheonQurious = async (
       point,
     };
     formData.append('question', JSON.stringify(questionData));
+    console.log('게시물 작성 중', formData);
     await client.post(`/pantheon-questions`, formData, {
       headers: {'Content-Type': 'multipart/form-data'},
     });
     console.log('판테온 궁금해요 게시물 작성');
   } catch (error: any) {
     console.log('판테온 궁금해요 게시물 작성 에러', error);
+  }
+};
+
+export const postPantheonReview = async (
+  category: string,
+  content: string,
+  isAnonymous: boolean,
+  job: string,
+  scale: string,
+  title: string,
+  year: string,
+  images?: any[],
+) => {
+  try {
+    const formData = new FormData();
+    images?.forEach((image: any, index: number) => {
+      const photo = {
+        uri: image.uri,
+        name: `${index}.jpg`,
+        type: 'image/jpeg',
+      };
+      formData.append('images', photo);
+    });
+    const reviewData = {
+      category,
+      content,
+      isAnonymous,
+      job,
+      scale,
+      title,
+      year,
+    };
+    formData.append('review', JSON.stringify(reviewData));
+    console.log('게시물 작성 중', formData);
+    await client.post(`/pantheon-reviews`, formData, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
+    console.log('판테온 수정후기 게시물 작성');
+  } catch (error: any) {
+    console.log('판테온 수정후기 게시물 작성 에러', error);
   }
 };
 

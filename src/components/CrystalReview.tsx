@@ -17,8 +17,8 @@ import Hot from '../../resources/icon/Hot';
 import {getCrystalReview} from '../common/CrystalApi';
 import Scrap from '../../resources/icon/Scrap';
 import {NoScrap} from '../../resources/icon/Scrap';
-
 import JobFilterTab from './JobFilterTab';
+import FloatingWriteButton from './FloatingWriteButton';
 
 const CrystalReview = () => {
   const navigation = useNavigation();
@@ -174,124 +174,133 @@ const CrystalReview = () => {
   }, [selectedJobList, sortParam]);
 
   return (
-    <ScrollView>
-      <JobFilterTab onFilterChange={handleFilterChange} />
-      {user?.isAuthenticated ? (
-        hotPost.length === 0 ? (
-          <View style={styles.contentBox}>
-            <Text
-              style={[
-                fontRegular,
-                {
-                  textAlign: 'center',
-                  fontSize: 15,
-                  color: '#6E7882',
-                  marginVertical: 15,
-                },
-              ]}>
-              인기글이 없습니다.
-            </Text>
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={hotPost}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('SpherePostScreen', {
-                      ptPostId: item.ptPostId,
-                      isFree: false,
-                      isQuestion: false,
-                      isReview: true,
-                    });
-                  }}>
-                  <View style={styles.contentBox}>
-                    <View style={styles.hotTagBox}>
-                      <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.hotTag}>
-                          <Hot style={{marginTop: 5}} />
-                          HOT
-                        </Text>
-                        <Text style={styles.yearJob}>{item.category} </Text>
-                        <Text style={styles.yearJob}>·</Text>
-                        <Text style={styles.yearJob}>{item.job} </Text>
-                        <Text style={styles.yearJob}>·</Text>
-                        <Text style={styles.yearJob}>{item.year} </Text>
-                      </View>
-                      <RightArrow />
-                    </View>
-                    <Text style={styles.contentTitle}>{item.title}</Text>
-                    <Text
-                      numberOfLines={2}
-                      ellipsizeMode="tail"
-                      style={styles.contentText}>
-                      {item.content}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              horizontal
-              pagingEnabled
-              keyExtractor={item => item.ptPostId.toString()}
-              showsHorizontalScrollIndicator={false}
-            />
-
-            <View>
-              {isLoadingReviewList ? (
-                <ActivityIndicator size="large" color="#A055FF" />
-              ) : (
-                reviewList.map((item, index) => (
-                  <View key={index} style={styles.postListContainer}>
-                    <View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate('SpherePostScreen', {
-                            ptPostId: item.ptPostId,
-                            isFree: false,
-                            isQuestion: false,
-                            isReview: true,
-                          });
-                        }}>
-                        <Text style={styles.contentTitle}>{item.title}</Text>
-                        <Text
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={styles.contentText}>
-                          {item.content}
-                        </Text>
-                        <View style={styles.hotTagBox}>
-                          <View style={styles.yearJobBox}>
-                            <Text style={styles.yearJobContent}>
-                              {item.category}
-                            </Text>
-                            <Text style={styles.yearJobContent}>·</Text>
-                            <Text style={styles.yearJobContent}>
-                              {item.job}{' '}
-                            </Text>
-                            <Text style={styles.yearJobContent}>·</Text>
-                            <Text style={styles.yearJobContent}>
-                              {item.year}
-                            </Text>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.scrapBox}>
-                      {item.scraped ? <Scrap /> : <NoScrap />}
-                      <Text style={styles.scrapCount}>{item.scrapCount}</Text>
-                    </View>
-                  </View>
-                ))
-              )}
+    <>
+      <ScrollView>
+        <JobFilterTab onFilterChange={handleFilterChange} />
+        {user?.isAuthenticated ? (
+          hotPost.length === 0 ? (
+            <View style={styles.contentBox}>
+              <Text
+                style={[
+                  fontRegular,
+                  {
+                    textAlign: 'center',
+                    fontSize: 15,
+                    color: '#6E7882',
+                    marginVertical: 15,
+                  },
+                ]}>
+                인기글이 없습니다.
+              </Text>
             </View>
-          </>
-        )
-      ) : (
-        <ActivityIndicator size="large" color="#A055FF" />
-      )}
-    </ScrollView>
+          ) : (
+            <>
+              <FlatList
+                data={hotPost}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SpherePostScreen', {
+                        ptPostId: item.ptPostId,
+                        isFree: false,
+                        isQuestion: false,
+                        isReview: true,
+                      });
+                    }}>
+                    <View style={styles.contentBox}>
+                      <View style={styles.hotTagBox}>
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Text style={styles.hotTag}>
+                            <Hot style={{marginTop: 5}} />
+                            HOT
+                          </Text>
+                          <Text style={styles.yearJob}>{item.category} </Text>
+                          <Text style={styles.yearJob}>·</Text>
+                          <Text style={styles.yearJob}>{item.job} </Text>
+                          <Text style={styles.yearJob}>·</Text>
+                          <Text style={styles.yearJob}>{item.year} </Text>
+                        </View>
+                        <RightArrow />
+                      </View>
+                      <Text style={styles.contentTitle}>{item.title}</Text>
+                      <Text
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                        style={styles.contentText}>
+                        {item.content}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                horizontal
+                pagingEnabled
+                keyExtractor={item => item.ptPostId.toString()}
+                showsHorizontalScrollIndicator={false}
+              />
+
+              <View>
+                {isLoadingReviewList ? (
+                  <ActivityIndicator size="large" color="#A055FF" />
+                ) : (
+                  reviewList.map((item, index) => (
+                    <View key={index} style={styles.postListContainer}>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('SpherePostScreen', {
+                              ptPostId: item.ptPostId,
+                              isFree: false,
+                              isQuestion: false,
+                              isReview: true,
+                            });
+                          }}>
+                          <Text style={styles.contentTitle}>{item.title}</Text>
+                          <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={styles.contentText}>
+                            {item.content}
+                          </Text>
+                          <View style={styles.hotTagBox}>
+                            <View style={styles.yearJobBox}>
+                              <Text style={styles.yearJobContent}>
+                                {item.category}
+                              </Text>
+                              <Text style={styles.yearJobContent}>·</Text>
+                              <Text style={styles.yearJobContent}>
+                                {item.job}{' '}
+                              </Text>
+                              <Text style={styles.yearJobContent}>·</Text>
+                              <Text style={styles.yearJobContent}>
+                                {item.year}
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.scrapBox}>
+                        {item.scraped ? <Scrap /> : <NoScrap />}
+                        <Text style={styles.scrapCount}>{item.scrapCount}</Text>
+                      </View>
+                    </View>
+                  ))
+                )}
+              </View>
+            </>
+          )
+        ) : (
+          <ActivityIndicator size="large" color="#A055FF" />
+        )}
+      </ScrollView>
+      <FloatingWriteButton
+        onPress={() =>
+          navigation.navigate('PostWriteScreen', {
+            isPantheon: 'review',
+          })
+        }
+      />
+    </>
   );
 };
 

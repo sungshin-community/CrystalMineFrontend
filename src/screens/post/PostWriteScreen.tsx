@@ -43,7 +43,13 @@ import {DeleteImageIcon} from '../../components/ImageDelete';
 import {getHundredsDigit} from '../../common/util/statusUtil';
 import {logout} from '../../common/authApi';
 import {getUser} from '../../common/myPageApi';
-import {postPantheonFree, postPantheonQurious} from '../../common/pantheonApi';
+import {
+  postPantheonFree,
+  postPantheonQurious,
+  postPantheonReview,
+} from '../../common/pantheonApi';
+import ReviewPostWriteSelect from '../../components/ReviewPostWrteSelect';
+import ReviewJobDetail from '../../components/ReviewJobDetail';
 const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
@@ -96,6 +102,13 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
   const isType3 = contentType === 'TYPE3';
   const isType4 = contentType === 'TYPE4';
   const isPantheon = route.params.isPantheon ?? 'false';
+  const [isSelecting, setIsSelecting] = useState<boolean>(
+    isPantheon === 'review',
+  ); // 직무 정보 선택 화면 표시 여부 (수정후기)
+  const [job, setJob] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
+  const [size, setSize] = useState<string | null>(null);
+  const [year, setYear] = useState<string | null>(null);
 
   useEffect(() => {
     const userInfo = async () => {
@@ -207,27 +220,68 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
     setIsLoading(false);
   };
 
+  const onSubmitReviewPress = async () => {
+    if (!job || !category || !size || !year || !title || !content) {
+      setTimeout(() => {
+        Toast.show('모든 항목을 입력해주세요.', Toast.SHORT);
+      }, 100);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await postPantheonReview(
+        category,
+        content,
+        isAnonymous,
+        job,
+        size,
+        title,
+        year,
+        images,
+      );
+
+      setTimeout(() => {
+        Toast.show('게시글이 성공적으로 등록되었습니다.', Toast.SHORT);
+      }, 100);
+
+      navigation.goBack();
+    } catch (error) {
+      console.error('판테온 수정후기 게시물 작성 에러', error);
+      setTimeout(() => {
+        Toast.show('게시글 등록에 실패하였습니다.', Toast.SHORT);
+      }, 100);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
           onPress={() => {
-            if (info?.hasTitle) {
-              if (title) {
-                setIsSubmitState(true);
+            if (isSelecting) {
+              // '다음' 버튼 동작
+              if (job && category && size && year) {
+                setIsSelecting(false); // 작성 페이지로 이동
               } else {
-                setIsSubmitState(false);
+                Toast.show('모든 항목을 선택해주세요.', Toast.SHORT);
               }
-            } else if (isPantheon === 'question') {
-              if (content && point) {
-                setIsSubmitState(true);
-              } else {
-                setIsSubmitState(false);
-              }
-            } else if (content) {
-              setIsSubmitState(true);
             } else {
-              setIsSubmitState(false);
+              // '완료' 버튼 동작
+              if (isPantheon === 'review') {
+                setIsSubmitState(
+                  !!(title && content && job && category && size && year),
+                );
+              } else if (info?.hasTitle) {
+                setIsSubmitState(!!title);
+              } else if (isPantheon === 'question') {
+                setIsSubmitState(!!content && !!point);
+              } else {
+                setIsSubmitState(!!content);
+              }
             }
           }}>
           <Text
@@ -235,7 +289,9 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               styles.submit,
               fontRegular,
               {
-                color: info?.hasTitle
+                color: isSelecting
+                  ? '#A055FF' // '다음' 버튼 활성화 색상
+                  : info?.hasTitle
                   ? title
                     ? '#A055FF'
                     : '#d8b9ff'
@@ -248,7 +304,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                   : '#d8b9ff',
               },
             ]}>
-            완료
+            {isSelecting ? '다음' : '완료'}
           </Text>
         </Pressable>
       ),
@@ -263,25 +319,44 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             justifyContent: 'center',
           }}
           onPress={() => {
-            if (title.length >= 1 || content.length >= 1 || images.length >= 1)
+            if (
+              title.length >= 1 ||
+              content.length >= 1 ||
+              images.length >= 1
+            ) {
               setGoBackWarning(true);
-            else navigation.goBack();
+            } else {
+              navigation.goBack();
+            }
           }}>
           <BackButtonIcon />
         </TouchableHighlight>
       ),
     });
-  }, [navigation, title, content, images, point]);
+  }, [
+    navigation,
+    title,
+    content,
+    images,
+    point,
+    isSelecting,
+    job,
+    category,
+    size,
+    year,
+  ]);
 
   useEffect(() => {
-    if (isSubmitState && isPantheon === 'false') {
-      onSubmitPress();
-    }
-    if (isSubmitState && isPantheon === 'question') {
-      onSubmitQuriousPress();
-    }
-    if (isSubmitState && isPantheon === 'free') {
-      onSubmitFreePress();
+    if (isSubmitState) {
+      if (isPantheon === 'false') {
+        onSubmitPress();
+      } else if (isPantheon === 'question') {
+        onSubmitQuriousPress();
+      } else if (isPantheon === 'free') {
+        onSubmitFreePress();
+      } else if (isPantheon === 'review') {
+        onSubmitReviewPress();
+      }
     }
   }, [isAnonymous, isSubmitState, images]);
 
@@ -370,6 +445,18 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
       showSubscription.remove();
     };
   }, []);
+  if (isSelecting) {
+    return (
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+        <ReviewPostWriteSelect
+          setJob={setJob}
+          setCategory={setCategory}
+          setSize={setSize}
+          setYear={setYear}
+        />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -464,9 +551,20 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                 />
               </View>
             )}
+            {isPantheon === 'review' && (
+              <View style={{paddingHorizontal: 16, marginTop: 16}}>
+                <ReviewJobDetail
+                  job={job}
+                  category={category}
+                  size={size}
+                  year={year}
+                />
+              </View>
+            )}
             {(info?.hasTitle ||
               isPantheon === 'question' ||
-              isPantheon === 'free') && (
+              isPantheon === 'free' ||
+              isPantheon === 'review') && (
               <>
                 <View style={[styles.inputTitle]}>
                   <Text
