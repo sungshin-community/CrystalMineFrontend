@@ -314,7 +314,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       fontWeight: '600',
                       color: '#3A424E',
                     }}>
-                    {postData?.displayName}
+                    {isReview ? postData?.nickname : postData?.displayName}
                   </Text>
                   <Text
                     style={{
