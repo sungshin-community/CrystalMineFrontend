@@ -93,12 +93,7 @@ export async function getNewPosts() {
 }
 export async function getBanner(prevAdPostId = null) {
   try {
-    // prevAdPostId가 있을 경우
-    const endpoint = prevAdPostId
-      ? `/home/banner?prevAdPostId=${prevAdPostId}`
-      : '/home/banner';
-
-    const response = await client.get(endpoint);
+    const response = await client.get('/home/banner');
     console.log('배너: ', response.data.data);
     return response.data.data;
   } catch (error) {
