@@ -15,10 +15,11 @@ import {useNavigation} from '@react-navigation/native';
 import RightArrow from '../../resources/icon/Arrow';
 import Hot from '../../resources/icon/Hot';
 import {getCrystalReview} from '../common/CrystalApi';
+import {postPantheonScrap, deletePantheonScrap} from '../common/pantheonApi';
 import Scrap from '../../resources/icon/Scrap';
 import {NoScrap} from '../../resources/icon/Scrap';
-
-import ReviewJobDetail from './ReviewJobDetail';
+import JobFilterTab from './JobFilterTab';
+import FloatingWriteButton from './FloatingWriteButton';
 
 const CrystalReview = () => {
   const navigation = useNavigation();
@@ -28,6 +29,49 @@ const CrystalReview = () => {
   const [reviewList, setReviewList] = useState<any[]>([]); // 수정후기 글 목록 데이터
   const [isLoadingReviewList, setIsLoadingReviewList] =
     useState<boolean>(false);
+
+  const [selectedJobList, setSelectedJobList] = useState<string>('all');
+  const [sortParam, setSortParam] = useState<string>('');
+
+  // 필터 변경 핸들러
+  const handleFilterChange = (filterNames: string) => {
+    if (filterNames === '전체') {
+      setSelectedJobList('all');
+    } else {
+      setSelectedJobList(filterNames);
+    }
+
+    if (filterNames.includes('인기글')) {
+      setSortParam('likeCount');
+      setSelectedJobList('all');
+    } else {
+      setSortParam('');
+    }
+  };
+
+  // 스크랩
+  const handleScrapToggle = async (postId: number, isScraped: boolean) => {
+    try {
+      if (isScraped) {
+        await deletePantheonScrap(postId);
+      } else {
+        await postPantheonScrap(postId);
+      }
+      setReviewList(prevList =>
+        prevList.map(post =>
+          post.ptPostId === postId
+            ? {
+                ...post,
+                scraped: !isScraped,
+                scrapCount: post.scrapCount + (isScraped ? -1 : 1),
+              }
+            : post,
+        ),
+      );
+    } catch (error) {
+      console.error('스크랩 토글 에러:', error);
+    }
+  };
 
   useEffect(() => {
     // 사용자 정보를 가져오기
@@ -84,8 +128,23 @@ const CrystalReview = () => {
       },
     ];
 
-    setHotPost(testData);
-    setReviewList(testData);
+    //setHotPost(testData);
+    //setReviewList(testData);
+  }, []);
+
+  useEffect(() => {
+    const fetchHotPosts = async () => {
+      try {
+        const data = await getCrystalReview('all', 'likeCount');
+
+        const topFivePosts = data.slice(0, 5);
+        setHotPost(topFivePosts);
+      } catch (error) {
+        console.error('Failed to fetch hot posts:', error);
+      }
+    };
+
+    fetchHotPosts();
   }, []);
 
   // 인기글
@@ -122,119 +181,156 @@ const CrystalReview = () => {
     </TouchableOpacity>
   );
 
-  // 수정 후기 글 목록 불러오기
+  // 후기 글 목록 API 호출
   useEffect(() => {
-    const fetcReviewList = async () => {
+    const fetchReviewList = async () => {
       setIsLoadingReviewList(true);
-      const data = await getCrystalReview();
-      //setReviewList(data);
-      setIsLoadingReviewList(false);
+      try {
+        const data = await getCrystalReview(selectedJobList, sortParam);
+        setReviewList(data);
+      } catch (error) {
+        console.error('후기 목록 불러오기 실패:', error);
+      } finally {
+        setIsLoadingReviewList(false);
+      }
     };
 
-    fetcReviewList();
-  }, []);
+    fetchReviewList();
+  }, [selectedJobList, sortParam]);
 
   return (
-    <ScrollView>
-      {user?.isAuthenticated ? (
-        hotPost.length === 0 ? (
-          <View style={styles.contentBox}>
-            <Text
-              style={[
-                fontRegular,
-                {
-                  textAlign: 'center',
-                  fontSize: 15,
-                  color: '#6E7882',
-                  marginVertical: 15,
-                },
-              ]}>
-              인기글이 없습니다.
-            </Text>
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={hotPost}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('PostScreen', {postId: item.ptPostId})
-                  }>
-                  <View style={styles.contentBox}>
-                    <View style={styles.hotTagBox}>
-                      <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={styles.hotTag}>
-                          <Hot style={{marginTop: 5}} />
-                          HOT
-                        </Text>
-                        <Text style={styles.yearJob}>{item.category} </Text>
-                        <Text style={styles.yearJob}>·</Text>
-                        <Text style={styles.yearJob}>{item.job} </Text>
-                        <Text style={styles.yearJob}>·</Text>
-                        <Text style={styles.yearJob}>{item.year} </Text>
+    <>
+      <ScrollView>
+        <JobFilterTab onFilterChange={handleFilterChange} />
+        {user?.isAuthenticated ? (
+          hotPost.length === 0 ? (
+            <View style={styles.contentBox}>
+              <Text
+                style={[
+                  fontRegular,
+                  {
+                    textAlign: 'center',
+                    fontSize: 15,
+                    color: '#6E7882',
+                    marginVertical: 15,
+                  },
+                ]}>
+                인기글이 없습니다.
+              </Text>
+            </View>
+          ) : (
+            <>
+              <FlatList
+                data={hotPost}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SpherePostScreen', {
+                        ptPostId: item.ptPostId,
+                        isFree: false,
+                        isQuestion: false,
+                        isReview: true,
+                      });
+                    }}>
+                    <View style={styles.contentBox}>
+                      <View style={styles.hotTagBox}>
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Text style={styles.hotTag}>
+                            <Hot style={{marginTop: 5}} />
+                            HOT
+                          </Text>
+                          <Text style={styles.yearJob}>{item.category} </Text>
+                          <Text style={styles.yearJob}>·</Text>
+                          <Text style={styles.yearJob}>{item.job} </Text>
+                          <Text style={styles.yearJob}>·</Text>
+                          <Text style={styles.yearJob}>{item.year} </Text>
+                        </View>
+                        <RightArrow />
                       </View>
-                      <RightArrow />
-                    </View>
-                    <Text style={styles.contentTitle}>{item.title}</Text>
-                    <Text
-                      numberOfLines={2}
-                      ellipsizeMode="tail"
-                      style={styles.contentText}>
-                      {item.content}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              horizontal
-              pagingEnabled
-              keyExtractor={item => item.ptPostId.toString()}
-              showsHorizontalScrollIndicator={false}
-            />
-
-            <View style={{marginTop: 4}}>
-              {isLoadingReviewList ? (
-                <ActivityIndicator size="large" color="#A055FF" />
-              ) : (
-                reviewList.map((item, index) => (
-                  <View key={index} style={styles.postListContainer}>
-                    <View>
                       <Text style={styles.contentTitle}>{item.title}</Text>
                       <Text
-                        numberOfLines={1}
+                        numberOfLines={2}
                         ellipsizeMode="tail"
                         style={styles.contentText}>
                         {item.content}
                       </Text>
-                      <View style={styles.hotTagBox}>
-                        <View style={styles.yearJobBox}>
-                          <Text style={styles.yearJobContent}>
-                            {item.category}
+                    </View>
+                  </TouchableOpacity>
+                )}
+                horizontal
+                pagingEnabled
+                keyExtractor={item => item.ptPostId.toString()}
+                showsHorizontalScrollIndicator={false}
+              />
+
+              <View>
+                {isLoadingReviewList ? (
+                  <ActivityIndicator size="large" color="#A055FF" />
+                ) : (
+                  reviewList.map((item, index) => (
+                    <View key={index} style={styles.postListContainer}>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('SpherePostScreen', {
+                              ptPostId: item.ptPostId,
+                              isFree: false,
+                              isQuestion: false,
+                              isReview: true,
+                            });
+                          }}>
+                          <Text style={styles.contentTitle}>{item.title}</Text>
+                          <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={styles.contentText}>
+                            {item.content}
                           </Text>
-                          <Text style={styles.yearJobContent}>·</Text>
-                          <Text style={styles.yearJobContent}>{item.job} </Text>
-                          <Text style={styles.yearJobContent}>·</Text>
-                          <Text style={styles.yearJobContent}>{item.year}</Text>
-                        </View>
+                          <View style={styles.hotTagBox}>
+                            <View style={styles.yearJobBox}>
+                              <Text style={styles.yearJobContent}>
+                                {item.category}
+                              </Text>
+                              <Text style={styles.yearJobContent}>·</Text>
+                              <Text style={styles.yearJobContent}>
+                                {item.job}{' '}
+                              </Text>
+                              <Text style={styles.yearJobContent}>·</Text>
+                              <Text style={styles.yearJobContent}>
+                                {item.year}
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.scrapBox}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            handleScrapToggle(item.ptPostId, item.scraped)
+                          }>
+                          {item.scraped ? <Scrap /> : <NoScrap />}
+                        </TouchableOpacity>
+                        <Text style={styles.scrapCount}>{item.scrapCount}</Text>
                       </View>
                     </View>
-                    <View style={styles.scrapBox}>
-                      {item.scraped ? <Scrap /> : <NoScrap />}
-                      <Text style={styles.scrapCount}>{item.scrapCount}</Text>
-                    </View>
-                  </View>
-                ))
-              )}
-            </View>
-          </>
-        )
-      ) : (
-        <Text style={[fontRegular, styles.boardText]}>
-          정회원 인증 후 확인하실 수 있습니다.
-        </Text>
-      )}
-    </ScrollView>
+                  ))
+                )}
+              </View>
+            </>
+          )
+        ) : (
+          <ActivityIndicator size="large" color="#A055FF" />
+        )}
+      </ScrollView>
+      <FloatingWriteButton
+        onPress={() =>
+          navigation.navigate('PostWriteScreen', {
+            isPantheon: 'review',
+          })
+        }
+      />
+    </>
   );
 };
 
@@ -247,7 +343,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: '#FFF',
     padding: 16,
-    marginTop: 16,
     marginHorizontal: 16,
   },
   hotTagBox: {
@@ -327,7 +422,7 @@ const styles = StyleSheet.create({
   postListContainer: {
     display: 'flex',
     flexDirection: 'row',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 16,
     borderBottomColor: '#F6F6F6',

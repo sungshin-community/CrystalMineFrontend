@@ -118,6 +118,8 @@ const HomeFragment = ({navigation}: Props) => {
     postContent: string;
   } | null>(null);
 
+  const [prevAdPostId, setPrevAdPostId] = useState<number | null>(null);
+
   // 학식 운캠/수캠 선택 토글
   const toggleCafeteriaModal = () => {
     console.log('눌려요');
@@ -291,18 +293,28 @@ const HomeFragment = ({navigation}: Props) => {
   }, []);
 
   // 총학생회 배너 데이터 불러오기
-  useEffect(() => {
-    const fetchBannerData = async () => {
-      try {
-        const bannerData = await getBanner();
-        setBannerData(bannerData);
-      } catch (error) {
-        console.error('베너 데이터 오류: ', error);
-      }
-    };
+  const fetchBannerData = async () => {
+    try {
+      // prevAdPostId를 getBanner 함수에 전달
+      const bannerData = await getBanner(prevAdPostId);
+      setBannerData(bannerData);
 
+      if (bannerData && bannerData.length > 0) {
+        const latestAdPost = bannerData.find(item => item.postId);
+        if (latestAdPost) {
+          setPrevAdPostId(latestAdPost.postId);
+        }
+      }
+    } catch (error) {
+      console.error('베너 데이터 오류: ', error);
+    }
+  };
+
+  useEffect(() => {
+    console.log('베너 데이터!!!!!!!!!!', bannerData);
     fetchBannerData();
-  }, []);
+  }, [prevAdPostId]);
+
   //인기있는 글
   const renderHotPostItem = ({item}: {item: HotPostItem}) => (
     <TouchableOpacity
@@ -420,8 +432,10 @@ const HomeFragment = ({navigation}: Props) => {
               <View style={styles.bannerContainer}>
                 <Image
                   source={
-                    bannerData.imageUrl
-                      ? {uri: bannerData.imageUrl}
+                    bannerData &&
+                    bannerData.length > 0 &&
+                    bannerData[0].imageUrl
+                      ? {uri: bannerData[0].imageUrl}
                       : BannerBasicImg // 기본 이미지 사용
                   }
                   style={styles.bannerImage}
@@ -439,9 +453,11 @@ const HomeFragment = ({navigation}: Props) => {
 
                 {/* 배너 텍스트 영역 */}
                 <View style={styles.bannerTextContainer}>
-                  <Text style={styles.bannerTitle}>{bannerData.postTitle}</Text>
+                  <Text style={styles.bannerTitle}>
+                    {bannerData[0]?.postTitle}
+                  </Text>
                   <Text style={styles.bannerContent}>
-                    {bannerData.postContent}
+                    {bannerData[0]?.postContent}
                   </Text>
                 </View>
               </View>

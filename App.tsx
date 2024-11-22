@@ -116,6 +116,8 @@ import SpinningThreeDots from './src/components/SpinningThreeDots';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
+import ProfileSetup from './src/screens/crystalBall/ProfileSetup';
+import ProfileCompleteScreen from './src/screens/crystalBall/ProfileCompleteScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -2030,11 +2032,28 @@ const App = () => {
                   ),
                 })}
               />
+
               <Stack.Screen
                 name="Onboarding"
                 component={OnboardingScreen}
                 options={{
                   title: 'Onboarding',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ProfileSetup"
+                component={ProfileSetup}
+                options={{
+                  title: 'ProfileSetup',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ProfileCompleteScreen"
+                component={ProfileCompleteScreen}
+                options={{
+                  title: 'ProfileCompleteScreen',
                   headerShown: false,
                 }}
               />
@@ -2870,7 +2889,6 @@ const App = () => {
                   ),
                 })}
               />
-
               <Stack.Screen
                 name="PostWriteScreen"
                 component={PostWriteScreen}
@@ -2984,7 +3002,6 @@ const App = () => {
                   },
                 })}
               />
-
               <Stack.Screen
                 name="ImageViewerScreen"
                 component={ImageViewerScreen}
@@ -3720,9 +3737,7 @@ const App = () => {
                   title: '',
                 })}
               />
-
               {/* 마이페이지 - 포인트 */}
-
               <Stack.Screen
                 name="PointScreen"
                 component={PointScreen}
@@ -3767,7 +3782,6 @@ const App = () => {
                   headerTitleAlign: 'left',
                 }}
               />
-
               <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}

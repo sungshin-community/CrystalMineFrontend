@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import DropDown from '../../resources/icon/DropDown';
 
-const SelectInput = ({label, placeholder, options}) => {
+const SelectInput = ({label, placeholder, options, onSelect}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -19,6 +19,7 @@ const SelectInput = ({label, placeholder, options}) => {
   const handleSelect = option => {
     setSelected(option);
     setIsOpen(false);
+    onSelect(option);
   };
 
   return (
@@ -47,7 +48,7 @@ const SelectInput = ({label, placeholder, options}) => {
   );
 };
 
-const ReviewPostWriteSelect = () => {
+const ReviewPostWriteSelect = ({setJob, setCategory, setSize, setYear}) => {
   const jobOptions = [
     '개발',
     '경영/비즈니스',
@@ -85,21 +86,25 @@ const ReviewPostWriteSelect = () => {
         label="직무 정보"
         placeholder="직무를 선택해주세요."
         options={jobOptions}
+        onSelect={setJob}
       />
       <SelectInput
         label="카테고리"
         placeholder="카테고리를 선택해주세요."
         options={categoryOptions}
+        onSelect={setCategory}
       />
       <SelectInput
         label="규모"
         placeholder="활동 규모를 선택해주세요."
         options={sizeOptions}
+        onSelect={setSize}
       />
       <SelectInput
         label="경력"
         placeholder="경력을 선택해주세요."
         options={yearOptions}
+        onSelect={setYear}
       />
     </View>
   );

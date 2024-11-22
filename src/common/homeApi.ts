@@ -91,7 +91,7 @@ export async function getNewPosts() {
     return [];
   }
 }
-export async function getBanner() {
+export async function getBanner(prevAdPostId = null) {
   try {
     const response = await client.get('/home/banner');
     console.log('배너: ', response.data.data);

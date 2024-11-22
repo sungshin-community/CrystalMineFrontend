@@ -33,10 +33,22 @@ export async function geRecruiting() {
   }
 }
 
-export async function getCrystalReview() {
+// 수정후기 글 목록 조회
+export async function getCrystalReview(jobList = 'all', sort = '') {
   try {
-    const response = await client.get('/pantheon-reviews');
-    console.log('수정 후기 글 목록 조회: ', response.data.data);
+    const response = await client.get('/pantheon-reviews', {
+      params: {
+        jobList,
+        sort,
+      },
+    });
+    console.log(
+      '수정 후기 글 목록 조회: ',
+      jobList,
+      sort,
+      ': ',
+      response.data.data,
+    );
     return response.data.data;
   } catch (error) {
     console.error('수정 후기 글 목록 조회 에러 발생: ', error);
@@ -53,5 +65,25 @@ export async function getPantheonProfile() {
   } catch (error) {
     console.error('판테온 프로필 존재 여부 :  ', error);
     return [];
+  }
+}
+
+// 판테온 온보딩
+export async function postPantheonOnboarding(
+  experienceYears,
+  graduated,
+  ptJob,
+) {
+  try {
+    const response = await client.post('/pantheon/onboarding', {
+      experienceYears,
+      graduated,
+      ptJob,
+    });
+    console.log('판테온 온보딩 응답: ', response.data);
+    return response;
+  } catch (error) {
+    console.error('판테온 온보딩 오류 발생: ', error);
+    throw error;
   }
 }
