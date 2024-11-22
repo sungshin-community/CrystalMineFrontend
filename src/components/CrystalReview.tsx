@@ -203,6 +203,7 @@ const CrystalReview = () => {
                       ptPostId: item.ptPostId,
                       isFree: false,
                       isQuestion: false,
+                      isReview: true,
                     });
                   }}>
                   <View style={styles.contentBox}>
@@ -250,6 +251,7 @@ const CrystalReview = () => {
                             ptPostId: item.ptPostId,
                             isFree: false,
                             isQuestion: false,
+                            isReview: true,
                           });
                         }}>
                         <Text style={styles.contentTitle}>{item.title}</Text>

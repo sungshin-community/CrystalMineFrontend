@@ -25,6 +25,8 @@ import {
   postPurchaseAdopt,
   deleltePantheonCommentLike,
   postPantheonCommentLike,
+  getPantheonReviewDetail,
+  getPantheonReviewComment,
 } from '../../common/pantheonApi';
 import AdMob from '../../components/AdMob';
 import PostFooter from '../../components/PostFooter';
@@ -46,7 +48,7 @@ interface SpherePostScreenProps {
 
 export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const navigation = useNavigation<NativeStackScreenProps<any>['navigation']>();
-  const {ptPostId, isQuestion, isFree} = route.params;
+  const {ptPostId, isQuestion, isFree, isReview} = route.params;
   const [postData, setPostData] = useState<pantheonDetail | undefined>(
     undefined,
   );
@@ -71,8 +73,11 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
         data = await getPantheonCuriousDetail(ptPostId);
       } else if (isFree) {
         data = await getPantheonFreeDetail(ptPostId);
+      } else if (isReview) {
+        data = await getPantheonReviewDetail(ptPostId);
       }
       setPostData(data);
+      console.log('글 상세 데이터: ', data);
       console.log('글 상세 조회 성공');
     } catch (error) {
       console.error('글 상세 조회 실패', error);
@@ -86,6 +91,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
         data = await getPantheonCuriousComment(ptPostId);
       } else if (isFree) {
         data = await getPantheonFreeComment(ptPostId);
+      } else if (isReview) {
+        data = await getPantheonReviewComment(ptPostId);
       }
       const selectedData = data.find(
         (comment: pantheonComment) => comment.isSelected === true,

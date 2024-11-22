@@ -81,6 +81,16 @@ export const getPantheonCuriousDetail = async (id: number) => {
   }
 };
 
+export const getPantheonReviewDetail = async (id: number) => {
+  try {
+    const response = await client.get(`/pantheon-reviews/${id}`);
+    console.log('판테온 수정후기 글 상세 조회');
+    return response.data.data;
+  } catch (error: any) {
+    console.log('판테온 수정후기 글 상세 조회 에러', error);
+  }
+};
+
 export const getPantheonFreeComment = async (id: number) => {
   try {
     const response = await client.get(`/pantheon-general/${id}/comments`);
@@ -98,6 +108,16 @@ export const getPantheonCuriousComment = async (id: number) => {
     return response.data.data;
   } catch (error: any) {
     console.log('판테온 궁금해요 댓글 조회 에러', error);
+  }
+};
+
+export const getPantheonReviewComment = async (id: number) => {
+  try {
+    const response = await client.get(`/pantheon-reviews/${id}/comments`);
+    console.log('판테온 수정후기 댓글 조회');
+    return response.data.data;
+  } catch (error: any) {
+    console.log('판테온 수정후기 댓글 조회 에러', error);
   }
 };
 
