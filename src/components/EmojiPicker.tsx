@@ -83,7 +83,10 @@ const EmojiPicker = ({
   const handleEmojiSelect = useCallback(
     emoji => {
       setSelectedEmoji(emoji);
-      onEmojiSelect({imageUrl: emoji.imageUrl, id: emoji.id});
+      onEmojiSelect({
+        imageUrl: emoji.imageUrl,
+        id: emoji.id, // ID를 명시적으로 전달
+      });
       onClose();
     },
     [onEmojiSelect],

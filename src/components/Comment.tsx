@@ -61,10 +61,17 @@ const Comment = ({
   const [blockModalVisible, setBlockModalVisible] = useState<boolean>(false);
   const [chatResponse, setChatResponse] = useState<any>({});
   const [dotsModalVisible, setDotsModalVisible] = useState<boolean>(false);
+  const [localLikeCount, setLocalLikeCount] = useState(data?.likeCount || 0);
+  const [localIsLiked, setLocalIsLiked] = useState(data?.isLiked || false);
 
   useEffect(() => {
     if (!isRecomment) setIsRecommentState(false);
   }, [isRecomment]);
+
+  useEffect(() => {
+    setLocalLikeCount(data?.likeCount || 0);
+    setLocalIsLiked(data?.isLiked || false);
+  }, [data?.likeCount, data?.isLiked]);
 
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
@@ -109,6 +116,15 @@ const Comment = ({
     setIsRecommentState(true);
     setDotsModalVisible(false);
     setComponentModalVisible(false);
+  };
+
+  const handleLocalCommentLike = async () => {
+    // 즉시 UI 업데이트
+    setLocalIsLiked(!localIsLiked);
+    setLocalLikeCount(localIsLiked ? localLikeCount - 1 : localLikeCount + 1);
+
+    // API 호출
+    await handleCommentLike(data.id);
   };
 
   /* Comment : 내 댓글 */
@@ -459,12 +475,8 @@ const Comment = ({
                 zIndex: 99,
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Pressable
-                  hitSlop={20}
-                  onPress={() => {
-                    handleCommentLike(data.id);
-                  }}>
-                  {data.isLiked ? <PostLike /> : <PostUnlike />}
+                <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
+                  {localIsLiked ? <PostLike /> : <PostUnlike />}
                 </Pressable>
                 <Text
                   style={[
@@ -474,7 +486,7 @@ const Comment = ({
                   좋아요
                 </Text>
                 <Text style={[fontRegular, styles.postLike]}>
-                  {data?.likeCount}개
+                  {localLikeCount}개
                 </Text>
               </View>
               <View
@@ -552,6 +564,14 @@ export const Recomment = ({
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const data: RecommentDto = recomment;
+  const [localLikeCount, setLocalLikeCount] = useState(data?.likeCount || 0);
+  const [localIsLiked, setLocalIsLiked] = useState(data?.isLiked || false);
+
+  useEffect(() => {
+    setLocalLikeCount(data?.likeCount || 0);
+    setLocalIsLiked(data?.isLiked || false);
+  }, [data?.likeCount, data?.isLiked]);
+
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
       partnerId: data.accountId,
@@ -589,6 +609,16 @@ export const Recomment = ({
     }
     setMessageModalVisible(false);
   };
+
+  const handleLocalCommentLike = async () => {
+    // 즉시 UI 업데이트
+    setLocalIsLiked(!localIsLiked);
+    setLocalLikeCount(localIsLiked ? localLikeCount - 1 : localLikeCount + 1);
+
+    // API 호출
+    await handleCommentLike(data.id);
+  };
+
   /* Recomment : 내 댓글 */
   const handleCommentDeleteComponent = (
     <>
@@ -760,7 +790,7 @@ export const Recomment = ({
                   }}>
                   <BlackReport style={{marginRight: 8}} />
                   <Text style={{paddingVertical: 8, fontSize: 14}}>
-                    신고하기
+                    ���고하기
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -879,10 +909,8 @@ export const Recomment = ({
                   justifyContent: 'space-between',
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Pressable
-                    hitSlop={20}
-                    onPress={() => handleCommentLike(data.id)}>
-                    {data.isLiked ? <PostLike /> : <PostUnlike />}
+                  <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
+                    {localIsLiked ? <PostLike /> : <PostUnlike />}
                   </Pressable>
                   <Text
                     style={[
@@ -892,7 +920,7 @@ export const Recomment = ({
                     좋아요
                   </Text>
                   <Text style={[fontRegular, styles.postLike]}>
-                    {data?.likeCount}개
+                    {localLikeCount}개
                   </Text>
                 </View>
               </View>

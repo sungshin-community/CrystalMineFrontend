@@ -11,6 +11,9 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Animated,
+  PanResponder,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import CommentWriteContainer from './CommentWriteContainer';
@@ -63,6 +66,74 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
     parentId: number | null;
   }>({parentId: null});
   const [selectedEmojiId, setSelectedEmojiId] = useState<number | null>(null);
+
+  const screenHeight = Dimensions.get('screen').height;
+  const bottomSheetHeight = screenHeight * 0.8; // 초기 높이 80%
+  const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
+  const dragThreshold = 0; // 드래그 임계값
+
+  const panY = useRef(new Animated.Value(screenHeight)).current;
+  const lastPanY = useRef(screenHeight - bottomSheetHeight);
+
+  const translateY = panY.interpolate({
+    inputRange: [0, screenHeight],
+    outputRange: [0, screenHeight],
+    extrapolate: 'clamp',
+  });
+
+  const resetBottomSheet = Animated.timing(panY, {
+    toValue: screenHeight - bottomSheetHeight,
+    useNativeDriver: true,
+    duration: 300,
+  });
+
+  const closeBottomSheet = Animated.timing(panY, {
+    toValue: screenHeight,
+    duration: 300,
+    useNativeDriver: true,
+  });
+
+  const expandBottomSheet = Animated.timing(panY, {
+    toValue: screenHeight - maxSheetHeight,
+    useNativeDriver: true,
+    duration: 300,
+  });
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gestureState) => {
+        const newPanY = lastPanY.current + gestureState.dy;
+        if (newPanY > screenHeight - maxSheetHeight && newPanY < screenHeight) {
+          panY.setValue(newPanY);
+        }
+      },
+      onPanResponderRelease: (event, gestureState) => {
+        if (gestureState.dy < -dragThreshold) {
+          expandBottomSheet.start(() => {
+            lastPanY.current = screenHeight - maxSheetHeight;
+          });
+        } else if (gestureState.dy > dragThreshold) {
+          if (lastPanY.current === screenHeight - maxSheetHeight) {
+            resetBottomSheet.start(() => {
+              lastPanY.current = screenHeight - bottomSheetHeight;
+            });
+          } else if (gestureState.dy > 100) {
+            closeModal();
+          } else {
+            resetBottomSheet.start(() => {
+              lastPanY.current = screenHeight - bottomSheetHeight;
+            });
+          }
+        } else {
+          resetBottomSheet.start(() => {
+            lastPanY.current = screenHeight - bottomSheetHeight;
+          });
+        }
+      },
+    }),
+  ).current;
 
   useEffect(() => {
     if (modalVisible && postId) {
@@ -219,12 +290,48 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   const focusCommentInput = () => {
     commentInputRef.current?.focus();
   };
-  // 댓글, 대댓글 공감
+  // 댓글, 대댓글 공감 함수 수정
   const handleCommentLike = async (commentId: number) => {
+    // 먼저 UI 업데이트
+    setComments(prevComments =>
+      prevComments.map(comment => {
+        if (comment.id === commentId) {
+          // 메인 댓글인 경우
+          return {
+            ...comment,
+            isLiked: !comment.isLiked,
+            likeCount: comment.isLiked
+              ? comment.likeCount - 1
+              : comment.likeCount + 1,
+          };
+        } else if (comment.recomments?.length > 0) {
+          // 대댓글인 경우
+          return {
+            ...comment,
+            recomments: comment.recomments.map(recomment =>
+              recomment.id === commentId
+                ? {
+                    ...recomment,
+                    isLiked: !recomment.isLiked,
+                    likeCount: recomment.isLiked
+                      ? recomment.likeCount - 1
+                      : recomment.likeCount + 1,
+                  }
+                : recomment,
+            ),
+          };
+        }
+        return comment;
+      }),
+    );
+
+    // API 호출
     const result = await setCommentLike(commentId);
-    const commentData = await getComments(route.params.postId);
-    console.log('commentData', commentData);
-    setComments(commentData);
+    if (!result) {
+      // API 호출이 실패한 경우 원래 상태로 되돌림
+      const commentData = await getComments(route.params.postId);
+      setComments(commentData);
+    }
   };
   // 댓글, 대댓글 삭제
   const handleCommentDelete = async (commentId: number) => {
@@ -315,58 +422,76 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
     setSelectedEmoji({uri: emoji.imageUrl});
     setSelectedEmojiId(emoji.id);
     setShowSelectedEmoji(true);
+    console.log('Selected emoji ID in CommentsModal:', emoji.id); // 디버깅용 로그 추가
   };
 
+  useEffect(() => {
+    if (modalVisible) {
+      resetBottomSheet.start();
+    }
+  }, [modalVisible]);
+
   return (
-    <Modal
-      isVisible={modalVisible}
-      onBackdropPress={closeModal}
-      style={styles.modal}
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      useNativeDriverForBackdrop={true}
-      backdropOpacity={0.5}>
-      <View style={styles.modalContent}>
-        <View style={{flex: 1}}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            style={{flex: 1}}
-            ref={flatListRef}
-            data={comments}
-            renderItem={({item, index}) => {
-              return (
-                <View key={index}>
-                  <Comment
-                    navigation={navigation}
-                    comment={item}
-                    setParentId={id => handleReplyMode(id)}
-                    handleCommentLike={handleCommentLike}
-                    isRecomment={isRecomment}
-                    setIsRecomment={setIsRecomment}
-                    handleCommentDelete={handleCommentDelete}
-                    handleCommentReport={handleCommentReport}
-                    handleFocus={focusCommentInput}
-                    componentModalVisible={componentModalVisible}
-                    setComponentModalVisible={setComponentModalVisible}
-                  />
-                  {item.recomments &&
-                    item.recomments.map((recomment, index) => (
-                      <Recomment
-                        key={index}
-                        navigation={navigation}
-                        recomment={recomment}
-                        handleCommentLike={handleCommentLike}
-                        handleCommentDelete={handleCommentDelete}
-                        handleCommentReport={handleCommentReport}
-                        componentModalVisible={componentModalVisible}
-                        setComponentModalVisible={setComponentModalVisible}
-                      />
-                    ))}
-                </View>
-              );
-            }}
-            ItemSeparatorComponent={() => <View style={{height: 1}} />}
-          />
+    <>
+      <Modal
+        isVisible={modalVisible}
+        style={styles.modal}
+        backdropOpacity={0.5}
+        onBackdropPress={closeModal}
+        useNativeDriver={true}>
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <View style={styles.background} />
+          </TouchableWithoutFeedback>
+          <Animated.View
+            style={[
+              styles.modalContent,
+              {transform: [{translateY: translateY}]},
+            ]}
+            {...panResponder.panHandlers}>
+            <View style={styles.homeIndicator} />
+
+            {/* 메인 컨텐츠 영역 */}
+            <View style={{flex: 1}}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                style={{flex: 1}}
+                ref={flatListRef}
+                data={comments}
+                renderItem={({item, index}) => (
+                  <View key={index}>
+                    <Comment
+                      navigation={navigation}
+                      comment={item}
+                      setParentId={id => handleReplyMode(id)}
+                      handleCommentLike={handleCommentLike}
+                      isRecomment={isRecomment}
+                      setIsRecomment={setIsRecomment}
+                      handleCommentDelete={handleCommentDelete}
+                      handleCommentReport={handleCommentReport}
+                      handleFocus={focusCommentInput}
+                      componentModalVisible={componentModalVisible}
+                      setComponentModalVisible={setComponentModalVisible}
+                    />
+                    {item.recomments &&
+                      item.recomments.map((recomment, index) => (
+                        <Recomment
+                          key={index}
+                          navigation={navigation}
+                          recomment={recomment}
+                          handleCommentLike={handleCommentLike}
+                          handleCommentDelete={handleCommentDelete}
+                          handleCommentReport={handleCommentReport}
+                          componentModalVisible={componentModalVisible}
+                          setComponentModalVisible={setComponentModalVisible}
+                        />
+                      ))}
+                  </View>
+                )}
+                ItemSeparatorComponent={() => <View style={{height: 1}} />}
+              />
+            </View>
+          </Animated.View>
         </View>
         {showSelectedEmoji && selectedEmoji && (
           <View style={styles.selectedEmojiContainer}>
@@ -378,28 +503,31 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
             </View>
           </View>
         )}
-        <CommentWriteContainer
-          navigation={navigation}
-          route={{params: {postId}}}
-          refreshComments={refreshComments}
-          addComment={addCommentFunc}
-          addRecomment={addRecommentFunc}
-          onCommentComplete={handleCommentComplete}
-          setShowSelectedEmoji={setShowSelectedEmoji}
-          onEmojiSelect={handleEmojiSelect}
-          isRecomment={isRecomment}
-          parentId={parentId}
-          setParentId={setParentId}
-          setIsRecomment={setIsRecomment}
-          replyToComment={replyToComment}
-          onCancelReply={() => {
-            setIsRecomment(false);
-            setParentId(null);
-            setReplyToComment({parentId: null});
-          }}
-        />
-      </View>
-    </Modal>
+        <View style={styles.commentWriteWrapper}>
+          <CommentWriteContainer
+            navigation={navigation}
+            route={{params: {postId}}}
+            refreshComments={refreshComments}
+            addComment={addCommentFunc}
+            addRecomment={addRecommentFunc}
+            onCommentComplete={handleCommentComplete}
+            setShowSelectedEmoji={setShowSelectedEmoji}
+            onEmojiSelect={handleEmojiSelect}
+            isRecomment={isRecomment}
+            parentId={parentId}
+            setParentId={setParentId}
+            setIsRecomment={setIsRecomment}
+            replyToComment={replyToComment}
+            onCancelReply={() => {
+              setIsRecomment(false);
+              setParentId(null);
+              setReplyToComment({parentId: null});
+            }}
+            selectedEmojiId={selectedEmojiId} // 새로운 prop 전달
+          />
+        </View>
+      </Modal>
+    </>
   );
 };
 
@@ -410,28 +538,50 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    paddingTop: 20,
-    borderRadius: 18,
-    height: Dimensions.get('window').height * 0.8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  background: {
+    flex: 1,
+  },
+  homeIndicator: {
+    width: 40,
+    height: 5,
+    borderRadius: 100,
+    backgroundColor: '#CECFD6',
+    marginVertical: 12,
+    alignSelf: 'center',
   },
   modalText: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    //marginBottom: 10,
   },
   selectedEmojiContainer: {
-    position: 'relative',
     left: 0,
     right: 0,
+    top: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(206, 207, 214, 0.4)',
     zIndex: 10000,
     padding: 10,
   },
   selectedEmoji: {
     width: 80,
     height: 80,
+  },
+  commentWriteWrapper: {
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFF3',
+    backgroundColor: 'white',
   },
 });
 
