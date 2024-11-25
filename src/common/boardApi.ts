@@ -168,6 +168,18 @@ export const checkIsAdminForAdBoardPost = async (boardId: number) => {
   }
 };
 
+// 중간 광고 게시글
+export const getRandomMidAd = async (boardId: number) => {
+  try {
+    const response = await client.get<Response<any>>(`/boards/ad-post`);
+    //console.log('여기는 getRandomMidAd 함수', response);
+    return response; // 전체 응답 객체 반환
+  } catch (e) {
+    console.log('여기는 getRandomMidAd 함수', e.response);
+    return e.response;
+  }
+};
+
 //게시판 내 인기 게시물
 export const getBoardHotPost = async (boardId: number) => {
   try {
@@ -492,7 +504,7 @@ export const getComments = async (postId: number /*, page: number*/) => {
     const response = await client.get<AxiosResponse>(
       `/posts/${postId}/comments`,
     );
-    console.log('댓글', response.data.data.content);
+    //console.log('댓글', response.data.data.content);
     return response.data.data.content;
   } catch (e) {
     console.log('여기는 getComments 함수', e.response.data);

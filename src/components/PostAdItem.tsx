@@ -60,16 +60,24 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
         </View>
       )}
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: post.thumbnail}} />
+        {post.thumbnail && (
+          <Image
+            style={styles.image}
+            source={{uri: post.thumbnail}}
+            resizeMode="cover"
+          />
+        )}
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: post.profileImage}}
-            />
-            <Text style={styles.name}>{post.displayName}</Text>
+            {post.profileImage && (
+              <Image
+                style={{width: 24, height: 24, borderRadius: 12}}
+                source={{uri: post.profileImage}}
+              />
+            )}
+            <Text style={styles.name}>{post.displayName || '광고'}</Text>
             {/* boardId가 93, 94, 95인 경우 -> 교내 게시판*/}
             {!(boardId === 93 || boardId === 94 || boardId === 95) &&
               !post.isAnonymous &&
@@ -86,25 +94,27 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
             )}
           </View>
         </View>
-        {post.hasTitle ? (
+
+        {post.title && (
           <Text style={[fontMedium, styles.title]}>{post.title}</Text>
-        ) : (
-          <></>
         )}
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <View>
+
+        <View style={styles.contentContainer}>
+          {post.content && (
             <Text
               numberOfLines={post.title ? 2 : 3}
               ellipsizeMode="tail"
               style={[styles.text, styles.content, fontRegular]}>
               {post.content}
             </Text>
-          </View>
+          )}
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
           {boardId !== 98 && (
             <Image
               style={{width: 60, height: 60, borderRadius: 8}}
@@ -292,6 +302,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     paddingHorizontal: 12,
+  },
+  contentContainer: {
+    marginVertical: 8,
   },
 });
 

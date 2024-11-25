@@ -25,6 +25,7 @@ import {
   reportBoard,
   toggleBoardPin,
   checkIsAdminForAdBoardPost,
+  getRandomMidAd,
 } from '../../common/boardApi';
 import BoardDetailDto, {
   BoardHotPostDto,
@@ -35,17 +36,9 @@ import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {fontMedium, fontRegular, fontBold} from '../../common/font';
 import Board from '../../classes/Board';
-import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
-import {
-  BigDarkPin,
-  BigGrayPin,
-  BigOrangePin,
-  BigPurplePin,
-} from '../../../resources/icon/Pin';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';
-import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
 import {logout} from '../../common/authApi';
@@ -53,10 +46,12 @@ import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
 import PurpleArrow from '../../../resources/icon/PurpleArrow';
 import HotIcon from '../../../resources/icon/HotIcon';
-import PostVoteIcon from '../../../resources/icon/PostVoteIcon';
 import PostAdItem from '../../components/PostAdItem';
 import PostWriteBCase from '../../components/PostWriteBCase';
 import GlobalNavbar from '../../components/GlobalNavbar';
+import remoteConfig from '@react-native-firebase/remote-config';
+import fetchAndActivate from '@react-native-firebase/remote-config';
+import getValue from '@react-native-firebase/remote-config';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -87,6 +82,86 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
   const [isAdBoard, setIsAdBoard] = useState<boolean>(false);
+  const [config, setConfig] = useState<{
+    componentToUse: string;
+  } | null>(null);
+  const [midAd, setMidAd] = useState<any>(null);
+
+  // 중간 광고 가져오는 함수
+  const fetchMidAd = async () => {
+    try {
+      const adData = await getRandomMidAd(route.params.boardId);
+      if (adData.data && adData.data.data) {
+        // 광고 데이터 구조 맞추기
+        const processedAdData = {
+          postId: adData.data.data.postId,
+          title: adData.data.data.title,
+          content: adData.data.data.content,
+          thumbnail: adData.data.data.thumbnail,
+          profileImage: adData.data.data.profileImage,
+          displayName: '광고',
+          createdAt: '',
+          commentCount: 0,
+          likeCount: 0,
+          isLiked: false,
+          isAnonymous: false,
+          isOwner: false,
+          imageCount: adData.data.data.imageCount || 0,
+          isAd: true,
+        };
+        setMidAd(processedAdData);
+      }
+    } catch (error) {
+      console.error('중간 광고 로딩 실패:', error);
+    }
+  };
+
+  // 중간 광고: 5개마다 광고 삽입
+  const getProcessedData = () => {
+    if (!boardDetail || !midAd) return boardDetail;
+
+    const processed = [...boardDetail];
+    for (let i = 5; i < processed.length; i += 6) {
+      processed.splice(i, 0, {...midAd, isAd: true});
+    }
+    return processed;
+  };
+
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        const remoteConfigInstance = remoteConfig();
+
+        console.log('Fetching existing activated value...');
+        const currentComponent = remoteConfigInstance
+          .getValue('write_component')
+          .asString();
+
+        if (currentComponent) {
+          console.log('Using previously activated value:', currentComponent);
+          setConfig({
+            componentToUse: currentComponent,
+          });
+        } else {
+          console.log('No previously activated value. Fetching new values...');
+          await remoteConfigInstance.fetchAndActivate();
+          const newComponent = remoteConfigInstance
+            .getValue('write_component')
+            .asString();
+
+          console.log('Fetched and activated value:', newComponent);
+          setConfig({
+            componentToUse: newComponent,
+          });
+        }
+      } catch (error) {
+        console.log('Remote Config error:', error);
+      }
+    };
+
+    loadConfig();
+  }, []);
+  console.log('config:', config);
 
   const listHeaderCondition =
     route.params?.boardId !== 5 &&
@@ -177,6 +252,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         if (boardInfo?.id) {
           await fetchAdminStatus(boardInfo.id);
         }
+        await fetchMidAd(); // 광고 데이터 가져오기
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
         Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
@@ -480,7 +556,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         {boardDetail.length === 0 ? (
           <>
             <View style={{backgroundColor: 'white'}}>
-              {!isLoading && (
+              {!isLoading && config?.componentToUse === 'writing_box' && (
                 <PostWriteBCase
                   navigation={navigation}
                   route={route}
@@ -522,9 +598,9 @@ const PostListScreen = ({navigation, route}: Props) => {
               <FlatList
                 showsVerticalScrollIndicator={false}
                 style={{flex: 1, backgroundColor: '#FFFFFF'}}
-                data={boardDetail}
+                data={getProcessedData()}
                 renderItem={({item, index}) =>
-                  boardInfo?.id === 98 ? (
+                  boardInfo?.id === 98 || item.isAd ? (
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('PostScreen', {
@@ -533,7 +609,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                       }}>
                       <PostAdItem
                         post={item}
-                        boardId={boardInfo?.id}
+                        boardId={98}
                         navigation={navigation}
                         route={route}
                       />
@@ -653,14 +729,15 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </TouchableOpacity> */}
                           </View>
                         )}
-                      {route.params.boardId !== 98 && (
-                        <PostWriteBCase
-                          navigation={navigation}
-                          route={route}
-                          contentType={boardInfo?.contentType || 'TYPE1'}
-                          hasTitle={boardDetail?.hasTitle}
-                        />
-                      )}
+                      {route.params.boardId !== 98 &&
+                        config?.componentToUse === 'writing_box' && (
+                          <PostWriteBCase
+                            navigation={navigation}
+                            route={route}
+                            contentType={boardInfo?.contentType || 'TYPE1'}
+                            hasTitle={boardDetail?.hasTitle}
+                          />
+                        )}
                     </View>
                   )
                 }
@@ -678,17 +755,18 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {(!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
-          (route.params?.boardId === 98 && isAdBoard)) && (
-          <FloatingWriteButton
-            onPress={() =>
-              navigation.navigate('PostWriteScreen', {
-                boardId: route.params.boardId,
-                contentType: boardInfo?.contentType,
-              })
-            }
-          />
-        )}
+        {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
+          (route.params?.boardId === 98 && isAdBoard) ||
+          (config?.componentToUse === 'floating_button' && (
+            <FloatingWriteButton
+              onPress={() =>
+                navigation.navigate('PostWriteScreen', {
+                  boardId: route.params.boardId,
+                  contentType: boardInfo?.contentType,
+                })
+              }
+            />
+          ))}
         <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
           <GlobalNavbar navigation={navigation} />
         </View>
