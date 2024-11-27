@@ -46,6 +46,7 @@ import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
 import PurpleArrow from '../../../resources/icon/PurpleArrow';
 import HotIcon from '../../../resources/icon/HotIcon';
+import PostAdMid from '../../components/PostAdMid';
 import PostAdItem from '../../components/PostAdItem';
 import PostWriteBCase from '../../components/PostWriteBCase';
 import GlobalNavbar from '../../components/GlobalNavbar';
@@ -600,14 +601,14 @@ const PostListScreen = ({navigation, route}: Props) => {
                 style={{flex: 1, backgroundColor: '#FFFFFF'}}
                 data={getProcessedData()}
                 renderItem={({item, index}) =>
-                  boardInfo?.id === 98 || item.isAd ? (
+                  item.isAd ? (
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('PostScreen', {
                           postId: item.postId,
                         });
                       }}>
-                      <PostAdItem
+                      <PostAdMid
                         post={item}
                         boardId={98}
                         navigation={navigation}
@@ -621,7 +622,16 @@ const PostListScreen = ({navigation, route}: Props) => {
                           postId: item.postId,
                         });
                       }}>
-                      <PostItem post={item} boardId={boardInfo?.id} />
+                      {boardInfo?.id === 98 ? (
+                        <PostAdItem
+                          post={item}
+                          boardId={boardInfo?.id}
+                          navigation={navigation}
+                          route={route}
+                        />
+                      ) : (
+                        <PostItem post={item} boardId={boardInfo?.id} />
+                      )}
                     </TouchableOpacity>
                   )
                 }
