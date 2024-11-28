@@ -87,3 +87,15 @@ export async function postPantheonOnboarding(
     throw error;
   }
 }
+
+// 아티클 목록 조회
+export async function getArticle() {
+  try {
+    const response = await client.get('/pantheon-articles');
+    console.log('아티클 목록 조회: ', response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error('아티클 목록 조회 에러: ', error);
+    return [];
+  }
+}
