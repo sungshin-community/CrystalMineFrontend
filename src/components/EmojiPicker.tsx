@@ -11,6 +11,16 @@ import Hamburger from '../../resources/icon/Hamburger';
 import EmojiShop from '../../resources/icon/EmojiShop';
 import {buyEmoticons, getMyEmoticons} from '../common/boardApi';
 import Toast from 'react-native-simple-toast';
+import emoji1 from '../../resources/emojis/수정광산/emoji1.png';
+import emoji2 from '../../resources/emojis/수정광산/emoji2.png';
+import emoji3 from '../../resources/emojis/수정광산/emoji3.png';
+import emoji4 from '../../resources/emojis/수정광산/emoji4.png';
+import emoji5 from '../../resources/emojis/수정광산/emoji5.png';
+import emoji6 from '../../resources/emojis/수정광산/emoji6.png';
+import emoji7 from '../../resources/emojis/수정광산/emoji7.png';
+import emoji8 from '../../resources/emojis/수정광산/emoji8.png';
+import emoji9 from '../../resources/emojis/수정광산/emoji9.png';
+import emoji10 from '../../resources/emojis/수정광산/emoji10.png';
 
 interface EmojiPickerProps {
   visible: boolean;
@@ -41,6 +51,19 @@ interface EmoticonResponse {
   timestamp: string;
 }
 
+const defaultEmojis = [
+  emoji1,
+  emoji2,
+  emoji3,
+  emoji4,
+  emoji5,
+  emoji6,
+  emoji7,
+  emoji8,
+  emoji9,
+  emoji10,
+];
+
 const EmojiPicker = ({
   visible,
   onClose,
@@ -63,6 +86,7 @@ const EmojiPicker = ({
       if (response?.data?.length === 0) {
         setIsEmoticonListEmpty(true);
         setEmoticons([]);
+        setIsPayed(false);
       } else {
         setIsEmoticonListEmpty(false);
         setEmoticons(response.data);
@@ -124,8 +148,23 @@ const EmojiPicker = ({
     setHamburgerClicked(false);
   };
 
+  const renderDefaultEmojis = () => (
+    <View style={styles.defaultEmojiContainer}>
+      {defaultEmojis.map((emoji, index) => (
+        <View key={index} style={styles.defaultEmojiWrapper}>
+          <Image
+            source={emoji}
+            style={styles.defaultEmoji}
+            resizeMode="contain"
+          />
+        </View>
+      ))}
+    </View>
+  );
+
   const renderPurchaseButton = () => (
     <View style={styles.overlay}>
+      {renderDefaultEmojis()}
       <View style={styles.purchaseContainer}>
         <TouchableOpacity
           style={styles.purchaseButton}
@@ -280,7 +319,7 @@ const EmojiPicker = ({
             </View>
           </View>
           {renderEmojis()}
-          {!isEmoticonListEmpty && renderPurchaseButton()}
+          {isEmoticonListEmpty && renderPurchaseButton()}
         </>
       )}
     </View>
@@ -371,6 +410,28 @@ const styles = StyleSheet.create({
   selectedEmoji: {
     width: 80,
     height: 80,
+  },
+  defaultEmojiContainer: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    opacity: 0.3,
+  },
+  defaultEmojiWrapper: {
+    width: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  defaultEmoji: {
+    width: 72,
+    height: 72,
+    margin: 5,
   },
   purchaseContainer: {
     justifyContent: 'center',
