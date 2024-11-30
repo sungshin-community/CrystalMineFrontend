@@ -172,7 +172,7 @@ export const checkIsAdminForAdBoardPost = async (boardId: number) => {
 export const getRandomMidAd = async (boardId: number) => {
   try {
     const response = await client.get<Response<any>>(`/boards/ad-post`);
-    //console.log('여기는 getRandomMidAd 함수', response);
+    console.log('여기는 getRandomMidAd 함수', response);
     return response; // 전체 응답 객체 반환
   } catch (e) {
     console.log('여기는 getRandomMidAd 함수', e.response);
@@ -399,6 +399,18 @@ export const getPosts = async (postId: number) => {
   }
 };
 
+// 광고게시글 상세
+export const getAdPosts = async (postAdId: number) => {
+  try {
+    const response = await client.get<Response<null>>(`/post-ad/${postAdId}`);
+    console.log('getAdPosts 함수 성공', response.data);
+    return response;
+  } catch (e) {
+    console.log('여기는 getAdPosts 함수', e.response.data);
+    return e.response;
+  }
+};
+
 export const getPostByComment = async (commentId: number) => {
   try {
     const response = await client.get<Response<PostDto>>(
@@ -459,13 +471,25 @@ export const reportPost = async (
     return e.response.data;
   }
 };
-// 게시글 삭제'
+// 게시글 삭제
 export const deletePosts = async (postId: number) => {
   try {
     const response = await client.delete<Response<null>>(`/posts/${postId}`);
     return true;
   } catch (e) {
     console.log('여기는 deletePosts 함수', e);
+    return false;
+  }
+};
+// 광고 게시글 삭제
+export const deleteAdPosts = async (postAdId: number) => {
+  try {
+    const response = await client.delete<Response<null>>(
+      `/post-ad/${postAdId}`,
+    );
+    return true;
+  } catch (e) {
+    console.log('여기는 deleteAdPosts 함수', e);
     return false;
   }
 };
@@ -664,6 +688,50 @@ export const postWritePost = async (
     return error.response;
   }
 };
+// 광고 게시글 생성
+export const adWritePost = async (
+  boardId: number,
+  title: string,
+  content: string,
+  storeName: string,
+  images?: any,
+) => {
+  try {
+    const formData = new FormData();
+    const adPost = {
+      boardId,
+      title,
+      content,
+      storeName,
+    };
+    formData.append('adPost', JSON.stringify(adPost));
+
+    images?.forEach((image: any, index: number) => {
+      const photo = {
+        uri: image.uri,
+        name: `image_${index}.jpg`,
+        type: image.type || 'image/jpeg',
+      };
+      formData.append('images', photo);
+    });
+
+    console.log('광고 API 호출 전 데이터: ', adPost, images);
+    const response = await client.post<Response<PostWriteDto>>(
+      '/post-ad',
+      formData,
+      {
+        headers: {'Content-Type': 'multipart/form-data'},
+      },
+    );
+
+    console.log('광고 생성 완료', response.data);
+    return response;
+  } catch (error: any) {
+    console.error('광고 생성 에러', error.response?.data || error.message);
+    return error.response;
+  }
+};
+
 // 게시글 생성 시 필요한 정보 조회
 export const getWritePostInfo = async (id: number) => {
   try {
