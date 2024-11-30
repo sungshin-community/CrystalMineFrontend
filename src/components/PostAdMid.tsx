@@ -59,7 +59,7 @@ function PostAdMid({post, boardId, navigation, route}: Props) {
             </Text>
             <View style={styles.adContainer}>
               <AdIcon />
-              <Text style={[styles.adText]}>광고하는 가게 이름이나 상호</Text>
+              <Text style={[styles.adText]}>{post.storeName}</Text>
             </View>
           </View>
           <Image

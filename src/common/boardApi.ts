@@ -172,8 +172,8 @@ export const checkIsAdminForAdBoardPost = async (boardId: number) => {
 export const getRandomMidAd = async (boardId: number) => {
   try {
     const response = await client.get<Response<any>>(`/boards/ad-post`);
-    console.log('여기는 getRandomMidAd 함수', response);
-    return response; // 전체 응답 객체 반환
+    console.log('여기는 getRandomMidAd 함수', response.data.data);
+    return response.data.data; // 전체 응답 객체 반환
   } catch (e) {
     console.log('여기는 getRandomMidAd 함수', e.response);
     return e.response;

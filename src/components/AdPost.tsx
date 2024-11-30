@@ -155,7 +155,6 @@ function AdPost({
             navigation.pop();
             navigation.navigate('PostListScreen', {
               boardId: data.boardId,
-              deletedPostId: data.postAdId,
             });
           }
         }}
@@ -304,13 +303,13 @@ function AdPost({
                 {data?.createdAt}
               </Text>
             </View>
-            {!data?.isAnonymous &&
+            {/* {!data?.isAnonymous &&
               data?.isOwner &&
               (data.boardType === 'PUBLIC' ? (
                 <SmallOrangeFlag style={{marginLeft: 5}} />
               ) : (
                 <SmallPurpleFlag style={{marginLeft: 5}} />
-              ))}
+              ))} */}
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {/* <SpinningThreeDots

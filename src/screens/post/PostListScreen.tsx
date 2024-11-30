@@ -92,22 +92,20 @@ const PostListScreen = ({navigation, route}: Props) => {
   const fetchMidAd = async () => {
     try {
       const adData = await getRandomMidAd(route.params.boardId);
-      if (adData.data && adData.data.data) {
+      console.log('광고 데이터:', adData);
+      if (adData) {
         // 광고 데이터 구조 맞추기
         const processedAdData = {
-          postId: adData.data.data.postId,
-          title: adData.data.data.title,
-          content: adData.data.data.content,
-          thumbnail: adData.data.data.thumbnail,
-          profileImage: adData.data.data.profileImage,
+          postAdId: adData.postAdId,
+          title: adData.title,
+          content: adData.content,
+          thumbnail: adData.thumbnail,
+          profileImage: adData.profileImage,
           displayName: '광고',
-          createdAt: '',
-          commentCount: 0,
-          likeCount: 0,
-          isLiked: false,
-          isAnonymous: false,
-          isOwner: false,
-          imageCount: adData.data.data.imageCount || 0,
+          storeName: adData.storeName,
+          createdAt: adData.createdAt,
+          isOwner: adData.isOwner,
+          imageCount: adData.imageCount || 0,
           isAd: true,
         };
         setMidAd(processedAdData);
@@ -606,7 +604,8 @@ const PostListScreen = ({navigation, route}: Props) => {
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('PostScreen', {
-                          postId: item.postId,
+                          postId: item.postAdId,
+                          boardId: 98,
                         });
                       }}>
                       <PostAdMid
