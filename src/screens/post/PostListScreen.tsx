@@ -169,11 +169,12 @@ const PostListScreen = ({navigation, route}: Props) => {
     route.params?.boardId !== 6 &&
     route.params?.boardId !== 7 &&
     route.params?.boardId !== 8 &&
-    route.params?.boardId !== 9; // 광고/인기글 제외 게시판 목록
+    route.params?.boardId !== 9;
   const fetchAdminStatus = useCallback(async (boardId: number) => {
     try {
       const response = await checkIsAdminForAdBoardPost(boardId);
       setIsAdBoard(response.data);
+      console.log('관리자 권한 확인', isAdBoard);
     } catch (error) {
       console.error('관리자 권한 확인', error);
     }
@@ -554,7 +555,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           )}
 
-        {boardDetail.length === 0 ? (
+        {boardDetail.length === 0 && route.params.boardId !== 98 ? (
           <>
             <View style={{backgroundColor: 'white'}}>
               {!isLoading && config?.componentToUse === 'writing_box' && (
@@ -765,21 +766,32 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
+        {config?.componentToUse === 'floating_button' && (
+          <FloatingWriteButton
+            onPress={() =>
+              navigation.navigate('PostWriteScreen', {
+                boardId: route.params.boardId,
+                contentType: boardInfo?.contentType,
+              })
+            }
+          />
+        )}
         {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
-          (route.params?.boardId === 98 && isAdBoard) ||
-          (config?.componentToUse === 'floating_button' && (
+          (route.params?.boardId === 98 && isAdBoard && (
             <FloatingWriteButton
               onPress={() =>
-                navigation.navigate('PostWriteScreen', {
-                  boardId: route.params.boardId,
-                  contentType: boardInfo?.contentType,
-                })
+                navigation.navigate(
+                  route.params.boardId === 98
+                    ? 'AdWriteScreen'
+                    : 'PostWriteScreen',
+                  {
+                    boardId: route.params.boardId,
+                    contentType: boardInfo?.contentType,
+                  },
+                )
               }
             />
           ))}
-        <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
-          <GlobalNavbar navigation={navigation} />
-        </View>
       </View>
     </>
   );
