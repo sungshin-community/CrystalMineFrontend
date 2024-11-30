@@ -93,14 +93,14 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
               )}
               <Text style={styles.name}>{post.displayName || '광고'}</Text>
               {/* boardId가 93, 94, 95인 경우 -> 교내 게시판*/}
-              {!(boardId === 93 || boardId === 94 || boardId === 95) &&
+              {/* {!(boardId === 93 || boardId === 94 || boardId === 95) &&
                 !post.isAnonymous &&
                 post.isOwner &&
                 (post.boardType === 'PUBLIC' ? (
                   <SmallOrangeFlag style={{marginLeft: 5}} />
                 ) : (
                   <SmallPurpleFlag style={{marginLeft: 5}} />
-                ))}
+                ))} */}
               {boardId !== 98 && (
                 <Text style={[styles.textSmall, styles.timeStamp]}>
                   {post.createdAt}
