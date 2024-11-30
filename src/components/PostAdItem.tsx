@@ -35,182 +35,110 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
   const closeModal = () => {
     setModalVisible(false);
   };
-  console.log('post', post);
-  console.log('boardId', boardId);
+
   return (
-    <View style={styles.container}>
-      {boardId === 2 && (
-        <View
-          style={{
-            marginTop: 10,
-            height: 28,
-            backgroundColor: '#F7F7F7',
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderRadius: 10,
-          }}>
-          <SmallBoard style={{marginLeft: 11}} />
-          <Text
-            style={[
-              {color: '#87919B', marginLeft: 8, fontSize: 14},
-              fontRegular,
-            ]}>
-            {post.boardName}
-          </Text>
-        </View>
-      )}
-      <View style={styles.imageContainer}>
-        {post.thumbnail && (
-          <Image
-            style={styles.image}
-            source={{uri: post.thumbnail}}
-            resizeMode="cover"
-          />
-        )}
-      </View>
-      <View style={styles.infoContainer}>
-        <View style={styles.nameContainer}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {post.profileImage && (
-              <Image
-                style={{width: 24, height: 24, borderRadius: 12}}
-                source={{uri: post.profileImage}}
-              />
-            )}
-            <Text style={styles.name}>{post.displayName || '광고'}</Text>
-            {/* boardId가 93, 94, 95인 경우 -> 교내 게시판*/}
-            {!(boardId === 93 || boardId === 94 || boardId === 95) &&
-              !post.isAnonymous &&
-              post.isOwner &&
-              (post.boardType === 'PUBLIC' ? (
-                <SmallOrangeFlag style={{marginLeft: 5}} />
-              ) : (
-                <SmallPurpleFlag style={{marginLeft: 5}} />
-              ))}
-            {boardId !== 98 && (
-              <Text style={[styles.textSmall, styles.timeStamp]}>
-                {post.createdAt}
-              </Text>
-            )}
-          </View>
-        </View>
-
-        {post.title && (
-          <Text style={[fontMedium, styles.title]}>{post.title}</Text>
-        )}
-
-        <View style={styles.contentContainer}>
-          {post.content && (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        console.log('Navigating to post:', {
+          postId: boardId === 98 ? post.postAdId : post.postId,
+          boardId: boardId,
+        });
+        if (!post.postId && !post.postAdId) {
+          console.error('Post ID is missing');
+          return;
+        }
+        navigation.navigate('PostScreen', {
+          postId: boardId === 98 ? post.postAdId : post.postId,
+          boardId: boardId || 98,
+        });
+      }}>
+      <View style={styles.container}>
+        {boardId === 2 && (
+          <View
+            style={{
+              marginTop: 10,
+              height: 28,
+              backgroundColor: '#F7F7F7',
+              flexDirection: 'row',
+              alignItems: 'center',
+              borderRadius: 10,
+            }}>
+            <SmallBoard style={{marginLeft: 11}} />
             <Text
-              numberOfLines={post.title ? 2 : 3}
-              ellipsizeMode="tail"
-              style={[styles.text, styles.content, fontRegular]}>
-              {post.content}
+              style={[
+                {color: '#87919B', marginLeft: 8, fontSize: 14},
+                fontRegular,
+              ]}>
+              {post.boardName}
             </Text>
-          )}
-        </View>
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          {boardId !== 98 && (
+          </View>
+        )}
+        <View style={styles.imageContainer}>
+          {post.thumbnail && (
             <Image
-              style={{width: 60, height: 60, borderRadius: 8}}
+              style={styles.image}
               source={{uri: post.thumbnail}}
+              resizeMode="cover"
             />
           )}
-
-          {post.imageCount > 1 && (
-            <Text
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
-                fontSize: 10,
-                paddingHorizontal: 6,
-                paddingVertical: 2,
-                marginHorizontal: 4,
-                marginVertical: 4,
-                borderRadius: 10,
-                overflow: 'hidden',
-              }}>
-              {`+${post.imageCount - 1}`}
-            </Text>
-          )}
         </View>
-        <View style={styles.icon}>
-          {!(boardId === 93 || boardId === 94 || boardId === 95) && (
-            <>
-              {post.isLiked ? <PostLike /> : <PostUnlike />}
-              <Text
-                style={[
-                  fontRegular,
-                  {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
-                ]}>
-                좋아요
-              </Text>
-              <Text style={[styles.textSmall, styles.iconCount]}>
-                {post.likeCount}
-              </Text>
-              {/* {post.imageCount > 0 && (
-                <>
-                  <PostImage />
-                  <Text style={[styles.textSmall, styles.iconCount]}>
-                    {post.imageCount}
-                  </Text>
-                </>
-              )} */}
-              <PostComment />
-              <Text
-                style={[
-                  fontRegular,
-                  {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
-                ]}>
-                댓글달기
-              </Text>
-              <Text style={[styles.textSmall, styles.iconCount]}>
-                {post.commentCount}
-              </Text>
-            </>
-          )}
-        </View>
-      </View>
+        <View style={styles.infoContainer}>
+          <View style={styles.nameContainer}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              {post.profileImage && (
+                <Image
+                  style={{width: 24, height: 24, borderRadius: 12}}
+                  source={{uri: post.profileImage}}
+                />
+              )}
+              <Text style={styles.name}>{post.displayName || '광고'}</Text>
+              {/* boardId가 93, 94, 95인 경우 -> 교내 게시판*/}
+              {!(boardId === 93 || boardId === 94 || boardId === 95) &&
+                !post.isAnonymous &&
+                post.isOwner &&
+                (post.boardType === 'PUBLIC' ? (
+                  <SmallOrangeFlag style={{marginLeft: 5}} />
+                ) : (
+                  <SmallPurpleFlag style={{marginLeft: 5}} />
+                ))}
+              {boardId !== 98 && (
+                <Text style={[styles.textSmall, styles.timeStamp]}>
+                  {post.createdAt}
+                </Text>
+              )}
+            </View>
+          </View>
 
-      {post.newCommentAuthor && (
-        <View style={{marginBottom: 10}}>
-          <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
-            <CommentArrow style={{marginHorizontal: 10}} />
-            <TouchableWithoutFeedback onPress={handleCommentContainerPress}>
-              <View style={styles.commentContainer}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: '600',
-                    color: '#3A424E',
-                    paddingRight: 12,
-                  }}>
-                  {post.newCommentAuthor}
-                </Text>
-                <Text style={{fontSize: 12, color: '#3A424E'}}>
-                  {post.newCommentContent}
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
+          {post.title && (
+            <Text style={[fontMedium, styles.title]}>{post.title}</Text>
+          )}
+
+          <View style={styles.contentContainer}>
+            {post.content && (
+              <Text
+                numberOfLines={post.title ? 2 : 3}
+                ellipsizeMode="tail"
+                style={[styles.text, styles.content, fontRegular]}>
+                {post.content}
+              </Text>
+            )}
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            {boardId !== 98 && (
+              <Image
+                style={{width: 60, height: 60, borderRadius: 8}}
+                source={{uri: post.thumbnail}}
+              />
+            )}
           </View>
         </View>
-      )}
-      <CommentsModal
-        modalVisible={modalVisible}
-        closeModal={closeModal}
-        navigation={navigation}
-        route={route}
-        postId={post.postId}
-      />
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
