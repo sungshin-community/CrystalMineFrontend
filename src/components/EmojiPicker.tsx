@@ -169,7 +169,7 @@ const EmojiPicker = ({
         <TouchableOpacity
           style={styles.purchaseButton}
           onPress={async () => {
-            const emoticonId = 2; // 이모티콘 없는 사람은 수정광산 기본 이모티콘을 사게 한다.
+            const emoticonId = 4; // 이모티콘 없는 사람은 수정광산 기본 이모티콘을 사게 한다.
             const result = await buyEmoticons(emoticonId);
             console.log('result', result);
             if (result?.status === 200) {
