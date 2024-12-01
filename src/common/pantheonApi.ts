@@ -1,6 +1,7 @@
+import {AxiosResponse} from 'axios';
 import client from './client';
 
-export async function getAllList(
+export async function getPantheonAllList(
   cursor: number,
   jobList: string,
   sort: string,
@@ -20,7 +21,7 @@ export async function getAllList(
   }
 }
 
-export async function getFreeList(
+export async function getPantheonFreeList(
   cursor: number,
   jobList: string,
   sort: string,
@@ -40,7 +41,7 @@ export async function getFreeList(
   }
 }
 
-export const getCuriousList = async (
+export const getPantheonCuriousList = async (
   cursor: number,
   jobList: string,
   sort: string,
@@ -60,7 +61,7 @@ export const getCuriousList = async (
   }
 };
 
-export const getFreeDetail = async (id: number) => {
+export const getPantheonFreeDetail = async (id: number) => {
   try {
     const response = await client.get(`/pantheon-general/${id}`);
     console.log('판테온 자유 글 상세 조회');
@@ -70,7 +71,7 @@ export const getFreeDetail = async (id: number) => {
   }
 };
 
-export const getCuriousDetail = async (id: number) => {
+export const getPantheonCuriousDetail = async (id: number) => {
   try {
     const response = await client.get(`/pantheon-questions/${id}`);
     console.log('판테온 궁금해요 글 상세 조회');
@@ -80,7 +81,17 @@ export const getCuriousDetail = async (id: number) => {
   }
 };
 
-export const getFreeComment = async (id: number) => {
+export const getPantheonReviewDetail = async (id: number) => {
+  try {
+    const response = await client.get(`/pantheon-reviews/${id}`);
+    console.log('판테온 수정후기 글 상세 조회');
+    return response.data.data;
+  } catch (error: any) {
+    console.log('판테온 수정후기 글 상세 조회 에러', error);
+  }
+};
+
+export const getPantheonFreeComment = async (id: number) => {
   try {
     const response = await client.get(`/pantheon-general/${id}/comments`);
     console.log('판테온 자유 댓글 조회');
@@ -90,13 +101,23 @@ export const getFreeComment = async (id: number) => {
   }
 };
 
-export const getCuriousComment = async (id: number) => {
+export const getPantheonCuriousComment = async (id: number) => {
   try {
     const response = await client.get(`/pantheon-questions/${id}/comments`);
     console.log('판테온 궁금해요 댓글 조회');
     return response.data.data;
   } catch (error: any) {
     console.log('판테온 궁금해요 댓글 조회 에러', error);
+  }
+};
+
+export const getPantheonReviewComment = async (id: number) => {
+  try {
+    const response = await client.get(`/pantheon-reviews/${id}/comments`);
+    console.log('판테온 수정후기 댓글 조회');
+    return response.data.data;
+  } catch (error: any) {
+    console.log('판테온 수정후기 댓글 조회 에러', error);
   }
 };
 
@@ -155,12 +176,53 @@ export const postPantheonQurious = async (
       point,
     };
     formData.append('question', JSON.stringify(questionData));
+    console.log('게시물 작성 중', formData);
     await client.post(`/pantheon-questions`, formData, {
       headers: {'Content-Type': 'multipart/form-data'},
     });
     console.log('판테온 궁금해요 게시물 작성');
   } catch (error: any) {
     console.log('판테온 궁금해요 게시물 작성 에러', error);
+  }
+};
+
+export const postPantheonReview = async (
+  category: string,
+  content: string,
+  isAnonymous: boolean,
+  job: string,
+  scale: string,
+  title: string,
+  year: string,
+  images?: any[],
+) => {
+  try {
+    const formData = new FormData();
+    images?.forEach((image: any, index: number) => {
+      const photo = {
+        uri: image.uri,
+        name: `${index}.jpg`,
+        type: 'image/jpeg',
+      };
+      formData.append('images', photo);
+    });
+    const reviewData = {
+      category,
+      content,
+      isAnonymous,
+      job,
+      scale,
+      title,
+      year,
+    };
+    formData.append('review', JSON.stringify(reviewData));
+    console.log('게시물 작성 중', formData);
+    await client.post(`/pantheon-reviews`, formData, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
+    console.log('판테온 수정후기 게시물 작성');
+  } catch (error: any) {
+    console.log('판테온 수정후기 게시물 작성 에러', error);
   }
 };
 
@@ -197,6 +259,24 @@ export const deleltePantheonLike = async (id: number) => {
     console.log('판테온 게시물 좋아요 삭제');
   } catch (error: any) {
     console.log('판테온 게시물 좋아요 삭제 에러', error);
+  }
+};
+
+export const postPantheonCommentLike = async (id: number) => {
+  try {
+    await client.post(`/pantheon-comments/${id}/like`);
+    console.log('판테온 댓글 및 대댓글 좋아요');
+  } catch (error: any) {
+    console.log('판테온 댓글 및 대댓글 좋아요 에러', error);
+  }
+};
+
+export const deleltePantheonCommentLike = async (id: number) => {
+  try {
+    await client.delete(`/pantheon-comments/${id}/like`, {});
+    console.log('판테온 댓글 및 대댓글 좋아요 삭제');
+  } catch (error: any) {
+    console.log('판테온 댓글 및 대댓글 좋아요 삭제 에러', error);
   }
 };
 
@@ -241,8 +321,9 @@ export const postPantheonReComment = async (
 
 export const postPurchaseAdopt = async (id: number) => {
   try {
-    await client.post(`/pantheon-comments/${id}/purchase`);
+    const response = await client.post(`/pantheon-comments/${id}/purchase`);
     console.log('판테온 채택 댓글 구매');
+    return response;
   } catch (error: any) {
     console.log('판테온 채택 댓글 구매 에러', error);
   }
@@ -257,9 +338,9 @@ export const postCommentAdopt = async (
       ptCommentId,
       ptPostId,
     });
-    console.log('판테온 궁금해요 댓글 채택');
+    console.log('판테온 댓글 채택');
   } catch (error: any) {
-    console.log('판테온 궁금해요 댓글 채택 에러', error);
+    console.log('판테온 댓글 채택 에러', error);
   }
 };
 

@@ -12,10 +12,10 @@ import SphereReplyItem from '../../components/SphereReplyItem';
 import SelectAnswer from '../../components/SelectAnswer';
 import {
   deleltePantheonLike,
-  getCuriousComment,
-  getCuriousDetail,
-  getFreeComment,
-  getFreeDetail,
+  getPantheonCuriousComment,
+  getPantheonCuriousDetail,
+  getPantheonFreeComment,
+  getPantheonFreeDetail,
   postPantheonComment,
   postPantheonLike,
   postPantheonScrap,
@@ -23,26 +23,19 @@ import {
   postCommentAdopt,
   postPantheonReComment,
   postPurchaseAdopt,
+  deleltePantheonCommentLike,
+  postPantheonCommentLike,
+  getPantheonReviewDetail,
+  getPantheonReviewComment,
 } from '../../common/pantheonApi';
 import AdMob from '../../components/AdMob';
 import PostFooter from '../../components/PostFooter';
-import timeCalculate from '../../common/util/timeCalculate';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import CommentInputBox, {CommentInputBoxRef} from './imshi';
-
-const selectData = {
-  content:
-    '이 답변에 대해 정말 공감합니다! 추가적인 의견이 있습니다. 정말 힘이드는데요 지치지만 이겨내보자구요',
-  authorDepartment: '컴퓨터공학부',
-  authorJob: '학생',
-  authorYear: 3,
-  likeCount: 20,
-  liked: true,
-  nickname: '개발자_김',
-  profileImageUrl: 'https://example.com/profile-image.jpg',
-  ptCommentId: 12345,
-};
+import {pantheonComment, pantheonDetail} from '../../classes/Pantheon';
+import CustomToast from '../../components/CustomToast';
+import ReviewJobDetail from '../../components/ReviewJobDetail';
 
 interface SpherePostScreenProps {
   route: {
@@ -56,48 +49,19 @@ interface SpherePostScreenProps {
 
 export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const navigation = useNavigation<NativeStackScreenProps<any>['navigation']>();
-  const {ptPostId, isQuestion, isFree} = route.params;
-  const [postData, setPostData] = useState<any>({});
-  const [questioning, setQuestioning] = useState(isQuestion);
-  interface Comment {
-    content: string;
-    authorDepartment: string;
-    authorJob: string;
-    authorYear: number;
-    emoticonUrl?: string | null;
-    likeCount: number;
-    liked: boolean;
-    nickname: string;
-    profileImageUrl: string;
-    id: number;
-    ptCommentId: number;
-    selected?: boolean;
-    reComments: Comment[];
-  }
-
-  interface PostData {
-    content: string;
-    createdAt: string;
-    department: string;
-    images: string[];
-    likeCount: number;
-    isLiked: boolean;
-    nickname: string;
-    thumbnails: string[];
-    profileImage: string;
-    userJob: string;
-    userYear: number;
-    isSelected?: boolean;
-    point?: number;
-    title: string;
-    isReported: boolean;
-    isScraped: boolean;
-  }
-
-  const [comments, setComments] = useState<Comment[]>([]);
+  const {ptPostId, isQuestion, isFree, isReview} = route.params;
+  const [postData, setPostData] = useState<pantheonDetail | undefined>(
+    undefined,
+  );
+  const [comments, setComments] = useState<pantheonComment[]>([]);
   const commentInputRef = useRef<CommentInputBoxRef>(null);
+  const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
   const [paraentId, setParentId] = useState<number>(0);
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
+  const [selectComment, setSelectComment] = useState<
+    pantheonComment | undefined
+  >(undefined);
 
   const handleFocus = () => {
     commentInputRef.current?.focusInput();
@@ -105,19 +69,17 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
 
   const fetchDetailData = async () => {
     try {
-      let data: PostData | any = {};
+      let data: pantheonDetail | any = {};
       if (isQuestion) {
-        data = await getCuriousDetail(ptPostId);
+        data = await getPantheonCuriousDetail(ptPostId);
       } else if (isFree) {
-        data = await getFreeDetail(ptPostId);
-      } else {
-        data = await getCuriousDetail(ptPostId);
-        if (!data) {
-          data = await getFreeDetail(ptPostId);
-        }
+        data = await getPantheonFreeDetail(ptPostId);
+      } else if (isReview) {
+        data = await getPantheonReviewDetail(ptPostId);
       }
       setPostData(data);
-      console.log('글 상세 조회 성공', questioning);
+      console.log('글 상세 데이터: ', data);
+      console.log('글 상세 조회 성공');
     } catch (error) {
       console.error('글 상세 조회 실패', error);
     }
@@ -127,19 +89,20 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     try {
       let data = [];
       if (isQuestion) {
-        data = await getCuriousComment(ptPostId);
+        data = await getPantheonCuriousComment(ptPostId);
       } else if (isFree) {
-        data = await getFreeComment(ptPostId);
-      } else {
-        data = await getFreeComment(ptPostId);
-        if (!data) {
-          data = await getCuriousComment(ptPostId);
-        }
+        data = await getPantheonFreeComment(ptPostId);
+      } else if (isReview) {
+        data = await getPantheonReviewComment(ptPostId);
       }
+      const selectedData = data.find(
+        (comment: pantheonComment) => comment.isSelected === true,
+      );
       setComments(data);
-      console.log('글 상세 조회 성공');
+      setSelectComment(selectedData || null);
+      console.log('댓글 조회 성공');
     } catch (error) {
-      console.error('글 상세 조회 실패', error);
+      console.error('댓글 조회 실패', error);
     }
   };
 
@@ -148,25 +111,6 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     fetchCommentData();
   }, [ptPostId]);
 
-  const {
-    content,
-    createdAt,
-    department,
-    images,
-    likeCount,
-    isLiked,
-    isReported,
-    isScraped,
-    nickname,
-    thumbnails,
-    profileImage,
-    userJob,
-    userYear,
-    isSelected,
-    point,
-    title,
-  } = postData;
-
   const imgUrlCoverting = (arr: string[]) => {
     const array = arr.map(url => {
       return {url: url};
@@ -174,12 +118,12 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     return array;
   };
 
-  const handlePostScrap = async (postId: number) => {
+  const handlePostScrap = async () => {
     try {
       if (postData?.isScraped) {
-        await deletePantheonScrap(postId);
+        await deletePantheonScrap(ptPostId);
       } else {
-        await postPantheonScrap(postId);
+        await postPantheonScrap(ptPostId);
       }
       await fetchDetailData();
       console.log('스크랩 상태 변경 성공');
@@ -188,18 +132,125 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     }
   };
 
-  const handlePostLike = async (postId: number) => {
+  const handlePostLike = async () => {
     try {
       if (postData?.isLiked) {
-        await deleltePantheonLike(postId);
+        await deleltePantheonLike(ptPostId);
       } else {
-        await postPantheonLike(postId);
+        await postPantheonLike(ptPostId);
       }
       await fetchDetailData();
       console.log('좋아요 상태 변경 성공');
     } catch (error) {
       console.error('좋아요 상태 변경 실패:', error);
     }
+  };
+
+  const handlePostComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emoticonId?: number,
+  ) => {
+    try {
+      await postPantheonComment(content, isAnonymous, ptPostId, emoticonId);
+      await fetchCommentData();
+      console.log('댓글 생성 성공');
+    } catch (error) {
+      console.error('댓글 생성 실패:', error);
+    }
+  };
+
+  const handlePostReComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emoticonId?: number,
+  ) => {
+    try {
+      await postPantheonReComment(
+        paraentId,
+        content,
+        isAnonymous,
+        ptPostId,
+        emoticonId,
+      );
+      await fetchCommentData();
+      console.log('대댓글 생성 성공');
+    } catch (error) {
+      console.error('대댓글 생성 실패:', error);
+    }
+  };
+
+  const postComment = async (content: string, isAnonymous: boolean) => {
+    if (isRecomment) {
+      handlePostReComment(content, isAnonymous);
+      console.log('대댓글 생성');
+    } else {
+      handlePostComment(content, isAnonymous);
+      console.log('댓글 생성');
+    }
+    setIsRecomment(false);
+  };
+
+  const handleCommentClick = (ptCommentId: number) => {
+    handleFocus();
+    setParentId(ptCommentId);
+    setIsRecomment(true);
+  };
+
+  const handlePurchaseAdopt = async (ptCommentId: number) => {
+    try {
+      const response = await postPurchaseAdopt(ptCommentId);
+      if (response?.status === 201) {
+        await fetchDetailData();
+        console.log('구매 성공');
+      }
+      if (response?.status === 400) {
+        showToast('본인의 댓글의 조회 권한은 구매할 수 없습니다.');
+        return;
+      }
+      if (response?.status === 403) {
+        // TODO: 구매 실패 시 포인트 화면으로 이동
+        return;
+      }
+    } catch (error) {
+      console.error('구매 실패:', error);
+    }
+  };
+
+  const handleAdoptComment = async (
+    ptCommentId: number,
+    selectReply: pantheonComment,
+  ) => {
+    try {
+      await postCommentAdopt(ptCommentId, ptPostId);
+      setSelectComment(selectReply);
+      showToast('답변을 채택하였습니다.');
+      await fetchDetailData();
+      await fetchCommentData();
+      console.log('채택 성공');
+    } catch (error) {
+      console.error('채택 실패:', error);
+    }
+  };
+
+  const handleCommentLike = async (isLiked: boolean, commentId: number) => {
+    try {
+      if (isLiked) {
+        await deleltePantheonCommentLike(commentId);
+      } else {
+        await postPantheonCommentLike(commentId);
+      }
+      await fetchCommentData();
+      console.log('좋아요 상태 변경 성공');
+    } catch (error) {
+      console.error('좋아요 상태 변경 실패:', error);
+    }
+  };
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000);
   };
 
   /*
@@ -212,70 +263,6 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
       console.error('게시글 신고 실패:', error);
     }
   };*/
-
-  const handlePostComment = async (
-    content: string,
-    isAnonymous: boolean,
-    //emoticonId: number,
-  ) => {
-    try {
-      await postPantheonComment(content, isAnonymous, ptPostId, 1);
-      await fetchCommentData();
-      console.log('댓글 생성 성공');
-    } catch (error) {
-      console.error('댓글 생성 실패:', error);
-    }
-  };
-
-  const handlePostReComment = async (
-    content: string,
-    isAnonymous: boolean,
-    //emoticonId: number,
-  ) => {
-    try {
-      await postPantheonReComment(paraentId, content, isAnonymous, ptPostId, 1);
-      await fetchCommentData();
-      console.log('대댓글 생성 성공');
-    } catch (error) {
-      console.error('대댓글 생성 실패:', error);
-    }
-  };
-
-  const postComment = async (content: string, isAnonymous: boolean) => {
-    if (isRecomment) {
-      console.log('대댓글 생성');
-      handlePostReComment(content, isAnonymous);
-    } else {
-      console.log('댓글 생성');
-      handlePostComment(content, isAnonymous);
-    }
-    setIsRecomment(false);
-  };
-
-  const handleCommentClick = (ptCommentId: number) => {
-    handleFocus();
-    setParentId(ptCommentId);
-    setIsRecomment(true);
-    console.log(ptCommentId);
-  };
-
-  const handlePurchaseAdopt = async (ptCommentId: number) => {
-    try {
-      await postPurchaseAdopt(ptCommentId);
-      console.log('구매 성공');
-    } catch (error) {
-      console.error('구매 실패:', error);
-    }
-  };
-
-  const handleAdoptComment = async (ptCommentId: number) => {
-    try {
-      await postCommentAdopt(ptCommentId, ptPostId);
-      console.log('채택 성공');
-    } catch (error) {
-      console.error('채택 실패:', error);
-    }
-  };
 
   return (
     <KeyboardAvoidingView style={{flex: 1}}>
@@ -304,7 +291,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                 flexDirection: 'row',
               }}>
               <Image
-                source={{uri: profileImage}}
+                source={{uri: postData?.profileImage}}
                 style={{
                   width: 36,
                   height: 36,
@@ -327,7 +314,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       fontWeight: '600',
                       color: '#3A424E',
                     }}>
-                    {nickname}
+                    {isReview ? postData?.nickname : postData?.displayName}
                   </Text>
                   <Text
                     style={{
@@ -335,7 +322,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       color: '#B9BAC1',
                       fontWeight: '400',
                     }}>
-                    {timeCalculate(createdAt)}
+                    {postData?.createdAt}
                   </Text>
                 </View>
                 <Text
@@ -344,8 +331,13 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                     fontWeight: '500',
                     color: '#89919A',
                   }}>
-                  {department} · {userJob} ·{' '}
-                  {userYear === 0 ? '신입' : `${userYear}년`}
+                  {postData?.isBlind
+                    ? '비공개'
+                    : `${postData?.department} · ${postData?.userJob} · ${
+                        postData?.userYear === 0
+                          ? '신입'
+                          : `${postData?.userYear}년`
+                      }`}
                 </Text>
               </View>
             </View>
@@ -358,7 +350,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       fontWeight: '700',
                       color: '#89919A',
                     }}>
-                    {point}P
+                    {postData?.point}P
                   </Text>
                 </View>
                 <View
@@ -369,24 +361,35 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       borderRadius: 4,
                     },
                     {
-                      backgroundColor: isSelected ? '#F3E9FF' : '#EFEFF3',
+                      backgroundColor: postData?.isSelected
+                        ? '#F3E9FF'
+                        : '#EFEFF3',
                     },
                   ]}>
                   <Text
                     style={[
                       {fontSize: 12, fontWeight: '700'},
                       {
-                        color: isSelected ? '#A055FF' : '#89919A',
+                        color: postData?.isSelected ? '#A055FF' : '#89919A',
                       },
                     ]}>
-                    {isSelected ? '채택완료' : '답변대기'}
+                    {postData?.isSelected ? '채택완료' : '답변대기'}
                   </Text>
                 </View>
               </View>
             )}
           </View>
 
-          {title && (
+          {isReview && postData && (
+            <ReviewJobDetail
+              job={postData.job}
+              category={postData.category}
+              size={postData.scale}
+              year={postData.year}
+            />
+          )}
+
+          {typeof postData?.title === 'string' && (
             <Text
               style={{
                 color: '#222222',
@@ -394,7 +397,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                 fontWeight: '600',
                 marginBottom: 10,
               }}>
-              {title}
+              {postData?.title}
             </Text>
           )}
 
@@ -404,20 +407,20 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
               fontWeight: '400',
               color: '#222222',
             }}>
-            {content}
+            {postData?.content}
           </Text>
 
-          {thumbnails && thumbnails.length !== 0 && (
+          {postData?.thumbnails.length !== 0 && (
             <View style={{flexDirection: 'row', marginTop: 16}}>
               <ScrollView
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
-                {thumbnails.map((url: any, index: React.Key) => (
+                {postData?.thumbnails.map((url: any, index: React.Key) => (
                   <TouchableOpacity
                     key={index}
                     onPress={() =>
                       navigation.navigate('ImageViewerScreen', {
-                        imageUrls: imgUrlCoverting(postData.images),
+                        imageUrls: imgUrlCoverting(postData?.images),
                         index: index,
                       })
                     }>
@@ -436,88 +439,111 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             </View>
           )}
         </View>
-        <PostFooter
-          isLiked={isLiked}
-          likeCount={likeCount}
-          commentCount={0}
-          isReported={isReported}
-          postId={0}
-          isScraped={isScraped}
-          handlePostLike={() => handlePostLike(ptPostId)}
-          handlePostComment={handleFocus}
-          handlePostReport={() => console.log('신고하기')}
-          handlePostScrap={() => handlePostScrap(ptPostId)}
-        />
+
+        {postData && (
+          <PostFooter
+            isLiked={postData.isLiked}
+            likeCount={postData.likeCount}
+            commentCount={0} // commentCount 임시 설정
+            isReported={postData.isReported}
+            ptPostId={ptPostId}
+            isScraped={postData.isScraped}
+            handlePostLike={handlePostLike}
+            handlePostComment={handleFocus}
+            handlePostReport={console.log('신고 로직 수정')} //신고 로직 수정
+            handlePostScrap={handlePostScrap}
+          />
+        )}
         <AdMob />
 
-        {isQuestion && (
+        {isQuestion && selectComment && (
           <SelectAnswer
-            time="hi"
-            replyCount={2}
-            reply={selectData}
-            canView={false}
+            reply={selectComment}
+            handlePurchase={handlePurchaseAdopt}
           />
         )}
 
         <View style={{marginBottom: 35}}>
-          {comments.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                {
-                  padding: 16,
-                  borderBottomColor: '#EFEFF3',
-                  borderBottomWidth: 1,
-                },
-                index === comments.length - 1 && {
-                  borderBottomWidth: 0,
-                },
-              ]}>
-              <SphereReplyItem
-                time={'1분전'}
-                reply={item}
-                isQuestion={isQuestion}
-                replyCount={item.reComments.length}
-                handleClick={() =>
-                  handleCommentClick(item.ptCommentId || item.id)
-                }
-              />
-              {item.reComments && item.reComments.length > 0 && (
-                <View style={{marginTop: 24}}>
-                  {item.reComments.map(
-                    (
-                      reComment: {
-                        content: string;
-                        authorDepartment: string;
-                        authorJob: string;
-                        authorYear: number;
-                        emoticonUrl?: string | null;
-                        likeCount: number;
-                        liked: boolean;
-                        nickname: string;
-                        profileImageUrl: string;
-                        ptCommentId: number;
-                        selected?: boolean;
-                      },
-                      idx: number,
-                    ) => (
-                      <View>
-                        <SphereReplyItem
-                          time={'1분전'}
-                          reply={reComment}
-                          isReply
-                          isQuestion={isQuestion}
-                        />
-                      </View>
-                    ),
-                  )}
-                </View>
-              )}
-            </View>
-          ))}
+          {postData &&
+            comments.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  {
+                    padding: 16,
+                    borderBottomColor: '#EFEFF3',
+                    borderBottomWidth: 1,
+                  },
+                  index === comments.length - 1 && {
+                    borderBottomWidth: 0,
+                  },
+                ]}>
+                {item.isSelected ? (
+                  item.canReadSelectedComment && (
+                    <SphereReplyItem
+                      reply={item}
+                      isQuestion={isQuestion}
+                      handleReplyClick={() =>
+                        handleCommentClick(item.ptCommentId)
+                      }
+                      handleLikePress={handleCommentLike}
+                      postIsSelected={postData.isSelected}
+                      handleAdoptComment={handleAdoptComment}
+                    />
+                  )
+                ) : (
+                  <SphereReplyItem
+                    reply={item}
+                    isQuestion={isQuestion}
+                    handleReplyClick={() =>
+                      handleCommentClick(item.ptCommentId)
+                    }
+                    handleLikePress={handleCommentLike}
+                    postIsSelected={postData.isSelected}
+                    handleAdoptComment={handleAdoptComment}
+                  />
+                )}
+                {item.reComments && item.reComments.length > 0 && (
+                  <View style={{marginTop: 24}}>
+                    {item.reComments.map(
+                      (reComment: pantheonComment, idx: number) => (
+                        <View>
+                          {reComment.isSelected ? (
+                            reComment.canReadSelectedComment && (
+                              <SphereReplyItem
+                                reply={reComment}
+                                isReply
+                                isQuestion={isQuestion}
+                                handleLikePress={handleCommentLike}
+                                postIsSelected={postData.isSelected}
+                                handleAdoptComment={handleAdoptComment}
+                              />
+                            )
+                          ) : (
+                            <SphereReplyItem
+                              reply={reComment}
+                              isReply
+                              isQuestion={isQuestion}
+                              handleLikePress={handleCommentLike}
+                              postIsSelected={postData.isSelected}
+                              handleAdoptComment={handleAdoptComment}
+                            />
+                          )}
+                        </View>
+                      ),
+                    )}
+                  </View>
+                )}
+              </View>
+            ))}
         </View>
       </ScrollView>
       <CommentInputBox ref={commentInputRef} onSubmit={postComment} />
+      <CustomToast
+        visible={toastVisible}
+        message={toastMessage}
+        onClose={() => setToastVisible(false)}
+      />
     </KeyboardAvoidingView>
   );
 }
@@ -531,6 +557,3 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
 });
-
-// 이미지가 있을 경우 디자인 확보 필요
-// 입력창 연결

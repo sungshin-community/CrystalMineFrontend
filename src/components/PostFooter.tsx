@@ -1,33 +1,32 @@
-import PostLike from '../../resources/icon/PostLike';
-import PostUnlike from '../../resources/icon/PostUnlike';
+import {FooterHeart} from '../../resources/icon/HeartIcon';
 import {FooterChat} from '../../resources/icon/ChatIcon';
 import {FooterScrap} from '../../resources/icon/Scrap';
-import {ReportModalBottom} from '../components/ReportModalBottom';
 import {FooterReport} from '../../resources/icon/Report';
 import {FooterMessage} from '../../resources/icon/Message';
 import CustomToast from '../components/CustomToast';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useState} from 'react';
 import React from 'react';
+import {ReportModalBottom} from '../components/ReportModalBottom'; // 신고 로직 수정
 
 interface PostFooterProps {
   isLiked: boolean;
   likeCount: number;
   commentCount: number;
   isReported: boolean;
-  postId: number;
+  ptPostId: number;
   isScraped: boolean;
-  handlePostLike: (postId: number) => void;
-  handlePostComment: (postId: number) => void;
-  handlePostReport: any;
-  handlePostScrap: (postId: number) => void;
+  handlePostLike: () => void;
+  handlePostComment: () => void;
+  handlePostScrap: () => void;
+  handlePostReport: any; // 신고 로직 수정
 }
 
 export default function PostFooter({
   isLiked,
   likeCount,
   commentCount,
-  postId,
+  ptPostId,
   isScraped,
   isReported,
   handlePostLike,
@@ -37,7 +36,7 @@ export default function PostFooter({
 }: PostFooterProps) {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [reportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -61,13 +60,16 @@ export default function PostFooter({
         }}>
         <TouchableOpacity
           style={{flexDirection: 'row', marginRight: 16, alignItems: 'center'}}
-          onPress={() => handlePostLike(postId)}>
-          {isLiked ? <PostLike /> : <PostUnlike />}
+          onPress={handlePostLike}>
+          <FooterHeart
+            fill={isLiked ? '#FF6376' : 'white'}
+            stroke={isLiked ? '#FF6376' : '#9DA4AB'}
+          />
           <Text
             style={[
               {
                 color: '#9DA4AB',
-                fontWeight: '500',
+                fontWeight: '400',
                 fontSize: 14,
                 marginLeft: 4,
               },
@@ -77,12 +79,12 @@ export default function PostFooter({
         </TouchableOpacity>
         <TouchableOpacity
           style={{flexDirection: 'row', alignItems: 'center'}}
-          onPress={() => handlePostComment(postId)}>
+          onPress={handlePostComment}>
           <FooterChat />
           <Text
             style={{
               color: '#9DA4AB',
-              fontWeight: '500',
+              fontWeight: '400',
               fontSize: 14,
               marginLeft: 4,
             }}>
@@ -97,23 +99,26 @@ export default function PostFooter({
         }}>
         {isReported ? (
           <TouchableOpacity
+            style={{marginRight: 16}}
             onPress={() => showToast('이미 신고한 게시글입니다.')}>
-            <FooterReport style={{marginRight: 16}} />
+            <FooterReport fill="#9DA4AB" />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
+            style={{marginRight: 16}}
             onPress={() => {
-              setReportModalVisible(true);
+              showToast('수정광산 팀이 열심히 기능을 개발하는 중이에요!'); // 신고 로직 수정
+              //setReportModalVisible(true);
             }}>
-            <FooterReport style={{marginRight: 16}} />
+            <FooterReport />
           </TouchableOpacity>
         )}
-        <ReportModalBottom
+        <ReportModalBottom // 신고 로직 수정
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
           title="해당 게시글을 신고하시겠어요?"
           purpleButtonText="네, 신고할게요."
-          reportId={postId}
+          reportId={ptPostId}
           reportFunc={handlePostReport}
           whiteButtonText="아니요."
           whiteButtonFunc={() => setReportModalVisible(false)}
@@ -126,10 +131,10 @@ export default function PostFooter({
           }>
           <FooterMessage style={{marginRight: 16}} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handlePostScrap(postId)}>
+        <TouchableOpacity onPress={handlePostScrap}>
           <FooterScrap
-            fill={isScraped ? '#FF6376' : 'white'}
-            stroke={isScraped ? '#FF6376' : '#9DA4AB'}
+            fill={isScraped ? '#A055FF' : 'white'}
+            stroke={isScraped ? '#A055FF' : '#9DA4AB'}
           />
         </TouchableOpacity>
       </View>

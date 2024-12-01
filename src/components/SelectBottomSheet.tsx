@@ -12,21 +12,13 @@ import {
   Image,
 } from 'react-native';
 import CloseIcon from '../../resources/icon/CloseIcon';
-import Toast from 'react-native-simple-toast';
+import {pantheonComment} from '../classes/Pantheon';
 
 interface SelectBottomSheetProps {
   sheetVisible: boolean;
   setSheetVisible: (value: boolean) => void;
   onSelect: () => void;
-  reply: {
-    profileImageUrl: string;
-    nickname: string;
-    authorDepartment: string;
-    authorJob: string;
-    authorYear: string;
-    emoticonUrl?: string | null; // 처리 수정
-    content: string;
-  };
+  reply: pantheonComment;
 }
 
 export default function SelectBottomSheet({
@@ -117,7 +109,7 @@ export default function SelectBottomSheet({
             <View style={styles.commentBox}>
               <View style={{flexDirection: 'row'}}>
                 <Image
-                  source={{uri: reply.profileImageUrl}}
+                  source={{uri: reply?.profileImageUrl}}
                   style={{
                     borderRadius: 12,
                     marginRight: 8,
@@ -140,7 +132,7 @@ export default function SelectBottomSheet({
                         fontWeight: '600',
                         color: '#3A424E',
                       }}>
-                      {reply.nickname}
+                      {reply?.displayName}
                     </Text>
                     <Text
                       style={{
@@ -148,7 +140,7 @@ export default function SelectBottomSheet({
                         color: '#B9BAC1',
                         fontWeight: '500',
                       }}>
-                      // time 함수 필요
+                      {reply?.createdAt}
                     </Text>
                   </View>
                   <Text
@@ -157,16 +149,16 @@ export default function SelectBottomSheet({
                       fontWeight: '500',
                       color: '#89919A',
                     }}>
-                    {reply.authorDepartment} · {reply.authorJob} ·{' '}
-                    {reply.authorYear}
-                    // 비공개 함수 처리
+                    {reply?.isBlind
+                      ? '비공개'
+                      : `${reply?.authorDepartment} · ${reply?.authorJob} ·${reply?.authorYear}`}
                   </Text>
                 </View>
               </View>
 
-              {reply.emoticonUrl && (
+              {typeof reply?.emoticonUrl === 'string' && (
                 <Image
-                  source={{uri: reply.emoticonUrl}}
+                  source={{uri: reply?.emoticonUrl}}
                   style={{
                     marginTop: 10,
                     width: 100,
@@ -183,9 +175,10 @@ export default function SelectBottomSheet({
                   color: '#222222',
                   marginTop: 10,
                 }}>
-                {reply.content}
+                {reply?.content}
               </Text>
             </View>
+
             <View
               style={{
                 flexDirection: 'row',
@@ -220,7 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(34, 34, 34, 0.5)',
   },
   bottomSheetContainer: {
-    height: 300,
+    flex: 1,
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -266,5 +259,3 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
 });
-
-// overlay 클릭 오류 수정

@@ -28,6 +28,7 @@ import {
   getSaengSaeng,
   getQuestionCrystalball,
   geRecruiting,
+  getArticle,
 } from '../common/CrystalApi';
 import LinearGradient from 'react-native-linear-gradient';
 import testImg from '../../resources/images/Happy.png';
@@ -43,6 +44,16 @@ const Lounge = () => {
   const [questionCrystalball, setQuestionCrystalball] = useState<any[]>([]); // 수정구에게 물어봐 데이터
   const [recruitingData, setRecruitingData] = useState<any[]>([]); // 수정구에게 물어봐 데이터
   const [isLoadingRecruiting, setIsLoadingRecruiting] = useState<boolean>(true);
+  const [articleData, setArticleData] = useState<any[]>([]);
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const viewabilityArticleConfig = {viewAreaCoveragePercentThreshold: 50}; // 50% 이상 보이면 해당 페이지로 간주
+
+  // onViewableItemsChanged를 useRef로 선언
+  const onViewRef = useRef(({viewableItems}) => {
+    if (viewableItems.length > 0) {
+      setCurrentArticleIndex(viewableItems[0].index); // 현재 보여지는 아이템의 인덱스 업데이트
+    }
+  });
 
   useEffect(() => {
     // 사용자 정보를 가져오는 함수 정의
@@ -179,6 +190,25 @@ const Lounge = () => {
     fetcRecruiting();
   }, []);
 
+  // 아티클 데이터 가져오기
+  useEffect(() => {
+    const fetchArticles = async () => {
+      setIsLoadingArticles(true); // 로딩 상태 활성화
+      try {
+        const response = await getArticle(); // getArticle API 호출
+        if (response.status === 200) {
+          //setArticleData(response.data.articles); // 아티클 데이터 상태 저장
+        }
+      } catch (error) {
+        console.error('아티클 데이터를 가져오는데 실패', error);
+      } finally {
+        setIsLoadingArticles(false); // 로딩 상태 비활성화
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
   // 테스트 데이터
   useEffect(() => {
     const testData = [
@@ -287,6 +317,40 @@ const Lounge = () => {
     //setRecruitingData(testData);
   }, []);
 
+  // 테스트 데이터
+  useEffect(() => {
+    const testData = [
+      {
+        commentCount: 5,
+        content: '수정구에 대한 궁금증을 풀어보세요!',
+        displayName: 'Crystal Guide',
+        issuedMonth: 11,
+        likeCount: 23,
+        title: '수정구의 매력, 수정광산의 이야기',
+        thumnnail: null,
+      },
+      {
+        commentCount: 2,
+        content: '이번 달 주요 업데이트와 새로운 소식을 확인하세요.',
+        displayName: 'Admin',
+        issuedMonth: 11,
+        likeCount: 15,
+        title: '11월 수정광산 업데이트 안내',
+        thumnnail: null,
+      },
+      {
+        commentCount: 10,
+        content: '참여하고 특별한 경험을 만들어보세요.',
+        displayName: 'Event Team',
+        issuedMonth: 11,
+        likeCount: 42,
+        title: '11월 수정광산 이벤트 안내',
+        thumnnail: null,
+      },
+    ];
+    setArticleData(testData);
+  }, []);
+
   function getMinutesAgo(createdAt) {
     const now = new Date();
     const createdDate = new Date(createdAt);
@@ -296,21 +360,55 @@ const Lounge = () => {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.bannerContainer}>
-        <Image
-          source={
-            BannerBasicImg // 기본 이미지 사용
-          }
-          style={styles.bannerImage}
-          resizeMode="cover"
+    <ScrollView style={{marginBottom: 30}}>
+      <View style={{width: '100%'}}>
+        <FlatList
+          data={articleData}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          onViewableItemsChanged={onViewRef.current} // useRef로 전달
+          viewabilityConfig={viewabilityArticleConfig}
+          renderItem={({item}) => (
+            <View style={styles.bannerContainer}>
+              {/* 배너 이미지 */}
+              <Image
+                source={
+                  item?.thumbnail ? {uri: item.thumbnail} : BannerBasicImg
+                }
+                style={styles.bannerImage}
+                resizeMode="cover"
+              />
+
+              {/* 그라데이션 레이어 */}
+              <LinearGradient
+                colors={['rgba(74, 74, 74, 0)', '#4A4A4A']}
+                style={styles.gradient}
+              />
+
+              {/* 텍스트 정보 */}
+              <Text style={styles.studenCouncilBox}>
+                수정 아티클 {item?.issuedMonth ?? 'N/A'}월호
+              </Text>
+              <View style={styles.bannerTextContainer}>
+                <Text style={styles.bannerTitle}>
+                  {item?.title ?? '제목 없음'}
+                </Text>
+                <Text style={styles.bannerContent}>
+                  {item?.content ?? '내용이 없습니다.'}
+                </Text>
+              </View>
+            </View>
+          )}
         />
 
-        {/* 그라데이션 레이어 */}
-        <LinearGradient
-          colors={['rgba(74, 74, 74, 0)', '#4A4A4A']} // 위는 투명, 아래는 #4A4A4A
-          style={styles.gradient}
-        />
+        {/* 오른쪽 하단에 인덱스 표시 */}
+        <View style={styles.pagination}>
+          <Text style={styles.paginationText}>
+            {currentArticleIndex + 1} / {articleData.length}
+          </Text>
+        </View>
       </View>
       <View style={styles.rowContainer}>
         <View style={styles.boardContainer}>
@@ -610,7 +708,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   bannerContainer: {
-    width: '100%',
+    width: Dimensions.get('window').width,
     position: 'relative',
   },
 
@@ -703,6 +801,56 @@ const styles = StyleSheet.create({
     height: 45,
   },
   flatList: {},
+  bannerTextContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 16,
+  },
+  bannerTitle: {
+    fontFamily: 'Pretendard',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  bannerContent: {
+    fontFamily: 'Pretendard',
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '400',
+  },
+  studenCouncilBox: {
+    fontFamily: 'Pretendard',
+    position: 'absolute',
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    top: 16,
+    left: 16,
+    borderRadius: 6,
+    color: '#fff',
+    fontSize: 12,
+    borderWidth: 1,
+    borderColor: 'white',
+    borderStyle: 'solid',
+    textAlign: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+  },
+  pagination: {
+    position: 'absolute',
+    bottom: 10,
+    right: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+
+  paginationText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 });
 
 export default Lounge;

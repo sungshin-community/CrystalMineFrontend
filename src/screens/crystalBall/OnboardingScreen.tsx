@@ -42,17 +42,17 @@ const OnboardingScreen = ({navigation}) => {
       description: (
         <View style={styles.nextPage}>
           <Text style={styles.subheadingNextText}>
-            <Text style={[styles.subheadingNextText]}>
-              궁금했던 활동들의{' '}
-              <Text style={styles.highlightedDescription}>생생후기</Text>
-              {'\n'}
-            </Text>
-            <Text style={styles.highlightedDescription}>
+            궁금했던 활동들의{' '}
+            <Text style={styles.highlightedDescription}>생생후기</Text>
+            {'\n'}
+          </Text>
+          <Text style={styles.subheadingNextText}>
+            <Text style={[styles.highlightedDescription, {marginTop: 10}]}>
               수정이들이 작성한 실제 후기
             </Text>
-            를 통해{'\n'}
-            궁금했던 정보를 얻어요
+            를 통해
           </Text>
+          <Text style={styles.subheadingNextText}>궁금했던 정보를 얻어요</Text>
         </View>
       ),
       image: require('../../../resources/images/Onboading2.png'),
@@ -64,9 +64,14 @@ const OnboardingScreen = ({navigation}) => {
         <View style={styles.nextPage}>
           <Text style={styles.subheadingNextText}>
             수정이들과 함께하고 싶다면?{'\n'}
-            채팅방에 입장해{'\n'}
-            스터디나 모임, 사이드 프로젝트를{'\n'}
-            만들어 모두와 진행해봐요
+            <Text style={{marginTop: 10}}>
+              <Text style={styles.highlightedDescription}>채팅방</Text>에 입장해
+              {'\n'}
+            </Text>
+            <Text style={styles.highlightedDescription}>
+              스터디나 모임, 사이드 프로젝트
+            </Text>
+            를{'\n'}만들어 모두와 진행해봐요
           </Text>
         </View>
       ),
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     fontSize: 16,
-    color: '#A055FF',
+    color: '#6E7882',
   },
   nextButton: {
     fontSize: 16,

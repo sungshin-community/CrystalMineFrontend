@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   FlatList,
@@ -10,14 +10,14 @@ import SphereItem from '../../components/SphereItem';
 import JobFilterTab from '../../components/JobFilterTab';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import UpFirstButton from '../../components/UpFirstButton';
-
 import {
-  getAllList,
-  getCuriousList,
-  getFreeList,
+  getPantheonAllList,
+  getPantheonCuriousList,
+  getPantheonFreeList,
 } from '../../common/pantheonApi';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {pantheonList} from '../../classes/Pantheon';
 
 interface LookScreenProps {
   isQuestion: boolean;
@@ -28,7 +28,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
   const navigation = useNavigation<NativeStackScreenProps<any>['navigation']>();
   const [showTopButton, setShowTopButton] = useState(false);
   const flatListRef = useRef<FlatList>(null);
-  const [postData, setPostData] = useState([]);
+  const [postData, setPostData] = useState<pantheonList[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [cursor, setCursor] = useState(0);
   const [filters, setFilters] = useState<string>('all');
@@ -47,47 +47,55 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
   const scrollToTop = () => {
     flatListRef.current?.scrollToOffset({offset: 0, animated: true});
   };
-
   const fetchPostList = async (newCursor = 0, isLoadMore = false) => {
     if (isLoading || isNextCursorLoading) return;
 
     isLoadMore ? setIsNextCursorLoading(true) : setIsLoading(true);
     try {
-      let data: any[] = [];
+      let data: pantheonList[] = [];
       if (isQuestion) {
-        data = await getCuriousList(newCursor, filters, sortBy);
+        const response = await getPantheonCuriousList(
+          newCursor,
+          filters,
+          sortBy,
+        );
+        data = response.ptQuestionList;
         console.log('data', data);
       } else if (isFree) {
-        data = await getFreeList(newCursor, filters, sortBy);
+        data = await getPantheonFreeList(newCursor, filters, sortBy);
         console.log('data', data);
       } else if (isQuestion === false && isFree === false) {
-        data = await getAllList(newCursor, filters, sortBy);
+        data = await getPantheonAllList(newCursor, filters, sortBy);
         console.log('data', data);
       }
+
       if (data.length === 0) {
         setHasMoreData(false);
       } else {
         setPostData(prevData => [
           ...prevData,
           ...data.filter(
-            item => !prevData.some(prevItem => prevItem.id === item.id),
+            item =>
+              !prevData.some(prevItem => prevItem.ptPostId === item.ptPostId),
           ),
         ]);
         setCursor(newCursor);
       }
-    } catch (error) {
-      console.error('데이터 조회 실패', error);
+    } catch (error: any) {
+      console.error('데이터 조회 실패:', error);
     } finally {
       isLoadMore ? setIsNextCursorLoading(false) : setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    setCursor(0);
-    setHasMoreData(true);
-    setPostData([]);
-    fetchPostList(0);
-  }, [filters, isFree, isQuestion, sortBy]);
+  useFocusEffect(
+    useCallback(() => {
+      setCursor(0);
+      setHasMoreData(true);
+      setPostData([]);
+      fetchPostList(0);
+    }, [filters, isFree, isQuestion, sortBy]),
+  );
 
   const handleRefresh = async () => {
     setHasMoreData(true);
@@ -128,6 +136,9 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
       <JobFilterTab
         isQuestion={isQuestion}
         onFilterChange={handleFilterChange}
+        onCheckboxChange={function (): void {
+          throw new Error('Function not implemented.');
+        }}
       />
       <FlatList
         showsVerticalScrollIndicator={false}

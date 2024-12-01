@@ -9,11 +9,15 @@ import {
 import Filter from '../../resources/icon/Filter';
 import PinkN from '../../resources/icon/PinkN';
 import JobFilterModal from './JobFilterModal';
-import CheckBox from '@react-native-community/checkbox';
+import {
+  RectangleChecked,
+  RectangleUnchecked,
+} from '../../resources/icon/CheckBox';
 
 interface JobFilterTabProps {
   isQuestion?: boolean;
   onFilterChange?: (filterNames: string) => void;
+  onCheckboxChange: () => void;
 }
 
 const data = [
@@ -86,6 +90,7 @@ const data = [
 export default function JobFilterTab({
   isQuestion = false,
   onFilterChange,
+  onCheckboxChange,
 }: JobFilterTabProps) {
   const [selected, setSelected] = useState<number[]>([1]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -94,7 +99,7 @@ export default function JobFilterTab({
   const modalSelected = selected
     .map(index => {
       if (index === 2) {
-        return undefined;
+        return 0;
       } else if (index === 1) {
         return 0;
       } else {
@@ -131,6 +136,7 @@ export default function JobFilterTab({
 
   const handleCheckboxChange = (value: boolean) => {
     setCheckboxChecked(value);
+    onCheckboxChange();
   };
 
   useEffect(() => {
@@ -180,12 +186,18 @@ export default function JobFilterTab({
 
       {isQuestion && (
         <View style={styles.checkboxContainer}>
-          <CheckBox
-            value={checkboxChecked}
-            onValueChange={handleCheckboxChange}
-            tintColors={{false: '#CECFD6', true: '#CECFD6'}}
-          />
-          <Text style={{fontWeight: '400', fontSize: 12, color: '#3A424E'}}>
+          <TouchableOpacity
+            onPress={() => handleCheckboxChange(!checkboxChecked)}>
+            {checkboxChecked ? <RectangleChecked /> : <RectangleUnchecked />}
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 12,
+              color: '#3A424E',
+              marginLeft: 10,
+              marginVertical: 8,
+            }}>
             내 직무 게시글만 보기
           </Text>
         </View>
@@ -207,7 +219,6 @@ export default function JobFilterTab({
 }
 
 const styles = StyleSheet.create({
-  // 배경 색깔 수정
   container: {
     backgroundColor: '#fff',
     paddingVertical: 12,
@@ -240,7 +251,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
-  // 배경 색깔 수정
   checkboxContainer: {
     backgroundColor: '#fff',
     position: 'absolute',
@@ -251,5 +261,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-// CheckBox 스타일링 + 클릭 후 작업 구현

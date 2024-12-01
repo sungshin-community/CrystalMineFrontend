@@ -1,44 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PurpleWarning from '../../resources/icon/PurpleWarning';
 import GraduationCap from '../../resources/icon/GraduationCap';
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import CloseIcon from '../../resources/icon/CloseIcon';
-import {PurpleRoundButton} from './Button';
+import {pantheonComment} from '../classes/Pantheon';
 
 interface SelectAnswerProps {
-  canView: boolean;
-  time: string;
-  replyCount?: number;
-  reply: {
-    content: string;
-    authorDepartment: string;
-    authorJob: string;
-    authorYear: number;
-    emoticonUrl?: string | null; // 처리 수정
-    likeCount: number;
-    liked: boolean;
-    nickname: string;
-    profileImageUrl: string;
-    ptCommentId: number;
-  };
+  reply: pantheonComment;
+  handlePurchase: (commentId: number) => void;
 }
 
 export default function SelectAnswer({
-  canView = false,
-  time,
-  replyCount,
   reply,
+  handlePurchase,
 }: SelectAnswerProps) {
-  const [isLiked, setIsLiked] = useState(reply.liked);
-  const [currentLikeCount, setCurrentLikeCount] = useState(reply.likeCount);
   const [showBox, setShowBox] = useState(false);
-
-  const handleLikePress = () => {
-    setIsLiked(!isLiked);
-    setCurrentLikeCount(isLiked ? currentLikeCount - 1 : currentLikeCount + 1);
-  };
+  const [canView, setCanView] = useState(false);
 
   const handleOpen = () => {
     setShowBox(true);
@@ -47,6 +26,12 @@ export default function SelectAnswer({
   const handleClose = () => {
     setShowBox(false);
   };
+
+  useEffect(() => {
+    if (reply.isOfPtPostAuthor || reply.canReadSelectedComment) {
+      setCanView(true);
+    }
+  }, [reply]);
 
   return (
     <View style={styles.selectBox}>
@@ -91,7 +76,7 @@ export default function SelectAnswer({
         </View>
       )}
       <View>
-        {!canView && (
+        {canView && (
           <View style={styles.viewBox}>
             <Text
               style={{
@@ -119,7 +104,8 @@ export default function SelectAnswer({
                 paddingHorizontal: 12,
                 paddingVertical: 8,
                 borderRadius: 4,
-              }}>
+              }}
+              onPress={() => handlePurchase}>
               <Text style={{color: 'white', fontWeight: '600', fontSize: 12}}>
                 포인트 사용하기
               </Text>
@@ -147,7 +133,7 @@ export default function SelectAnswer({
                     fontWeight: '600',
                     color: '#3A424E',
                   }}>
-                  {reply.nickname}
+                  {reply.displayName}
                 </Text>
                 <Text
                   style={{
@@ -155,7 +141,7 @@ export default function SelectAnswer({
                     color: '#B9BAC1',
                     fontWeight: '500',
                   }}>
-                  // time 함수 필요
+                  {reply.createdAt}
                 </Text>
               </View>
               <Text
@@ -164,14 +150,15 @@ export default function SelectAnswer({
                   fontWeight: '500',
                   color: '#89919A',
                 }}>
-                {reply.authorDepartment} · {reply.authorJob} ·{' '}
-                {reply.authorYear}
-                // 비공개 함수 처리
+                {reply.isBlind
+                  ? '비공개'
+                  : `${reply.authorDepartment} · ${reply.authorJob} · ${
+                      reply.authorYear === 0 ? '신입' : `${reply.authorYear}년`
+                    }`}
               </Text>
             </View>
           </View>
-
-          {reply.emoticonUrl && (
+          {typeof reply.emoticonUrl === 'string' && (
             <Image
               source={{uri: reply.emoticonUrl}}
               style={{
@@ -194,21 +181,20 @@ export default function SelectAnswer({
           </Text>
 
           <View style={{flexDirection: 'row', marginTop: 16}}>
-            <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
-              onPress={handleLikePress}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <HeartIcon
-                fill={isLiked ? '#FF6376' : 'white'}
-                stroke={isLiked ? '#FF6376' : '#9DA4AB'}
+                fill={reply.isLiked ? '#FF6376' : 'white'}
+                stroke={reply.isLiked ? '#FF6376' : '#9DA4AB'}
               />
-              <Text style={styles.footerText}>좋아요 {currentLikeCount}</Text>
-            </TouchableOpacity>
+              <Text style={styles.footerText}>좋아요 {reply.likeCount}</Text>
+            </View>
 
-            <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <ChatIcon />
-              <Text style={styles.footerText}>대댓글 {replyCount}</Text>
-            </TouchableOpacity>
+              <Text style={styles.footerText}>
+                대댓글 {reply.reComments ? reply.reComments.length : 0}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -291,7 +277,3 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 7,
   },
 });
-
-//triangle border 추가
-//블러 기능 추가
-//클릭 후 작업 구현

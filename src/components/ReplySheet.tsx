@@ -17,7 +17,10 @@ import {
 } from 'react-native';
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
-import {getCuriousComment, getFreeComment} from '../common/pantheonApi';
+import {
+  getPantheonCuriousComment,
+  getPantheonFreeComment,
+} from '../common/pantheonApi';
 import CommentInputBox from '../screens/crystalBall/imshi';
 
 interface ReplySheetProps {
@@ -50,9 +53,9 @@ export default function ReplySheet({
   const fetchCommentData = async () => {
     try {
       let data = [];
-      data = await getFreeComment(ptPostId);
+      data = await getPantheonFreeComment(ptPostId);
       if (!data) {
-        data = await getCuriousComment(ptPostId);
+        data = await getPantheonCuriousComment(ptPostId);
       }
       setComments(data);
       console.log('댓글 조회 성공');

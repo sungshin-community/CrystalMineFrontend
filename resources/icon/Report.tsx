@@ -112,14 +112,12 @@ export const BlackReport = (props: SvgProps) => (
   </Svg>
 );
 
-export const FooterReport = (props: SvgProps) => (
-  <Svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}>
+interface ReportIconProps {
+  fill?: string;
+}
+
+export const FooterReport = ({fill = 'none'}: ReportIconProps) => (
+  <Svg width="24" height="24" viewBox="0 0 24 24" fill={fill}>
     <Path
       d="M6.15767 11.6791C6.15767 8.45115 8.7744 5.83442 12.0023 5.83442C15.2302 5.83442 17.8469 8.45115 17.8469 11.6791V15.8571H6.15767V11.6791Z"
       stroke="#9DA4AB"

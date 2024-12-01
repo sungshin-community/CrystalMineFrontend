@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import ForwardArrow from '../../resources/icon/Arrow';
+import {UpArrow} from '../../resources/icon/Arrow';
 
 interface UpFirstButtonProps {
   onPress: () => void;
@@ -12,7 +12,7 @@ export default function UpFirstButton({onPress}: UpFirstButtonProps) {
       activeOpacity={0.5}
       onPress={onPress}
       style={styles.touchableOpacityStyle}>
-      <ForwardArrow />
+      <UpArrow />
     </TouchableOpacity>
   );
 }
@@ -26,14 +26,11 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     borderRadius: 30,
     position: 'absolute',
-    right: 32,
-    bottom: 110,
+    right: 21,
+    bottom: 145,
     shadowColor: '#4A4A4A',
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
   },
 });
-
-// svg 크기 수정
-// style 수정
