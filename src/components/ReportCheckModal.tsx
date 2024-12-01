@@ -73,15 +73,9 @@ export const ReportCheckModal = ({
         }, 100);
       } else {
         setModalVisible(false);
-        setTimeout(() => {
-          Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-        }, 100);
       }
     } catch (error) {
       setModalVisible(false);
-      setTimeout(() => {
-        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-      }, 100);
     }
   };
   return (
