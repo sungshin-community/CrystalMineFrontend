@@ -25,7 +25,7 @@ interface PostItem {
   boardId: string | null;
   postId: string;
 }
-
+import client from '../../common/client';
 type Tab = '광산' | '수정구';
 type SubTab = '내가 쓴 글' | '내가 쓴 댓글' | '스크랩한 글';
 
@@ -44,7 +44,22 @@ const MyActivity = () => {
   }, [activeTab, activeSubTab]);
 
   const transformData = (rawData: any): PostItem[] => {
-    if (!Array.isArray(rawData)) return [];
+    if (!Array.isArray(rawData)) {
+      // 수정구 데이터 구조 처리
+      if (rawData?.data?.content) {
+        return rawData.data.content.map((item: any) => ({
+          id: item.ptPostId?.toString() || '',
+          content: item.content || '내용 없음',
+          createdAt: item.createdAt || '시간 정보 없음',
+          likeCount: item.likeCount || 0,
+          commentCount: item.commentCount || 0,
+          boardName: '수정구',
+          boardId: null,
+          postId: item.ptPostId?.toString() || '',
+        }));
+      }
+      return [];
+    }
     return rawData.map((item: any, index: number) => ({
       id: item.id || index.toString(),
       content: item.content || '내용 없음',
@@ -61,15 +76,40 @@ const MyActivity = () => {
     setLoading(true);
     try {
       let data;
-      if (activeSubTab === '내가 쓴 글') {
-        data = await getMyPostList(0, 'createdAt');
-      } else if (activeSubTab === '내가 쓴 댓글') {
-        data = await getMyCommentList(0, 'createdAt');
-      } else if (activeSubTab === '스크랩한 글') {
-        data = await getScrapedPostList(0);
+
+      if (activeTab === '광산') {
+        if (activeSubTab === '내가 쓴 글') {
+          data = await getMyPostList(0, 'createdAt');
+        } else if (activeSubTab === '내가 쓴 댓글') {
+          data = await getMyCommentList(0, 'createdAt');
+        } else if (activeSubTab === '스크랩한 글') {
+          data = await getScrapedPostList(0);
+        }
+      } else if (activeTab === '수정구') {
+        let response;
+        if (activeSubTab === '내가 쓴 글') {
+          response = await client.get('/pantheon-common/my/pt-post');
+          data = response.data;
+        } else if (activeSubTab === '내가 쓴 댓글') {
+          response = await client.get('/pantheon-comments/my/pt-comment');
+          data = response.data;
+        } else if (activeSubTab === '스크랩한 글') {
+          response = await client.get('/pantheon-common/my/pt-scrap');
+          data = response.data;
+        }
+        console.log('수정구 응답:', response?.data);
       }
-      console.log('Fetched data:', data);
-      setPosts(transformData(data));
+
+      if (data) {
+        const transformedData = transformData(data);
+        console.log('변환된 데이터:', {
+          activeTab,
+          activeSubTab,
+          dataLength: transformedData.length,
+          firstItem: transformedData[0],
+        });
+        setPosts(transformedData);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
