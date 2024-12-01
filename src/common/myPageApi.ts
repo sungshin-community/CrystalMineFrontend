@@ -265,3 +265,24 @@ export const updateProfile = async (data: {
     return errorCode;
   }
 };
+
+// PantheonProfile 타입 정의 추가
+export interface PantheonProfile {
+  ptAccountId: number;
+  profileImage: string;
+  nickname: string;
+  department: string;
+  ptJob: string;
+  experienceYears: number;
+}
+
+// API 함수 추가
+export const getPantheonProfile = async () => {
+  try {
+    const response = await client.get<Response<PantheonProfile>>('/pantheon/profile/my');
+    return response.data;
+  } catch (error) {
+    console.log('판테온 프로필 조회 실패', error.response?.data);
+    return error.response?.data;
+  }
+};

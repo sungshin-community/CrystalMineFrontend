@@ -22,6 +22,8 @@ import {
   setDefaultProfileImage,
   getUser,
   uploadProfileImage,
+  PantheonProfile,
+  getPantheonProfile,
 } from '../../common/myPageApi';
 import {PurpleRoundButton} from '../../components/Button';
 import User from '../../classes/User';
@@ -50,14 +52,14 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    // fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#6E7882',
     marginLeft: 32,
     marginBottom: 11,
   },
   menuText: {
     fontSize: 15,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    // fontFamily: 'SpoqaHanSansNeo-Regular',
     color: '#222222',
   },
   arrowContainer: {
@@ -104,6 +106,7 @@ const MyPageFragment = ({navigation}: Props) => {
   const [isError, setIsError] = useState<boolean>(false);
   const isFocused = useIsFocused();
   const [errorStatus, setErrorStatus] = useState<number>();
+  const [pantheonProfile, setPantheonProfile] = useState<PantheonProfile>();
   const handleProfileModify = () => {
     navigation.navigate('ProfileModify');
   };
@@ -128,6 +131,10 @@ const MyPageFragment = ({navigation}: Props) => {
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(userDto.status) === 2) {
         setUser(userDto.data.data);
+        const pantheonResult = await getPantheonProfile();
+        if (pantheonResult.code === 'READ_PANTHEON_PROFILE_SUCCESS') {
+          setPantheonProfile(pantheonResult.data);
+        }
       } else {
         setErrorStatus(userDto.status);
         setIsError(true);
@@ -202,7 +209,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            fontFamily: 'SpoqaHanSansNeo-Bold',
+                            // fontFamily: 'SpoqaHanSansNeo-Bold',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           {user?.nickname}
@@ -210,7 +217,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            fontFamily: 'SpoqaHanSansNeo-Regular',
+                            // fontFamily: 'SpoqaHanSansNeo-Regular',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           님,
@@ -220,7 +227,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         style={{
                           marginTop: 3,
                           fontSize: 17,
-                          fontFamily: 'SpoqaHanSansNeo-Regular',
+                          // fontFamily: 'SpoqaHanSansNeo-Regular',
                           marginBottom: Platform.OS === 'ios' ? 5 : 0,
                         }}>
                         안녕하세요!
@@ -269,7 +276,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            fontFamily: 'SpoqaHanSansNeo-Bold',
+                            // fontFamily: 'SpoqaHanSansNeo-Bold',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           {user?.nickname}
@@ -278,7 +285,7 @@ const MyPageFragment = ({navigation}: Props) => {
                           style={{
                             marginTop: 3,
                             fontSize: 13,
-                            fontFamily: 'SpoqaHanSansNeo-Regular',
+                            // fontFamily: 'SpoqaHanSansNeo-Regular',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           기본 프로필
@@ -287,7 +294,7 @@ const MyPageFragment = ({navigation}: Props) => {
                           style={{
                             marginTop: 3,
                             fontSize: 13,
-                            fontFamily: 'SpoqaHanSansNeo-Regular',
+                            // fontFamily: 'SpoqaHanSansNeo-Regular',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                             color: '#89919A',
                           }}>
@@ -312,7 +319,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            fontFamily: 'SpoqaHanSansNeo-Bold',
+                            // fontFamily: 'SpoqaHanSansNeo-Bold',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           {user?.nickname}
@@ -321,7 +328,7 @@ const MyPageFragment = ({navigation}: Props) => {
                           style={{
                             marginTop: 3,
                             fontSize: 13,
-                            fontFamily: 'SpoqaHanSansNeo-Regular',
+                            // fontFamily: 'SpoqaHanSansNeo-Regular',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           수정구 전용 프로필
@@ -330,11 +337,21 @@ const MyPageFragment = ({navigation}: Props) => {
                           style={{
                             marginTop: 3,
                             fontSize: 13,
-                            fontFamily: 'SpoqaHanSansNeo-Regular',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                             color: '#89919A',
                           }}>
-                          {user?.department}
+                          {user?.department}/{pantheonProfile?.ptJob}
+                        </Text>
+                        <Text
+                          style={{
+                            marginTop: 3,
+                            fontSize: 13,
+                            marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                            color: '#89919A',
+                          }}>
+                          {pantheonProfile?.experienceYears === 0
+                            ? '신입'
+                            : `${pantheonProfile?.experienceYears}년차`}
                         </Text>
                       </View>
                     </View>
@@ -343,7 +360,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontFamily: 'SpoqaHanSansNeo-Regular',
+                      // fontFamily: 'SpoqaHanSansNeo-Regular',
                       color: '#6E7882',
                       marginLeft: 0,
                       marginTop: 25,
@@ -371,7 +388,7 @@ const MyPageFragment = ({navigation}: Props) => {
                       <Text
                         style={{
                           fontSize: 15,
-                          fontFamily: 'SpoqaHanSansNeo-Regular',
+                          // fontFamily: 'SpoqaHanSansNeo-Regular',
                           color: '#222222',
                         }}>
                         내 활동
@@ -410,7 +427,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         style={{
                           color: '#222222',
                           fontSize: 15,
-                          fontFamily: 'SpoqaHanSansNeo-Regular',
+                          // fontFamily: 'SpoqaHanSansNeo-Regular',
                         }}>
                         정회원 인증이 필요해요!
                       </Text>
@@ -418,7 +435,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         style={{
                           color: '#6E7882',
                           fontSize: 13,
-                          fontFamily: 'SpoqaHanSansNeo-Regular',
+                          // fontFamily: 'SpoqaHanSansNeo-Regular',
                         }}>
                         정회원 인증
                       </Text>
