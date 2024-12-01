@@ -55,8 +55,6 @@ import BoardFragment from './src/screens/fragments/BoardFragment';
 import PostListScreen from './src/screens/post/PostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
 import PostWriteScreen from './src/screens/post/PostWriteScreen';
-import AdWriteScreen from './src/screens/post/AdWriteScreen';
-
 // myPage
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import DirectionAgreeMyPage from './src/screens/mypage/regularMemberAuth/DirectionAgreeMyPage';
@@ -118,8 +116,6 @@ import SpinningThreeDots from './src/components/SpinningThreeDots';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
-import ProfileSetup from './src/screens/crystalBall/ProfileSetup';
-import ProfileCompleteScreen from './src/screens/crystalBall/ProfileCompleteScreen';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -1004,20 +1000,6 @@ const App = () => {
                 component={PostWriteScreen}
                 options={({navigation}) => ({
                   title: '게시글 작성',
-                  headerTitleAlign: 'left',
-                  headerTintColor: '#222222',
-                  headerTitleStyle: {
-                    fontSize: 20,
-                    fontWeight: '700',
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
-                })}
-              />
-              <Stack.Screen
-                name="AdWriteScreen"
-                component={AdWriteScreen}
-                options={({navigation}) => ({
-                  title: '광고 게시글 작성',
                   headerTitleAlign: 'left',
                   headerTintColor: '#222222',
                   headerTitleStyle: {
@@ -2048,28 +2030,11 @@ const App = () => {
                   ),
                 })}
               />
-
               <Stack.Screen
                 name="Onboarding"
                 component={OnboardingScreen}
                 options={{
                   title: 'Onboarding',
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="ProfileSetup"
-                component={ProfileSetup}
-                options={{
-                  title: 'ProfileSetup',
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="ProfileCompleteScreen"
-                component={ProfileCompleteScreen}
-                options={{
-                  title: 'ProfileCompleteScreen',
                   headerShown: false,
                 }}
               />
@@ -2905,25 +2870,12 @@ const App = () => {
                   ),
                 })}
               />
+
               <Stack.Screen
                 name="PostWriteScreen"
                 component={PostWriteScreen}
                 options={({navigation}) => ({
                   title: '게시글 작성',
-                  headerTitleAlign: 'left',
-                  headerTintColor: '#222222',
-                  headerTitleStyle: {
-                    fontSize: 20,
-                    fontWeight: '700',
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
-                })}
-              />
-              <Stack.Screen
-                name="AdWriteScreen"
-                component={AdWriteScreen}
-                options={({navigation}) => ({
-                  title: '광고 게시글 작성',
                   headerTitleAlign: 'left',
                   headerTintColor: '#222222',
                   headerTitleStyle: {
@@ -3032,6 +2984,7 @@ const App = () => {
                   },
                 })}
               />
+
               <Stack.Screen
                 name="ImageViewerScreen"
                 component={ImageViewerScreen}
@@ -3767,18 +3720,17 @@ const App = () => {
                   title: '',
                 })}
               />
+
               {/* 마이페이지 - 포인트 */}
+
               <Stack.Screen
                 name="PointScreen"
                 component={PointScreen}
-                options={({navigation}) => ({
-                  title: '포인트 내역',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
-                  },
+                options={{
+                  headerShown: false, // 헤더를 숨깁니다
+                }}
+              />
+              {/*                 
                   // headerLeft: () => (
                   //   <TouchableHighlight
                   //     underlayColor="#EEEEEE"
@@ -3795,8 +3747,8 @@ const App = () => {
                   //     <BackButtonIcon />
                   //   </TouchableHighlight>
                   // ),
-                })}
-              />
+                // })} */}
+
               <Stack.Screen
                 name="MyActivity"
                 component={MyActivity}
@@ -3812,6 +3764,7 @@ const App = () => {
                   headerTitleAlign: 'left',
                 }}
               />
+
               <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}
