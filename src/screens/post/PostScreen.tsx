@@ -170,6 +170,7 @@ const PostScreen = ({navigation, route}: Props) => {
         navigation.reset({routes: [{name: 'SplashHome'}]});
       } else if (getHundredsDigit(result.status) === 2) {
         setPost(result.data.data);
+        return true;
       } else if (result.data.code === 'BOARD_ALREADY_BLIND') {
         setTimeout(function () {
           Toast.show('블라인드된 게시판입니다.', Toast.SHORT);
