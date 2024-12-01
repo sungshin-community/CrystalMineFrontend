@@ -40,6 +40,11 @@ interface pantheonDetail {
   userYear: number;
   point?: number;
   isSelected?: boolean;
+  job?: string;
+  category?: string;
+  year?: number;
+  scale?: string;
+  nickname?: string; // 변수 백엔드 수정
 }
 
 interface pantheonComment {

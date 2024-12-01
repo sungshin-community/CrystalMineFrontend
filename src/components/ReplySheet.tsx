@@ -18,10 +18,16 @@ import {
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import {
-  getPantheonCuriousComment,
+  deleltePantheonCommentLike,
   getPantheonFreeComment,
+  postPantheonComment,
+  postPantheonCommentLike,
+  postPantheonReComment,
 } from '../common/pantheonApi';
-import CommentInputBox from '../screens/crystalBall/imshi';
+import {pantheonComment} from '../classes/Pantheon';
+import CommentInputBox, {
+  CommentInputBoxRef,
+} from '../screens/crystalBall/imshi';
 
 interface ReplySheetProps {
   ptPostId: number;
@@ -34,29 +40,12 @@ export default function ReplySheet({
   setVisible,
   ptPostId,
 }: ReplySheetProps) {
-  interface Comment {
-    content: string;
-    authorDepartment: string;
-    authorJob: string;
-    authorYear: number;
-    emoticonUrl?: string | null;
-    likeCount: number;
-    liked: boolean;
-    nickname: string;
-    profileImageUrl: string;
-    ptCommentId: number;
-    selected?: boolean;
-    reComments: Comment[];
-  }
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<pantheonComment[]>([]);
 
   const fetchCommentData = async () => {
     try {
       let data = [];
       data = await getPantheonFreeComment(ptPostId);
-      if (!data) {
-        data = await getPantheonCuriousComment(ptPostId);
-      }
       setComments(data);
       console.log('댓글 조회 성공');
     } catch (error) {
@@ -154,6 +143,101 @@ export default function ReplySheet({
     });
   };
 
+  const handleCommentLike = async (isLiked: boolean, commentId: number) => {
+    try {
+      if (isLiked) {
+        await deleltePantheonCommentLike(commentId);
+      } else {
+        await postPantheonCommentLike(commentId);
+      }
+      await fetchCommentData();
+      console.log('좋아요 상태 변경 성공');
+    } catch (error) {
+      console.error('좋아요 상태 변경 실패:', error);
+    }
+  };
+
+  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
+  const flatListRef = useRef<FlatList>(null);
+  const commentInputRef = useRef<CommentInputBoxRef>(null);
+
+  const handleFocus = () => {
+    commentInputRef.current?.focusInput();
+  };
+  const [parentId, setParentId] = useState<number>(0);
+  const [isRecomment, setIsRecomment] = useState<boolean>(false);
+
+  const handleCommentClick = (ptCommentId: number, index: number) => {
+    setFocusCommentId(ptCommentId);
+    handleFocus();
+    setParentId(ptCommentId);
+    setIsRecomment(true);
+
+    if (comments.length > index) {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToIndex({
+          index: index,
+          animated: true,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setFocusCommentId(null);
+    });
+    return () => {
+      keyboardHideListener.remove();
+    };
+  }, []);
+
+  const handlePostComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emoticonId?: number,
+  ) => {
+    try {
+      await postPantheonComment(content, isAnonymous, ptPostId, emoticonId);
+      await fetchCommentData();
+      console.log('댓글 생성 성공');
+    } catch (error) {
+      console.error('댓글 생성 실패:', error);
+    }
+  };
+
+  const handlePostReComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emoticonId?: number,
+  ) => {
+    try {
+      await postPantheonReComment(
+        parentId,
+        content,
+        isAnonymous,
+        ptPostId,
+        emoticonId,
+      );
+
+      await fetchCommentData();
+      console.log('대댓글 생성 성공');
+    } catch (error) {
+      console.error('대댓글 생성 실패:', error);
+    }
+  };
+
+  const postComment = async (content: string, isAnonymous: boolean) => {
+    if (isRecomment) {
+      handlePostReComment(content, isAnonymous);
+      console.log('대댓글 생성');
+    } else {
+      handlePostComment(content, isAnonymous);
+      console.log('댓글 생성');
+    }
+    setIsRecomment(false);
+  };
+
   return (
     <Modal
       visible={visible}
@@ -175,113 +259,259 @@ export default function ReplySheet({
             ]}
             {...panResponder.panHandlers}>
             <View style={styles.homeIndicator} />
-            <View></View>
+
             <FlatList
               style={{width: '100%', flex: 1}}
+              ref={flatListRef}
               data={comments}
               renderItem={({item, index}) => (
-                <View style={{flexDirection: 'row', padding: 16}}>
-                  <Image
-                    source={{uri: item.profileImageUrl}}
-                    style={{
-                      borderRadius: 14,
-                      marginRight: 10,
-                      width: 28,
-                      height: 28,
-                    }}
-                    resizeMode="cover"
-                  />
-                  <View style={{flex: 1}}>
-                    <View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          marginBottom: 2,
-                        }}>
-                        <Text
+                <View>
+                  <View
+                    style={[
+                      {flexDirection: 'row', padding: 16},
+                      item.ptCommentId === focusCommentId && {
+                        backgroundColor: '#f6f6f6',
+                      },
+                    ]}>
+                    <Image
+                      source={{uri: item.profileImageUrl}}
+                      style={{
+                        borderRadius: 14,
+                        marginRight: 10,
+                        width: 28,
+                        height: 28,
+                      }}
+                      resizeMode="cover"
+                    />
+                    <View style={{flex: 1}}>
+                      <View>
+                        <View
                           style={{
-                            fontSize: 14,
-                            marginRight: 6,
-                            fontWeight: '600',
-                            color:
-                              item.nickname === '글쓴이'
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginBottom: 2,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              marginRight: 6,
+                              fontWeight: '600',
+                              color: item.displayName.includes('글쓴이')
                                 ? '#A055FF'
                                 : '#3A424E',
-                          }}>
-                          {item.nickname}
-                        </Text>
+                            }}>
+                            {item.displayName}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: '#B9BAC1',
+                              fontWeight: '500',
+                            }}>
+                            {item.createdAt}
+                          </Text>
+                        </View>
                         <Text
                           style={{
                             fontSize: 12,
-                            color: '#B9BAC1',
                             fontWeight: '500',
+                            color: '#89919A',
                           }}>
-                          // time 함수 필요
+                          {item.isBlind
+                            ? '비공개'
+                            : `${item.authorDepartment} · ${item.authorJob} · ${
+                                item.authorYear === 0
+                                  ? '신입'
+                                  : `${item.authorYear}년`
+                              }`}
                         </Text>
                       </View>
+
+                      {item.emoticonUrl && (
+                        <Image
+                          source={{uri: item.emoticonUrl}}
+                          style={{
+                            marginTop: 10,
+                            width: 100,
+                            height: 100,
+                          }}
+                          resizeMode="cover"
+                        />
+                      )}
+
                       <Text
                         style={{
-                          fontSize: 12,
-                          fontWeight: '500',
-                          color: '#89919A',
-                        }}>
-                        {item.authorDepartment} · {item.authorJob} ·{' '}
-                        {item.authorYear}
-                        // 비공개 함수 처리
-                      </Text>
-                    </View>
-
-                    {item.emoticonUrl && (
-                      <Image
-                        source={{uri: item.emoticonUrl}}
-                        style={{
+                          fontSize: 14,
+                          fontWeight: '400',
+                          color: '#222222',
                           marginTop: 10,
-                          width: 100,
-                          height: 100,
-                        }}
-                        resizeMode="cover"
-                      />
-                    )}
+                        }}>
+                        {item.content}
+                      </Text>
 
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '400',
-                        color: '#222222',
-                        marginTop: 10,
-                      }}>
-                      {item.content}
-                    </Text>
-
-                    <View style={{flexDirection: 'row', marginTop: 12}}>
-                      <TouchableOpacity
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <HeartIcon
-                          fill={item.liked ? '#FF6376' : 'white'}
-                          stroke={item.liked ? '#FF6376' : '#9DA4AB'}
-                        />
-                        <Text style={styles.footerText}>
-                          좋아요 {item.likeCount}개
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <ChatIcon />
-                        <Text style={styles.footerText}>댓글달기 3개</Text>
-                      </TouchableOpacity>
+                      <View style={{flexDirection: 'row', marginTop: 12}}>
+                        <TouchableOpacity
+                          style={{flexDirection: 'row', alignItems: 'center'}}
+                          onPress={() =>
+                            handleCommentLike(item.isLiked, item.ptCommentId)
+                          }>
+                          <HeartIcon
+                            fill={item.isLiked ? '#FF6376' : 'white'}
+                            stroke={item.isLiked ? '#FF6376' : '#9DA4AB'}
+                          />
+                          <Text style={styles.footerText}>
+                            좋아요 {item.likeCount}개
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{flexDirection: 'row', alignItems: 'center'}}
+                          onPress={() =>
+                            handleCommentClick(item.ptCommentId, index)
+                          }>
+                          <ChatIcon />
+                          <Text style={styles.footerText}>
+                            댓글달기 {item.reComments.length}개
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
+                  {item.reComments && item.reComments.length > 0 && (
+                    <View style={{marginTop: 24}}>
+                      {item.reComments.map(
+                        (reComment: pantheonComment, idx: number) => (
+                          <View
+                            style={[
+                              {
+                                marginBottom: 20,
+                              },
+                              idx === item.reComments.length - 1 && {
+                                marginBottom: 0,
+                              },
+                            ]}>
+                            <View
+                              style={{flexDirection: 'row', marginLeft: 48}}>
+                              <Image
+                                source={{uri: reComment.profileImageUrl}}
+                                style={{
+                                  borderRadius: 10,
+                                  marginRight: 10,
+                                  width: 24,
+                                  height: 24,
+                                }}
+                                resizeMode="cover"
+                              />
+                              <View style={{flex: 1}}>
+                                <View>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                      marginBottom: 2,
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 14,
+                                        marginRight: 6,
+                                        fontWeight: '600',
+                                        color: reComment.displayName.includes(
+                                          '글쓴이',
+                                        )
+                                          ? '#A055FF'
+                                          : '#3A424E',
+                                      }}>
+                                      {reComment.displayName}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 12,
+                                        color: '#B9BAC1',
+                                        fontWeight: '500',
+                                      }}>
+                                      {reComment.createdAt}
+                                    </Text>
+                                  </View>
+                                  <Text
+                                    style={{
+                                      fontSize: 12,
+                                      fontWeight: '500',
+                                      color: '#89919A',
+                                    }}>
+                                    {reComment.isBlind
+                                      ? '비공개'
+                                      : `${reComment.authorDepartment} · ${
+                                          item.authorJob
+                                        } · ${
+                                          reComment.authorYear === 0
+                                            ? '신입'
+                                            : `${reComment.authorYear}년`
+                                        }`}
+                                  </Text>
+                                </View>
+
+                                {reComment.emoticonUrl && (
+                                  <Image
+                                    source={{uri: reComment.emoticonUrl}}
+                                    style={{
+                                      marginTop: 10,
+                                      width: 100,
+                                      height: 100,
+                                    }}
+                                    resizeMode="cover"
+                                  />
+                                )}
+
+                                <Text
+                                  style={{
+                                    fontSize: 14,
+                                    fontWeight: '400',
+                                    color: '#222222',
+                                    marginTop: 10,
+                                  }}>
+                                  {reComment.content}
+                                </Text>
+
+                                <View
+                                  style={{flexDirection: 'row', marginTop: 12}}>
+                                  <TouchableOpacity
+                                    style={{
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                    }}
+                                    onPress={() =>
+                                      handleCommentLike(
+                                        reComment.isLiked,
+                                        reComment.ptCommentId,
+                                      )
+                                    }>
+                                    <HeartIcon
+                                      fill={
+                                        reComment.isLiked ? '#FF6376' : 'white'
+                                      }
+                                      stroke={
+                                        reComment.isLiked
+                                          ? '#FF6376'
+                                          : '#9DA4AB'
+                                      }
+                                    />
+                                    <Text style={styles.footerText}>
+                                      좋아요 {reComment.likeCount}개
+                                    </Text>
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        ),
+                      )}
+                    </View>
+                  )}
                 </View>
               )}
             />
           </Animated.View>
         </View>
-        <CommentInputBox
-          onSubmit={function (comment: string, isAnonymous: boolean): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        <CommentInputBox ref={commentInputRef} onSubmit={postComment} />
       </KeyboardAvoidingView>
     </Modal>
   );

@@ -17,7 +17,7 @@ import {
 interface JobFilterTabProps {
   isQuestion?: boolean;
   onFilterChange?: (filterNames: string) => void;
-  onCheckboxChange: () => void;
+  onCheckboxChange: (boxChecked: boolean) => void;
 }
 
 const data = [
@@ -109,11 +109,14 @@ export default function JobFilterTab({
     .filter(index => index !== undefined);
 
   const handleChipPress = (index: number) => {
+    if (checkboxChecked) {
+      setCheckboxChecked(false);
+    }
     if (index === 0) {
       setModalVisible(true);
       return;
     }
-    if (index === 1 || index === 2) {
+    if (index === 1 || index === 2 || checkboxChecked) {
       setSelected(prevSelected => {
         if (prevSelected.includes(index)) {
           return [];
@@ -136,7 +139,10 @@ export default function JobFilterTab({
 
   const handleCheckboxChange = (value: boolean) => {
     setCheckboxChecked(value);
-    onCheckboxChange();
+    if (!checkboxChecked) {
+      setSelected([]);
+    }
+    onCheckboxChange(checkboxChecked);
   };
 
   useEffect(() => {
@@ -150,10 +156,14 @@ export default function JobFilterTab({
   }, [selected]);
 
   useEffect(() => {
-    if (selected.length === 0) {
+    if (selected.length === 0 && !checkboxChecked) {
       setSelected([1]);
     }
-  }, [selected]);
+  }, [selected, checkboxChecked]);
+
+  useEffect(() => {
+    setCheckboxChecked(false);
+  }, [isQuestion]);
 
   return (
     <View>

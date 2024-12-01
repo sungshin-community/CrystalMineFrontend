@@ -1,4 +1,3 @@
-import {AxiosResponse} from 'axios';
 import client from './client';
 
 export async function getPantheonAllList(
@@ -344,39 +343,22 @@ export const postCommentAdopt = async (
   }
 };
 
-/*
 export const postPantheonReport = async (
   id: number,
   reasonId: number,
   detail?: string,
 ) => {
   try {
-    console.log('게시물 신고 요청 시작');
     const requestBody = {
-      detail: detail || '', // 기본값 제공
+      detail: detail || '',
       reasonId,
     };
-
-    console.log('API 요청 시작:', `/pantheon-common/${id}/report`);
-    console.log('요청 데이터:', requestBody);
-
     const response = await client.post(
       `/pantheon-common/${id}/report`,
       requestBody,
     );
-    console.log('게시물 신고 성공:', response.data);
-  } catch (e: any) {
-    // 에러를 자세히 출력
-    if (e.response) {
-      console.error('HTTP 상태 코드:', e.response.status); // 404 등 상태 코드
-      console.error('응답 데이터:', e.response.data); // 서버에서 반환한 에러 메시지
-      console.error('응답 헤더:', e.response.headers); // 서버의 응답 헤더
-    } else if (e.request) {
-      console.error('요청이 서버에 도달하지 못함:', e.request); // 요청이 전송되었지만 응답을 받지 못한 경우
-    } else {
-      console.error('요청 설정 에러:', e.message); // 요청 설정 자체에서 발생한 에러
-    }
-
-    console.error('전체 에러 객체:', e); // 전체 에러 객체 출력
+    console.log('판테온 게시물 신고 성공');
+  } catch (error: any) {
+    console.log('판테온 게시물 신고 에러', error);
   }
-};*/
+};
