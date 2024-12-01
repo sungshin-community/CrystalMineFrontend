@@ -23,13 +23,14 @@ import PostDto from '../../classes/PostDto';
 import {
   deleteComment,
   deletePosts,
-  getEmoticons,
+  deleteAdPosts,
   getComments,
   getPosts,
   reportPost,
   setPostLike,
   setPostScrap,
   setUserMute,
+  getAdPosts,
 } from '../../common/boardApi';
 import {addComment, addRecomment, reportComment} from '../../common/boardApi';
 import CommentDto from '../../classes/CommentDto';
@@ -47,6 +48,7 @@ import {logout} from '../../common/authApi';
 import AdMob from '../../components/AdMob';
 import CommentWriteContainer from '../../components/CommentWriteContainer';
 import CloseIcon from '../../../resources/icon/CloseIcon';
+import AdPost from '../../components/AdPost';
 
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
@@ -146,44 +148,60 @@ const PostScreen = ({navigation, route}: Props) => {
     );
   };
   const getPostsFunc = async () => {
-    const result = await getPosts(route.params.postId);
-    if (result.status === 401) {
-      setTimeout(function () {
-        Toast.show(
-          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-          Toast.SHORT,
-        );
-      }, 100);
-      logout();
-      navigation.reset({routes: [{name: 'SplashHome'}]});
-    } else if (getHundredsDigit(result.status) === 2) {
-      setPost(result.data.data);
-    } else if (result.data.code === 'BOARD_ALREADY_BLIND') {
-      setTimeout(function () {
-        Toast.show('블라인드된 게시판입니다.', Toast.SHORT);
-      }, 100);
-      navigation.goBack();
-    } else if (result.data.code === 'POST_NOT_FOUND') {
-      result.data;
-      setTimeout(function () {
-        Toast.show('삭제되었거나 블라인드된 게시글입니다.', Toast.SHORT);
-      }, 100);
-      navigation.goBack();
-    } else if (result.data.code === 'BOARD_ALREADY_DELETED') {
-      setTimeout(function () {
-        Toast.show('삭제된 게시판입니다.', Toast.SHORT);
-      }, 100);
-      navigation.goBack();
-    } else if (result.data.code === 'POST_ALREDY_BLOCK') {
-      setTimeout(function () {
-        Toast.show('숨김처리된 게시글입니다.', Toast.SHORT);
-      }, 100);
-      navigation.goBack();
-    } else {
-      setTimeout(function () {
-        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-      }, 100);
-      navigation.goBack();
+    try {
+      let result;
+
+      // boardId 확인
+      if (route.params.boardId === 98) {
+        result = await getAdPosts(route.params.postId);
+        console.log('광고글 조회', result);
+      } else {
+        result = await getPosts(route.params.postId);
+      }
+
+      if (result.status === 401) {
+        setTimeout(function () {
+          Toast.show(
+            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+            Toast.SHORT,
+          );
+        }, 100);
+        logout();
+        navigation.reset({routes: [{name: 'SplashHome'}]});
+      } else if (getHundredsDigit(result.status) === 2) {
+        setPost(result.data.data);
+        return true;
+      } else if (result.data.code === 'BOARD_ALREADY_BLIND') {
+        setTimeout(function () {
+          Toast.show('블라인드된 게시판입니다.', Toast.SHORT);
+        }, 100);
+        navigation.goBack();
+      } else if (result.data.code === 'POST_NOT_FOUND') {
+        result.data;
+        setTimeout(function () {
+          Toast.show('삭제되었거나 블라인드된 게시글입니다.', Toast.SHORT);
+        }, 100);
+        navigation.goBack();
+      } else if (result.data.code === 'BOARD_ALREADY_DELETED') {
+        setTimeout(function () {
+          Toast.show('삭제된 게시판입니다.', Toast.SHORT);
+        }, 100);
+        navigation.goBack();
+      } else if (result.data.code === 'POST_ALREDY_BLOCK') {
+        setTimeout(function () {
+          Toast.show('숨김처리된 게시글입니다.', Toast.SHORT);
+        }, 100);
+        navigation.goBack();
+      } else {
+        setTimeout(function () {
+          Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+        }, 100);
+        navigation.goBack();
+      }
+      return false;
+    } catch (error) {
+      console.error('Error getting posts:', error);
+      return false;
     }
   };
 
@@ -191,11 +209,17 @@ const PostScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     async function init() {
       setIsLoading(true);
-      getPostsFunc();
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
-      console.log('commentData', commentData);
-      setIsLoading(false);
+      try {
+        const result = await getPostsFunc();
+        if (result) {
+          const commentData = await getComments(route.params.postId);
+          setComments(commentData);
+        }
+      } catch (error) {
+        console.error('Error initializing:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
     init();
   }, [componentModalVisible]);
@@ -233,6 +257,19 @@ const PostScreen = ({navigation, route}: Props) => {
     const result = await deletePosts(postId);
     if (result) return true;
     else return false;
+  };
+  // 광고 게시글 삭제
+  const handleAdPostDelete = async (postAdId: number) => {
+    const result = await deleteAdPosts(postAdId);
+    if (result) {
+      navigation.goBack();
+      navigation.navigate('PostListScreen', {
+        boardId: post.boardId,
+      });
+      return true;
+    } else {
+      return false;
+    }
   };
   // 이용자 차단, 이용자 뮤트
   const handleMuteUser = async (postId: number) => {
@@ -452,15 +489,29 @@ const PostScreen = ({navigation, route}: Props) => {
           contentContainerStyle={{flexGrow: 1}}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
-          <Post
-            navigation={navigation}
-            post={post}
-            handlePostLike={handlePostLike}
-            handlePostScrap={handlePostScrap}
-            handlePostDelete={handlePostDelete}
-            handlePostReport={handlePostReport}
-            componentModalVisible={componentModalVisible}
-            setComponentModalVisible={setComponentModalVisible}></Post>
+          {post?.boardId === 98 ? (
+            <AdPost
+              navigation={navigation}
+              post={post}
+              handlePostLike={handlePostLike}
+              handlePostScrap={handlePostScrap}
+              handleAdPostDelete={handleAdPostDelete}
+              handlePostReport={handlePostReport}
+              componentModalVisible={componentModalVisible}
+              setComponentModalVisible={setComponentModalVisible}
+            />
+          ) : (
+            <Post
+              navigation={navigation}
+              post={post}
+              handlePostLike={handlePostLike}
+              handlePostScrap={handlePostScrap}
+              handlePostDelete={handlePostDelete}
+              handlePostReport={handlePostReport}
+              componentModalVisible={componentModalVisible}
+              setComponentModalVisible={setComponentModalVisible}
+            />
+          )}
           <AdMob />
           <View style={{flex: 1}}>
             <FlatList

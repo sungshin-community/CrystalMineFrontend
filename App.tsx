@@ -55,6 +55,8 @@ import BoardFragment from './src/screens/fragments/BoardFragment';
 import PostListScreen from './src/screens/post/PostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
 import PostWriteScreen from './src/screens/post/PostWriteScreen';
+import AdWriteScreen from './src/screens/post/AdWriteScreen';
+
 // myPage
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import DirectionAgreeMyPage from './src/screens/mypage/regularMemberAuth/DirectionAgreeMyPage';
@@ -1002,6 +1004,20 @@ const App = () => {
                 component={PostWriteScreen}
                 options={({navigation}) => ({
                   title: '게시글 작성',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#222222',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                })}
+              />
+              <Stack.Screen
+                name="AdWriteScreen"
+                component={AdWriteScreen}
+                options={({navigation}) => ({
+                  title: '광고 게시글 작성',
                   headerTitleAlign: 'left',
                   headerTintColor: '#222222',
                   headerTitleStyle: {
@@ -2894,6 +2910,20 @@ const App = () => {
                 component={PostWriteScreen}
                 options={({navigation}) => ({
                   title: '게시글 작성',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#222222',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                })}
+              />
+              <Stack.Screen
+                name="AdWriteScreen"
+                component={AdWriteScreen}
+                options={({navigation}) => ({
+                  title: '광고 게시글 작성',
                   headerTitleAlign: 'left',
                   headerTintColor: '#222222',
                   headerTitleStyle: {

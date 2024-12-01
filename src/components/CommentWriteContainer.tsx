@@ -437,7 +437,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
                 bottom: 0,
               }}
               onPress={onSubmit}>
-              {newComment || selectedEmoji ? <PurplePostSend /> : <PostSend />}
+              {newComment ? <PurplePostSend /> : <PostSend />}
             </Pressable>
           </Text>
         </View>

@@ -25,6 +25,7 @@ import {
   reportBoard,
   toggleBoardPin,
   checkIsAdminForAdBoardPost,
+  getRandomMidAd,
 } from '../../common/boardApi';
 import BoardDetailDto, {
   BoardHotPostDto,
@@ -35,17 +36,9 @@ import SpinningThreeDots from '../../components/SpinningThreeDots';
 import {BigGrayFlag} from '../../../resources/icon/GrayFlag';
 import {fontMedium, fontRegular, fontBold} from '../../common/font';
 import Board from '../../classes/Board';
-import {BigOrangeFlag} from '../../../resources/icon/OrangeFlag';
-import {
-  BigDarkPin,
-  BigGrayPin,
-  BigOrangePin,
-  BigPurplePin,
-} from '../../../resources/icon/Pin';
 import SearchIcon from '../../../resources/icon/SearchIcon';
 import NoReport, {Report} from '../../../resources/icon/Report';
 import SettingIcon from '../../../resources/icon/SettingIcon';
-import {ModalBottom} from '../../components/ModalBottom';
 import {SelectModalBottom} from '../../components/SelectModalBottom';
 import SortIcon from '../../../resources/icon/SortIcon';
 import {logout} from '../../common/authApi';
@@ -53,10 +46,13 @@ import {getHundredsDigit} from '../../common/util/statusUtil';
 import WaterMark from '../../components/WaterMark';
 import PurpleArrow from '../../../resources/icon/PurpleArrow';
 import HotIcon from '../../../resources/icon/HotIcon';
-import PostVoteIcon from '../../../resources/icon/PostVoteIcon';
+import PostAdMid from '../../components/PostAdMid';
 import PostAdItem from '../../components/PostAdItem';
 import PostWriteBCase from '../../components/PostWriteBCase';
 import GlobalNavbar from '../../components/GlobalNavbar';
+import remoteConfig from '@react-native-firebase/remote-config';
+import fetchAndActivate from '@react-native-firebase/remote-config';
+import getValue from '@react-native-firebase/remote-config';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -87,17 +83,96 @@ const PostListScreen = ({navigation, route}: Props) => {
   const [isNextPageLoading, setIsNextPageLoading] = useState<boolean>(false);
   const [isHotBoard, setIsHotBoard] = useState<boolean>(true);
   const [isAdBoard, setIsAdBoard] = useState<boolean>(false);
+  const [config, setConfig] = useState<{
+    componentToUse: string;
+  } | null>(null);
+  const [midAd, setMidAd] = useState<any>(null);
+
+  // 중간 광고 가져오는 함수
+  const fetchMidAd = async () => {
+    try {
+      const adData = await getRandomMidAd(route.params.boardId);
+      console.log('광고 데이터:', adData);
+      if (adData) {
+        // 광고 데이터 구조 맞추기
+        const processedAdData = {
+          postAdId: adData.postAdId,
+          title: adData.title,
+          content: adData.content,
+          thumbnail: adData.thumbnail,
+          profileImage: adData.profileImage,
+          displayName: '광고',
+          storeName: adData.storeName,
+          createdAt: adData.createdAt,
+          isOwner: adData.isOwner,
+          imageCount: adData.imageCount || 0,
+          isAd: true,
+        };
+        setMidAd(processedAdData);
+      }
+    } catch (error) {
+      console.error('중간 광고 로딩 실패:', error);
+    }
+  };
+
+  // 중간 광고: 5개마다 광고 삽입
+  const getProcessedData = () => {
+    if (!boardDetail || !midAd) return boardDetail;
+
+    const processed = [...boardDetail];
+    for (let i = 5; i < processed.length; i += 6) {
+      processed.splice(i, 0, {...midAd, isAd: true});
+    }
+    return processed;
+  };
+
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        const remoteConfigInstance = remoteConfig();
+
+        console.log('Fetching existing activated value...');
+        const currentComponent = remoteConfigInstance
+          .getValue('write_component')
+          .asString();
+
+        if (currentComponent) {
+          console.log('Using previously activated value:', currentComponent);
+          setConfig({
+            componentToUse: currentComponent,
+          });
+        } else {
+          console.log('No previously activated value. Fetching new values...');
+          await remoteConfigInstance.fetchAndActivate();
+          const newComponent = remoteConfigInstance
+            .getValue('write_component')
+            .asString();
+
+          console.log('Fetched and activated value:', newComponent);
+          setConfig({
+            componentToUse: newComponent,
+          });
+        }
+      } catch (error) {
+        console.log('Remote Config error:', error);
+      }
+    };
+
+    loadConfig();
+  }, []);
+  console.log('config:', config);
 
   const listHeaderCondition =
     route.params?.boardId !== 5 &&
     route.params?.boardId !== 6 &&
     route.params?.boardId !== 7 &&
     route.params?.boardId !== 8 &&
-    route.params?.boardId !== 9; // 광고/인기글 제외 게시판 목록
+    route.params?.boardId !== 9;
   const fetchAdminStatus = useCallback(async (boardId: number) => {
     try {
       const response = await checkIsAdminForAdBoardPost(boardId);
       setIsAdBoard(response.data);
+      console.log('관리자 권한 확인', isAdBoard);
     } catch (error) {
       console.error('관리자 권한 확인', error);
     }
@@ -177,6 +252,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         if (boardInfo?.id) {
           await fetchAdminStatus(boardInfo.id);
         }
+        await fetchMidAd(); // 광고 데이터 가져오기
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
         Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
@@ -477,10 +553,10 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           )}
 
-        {boardDetail.length === 0 ? (
+        {boardDetail.length === 0 && route.params.boardId !== 98 ? (
           <>
             <View style={{backgroundColor: 'white'}}>
-              {!isLoading && (
+              {!isLoading && config?.componentToUse === 'writing_box' && (
                 <PostWriteBCase
                   navigation={navigation}
                   route={route}
@@ -522,18 +598,19 @@ const PostListScreen = ({navigation, route}: Props) => {
               <FlatList
                 showsVerticalScrollIndicator={false}
                 style={{flex: 1, backgroundColor: '#FFFFFF'}}
-                data={boardDetail}
+                data={getProcessedData()}
                 renderItem={({item, index}) =>
-                  boardInfo?.id === 98 ? (
+                  item.isAd ? (
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('PostScreen', {
-                          postId: item.postId,
+                          postId: item.postAdId,
+                          boardId: 98,
                         });
                       }}>
-                      <PostAdItem
+                      <PostAdMid
                         post={item}
-                        boardId={boardInfo?.id}
+                        boardId={98}
                         navigation={navigation}
                         route={route}
                       />
@@ -545,7 +622,16 @@ const PostListScreen = ({navigation, route}: Props) => {
                           postId: item.postId,
                         });
                       }}>
-                      <PostItem post={item} boardId={boardInfo?.id} />
+                      {boardInfo?.id === 98 ? (
+                        <PostAdItem
+                          post={item}
+                          boardId={boardInfo?.id}
+                          navigation={navigation}
+                          route={route}
+                        />
+                      ) : (
+                        <PostItem post={item} boardId={boardInfo?.id} />
+                      )}
                     </TouchableOpacity>
                   )
                 }
@@ -653,14 +739,15 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </TouchableOpacity> */}
                           </View>
                         )}
-                      {route.params.boardId !== 98 && (
-                        <PostWriteBCase
-                          navigation={navigation}
-                          route={route}
-                          contentType={boardInfo?.contentType || 'TYPE1'}
-                          hasTitle={boardDetail?.hasTitle}
-                        />
-                      )}
+                      {route.params.boardId !== 98 &&
+                        config?.componentToUse === 'writing_box' && (
+                          <PostWriteBCase
+                            navigation={navigation}
+                            route={route}
+                            contentType={boardInfo?.contentType || 'TYPE1'}
+                            hasTitle={boardDetail?.hasTitle}
+                          />
+                        )}
                     </View>
                   )
                 }
@@ -678,8 +765,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {(!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
-          (route.params?.boardId === 98 && isAdBoard)) && (
+        {config?.componentToUse === 'floating_button' && (
           <FloatingWriteButton
             onPress={() =>
               navigation.navigate('PostWriteScreen', {
@@ -689,9 +775,22 @@ const PostListScreen = ({navigation, route}: Props) => {
             }
           />
         )}
-        <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
-          <GlobalNavbar navigation={navigation} />
-        </View>
+        {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
+          (route.params?.boardId === 98 && isAdBoard && (
+            <FloatingWriteButton
+              onPress={() =>
+                navigation.navigate(
+                  route.params.boardId === 98
+                    ? 'AdWriteScreen'
+                    : 'PostWriteScreen',
+                  {
+                    boardId: route.params.boardId,
+                    contentType: boardInfo?.contentType,
+                  },
+                )
+              }
+            />
+          ))}
       </View>
     </>
   );
