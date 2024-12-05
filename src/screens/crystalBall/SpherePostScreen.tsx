@@ -34,10 +34,12 @@ import AdMob from '../../components/AdMob';
 import PostFooter from '../../components/PostFooter';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import CommentInputBox, {CommentInputBoxRef} from './imshi';
 import {pantheonComment, pantheonDetail} from '../../classes/Pantheon';
 import CustomToast from '../../components/CustomToast';
 import ReviewJobDetail from '../../components/ReviewJobDetail';
+import SphereCommentInput, {
+  SphereCommentInputRef,
+} from '../../components/SphereCommentInput';
 
 interface SpherePostScreenProps {
   route: {
@@ -57,10 +59,10 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     undefined,
   );
   const [comments, setComments] = useState<pantheonComment[]>([]);
-  const commentInputRef = useRef<CommentInputBoxRef>(null);
+  const commentInputRef = useRef<SphereCommentInputRef>(null);
   const [toastVisible, setToastVisible] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>('');
-  const [paraentId, setParentId] = useState<number>(0);
+  const [paraentId, setParentId] = useState<number | null>(null);
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const [selectComment, setSelectComment] = useState<
     pantheonComment | undefined
@@ -68,6 +70,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
 
   const handleFocus = () => {
+    setIsRecomment(false);
+    setParentId(null);
     commentInputRef.current?.focusInput();
   };
 
@@ -153,7 +157,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const handlePostComment = async (
     content: string,
     isAnonymous: boolean,
-    emoticonId?: number,
+    emoticonId: number | null,
   ) => {
     try {
       await postPantheonComment(content, isAnonymous, ptPostId, emoticonId);
@@ -167,16 +171,18 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const handlePostReComment = async (
     content: string,
     isAnonymous: boolean,
-    emoticonId?: number,
+    emoticonId: number | null,
   ) => {
     try {
-      await postPantheonReComment(
-        paraentId,
-        content,
-        isAnonymous,
-        ptPostId,
-        emoticonId,
-      );
+      if (paraentId !== null) {
+        await postPantheonReComment(
+          paraentId,
+          content,
+          isAnonymous,
+          ptPostId,
+          emoticonId,
+        );
+      }
       await fetchCommentData();
       console.log('대댓글 생성 성공');
     } catch (error) {
@@ -184,15 +190,20 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     }
   };
 
-  const postComment = async (content: string, isAnonymous: boolean) => {
+  const postComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emojiId: number | null,
+  ) => {
     if (isRecomment) {
-      handlePostReComment(content, isAnonymous);
+      handlePostReComment(content, isAnonymous, emojiId);
       console.log('대댓글 생성');
     } else {
-      handlePostComment(content, isAnonymous);
+      handlePostComment(content, isAnonymous, emojiId);
       console.log('댓글 생성');
     }
     setIsRecomment(false);
+    setParentId(null);
   };
 
   const scrollViewRef = useRef<ScrollView>(null);
@@ -474,7 +485,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
           <PostFooter
             isLiked={postData.isLiked}
             likeCount={postData.likeCount}
-            commentCount={0} // commentCount 임시 설정
+            commentCount={postData.ptCommentCount}
             isReported={postData.isReported}
             ptPostId={ptPostId}
             isScraped={postData.isScraped}
@@ -588,7 +599,14 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             ))}
         </View>
       </ScrollView>
-      <CommentInputBox ref={commentInputRef} onSubmit={postComment} />
+      <SphereCommentInput
+        ref={commentInputRef}
+        onSubmit={postComment}
+        onNewFocus={() => {
+          setIsRecomment(false);
+          setParentId(null);
+        }}
+      />
       <CustomToast
         visible={toastVisible}
         message={toastMessage}

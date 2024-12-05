@@ -18,6 +18,10 @@ interface pantheonList {
   ptPostType?: string;
   isSelected?: boolean;
   point?: number;
+  storeName?: string;
+  imageCount?: number;
+  isAd?: boolean;
+  postAdId?: number;
 }
 
 interface pantheonDetail {
@@ -38,6 +42,7 @@ interface pantheonDetail {
   title: string;
   userJob: string;
   userYear: number;
+  ptCommentCount: number;
   point?: number;
   isSelected?: boolean;
   job?: string;

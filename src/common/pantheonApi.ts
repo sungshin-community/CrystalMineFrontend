@@ -283,7 +283,7 @@ export const postPantheonComment = async (
   content: string,
   isAnonymous: boolean,
   ptPostId: number,
-  emoticonId?: number,
+  emoticonId: number | null,
 ) => {
   try {
     await client.post(`/pantheon-comments`, {
@@ -303,7 +303,7 @@ export const postPantheonReComment = async (
   content: string,
   isAnonymous: boolean,
   ptPostId: number,
-  emoticonId?: number,
+  emoticonId: number | null,
 ) => {
   try {
     await client.post(`/pantheon-comments/${id}/re-comments`, {

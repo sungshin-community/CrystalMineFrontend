@@ -18,6 +18,7 @@ import {
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {pantheonList} from '../../classes/Pantheon';
+import {getRandomMidAd} from '../../common/boardApi';
 import SphereAdItem from '../../components/SphereAdItem';
 
 interface LookScreenProps {
@@ -38,6 +39,25 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [hasMoreData, setHasMoreData] = useState(true);
   const [myJob, setMyJob] = useState<string>('');
+
+  const fetchMidAd = async () => {
+    try {
+      const adData = await getRandomMidAd();
+      const processedAdData: any = {
+        title: adData.title,
+        content: adData.content,
+        thumbnail: adData.thumbnail,
+        storeName: adData.storeName,
+        imageCount: adData.imageCount || 0,
+        isAd: true,
+        postAdId: adData.postAdId,
+      };
+      console.log('중간 광고 로딩 성공');
+      return processedAdData;
+    } catch (error) {
+      console.error('중간 광고 로딩 실패:', error);
+    }
+  };
 
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -68,15 +88,24 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
         data = await getPantheonFreeList(newCursor, filters, sortBy);
       } else if (isQuestion === false && isFree === false) {
         data = await getPantheonAllList(newCursor, filters, sortBy);
-        console.log(data);
       }
 
       if (data.length === 0) {
         setHasMoreData(false);
       } else {
+        const updatedData: pantheonList[] = [];
+        for (let i = 0; i < data.length; i++) {
+          const post = data[i];
+          if ((i + 1) % 5 === 0) {
+            const ad = await fetchMidAd();
+            updatedData.push(ad);
+          }
+          updatedData.push(post);
+        }
+
         setPostData(prevData => [
           ...prevData,
-          ...data.filter(
+          ...updatedData.filter(
             item =>
               !prevData.some(prevItem => prevItem.ptPostId === item.ptPostId),
           ),
@@ -171,11 +200,14 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
         renderItem={({item, index}) => (
           <View
             style={[
-              // item type에 따른 광고 추가
               styles.postContainer,
               index === postData.length - 1 && styles.lastPostItem,
             ]}>
-            <SphereItem isQuestion={isQuestion} post={item} isFree={isFree} />
+            {item.isAd ? (
+              <SphereAdItem post={item} />
+            ) : (
+              <SphereItem isQuestion={isQuestion} post={item} isFree={isFree} />
+            )}
           </View>
         )}
       />

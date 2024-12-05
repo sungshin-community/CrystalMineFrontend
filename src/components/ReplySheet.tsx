@@ -25,15 +25,15 @@ import {
   postPantheonReComment,
 } from '../common/pantheonApi';
 import {pantheonComment} from '../classes/Pantheon';
-import CommentInputBox, {
-  CommentInputBoxRef,
-} from '../screens/crystalBall/imshi';
+import SphereCommentInput, {SphereCommentInputRef} from './SphereCommentInput';
 
 interface ReplySheetProps {
   ptPostId: number;
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }
+
+const screenHeight = Dimensions.get('screen').height;
 
 export default function ReplySheet({
   visible,
@@ -57,10 +57,9 @@ export default function ReplySheet({
     fetchCommentData();
   }, [ptPostId]);
 
-  const screenHeight = Dimensions.get('screen').height;
-  const bottomSheetHeight = screenHeight * 0.75; // 초기 높이 75%
-  const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
-  const dragThreshold = 30; // 드래그 임계값 설정
+  const bottomSheetHeight = screenHeight * 0.8;
+  const maxSheetHeight = screenHeight * 0.95;
+  const dragThreshold = 0;
 
   const panY = useRef(new Animated.Value(screenHeight)).current;
   const lastPanY = useRef(screenHeight - bottomSheetHeight); // 마지막 위치 기록
@@ -96,34 +95,29 @@ export default function ReplySheet({
       onPanResponderMove: (event, gestureState) => {
         const newPanY = lastPanY.current + gestureState.dy;
         if (newPanY > screenHeight - maxSheetHeight && newPanY < screenHeight) {
-          // panY 값을 실시간으로 업데이트하여 드래그가 자연스럽게 따라오게 함
           panY.setValue(newPanY);
         }
       },
       onPanResponderRelease: (event, gestureState) => {
         if (gestureState.dy < -dragThreshold) {
-          // 위로 드래그했을 때 50px 이상일 경우 확장
           expandBottomSheet.start(() => {
-            lastPanY.current = screenHeight - maxSheetHeight; // 최종 위치를 최대 높이로 업데이트
+            lastPanY.current = screenHeight - maxSheetHeight;
           });
         } else if (gestureState.dy > dragThreshold) {
           if (lastPanY.current === screenHeight - maxSheetHeight) {
-            // 95% 상태에서 아래로 내렸을 때 75%로 이동
             resetBottomSheet.start(() => {
-              lastPanY.current = screenHeight - bottomSheetHeight; // 최종 위치를 75%로 업데이트
+              lastPanY.current = screenHeight - bottomSheetHeight;
             });
           } else if (gestureState.dy > 100) {
-            // 아래로 드래그했을 때 100px 이상일 경우 모달 닫기
             closeModal();
           } else {
             resetBottomSheet.start(() => {
-              lastPanY.current = screenHeight - bottomSheetHeight; // 최종 위치를 75%로 업데이트
+              lastPanY.current = screenHeight - bottomSheetHeight;
             });
           }
         } else {
-          // 작은 움직임은 75%로 되돌리기
           resetBottomSheet.start(() => {
-            lastPanY.current = screenHeight - bottomSheetHeight; // 최종 위치를 75%로 업데이트
+            lastPanY.current = screenHeight - bottomSheetHeight;
           });
         }
       },
@@ -159,12 +153,12 @@ export default function ReplySheet({
 
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
   const flatListRef = useRef<FlatList>(null);
-  const commentInputRef = useRef<CommentInputBoxRef>(null);
+  const commentInputRef = useRef<SphereCommentInputRef>(null);
 
   const handleFocus = () => {
     commentInputRef.current?.focusInput();
   };
-  const [parentId, setParentId] = useState<number>(0);
+  const [parentId, setParentId] = useState<number | null>(null);
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
 
   const handleCommentClick = (ptCommentId: number, index: number) => {
@@ -195,7 +189,7 @@ export default function ReplySheet({
   const handlePostComment = async (
     content: string,
     isAnonymous: boolean,
-    emoticonId?: number,
+    emoticonId: number | null,
   ) => {
     try {
       await postPantheonComment(content, isAnonymous, ptPostId, emoticonId);
@@ -209,17 +203,18 @@ export default function ReplySheet({
   const handlePostReComment = async (
     content: string,
     isAnonymous: boolean,
-    emoticonId?: number,
+    emoticonId: number | null,
   ) => {
     try {
-      await postPantheonReComment(
-        parentId,
-        content,
-        isAnonymous,
-        ptPostId,
-        emoticonId,
-      );
-
+      if (parentId !== null) {
+        await postPantheonReComment(
+          parentId,
+          content,
+          isAnonymous,
+          ptPostId,
+          emoticonId,
+        );
+      }
       await fetchCommentData();
       console.log('대댓글 생성 성공');
     } catch (error) {
@@ -227,12 +222,16 @@ export default function ReplySheet({
     }
   };
 
-  const postComment = async (content: string, isAnonymous: boolean) => {
+  const postComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emoticonId: number | null,
+  ) => {
     if (isRecomment) {
-      handlePostReComment(content, isAnonymous);
+      handlePostReComment(content, isAnonymous, emoticonId);
       console.log('대댓글 생성');
     } else {
-      handlePostComment(content, isAnonymous);
+      handlePostComment(content, isAnonymous, emoticonId);
       console.log('댓글 생성');
     }
     setIsRecomment(false);
@@ -246,8 +245,8 @@ export default function ReplySheet({
       statusBarTranslucent>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior="padding" // iOS에서는 padding, Android에서는 height 사용
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
         <View style={styles.overlay}>
           <TouchableWithoutFeedback onPress={closeModal}>
             <View style={styles.background} />
@@ -259,9 +258,10 @@ export default function ReplySheet({
             ]}
             {...panResponder.panHandlers}>
             <View style={styles.homeIndicator} />
-
             <FlatList
               style={{width: '100%', flex: 1}}
+              contentContainerStyle={{paddingBottom: 0}}
+              keyboardShouldPersistTaps="handled"
               ref={flatListRef}
               data={comments}
               renderItem={({item, index}) => (
@@ -472,7 +472,10 @@ export default function ReplySheet({
                                 </Text>
 
                                 <View
-                                  style={{flexDirection: 'row', marginTop: 12}}>
+                                  style={{
+                                    flexDirection: 'row',
+                                    marginTop: 12,
+                                  }}>
                                   <TouchableOpacity
                                     style={{
                                       flexDirection: 'row',
@@ -511,7 +514,14 @@ export default function ReplySheet({
             />
           </Animated.View>
         </View>
-        <CommentInputBox ref={commentInputRef} onSubmit={postComment} />
+        <SphereCommentInput
+          ref={commentInputRef}
+          onSubmit={postComment}
+          onNewFocus={() => {
+            setIsRecomment(false);
+            setParentId(null);
+          }}
+        />
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -526,12 +536,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSheetContainer: {
-    height: '95%',
+    height: screenHeight * 0.95,
     paddingBottom: 50,
     backgroundColor: 'white',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    alignItems: 'center',
   },
   homeIndicator: {
     width: 40,
@@ -539,6 +548,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: '#CECFD6',
     marginTop: 12,
+    alignSelf: 'center',
   },
   footerText: {
     marginLeft: 4,
