@@ -26,6 +26,8 @@ import {getHundredsDigit} from '../common/util/statusUtil';
 import User from '../classes/User';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import DeleteImageIcon from './ImageDelete';
+import analytics from '@react-native-firebase/analytics';
+
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number; contentType: string};
@@ -43,9 +45,17 @@ import BPostSend from '../../resources/icon/BPostSend';
 type Props = NativeStackScreenProps<RootStackParamList> & {
   contentType: 'TYPE1' | 'TYPE2' | 'TYPE3' | 'TYPE4';
   hasTitle: boolean;
+  onPress: () => void;
 };
 
-const PostWriteBCase = ({navigation, route, contentType, hasTitle}: Props) => {
+const PostWriteBCase = ({
+  navigation,
+  route,
+  contentType,
+  hasTitle,
+  onPress,
+}: Props) => {
+  console.log('PostWriteBCase rendered');
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [titleInput, setTitleInput] = useState('');
   const [contentInput, setContentInput] = useState('');
@@ -216,148 +226,171 @@ const PostWriteBCase = ({navigation, route, contentType, hasTitle}: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
-        <View style={styles.nameContainer}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: user?.profileImage}}
-            />
-            <Text style={styles.name}>{user?.nickname}</Text>
-          </View>
-          <TouchableOpacity onPress={toPostWriteScreen}>
-            <ExpandIcon />
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.textContainer]}>
-          <View>
-            {showTitle && (
-              <TextInput
-                style={styles.titleInput}
-                placeholder="제목을 입력하세요"
-                value={titleInput}
-                onChangeText={setTitleInput}
-              />
-            )}
-            {showContent && (
-              <TextInput
-                style={styles.contentInput}
-                placeholder="내용을 입력하세요"
-                value={contentInput}
-                onChangeText={setContentInput}
-                multiline
-              />
-            )}
-          </View>
-          <View style={{marginVertical: 10}}>
-            {images.length > 0 && (
-              <View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {renderImages()}
-                </ScrollView>
-              </View>
-            )}
-          </View>
-          <SafeAreaView style={styles.bottomBar}>
+    <TouchableOpacity
+      onPress={async () => {
+        console.log('Writing box clicked inside PostWriteBCase');
+        if (onPress) {
+          onPress();
+        } else {
+          console.log('onPress is not defined');
+          try {
+            await analytics().logEvent('custom_click', {
+              component: 'writing_box',
+              boardId: route.params.boardId.toString(),
+            });
+            console.log('Event logged to Firebase');
+          } catch (error) {
+            console.error('Error logging event:', error);
+          }
+        }
+      }}>
+      <View style={styles.container}>
+        <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
+          <View style={styles.nameContainer}>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                flex: 1,
               }}>
+              <Image
+                style={{width: 24, height: 24, borderRadius: 12}}
+                source={{uri: user?.profileImage}}
+              />
+              <Text style={styles.name}>{user?.nickname}</Text>
+            </View>
+            <TouchableOpacity onPress={toPostWriteScreen}>
+              <ExpandIcon />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.textContainer]}>
+            <View>
+              {showTitle && (
+                <TextInput
+                  style={styles.titleInput}
+                  placeholder="제목을 입력하세요"
+                  value={titleInput}
+                  onChangeText={setTitleInput}
+                />
+              )}
+              {showContent && (
+                <TextInput
+                  style={styles.contentInput}
+                  placeholder="내용을 입력하세요"
+                  value={contentInput}
+                  onChangeText={setContentInput}
+                  multiline
+                />
+              )}
+            </View>
+            <View style={{marginVertical: 10}}>
+              {images.length > 0 && (
+                <View>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {renderImages()}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+            <SafeAreaView style={styles.bottomBar}>
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  flex: 1,
                 }}>
-                {showImageIcon && (
-                  <TouchableOpacity onPress={onSelectImage}>
-                    <ImageIcon />
-                  </TouchableOpacity>
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Pressable
+                <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginRight: 10,
-                  }}
-                  onPress={() => {
-                    setIsAnonymous(current => !current);
                   }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '500',
-                      marginRight: 4,
-                      color: '#3A424E',
-                    }}>
-                    익명
-                  </Text>
-                  {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    if (info?.hasTitle) {
-                      if (titleInput && contentInput) setIsSubmitState(true);
-                      else setIsSubmitState(false);
-                    } else if (contentInput) setIsSubmitState(true);
-                    else setIsSubmitState(false);
+                  {showImageIcon && (
+                    <TouchableOpacity onPress={onSelectImage}>
+                      <ImageIcon />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
                   }}>
-                  <View
+                  <Pressable
                     style={{
                       flexDirection: 'row',
-                      width: 67,
-                      height: 37,
-                      justifyContent: 'center',
                       alignItems: 'center',
-                      borderRadius: 4,
-                      backgroundColor: info?.hasTitle
-                        ? titleInput && contentInput
-                          ? '#A055FF'
-                          : '#E2E4E8'
-                        : contentInput
-                        ? '#A055FF'
-                        : '#E2E4E8',
+                      marginRight: 10,
+                    }}
+                    onPress={() => {
+                      setIsAnonymous(current => !current);
                     }}>
                     <Text
-                      style={[
-                        styles.submit,
-
-                        {
-                          color: info?.hasTitle
-                            ? titleInput && contentInput
-                              ? '#fff'
-                              : '#fff'
-                            : contentInput
-                            ? '#fff'
-                            : '#fff',
-                          fontSize: 14,
-                        },
-                      ]}>
-                      완료
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '500',
+                        marginRight: 4,
+                        color: '#3A424E',
+                      }}>
+                      익명
                     </Text>
-                    <BPostSend />
-                  </View>
-                </Pressable>
+                    {isAnonymous ? (
+                      <RectangleChecked />
+                    ) : (
+                      <RectangleUnchecked />
+                    )}
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      if (info?.hasTitle) {
+                        if (titleInput && contentInput) setIsSubmitState(true);
+                        else setIsSubmitState(false);
+                      } else if (contentInput) setIsSubmitState(true);
+                      else setIsSubmitState(false);
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: 67,
+                        height: 37,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 4,
+                        backgroundColor: info?.hasTitle
+                          ? titleInput && contentInput
+                            ? '#A055FF'
+                            : '#E2E4E8'
+                          : contentInput
+                          ? '#A055FF'
+                          : '#E2E4E8',
+                      }}>
+                      <Text
+                        style={[
+                          styles.submit,
+
+                          {
+                            color: info?.hasTitle
+                              ? titleInput && contentInput
+                                ? '#fff'
+                                : '#fff'
+                              : contentInput
+                              ? '#fff'
+                              : '#fff',
+                            fontSize: 14,
+                          },
+                        ]}>
+                        완료
+                      </Text>
+                      <BPostSend />
+                    </View>
+                  </Pressable>
+                </View>
               </View>
-            </View>
-          </SafeAreaView>
+            </SafeAreaView>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

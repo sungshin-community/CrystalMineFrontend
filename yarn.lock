@@ -2007,7 +2007,7 @@
   dependencies:
     "invariant" "^2.2.4"
 
-"@react-native-firebase/analytics@16.5.0":
+"@react-native-firebase/analytics@^16.5.0", "@react-native-firebase/analytics@16.5.0":
   "integrity" "sha512-6HpQLOHcbOCA5YXETyPIwldOdT50HxEykI7LZv+JkGmkLDqUaZq3+VKX7eQVRbZX2ZFWCUi9R7IqRY4Ei27/vg=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/analytics/-/analytics-16.5.0.tgz"
   "version" "16.5.0"

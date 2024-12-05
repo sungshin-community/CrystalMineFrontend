@@ -15,6 +15,7 @@
         "@react-native-community/cameraroll": "^4.1.2",
         "@react-native-community/checkbox": "^0.5.8",
         "@react-native-community/push-notification-ios": "^1.10.1",
+        "@react-native-firebase/analytics": "^16.5.0",
         "@react-native-firebase/app": "^16.5.0",
         "@react-native-firebase/messaging": "^16.5.0",
         "@react-native-firebase/remote-config": "^16.5.0",
