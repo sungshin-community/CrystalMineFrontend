@@ -51,7 +51,7 @@ const ButtonContainer = styled.View`
 const styles = StyleSheet.create({
   greyText: {
     color: '#797979',
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    // fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 13,
     lineHeight: 19.5,
   },
@@ -165,7 +165,7 @@ export default function ChangeMajor({navigation}: Props) {
                     Toast.show('학과 정보를 찾을 수 없습니다.', Toast.SHORT);
                   }, 100);
                 } else {
-                  setTimeout(function () {        
+                  setTimeout(function () {
                     Toast.show('학과 변경에 실패하였습니다.', Toast.SHORT);
                   }, 100);
                 }
