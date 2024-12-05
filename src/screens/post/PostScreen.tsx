@@ -255,15 +255,18 @@ const PostScreen = ({navigation, route}: Props) => {
   // 게시글 삭제
   const handlePostDelete = async (postId: number) => {
     const result = await deletePosts(postId);
-    if (result) return true;
-    else return false;
+    if (result) {
+      navigation.replace('PostListScreen', {
+        boardId: post.boardId,
+      });
+      return true;
+    } else return false;
   };
   // 광고 게시글 삭제
   const handleAdPostDelete = async (postAdId: number) => {
     const result = await deleteAdPosts(postAdId);
     if (result) {
-      navigation.goBack();
-      navigation.navigate('PostListScreen', {
+      navigation.replace('PostListScreen', {
         boardId: post.boardId,
       });
       return true;

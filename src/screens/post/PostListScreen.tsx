@@ -261,6 +261,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           await fetchAdminStatus(boardInfo.id);
         }
         await fetchMidAd(); // 광고 데이터 가져오기
+        await updateBoardDetail(); // 게시글 목록 업데이트
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
         Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
