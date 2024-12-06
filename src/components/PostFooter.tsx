@@ -16,6 +16,7 @@ interface PostFooterProps {
   isReported: boolean;
   ptPostId: number;
   isScraped: boolean;
+  isOwner: boolean;
   handlePostLike: () => void;
   handlePostComment: () => void;
   handlePostScrap: () => void;
@@ -33,6 +34,7 @@ export default function PostFooter({
   handlePostComment,
   handlePostReport,
   handlePostScrap,
+  isOwner,
 }: PostFooterProps) {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -107,7 +109,9 @@ export default function PostFooter({
           <TouchableOpacity
             style={{marginRight: 16}}
             onPress={() => {
-              setReportModalVisible(true);
+              isOwner
+                ? showToast('자신의 게시물은 신고가 불가능합니다.')
+                : setReportModalVisible(true);
             }}>
             <FooterReport />
           </TouchableOpacity>
@@ -125,9 +129,11 @@ export default function PostFooter({
           modalType="게시글"
         />
         <TouchableOpacity
-          onPress={() =>
-            showToast('수정광산 팀이 열심히 기능을 개발하는 중이에요!')
-          }>
+          onPress={() => {
+            isOwner
+              ? showToast('자신에게는 쪽지를 보낼 수 없습니다.')
+              : showToast('수정광산 팀이 열심히 기능을 개발하는 중이에요!');
+          }}>
           <FooterMessage style={{marginRight: 16}} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handlePostScrap}>

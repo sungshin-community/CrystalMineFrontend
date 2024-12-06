@@ -169,7 +169,7 @@ export const checkIsAdminForAdBoardPost = async (boardId: number) => {
 };
 
 // 중간 광고 게시글
-export const getRandomMidAd = async (boardId: number) => {
+export const getRandomMidAd = async (boardId?: number) => {
   try {
     const response = await client.get<Response<any>>(`/boards/ad-post`);
     console.log('여기는 getRandomMidAd 함수', response.data.data);

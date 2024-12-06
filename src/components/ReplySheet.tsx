@@ -1,6 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {
-  Modal,
   View,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -11,10 +10,10 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Keyboard,
-  Platform,
+  KeyboardEvent,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import {
@@ -25,9 +24,7 @@ import {
   postPantheonReComment,
 } from '../common/pantheonApi';
 import {pantheonComment} from '../classes/Pantheon';
-import CommentInputBox, {
-  CommentInputBoxRef,
-} from '../screens/crystalBall/imshi';
+import SphereCommentInput, {SphereCommentInputRef} from './SphereCommentInput';
 
 interface ReplySheetProps {
   ptPostId: number;
@@ -41,6 +38,74 @@ export default function ReplySheet({
   ptPostId,
 }: ReplySheetProps) {
   const [comments, setComments] = useState<pantheonComment[]>([]);
+  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
+  const flatListRef = useRef<FlatList>(null);
+  const commentInputRef = useRef<SphereCommentInputRef>(null);
+  const [parentId, setParentId] = useState<number | null>(null);
+  const [isRecomment, setIsRecomment] = useState<boolean>(false);
+
+  const screenHeight = Dimensions.get('screen').height;
+  const bottomSheetHeight = screenHeight * 0.8;
+  const maxSheetHeight = screenHeight * 0.95;
+  const dragThreshold = 0;
+
+  const panY = useRef(new Animated.Value(screenHeight)).current;
+  const lastPanY = useRef(screenHeight - bottomSheetHeight);
+
+  const translateY = panY.interpolate({
+    inputRange: [0, screenHeight],
+    outputRange: [0, screenHeight],
+    extrapolate: 'clamp',
+  });
+
+  const resetBottomSheet = Animated.timing(panY, {
+    toValue: screenHeight - bottomSheetHeight,
+    useNativeDriver: true,
+    duration: 300,
+  });
+
+  const expandBottomSheet = Animated.timing(panY, {
+    toValue: screenHeight - maxSheetHeight,
+    useNativeDriver: true,
+    duration: 300,
+  });
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gestureState) => {
+        const newPanY = lastPanY.current + gestureState.dy;
+        if (newPanY > screenHeight - maxSheetHeight && newPanY < screenHeight) {
+          panY.setValue(newPanY);
+        }
+      },
+      onPanResponderRelease: (event, gestureState) => {
+        if (gestureState.dy < -dragThreshold) {
+          expandBottomSheet.start(() => {
+            lastPanY.current = screenHeight - maxSheetHeight;
+          });
+        } else if (gestureState.dy > dragThreshold) {
+          if (lastPanY.current === screenHeight - maxSheetHeight) {
+            resetBottomSheet.start(() => {
+              lastPanY.current = screenHeight - bottomSheetHeight;
+            });
+          } else if (gestureState.dy > 100) {
+            closeModal();
+          } else {
+            resetBottomSheet.start(() => {
+              lastPanY.current = screenHeight - bottomSheetHeight;
+            });
+          }
+        } else {
+          resetBottomSheet.start(() => {
+            lastPanY.current = screenHeight - bottomSheetHeight;
+          });
+        }
+      },
+    }),
+  ).current;
 
   const fetchCommentData = async () => {
     try {
@@ -57,79 +122,6 @@ export default function ReplySheet({
     fetchCommentData();
   }, [ptPostId]);
 
-  const screenHeight = Dimensions.get('screen').height;
-  const bottomSheetHeight = screenHeight * 0.75; // 초기 높이 75%
-  const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
-  const dragThreshold = 30; // 드래그 임계값 설정
-
-  const panY = useRef(new Animated.Value(screenHeight)).current;
-  const lastPanY = useRef(screenHeight - bottomSheetHeight); // 마지막 위치 기록
-
-  const translateY = panY.interpolate({
-    inputRange: [0, screenHeight],
-    outputRange: [0, screenHeight],
-    extrapolate: 'clamp',
-  });
-
-  const resetBottomSheet = Animated.timing(panY, {
-    toValue: screenHeight - bottomSheetHeight,
-    useNativeDriver: true,
-    duration: 300,
-  });
-
-  const closeBottomSheet = Animated.timing(panY, {
-    toValue: screenHeight,
-    duration: 300,
-    useNativeDriver: true,
-  });
-
-  const expandBottomSheet = Animated.timing(panY, {
-    toValue: screenHeight - maxSheetHeight,
-    useNativeDriver: true,
-    duration: 300,
-  });
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (event, gestureState) => {
-        const newPanY = lastPanY.current + gestureState.dy;
-        if (newPanY > screenHeight - maxSheetHeight && newPanY < screenHeight) {
-          // panY 값을 실시간으로 업데이트하여 드래그가 자연스럽게 따라오게 함
-          panY.setValue(newPanY);
-        }
-      },
-      onPanResponderRelease: (event, gestureState) => {
-        if (gestureState.dy < -dragThreshold) {
-          // 위로 드래그했을 때 50px 이상일 경우 확장
-          expandBottomSheet.start(() => {
-            lastPanY.current = screenHeight - maxSheetHeight; // 최종 위치를 최대 높이로 업데이트
-          });
-        } else if (gestureState.dy > dragThreshold) {
-          if (lastPanY.current === screenHeight - maxSheetHeight) {
-            // 95% 상태에서 아래로 내렸을 때 75%로 이동
-            resetBottomSheet.start(() => {
-              lastPanY.current = screenHeight - bottomSheetHeight; // 최종 위치를 75%로 업데이트
-            });
-          } else if (gestureState.dy > 100) {
-            // 아래로 드래그했을 때 100px 이상일 경우 모달 닫기
-            closeModal();
-          } else {
-            resetBottomSheet.start(() => {
-              lastPanY.current = screenHeight - bottomSheetHeight; // 최종 위치를 75%로 업데이트
-            });
-          }
-        } else {
-          // 작은 움직임은 75%로 되돌리기
-          resetBottomSheet.start(() => {
-            lastPanY.current = screenHeight - bottomSheetHeight; // 최종 위치를 75%로 업데이트
-          });
-        }
-      },
-    }),
-  ).current;
-
   useEffect(() => {
     if (visible) {
       resetBottomSheet.start();
@@ -137,11 +129,26 @@ export default function ReplySheet({
   }, [visible]);
 
   const closeModal = () => {
-    closeBottomSheet.start(() => {
-      setVisible(false);
-      Keyboard.dismiss();
-    });
+    setVisible(false);
   };
+
+  const handleFocus = () => {
+    commentInputRef.current?.focusInput();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
 
   const handleCommentLike = async (isLiked: boolean, commentId: number) => {
     try {
@@ -156,16 +163,6 @@ export default function ReplySheet({
       console.error('좋아요 상태 변경 실패:', error);
     }
   };
-
-  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
-  const flatListRef = useRef<FlatList>(null);
-  const commentInputRef = useRef<CommentInputBoxRef>(null);
-
-  const handleFocus = () => {
-    commentInputRef.current?.focusInput();
-  };
-  const [parentId, setParentId] = useState<number>(0);
-  const [isRecomment, setIsRecomment] = useState<boolean>(false);
 
   const handleCommentClick = (ptCommentId: number, index: number) => {
     setFocusCommentId(ptCommentId);
@@ -183,19 +180,10 @@ export default function ReplySheet({
     }
   };
 
-  useEffect(() => {
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setFocusCommentId(null);
-    });
-    return () => {
-      keyboardHideListener.remove();
-    };
-  }, []);
-
   const handlePostComment = async (
     content: string,
     isAnonymous: boolean,
-    emoticonId?: number,
+    emoticonId: number | null,
   ) => {
     try {
       await postPantheonComment(content, isAnonymous, ptPostId, emoticonId);
@@ -209,17 +197,18 @@ export default function ReplySheet({
   const handlePostReComment = async (
     content: string,
     isAnonymous: boolean,
-    emoticonId?: number,
+    emoticonId: number | null,
   ) => {
     try {
-      await postPantheonReComment(
-        parentId,
-        content,
-        isAnonymous,
-        ptPostId,
-        emoticonId,
-      );
-
+      if (parentId !== null) {
+        await postPantheonReComment(
+          parentId,
+          content,
+          isAnonymous,
+          ptPostId,
+          emoticonId,
+        );
+      }
       await fetchCommentData();
       console.log('대댓글 생성 성공');
     } catch (error) {
@@ -227,12 +216,16 @@ export default function ReplySheet({
     }
   };
 
-  const postComment = async (content: string, isAnonymous: boolean) => {
+  const postComment = async (
+    content: string,
+    isAnonymous: boolean,
+    emoticonId: number | null,
+  ) => {
     if (isRecomment) {
-      handlePostReComment(content, isAnonymous);
+      handlePostReComment(content, isAnonymous, emoticonId);
       console.log('대댓글 생성');
     } else {
-      handlePostComment(content, isAnonymous);
+      handlePostComment(content, isAnonymous, emoticonId);
       console.log('댓글 생성');
     }
     setIsRecomment(false);
@@ -240,28 +233,26 @@ export default function ReplySheet({
 
   return (
     <Modal
-      visible={visible}
-      animationType="fade"
-      transparent
-      statusBarTranslucent>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior="padding" // iOS에서는 padding, Android에서는 height 사용
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 20 : 0}>
-        <View style={styles.overlay}>
-          <TouchableWithoutFeedback onPress={closeModal}>
-            <View style={styles.background} />
-          </TouchableWithoutFeedback>
-          <Animated.View
-            style={[
-              styles.bottomSheetContainer,
-              {transform: [{translateY: translateY}]},
-            ]}
-            {...panResponder.panHandlers}>
-            <View style={styles.homeIndicator} />
-
+      isVisible={visible}
+      style={styles.modal}
+      backdropOpacity={0.5}
+      onBackdropPress={closeModal}
+      useNativeDriver={true}>
+      <View style={styles.overlay}>
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.background} />
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={[
+            styles.bottomSheetContainer,
+            {transform: [{translateY: translateY}]},
+          ]}
+          {...panResponder.panHandlers}>
+          <View style={styles.homeIndicator} />
+          <View style={{flex: 1, paddingBottom: 45}}>
             <FlatList
               style={{width: '100%', flex: 1}}
+              keyboardShouldPersistTaps="handled"
               ref={flatListRef}
               data={comments}
               renderItem={({item, index}) => (
@@ -377,7 +368,7 @@ export default function ReplySheet({
                     </View>
                   </View>
                   {item.reComments && item.reComments.length > 0 && (
-                    <View style={{marginTop: 24}}>
+                    <View style={{marginTop: 12}}>
                       {item.reComments.map(
                         (reComment: pantheonComment, idx: number) => (
                           <View
@@ -386,7 +377,7 @@ export default function ReplySheet({
                                 marginBottom: 20,
                               },
                               idx === item.reComments.length - 1 && {
-                                marginBottom: 0,
+                                marginBottom: 12,
                               },
                             ]}>
                             <View
@@ -472,7 +463,10 @@ export default function ReplySheet({
                                 </Text>
 
                                 <View
-                                  style={{flexDirection: 'row', marginTop: 12}}>
+                                  style={{
+                                    flexDirection: 'row',
+                                    marginTop: 12,
+                                  }}>
                                   <TouchableOpacity
                                     style={{
                                       flexDirection: 'row',
@@ -509,36 +503,41 @@ export default function ReplySheet({
                 </View>
               )}
             />
-          </Animated.View>
-        </View>
-        <CommentInputBox ref={commentInputRef} onSubmit={postComment} />
-      </KeyboardAvoidingView>
+          </View>
+        </Animated.View>
+      </View>
+      <SphereCommentInput ref={commentInputRef} onSubmit={postComment} />
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'transparent',
   },
   background: {
     flex: 1,
   },
   bottomSheetContainer: {
-    height: '95%',
-    paddingBottom: 50,
     backgroundColor: 'white',
-    borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    alignItems: 'center',
+    borderTopRightRadius: 20,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   homeIndicator: {
     width: 40,
     height: 5,
     borderRadius: 100,
     backgroundColor: '#CECFD6',
-    marginTop: 12,
+    marginVertical: 12,
+    alignSelf: 'center',
   },
   footerText: {
     marginLeft: 4,

@@ -283,7 +283,7 @@ export const postPantheonComment = async (
   content: string,
   isAnonymous: boolean,
   ptPostId: number,
-  emoticonId?: number,
+  emoticonId: number | null,
 ) => {
   try {
     await client.post(`/pantheon-comments`, {
@@ -303,7 +303,7 @@ export const postPantheonReComment = async (
   content: string,
   isAnonymous: boolean,
   ptPostId: number,
-  emoticonId?: number,
+  emoticonId: number | null,
 ) => {
   try {
     await client.post(`/pantheon-comments/${id}/re-comments`, {
@@ -360,5 +360,25 @@ export const postPantheonReport = async (
     console.log('판테온 게시물 신고 성공');
   } catch (error: any) {
     console.log('판테온 게시물 신고 에러', error);
+  }
+};
+
+export const postPantheonCommentReport = async (
+  id: number,
+  reasonId: number,
+  detail?: string,
+) => {
+  try {
+    const requestBody = {
+      detail: detail || '',
+      reasonId,
+    };
+    const response = await client.post(
+      `/pantheon-comments/${id}/reports`,
+      requestBody,
+    );
+    console.log('판테온 댓글 신고 성공');
+  } catch (error: any) {
+    console.log('판테온 댓글 신고 에러', error);
   }
 };

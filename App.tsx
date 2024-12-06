@@ -116,6 +116,11 @@ import SpinningThreeDots from './src/components/SpinningThreeDots';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
+import {
+  checkMultiple,
+  PERMISSIONS,
+  requestMultiple,
+} from 'react-native-permissions';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -135,6 +140,34 @@ const App = () => {
     // StatusBar.setTranslucent(true);
     StatusBar.setBarStyle('dark-content');
   }
+
+  useEffect(() => {
+    const checkPermission = async () => {
+      const res = await checkMultiple([PERMISSIONS.IOS.PHOTO_LIBRARY]);
+
+      if (res['ios.permission.PHOTO_LIBRARY'] === 'denied') {
+        const req = await requestMultiple([PERMISSIONS.IOS.PHOTO_LIBRARY]);
+      }
+    };
+
+    checkPermission();
+  }, []);
+
+  useEffect(() => {
+    const checkPermission = async () => {
+      const res = await checkMultiple([
+        PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY,
+      ]);
+
+      if (res['ios.permission.APP_TRACKING_TRANSPARENCY'] === 'denied') {
+        const req = await requestMultiple([
+          PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY,
+        ]);
+      }
+    };
+
+    checkPermission();
+  }, []);
 
   useEffect(() => {
     async function checkLoginState() {
