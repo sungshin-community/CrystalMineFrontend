@@ -461,6 +461,14 @@ function Post({
                   }}
                 />
               </Pressable>
+              <MessageModalBottom
+                modalVisible={messageModalVisible}
+                setModalVisible={setMessageModalVisible}
+                purpleButtonText="확인"
+                purpleButtonFunc={handlePostMessage}
+                setDim={false}
+                anonymous={data?.isAnonymous}
+              />
               <Pressable
                 hitSlop={10}
                 onPress={() => handlePostScrap(data.postId)}>

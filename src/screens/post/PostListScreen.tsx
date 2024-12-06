@@ -53,6 +53,7 @@ import GlobalNavbar from '../../components/GlobalNavbar';
 import remoteConfig from '@react-native-firebase/remote-config';
 import fetchAndActivate from '@react-native-firebase/remote-config';
 import getValue from '@react-native-firebase/remote-config';
+import analytics from '@react-native-firebase/analytics';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -87,6 +88,13 @@ const PostListScreen = ({navigation, route}: Props) => {
     componentToUse: string;
   } | null>(null);
   const [midAd, setMidAd] = useState<any>(null);
+
+  useEffect(() => {
+    const initializeFirebaseAnalytics = async () => {
+      await analytics().setAnalyticsCollectionEnabled(true);
+    };
+    initializeFirebaseAnalytics();
+  }, []);
 
   // 중간 광고 가져오는 함수
   const fetchMidAd = async () => {
@@ -253,6 +261,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           await fetchAdminStatus(boardInfo.id);
         }
         await fetchMidAd(); // 광고 데이터 가져오기
+        await updateBoardDetail(); // 게시글 목록 업데이트
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
         Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
@@ -562,6 +571,13 @@ const PostListScreen = ({navigation, route}: Props) => {
                   route={route}
                   contentType={boardInfo?.contentType || 'TYPE1'}
                   hasTitle={boardDetail?.hasTitle}
+                  onPress={async () => {
+                    console.log('Writing box clicked');
+                    await analytics().logEvent('custom_click', {
+                      component: 'writing_box',
+                      boardId: route.params.boardId.toString(),
+                    });
+                  }}
                 />
               )}
             </View>
@@ -767,12 +783,17 @@ const PostListScreen = ({navigation, route}: Props) => {
         )}
         {config?.componentToUse === 'floating_button' && (
           <FloatingWriteButton
-            onPress={() =>
+            onPress={async () => {
+              await analytics().logEvent('custom_click', {
+                component: 'floating_button',
+                boardId: route.params.boardId.toString(),
+              });
+              console.log('Floating button clicked');
               navigation.navigate('PostWriteScreen', {
                 boardId: route.params.boardId,
                 contentType: boardInfo?.contentType,
-              })
-            }
+              });
+            }}
           />
         )}
         {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
