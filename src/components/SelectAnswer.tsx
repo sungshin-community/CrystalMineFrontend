@@ -76,7 +76,7 @@ export default function SelectAnswer({
         </View>
       )}
       <View>
-        {canView && (
+        {!canView && (
           <View style={styles.viewBox}>
             <Text
               style={{
@@ -105,7 +105,7 @@ export default function SelectAnswer({
                 paddingVertical: 8,
                 borderRadius: 4,
               }}
-              onPress={() => handlePurchase}>
+              onPress={() => handlePurchase(reply.ptCommentId)}>
               <Text style={{color: 'white', fontWeight: '600', fontSize: 12}}>
                 포인트 사용하기
               </Text>

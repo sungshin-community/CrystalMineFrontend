@@ -7,7 +7,7 @@ import CustomToast from '../components/CustomToast';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useState} from 'react';
 import React from 'react';
-import {ReportModalBottom} from '../components/ReportModalBottom'; // 신고 로직 수정
+import {ReportModalBottom} from '../components/ReportModalBottom';
 
 interface PostFooterProps {
   isLiked: boolean;
@@ -19,7 +19,7 @@ interface PostFooterProps {
   handlePostLike: () => void;
   handlePostComment: () => void;
   handlePostScrap: () => void;
-  handlePostReport: any; // 신고 로직 수정
+  handlePostReport: any;
 }
 
 export default function PostFooter({
@@ -107,13 +107,12 @@ export default function PostFooter({
           <TouchableOpacity
             style={{marginRight: 16}}
             onPress={() => {
-              showToast('수정광산 팀이 열심히 기능을 개발하는 중이에요!'); // 신고 로직 수정
-              //setReportModalVisible(true);
+              setReportModalVisible(true);
             }}>
             <FooterReport />
           </TouchableOpacity>
         )}
-        <ReportModalBottom // 신고 로직 수정
+        <ReportModalBottom
           modalVisible={reportModalVisible}
           setModalVisible={setReportModalVisible}
           title="해당 게시글을 신고하시겠어요?"

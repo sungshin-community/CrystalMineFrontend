@@ -6,6 +6,11 @@ import ThumbNone, {ThumbFill} from '../../resources/icon/ThumbIcon';
 import SelectBottomSheet from './SelectBottomSheet';
 import SpinningThreeDots from './SpinningThreeDots';
 import {pantheonComment} from '../classes/Pantheon';
+import {BigPostComment} from '../../resources/icon/PostComment';
+import {ReportModalBottom} from './ReportModalBottom';
+import CustomToast from './CustomToast';
+import {BlackMessageIcon} from '../../resources/icon/Message';
+import {BlackReport} from '../../resources/icon/Report';
 
 interface SphereReplyItemProps {
   reply: pantheonComment;
@@ -14,7 +19,8 @@ interface SphereReplyItemProps {
   isReply?: boolean;
   postIsSelected?: boolean;
   handleReplyClick?: () => void;
-  handleAdoptComment?: (ptCommentId: number, comment: pantheonComment) => void;
+  handleAdoptComment: (ptCommentId: number, comment: pantheonComment) => void;
+  isOwner?: boolean;
 }
 
 export default function SphereItem({
@@ -25,11 +31,15 @@ export default function SphereItem({
   postIsSelected = false,
   handleReplyClick,
   handleAdoptComment,
+  isOwner,
 }: SphereReplyItemProps) {
   const [popVisible, setPopVisible] = useState(false);
   const [popComment, setPopComment] = useState<pantheonComment | undefined>(
     undefined,
   );
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [reportModalVisible, setReportModalVisible] = useState(false);
 
   const handleOpenPop = () => {
     setPopVisible(true);
@@ -38,8 +48,173 @@ export default function SphereItem({
 
   const handleSelect = () => {
     setPopVisible(false);
-    handleAdoptComment && handleAdoptComment(reply.ptCommentId, reply);
+    handleAdoptComment(reply.ptCommentId, reply);
   };
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 3000);
+  };
+
+  const handleReplyReport = () => {}; // 댓글 신고 기능 추가
+
+  const mineComponent = (
+    <>
+      {!isReply && (
+        <View
+          style={{
+            position: 'absolute',
+            top: -20,
+            right: 0,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: 150,
+            height: 50,
+            zIndex: 150,
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#FFFFFF',
+              borderColor: '#EFEFF3',
+              borderWidth: 1,
+              borderRadius: 8,
+              //iOS
+              shadowColor: '#A6AAAE',
+              shadowOffset: {width: 0, height: 4},
+              shadowOpacity: 0.4,
+              shadowRadius: 18,
+              // Android
+              elevation: 18,
+              width: 130,
+              height: '100%',
+            }}>
+            <TouchableOpacity onPress={handleReplyClick}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
+                  zIndex: 999,
+                }}>
+                <BigPostComment style={{marginRight: 8}} />
+                <Text
+                  style={{
+                    paddingVertical: 8,
+                    fontSize: 14,
+                    color: '#3A424E',
+                  }}>
+                  대댓글 달기
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </>
+  );
+
+  const notMineComponent = (
+    <>
+      <ReportModalBottom
+        modalVisible={reportModalVisible}
+        setModalVisible={setReportModalVisible}
+        title="해당 댓글을 신고하시겠어요?"
+        purpleButtonText="네, 신고할게요."
+        reportId={reply.ptCommentId}
+        reportFunc={handleReplyReport}
+        whiteButtonText="아니요."
+        whiteButtonFunc={() => setReportModalVisible(false)}
+        setDim={false}
+        modalType="댓글"
+      />
+
+      <View
+        style={{
+          position: 'absolute',
+          top: -20,
+          right: 0,
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 150,
+          height: 120,
+          zIndex: 150,
+        }}>
+        <View
+          style={{
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            backgroundColor: '#FFFFFF',
+            borderColor: '#EFEFF3',
+            borderWidth: 1,
+            borderRadius: 8,
+            //iOS
+            shadowColor: '#A6AAAE',
+            shadowOffset: {width: 0, height: 4},
+            shadowOpacity: 0.4,
+            shadowRadius: 18,
+            // Android
+            elevation: 18,
+            width: 130,
+            height: '100%',
+          }}>
+          <TouchableOpacity onPress={handleReplyClick}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                zIndex: 999,
+              }}>
+              <BigPostComment style={{marginRight: 8}} />
+              <Text
+                style={{
+                  paddingVertical: 8,
+                  fontSize: 14,
+                  color: '#3A424E',
+                }}>
+                대댓글 달기
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              showToast('수정광산 팀이 열심히 기능을 개발하는 중이에요!')
+            }>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                zIndex: 120,
+              }}>
+              <BlackMessageIcon style={{marginRight: 8}} />
+              <Text style={{paddingVertical: 8, fontSize: 14}}>쪽지하기</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={
+              reply.isReported
+                ? () => showToast('이미 신고한 댓글입니다.')
+                : () => setReportModalVisible(true)
+            }>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF',
+                zIndex: 120,
+              }}>
+              <BlackReport style={{marginRight: 8}} />
+              <Text style={{paddingVertical: 8, fontSize: 14}}>신고하기</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
+  );
 
   return (
     <View style={[{flexDirection: 'row'}, {marginLeft: isReply ? 32 : 0}]}>
@@ -102,10 +277,10 @@ export default function SphereItem({
           </View>
           <SpinningThreeDots
             isMine={reply.isOfReader}
-            handleOptionModeIsMineComponent={<></>}
+            handleOptionModeIsMineComponent={mineComponent}
             handleDefaultModeComponent={<></>}
-            isGrey={true}
-            boardId={3}
+            handleOptionModeIsNotMineComponent={notMineComponent}
+            isGrey
           />
         </View>
 
@@ -151,7 +326,7 @@ export default function SphereItem({
               </Text>
             </TouchableOpacity>
           )}
-          {isQuestion && !postIsSelected && (
+          {isQuestion && !postIsSelected && !reply.isOfPtPostAuthor && isOwner && (
             <TouchableOpacity
               style={{flexDirection: 'row', alignItems: 'center'}}
               onPress={handleOpenPop}>
@@ -189,6 +364,11 @@ export default function SphereItem({
         sheetVisible={popVisible}
         setSheetVisible={setPopVisible}
         reply={popComment as pantheonComment}
+      />
+      <CustomToast
+        visible={toastVisible}
+        message={toastMessage}
+        onClose={() => setToastVisible(false)}
       />
     </View>
   );

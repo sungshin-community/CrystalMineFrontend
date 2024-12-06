@@ -208,6 +208,17 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
       }, 100);
       return;
     }
+
+    if (Number(point) === 0) {
+      setTimeout(function () {
+        Toast.show(
+          '궁금해요 글을 작성하려면 최소 1 포인트가 필요합니다.',
+          Toast.SHORT,
+        );
+      }, 100);
+      return;
+    }
+
     setIsLoading(true);
     await postPantheonQurious(
       content,

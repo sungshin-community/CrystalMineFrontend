@@ -74,11 +74,11 @@ export const ModalBottom = ({
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={{alignSelf: 'flex-start'}}>
-                {title && <Text style={[fontBold, styles.title]}>{title}</Text>}
+                {title && <Text style={[styles.title]}>{title}</Text>}
                 {content && (
                   <Text
                     style={[
-                      fontRegular,
+                      // fontRegular,
                       {
                         textAlign: isContentCenter ? 'center' : 'left',
                         fontSize: 14,
@@ -178,14 +178,14 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    // fontFamily: 'SpoqaHanSansNeo-Regular',
     fontWeight: '700',
   },
   secondButtonTextStyle: {
     color: '#6E7882',
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    // fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   title: {
     textAlign: 'center',

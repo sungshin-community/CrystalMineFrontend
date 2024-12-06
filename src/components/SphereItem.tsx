@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
@@ -11,28 +11,41 @@ import {pantheonList} from '../classes/Pantheon';
 interface SphereItemProps {
   isQuestion?: boolean;
   isFree?: boolean;
+  isReview?: boolean;
   post: pantheonList;
 }
 
 type RootStackParamList = {
-  SpherePostScreen: {ptPostId: number; isFree: boolean; isQuestion: boolean};
+  SpherePostScreen: {
+    ptPostId: number;
+    isFree: boolean;
+    isQuestion: boolean;
+    isReview: boolean;
+  };
 };
 
 export default function SphereItem({
   isQuestion = false,
   isFree = false,
+  isReview = false,
   post,
 }: SphereItemProps) {
   const navigation =
     useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
   const [replyVisible, setReplyVisible] = useState(false);
+  const [isQuestionState, setIsQuestionState] = useState(isQuestion);
+  const [isFreeState, setIsFreeState] = useState(isFree);
+  const [isReviewState, setIsReviewState] = useState(isReview);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (post.ptPostType === 'QUESTION') {
-      isQuestion = true;
+      setIsQuestionState(true);
     }
-    if (post.ptPostType === 'FREE') {
-      isFree = true;
+    if (post.ptPostType === 'GENERAL') {
+      setIsFreeState(true);
+    }
+    if (post.ptPostType === 'REVIEW') {
+      setIsReviewState(true);
     }
   }, [post.ptPostType]);
 
@@ -42,8 +55,9 @@ export default function SphereItem({
         onPress={() => {
           navigation.navigate('SpherePostScreen', {
             ptPostId: post.ptPostId,
-            isFree: isFree,
-            isQuestion: isQuestion,
+            isFree: isFreeState,
+            isQuestion: isQuestionState,
+            isReview: isReviewState,
           });
         }}>
         <View
@@ -192,54 +206,60 @@ export default function SphereItem({
           <Text style={styles.footerText}>댓글달기 {post.ptCommentCount}</Text>
         </View>
       </TouchableOpacity>
-      {post.ptCommentCount > 0 && isQuestion === false && isFree === true && (
-        <TouchableOpacity
-          style={{
-            marginTop: 20,
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}
-          onPress={() => setReplyVisible(true)}>
-          <ReplyIcon />
-          <View style={styles.commentBox}>
-            <View style={{flexDirection: 'row'}}>
-              <Text
-                style={{
-                  fontWeight: '600',
-                  fontSize: 12,
-                  color: '#3A424E',
-                  marginRight: 8,
-                }}>
-                {post.newCommentAuthor}
-              </Text>
-              <Text
-                style={{
-                  fontWeight: '400',
-                  fontSize: 12,
-                  color: '#3A424E',
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {post.newCommentContent}
-              </Text>
-            </View>
-            <Text
+      {post.ptCommentCount > 0 &&
+        ((isQuestion === false && isFree === true) ||
+          (isQuestion === false &&
+            isFree === false &&
+            post.ptPostType === 'GENERAL')) && (
+          <>
+            <TouchableOpacity
               style={{
-                fontWeight: '500',
-                fontSize: 12,
-                color: '#9DA4AB',
-                textDecorationLine: 'underline',
-              }}>
-              댓글 {post.ptCommentCount - 1}개 +
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )}
-      <ReplySheet
-        visible={replyVisible}
-        setVisible={setReplyVisible}
-        ptPostId={post.ptPostId}
-      />
+                marginTop: 20,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+              }}
+              onPress={() => setReplyVisible(true)}>
+              <ReplyIcon />
+              <View style={styles.commentBox}>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 12,
+                      color: '#3A424E',
+                      marginRight: 8,
+                    }}>
+                    {post.newCommentAuthor}
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '400',
+                      fontSize: 12,
+                      color: '#3A424E',
+                    }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {post.newCommentContent}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontWeight: '500',
+                    fontSize: 12,
+                    color: '#9DA4AB',
+                    textDecorationLine: 'underline',
+                  }}>
+                  댓글 {post.ptCommentCount - 1}개 +
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <ReplySheet
+              visible={replyVisible}
+              setVisible={setReplyVisible}
+              ptPostId={post.ptPostId}
+            />
+          </>
+        )}
     </View>
   );
 }

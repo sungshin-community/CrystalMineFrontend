@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   View,
   FlatList,
@@ -18,6 +18,7 @@ import {
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {pantheonList} from '../../classes/Pantheon';
+import SphereAdItem from '../../components/SphereAdItem';
 
 interface LookScreenProps {
   isQuestion: boolean;
@@ -36,6 +37,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [myJob, setMyJob] = useState<string>('');
 
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -47,6 +49,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
   const scrollToTop = () => {
     flatListRef.current?.scrollToOffset({offset: 0, animated: true});
   };
+
   const fetchPostList = async (newCursor = 0, isLoadMore = false) => {
     if (isLoading || isNextCursorLoading) return;
 
@@ -60,13 +63,12 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
           sortBy,
         );
         data = response.ptQuestionList;
-        console.log('data', data);
+        setMyJob(response.myPtJob);
       } else if (isFree) {
         data = await getPantheonFreeList(newCursor, filters, sortBy);
-        console.log('data', data);
       } else if (isQuestion === false && isFree === false) {
         data = await getPantheonAllList(newCursor, filters, sortBy);
-        console.log('data', data);
+        console.log(data);
       }
 
       if (data.length === 0) {
@@ -113,12 +115,24 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
   const handleFilterChange = (selectedFilter: string) => {
     if (selectedFilter === '전체') {
       setFilters('all');
+      setSortBy('createdAt');
     } else if (selectedFilter === '인기글') {
       setFilters('all');
       setSortBy('likeCount');
     } else {
       setFilters(selectedFilter);
+      setSortBy('createdAt');
     }
+  };
+
+  const handleCheckbox = (boxChecked: boolean) => {
+    if (boxChecked) {
+      setFilters('all');
+    }
+    if (!boxChecked) {
+      setFilters(myJob);
+    }
+    setSortBy('createdAt');
   };
 
   return (
@@ -136,9 +150,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
       <JobFilterTab
         isQuestion={isQuestion}
         onFilterChange={handleFilterChange}
-        onCheckboxChange={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        onCheckboxChange={handleCheckbox}
       />
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -159,6 +171,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
         renderItem={({item, index}) => (
           <View
             style={[
+              // item type에 따른 광고 추가
               styles.postContainer,
               index === postData.length - 1 && styles.lastPostItem,
             ]}>
@@ -188,7 +201,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white', // 배경 수정
+    backgroundColor: 'white',
     flexGrow: 1,
     marginBottom: 45,
   },

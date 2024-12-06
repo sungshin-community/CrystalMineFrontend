@@ -16,7 +16,7 @@ interface Props {
   isMine?: boolean;
   handleOptionModeIsMineComponent?: any;
   handleOptionModeIsNotMineComponent?: any;
-  boardId: number;
+  boardId?: number;
   isGrey?: boolean;
 }
 function SpinningThreeDots({
