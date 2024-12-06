@@ -268,7 +268,12 @@ export function OfficialBoardList({
           alignItems: 'center',
           backgroundColor: '#fff',
         }}>
-        <View style={{flex: 1, marginLeft: 15, marginRight: 15}}>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 15,
+            marginRight: 15,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -389,7 +394,7 @@ export function CustomBoardList({
                 }}>
                 {item.name}
               </Text>
-              {item.todayNewPost && <NewIcon />}
+              {item.todayNewPost && <NewIcon style={{marginTop: 2}} />}
             </View>
             <Text
               numberOfLines={1}
