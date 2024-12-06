@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Keyboard,
 } from 'react-native';
 import SphereReplyItem from '../../components/SphereReplyItem';
 import SelectAnswer from '../../components/SelectAnswer';
@@ -29,6 +28,7 @@ import {
   getPantheonReviewDetail,
   getPantheonReviewComment,
   postPantheonReport,
+  postPantheonCommentReport,
 } from '../../common/pantheonApi';
 import AdMob from '../../components/AdMob';
 import PostFooter from '../../components/PostFooter';
@@ -40,6 +40,7 @@ import ReviewJobDetail from '../../components/ReviewJobDetail';
 import SphereCommentInput, {
   SphereCommentInputRef,
 } from '../../components/SphereCommentInput';
+import {getUser} from '../../common/myPageApi';
 
 interface SpherePostScreenProps {
   route: {
@@ -52,8 +53,20 @@ interface SpherePostScreenProps {
   };
 }
 
+type RootStackParamList = {
+  PointScreen: {
+    username: string;
+    points: number;
+  };
+  ImageViewerScreen: {
+    imageUrls: {url: string}[];
+    index: number;
+  };
+};
+
 export default function SpherePostScreen({route}: SpherePostScreenProps) {
-  const navigation = useNavigation<NativeStackScreenProps<any>['navigation']>();
+  const navigation =
+    useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
   const {ptPostId, isQuestion, isFree, isReview} = route.params;
   const [postData, setPostData] = useState<pantheonDetail | undefined>(
     undefined,
@@ -70,8 +83,9 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
 
   const handleFocus = () => {
-    setIsRecomment(false);
+    setFocusCommentId(null);
     setParentId(null);
+    setIsRecomment(false);
     commentInputRef.current?.focusInput();
   };
 
@@ -210,7 +224,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
 
   const handleCommentClick = (ptCommentId: number) => {
     setFocusCommentId(ptCommentId);
-    handleFocus();
+    commentInputRef.current?.focusInput();
     setParentId(ptCommentId);
     setIsRecomment(true);
     const targetComment = comments.find(
@@ -237,7 +251,11 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
         return;
       }
       if (response?.status === 403) {
-        // TODO: 구매 실패 시 포인트 화면으로 이동
+        const user = await getUser();
+        navigation.navigate('PointScreen', {
+          username: user?.data.data.username,
+          points: user?.data.data.point,
+        });
         return;
       }
     } catch (error) {
@@ -295,16 +313,19 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     }
   };
 
-  useEffect(() => {
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setFocusCommentId(null);
-      setIsRecomment(false);
-      setParentId(null);
-    });
-    return () => {
-      keyboardHideListener.remove();
-    };
-  }, []);
+  const handleReplyReport = async (
+    id: number,
+    reasonId: number,
+    detail?: string,
+  ) => {
+    try {
+      await postPantheonCommentReport(id, reasonId, detail);
+      await fetchCommentData();
+      console.log('댓글 신고 성공');
+    } catch (error) {
+      console.error('댓글 신고 실패:', error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={{flex: 1}}>
@@ -458,7 +479,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
               <ScrollView
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
-                {postData?.thumbnails.map((url: any, index: React.Key) => (
+                {postData?.thumbnails.map((url: any, index: number) => (
                   <TouchableOpacity
                     key={index}
                     onPress={() =>
@@ -545,6 +566,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                         postIsSelected={postData.isSelected}
                         handleAdoptComment={handleAdoptComment}
                         isOwner={postData.isOwner}
+                        handleReplyReport={handleReplyReport}
                       />
                     )
                   ) : (
@@ -558,6 +580,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       postIsSelected={postData.isSelected}
                       handleAdoptComment={handleAdoptComment}
                       isOwner={postData.isOwner}
+                      handleReplyReport={handleReplyReport}
                     />
                   )}
                 </View>
@@ -585,6 +608,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                                 postIsSelected={postData.isSelected}
                                 handleAdoptComment={handleAdoptComment}
                                 isOwner={postData.isOwner}
+                                handleReplyReport={handleReplyReport}
                               />
                             )
                           ) : (
@@ -596,6 +620,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                               postIsSelected={postData.isSelected}
                               handleAdoptComment={handleAdoptComment}
                               isOwner={postData.isOwner}
+                              handleReplyReport={handleReplyReport}
                             />
                           )}
                         </View>

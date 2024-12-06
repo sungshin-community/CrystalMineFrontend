@@ -120,129 +120,134 @@ const SphereCommentInput = forwardRef(
             </TouchableOpacity>
           </View>
         )}
-
-        <View
-          style={{
-            flexDirection: 'column',
-          }}>
+        <View style={styles.commentWriteWrapper}>
           <View
             style={{
-              flexDirection: 'row',
-              paddingVertical: 5,
-              backgroundColor: 'white',
-              zIndex: 99999,
+              flexDirection: 'column',
             }}>
             <View
               style={{
-                position: 'relative',
-                justifyContent: 'flex-end',
-                backgroundColor: '#fff',
+                flexDirection: 'row',
+                paddingVertical: 5,
+                backgroundColor: 'white',
+                zIndex: 99999,
               }}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  marginRight: 12,
-                  marginLeft: 12,
-                  marginVertical: 25,
+                  position: 'relative',
+                  justifyContent: 'flex-end',
                   backgroundColor: '#fff',
                 }}>
-                <Text
+                <View
                   style={{
-                    color: '#3A424E',
-                    fontWeight: '500',
-                    fontSize: 12,
-                    marginRight: 5,
+                    flexDirection: 'row',
+                    marginRight: 12,
+                    marginLeft: 12,
+                    marginVertical: 25,
+                    backgroundColor: '#fff',
                   }}>
-                  익명
-                </Text>
-                <Pressable
-                  hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                  onPress={() => setIsAnonymous(!isAnonymous)}>
-                  {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
-                </Pressable>
+                  <Text
+                    style={{
+                      color: '#3A424E',
+                      fontWeight: '500',
+                      fontSize: 12,
+                      marginRight: 5,
+                    }}>
+                    익명
+                  </Text>
+                  <Pressable
+                    hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                    onPress={() => setIsAnonymous(!isAnonymous)}>
+                    {isAnonymous ? (
+                      <RectangleChecked />
+                    ) : (
+                      <RectangleUnchecked />
+                    )}
+                  </Pressable>
+                </View>
               </View>
-            </View>
 
-            <View
-              style={[
-                styles.inputBox,
-                {
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-end',
-                  position: 'relative',
-                },
-              ]}>
-              <TextInput
-                ref={commentInputRef}
-                placeholder="댓글을 입력해 주세요."
-                placeholderTextColor="#87919B"
-                multiline
-                value={newComment}
-                autoCorrect={false}
-                style={styles.input}
-                onChangeText={text => {
-                  setNewComment(text);
-                  if (text.length === 500) {
-                    Toast.show(
-                      '댓글 내용은 500글자까지만 입력 가능합니다.',
-                      Toast.SHORT,
-                    );
-                  }
-                }}
-                onFocus={() => {
-                  if (showEmojiPicker) {
-                    setShowEmojiPicker(false);
-                    setEmojiClicked(false);
-                  }
-                }}
-                maxLength={500}
-              />
-              <View style={{marginBottom: 10}}>
-                <TouchableOpacity onPress={handleEmojiIconPress}>
-                  {emojiClicked ? <ClickedEmojiIcon /> : <EmojiIcon />}
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                position: 'relative',
-                alignItems: 'flex-end',
-                marginBottom: 15,
-                marginRight: 12,
-                marginLeft: 12,
-              }}>
-              <Text>
-                <Pressable
-                  style={{
-                    paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                    bottom: 0,
+              <View
+                style={[
+                  styles.inputBox,
+                  {
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end',
+                    position: 'relative',
+                  },
+                ]}>
+                <TextInput
+                  ref={commentInputRef}
+                  placeholder="댓글을 입력해 주세요."
+                  placeholderTextColor="#87919B"
+                  multiline
+                  value={newComment}
+                  autoCorrect={false}
+                  style={styles.input}
+                  onChangeText={text => {
+                    setNewComment(text);
+                    if (text.length === 500) {
+                      Toast.show(
+                        '댓글 내용은 500글자까지만 입력 가능합니다.',
+                        Toast.SHORT,
+                      );
+                    }
                   }}
-                  onPress={handleSubmit}>
-                  {newComment || showSelectedEmoji ? (
-                    <PurplePostSend />
-                  ) : (
-                    <PostSend />
-                  )}
-                </Pressable>
-              </Text>
+                  onFocus={() => {
+                    if (showEmojiPicker) {
+                      setShowEmojiPicker(false);
+                      setEmojiClicked(false);
+                    }
+                  }}
+                  maxLength={500}
+                />
+                <View style={{marginBottom: 10}}>
+                  <TouchableOpacity onPress={handleEmojiIconPress}>
+                    {emojiClicked ? <ClickedEmojiIcon /> : <EmojiIcon />}
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  position: 'relative',
+                  alignItems: 'flex-end',
+                  marginBottom: 15,
+                  marginRight: 12,
+                  marginLeft: 12,
+                }}>
+                <Text>
+                  <Pressable
+                    style={{
+                      paddingBottom: Platform.OS === 'ios' ? 3 : 5,
+                      bottom: 0,
+                    }}
+                    onPress={handleSubmit}>
+                    {newComment || showSelectedEmoji ? (
+                      <PurplePostSend />
+                    ) : (
+                      <PostSend />
+                    )}
+                  </Pressable>
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        {showEmojiPicker && (
-          <View style={styles.emojiPickerContainer}>
-            <EmojiPicker
-              visible={showEmojiPicker}
-              onClose={() => setShowEmojiPicker(showEmojiPicker)}
-              onEmojiSelect={handleEmojiSelect}
-              isPayed={isPayed}
-              setIsPayed={setIsPayed}
-            />
-          </View>
-        )}
+          {showEmojiPicker && (
+            <View style={styles.emojiPickerContainer}>
+              <EmojiPicker
+                visible={showEmojiPicker}
+                onClose={() => setShowEmojiPicker(showEmojiPicker)}
+                onEmojiSelect={handleEmojiSelect}
+                isPayed={isPayed}
+                setIsPayed={setIsPayed}
+              />
+            </View>
+          )}
+        </View>
       </>
     );
   },
