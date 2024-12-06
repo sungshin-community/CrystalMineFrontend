@@ -33,11 +33,10 @@ interface SphereCommentInputProps {
     isAnonymous: boolean,
     emojiId: number | null,
   ) => void;
-  onNewFocus: () => void;
 }
 
 const SphereCommentInput = forwardRef(
-  ({onSubmit, onNewFocus}: SphereCommentInputProps, ref) => {
+  ({onSubmit}: SphereCommentInputProps, ref) => {
     const [newComment, setNewComment] = useState<string>('');
     const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
     const [emojiClicked, setEmojiClicked] = useState<boolean>(false);
@@ -192,7 +191,6 @@ const SphereCommentInput = forwardRef(
                   }
                 }}
                 onFocus={() => {
-                  onNewFocus();
                   if (showEmojiPicker) {
                     setShowEmojiPicker(false);
                     setEmojiClicked(false);

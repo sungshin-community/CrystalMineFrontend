@@ -298,6 +298,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   useEffect(() => {
     const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
       setFocusCommentId(null);
+      setIsRecomment(false);
+      setParentId(null);
     });
     return () => {
       keyboardHideListener.remove();
@@ -488,6 +490,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             commentCount={postData.ptCommentCount}
             isReported={postData.isReported}
             ptPostId={ptPostId}
+            isOwner={postData.isOwner}
             isScraped={postData.isScraped}
             handlePostLike={handlePostLike}
             handlePostComment={handleFocus}
@@ -504,22 +507,17 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
           />
         )}
 
-        <View style={{marginBottom: 35}}>
+        <View>
           {postData &&
             comments.map((item, index) => (
               <View
-                key={item.ptCommentId}
                 style={[
                   {
-                    padding: 16,
                     borderBottomColor: '#EFEFF3',
                     borderBottomWidth: 1,
                   },
                   index === comments.length - 1 && {
                     borderBottomWidth: 0,
-                  },
-                  item.ptCommentId === focusCommentId && {
-                    backgroundColor: '#f6f6f6',
                   },
                   item.isSelected &&
                     !item.canReadSelectedComment && {
@@ -527,8 +525,29 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       borderBottomWidth: 0,
                     },
                 ]}>
-                {item.isSelected ? (
-                  item.canReadSelectedComment && (
+                <View
+                  key={item.ptCommentId}
+                  style={[
+                    item.ptCommentId === focusCommentId && {
+                      backgroundColor: '#f6f6f6',
+                    },
+                    {padding: 16},
+                  ]}>
+                  {item.isSelected ? (
+                    item.canReadSelectedComment && (
+                      <SphereReplyItem
+                        reply={item}
+                        isQuestion={isQuestion}
+                        handleReplyClick={() =>
+                          handleCommentClick(item.ptCommentId)
+                        }
+                        handleLikePress={handleCommentLike}
+                        postIsSelected={postData.isSelected}
+                        handleAdoptComment={handleAdoptComment}
+                        isOwner={postData.isOwner}
+                      />
+                    )
+                  ) : (
                     <SphereReplyItem
                       reply={item}
                       isQuestion={isQuestion}
@@ -540,31 +559,20 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       handleAdoptComment={handleAdoptComment}
                       isOwner={postData.isOwner}
                     />
-                  )
-                ) : (
-                  <SphereReplyItem
-                    reply={item}
-                    isQuestion={isQuestion}
-                    handleReplyClick={() =>
-                      handleCommentClick(item.ptCommentId)
-                    }
-                    handleLikePress={handleCommentLike}
-                    postIsSelected={postData.isSelected}
-                    handleAdoptComment={handleAdoptComment}
-                    isOwner={postData.isOwner}
-                  />
-                )}
+                  )}
+                </View>
                 {item.reComments && item.reComments.length > 0 && (
-                  <View style={{marginTop: 24}}>
+                  <View style={{marginTop: 10}}>
                     {item.reComments.map(
                       (reComment: pantheonComment, idx: number) => (
                         <View
                           style={[
                             {
                               marginBottom: 20,
+                              paddingHorizontal: 16,
                             },
                             idx === item.reComments.length - 1 && {
-                              marginBottom: 0,
+                              marginBottom: 26,
                             },
                           ]}>
                           {reComment.isSelected ? (
@@ -599,14 +607,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             ))}
         </View>
       </ScrollView>
-      <SphereCommentInput
-        ref={commentInputRef}
-        onSubmit={postComment}
-        onNewFocus={() => {
-          setIsRecomment(false);
-          setParentId(null);
-        }}
-      />
+      <SphereCommentInput ref={commentInputRef} onSubmit={postComment} />
       <CustomToast
         visible={toastVisible}
         message={toastMessage}

@@ -311,7 +311,7 @@ export default function SphereItem({
             style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => handleLikePress(reply.isLiked, reply.ptCommentId)}>
             <HeartIcon
-              fill={reply.isLiked ? '#FF6376' : 'white'}
+              fill={reply.isLiked ? '#FF6376' : 'none'}
               stroke={reply.isLiked ? '#FF6376' : '#9DA4AB'}
             />
             <Text style={styles.footerText}>좋아요 {reply.likeCount}</Text>

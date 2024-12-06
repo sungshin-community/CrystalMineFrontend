@@ -72,15 +72,16 @@ export default function SphereAdItem({post}: SphereAdItemProps) {
           </Text>
 
           {typeof post.thumbnail === 'string' && (
-            <Image
-              source={{uri: post.thumbnail}}
-              style={{
-                marginLeft: 8,
-                height: 60,
-                width: 60,
-                borderRadius: 8,
-              }}
-              resizeMode="cover">
+            <View style={{marginLeft: 8}}>
+              <Image
+                source={{uri: post.thumbnail}}
+                style={{
+                  height: 60,
+                  width: 60,
+                  borderRadius: 8,
+                }}
+                resizeMode="cover"
+              />
               {post.imageCount > 1 && (
                 <Text
                   style={{
@@ -99,7 +100,7 @@ export default function SphereAdItem({post}: SphereAdItemProps) {
                   {`+${post.imageCount - 1}`}
                 </Text>
               )}
-            </Image>
+            </View>
           )}
         </View>
 

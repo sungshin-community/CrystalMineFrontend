@@ -1,6 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {
-  Modal,
   View,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -11,10 +10,10 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Keyboard,
-  Platform,
+  KeyboardEvent,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import HeartIcon from '../../resources/icon/HeartIcon';
 import ChatIcon from '../../resources/icon/ChatIcon';
 import {
@@ -33,36 +32,26 @@ interface ReplySheetProps {
   setVisible: (visible: boolean) => void;
 }
 
-const screenHeight = Dimensions.get('screen').height;
-
 export default function ReplySheet({
   visible,
   setVisible,
   ptPostId,
 }: ReplySheetProps) {
   const [comments, setComments] = useState<pantheonComment[]>([]);
+  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
+  const flatListRef = useRef<FlatList>(null);
+  const commentInputRef = useRef<SphereCommentInputRef>(null);
+  const [parentId, setParentId] = useState<number | null>(null);
+  const [isRecomment, setIsRecomment] = useState<boolean>(false);
 
-  const fetchCommentData = async () => {
-    try {
-      let data = [];
-      data = await getPantheonFreeComment(ptPostId);
-      setComments(data);
-      console.log('댓글 조회 성공');
-    } catch (error) {
-      console.error('댓글 조회 실패', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCommentData();
-  }, [ptPostId]);
-
+  const screenHeight = Dimensions.get('screen').height;
   const bottomSheetHeight = screenHeight * 0.8;
   const maxSheetHeight = screenHeight * 0.95;
   const dragThreshold = 0;
 
   const panY = useRef(new Animated.Value(screenHeight)).current;
-  const lastPanY = useRef(screenHeight - bottomSheetHeight); // 마지막 위치 기록
+  const lastPanY = useRef(screenHeight - bottomSheetHeight);
 
   const translateY = panY.interpolate({
     inputRange: [0, screenHeight],
@@ -74,12 +63,6 @@ export default function ReplySheet({
     toValue: screenHeight - bottomSheetHeight,
     useNativeDriver: true,
     duration: 300,
-  });
-
-  const closeBottomSheet = Animated.timing(panY, {
-    toValue: screenHeight,
-    duration: 300,
-    useNativeDriver: true,
   });
 
   const expandBottomSheet = Animated.timing(panY, {
@@ -124,6 +107,21 @@ export default function ReplySheet({
     }),
   ).current;
 
+  const fetchCommentData = async () => {
+    try {
+      let data = [];
+      data = await getPantheonFreeComment(ptPostId);
+      setComments(data);
+      console.log('댓글 조회 성공');
+    } catch (error) {
+      console.error('댓글 조회 실패', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCommentData();
+  }, [ptPostId]);
+
   useEffect(() => {
     if (visible) {
       resetBottomSheet.start();
@@ -131,11 +129,26 @@ export default function ReplySheet({
   }, [visible]);
 
   const closeModal = () => {
-    closeBottomSheet.start(() => {
-      setVisible(false);
-      Keyboard.dismiss();
-    });
+    setVisible(false);
   };
+
+  const handleFocus = () => {
+    commentInputRef.current?.focusInput();
+  };
+
+  const onKeyboardDidshow = (e: KeyboardEvent) => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidshow,
+    );
+    return () => {
+      showSubscription.remove();
+    };
+  }, []);
 
   const handleCommentLike = async (isLiked: boolean, commentId: number) => {
     try {
@@ -150,16 +163,6 @@ export default function ReplySheet({
       console.error('좋아요 상태 변경 실패:', error);
     }
   };
-
-  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
-  const flatListRef = useRef<FlatList>(null);
-  const commentInputRef = useRef<SphereCommentInputRef>(null);
-
-  const handleFocus = () => {
-    commentInputRef.current?.focusInput();
-  };
-  const [parentId, setParentId] = useState<number | null>(null);
-  const [isRecomment, setIsRecomment] = useState<boolean>(false);
 
   const handleCommentClick = (ptCommentId: number, index: number) => {
     setFocusCommentId(ptCommentId);
@@ -176,15 +179,6 @@ export default function ReplySheet({
       }
     }
   };
-
-  useEffect(() => {
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setFocusCommentId(null);
-    });
-    return () => {
-      keyboardHideListener.remove();
-    };
-  }, []);
 
   const handlePostComment = async (
     content: string,
@@ -239,28 +233,25 @@ export default function ReplySheet({
 
   return (
     <Modal
-      visible={visible}
-      animationType="fade"
-      transparent
-      statusBarTranslucent>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
-        <View style={styles.overlay}>
-          <TouchableWithoutFeedback onPress={closeModal}>
-            <View style={styles.background} />
-          </TouchableWithoutFeedback>
-          <Animated.View
-            style={[
-              styles.bottomSheetContainer,
-              {transform: [{translateY: translateY}]},
-            ]}
-            {...panResponder.panHandlers}>
-            <View style={styles.homeIndicator} />
+      isVisible={visible}
+      style={styles.modal}
+      backdropOpacity={0.5}
+      onBackdropPress={closeModal}
+      useNativeDriver={true}>
+      <View style={styles.overlay}>
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.background} />
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={[
+            styles.bottomSheetContainer,
+            {transform: [{translateY: translateY}]},
+          ]}
+          {...panResponder.panHandlers}>
+          <View style={styles.homeIndicator} />
+          <View style={{flex: 1, paddingBottom: 45}}>
             <FlatList
               style={{width: '100%', flex: 1}}
-              contentContainerStyle={{paddingBottom: 0}}
               keyboardShouldPersistTaps="handled"
               ref={flatListRef}
               data={comments}
@@ -377,7 +368,7 @@ export default function ReplySheet({
                     </View>
                   </View>
                   {item.reComments && item.reComments.length > 0 && (
-                    <View style={{marginTop: 24}}>
+                    <View style={{marginTop: 12}}>
                       {item.reComments.map(
                         (reComment: pantheonComment, idx: number) => (
                           <View
@@ -386,7 +377,7 @@ export default function ReplySheet({
                                 marginBottom: 20,
                               },
                               idx === item.reComments.length - 1 && {
-                                marginBottom: 0,
+                                marginBottom: 12,
                               },
                             ]}>
                             <View
@@ -512,42 +503,40 @@ export default function ReplySheet({
                 </View>
               )}
             />
-          </Animated.View>
-        </View>
-        <SphereCommentInput
-          ref={commentInputRef}
-          onSubmit={postComment}
-          onNewFocus={() => {
-            setIsRecomment(false);
-            setParentId(null);
-          }}
-        />
-      </KeyboardAvoidingView>
+          </View>
+        </Animated.View>
+      </View>
+      <SphereCommentInput ref={commentInputRef} onSubmit={postComment} />
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'transparent',
   },
   background: {
     flex: 1,
   },
   bottomSheetContainer: {
-    height: screenHeight * 0.95,
-    paddingBottom: 50,
     backgroundColor: 'white',
-    borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   homeIndicator: {
     width: 40,
     height: 5,
     borderRadius: 100,
     backgroundColor: '#CECFD6',
-    marginTop: 12,
+    marginVertical: 12,
     alignSelf: 'center',
   },
   footerText: {
