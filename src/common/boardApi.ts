@@ -505,6 +505,17 @@ export const getMyEmoticons = async () => {
   }
 };
 
+//전체 이모티콘 조회
+export const getEmoticons = async () => {
+  try {
+    const response = await client.get<AxiosResponse>(`/emoticons`);
+    console.log('전체이모티콘list', response.data);
+    return response.data;
+  } catch (e) {
+    console.log('getEmoticons 함수', e);
+  }
+};
+
 // 수정광산 이모티콘 구매하기
 export const buyEmoticons = async (emoticonId: number) => {
   try {
@@ -519,7 +530,15 @@ export const buyEmoticons = async (emoticonId: number) => {
     return e.response;
   }
 };
-
+//특정이모티콘 조회
+export const getEmoticonDetail = async (emoticonId: number) => {
+  try {
+    const response = await client.get(`/emoticons/${emoticonId}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 // 댓글
 export const getComments = async (postId: number /*, page: number*/) => {
   try {

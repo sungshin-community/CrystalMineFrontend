@@ -105,6 +105,7 @@ import ReplaceEmailInput from './src/screens/mypage/ReplaceEmailInput';
 import ReplaceEmailCheck from './src/screens/mypage/ReplaceEmailCheck';
 import {MobileAds} from 'react-native-google-mobile-ads';
 import MessageScreen from './src/screens/message/MessageScreen';
+import EmoticonShop from './src/screens/mypage/EmoticonShop';
 
 import PointScreen from './src/screens/mypage/point/PointScreen';
 import ProfileModify from './src/screens/mypage/ProfileModify';
@@ -116,6 +117,7 @@ import SpinningThreeDots from './src/components/SpinningThreeDots';
 
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
+import EmoticonDetailScreen from './src/screens/mypage/EmoticonDetail';
 import {
   checkMultiple,
   PERMISSIONS,
@@ -1504,6 +1506,64 @@ const App = () => {
                 component={DirectionAgreeScreen}
                 options={({navigation}) => ({
                   title: '수정광산 이용 방향',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="EmoticonShop"
+                component={EmoticonShop}
+                options={({navigation}) => ({
+                  title: '이모티콘샵',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="EmoticonDetailShop"
+                component={EmoticonDetailScreen}
+                options={({navigation}) => ({
+                  title: '이모티콘 샵',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -3346,6 +3406,64 @@ const App = () => {
                 component={DirectionAgreeScreen}
                 options={({navigation}) => ({
                   title: '수정광산 이용 방향',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="EmoticonShop"
+                component={EmoticonShop}
+                options={({navigation}) => ({
+                  title: '이모티콘샵',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="EmoticonDetailShop"
+                component={EmoticonDetailScreen}
+                options={({navigation}) => ({
+                  title: '이모티콘 샵',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
