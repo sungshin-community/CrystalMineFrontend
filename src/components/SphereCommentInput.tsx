@@ -124,6 +124,7 @@ const SphereCommentInput = forwardRef(
           <View
             style={{
               flexDirection: 'column',
+              paddingBottom: Platform.OS == 'ios' ? 20 : 0,
             }}>
             <View
               style={{
@@ -145,6 +146,7 @@ const SphereCommentInput = forwardRef(
                     marginLeft: 12,
                     marginVertical: 25,
                     backgroundColor: '#fff',
+                    alignItems: 'center',
                   }}>
                   <Text
                     style={{
@@ -202,7 +204,7 @@ const SphereCommentInput = forwardRef(
                   }}
                   maxLength={500}
                 />
-                <View style={{marginBottom: 10}}>
+                <View style={{marginBottom: Platform.OS == 'ios' ? 12 : 10}}>
                   <TouchableOpacity onPress={handleEmojiIconPress}>
                     {emojiClicked ? <ClickedEmojiIcon /> : <EmojiIcon />}
                   </TouchableOpacity>
@@ -257,7 +259,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 14,
     width: Dimensions.get('window').width - 175,
-    paddingTop: Platform.OS == 'ios' ? 13 : 10,
+    paddingBottom: Platform.OS == 'ios' ? 13 : 10,
     lineHeight: 20,
     minHeight: 40,
     maxHeight: 230,
