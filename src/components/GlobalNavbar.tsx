@@ -319,8 +319,12 @@ function GlobalNavbar({navigation}: ScreenProps) {
           tabPress: async e => {
             e.preventDefault();
             try {
-              // Push 하기 전에 반드시 수정 확인
-              navigation.navigate('CrystalBall');
+              const profileData = await getPantheonProfile();
+              if (!profileData.isNew) {
+                navigation.navigate('CrystalBall');
+              } else {
+                navigation.navigate('Onboarding'); // 온보딩
+              }
             } catch (error) {
               console.error('판테온 프로필 조회 오류:', error);
             }
@@ -328,6 +332,11 @@ function GlobalNavbar({navigation}: ScreenProps) {
         })}
         options={{
           title: '수정구',
+          headerTintColor: '#222222',
+          headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: '700',
+          },
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <View style={styles.iconContainer}>
@@ -342,30 +351,9 @@ function GlobalNavbar({navigation}: ScreenProps) {
             );
           },
           headerStyle: {
-            height: 40,
+            height: 60,
           },
           headerRight: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <TouchableHighlight
-                style={{
-                  marginRight: 11,
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                underlayColor="#EEEEEE"
-                onPress={onSearchPress}>
-                <SearchIcon />
-              </TouchableHighlight>
-            </View>
-          ),
-          headerLeft: () => (
             <TouchableHighlight
               style={{
                 marginRight: 16,
@@ -385,12 +373,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
               </View>
             </TouchableHighlight>
           ),
-          headerTitleStyle: {
-            fontSize: 20,
-            marginLeft: 5,
-            fontFamily: 'Pretendard-Bold',
-            fontWeight: '900',
-          },
         }}
       />
       <Tab.Screen

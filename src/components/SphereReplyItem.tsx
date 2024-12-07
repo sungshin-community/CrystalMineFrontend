@@ -19,6 +19,7 @@ interface SphereReplyItemProps {
   isReply?: boolean;
   postIsSelected?: boolean;
   handleReplyClick?: () => void;
+  handleReplyReport: any;
   handleAdoptComment: (ptCommentId: number, comment: pantheonComment) => void;
   isOwner?: boolean;
 }
@@ -30,6 +31,7 @@ export default function SphereItem({
   isReply = false,
   postIsSelected = false,
   handleReplyClick,
+  handleReplyReport,
   handleAdoptComment,
   isOwner,
 }: SphereReplyItemProps) {
@@ -57,63 +59,57 @@ export default function SphereItem({
     setTimeout(() => setToastVisible(false), 3000);
   };
 
-  const handleReplyReport = () => {}; // 댓글 신고 기능 추가
-
   const mineComponent = (
-    <>
-      {!isReply && (
-        <View
-          style={{
-            position: 'absolute',
-            top: -20,
-            right: 0,
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: 150,
-            height: 50,
-            zIndex: 150,
-          }}>
+    <View
+      style={{
+        position: 'absolute',
+        top: -20,
+        right: 0,
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: 150,
+        height: 50,
+        zIndex: 150,
+      }}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#FFFFFF',
+          borderColor: '#EFEFF3',
+          borderWidth: 1,
+          borderRadius: 8,
+          //iOS
+          shadowColor: '#A6AAAE',
+          shadowOffset: {width: 0, height: 4},
+          shadowOpacity: 0.4,
+          shadowRadius: 18,
+          // Android
+          elevation: 18,
+          width: 130,
+          height: '100%',
+        }}>
+        <TouchableOpacity onPress={handleReplyClick}>
           <View
             style={{
-              justifyContent: 'center',
+              flexDirection: 'row',
               alignItems: 'center',
               backgroundColor: '#FFFFFF',
-              borderColor: '#EFEFF3',
-              borderWidth: 1,
-              borderRadius: 8,
-              //iOS
-              shadowColor: '#A6AAAE',
-              shadowOffset: {width: 0, height: 4},
-              shadowOpacity: 0.4,
-              shadowRadius: 18,
-              // Android
-              elevation: 18,
-              width: 130,
-              height: '100%',
+              zIndex: 999,
             }}>
-            <TouchableOpacity onPress={handleReplyClick}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  backgroundColor: '#FFFFFF',
-                  zIndex: 999,
-                }}>
-                <BigPostComment style={{marginRight: 8}} />
-                <Text
-                  style={{
-                    paddingVertical: 8,
-                    fontSize: 14,
-                    color: '#3A424E',
-                  }}>
-                  대댓글 달기
-                </Text>
-              </View>
-            </TouchableOpacity>
+            <BigPostComment style={{marginRight: 8}} />
+            <Text
+              style={{
+                paddingVertical: 8,
+                fontSize: 14,
+                color: '#3A424E',
+              }}>
+              대댓글 달기
+            </Text>
           </View>
-        </View>
-      )}
-    </>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 
   const notMineComponent = (
@@ -139,7 +135,7 @@ export default function SphereItem({
           flexDirection: 'column',
           alignItems: 'center',
           width: 150,
-          height: 120,
+          height: !isReply ? 120 : 90,
           zIndex: 150,
         }}>
         <View
@@ -160,25 +156,27 @@ export default function SphereItem({
             width: 130,
             height: '100%',
           }}>
-          <TouchableOpacity onPress={handleReplyClick}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: '#FFFFFF',
-                zIndex: 999,
-              }}>
-              <BigPostComment style={{marginRight: 8}} />
-              <Text
+          {!isReply && (
+            <TouchableOpacity onPress={handleReplyClick}>
+              <View
                 style={{
-                  paddingVertical: 8,
-                  fontSize: 14,
-                  color: '#3A424E',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: '#FFFFFF',
+                  zIndex: 999,
                 }}>
-                대댓글 달기
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <BigPostComment style={{marginRight: 8}} />
+                <Text
+                  style={{
+                    paddingVertical: 8,
+                    fontSize: 14,
+                    color: '#3A424E',
+                  }}>
+                  대댓글 달기
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() =>
               showToast('수정광산 팀이 열심히 기능을 개발하는 중이에요!')
@@ -275,13 +273,15 @@ export default function SphereItem({
                   }`}
             </Text>
           </View>
-          <SpinningThreeDots
-            isMine={reply.isOfReader}
-            handleOptionModeIsMineComponent={mineComponent}
-            handleDefaultModeComponent={<></>}
-            handleOptionModeIsNotMineComponent={notMineComponent}
-            isGrey
-          />
+          {isReply && reply.isOfReader ? null : (
+            <SpinningThreeDots
+              isMine={reply.isOfReader}
+              handleOptionModeIsMineComponent={mineComponent}
+              handleDefaultModeComponent={<></>}
+              handleOptionModeIsNotMineComponent={notMineComponent}
+              isGrey
+            />
+          )}
         </View>
 
         {reply.emoticonUrl && (
@@ -311,7 +311,7 @@ export default function SphereItem({
             style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => handleLikePress(reply.isLiked, reply.ptCommentId)}>
             <HeartIcon
-              fill={reply.isLiked ? '#FF6376' : 'white'}
+              fill={reply.isLiked ? '#FF6376' : 'none'}
               stroke={reply.isLiked ? '#FF6376' : '#9DA4AB'}
             />
             <Text style={styles.footerText}>좋아요 {reply.likeCount}</Text>

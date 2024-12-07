@@ -10,6 +10,7 @@ import {
   PanResponder,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import CloseIcon from '../../resources/icon/CloseIcon';
 import {pantheonComment} from '../classes/Pantheon';
@@ -151,7 +152,11 @@ export default function SelectBottomSheet({
                     }}>
                     {reply?.isBlind
                       ? '비공개'
-                      : `${reply?.authorDepartment} · ${reply?.authorJob} ·${reply?.authorYear}`}
+                      : `${reply?.authorDepartment} · ${reply?.authorJob} · ${
+                          reply?.authorYear === 0
+                            ? '신입'
+                            : `${reply?.authorYear}년`
+                        }`}
                   </Text>
                 </View>
               </View>
@@ -182,7 +187,8 @@ export default function SelectBottomSheet({
             <View
               style={{
                 flexDirection: 'row',
-                marginVertical: 16,
+                marginTop: 16,
+                marginBottom: Platform.OS === 'ios' ? 46 : 30,
               }}>
               <TouchableOpacity
                 style={styles.cancelButton}
@@ -213,7 +219,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(34, 34, 34, 0.5)',
   },
   bottomSheetContainer: {
-    flex: 1,
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

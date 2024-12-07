@@ -5,11 +5,21 @@ import {useNavigation} from '@react-navigation/native';
 import {pantheonList} from '../classes/Pantheon';
 
 interface SphereAdItemProps {
-  post: pantheonList;
+  post: {
+    title: string;
+    content: string;
+    thumbnail: string;
+    storeName: string;
+    imageCount: number;
+    postAdId: number;
+  };
 }
 
 type RootStackParamList = {
-  // 연결 후 수정
+  PostScreen: {
+    postId: number;
+    boardId: number;
+  };
 };
 
 export default function SphereAdItem({post}: SphereAdItemProps) {
@@ -20,7 +30,10 @@ export default function SphereAdItem({post}: SphereAdItemProps) {
     <View style={{paddingHorizontal: 16}}>
       <TouchableOpacity
         onPress={() => {
-          // navigation.navigate(); 연결 후 수정
+          navigation.navigate('PostScreen', {
+            postId: post.postAdId,
+            boardId: 98,
+          });
         }}>
         {typeof post.title === 'string' && (
           <Text
@@ -59,17 +72,17 @@ export default function SphereAdItem({post}: SphereAdItemProps) {
           </Text>
 
           {typeof post.thumbnail === 'string' && (
-            <Image
-              source={{uri: post.thumbnail}}
-              style={{
-                marginLeft: 8,
-                height: 60,
-                width: 60,
-                borderRadius: 8,
-              }}
-              resizeMode="cover">
-              {
-                // post.imageCount > 1 && 변수 조건 생성 및 수정
+            <View style={{marginLeft: 8}}>
+              <Image
+                source={{uri: post.thumbnail}}
+                style={{
+                  height: 60,
+                  width: 60,
+                  borderRadius: 8,
+                }}
+                resizeMode="cover"
+              />
+              {post.imageCount > 1 && (
                 <Text
                   style={{
                     position: 'absolute',
@@ -84,17 +97,17 @@ export default function SphereAdItem({post}: SphereAdItemProps) {
                     borderRadius: 10,
                     overflow: 'hidden',
                   }}>
-                  {`+${0}`}
+                  {`+${post.imageCount - 1}`}
                 </Text>
-              }
-            </Image>
+              )}
+            </View>
           )}
         </View>
 
         <View
           style={{alignItems: 'center', marginTop: 12, flexDirection: 'row'}}>
           <Text style={styles.footerAd}>AD</Text>
-          <Text style={styles.footerText}>변수 생성 및 추가</Text>
+          <Text style={styles.footerText}>{post.storeName}</Text>
         </View>
       </TouchableOpacity>
     </View>
