@@ -771,6 +771,19 @@ const MyPageFragment = ({navigation}: Props) => {
                   </View>
                 </View>
               </TouchableHighlight>
+              {/* emoticon */}
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={() => {
+                  navigation.navigate('EmoticonShop');
+                }}>
+                <View style={styles.menu}>
+                  <Text style={styles.menuText}>이모티콘샵</Text>
+                  <View style={styles.arrowContainer}>
+                    <RightArrow />
+                  </View>
+                </View>
+              </TouchableHighlight>
               {/* 공지사항 */}
               <TouchableHighlight
                 underlayColor="#EEEEEE"

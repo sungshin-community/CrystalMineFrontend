@@ -10,3 +10,24 @@ export const getPointRecords = async () => {
     throw error;
   }
 };
+//회원보유포인트조회
+interface PointResponse {
+  timestamp: string;
+  code: string;
+  status: string;
+  detail: string;
+  data: {
+    userId: number;
+    point: number;
+  }
+}
+
+export const getPoint = async () => {
+  try {
+    const response = await client.get<PointResponse>('/user/point');
+    return response.data.data.point; // point 값만 반환
+  } catch (error) {
+    console.error('포인트 조회 실패:', error);
+    throw error;
+  }
+};
