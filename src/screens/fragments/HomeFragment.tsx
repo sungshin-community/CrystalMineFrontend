@@ -456,7 +456,7 @@ const HomeFragment = ({navigation}: Props) => {
                   <Text style={styles.bannerTitle}>
                     {bannerData[0]?.postTitle}
                   </Text>
-                  <Text style={styles.bannerContent}>
+                  <Text style={styles.bannerContent} numberOfLines={1}>
                     {bannerData[0]?.postContent}
                   </Text>
                 </View>

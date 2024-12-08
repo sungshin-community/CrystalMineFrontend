@@ -74,9 +74,14 @@ const Lounge = () => {
   // 생생 수정 후기
   const renderSaengSaengtItem = ({item}: {item: any}) => (
     <TouchableOpacity
-      onPress={
-        () => navigation.navigate('PostScreen', {postId: item.ptPostId}) // 게시글 이동 수정 필요
-      }>
+      onPress={() => {
+        navigation.navigate('SpherePostScreen', {
+          ptPostId: item.ptPostId,
+          isFree: false,
+          isQuestion: false,
+          isReview: true,
+        });
+      }}>
       <View style={styles.contentBox}>
         <View style={styles.hotTagBox}>
           <Text style={styles.hotTag}>HOT</Text>
@@ -190,23 +195,50 @@ const Lounge = () => {
     fetcRecruiting();
   }, []);
 
-  // 아티클 데이터 가져오기
+  // 아티클 데이터  데이터 불러오기
   useEffect(() => {
     const fetchArticles = async () => {
-      setIsLoadingArticles(true); // 로딩 상태 활성화
-      try {
-        const response = await getArticle(); // getArticle API 호출
-        if (response.status === 200) {
-          //setArticleData(response.data.articles); // 아티클 데이터 상태 저장
-        }
-      } catch (error) {
-        console.error('아티클 데이터를 가져오는데 실패', error);
-      } finally {
-        setIsLoadingArticles(false); // 로딩 상태 비활성화
-      }
+      //setIsLoadingRecruiting(true);
+      const data = await getArticle();
+      setArticleData(data);
+      //setIsLoadingRecruiting(false);
     };
 
     fetchArticles();
+  }, []);
+
+  // 테스트 데이터
+  useEffect(() => {
+    const testData = [
+      {
+        commentCount: 5,
+        content: '수정구에 대한 궁금증을 풀어보세요!',
+        displayName: 'Crystal Guide',
+        issuedMonth: 11,
+        likeCount: 23,
+        title: '수정구의 매력, 수정광산의 이야기',
+        thumnnail: null,
+      },
+      {
+        commentCount: 2,
+        content: '이번 달 주요 업데이트와 새로운 소식을 확인하세요.',
+        displayName: 'Admin',
+        issuedMonth: 11,
+        likeCount: 15,
+        title: '11월 수정광산 업데이트 안내',
+        thumnnail: null,
+      },
+      {
+        commentCount: 10,
+        content: '참여하고 특별한 경험을 만들어보세요.',
+        displayName: 'Event Team',
+        issuedMonth: 11,
+        likeCount: 42,
+        title: '11월 수정광산 이벤트 안내',
+        thumnnail: null,
+      },
+    ];
+    //setArticleData(testData);
   }, []);
 
   // 테스트 데이터
@@ -317,40 +349,6 @@ const Lounge = () => {
     //setRecruitingData(testData);
   }, []);
 
-  // 테스트 데이터
-  useEffect(() => {
-    const testData = [
-      {
-        commentCount: 5,
-        content: '수정구에 대한 궁금증을 풀어보세요!',
-        displayName: 'Crystal Guide',
-        issuedMonth: 11,
-        likeCount: 23,
-        title: '수정구의 매력, 수정광산의 이야기',
-        thumnnail: null,
-      },
-      {
-        commentCount: 2,
-        content: '이번 달 주요 업데이트와 새로운 소식을 확인하세요.',
-        displayName: 'Admin',
-        issuedMonth: 11,
-        likeCount: 15,
-        title: '11월 수정광산 업데이트 안내',
-        thumnnail: null,
-      },
-      {
-        commentCount: 10,
-        content: '참여하고 특별한 경험을 만들어보세요.',
-        displayName: 'Event Team',
-        issuedMonth: 11,
-        likeCount: 42,
-        title: '11월 수정광산 이벤트 안내',
-        thumnnail: null,
-      },
-    ];
-    setArticleData(testData);
-  }, []);
-
   function getMinutesAgo(createdAt) {
     const now = new Date();
     const createdDate = new Date(createdAt);
@@ -358,51 +356,54 @@ const Lounge = () => {
     const diffInMinutes = Math.floor(diffInMilliseconds / 1000 / 60);
     return diffInMinutes;
   }
-
+  console.log('articleData', articleData);
   return (
     <ScrollView style={{marginBottom: 30}}>
       <View style={{width: '100%'}}>
-        <FlatList
-          data={articleData}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          onViewableItemsChanged={onViewRef.current} // useRef로 전달
-          viewabilityConfig={viewabilityArticleConfig}
-          renderItem={({item}) => (
-            <View style={styles.bannerContainer}>
-              {/* 배너 이미지 */}
-              <Image
-                source={
-                  item?.thumbnail ? {uri: item.thumbnail} : BannerBasicImg
-                }
-                style={styles.bannerImage}
-                resizeMode="cover"
-              />
+        {articleData.length > 0 ? (
+          <FlatList
+            data={articleData}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewRef.current} // useRef로 전달
+            viewabilityConfig={viewabilityArticleConfig}
+            renderItem={({item}) => (
+              <View style={styles.bannerContainer}>
+                {/* 배너 이미지 */}
+                <Image
+                  source={
+                    item.thumbnail ? {uri: item.thumbnail} : BannerBasicImg
+                  }
+                  style={styles.bannerImage}
+                  resizeMode="cover"
+                />
 
-              {/* 그라데이션 레이어 */}
-              <LinearGradient
-                colors={['rgba(74, 74, 74, 0)', '#4A4A4A']}
-                style={styles.gradient}
-              />
+                {/* 그라데이션 레이어 */}
+                <LinearGradient
+                  colors={['rgba(74, 74, 74, 0)', '#4A4A4A']}
+                  style={styles.gradient}
+                />
 
-              {/* 텍스트 정보 */}
-              <Text style={styles.studenCouncilBox}>
-                수정 아티클 {item?.issuedMonth ?? 'N/A'}월호
-              </Text>
-              <View style={styles.bannerTextContainer}>
-                <Text style={styles.bannerTitle}>
-                  {item?.title ?? '제목 없음'}
+                {/* 텍스트 정보 */}
+                <Text style={styles.studenCouncilBox}>
+                  수정 아티클 {item?.issuedMonth ?? 'N/A'}월호
                 </Text>
-                <Text style={styles.bannerContent}>
-                  {item?.content ?? '내용이 없습니다.'}
-                </Text>
+                <View style={styles.bannerTextContainer}>
+                  <Text style={styles.bannerTitle}>
+                    {item?.title ?? '제목 없음'}
+                  </Text>
+                  <Text style={styles.bannerContent} numberOfLines={1}>
+                    {item?.content ?? '내용이 없습니다.'}
+                  </Text>
+                </View>
               </View>
-            </View>
-          )}
-        />
-
+            )}
+          />
+        ) : (
+          <ActivityIndicator />
+        )}
         {/* 오른쪽 하단에 인덱스 표시 */}
         <View style={styles.pagination}>
           <Text style={styles.paginationText}>
@@ -410,6 +411,7 @@ const Lounge = () => {
           </Text>
         </View>
       </View>
+
       <View style={styles.rowContainer}>
         <View style={styles.boardContainer}>
           <View style={styles.boardTitleContainer}>
@@ -493,7 +495,7 @@ const Lounge = () => {
               <TouchableWithoutFeedback
                 onPress={() => {
                   user?.isAuthenticated
-                    ? navigation.navigate('PostListScreen', {boardId: 2}) // 이동할 페이지 수정하기
+                    ? navigation.navigate('PostListScreen', {boardId: 4}) // 홍보 게시판으로 이동
                     : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                 }}>
                 <RightArrow />
@@ -530,9 +532,14 @@ const Lounge = () => {
           </View>
           <TouchableWithoutFeedback
             onPress={() => {
-              user?.isAuthenticated
-                ? navigation.navigate('PostListScreen', {boardId: 2}) // 이동할 페이지 수정하기
-                : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              if (user?.isAuthenticated) {
+                navigation.navigate('CrystalBall', {
+                  tabIndex: 2, // 궁금해요로 이동
+                  activeTab: 'explore', // '살펴보기'
+                });
+              } else {
+                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              }
             }}>
             <RightArrow />
           </TouchableWithoutFeedback>
@@ -568,9 +575,14 @@ const Lounge = () => {
             questionCrystalball.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={
-                  () => navigation.navigate('PostScreen', {postId: item.postId}) // 이동할 페이지 변경 필요
-                }>
+                onPress={() => {
+                  navigation.navigate('SpherePostScreen', {
+                    ptPostId: item.ptPostId,
+                    isFree: false,
+                    isQuestion: true,
+                    isReview: false,
+                  });
+                }}>
                 <View style={styles.newPostContainer}>
                   <View style={styles.hotPostContainer}>
                     <Text
@@ -587,7 +599,8 @@ const Lounge = () => {
                     </Text>
                   </View>
                   <Text style={styles.newPostTime}>
-                    {getMinutesAgo(item.createdAt)}분전 ·{' '}
+                    {item.createdAt}
+                    {'  '}
                     <Text style={styles.newPostBoard}>{item.userJob}</Text>
                     <Text style={styles.newPostBoard}>{item.year}</Text>
                   </Text>

@@ -28,6 +28,8 @@ import CrystalReview from '../../components/CrystalReview';
 import SphereTabNav from '../../components/SphereTabNav';
 import DevelopScreen from '../developScreen/DevelopScreen';
 import LookScreen from '../crystalBall/LookScreen';
+import {useRoute} from '@react-navigation/native';
+
 type RootStackParamList = {
   MyPostList: undefined;
   MyCommentList: undefined;
@@ -40,6 +42,11 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function CrystalBallFragment({navigation}: Props) {
+  const route = useRoute(); // 라우트에서 파라미터 가져오기
+  const {tabIndex: routeTabIndex, activeTab: routeActiveTab} =
+    route.params || {};
+  console.log(routeTabIndex, routeActiveTab);
+
   const [pinnedBoardList, setPinnedBoardList] = useState<Board[]>([]);
   const [customBoardList, setCustomBoardList] = useState<Board[]>([]);
   const [officialBoardList, setOfficialBoardList] = useState<Board[]>([]);
@@ -51,6 +58,13 @@ export default function CrystalBallFragment({navigation}: Props) {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorStatus, setErrorStatus] = useState<number>();
   const [activeTab, setActiveTab] = useState<'lounge' | 'explore'>('lounge'); // 선택된 탭
+  const [tabIndex, setTabIndex] = useState<number>(0);
+
+  // 탭 및 상태 초기화
+  useEffect(() => {
+    if (routeActiveTab) setActiveTab(routeActiveTab);
+    if (routeTabIndex !== undefined) setTabIndex(routeTabIndex);
+  }, [routeActiveTab, routeTabIndex]);
 
   const getPinnedBoardList = async () => {
     let boardList: Board[] = [];
@@ -210,8 +224,6 @@ export default function CrystalBallFragment({navigation}: Props) {
       init();
     }
   }, [navigation, isFocused]);
-
-  const [tabIndex, setTabIndex] = useState(0);
 
   const renderContent = () => {
     switch (tabIndex) {
