@@ -114,10 +114,11 @@ import MyActivity from './src/screens/mypage/MyActivity';
 import CancelButton from './resources/icon/Cancel';
 import SearchIcon from './resources/icon/SearchIcon';
 import SpinningThreeDots from './src/components/SpinningThreeDots';
-
+import ProfileSetup from './src/screens/crystalBall/ProfileSetup';
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
 import EmoticonDetailScreen from './src/screens/mypage/EmoticonDetail';
+import ProfileCompleteScreen from './src/screens/crystalBall/ProfileCompleteScreen';
 import {
   checkMultiple,
   PERMISSIONS,
@@ -2124,10 +2125,26 @@ const App = () => {
                 })}
               />
               <Stack.Screen
-                name="Onboarding"
+                name="OnboardingScreen"
                 component={OnboardingScreen}
                 options={{
-                  title: 'Onboarding',
+                  title: 'OnboardingScreen',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ProfileSetup"
+                component={ProfileSetup}
+                options={{
+                  title: 'ProfileSetup',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ProfileCompleteScreen"
+                component={ProfileCompleteScreen}
+                options={{
+                  title: 'ProfileCompleteScreen',
                   headerShown: false,
                 }}
               />

@@ -323,7 +323,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
               if (!profileData.isNew) {
                 navigation.navigate('CrystalBall');
               } else {
-                navigation.navigate('Onboarding'); // 온보딩
+                navigation.navigate('OnboardingScreen'); // 온보딩
               }
             } catch (error) {
               console.error('판테온 프로필 조회 오류:', error);
