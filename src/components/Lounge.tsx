@@ -85,9 +85,9 @@ const Lounge = () => {
       <View style={styles.contentBox}>
         <View style={styles.hotTagBox}>
           <Text style={styles.hotTag}>HOT</Text>
-          <Text style={styles.yearJob}>{item.job} </Text>
+          <Text style={styles.yearJob}>{item.userJob} </Text>
           <Text style={styles.yearJob}>·</Text>
-          <Text style={styles.yearJob}>{item.year} </Text>
+          <Text style={styles.yearJob}>{item.userYear} </Text>
         </View>
         <Text style={styles.contentTitle}>{item.title}</Text>
         <Text numberOfLines={1} ellipsizeMode="tail" style={styles.contentText}>
@@ -120,7 +120,7 @@ const Lounge = () => {
   const renderRecruitingtItem = ({item}) => (
     <TouchableOpacity
       style={styles.nowBox}
-      onPress={() => console.log(`Post ID: ${item.postId}`)}>
+      onPress={() => navigation.navigate('PostScreen', {postId: item.postId})}>
       <View style={styles.thumbnailImgContainer}>
         <Image
           source={{uri: item.thumbnail}}
@@ -420,9 +420,14 @@ const Lounge = () => {
           </View>
           <TouchableWithoutFeedback
             onPress={() => {
-              user?.isAuthenticated
-                ? navigation.navigate('PostListScreen', {boardId: 2}) // 이동할 페이지 수정하기
-                : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              if (user?.isAuthenticated) {
+                navigation.navigate('CrystalBall', {
+                  tabIndex: 3, // 수정후기로 이동
+                  activeTab: 'explore', // '살펴보기'
+                });
+              } else {
+                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              }
             }}>
             <RightArrow />
           </TouchableWithoutFeedback>
@@ -679,6 +684,7 @@ const styles = StyleSheet.create({
   contentTitle: {
     color: '#222',
     fontSize: 16,
+    marginBottom: 5,
     fontFamily: 'Pretendard-Bold',
   },
   contentText: {
