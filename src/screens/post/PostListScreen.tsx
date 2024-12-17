@@ -123,12 +123,13 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
   };
 
-  // 중간 광고: 5개마다 광고 삽입
+  // 중간 광고: boardId가 10인 경우에만 5개마다 광고 삽입
   const getProcessedData = () => {
-    if (!boardDetail || !midAd) return boardDetail;
+    if (!boardDetail || !midAd || route.params.boardId !== 10)
+      return boardDetail;
 
     const processed = [...boardDetail];
-    for (let i = 5; i < processed.length; i += 6) {
+    for (let i = 0; i < processed.length; i += 5) {
       processed.splice(i, 0, {...midAd, isAd: true});
     }
     return processed;
@@ -565,21 +566,23 @@ const PostListScreen = ({navigation, route}: Props) => {
         {boardDetail.length === 0 && route.params.boardId !== 98 ? (
           <>
             <View style={{backgroundColor: 'white'}}>
-              {!isLoading && config?.componentToUse === 'writing_box' && (
-                <PostWriteBCase
-                  navigation={navigation}
-                  route={route}
-                  contentType={boardInfo?.contentType || 'TYPE1'}
-                  hasTitle={boardDetail?.hasTitle}
-                  onPress={async () => {
-                    console.log('Writing box clicked');
-                    await analytics().logEvent('custom_click', {
-                      component: 'writing_box',
-                      boardId: route.params.boardId.toString(),
-                    });
-                  }}
-                />
-              )}
+              {!isLoading &&
+                config?.componentToUse === 'writing_box' &&
+                ![93, 94, 95].includes(route.params.boardId) && (
+                  <PostWriteBCase
+                    navigation={navigation}
+                    route={route}
+                    contentType={boardInfo?.contentType || 'TYPE1'}
+                    hasTitle={boardDetail?.hasTitle}
+                    onPress={async () => {
+                      console.log('Writing box clicked');
+                      await analytics().logEvent('custom_click', {
+                        component: 'writing_box',
+                        boardId: route.params.boardId.toString(),
+                      });
+                    }}
+                  />
+                )}
             </View>
             <SafeAreaView style={{flex: 1}}>
               <View
@@ -756,7 +759,8 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </View>
                         )}
                       {route.params.boardId !== 98 &&
-                        config?.componentToUse === 'writing_box' && (
+                        config?.componentToUse === 'writing_box' &&
+                        ![93, 94, 95].includes(route.params.boardId) && (
                           <PostWriteBCase
                             navigation={navigation}
                             route={route}
@@ -781,21 +785,22 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {config?.componentToUse === 'floating_button' && (
-          <FloatingWriteButton
-            onPress={async () => {
-              await analytics().logEvent('custom_click', {
-                component: 'floating_button',
-                boardId: route.params.boardId.toString(),
-              });
-              console.log('Floating button clicked');
-              navigation.navigate('PostWriteScreen', {
-                boardId: route.params.boardId,
-                contentType: boardInfo?.contentType,
-              });
-            }}
-          />
-        )}
+        {config?.componentToUse === 'floating_button' &&
+          ![93, 94, 95].includes(route.params.boardId) && (
+            <FloatingWriteButton
+              onPress={async () => {
+                await analytics().logEvent('custom_click', {
+                  component: 'floating_button',
+                  boardId: route.params.boardId.toString(),
+                });
+                console.log('Floating button clicked');
+                navigation.navigate('PostWriteScreen', {
+                  boardId: route.params.boardId,
+                  contentType: boardInfo?.contentType,
+                });
+              }}
+            />
+          )}
         {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
           (route.params?.boardId === 98 && isAdBoard && (
             <FloatingWriteButton
