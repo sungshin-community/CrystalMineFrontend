@@ -86,8 +86,8 @@ export const getCustomBoardList = async () => {
 export const toggleBoardPin = async (boardId: number) => {
   try {
     const response = await client.post<AxiosResponse>(`/boards/${boardId}/pin`);
-    console.log('고정/고정해제 response:', response);
-    return response;
+    console.log('고정/고정해제 response:', response.data.data);
+    return response.data.data;
   } catch (e: any) {
     console.log('여기는 toggleBoardPin 함수', e);
     return e.response;
@@ -176,6 +176,22 @@ export const getRandomMidAd = async (boardId?: number) => {
     return response.data.data; // 전체 응답 객체 반환
   } catch (e) {
     console.log('여기는 getRandomMidAd 함수', e.response);
+    return e.response;
+  }
+};
+
+// 게시판 내 최신 게시판 조회
+export const getCurrentPost = async (page: number) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    const response = await client.get<Response<any>>(
+      `/boards/new-board/posts?${params}`,
+    );
+    //console.log('여기는 getCurrentPost 함수', response.data.data.content);
+    return response.data.data.content;
+  } catch (e) {
+    console.log('여기는 getCurrentPost 함수', e.response);
     return e.response;
   }
 };

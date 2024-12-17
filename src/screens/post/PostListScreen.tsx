@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
-
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   getBoardDetail,
@@ -26,6 +25,7 @@ import {
   toggleBoardPin,
   checkIsAdminForAdBoardPost,
   getRandomMidAd,
+  getCurrentPost,
 } from '../../common/boardApi';
 import BoardDetailDto, {
   BoardHotPostDto,
@@ -189,6 +189,10 @@ const PostListScreen = ({navigation, route}: Props) => {
 
   // 게시글 목록 업데이트 함수를 별도로 분리
   const updateBoardDetail = useCallback(async () => {
+    if (route.params.boardId === 102) {
+      // 102 별도 처리하지 않음.
+      return;
+    }
     if (route.params.boardId !== 2 && route.params.boardId !== 98) {
       const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
       if (!boardDetail.code) {
@@ -197,12 +201,15 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
   }, [route.params.boardId, sortBy]);
 
-  // 초기 데이터 로딩
+  // 초기 데이터 로딩 수정
   useEffect(() => {
     async function init() {
       setIsLoading(true);
       try {
-        if (route.params.boardId === 2) {
+        if (route.params.boardId === 102) {
+          const currentPost = await getCurrentPost(0);
+          setBoardDetail(currentPost);
+        } else if (route.params.boardId === 2) {
           const hotBoardData = await getHotBoardPosts(0);
           setBoardDetail(hotBoardData);
         } else if (route.params.boardId === 98) {
@@ -262,7 +269,9 @@ const PostListScreen = ({navigation, route}: Props) => {
           await fetchAdminStatus(boardInfo.id);
         }
         await fetchMidAd(); // 광고 데이터 가져오기
-        await updateBoardDetail(); // 게시글 목록 업데이트
+        if (route.params.boardId !== 102) {
+          await updateBoardDetail();
+        }
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
         Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
@@ -279,7 +288,11 @@ const PostListScreen = ({navigation, route}: Props) => {
   }, [sortBy]);
 
   const handleRefresh = async () => {
-    if (route.params.boardId === 2) {
+    if (route.params.boardId === 102) {
+      const postList = await getCurrentPost(0);
+      setCurrentPage(0);
+      setBoardDetail(postList);
+    } else if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
       setCurrentPage(0);
       setBoardDetail(postList);
@@ -294,9 +307,16 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
   };
 
+  // fetchNextPage 함수 수정
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    if (route.params.boardId === 2) {
+    if (route.params.boardId === 102) {
+      const nextPagePosts = await getCurrentPost(currentPage + 1);
+      setBoardDetail(boardDetail.concat(nextPagePosts));
+      if (nextPagePosts.length > 0) {
+        setCurrentPage(currentPage + 1);
+      }
+    } else if (route.params.boardId === 2) {
       let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
         currentPage + 1,
       );
@@ -322,9 +342,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     return (
       <>
         {boardInfo?.id === 1 ? (
-          {
-            /* <BigDarkPin /> */
-          }
+          <></>
         ) : (
           <Pressable
             onPress={async () => {
@@ -568,7 +586,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             <View style={{backgroundColor: 'white'}}>
               {!isLoading &&
                 config?.componentToUse === 'writing_box' &&
-                ![93, 94, 95].includes(route.params.boardId) && (
+                ![93, 94, 95, 102].includes(route.params.boardId) && (
                   <PostWriteBCase
                     navigation={navigation}
                     route={route}
@@ -760,7 +778,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                         )}
                       {route.params.boardId !== 98 &&
                         config?.componentToUse === 'writing_box' &&
-                        ![93, 94, 95].includes(route.params.boardId) && (
+                        ![93, 94, 95, 102].includes(route.params.boardId) && (
                           <PostWriteBCase
                             navigation={navigation}
                             route={route}
@@ -786,7 +804,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           </>
         )}
         {config?.componentToUse === 'floating_button' &&
-          ![93, 94, 95].includes(route.params.boardId) && (
+          ![93, 94, 95, 102].includes(route.params.boardId) && (
             <FloatingWriteButton
               onPress={async () => {
                 await analytics().logEvent('custom_click', {
@@ -801,7 +819,7 @@ const PostListScreen = ({navigation, route}: Props) => {
               }}
             />
           )}
-        {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
+        {!(isHotBoard || [93, 94, 95, 102].includes(route.params?.boardId)) ||
           (route.params?.boardId === 98 && isAdBoard && (
             <FloatingWriteButton
               onPress={() =>
