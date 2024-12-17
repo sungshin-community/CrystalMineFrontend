@@ -126,7 +126,7 @@ export function BoardListContainer({
           style={[
             fontBold,
             {
-              fontSize: 17,
+              fontSize: 16,
               fontFamily: 'SpoqaHanSansNeo-Regular',
               lineHeight: 20,
               flex: 1,
@@ -145,7 +145,7 @@ export function BoardListContainer({
               color: '#6E7882',
               fontFamily: 'SpoqaHanSansNeo-Regular',
               fontWeight: '500',
-              marginLeft: 10,
+              marginLeft: 5,
             }}>
             {officialBoards}
           </Text>
@@ -253,7 +253,7 @@ export function CustomBoardListContainer({
         onPress={toggleSpread}>
         <Text
           style={{
-            fontSize: 17,
+            fontSize: 16,
             fontFamily: 'SpoqaHanSansNeo-Regular',
             lineHeight: 20,
             flex: 1,
@@ -271,7 +271,7 @@ export function CustomBoardListContainer({
               color: '#6E7882',
               fontFamily: 'SpoqaHanSansNeo-Regular',
               fontWeight: '500',
-              marginLeft: 10,
+              marginLeft: 5,
             }}>
             {majorBoards}
           </Text>
@@ -375,7 +375,7 @@ export function OfficialBoardListContainer({
         onPress={() => setIsSpread(!isSpread)}>
         <Text
           style={{
-            fontSize: 17,
+            fontSize: 16,
             fontFamily: 'SpoqaHanSansNeo-Regular',
             lineHeight: 20,
             flex: 1,
@@ -393,7 +393,7 @@ export function OfficialBoardListContainer({
               color: '#6E7882',
               fontFamily: 'SpoqaHanSansNeo-Regular',
               fontWeight: '500',
-              marginLeft: 10,
+              marginLeft: 5,
             }}>
             {majorBoards}
           </Text>
