@@ -739,7 +739,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             <Text style={{fontSize: 14, fontWeight: '500', marginRight: 4}}>
               익명
             </Text>
-            {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
+            {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
           </Pressable>
         </View>
       </SafeAreaView>
