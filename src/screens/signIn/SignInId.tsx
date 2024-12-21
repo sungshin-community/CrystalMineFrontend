@@ -21,7 +21,7 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Toast from 'react-native-simple-toast';
 import styled from 'styled-components/native';
-import { fontRegular } from '../../common/font';
+import {fontRegular} from '../../common/font';
 
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
@@ -93,14 +93,16 @@ export default function SignInId({navigation}: Props) {
         <ScrollView style={{flex: 1, paddingHorizontal: 24}}>
           <NormalOneLineText style={{marginTop: 25}}>로그인</NormalOneLineText>
           <View>
-            <Text style={[fontRegular, {marginTop: 47, color: '#A055FF'}]}>아이디</Text>
+            <Text style={[fontRegular, {marginTop: 47, color: '#A055FF'}]}>
+              아이디
+            </Text>
             <View style={{marginTop: 12}}>
               <MiddleInputContainerStyle
                 style={{borderColor: isIdFocused ? '#A055FF' : '#D7DCE6'}}>
                 <TextInput
                   autoFocus={true}
                   style={{
-                    width: '60%',
+                    width: '57%',
                     fontSize: 21,
                     fontFamily: 'SpoqaHanSansNeo-Regular',
                     paddingBottom: 7,

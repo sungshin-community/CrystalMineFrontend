@@ -894,7 +894,7 @@ const MyPageFragment = ({navigation}: Props) => {
               </TouchableHighlight>
             </View>
             {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
-                Salty Lab | contact@crystalmine.kr
+                Salty Lab | sungshin.community@gmail.com
               </Text> */}
           </View>
 
