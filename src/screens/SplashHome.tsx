@@ -70,12 +70,12 @@ const SplashHome = ({navigation}: Props) => {
           fontRegular,
           {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30, backgroundColor: '#fff'},
         ]}>
-        Salty Lab | contact@crystalmine.kr
+        Salty Lab | sungshin.community@gmail.com
       </Text> */}
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        content={`개인정보 민원 처리, 제휴, 콜라보 등의 외부 문의는 아래 수정광산 메일로 내용을 보내주시면 담당자가 확인 후 연락드리도록 하겠습니다.\n\ncontact@crystalmine.kr`}
+        content={`개인정보 민원 처리, 제휴, 콜라보 등의 외부 문의는 아래 수정광산 메일로 내용을 보내주시면 담당자가 확인 후 연락드리도록 하겠습니다.\n\nsungshin.community@gmail.com`}
         purpleButtonText="확인"
         purpleButtonFunc={() => {
           setModalVisible(false);
