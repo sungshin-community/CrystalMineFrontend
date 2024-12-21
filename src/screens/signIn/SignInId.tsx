@@ -102,7 +102,7 @@ export default function SignInId({navigation}: Props) {
                 <TextInput
                   autoFocus={true}
                   style={{
-                    width: '59%',
+                    width: '57%',
                     fontSize: 21,
                     fontFamily: 'SpoqaHanSansNeo-Regular',
                     paddingBottom: 7,
