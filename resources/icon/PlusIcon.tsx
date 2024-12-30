@@ -1,17 +1,29 @@
 import * as React from 'react';
-import Svg, {SvgProps, Path} from 'react-native-svg';
+import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
 
 const PlusIcon = (props: any) => (
   <Svg
-    width={18}
-    height={18}
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    width={24}
+    height={24}
     {...props}>
-    <Path
-      d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9c0 4.14 3.36 7.5 7.5 7.5 4.14 0 7.5-3.36 7.5-7.5 0-4.14-3.36-7.5-7.5-7.5Zm3.75 8.25h-3v3h-1.5v-3h-3v-1.5h3v-3h1.5v3h3v1.5Z"
-      fill="#DBDCE0"
-    />
+    <G clipPath="url(#a)">
+      <G clipPath="url(#b)">
+        <Path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"
+          fill="#DBDCE0"
+        />
+      </G>
+    </G>
+    <Defs>
+      <ClipPath id="a">
+        <Path fill="#fff" d="M0 0h24v24H0z" />
+      </ClipPath>
+      <ClipPath id="b">
+        <Path fill="#fff" d="M0 0h24v24H0z" />
+      </ClipPath>
+    </Defs>
   </Svg>
 );
 

@@ -19,7 +19,7 @@ import {DarkPin, GrayPin, OrangePin, PurplePin} from '../../resources/icon/Pin';
 import PlusIcon from '../../resources/icon/PlusIcon';
 import Board from '../classes/Board';
 import {toggleBoardPin} from '../common/boardApi';
-import {fontRegular} from '../common/font';
+import {fontBold, fontRegular} from '../common/font';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
@@ -52,12 +52,12 @@ export default function BoardList({
         onPress={() => moveToBoard(item.id)}
         style={{
           flexDirection: 'row',
-          height: 55,
+          height: 44,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#fff',
         }}>
-        <View style={{flex: 7, marginLeft: 15, marginRight: 5}}>
+        <View style={{flex: 7, marginLeft: 16, marginRight: 5}}>
           <Text
             style={{
               fontSize: 14,
@@ -71,8 +71,9 @@ export default function BoardList({
             ellipsizeMode="tail"
             style={{
               fontSize: 12,
+              fontWeight: '400',
               color: '#89919A',
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              marginTop: 2,
             }}>
             {item.introduction}
           </Text>
@@ -470,9 +471,8 @@ export function CustomBoardList({
               <Text
                 style={{
                   fontSize: 12,
-                  color: '#A055FF',
+                  color: item.isPinned ? '#A055FF' : '#CECFD6',
                   fontWeight: '500',
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
                 }}>
                 {item.pinCount}
               </Text>
@@ -509,7 +509,7 @@ export function CustomBoardList({
             <View
               style={{
                 zIndex: 99,
-                width: 343,
+                width: 392,
                 height: 44,
                 borderRadius: 8,
                 borderWidth: 1,
@@ -517,15 +517,22 @@ export function CustomBoardList({
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginBottom: 10,
+                marginHorizontal: 16,
+                flexDirection: 'row',
               }}>
               <Text
-                style={{
-                  fontSize: 15,
-                  color: '#6E7882',
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
-                }}>
-                게시판 펼쳐보기 <SpreadButton />
+                style={[
+                  fontBold,
+                  {
+                    fontSize: 14,
+                    color: '#6E7882',
+                    fontFamily: 'SpoqaHanSansNeo-Regular',
+                    marginRight: 8,
+                  },
+                ]}>
+                게시판 펼쳐 보기
               </Text>
+              <SpreadButton />
             </View>
           </TouchableOpacity>
         </View>
