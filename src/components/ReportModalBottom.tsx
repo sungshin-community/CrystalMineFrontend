@@ -119,7 +119,7 @@ export const ReportModalBottom = ({
             bottom:
               Platform.OS == 'ios'
                 ? isFocused
-                  ? keyboardHeight
+                  ? keyboardHeight + 120
                   : Dimensions.get('window').width * 0.15
                 : Dimensions.get('window').width * 0.15,
           },
@@ -142,7 +142,7 @@ export const ReportModalBottom = ({
                 bottom:
                   Platform.OS == 'ios'
                     ? isFocused
-                      ? keyboardHeight
+                      ? keyboardHeight + 120
                       : Dimensions.get('window').width * 0.15
                     : Dimensions.get('window').width * 0.15,
               },
@@ -342,8 +342,8 @@ export const ReportItem = ({
                 {
                   backgroundColor: '#F6F6F6',
                   fontSize: 13,
-                  borderRadius: 10,
-                  padding: 0,
+                  borderRadius: 4,
+                  padding: 8,
                   width: Dimensions.get('window').width - 200,
                   paddingVertical: Platform.OS == 'ios' ? 5 : 0,
                 },

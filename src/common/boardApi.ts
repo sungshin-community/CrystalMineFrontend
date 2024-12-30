@@ -441,7 +441,8 @@ export const getPostByComment = async (commentId: number) => {
 export const setPostLike = async (postId: number) => {
   try {
     const response = await client.post<Response<null>>(`/posts/${postId}/like`);
-    return true;
+    console.log('좋아요 응답:', response.data);
+    return response.data;
   } catch (e) {
     console.log('여기는 setPostLike 함수', e);
     return false;

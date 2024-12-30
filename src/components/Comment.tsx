@@ -82,10 +82,10 @@ const Comment = ({
     console.log('messageData', messageData);
 
     const response = await postChatRoom(messageData);
-    console.log('blockedCheck1', response);
+    console.log('response', response);
     setChatResponse(response);
     const block = await getMessageContent(response.data.roomId, 0);
-    console.log('blockedCheck2', block);
+    console.log('block', block);
 
     if (!block.data.isBlocked) {
       setMessageModalVisible(true);
@@ -325,6 +325,14 @@ const Comment = ({
                   </Text>
                 </View>
               </TouchableOpacity>
+              <MessageModalBottom
+                modalVisible={messageModalVisible}
+                setModalVisible={setMessageModalVisible}
+                purpleButtonText="확인"
+                purpleButtonFunc={handlePostMessage}
+                setDim={false}
+                anonymous={data?.isAnonymous}
+              />
               <TouchableOpacity onPress={() => setReportModalVisible(true)}>
                 <View
                   style={{
@@ -780,6 +788,14 @@ export const Recomment = ({
                   </Text>
                 </View>
               </TouchableOpacity>
+              <MessageModalBottom
+                modalVisible={messageModalVisible}
+                setModalVisible={setMessageModalVisible}
+                purpleButtonText="확인"
+                purpleButtonFunc={handlePostMessage}
+                setDim={false}
+                anonymous={data?.isAnonymous}
+              />
               <TouchableOpacity onPress={() => setReportModalVisible(true)}>
                 <View
                   style={{
@@ -790,7 +806,7 @@ export const Recomment = ({
                   }}>
                   <BlackReport style={{marginRight: 8}} />
                   <Text style={{paddingVertical: 8, fontSize: 14}}>
-                    ���고하기
+                    신고하기
                   </Text>
                 </View>
               </TouchableOpacity>

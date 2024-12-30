@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {
   StyleSheet,
@@ -26,6 +27,7 @@ import {
   checkIsAdminForAdBoardPost,
   getRandomMidAd,
   getCurrentPost,
+  setPostLike,
 } from '../../common/boardApi';
 import BoardDetailDto, {
   BoardHotPostDto,
@@ -286,6 +288,39 @@ const PostListScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     updateBoardDetail();
   }, [sortBy]);
+
+  // 화면이 focus될 때마다 데이터 새로 불러오기
+  useFocusEffect(
+    useCallback(() => {
+      const refreshData = async () => {
+        try {
+          if (route.params.boardId === 102) {
+            const currentPost = await getCurrentPost(0);
+            setBoardDetail(currentPost);
+          } else if (route.params.boardId === 2) {
+            const hotBoardData = await getHotBoardPosts(0);
+            setBoardDetail(hotBoardData);
+          } else if (route.params.boardId === 98) {
+            const adBoardData = await getAdBoardPost(98, 0);
+            setBoardDetail(adBoardData);
+          } else {
+            const boardDetail = await getBoardDetail(
+              route.params.boardId,
+              0,
+              sortBy,
+            );
+            if (!boardDetail.code) {
+              setBoardDetail(boardDetail);
+            }
+          }
+        } catch (error) {
+          console.error('데이터 새로고침 실패:', error);
+        }
+      };
+
+      refreshData();
+    }, [route.params.boardId, sortBy]),
+  );
 
   const handleRefresh = async () => {
     if (route.params.boardId === 102) {
@@ -629,127 +664,153 @@ const PostListScreen = ({navigation, route}: Props) => {
           </>
         ) : (
           <>
-            {isLoading ? (
-              <ActivityIndicator size="large" color="#A055FF" />
-            ) : (
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                style={{flex: 1, backgroundColor: '#FFFFFF'}}
-                data={getProcessedData()}
-                renderItem={({item, index}) =>
-                  item.isAd ? (
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('PostScreen', {
-                          postId: item.postAdId,
-                          boardId: 98,
-                        });
-                      }}>
-                      <PostAdMid
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              style={{flex: 1, backgroundColor: '#FFFFFF'}}
+              data={getProcessedData()}
+              renderItem={({item, index}) =>
+                item.isAd ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('PostScreen', {
+                        postId: item.postAdId,
+                        boardId: 98,
+                      });
+                    }}>
+                    <PostAdMid
+                      post={item}
+                      boardId={98}
+                      navigation={navigation}
+                      route={route}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('PostScreen', {
+                        postId: item.postId,
+                      });
+                    }}>
+                    {boardInfo?.id === 98 ? (
+                      <PostAdItem
                         post={item}
-                        boardId={98}
+                        boardId={boardInfo?.id}
                         navigation={navigation}
                         route={route}
                       />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('PostScreen', {
-                          postId: item.postId,
-                        });
-                      }}>
-                      {boardInfo?.id === 98 ? (
-                        <PostAdItem
-                          post={item}
-                          boardId={boardInfo?.id}
-                          navigation={navigation}
-                          route={route}
-                        />
-                      ) : (
-                        <PostItem post={item} boardId={boardInfo?.id} />
-                      )}
-                    </TouchableOpacity>
-                  )
-                }
-                ItemSeparatorComponent={() => (
-                  <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-                )}
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={handleRefresh}
-                    colors={['#A055FF']} // for android
-                    tintColor={'#A055FF'} // for ios
-                  />
-                }
-                onEndReached={() => fetchNextPage()}
-                onEndReachedThreshold={0.8}
-                ListHeaderComponent={
-                  boardDetail.length !== 0 &&
-                  route.params?.boardId !== 2 &&
-                  listHeaderCondition && (
-                    <View>
-                      {!isHotBoard &&
-                        ![93, 94, 95, 98].includes(route.params.boardId) && (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              paddingHorizontal: 24,
+                    ) : (
+                      <PostItem
+                        post={item}
+                        boardId={boardInfo?.id}
+                        navigation={navigation}
+                        route={route}
+                        handlePostLike={async postId => {
+                          try {
+                            const response = await setPostLike(postId);
+                            if (response) {
+                              // 특정 postId를 가진 게시물의 좋아요 상태만 업데이트
+                              setBoardDetail(prevPosts =>
+                                prevPosts.map(post =>
+                                  post.postId === postId
+                                    ? {
+                                        ...post,
+                                        isLiked: !post.isLiked,
+                                        likeCount:
+                                          post.likeCount +
+                                          (post.isLiked ? -1 : 1),
+                                      }
+                                    : post,
+                                ),
+                              );
+                            }
+                          } catch (error) {
+                            console.error('좋아요 처리 실패:', error);
+                            Toast.show(
+                              '좋아요 처리에 실패했습니다.',
+                              Toast.SHORT,
+                            );
+                          }
+                        }}
+                      />
+                    )}
+                  </TouchableOpacity>
+                )
+              }
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={() => fetchNextPage()}
+              onEndReachedThreshold={0.8}
+              ListHeaderComponent={
+                boardDetail.length !== 0 &&
+                route.params?.boardId !== 2 &&
+                listHeaderCondition && (
+                  <View>
+                    {!isHotBoard &&
+                      ![93, 94, 95, 98].includes(route.params.boardId) && (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            paddingHorizontal: 24,
+                          }}>
+                          <TouchableOpacity
+                            style={[
+                              styles.purpleButtonStyle,
+                              {
+                                flex: 1,
+                                paddingLeft: 6,
+                              },
+                            ]}
+                            onPress={() => {
+                              boardHotPost?.isExist
+                                ? navigation.navigate('PostScreen', {
+                                    postId: boardHotPost.postId,
+                                  })
+                                : {};
                             }}>
-                            <TouchableOpacity
+                            {boardHotPost?.isExist ? (
+                              <>
+                                <HotIcon style={{marginLeft: 6}} />
+                                <Text
+                                  style={[styles.popularButtonText, fontBold]}>
+                                  인기
+                                </Text>
+                              </>
+                            ) : null}
+                            <Text
                               style={[
-                                styles.purpleButtonStyle,
-                                {
-                                  flex: 1,
-                                  paddingLeft: 6,
-                                },
+                                styles.grayButtonText,
+                                fontRegular,
+                                {flex: 1},
                               ]}
-                              onPress={() => {
-                                boardHotPost?.isExist
-                                  ? navigation.navigate('PostScreen', {
-                                      postId: boardHotPost.postId,
-                                    })
-                                  : {};
-                              }}>
-                              {boardHotPost?.isExist ? (
-                                <>
-                                  <HotIcon style={{marginLeft: 6}} />
-                                  <Text
-                                    style={[
-                                      styles.popularButtonText,
-                                      fontBold,
-                                    ]}>
-                                    인기
-                                  </Text>
-                                </>
-                              ) : null}
-                              <Text
-                                style={[
-                                  styles.grayButtonText,
-                                  fontRegular,
-                                  {flex: 1},
-                                ]}
-                                numberOfLines={1}
-                                ellipsizeMode="tail">
-                                {boardHotPost?.isExist === false
-                                  ? '현재 실시간 인기글이 없습니다.'
-                                  : boardHotPost?.title !== null
-                                  ? boardHotPost?.title
-                                  : boardHotPost.content}
-                              </Text>
-                              {boardHotPost?.isExist ? (
-                                <PurpleArrow
-                                  style={{
-                                    marginRight: 6,
-                                  }}
-                                />
-                              ) : null}
-                            </TouchableOpacity>
+                              numberOfLines={1}
+                              ellipsizeMode="tail">
+                              {boardHotPost?.isExist === false
+                                ? '현재 실시간 인기글이 없습니다.'
+                                : boardHotPost?.title !== null
+                                ? boardHotPost?.title
+                                : boardHotPost.content}
+                            </Text>
+                            {boardHotPost?.isExist ? (
+                              <PurpleArrow
+                                style={{
+                                  marginRight: 6,
+                                }}
+                              />
+                            ) : null}
+                          </TouchableOpacity>
 
-                            {/* <TouchableOpacity
+                          {/* <TouchableOpacity
                             onPress={() => {
                               if (sortBy === 'createdAt') {
                                 setSortBy('likeCount');
@@ -774,23 +835,22 @@ const PostListScreen = ({navigation, route}: Props) => {
                             </Text>
                             <SortIcon />
                           </TouchableOpacity> */}
-                          </View>
-                        )}
-                      {route.params.boardId !== 98 &&
-                        config?.componentToUse === 'writing_box' &&
-                        ![93, 94, 95, 102].includes(route.params.boardId) && (
-                          <PostWriteBCase
-                            navigation={navigation}
-                            route={route}
-                            contentType={boardInfo?.contentType || 'TYPE1'}
-                            hasTitle={boardDetail?.hasTitle}
-                          />
-                        )}
-                    </View>
-                  )
-                }
-              />
-            )}
+                        </View>
+                      )}
+                    {route.params.boardId !== 98 &&
+                      config?.componentToUse === 'writing_box' &&
+                      ![93, 94, 95, 102].includes(route.params.boardId) && (
+                        <PostWriteBCase
+                          navigation={navigation}
+                          route={route}
+                          contentType={boardInfo?.contentType || 'TYPE1'}
+                          hasTitle={boardDetail?.hasTitle}
+                        />
+                      )}
+                  </View>
+                )
+              }
+            />
             <View style={{backgroundColor: '#FFFFFF'}}>
               {isNextPageLoading && (
                 <ActivityIndicator

@@ -5,6 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import {PostComment, BigPostComment} from '../../resources/icon/PostComment';
@@ -22,9 +23,11 @@ interface Props {
   boardId: number;
   navigation: any;
   route: any;
+  handlePostLike: (postId: number) => void; // 추가
 }
 
-function PostItem({post, boardId, navigation, route}: Props) {
+function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
+  //setModalVisible(false);
   const [modalVisible, setModalVisible] = useState(false);
   const handleCommentContainerPress = () => {
     setModalVisible(true);
@@ -126,7 +129,11 @@ function PostItem({post, boardId, navigation, route}: Props) {
         <View style={styles.icon}>
           {!(boardId === 93 || boardId === 94 || boardId === 95) && (
             <>
-              {post.isLiked ? <PostLike /> : <PostUnlike />}
+              <Pressable
+                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                onPress={() => handlePostLike(post.postId)}>
+                {post.isLiked ? <PostLike /> : <PostUnlike />}
+              </Pressable>
               <Text
                 style={[
                   fontRegular,

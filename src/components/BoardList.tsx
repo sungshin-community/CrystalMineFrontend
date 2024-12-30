@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   FlatList,
@@ -359,15 +359,51 @@ export function OfficialBoardList({
 }
 
 export function CustomBoardList({
-  items,
+  items: initialItems,
   onUpdate,
   moveToBoard,
   isInited,
   isExpanded,
 }: Props) {
-  const [value, setValue] = useState<boolean>(false);
+  const [items, setItems] = useState(initialItems);
   const navigation = useNavigation();
   const visibleItems = isExpanded ? items : items.slice(0, 5);
+
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
+
+  const handlePinToggle = async (item: Board, index: number) => {
+    if (item.id === 1) return;
+
+    const updatedItems = [...items];
+    updatedItems[index] = {
+      ...item,
+      isPinned: !item.isPinned,
+      pinCount: item.isPinned ? item.pinCount - 1 : item.pinCount + 1,
+    };
+    setItems(updatedItems);
+
+    const response = await toggleBoardPin(item.id);
+    if (response.status === 401) {
+      setItems(items);
+      setTimeout(() => {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      onUpdate();
+    } else {
+      setItems(items);
+      setTimeout(() => {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
+    }
+  };
 
   return items != null && items.length > 0 ? (
     <>
@@ -409,29 +445,7 @@ export function CustomBoardList({
           </View>
           <View style={{flex: 1, marginRight: 10, marginLeft: 5}}>
             <Pressable
-              onPress={async () => {
-                if (item.id === 1) return;
-                const response = await toggleBoardPin(item.id);
-                if (response.status === 401) {
-                  setTimeout(function () {
-                    Toast.show(
-                      '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                      Toast.SHORT,
-                    );
-                  }, 100);
-                  logout();
-                  navigation.reset({routes: [{name: 'SplashHome'}]});
-                } else if (getHundredsDigit(response.status) === 2) {
-                  onUpdate();
-                } else {
-                  setTimeout(function () {
-                    Toast.show(
-                      '알 수 없는 오류가 발생하였습니다.',
-                      Toast.SHORT,
-                    );
-                  }, 100);
-                }
-              }}
+              onPress={() => handlePinToggle(item, index)}
               style={{
                 height: 30,
                 justifyContent: 'center',
@@ -529,9 +543,7 @@ export function CustomBoardList({
           fontSize: 15,
           color: '#6E7882',
           fontFamily: 'SpoqaHanSansNeo-Regular',
-        }}>
-        생성된 수정 게시판이 없습니다
-      </Text>
+        }}></Text>
     </View>
   );
 }

@@ -470,7 +470,9 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
   }
 
   return (
-    <>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={{flex: 1, backgroundColor: '#fff'}}>
       <View
         style={{
           position: 'absolute',
@@ -494,229 +496,210 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
           borderBottomColor: '#EFEFF3',
         }}
       />
-      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#fff'}}>
-        {/* <Image
-            style={{width: 24, height: 24, borderRadius: 12}}
-            source={{
-              uri: isAnonymous ? info?.defaultProfileImage : info?.profileImage,
-            }}
-          /> */}
-        {/* <Text
-              style={{
-                fontSize: 16,
-                paddingLeft: 8,
-                paddingRight: 6,
-                fontWeight: '500',
-              }}>
-              {isAnonymous ? '수정' : info?.nickname}
-            </Text> */}
-        {/* {info?.isOwner && !isAnonymous && <OrangeFlag />} */}
-        <View style={[styles.container]}>
-          <ScrollView
-            contentContainerStyle={{
-              flexGrow: 1, // ScrollView 내용이 길어지면 버튼도 같이 내려가게 합니다
-              //backgroundColor: 'green',
-              justifyContent: 'space-between', // 내용과 버튼 사이에 공간을 둡니다
-            }}
-            style={{
-              flex: 1,
-            }}>
-            {isPantheon === 'question' && (
-              <View>
-                <View
+      <View style={[styles.container]}>
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'space-between',
+          }}
+          style={{
+            flex: 1,
+          }}>
+          {isPantheon === 'question' && (
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 10,
+                  paddingHorizontal: 24,
+                }}>
+                <Text
                   style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    paddingHorizontal: 24,
+                    fontSize: 12,
+                    fontWeight: '500',
+                    color: '#B9BAC1',
+                    marginRight: 8,
                   }}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '500',
-                      color: '#B9BAC1',
-                      marginRight: 8,
-                    }}>
-                    채택포인트
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '500',
-                      color: '#A055FF',
-                    }}>
-                    사용 가능 포인트 {myPoint}P
-                  </Text>
-                </View>
+                  채택포인트
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: '500',
+                    color: '#A055FF',
+                  }}>
+                  사용 가능 포인트 {myPoint}P
+                </Text>
+              </View>
+              <TextInput
+                placeholder="채택 답변에 제공될 포인트를 작성해주세요."
+                placeholderTextColor="#D5DBE1"
+                value={point}
+                onChangeText={value => {
+                  setPoint(value);
+                }}
+                keyboardType="numeric"
+                style={[fontMedium, styles.title]}
+              />
+              <View
+                style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
+              />
+            </View>
+          )}
+          {isPantheon === 'review' && (
+            <View style={{paddingHorizontal: 16, marginTop: 16}}>
+              <ReviewJobDetail
+                job={job}
+                category={category}
+                size={size}
+                year={year}
+              />
+            </View>
+          )}
+          {(info?.hasTitle ||
+            isPantheon === 'question' ||
+            isPantheon === 'free' ||
+            isPantheon === 'review') && (
+            <>
+              <View style={[styles.inputTitle]}>
+                <Text
+                  style={{
+                    color: '#B9BAC1',
+                  }}>
+                  제목
+                </Text>
+              </View>
+              <View style={{height: 50}}>
                 <TextInput
-                  placeholder="채택 답변에 제공될 포인트를 작성해주세요."
+                  placeholder="제목을 입력하세요."
                   placeholderTextColor="#D5DBE1"
-                  value={point}
+                  value={title}
                   onChangeText={value => {
-                    setPoint(value);
+                    setTitle(value);
+                    if (value.length === 20)
+                      Toast.show(
+                        '게시글 제목은 20글자까지만 입력 가능합니다.',
+                        Toast.SHORT,
+                      );
                   }}
-                  keyboardType="numeric"
+                  maxLength={20}
                   style={[fontMedium, styles.title]}
                 />
                 <View
                   style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
                 />
               </View>
-            )}
-            {isPantheon === 'review' && (
-              <View style={{paddingHorizontal: 16, marginTop: 16}}>
-                <ReviewJobDetail
-                  job={job}
-                  category={category}
-                  size={size}
-                  year={year}
-                />
-              </View>
-            )}
-            {(info?.hasTitle ||
-              isPantheon === 'question' ||
-              isPantheon === 'free' ||
-              isPantheon === 'review') && (
-              <>
-                <View style={[styles.inputTitle]}>
-                  <Text
-                    style={{
-                      color: '#B9BAC1',
-                    }}>
-                    제목
-                  </Text>
-                </View>
-                <View style={{height: 50}}>
-                  <TextInput
-                    placeholder="제목을 입력하세요."
-                    placeholderTextColor="#D5DBE1"
-                    value={title}
-                    onChangeText={value => {
-                      setTitle(value);
-                      if (value.length === 20)
-                        Toast.show(
-                          '게시글 제목은 20글자까지만 입력 가능합니다.',
-                          Toast.SHORT,
-                        );
-                    }}
-                    maxLength={20}
-                    style={[fontMedium, styles.title]}
-                  />
-                  <View
-                    style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
-                  />
-                </View>
-              </>
-            )}
-            {(!isType3 ||
-              isPantheon === 'question' ||
-              isPantheon === 'free') && (
-              <>
-                <View style={[styles.inputTitle]}>
-                  <Text
-                    style={{
-                      color: '#B9BAC1',
-                    }}>
-                    본문
-                  </Text>
-                </View>
-                <TextInput
-                  autoFocus={false}
-                  placeholder={`본문 내용을 입력해주세요. \n\n즐거운 수정광산 환경을 만들어 나가는 데에 동참해주세요! 이용 규정을 위반하거나, 일정 수 이상의 신고를 받을 경우 수정광산 이용이 제한될 수 있습니다.`}
-                  placeholderTextColor="#D5DBE1"
-                  value={content}
-                  multiline={true}
-                  onChangeText={value => {
-                    setContent(value);
-                    if (value.length === 5000)
-                      Toast.show(
-                        '게시글 내용은 5000글자까지만 입력 가능합니다.',
-                        Toast.SHORT,
-                      );
-                  }}
-                  maxLength={5000}
-                  style={[
-                    fontRegular,
-                    styles.input,
-                    {
-                      maxHeight: isFocused
-                        ? Platform.OS == 'ios'
-                          ? info?.hasTitle
-                            ? Dimensions.get('window').height -
-                              keyboardHeight -
-                              500
-                            : Dimensions.get('window').height -
-                              keyboardHeight -
-                              250
-                          : 100000
-                        : 400,
-                    },
-                  ]}
-                  autoCorrect={false}
-                  onFocus={(e: any) => {
-                    onInputFocus();
-                  }}
-                  onBlur={(e: any) => {
-                    onInputFocusOut();
-                  }}
-                />
-              </>
-            )}
-            <View style={{marginVertical: 10}}>
-              {images.length > 0 && (
-                <View style={{paddingHorizontal: 12}}>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {renderImages()}
-                  </ScrollView>
-                </View>
-              )}
-            </View>
-            <View
-              style={{
-                marginTop: 'auto',
-                alignItems: 'center',
-              }}>
-              <Pressable
-                onPress={() => navigation.navigate('DirectionAgreeScreen')}
-                style={{
-                  borderRadius: 25,
-                  backgroundColor: '#F6F6F6',
-                  alignSelf: 'center',
-                  width: 'auto',
-                  paddingTop: 6,
-                  paddingRight: 12,
-                  paddingBottom: 6,
-                  paddingLeft: 12,
-                  marginBottom: 80,
-                }}>
+            </>
+          )}
+          {(!isType3 || isPantheon === 'question' || isPantheon === 'free') && (
+            <>
+              <View style={[styles.inputTitle]}>
                 <Text
                   style={{
-                    fontWeight: '400',
-                    color: '#9DA4AB',
-                    textAlign: 'center',
-                    paddingHorizontal: 4,
-                    paddingVertical: 4,
+                    color: '#B9BAC1',
                   }}>
-                  수정광산 이용 방향 전문 보기
+                  본문
                 </Text>
-              </Pressable>
-            </View>
-          </ScrollView>
-        </View>
-      </KeyboardAvoidingView>
-      <SafeAreaView style={styles.bottomBar}>
-        {/* <Text style={styles.bottomBarText}>Bottom Fixed Bar</Text> */}
+              </View>
+              <TextInput
+                autoFocus={false}
+                placeholder={`본문 내용을 입력해주세요. \n\n즐거운 수정광산 환경을 만들어 나가는 데에 동참해주세요! 이용 규정을 위반하거나, 일정 수 이상의 신고를 받을 경우 수정광산 이용이 제한될 수 있습니다.`}
+                placeholderTextColor="#D5DBE1"
+                value={content}
+                multiline={true}
+                onChangeText={value => {
+                  setContent(value);
+                  if (value.length === 5000)
+                    Toast.show(
+                      '게시글 내용은 5000글자까지만 입력 가능합니다.',
+                      Toast.SHORT,
+                    );
+                }}
+                maxLength={5000}
+                style={[
+                  fontRegular,
+                  styles.input,
+                  {
+                    maxHeight: isFocused
+                      ? Platform.OS == 'ios'
+                        ? info?.hasTitle
+                          ? Dimensions.get('window').height -
+                            keyboardHeight -
+                            500
+                          : Dimensions.get('window').height -
+                            keyboardHeight -
+                            250
+                        : 100000
+                      : 400,
+                  },
+                ]}
+                autoCorrect={false}
+                onFocus={(e: any) => {
+                  onInputFocus();
+                }}
+                onBlur={(e: any) => {
+                  onInputFocusOut();
+                }}
+              />
+            </>
+          )}
+          <View style={{marginVertical: 10}}>
+            {images.length > 0 && (
+              <View style={{paddingHorizontal: 12}}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {renderImages()}
+                </ScrollView>
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              marginTop: 'auto',
+              alignItems: 'center',
+            }}>
+            <Pressable
+              onPress={() => navigation.navigate('DirectionAgreeScreen')}
+              style={{
+                borderRadius: 25,
+                backgroundColor: '#F6F6F6',
+                alignSelf: 'center',
+                width: 'auto',
+                paddingTop: 6,
+                paddingRight: 12,
+                paddingBottom: 6,
+                paddingLeft: 12,
+                marginBottom: 80,
+              }}>
+              <Text
+                style={{
+                  fontWeight: '400',
+                  color: '#9DA4AB',
+                  textAlign: 'center',
+                  paddingHorizontal: 4,
+                  paddingVertical: 4,
+                }}>
+                수정광산 이용 방향 전문 보기
+              </Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </View>
+      <SafeAreaView>
         <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            flex: 1,
-          }}>
+          style={[
+            styles.bottomBar,
+            {
+              position: 'relative', // absolute에서 relative로 변경
+              bottom: Platform.OS === 'ios' ? 0 : 0,
+            },
+          ]}>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              flex: 1,
             }}>
             {(!isType1 ||
               isPantheon === 'question' ||
@@ -725,22 +708,21 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                 <ImageIcon style={{marginLeft: 20}} />
               </TouchableOpacity>
             )}
-            {/* <PostVoteIcon style={{marginHorizontal: 20}} /> */}
+            <Pressable
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingRight: 20,
+              }}
+              onPress={() => {
+                setIsAnonymous(current => !current);
+              }}>
+              <Text style={{fontSize: 14, fontWeight: '500', marginRight: 4}}>
+                익명
+              </Text>
+              {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
+            </Pressable>
           </View>
-          <Pressable
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingRight: 20,
-            }}
-            onPress={() => {
-              setIsAnonymous(current => !current);
-            }}>
-            <Text style={{fontSize: 14, fontWeight: '500', marginRight: 4}}>
-              익명
-            </Text>
-            {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
-          </Pressable>
         </View>
       </SafeAreaView>
       <ModalBottom
@@ -758,7 +740,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
           setGoBackWarning(!goBackWarning);
         }}
       />
-    </>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -822,10 +804,6 @@ const styles = StyleSheet.create({
     color: '#d1d1d1',
   },
   bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     height: 52,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
