@@ -100,7 +100,7 @@ export const BigSpreadButton = (props: any) => (
   </Svg>
 );
 
-export const GreyBigFoldButton = (props: any) => (
+export const GreyBigSpreadButton = (props: any) => (
   <Svg
     width={16}
     height={10}
@@ -111,7 +111,7 @@ export const GreyBigFoldButton = (props: any) => (
   </Svg>
 );
 
-export const GreyBigSpreadButton = (props: any) => (
+export const GreyBigFoldButton = (props: any) => (
   <Svg
     width={16}
     height={10}

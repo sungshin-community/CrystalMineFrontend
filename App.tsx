@@ -894,8 +894,8 @@ const App = () => {
                   headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    ontSize: 20,
+                    fontWeight: '700',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2874,8 +2874,9 @@ const App = () => {
                   headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard-Bold'
                   },
                   headerLeft: () => (
                     <TouchableHighlight

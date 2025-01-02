@@ -150,7 +150,7 @@ function CreateBoard({navigation}: Props) {
         />
       </View>
       <View style={styles.container}>
-        <View style={{marginHorizontal: 24, paddingTop: 20}}>
+        <View style={{marginLeft: 16, marginRight: 16, paddingTop: 24}}>
           <Text style={[fontMedium, {fontSize: 16, paddingBottom: 12}]}>
             게시판 형태<Text style={styles.asterisk}> *</Text>
           </Text>
@@ -158,12 +158,12 @@ function CreateBoard({navigation}: Props) {
             style={styles.selectButton}
             onPress={() => {
               setIsDropdownVisible(!isDropdownVisible);
-              setIsSpread(!isSpread);
+              setIsSpread(true);
             }}>
-            <Text style={{color: '#B9BAC1', fontSize: 14}}>
+            <Text style={{color: '#3A424E', fontSize: 14}}>
               {selectedBoardType}
             </Text>
-            {isSpread ? <GreyBigFoldButton /> : <GreyBigSpreadButton />}
+            {isSpread ? <GreyBigSpreadButton /> : <GreyBigFoldButton />}
           </TouchableOpacity>
           {isDropdownVisible && (
             <View style={styles.dropdownContainer}>
@@ -173,7 +173,7 @@ function CreateBoard({navigation}: Props) {
                 renderItem={({item}) => (
                   <TouchableOpacity
                     style={styles.optionButton}
-                    onPress={() => handleSelectBoardType(item.id)}>
+                    onPress={() => {handleSelectBoardType(item.id); setIsSpread(!isSpread)}}>
                     <Text style={styles.optionText}>{item.label}</Text>
                   </TouchableOpacity>
                 )}
@@ -223,7 +223,7 @@ function CreateBoard({navigation}: Props) {
           <Text style={[fontMedium, {fontSize: 16, paddingBottom: 12}]}>
             게시판 소개<Text style={styles.asterisk}> *</Text>
           </Text>
-          <View style={{height: 149}}>
+          <View style={{height: 160}}>
             <TextInput
               placeholderTextColor="#B9BAC1"
               placeholder="게시판 소개를 입력해 주세요."
@@ -232,19 +232,19 @@ function CreateBoard({navigation}: Props) {
               autoCorrect={false}
               onChangeText={value => {
                 setBoardIntroduction(value);
-                if (value.length === 22)
+                if (value.length === 50)
                   Toast.show(
                     '게시판 이름, 설명의 글자 수를 확인해주세요.',
                     Toast.SHORT,
                   );
               }}
-              maxLength={22}
+              maxLength={50}
+              multiline={true}
               onBlur={() => {
                 Keyboard.dismiss();
               }}
               style={[
-                styles.input,
-                {fontSize: 14, borderRadius: 4, paddingHorizontal: 12},
+                styles.intro,
               ]}
             />
           </View>
@@ -256,37 +256,28 @@ function CreateBoard({navigation}: Props) {
             backgroundColor: '#F6F6F6',
             alignSelf: 'center',
             width: 'auto',
-            paddingTop: 6,
-            paddingRight: 12,
-            paddingBottom: 6,
-            paddingLeft: 12,
+            height: 'auto',
             position: 'absolute',
             bottom: 110,
           }}>
           <Text
             style={{
               fontWeight: '400',
+              fontFamily: 'Pretendard-Regular',
               color: '#9DA4AB',
               textAlign: 'center',
-              paddingHorizontal: 4,
-              paddingVertical: 4,
+              marginHorizontal: 12,
+              marginVertical: 6,
             }}>
             수정광산 이용 방향 전문 보기
           </Text>
         </Pressable>
         <View
           style={{
-            height: 44,
-            borderRadius: 4,
-            //paddingHorizontal: 24,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#A055FF',
-            bottom: 0,
-            marginBottom: 34,
-            marginHorizontal: 16,
+            bottom: 40,
             position: 'absolute',
+            width: '100%',
+            alignItems: 'center',
           }}>
           <Pressable
             onPress={() => {
@@ -298,7 +289,7 @@ function CreateBoard({navigation}: Props) {
               onClick={() =>
                 onSubmitPress(boardName, boardIntroduction, hotable, boardType)
               }
-              style={{color: '#fff'}}
+              style={{color: '#ffffff'}}
             />
           </Pressable>
           {/* <Pressable
@@ -330,6 +321,15 @@ const styles = StyleSheet.create({
     //width: 343,
     height: 86,
   },
+  intro: {
+    paddingTop: 12,
+    paddingHorizontal: 13,
+    textAlignVertical: 'top',
+    borderColor: '#E2E4E8',
+    borderWidth: 1,
+    height: 160,
+    borderRadius: 4,
+  },
   option: {
     marginTop: 19,
     marginLeft: 3,
@@ -352,6 +352,7 @@ const styles = StyleSheet.create({
     borderColor: '#E2E4E8',
     borderWidth: 1,
     borderRadius: 4,
+    marginTop: 4,
     maxHeight: 132,
     overflow: 'hidden',
     backgroundColor: 'white',

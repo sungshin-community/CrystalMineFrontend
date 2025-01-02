@@ -440,7 +440,6 @@ export default function BoardFragment({navigation}: Props) {
                     {
                       color: '#89919A',
                       fontSize: 14,
-                      fontFamily: 'SpoqaHanSansNeo-Regular',
                     },
                   ]}>
                   새 게시판 만들기
