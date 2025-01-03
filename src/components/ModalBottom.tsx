@@ -75,51 +75,56 @@ export const ModalBottom = ({
             <View style={styles.modalView}>
               <View style={{alignSelf: 'flex-start'}}>
                 {title && <Text style={[styles.title]}>{title}</Text>}
+
                 {content && (
-                  <Text
-                    style={[
-                      // fontRegular,
-                      {
-                        textAlign: isContentCenter ? 'center' : 'left',
-                        fontSize: 14,
-                        color: '#89919A',
-                      },
-                    ]}>
-                    {content}
-                  </Text>
+                  <View
+                    style={{
+                      width: Dimensions.get('window').width,
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: isContentCenter ? 'center' : 'left',
+                          fontSize: 14,
+                          color: '#3A424E',
+                          lineHeight: 20,
+
+                          //backgroundColor: 'red',
+                        },
+                      ]}>
+                      {content}
+                    </Text>
+                  </View>
                 )}
               </View>
-              {purpleButtonText && purpleButtonText !== 'none' && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc()}>
-                  <Text style={styles.textStyle}>{purpleButtonText}</Text>
-                </TouchableOpacity>
-              )}
-              {purpleButtonText2 && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc2()}>
-                  <Text style={styles.textStyle}>{purpleButtonText2}</Text>
-                </TouchableOpacity>
-              )}
-              {whiteButtonText && whiteButtonText !== 'none' && (
-                <TouchableOpacity
-                  style={[styles.secondButton, styles.secondButtonClose]}
-                  onPress={() => whiteButtonFunc()}>
-                  <Text style={styles.secondButtonTextStyle}>
-                    {whiteButtonText}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              <View style={styles.buttonContianer}>
+                {whiteButtonText && whiteButtonText !== 'none' && (
+                  <TouchableOpacity
+                    style={[styles.secondButton, styles.secondButtonClose]}
+                    onPress={() => whiteButtonFunc()}>
+                    <Text style={styles.secondButtonTextStyle}>
+                      {whiteButtonText}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {purpleButtonText && purpleButtonText !== 'none' && (
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => purpleButtonFunc()}>
+                    <Text style={styles.textStyle}>{purpleButtonText}</Text>
+                  </TouchableOpacity>
+                )}
+                {purpleButtonText2 && (
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => purpleButtonFunc2()}>
+                    <Text style={styles.textStyle}>{purpleButtonText2}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
         </Modal>
@@ -143,11 +148,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingVertical: 24,
-    marginBottom: 20,
-    paddingHorizontal: Dimensions.get('window').width * 0.05,
+    paddingTop: 24,
+    paddingBottom: 24,
+    marginBottom: 24,
+    //paddingHorizontal: Dimensions.get('window').width * 0.05,
     //paddingHorizontal: 24,
-    // alignItems: 'center',
+    //alignItems: 'center',
     //shadowColor: '#000',
     /* shadowOffset: {
       width: 0,
@@ -157,35 +163,45 @@ const styles = StyleSheet.create({
     //shadowRadius: 4,
     //elevation: 5,
   },
+  buttonContianer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   button: {
     borderRadius: 4,
     padding: 12,
     height: 44,
+    width: '45%',
+    marginTop: 24,
+    marginRight: 16,
   },
   secondButton: {
     borderRadius: 4,
     padding: 12,
     height: 44,
-    marginTop: 8,
+    marginTop: 24,
+    width: '45%',
+    marginLeft: 16,
   },
   buttonClose: {
     backgroundColor: '#A055FF',
   },
   secondButtonClose: {
     backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#EFEFF3',
   },
   textStyle: {
     color: 'white',
     textAlign: 'center',
     fontSize: 14,
-    // fontFamily: 'SpoqaHanSansNeo-Regular',
     fontWeight: '700',
   },
   secondButtonTextStyle: {
     color: '#6E7882',
     textAlign: 'center',
     fontSize: 14,
-    // fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontWeight: '400',
   },
   title: {
     textAlign: 'center',

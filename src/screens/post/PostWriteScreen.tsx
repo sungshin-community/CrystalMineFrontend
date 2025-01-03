@@ -22,7 +22,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {fontMedium, fontRegular} from '../../common/font';
+import {fontBold, fontMedium, fontRegular} from '../../common/font';
 import ImageIcon from '../../../resources/icon/ImageIcon';
 import PostVoteIcon from '../../../resources/icon/PostVoteIcon';
 import PhotoIcon from '../../../resources/icon/PhotoIcon';
@@ -298,7 +298,6 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
           <Text
             style={[
               styles.submit,
-              fontRegular,
               {
                 color: isSelecting
                   ? '#A055FF' // '다음' 버튼 활성화 색상
@@ -630,7 +629,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                             keyboardHeight -
                             250
                         : 100000
-                      : 400,
+                      : 120,
                   },
                 ]}
                 autoCorrect={false}
@@ -643,7 +642,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               />
             </>
           )}
-          <View style={{marginVertical: 10}}>
+          <View style={{marginVertical: 0}}>
             {images.length > 0 && (
               <View style={{paddingHorizontal: 12}}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -664,19 +663,18 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                 backgroundColor: '#F6F6F6',
                 alignSelf: 'center',
                 width: 'auto',
-                paddingTop: 6,
-                paddingRight: 12,
-                paddingBottom: 6,
-                paddingLeft: 12,
-                marginBottom: 80,
+                height: 'auto',
+                position: 'absolute',
+                bottom: 24,
               }}>
               <Text
                 style={{
                   fontWeight: '400',
+                  fontFamily: 'Pretendard-Regular',
                   color: '#9DA4AB',
                   textAlign: 'center',
-                  paddingHorizontal: 4,
-                  paddingVertical: 4,
+                  marginHorizontal: 12,
+                  marginVertical: 6,
                 }}>
                 수정광산 이용 방향 전문 보기
               </Text>
@@ -699,25 +697,25 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               alignItems: 'center',
               justifyContent: 'space-between',
               width: '100%',
-              flex: 1,
+              height: 52,
             }}>
             {(!isType1 ||
               isPantheon === 'question' ||
               isPantheon === 'free') && (
               <TouchableOpacity onPress={onSelectImage}>
-                <ImageIcon style={{marginLeft: 20}} />
+                <ImageIcon style={{marginLeft: 16}} />
               </TouchableOpacity>
             )}
             <Pressable
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingRight: 20,
+                paddingRight: 16,
               }}
               onPress={() => {
                 setIsAnonymous(current => !current);
               }}>
-              <Text style={{fontSize: 14, fontWeight: '500', marginRight: 4}}>
+              <Text style={{fontSize: 14, fontWeight: '500', marginRight: 6}}>
                 익명
               </Text>
               {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
@@ -728,8 +726,8 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
       <ModalBottom
         modalVisible={goBackWarning}
         setModalVisible={setGoBackWarning}
-        content={`작성한 게시글이 삭제됩니다.\n 뒤로 가시겠습니까?`}
-        isContentCenter={false}
+        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isContentCenter={true}
         purpleButtonText="확인"
         purpleButtonFunc={() => {
           setGoBackWarning(!goBackWarning);
@@ -748,13 +746,12 @@ const styles = StyleSheet.create({
   submit: {
     fontSize: 18,
     fontWeight: '600',
-    marginRight: 8,
   },
   inputTitle: {
     fontSize: 12,
     fontWeight: '500',
-    paddingHorizontal: 24,
-    paddingTop: 10,
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   container: {
     flex: 1,
@@ -762,49 +759,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: '600',
-    paddingVertical: 15,
-    paddingHorizontal: 24,
+    fontWeight: '500',
+    paddingHorizontal: 16,
     color: '#3A424E',
   },
   input: {
     // minHeight: Dimensions.get('window').height - 400,
-    minHeight: 100,
+    //minHeight: 8,
     // maxHeight: Platform.OS === 'ios' ? 300 : 5000,
     fontSize: 14,
-    paddingTop: 14,
     fontWeight: '400',
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     textAlignVertical: 'top',
     color: '#3A424E',
-    //backgroundColor: 'skyblue',
-  },
-  image: {
-    marginTop: 19,
-    marginLeft: 3,
-    marginBottom: 7,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  imageText: {fontSize: 14, color: '#444444', marginLeft: 8},
-  imageBox: {
-    width: 70,
-    height: 70,
-    borderRadius: 10,
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  imageSelectBox: {
-    backgroundColor: '#F2F2F2',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   count: {
     fontSize: 8,
     color: '#d1d1d1',
   },
   bottomBar: {
-    height: 52,
+    height: 86,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
     backgroundColor: '#FFFFFF',
