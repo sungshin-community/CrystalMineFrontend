@@ -119,7 +119,7 @@ export const ReportModalBottom = ({
             bottom:
               Platform.OS == 'ios'
                 ? isFocused
-                  ? keyboardHeight
+                  ? keyboardHeight + 120
                   : Dimensions.get('window').width * 0.15
                 : Dimensions.get('window').width * 0.15,
           },
@@ -142,7 +142,7 @@ export const ReportModalBottom = ({
                 bottom:
                   Platform.OS == 'ios'
                     ? isFocused
-                      ? keyboardHeight
+                      ? keyboardHeight + 120
                       : Dimensions.get('window').width * 0.15
                     : Dimensions.get('window').width * 0.15,
               },
@@ -155,9 +155,7 @@ export const ReportModalBottom = ({
                     justifyContent: 'space-between',
                     flexDirection: 'row',
                   }}>
-                  {title && (
-                    <Text style={[fontBold, styles.title]}>{title}</Text>
-                  )}
+                  {title && <Text style={[styles.title]}>{title}</Text>}
                   <TouchableOpacity
                     onPress={() => setModalVisible(!modalVisible)}>
                     <CancelButton />
@@ -166,7 +164,7 @@ export const ReportModalBottom = ({
                 <Text
                   style={[
                     fontRegular,
-                    {color: '#89919A', fontSize: 12, marginBottom: 7},
+                    {color: '#89919A', fontSize: 12, fontWeight: '400'},
                   ]}>
                   {`수정광산 팀이 검토 후 제재합니다.`}
                 </Text>
@@ -204,7 +202,7 @@ export const ReportModalBottom = ({
                 style={{
                   justifyContent: 'space-between',
                   flexDirection: 'row',
-                  marginVertical: 20,
+                  marginBottom: 28,
                   //backgroundColor: '#000',
                 }}>
                 {whiteButtonText && (
@@ -268,7 +266,7 @@ export const ReportItem = ({
         <View
           style={{
             flexDirection: 'row',
-            paddingVertical: 6,
+            paddingBottom: 12,
             alignItems: 'center',
           }}
           key={item.id}>
@@ -276,21 +274,23 @@ export const ReportItem = ({
             style={{flexDirection: 'row'}}
             onPress={() => setIsCheckedReportNum(item.id)}>
             {isCheckedReportNum === item.id ? (
-              <RadioButtonChecked style={{marginRight: 10}} />
+              <RadioButtonChecked style={{marginRight: 12}} />
             ) : (
-              <RadioButtonUnChecked style={{marginRight: 10}} />
+              <RadioButtonUnChecked style={{marginRight: 12}} />
             )}
             <Text
               style={[
                 fontRegular,
                 {
                   marginRight: 12,
+                  fontFamily: 'Pretendard-Medium',
                   fontWeight: '500',
+                  fontSize: 14,
                 },
               ]}>
               {item.num}
             </Text>
-            <Text style={[fontRegular]}>{item.reason}</Text>
+            <Text style={[fontRegular, {fontSize: 14}]}>{item.reason}</Text>
           </Pressable>
         </View>
       ))}
@@ -299,6 +299,7 @@ export const ReportItem = ({
           flexDirection: 'row',
           paddingVertical: 4,
           alignItems: 'center',
+          marginBottom: 28,
         }}>
         <Pressable
           style={{flexDirection: 'row'}}
@@ -307,9 +308,9 @@ export const ReportItem = ({
             setDetail(null);
           }}>
           {isCheckedReportNum === numofETC ? (
-            <RadioButtonChecked style={{marginRight: 10}} />
+            <RadioButtonChecked style={{marginRight: 12}} />
           ) : (
-            <RadioButtonUnChecked style={{marginRight: 10}} />
+            <RadioButtonUnChecked style={{marginRight: 12}} />
           )}
           <Text style={fontMedium}>기타</Text>
         </Pressable>
@@ -326,7 +327,7 @@ export const ReportItem = ({
           <View
             style={{
               width: Dimensions.get('window').width - 200,
-              marginLeft: 5,
+              marginLeft: 12,
               height: 24,
             }}>
             <TextInput
@@ -342,8 +343,8 @@ export const ReportItem = ({
                 {
                   backgroundColor: '#F6F6F6',
                   fontSize: 13,
-                  borderRadius: 10,
-                  padding: 0,
+                  borderRadius: 4,
+                  padding: 8,
                   width: Dimensions.get('window').width - 200,
                   paddingVertical: Platform.OS == 'ios' ? 5 : 0,
                 },
@@ -375,11 +376,13 @@ const styles = StyleSheet.create({
   modalView: {
     //margin: 2,
     width: Dimensions.get('window').width,
+    height: 474,
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingVertical: 24,
-    paddingHorizontal: Dimensions.get('window').width * 0.05,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingTop: 20,
+    marginBottom: 20,
+    paddingHorizontal: 20,
     // alignSelf: 'center',
     //shadowColor: '#000',
     /* shadowOffset: {
@@ -391,14 +394,14 @@ const styles = StyleSheet.create({
     //elevation: 5,
   },
   button: {
-    width: 169,
+    width: '48%',
     height: 44,
     borderRadius: 4,
     padding: 12,
     //marginTop: 20,
   },
   secondButton: {
-    width: 169,
+    width: '48%',
     height: 44,
     borderRadius: 4,
     padding: 12,
@@ -416,17 +419,19 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontWeight: '700',
   },
   secondButtonTextStyle: {
     color: '#6E7882',
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontWeight: '400',
   },
   title: {
     textAlign: 'left',
     fontSize: 16,
     marginBottom: 10,
+    color: '#222222',
+    fontWeight: '600',
   },
 });

@@ -894,8 +894,8 @@ const App = () => {
                   headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    ontSize: 20,
+                    fontWeight: '700',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1007,6 +1007,11 @@ const App = () => {
                 component={PostListScreen}
                 options={({navigation}) => ({
                   title: '',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard-bold',
+                  },
                   headerTitleAlign: 'left',
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1015,8 +1020,6 @@ const App = () => {
                         width: 40,
                         height: 40,
                         borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
                       }}
                       onPress={() =>
                         navigation.dispatch(CommonActions.goBack())
@@ -1025,8 +1028,7 @@ const App = () => {
                     </TouchableHighlight>
                   ),
                   headerTitleContainerStyle: {
-                    left: 0, // 제목을 왼쪽으로 이동
-                    paddingLeft: 20, // 제목과 화면 왼쪽 사이의 간격 설정
+                    left: 0,
                   },
                 })}
               />
@@ -2167,19 +2169,18 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '모든 게시판',
                   headerTitleAlign: 'left',
-                  headerTintColor: '#000000',
+                  headerTintColor: '#222222',
                   headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"
                       style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
+                        width: 24,
+                        height: 24,
                         justifyContent: 'center',
                       }}
                       onPress={() =>
@@ -2192,10 +2193,8 @@ const App = () => {
                     <TouchableHighlight
                       underlayColor="#EEEEEE"
                       style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
+                        width: 24,
+                        height: 24,
                         justifyContent: 'center',
                       }}
                       onPress={() => navigation.navigate('BoardSearch')}>
@@ -2877,8 +2876,9 @@ const App = () => {
                   headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2962,6 +2962,11 @@ const App = () => {
                 options={({navigation}) => ({
                   title: '',
                   headerTitleAlign: 'left',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard-bold',
+                  },
                   headerLeft: () => (
                     <TouchableHighlight
                       underlayColor="#EEEEEE"
@@ -2991,7 +2996,7 @@ const App = () => {
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: '700',
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                 })}
               />

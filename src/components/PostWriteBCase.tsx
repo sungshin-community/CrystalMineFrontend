@@ -245,7 +245,6 @@ const PostWriteBCase = ({
         }
       }}>
       <View style={styles.container}>
-        <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
           <View style={styles.nameContainer}>
             <View
               style={{
@@ -267,7 +266,7 @@ const PostWriteBCase = ({
               {showTitle && (
                 <TextInput
                   style={styles.titleInput}
-                  placeholder="제목을 입력하세요"
+                  placeholder="제목을 입력해 주세요!"
                   value={titleInput}
                   onChangeText={setTitleInput}
                 />
@@ -275,7 +274,7 @@ const PostWriteBCase = ({
               {showContent && (
                 <TextInput
                   style={styles.contentInput}
-                  placeholder="내용을 입력하세요"
+                  placeholder="게시글을 작성해 주세요!"
                   value={contentInput}
                   onChangeText={setContentInput}
                   multiline
@@ -329,15 +328,15 @@ const PostWriteBCase = ({
                       style={{
                         fontSize: 14,
                         fontWeight: '500',
-                        marginRight: 4,
+                        marginRight: 6,
                         color: '#3A424E',
                       }}>
                       익명
                     </Text>
                     {isAnonymous ? (
-                      <RectangleChecked />
-                    ) : (
                       <RectangleUnchecked />
+                    ) : (
+                      <RectangleChecked />
                     )}
                   </Pressable>
                   <Pressable
@@ -389,7 +388,6 @@ const PostWriteBCase = ({
             </SafeAreaView>
           </View>
         </View>
-      </View>
     </TouchableOpacity>
   );
 };
@@ -446,7 +444,8 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'relative',
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
+    paddingTop: 16,
     borderBottomColor: '#F6F6F6',
     borderStyle: 'solid',
     borderBottomWidth: 4,
@@ -459,9 +458,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    paddingTop: 2,
     paddingLeft: 8,
-    fontFamily: 'SpoqaHanSansNeo-Medium',
     fontSize: 14,
     fontWeight: '500',
     color: '#3A424E',
@@ -523,8 +520,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submit: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '500',
     marginRight: 8,
   },
 });

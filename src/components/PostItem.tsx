@@ -5,6 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import SmallBoard from '../../resources/icon/BoardSmallIcon';
 import {PostComment, BigPostComment} from '../../resources/icon/PostComment';
@@ -22,9 +23,11 @@ interface Props {
   boardId: number;
   navigation: any;
   route: any;
+  handlePostLike: (postId: number) => void; // 추가
 }
 
-function PostItem({post, boardId, navigation, route}: Props) {
+function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
+  //setModalVisible(false);
   const [modalVisible, setModalVisible] = useState(false);
   const handleCommentContainerPress = () => {
     setModalVisible(true);
@@ -56,7 +59,6 @@ function PostItem({post, boardId, navigation, route}: Props) {
           </Text>
         </View>
       )}
-      <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
         <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
@@ -73,7 +75,7 @@ function PostItem({post, boardId, navigation, route}: Props) {
               ) : (
                 <SmallPurpleFlag style={{marginLeft: 5}} />
               ))}
-            <Text style={[styles.textSmall, styles.timeStamp]}>
+            <Text style={[styles.timeStamp]}>
               {post.createdAt}
             </Text>
           </View>
@@ -126,7 +128,11 @@ function PostItem({post, boardId, navigation, route}: Props) {
         <View style={styles.icon}>
           {!(boardId === 93 || boardId === 94 || boardId === 95) && (
             <>
-              {post.isLiked ? <PostLike /> : <PostUnlike />}
+              <Pressable
+                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                onPress={() => handlePostLike(post.postId)}>
+                {post.isLiked ? <PostLike /> : <PostUnlike />}
+              </Pressable>
               <Text
                 style={[
                   fontRegular,
@@ -158,13 +164,12 @@ function PostItem({post, boardId, navigation, route}: Props) {
               </Text>
             </>
           )}
-        </View>
       </View>
 
       {post.newCommentAuthor && (
-        <View style={{marginBottom: 10}}>
+        <View>
           <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
-            <CommentArrow style={{marginHorizontal: 10}} />
+            <CommentArrow style={{marginRight: 10, marginTop: 20}} />
             <TouchableWithoutFeedback onPress={handleCommentContainerPress}>
               <View style={styles.commentContainer}>
                 <Text
@@ -176,8 +181,11 @@ function PostItem({post, boardId, navigation, route}: Props) {
                   }}>
                   {post.newCommentAuthor}
                 </Text>
-                <Text style={{fontSize: 12, color: '#3A424E'}}>
-                  {post.newCommentContent}
+                <Text 
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={{fontSize: 12, color: '#3A424E', fontWeight: '400'}}>
+                  {post.newCommentContent?.length > 25 ? post.newCommentContent?.substring(0, 25) + '...' : post.newCommentContent}
                 </Text>
               </View>
             </TouchableWithoutFeedback>
@@ -197,37 +205,36 @@ function PostItem({post, boardId, navigation, route}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
     borderBottomColor: '#F6F6F6',
-    borderStyle: 'solid',
     borderBottomWidth: 4,
   },
   nameContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   name: {
-    paddingTop: 2,
     paddingLeft: 8,
-    fontFamily: 'SpoqaHanSansNeo-Medium',
+    fontWeight: '700',
     fontSize: 14,
     color: '#3A424E',
   },
   text: {
     fontSize: 14,
+    fontWeight: '500',
     color: '#222222',
   },
   textSmall: {
     color: '#9DA4AB',
     fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontWeight: '500',
   },
   timeStamp: {
     fontSize: 12,
-    paddingLeft: 10,
-    paddingTop: 2,
+    paddingLeft: 8,
     color: '#B9BAC1',
   },
   content: {
@@ -254,6 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     paddingHorizontal: 12,
+    marginTop: 20,
   },
 });
 

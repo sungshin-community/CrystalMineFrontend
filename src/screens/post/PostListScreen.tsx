@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {
   StyleSheet,
@@ -14,7 +15,6 @@ import {
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
-
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   getBoardDetail,
@@ -26,6 +26,8 @@ import {
   toggleBoardPin,
   checkIsAdminForAdBoardPost,
   getRandomMidAd,
+  getCurrentPost,
+  setPostLike,
 } from '../../common/boardApi';
 import BoardDetailDto, {
   BoardHotPostDto,
@@ -123,12 +125,13 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
   };
 
-  // 중간 광고: 5개마다 광고 삽입
+  // 중간 광고: boardId가 10인 경우에만 5개마다 광고 삽입
   const getProcessedData = () => {
-    if (!boardDetail || !midAd) return boardDetail;
+    if (!boardDetail || !midAd || route.params.boardId !== 10)
+      return boardDetail;
 
     const processed = [...boardDetail];
-    for (let i = 5; i < processed.length; i += 6) {
+    for (let i = 0; i < processed.length; i += 5) {
       processed.splice(i, 0, {...midAd, isAd: true});
     }
     return processed;
@@ -188,6 +191,10 @@ const PostListScreen = ({navigation, route}: Props) => {
 
   // 게시글 목록 업데이트 함수를 별도로 분리
   const updateBoardDetail = useCallback(async () => {
+    if (route.params.boardId === 102) {
+      // 102 별도 처리하지 않음.
+      return;
+    }
     if (route.params.boardId !== 2 && route.params.boardId !== 98) {
       const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
       if (!boardDetail.code) {
@@ -196,12 +203,15 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
   }, [route.params.boardId, sortBy]);
 
-  // 초기 데이터 로딩
+  // 초기 데이터 로딩 수정
   useEffect(() => {
     async function init() {
       setIsLoading(true);
       try {
-        if (route.params.boardId === 2) {
+        if (route.params.boardId === 102) {
+          const currentPost = await getCurrentPost(0);
+          setBoardDetail(currentPost);
+        } else if (route.params.boardId === 2) {
           const hotBoardData = await getHotBoardPosts(0);
           setBoardDetail(hotBoardData);
         } else if (route.params.boardId === 98) {
@@ -261,7 +271,9 @@ const PostListScreen = ({navigation, route}: Props) => {
           await fetchAdminStatus(boardInfo.id);
         }
         await fetchMidAd(); // 광고 데이터 가져오기
-        await updateBoardDetail(); // 게시글 목록 업데이트
+        if (route.params.boardId !== 102) {
+          await updateBoardDetail();
+        }
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
         Toast.show('데이터를 불러오는데 실패했습니다.', Toast.SHORT);
@@ -277,8 +289,45 @@ const PostListScreen = ({navigation, route}: Props) => {
     updateBoardDetail();
   }, [sortBy]);
 
+  // 화면이 focus될 때마다 데이터 새로 불러오기
+  useFocusEffect(
+    useCallback(() => {
+      const refreshData = async () => {
+        try {
+          if (route.params.boardId === 102) {
+            const currentPost = await getCurrentPost(0);
+            setBoardDetail(currentPost);
+          } else if (route.params.boardId === 2) {
+            const hotBoardData = await getHotBoardPosts(0);
+            setBoardDetail(hotBoardData);
+          } else if (route.params.boardId === 98) {
+            const adBoardData = await getAdBoardPost(98, 0);
+            setBoardDetail(adBoardData);
+          } else {
+            const boardDetail = await getBoardDetail(
+              route.params.boardId,
+              0,
+              sortBy,
+            );
+            if (!boardDetail.code) {
+              setBoardDetail(boardDetail);
+            }
+          }
+        } catch (error) {
+          console.error('데이터 새로고침 실패:', error);
+        }
+      };
+
+      refreshData();
+    }, [route.params.boardId, sortBy]),
+  );
+
   const handleRefresh = async () => {
-    if (route.params.boardId === 2) {
+    if (route.params.boardId === 102) {
+      const postList = await getCurrentPost(0);
+      setCurrentPage(0);
+      setBoardDetail(postList);
+    } else if (route.params.boardId === 2) {
       const postList = await getHotBoardPosts(0);
       setCurrentPage(0);
       setBoardDetail(postList);
@@ -293,9 +342,16 @@ const PostListScreen = ({navigation, route}: Props) => {
     }
   };
 
+  // fetchNextPage 함수 수정
   const fetchNextPage = async () => {
     setIsNextPageLoading(true);
-    if (route.params.boardId === 2) {
+    if (route.params.boardId === 102) {
+      const nextPagePosts = await getCurrentPost(currentPage + 1);
+      setBoardDetail(boardDetail.concat(nextPagePosts));
+      if (nextPagePosts.length > 0) {
+        setCurrentPage(currentPage + 1);
+      }
+    } else if (route.params.boardId === 2) {
       let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
         currentPage + 1,
       );
@@ -321,9 +377,7 @@ const PostListScreen = ({navigation, route}: Props) => {
     return (
       <>
         {boardInfo?.id === 1 ? (
-          {
-            /* <BigDarkPin /> */
-          }
+          <></>
         ) : (
           <Pressable
             onPress={async () => {
@@ -565,21 +619,23 @@ const PostListScreen = ({navigation, route}: Props) => {
         {boardDetail.length === 0 && route.params.boardId !== 98 ? (
           <>
             <View style={{backgroundColor: 'white'}}>
-              {!isLoading && config?.componentToUse === 'writing_box' && (
-                <PostWriteBCase
-                  navigation={navigation}
-                  route={route}
-                  contentType={boardInfo?.contentType || 'TYPE1'}
-                  hasTitle={boardDetail?.hasTitle}
-                  onPress={async () => {
-                    console.log('Writing box clicked');
-                    await analytics().logEvent('custom_click', {
-                      component: 'writing_box',
-                      boardId: route.params.boardId.toString(),
-                    });
-                  }}
-                />
-              )}
+              {!isLoading &&
+                config?.componentToUse === 'writing_box' &&
+                ![93, 94, 95, 102].includes(route.params.boardId) && (
+                  <PostWriteBCase
+                    navigation={navigation}
+                    route={route}
+                    contentType={boardInfo?.contentType || 'TYPE1'}
+                    hasTitle={boardDetail?.hasTitle}
+                    onPress={async () => {
+                      console.log('Writing box clicked');
+                      await analytics().logEvent('custom_click', {
+                        component: 'writing_box',
+                        boardId: route.params.boardId.toString(),
+                      });
+                    }}
+                  />
+                )}
             </View>
             <SafeAreaView style={{flex: 1}}>
               <View
@@ -608,127 +664,150 @@ const PostListScreen = ({navigation, route}: Props) => {
           </>
         ) : (
           <>
-            {isLoading ? (
-              <ActivityIndicator size="large" color="#A055FF" />
-            ) : (
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                style={{flex: 1, backgroundColor: '#FFFFFF'}}
-                data={getProcessedData()}
-                renderItem={({item, index}) =>
-                  item.isAd ? (
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('PostScreen', {
-                          postId: item.postAdId,
-                          boardId: 98,
-                        });
-                      }}>
-                      <PostAdMid
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              style={{flex: 1, backgroundColor: '#FFFFFF'}}
+              data={getProcessedData()}
+              renderItem={({item, index}) =>
+                item.isAd ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('PostScreen', {
+                        postId: item.postAdId,
+                        boardId: 98,
+                      });
+                    }}>
+                    <PostAdMid
+                      post={item}
+                      boardId={98}
+                      navigation={navigation}
+                      route={route}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('PostScreen', {
+                        postId: item.postId,
+                      });
+                    }}>
+                    {boardInfo?.id === 98 ? (
+                      <PostAdItem
                         post={item}
-                        boardId={98}
+                        boardId={boardInfo?.id}
                         navigation={navigation}
                         route={route}
                       />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('PostScreen', {
-                          postId: item.postId,
-                        });
-                      }}>
-                      {boardInfo?.id === 98 ? (
-                        <PostAdItem
-                          post={item}
-                          boardId={boardInfo?.id}
-                          navigation={navigation}
-                          route={route}
-                        />
-                      ) : (
-                        <PostItem post={item} boardId={boardInfo?.id} />
-                      )}
-                    </TouchableOpacity>
-                  )
-                }
-                ItemSeparatorComponent={() => (
-                  <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
-                )}
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={handleRefresh}
-                    colors={['#A055FF']} // for android
-                    tintColor={'#A055FF'} // for ios
-                  />
-                }
-                onEndReached={() => fetchNextPage()}
-                onEndReachedThreshold={0.8}
-                ListHeaderComponent={
-                  boardDetail.length !== 0 &&
-                  route.params?.boardId !== 2 &&
-                  listHeaderCondition && (
-                    <View>
-                      {!isHotBoard &&
-                        ![93, 94, 95, 98].includes(route.params.boardId) && (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              paddingHorizontal: 24,
+                    ) : (
+                      <PostItem
+                        post={item}
+                        boardId={boardInfo?.id}
+                        navigation={navigation}
+                        route={route}
+                        handlePostLike={async postId => {
+                          try {
+                            const response = await setPostLike(postId);
+                            if (response) {
+                              // 특정 postId를 가진 게시물의 좋아요 상태만 업데이트
+                              setBoardDetail(prevPosts =>
+                                prevPosts.map(post =>
+                                  post.postId === postId
+                                    ? {
+                                        ...post,
+                                        isLiked: !post.isLiked,
+                                        likeCount:
+                                          post.likeCount +
+                                          (post.isLiked ? -1 : 1),
+                                      }
+                                    : post,
+                                ),
+                              );
+                            }
+                          } catch (error) {
+                            console.error('좋아요 처리 실패:', error);
+                            Toast.show(
+                              '좋아요 처리에 실패했습니다.',
+                              Toast.SHORT,
+                            );
+                          }
+                        }}
+                      />
+                    )}
+                  </TouchableOpacity>
+                )
+              }
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: '#F6F6F6'}}></View>
+              )}
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                  colors={['#A055FF']} // for android
+                  tintColor={'#A055FF'} // for ios
+                />
+              }
+              onEndReached={() => fetchNextPage()}
+              onEndReachedThreshold={0.8}
+              ListHeaderComponent={
+                boardDetail.length !== 0 &&
+                route.params?.boardId !== 2 &&
+                listHeaderCondition && (
+                  <View>
+                    {!isHotBoard &&
+                      ![93, 94, 95, 98].includes(route.params.boardId) && (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            paddingHorizontal: 16,
+                          }}>
+                          <TouchableOpacity
+                            style={[
+                              styles.purpleButtonStyle,
+                              {
+                                flex: 1,
+                                paddingLeft: 6,
+                              },
+                            ]}
+                            onPress={() => {
+                              boardHotPost?.isExist
+                                ? navigation.navigate('PostScreen', {
+                                    postId: boardHotPost.postId,
+                                  })
+                                : {};
                             }}>
-                            <TouchableOpacity
+                            {boardHotPost?.isExist ? (
+                              <>
+                                <HotIcon />
+                                <Text
+                                  style={[styles.popularButtonText, fontBold]}>
+                                  인기
+                                </Text>
+                              </>
+                            ) : null}
+                            <Text
                               style={[
-                                styles.purpleButtonStyle,
-                                {
-                                  flex: 1,
-                                  paddingLeft: 6,
-                                },
+                                styles.grayButtonText,
+                                fontRegular,
+                                {flex: 1},
                               ]}
-                              onPress={() => {
-                                boardHotPost?.isExist
-                                  ? navigation.navigate('PostScreen', {
-                                      postId: boardHotPost.postId,
-                                    })
-                                  : {};
-                              }}>
-                              {boardHotPost?.isExist ? (
-                                <>
-                                  <HotIcon style={{marginLeft: 6}} />
-                                  <Text
-                                    style={[
-                                      styles.popularButtonText,
-                                      fontBold,
-                                    ]}>
-                                    인기
-                                  </Text>
-                                </>
-                              ) : null}
-                              <Text
-                                style={[
-                                  styles.grayButtonText,
-                                  fontRegular,
-                                  {flex: 1},
-                                ]}
-                                numberOfLines={1}
-                                ellipsizeMode="tail">
-                                {boardHotPost?.isExist === false
-                                  ? '현재 실시간 인기글이 없습니다.'
-                                  : boardHotPost?.title !== null
-                                  ? boardHotPost?.title
-                                  : boardHotPost.content}
-                              </Text>
-                              {boardHotPost?.isExist ? (
-                                <PurpleArrow
-                                  style={{
-                                    marginRight: 6,
-                                  }}
-                                />
-                              ) : null}
-                            </TouchableOpacity>
+                              numberOfLines={1}
+                              ellipsizeMode="tail">
+                              {boardHotPost?.isExist === false
+                                ? '현재 실시간 인기글이 없습니다.'
+                                : boardHotPost?.title !== null
+                                ? boardHotPost?.title
+                                : boardHotPost.content}
+                            </Text>
+                            {boardHotPost?.isExist ? (
+                              <PurpleArrow
+                              />
+                            ) : null}
+                          </TouchableOpacity>
 
-                            {/* <TouchableOpacity
+                          {/* <TouchableOpacity
                             onPress={() => {
                               if (sortBy === 'createdAt') {
                                 setSortBy('likeCount');
@@ -753,22 +832,22 @@ const PostListScreen = ({navigation, route}: Props) => {
                             </Text>
                             <SortIcon />
                           </TouchableOpacity> */}
-                          </View>
-                        )}
-                      {route.params.boardId !== 98 &&
-                        config?.componentToUse === 'writing_box' && (
-                          <PostWriteBCase
-                            navigation={navigation}
-                            route={route}
-                            contentType={boardInfo?.contentType || 'TYPE1'}
-                            hasTitle={boardDetail?.hasTitle}
-                          />
-                        )}
-                    </View>
-                  )
-                }
-              />
-            )}
+                        </View>
+                      )}
+                    {route.params.boardId !== 98 &&
+                      config?.componentToUse === 'writing_box' &&
+                      ![93, 94, 95, 102].includes(route.params.boardId) && (
+                        <PostWriteBCase
+                          navigation={navigation}
+                          route={route}
+                          contentType={boardInfo?.contentType || 'TYPE1'}
+                          hasTitle={boardDetail?.hasTitle}
+                        />
+                      )}
+                  </View>
+                )
+              }
+            />
             <View style={{backgroundColor: '#FFFFFF'}}>
               {isNextPageLoading && (
                 <ActivityIndicator
@@ -781,22 +860,23 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           </>
         )}
-        {config?.componentToUse === 'floating_button' && (
-          <FloatingWriteButton
-            onPress={async () => {
-              await analytics().logEvent('custom_click', {
-                component: 'floating_button',
-                boardId: route.params.boardId.toString(),
-              });
-              console.log('Floating button clicked');
-              navigation.navigate('PostWriteScreen', {
-                boardId: route.params.boardId,
-                contentType: boardInfo?.contentType,
-              });
-            }}
-          />
-        )}
-        {!(isHotBoard || [93, 94, 95].includes(route.params?.boardId)) ||
+        {config?.componentToUse === 'floating_button' &&
+          ![93, 94, 95, 102].includes(route.params.boardId) && (
+            <FloatingWriteButton
+              onPress={async () => {
+                await analytics().logEvent('custom_click', {
+                  component: 'floating_button',
+                  boardId: route.params.boardId.toString(),
+                });
+                console.log('Floating button clicked');
+                navigation.navigate('PostWriteScreen', {
+                  boardId: route.params.boardId,
+                  contentType: boardInfo?.contentType,
+                });
+              }}
+            />
+          )}
+        {!(isHotBoard || [93, 94, 95, 102].includes(route.params?.boardId)) ||
           (route.params?.boardId === 98 && isAdBoard && (
             <FloatingWriteButton
               onPress={() =>
@@ -848,16 +928,15 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   grayButtonText: {
-    color: '#6E7882',
+    color: '#3A424E',
     fontSize: 12,
     lineHeight: 15,
-    paddingLeft: 10,
+    marginLeft: 8,
   },
   popularButtonText: {
     fontWeight: '700',
     fontSize: 12,
     color: '#A055FF',
-    paddingLeft: 10,
     lineHeight: 15,
   },
   purpleButtonStyle: {
@@ -866,7 +945,9 @@ const styles = StyleSheet.create({
     height: 36,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 16,
+    paddingHorizontal: 10,
+    paddingLeft: 8,
   },
   container: {
     position: 'relative',
@@ -884,7 +965,6 @@ const styles = StyleSheet.create({
   name: {
     paddingTop: 2,
     paddingLeft: 8,
-    fontFamily: 'SpoqaHanSansNeo-Medium',
     fontSize: 14,
     fontWeight: '500',
     color: '#3A424E',
@@ -900,7 +980,6 @@ const styles = StyleSheet.create({
   textSmall: {
     color: '#9DA4AB',
     fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   timeStamp: {
     fontSize: 12,
