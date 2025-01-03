@@ -761,7 +761,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                         <View
                           style={{
                             flexDirection: 'row',
-                            paddingHorizontal: 24,
+                            paddingHorizontal: 16,
                           }}>
                           <TouchableOpacity
                             style={[
@@ -780,7 +780,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                             }}>
                             {boardHotPost?.isExist ? (
                               <>
-                                <HotIcon style={{marginLeft: 6}} />
+                                <HotIcon />
                                 <Text
                                   style={[styles.popularButtonText, fontBold]}>
                                   인기
@@ -803,9 +803,6 @@ const PostListScreen = ({navigation, route}: Props) => {
                             </Text>
                             {boardHotPost?.isExist ? (
                               <PurpleArrow
-                                style={{
-                                  marginRight: 6,
-                                }}
                               />
                             ) : null}
                           </TouchableOpacity>
@@ -931,16 +928,15 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   grayButtonText: {
-    color: '#6E7882',
+    color: '#3A424E',
     fontSize: 12,
     lineHeight: 15,
-    paddingLeft: 10,
+    marginLeft: 8,
   },
   popularButtonText: {
     fontWeight: '700',
     fontSize: 12,
     color: '#A055FF',
-    paddingLeft: 10,
     lineHeight: 15,
   },
   purpleButtonStyle: {
@@ -949,7 +945,9 @@ const styles = StyleSheet.create({
     height: 36,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 16,
+    paddingHorizontal: 10,
+    paddingLeft: 8,
   },
   container: {
     position: 'relative',
@@ -967,7 +965,6 @@ const styles = StyleSheet.create({
   name: {
     paddingTop: 2,
     paddingLeft: 8,
-    fontFamily: 'SpoqaHanSansNeo-Medium',
     fontSize: 14,
     fontWeight: '500',
     color: '#3A424E',
@@ -983,7 +980,6 @@ const styles = StyleSheet.create({
   textSmall: {
     color: '#9DA4AB',
     fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   timeStamp: {
     fontSize: 12,
