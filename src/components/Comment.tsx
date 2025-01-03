@@ -25,6 +25,8 @@ import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import {BlackMessageIcon, MessageIcon} from '../../resources/icon/Message';
 import {getMessageContent, postChatRoom} from '../common/messageApi';
 import {ReportModalBottom} from './ReportModalBottom';
+import HeartIcon from '../../resources/icon/HeartIcon';
+import ChatIcon from '../../resources/icon/ChatIcon';
 
 interface Props {
   navigation: any;
@@ -153,11 +155,10 @@ const Comment = ({
         style={{
           position: 'absolute',
           top: -20,
-          right: 0,
+          right: 10,
           flexDirection: 'column',
           alignItems: 'center',
           width: 150,
-          height: 90,
           zIndex: 150,
         }}>
         <Pressable
@@ -167,19 +168,17 @@ const Comment = ({
           <View
             style={{
               paddingHorizontal: 12,
-              paddingVertical: 8,
+              paddingVertical: 10,
               backgroundColor: '#ffffff',
-              borderColor: '#EFEFF3',
-              borderWidth: 1,
               borderRadius: 8,
               //iOS
               shadowColor: '#A6AAAE',
-              shadowOffset: {width: 0, height: 4},
+              shadowOffset: {width: 0, height: 2},
               shadowOpacity: 0.4,
-              shadowRadius: 18,
+              shadowRadius: 10,
               // Android
-              elevation: 18,
-              width: 130,
+              elevation: 10,
+              width: 150,
               height: '100%',
             }}>
             <TouchableOpacity
@@ -263,7 +262,7 @@ const Comment = ({
           style={{
             position: 'absolute',
             top: -20,
-            right: 0,
+            right: 10,
             flexDirection: 'column',
             alignItems: 'center',
             width: 150,
@@ -277,19 +276,17 @@ const Comment = ({
             <View
               style={{
                 paddingHorizontal: 12,
-                paddingVertical: 8,
-                backgroundColor: '#FFFFFF',
-                borderColor: '#EFEFF3',
-                borderWidth: 1,
+                paddingVertical: 10,
+                backgroundColor: '#ffffff',
                 borderRadius: 8,
                 //iOS
                 shadowColor: '#A6AAAE',
-                shadowOffset: {width: 0, height: 4},
+                shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.4,
-                shadowRadius: 18,
+                shadowRadius: 10,
                 // Android
-                elevation: 18,
-                width: 130,
+                elevation: 10,
+                width: 150,
                 height: '100%',
               }}>
               <TouchableOpacity onPress={() => handleRecomment(data.id)}>
@@ -374,10 +371,10 @@ const Comment = ({
     <>
       <View
         style={{
-          paddingHorizontal: 24,
+          paddingHorizontal: 16,
           overflow: 'visible',
-          borderTopColor: '#F0F0F0',
-          borderTopWidth: 1,
+          borderBottomColor: '#efeff3',
+          borderBottomWidth: 1,
           backgroundColor: isRecommentState
             ? '#F3E7FF'
             : data?.isOfReader
@@ -389,10 +386,10 @@ const Comment = ({
             position: 'relative',
             overflow: 'visible',
             flexDirection: 'row',
-            marginVertical: 15,
+            marginVertical: 16,
             justifyContent: 'space-between',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{flexDirection: 'row'}}>
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
               source={{uri: data?.profileImage}}
@@ -402,9 +399,12 @@ const Comment = ({
                 style={[
                   fontMedium,
                   {
-                    fontSize: 15,
-                    paddingLeft: 8,
+                    fontSize: 14,
+                    fontWeight: '600',
+                    fontFamily: 'Pretendard-SemiBold',
+                    paddingLeft: 10,
                     color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                    paddingBottom: 2,
                   },
                 ]}>
                 {data?.displayName}
@@ -412,7 +412,12 @@ const Comment = ({
               <Text
                 style={[
                   fontRegular,
-                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 10},
+                  {
+                    color: '#9DA4AB',
+                    fontSize: 12,
+                    fontWeight: '500',
+                    paddingLeft: 10,
+                  },
                 ]}>
                 {data?.createdAt}
               </Text>
@@ -452,24 +457,26 @@ const Comment = ({
             />
           )}
         </View>
+        {data?.emoticonUrl && data.isDeleted === false ? (
+          <Image
+            source={{uri: data?.emoticonUrl}}
+            style={{width: 100, height: 100, marginLeft: 34}}
+          />
+        ) : null}
         <Text
           style={[
             {
               color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
               fontSize: 14,
-              marginLeft: 35,
+              marginLeft: 34,
               zIndex: 98,
+              marginTop: 10,
             },
             fontRegular,
           ]}>
           <Autolink text={data ? (data.content ? data.content : '') : ''} />
         </Text>
-        {data?.emoticonUrl && data.isDeleted === false ? (
-          <Image
-            source={{uri: data?.emoticonUrl}}
-            style={{width: 80, height: 80, marginTop: 10, marginLeft: 35}}
-          />
-        ) : null}
+
         {data.isDeleted || data.isBlind ? (
           <></>
         ) : (
@@ -477,14 +484,18 @@ const Comment = ({
             <View
               style={{
                 flexDirection: 'row',
-                marginTop: 15,
-                marginLeft: 35,
+                marginTop: 10,
+                marginLeft: 34,
                 justifyContent: 'flex-start',
                 zIndex: 99,
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
-                  {localIsLiked ? <PostLike /> : <PostUnlike />}
+                  {localIsLiked ? (
+                    <HeartIcon fill="#FF6376" stroke="#FF6376" />
+                  ) : (
+                    <HeartIcon fill="white" stroke="#9DA4AB" />
+                  )}
                 </Pressable>
                 <Text
                   style={[
@@ -505,7 +516,7 @@ const Comment = ({
                 <Pressable
                   hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
                   onPress={() => handleRecomment(data.id)}>
-                  <PostComment />
+                  <ChatIcon />
                 </Pressable>
                 <Text
                   style={[
@@ -654,11 +665,10 @@ export const Recomment = ({
         style={{
           position: 'absolute',
           top: -20,
-          right: 0,
+          right: 10,
           flexDirection: 'column',
           alignItems: 'center',
           width: 150,
-          height: '100%',
           zIndex: 150,
         }}>
         <Pressable
@@ -668,20 +678,18 @@ export const Recomment = ({
           <View
             style={{
               paddingHorizontal: 12,
-              paddingVertical: 8,
-              backgroundColor: '#FFFFFF',
-              borderColor: '#EFEFF3',
-              borderWidth: 1,
+              paddingVertical: 10,
+              backgroundColor: '#ffffff',
               borderRadius: 8,
               //iOS
               shadowColor: '#A6AAAE',
-              shadowOffset: {width: 0, height: 4},
+              shadowOffset: {width: 0, height: 2},
               shadowOpacity: 0.4,
-              shadowRadius: 18,
+              shadowRadius: 10,
               // Android
-              elevation: 18,
-              width: 130,
-              height: 50,
+              elevation: 10,
+              width: 150,
+              height: '100%',
             }}>
             <Pressable
               onPress={() => {
@@ -745,11 +753,10 @@ export const Recomment = ({
           style={{
             position: 'absolute',
             top: -20,
-            right: 0,
+            right: 10,
             flexDirection: 'column',
             alignItems: 'center',
             width: 150,
-            height: 90,
             zIndex: 150,
           }}>
           <Pressable
@@ -759,19 +766,17 @@ export const Recomment = ({
             <View
               style={{
                 paddingHorizontal: 12,
-                paddingVertical: 8,
-                backgroundColor: '#FFFFFF',
-                borderColor: '#EFEFF3',
-                borderWidth: 1,
+                paddingVertical: 10,
+                backgroundColor: '#ffffff',
                 borderRadius: 8,
                 //iOS
                 shadowColor: '#A6AAAE',
-                shadowOffset: {width: 0, height: 4},
+                shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.4,
-                shadowRadius: 18,
+                shadowRadius: 10,
                 // Android
-                elevation: 18,
-                width: 130,
+                elevation: 10,
+                width: 150,
                 height: '100%',
               }}>
               <TouchableOpacity onPress={() => blockedCheck(data.isAnonymous)}>
@@ -820,23 +825,23 @@ export const Recomment = ({
     <>
       <View
         style={{
-          paddingHorizontal: 24,
+          paddingHorizontal: 16,
           paddingLeft: 48,
           backgroundColor: data.isOfReader ? '#fff' : '#FFF',
           paddingBottom: 12,
-          borderTopColor: '#F0F0F0',
-          borderTopWidth: 1,
+          borderBottomColor: '#F0F0F0',
+          borderBottomWidth: 1,
           zIndex: 1,
           overflow: 'visible',
         }}>
         <View
           style={{
             flexDirection: 'row',
-            marginVertical: 15,
+            marginVertical: 16,
             justifyContent: 'space-between',
             overflow: 'visible',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{flexDirection: 'row'}}>
             {/* <Reply style={{marginRight: 8}} /> */}
             <Image
               style={{width: 24, height: 24, borderRadius: 12}}
@@ -847,8 +852,10 @@ export const Recomment = ({
                 style={[
                   fontMedium,
                   {
-                    fontSize: 15,
-                    paddingLeft: 8,
+                    fontSize: 14,
+                    fontFamily: 'Pretendard-SemiBold',
+                    fontWeight: '600',
+                    paddingLeft: 10,
                     color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                   },
                 ]}>
@@ -856,8 +863,13 @@ export const Recomment = ({
               </Text>
               <Text
                 style={[
+                  {
+                    color: '#9DA4AB',
+                    fontSize: 12,
+                    paddingLeft: 10,
+                    fontWeight: '500',
+                  },
                   fontRegular,
-                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 10},
                 ]}>
                 {data?.createdAt}
               </Text>
@@ -897,23 +909,25 @@ export const Recomment = ({
             />
           )}
         </View>
-        <View style={{marginLeft: 35}}>
+        <View style={{marginLeft: 34}}>
+          {data?.emoticonUrl && data.isDeleted === false ? (
+            <Image
+              source={{uri: data?.emoticonUrl}}
+              style={{width: 100, height: 100}}
+            />
+          ) : null}
           <Text
             style={[
               {
                 color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
                 fontSize: 14,
+                marginTop: 10,
               },
               fontRegular,
             ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
-          {data?.emoticonUrl && data.isDeleted === false ? (
-            <Image
-              source={{uri: data?.emoticonUrl}}
-              style={{width: 80, height: 80, marginTop: 10}}
-            />
-          ) : null}
+
           {data.isDeleted || data.isBlind ? (
             <></>
           ) : (
@@ -921,12 +935,16 @@ export const Recomment = ({
               <View
                 style={{
                   flexDirection: 'row',
-                  marginTop: 15,
+                  marginTop: 10,
                   justifyContent: 'space-between',
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
-                    {localIsLiked ? <PostLike /> : <PostUnlike />}
+                    {localIsLiked ? (
+                      <HeartIcon fill="#FF6376" stroke="#FF6376" />
+                    ) : (
+                      <HeartIcon fill="white" stroke="#9DA4AB" />
+                    )}
                   </Pressable>
                   <Text
                     style={[
