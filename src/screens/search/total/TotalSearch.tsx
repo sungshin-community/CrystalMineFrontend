@@ -105,20 +105,22 @@ function TotalSearch({navigation, route}: Props) {
         </View>
       ),
       headerRight: (): React.ReactNode => (
-        <TouchableHighlight
-          style={{
-            width: 50,
-            borderRadius: 20,
-            alignItems: 'center',
-            height: 40,
-            justifyContent: 'center',
-          }}
-          underlayColor="#EEEEEE"
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Text style={[fontRegular, {fontSize: 17}]}>취소</Text>
-        </TouchableHighlight>
+        <View style={{marginLeft: 16}}>
+          <TouchableHighlight
+            style={{
+              width: 28,
+              borderRadius: 20,
+              alignItems: 'center',
+              height: 40,
+              justifyContent: 'center',
+            }}
+            underlayColor="#EEEEEE"
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Text style={[fontRegular, {fontSize: 16}]}>취소</Text>
+          </TouchableHighlight>
+        </View>
       ),
       headerBackVisible: false,
     });
@@ -209,16 +211,15 @@ export default TotalSearch;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingLeft: 5,
   },
   input: {
     backgroundColor: '#F6F6F6',
-    width: Dimensions.get('window').width - 100,
+    width: Dimensions.get('window').width - 75,
     alignItems: 'center',
     alignContent: 'center',
     height: 35,
     borderRadius: 8,
-    paddingLeft: 36,
+    paddingLeft: 40,
     paddingVertical: 8,
     fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 16,
@@ -240,6 +241,7 @@ const styles = StyleSheet.create({
   },
   noResult: {
     fontSize: 16,
+    fontFamily: 'Pretendard-Medium',
     color: '#9DA4AB',
     marginTop: 12,
   },

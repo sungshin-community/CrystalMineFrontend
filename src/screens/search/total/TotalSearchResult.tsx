@@ -84,18 +84,29 @@ function TotalSearchResult({navigation, route}: Props) {
         </View>
       ),
       headerRight: () => (
-        <TouchableHighlight
-          style={{
-            width: 50,
-            borderRadius: 20,
-            alignItems: 'center',
-            height: 40,
-            justifyContent: 'center',
-          }}
-          underlayColor="#EEEEEE"
-          onPress={() => navigation.goBack()}>
-          <Text style={{fontSize: 17}}>취소</Text>
-        </TouchableHighlight>
+        <View style={{marginLeft: 16}}>
+          <TouchableHighlight
+            style={{
+              width: 28,
+              borderRadius: 20,
+              alignItems: 'center',
+              height: 40,
+              justifyContent: 'center',
+              // backgroundColor: 'blue',
+            }}
+            underlayColor="#EEEEEE"
+            onPress={() => navigation.goBack()}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Pretendard-Medium',
+                color: '#3a424e',
+                // backgroundColor: 'red',
+              }}>
+              취소
+            </Text>
+          </TouchableHighlight>
+        </View>
       ),
       headerBackVisible: false,
     });
@@ -123,7 +134,7 @@ function TotalSearchResult({navigation, route}: Props) {
             },
             tabBarShowLabel: true,
             tabBarLabelStyle: {
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontFamily: 'Pretendard-Bold',
               backgroundColor: '#FFFFFF',
               fontSize: 16,
               fontWeight: '700',
@@ -159,17 +170,16 @@ export default TotalSearchResult;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingLeft: 5,
   },
   input: {
     backgroundColor: '#F6F6F6',
-    width: Dimensions.get('window').width - 100,
+    width: Dimensions.get('window').width - 75,
     height: 35,
     borderRadius: 8,
-    paddingLeft: 36,
+    paddingLeft: 40,
     paddingVertical: 8,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
     fontSize: 16,
+    fontWeight: '500',
     color: '#222222',
   },
   icon: {

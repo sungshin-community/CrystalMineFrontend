@@ -17,6 +17,8 @@ import {fontRegular} from '../../../common/font';
 import PostLike from '../../../../resources/icon/PostLike';
 import PostUnlike from '../../../../resources/icon/PostUnlike';
 import {PostComment} from '../../../../resources/icon/PostComment';
+import HeartIcon from '../../../../resources/icon/HeartIcon';
+import ChatIcon from '../../../../resources/icon/ChatIcon';
 
 interface Props {
   searchWord: string;
@@ -197,7 +199,7 @@ export default function CrystalSearchResult({searchWord}: Props) {
             style={{
               color: '#6E7882',
               fontSize: 15,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontFamily: 'Pretendard-Regular',
               textAlign: 'center',
               lineHeight: 22.5,
               marginTop: 20,
@@ -219,19 +221,18 @@ export default function CrystalSearchResult({searchWord}: Props) {
                 onPress={() => moveToPtPost(item)}>
                 <View
                   style={{
-                    marginTop: 10,
+                    marginTop: 20,
                     marginBottom: 4,
                     height: 23,
                     flexDirection: 'row',
                     alignItems: 'center',
                     borderRadius: 10,
-                    paddingHorizontal: 12,
+                    paddingHorizontal: 16,
                   }}>
                   <Text
                     style={[
                       {
                         color: '#A055FF',
-                        marginLeft: 10,
                         fontSize: 14,
                         fontWeight: '500',
                       },
@@ -246,7 +247,7 @@ export default function CrystalSearchResult({searchWord}: Props) {
                       : item.ptPostType}
                   </Text>
                 </View>
-                <View style={{paddingHorizontal: 12}}>
+                <View style={{paddingHorizontal: 16}}>
                   {item.hasTitle && (
                     <Text style={styles.titleText}>{item.title}</Text>
                   )}
@@ -258,7 +259,11 @@ export default function CrystalSearchResult({searchWord}: Props) {
                   </Text>
                   <View style={styles.iconContainer}>
                     <View style={styles.icon}>
-                      {item.isLiked ? <PostLike /> : <PostUnlike />}
+                      {item.isLiked ? (
+                        <HeartIcon fill="#FF6376" stroke="#FF6376" />
+                      ) : (
+                        <HeartIcon />
+                      )}
                       <Text
                         style={[
                           fontRegular,
@@ -269,7 +274,7 @@ export default function CrystalSearchResult({searchWord}: Props) {
                       <Text style={[styles.textSmall, styles.iconCount]}>
                         {item.likeCount} 개
                       </Text>
-                      <PostComment />
+                      <ChatIcon />
                       <Text style={[styles.textSmall, styles.iconCount]}>
                         {item.commentCount} 개
                       </Text>
@@ -303,7 +308,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 16,
+    marginTop: 16,
+    marginHorizontal: 16,
   },
   button: {
     paddingHorizontal: 12,
@@ -337,27 +343,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderColor: '#E2E4E8',
   },
-  nameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   name: {
     paddingTop: 2,
     paddingLeft: 8,
-    fontFamily: 'SpoqaHanSansNeo-Medium',
+    fontFamily: 'Pretendard-Medium',
     fontSize: 15,
   },
   textSmall: {
     fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontFamily: 'Pretendard-Regular',
   },
   titleText: {
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 5,
-    paddingHorizontal: 12,
   },
   timeStamp: {
     color: '#9DA4AB',
@@ -367,14 +366,12 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginBottom: 14,
     lineHeight: 22.5,
-    paddingHorizontal: 12,
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 10,
-    paddingHorizontal: 12,
   },
   icon: {
     flexDirection: 'row',
