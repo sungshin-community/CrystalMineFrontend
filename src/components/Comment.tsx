@@ -135,7 +135,9 @@ const Comment = ({
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        content={`작성한 댓글을 삭제하시겠습니까?`}
+        title={`작성한 댓글을 삭제하시겠습니까?`}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
         purpleButtonText="삭제"
         purpleButtonFunc={() => {
           handleCommentDelete(data.id);
@@ -143,11 +145,11 @@ const Comment = ({
           setComponentModalVisible(false);
           setDotsModalVisible(false);
         }}
-        whiteButtonText="취소"
-        whiteButtonFunc={() => {
-          setModalVisible(false);
-          setComponentModalVisible(false);
-        }}
+        // whiteButtonText="취소"
+        // whiteButtonFunc={() => {
+        //   setModalVisible(false);
+        //   setComponentModalVisible(false);
+        // }}
         setDim={false}
       />
 
@@ -644,7 +646,9 @@ export const Recomment = ({
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        content={`작성한 댓글을 삭제하시겠습니까?`}
+        title={`작성한 댓글을 삭제하시겠습니까?`}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
         purpleButtonText="삭제"
         purpleButtonFunc={() => {
           handleCommentDelete(data.id);
@@ -656,8 +660,8 @@ export const Recomment = ({
             );
           }, 100);
         }}
-        whiteButtonText="취소"
-        whiteButtonFunc={() => setModalVisible(false)}
+        // whiteButtonText="취소"
+        // whiteButtonFunc={() => setModalVisible(false)}
         setDim={false}
       />
 

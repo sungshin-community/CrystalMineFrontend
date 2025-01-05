@@ -1,4 +1,4 @@
-import {View, Dimensions} from 'react-native';
+import {View, Dimensions, Text} from 'react-native';
 import React from 'react';
 import {BannerAd} from 'react-native-google-mobile-ads';
 import {Platform} from 'react-native';
@@ -8,11 +8,12 @@ export default function AdMob() {
     <View
       style={{
         alignItems: 'center',
-        marginVertical: 16,
-        marginHorizontal: 24,
+        marginVertical: 8,
+        marginHorizontal: 16,
         borderRadius: 10,
         height: 70,
         overflow: 'hidden',
+        backgroundColor: '#EFEFF3',
       }}>
       <BannerAd
         unitId={
@@ -22,6 +23,7 @@ export default function AdMob() {
         }
         size={`${Math.floor(Dimensions.get('screen').width - 48)}x70`}
       />
+      <Text>광고</Text>
     </View>
   );
 }

@@ -80,8 +80,8 @@ export const ModalBottom = ({
                   <View
                     style={{
                       width: Dimensions.get('window').width,
-                      justifyContent: 'center',
-                      alignContent: 'center',
+                      // justifyContent: 'flex-start',
+                      // alignContent: 'flex-start',
                     }}>
                     <Text
                       style={[
@@ -89,9 +89,10 @@ export const ModalBottom = ({
                         {
                           textAlign: isContentCenter ? 'center' : 'left',
                           fontSize: 14,
-                          color: '#3A424E',
+                          fontWeight: '400',
+                          color: '#89919A',
                           lineHeight: 20,
-
+                          marginLeft: isContentCenter ? 0 : 16,
                           //backgroundColor: 'red',
                         },
                       ]}>
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     paddingTop: 24,
-    paddingBottom: 24,
+    paddingBottom: 45,
     marginBottom: 24,
     //paddingHorizontal: Dimensions.get('window').width * 0.05,
     //paddingHorizontal: 24,
@@ -166,20 +167,21 @@ const styles = StyleSheet.create({
   buttonContianer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingRight: 32,
   },
   button: {
     borderRadius: 4,
     padding: 12,
     height: 44,
-    width: '45%',
-    marginTop: 24,
-    marginRight: 16,
+    width: '100%',
+    marginTop: 28,
+    marginHorizontal: 16,
   },
   secondButton: {
     borderRadius: 4,
     padding: 12,
     height: 44,
-    marginTop: 24,
+    marginTop: 28,
     width: '45%',
     marginLeft: 16,
   },
@@ -196,6 +198,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontWeight: '700',
+    fontFamily: 'Pretendard-Bold',
   },
   secondButtonTextStyle: {
     color: '#6E7882',
@@ -204,8 +207,12 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   title: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 16,
     marginBottom: 10,
+    color: '#222222',
+    marginLeft: 16,
+    fontWeight: '600',
+    fontFamily: 'Pretendard-Bold',
   },
 });
