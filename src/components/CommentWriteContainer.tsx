@@ -450,6 +450,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
             onEmojiSelect={handleEmojiSelect}
             isPayed={isPayed}
             setIsPayed={setIsPayed}
+            navigation={navigation}
           />
         </View>
       )}

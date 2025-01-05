@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  TouchableHighlight,
 } from 'react-native';
 import Hamburger from '../../resources/icon/Hamburger';
 import EmojiShop from '../../resources/icon/EmojiShop';
@@ -28,6 +29,7 @@ interface EmojiPickerProps {
   onEmojiSelect: (emoji: {imageUrl: string; id: number}) => void;
   isPayed: boolean;
   setIsPayed: (isPayed: boolean) => void;
+  navigation?: any;
 }
 
 interface Emoticon {
@@ -70,6 +72,7 @@ const EmojiPicker = ({
   onEmojiSelect,
   isPayed,
   setIsPayed,
+  navigation,
 }: EmojiPickerProps) => {
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
@@ -273,6 +276,11 @@ const EmojiPicker = ({
     );
   };
 
+  const handleShopPress = () => {
+    onClose();
+    navigation?.navigate('EmoticonShop');
+  };
+
   return visible ? (
     <View style={styles.container}>
       {isPayed ? (
@@ -301,7 +309,11 @@ const EmojiPicker = ({
               )}
             </View>
             <View>
-              <EmojiShop />
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={handleShopPress}>
+                <EmojiShop />
+              </TouchableHighlight>
             </View>
           </View>
           {renderEmojis()}

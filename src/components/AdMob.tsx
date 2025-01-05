@@ -13,7 +13,7 @@ export default function AdMob() {
         borderRadius: 10,
         height: 70,
         overflow: 'hidden',
-        backgroundColor: '#EFEFF3',
+        //backgroundColor: '#EFEFF3',
       }}>
       <BannerAd
         unitId={
