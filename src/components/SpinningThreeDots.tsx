@@ -78,6 +78,10 @@ function SpinningThreeDots({
         {![93, 94, 95].includes(boardId) && (
           <View style={{flexDirection: 'row'}}>
             <Pressable
+              style={{
+                paddingLeft: 10,
+                paddingBottom: 10,
+              }}
               onPress={() => {
                 handleAnimation();
                 setIsOptionState(!isOptionState);
