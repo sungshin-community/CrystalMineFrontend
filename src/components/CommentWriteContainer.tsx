@@ -326,10 +326,11 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
       <View
         style={{
           flexDirection: 'row',
-          paddingVertical: 5,
+          // paddingTop: 8,
+          paddingBottom: Platform.OS === 'ios' ? (emojiClicked ? 0 : 20) : 0,
           //alignItems: 'center',
-          backgroundColor: 'white',
           zIndex: 99999,
+          backgroundColor: '#fff',
         }}>
         <View
           style={{
@@ -437,7 +438,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
                 bottom: 0,
               }}
               onPress={onSubmit}>
-              {newComment ? <PurplePostSend /> : <PostSend />}
+              {newComment || emojiClicked ? <PurplePostSend /> : <PostSend />}
             </Pressable>
           </Text>
         </View>
@@ -461,30 +462,27 @@ export default CommentWriteContainer;
 
 const styles = StyleSheet.create({
   inputBox: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: '#f6f6f6',
     width: Dimensions.get('window').width - 125,
     borderRadius: 8,
     paddingHorizontal: 10,
-    //paddingVertical: 5,
     marginVertical: 10,
-    //paddingRight: 5,
   },
   input: {
     fontSize: 14,
     width: Dimensions.get('window').width - 175,
-    //paddingVertical: 5,
-    paddingTop: Platform.OS == 'ios' ? 13 : 10,
+    paddingBottom: Platform.OS == 'ios' ? 13 : 10,
     lineHeight: 20,
     minHeight: 40,
     maxHeight: 230,
     color: '#222222',
+    fontWeight: '400',
   },
   emojiPickerContainer: {
-    position: 'relative',
+    // position: 'relative',
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'white',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     /* elevation: 5,
