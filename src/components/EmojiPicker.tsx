@@ -181,6 +181,7 @@ const EmojiPicker = ({
               Toast.show('이모티콘 구매 성공', Toast.SHORT);
             } else if (result?.status === 403) {
               Toast.show('포인트가 부족합니다.', Toast.SHORT);
+              navigation?.navigate('EmoticonShop');
             } else if (result?.status === 409) {
               Toast.show('이미 구매한 이모티콘입니다.', Toast.SHORT);
               setIsPayed(true);
