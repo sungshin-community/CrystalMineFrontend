@@ -699,12 +699,19 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               width: '100%',
               height: 52,
             }}>
-            {(!isType1 ||
-              isPantheon === 'question' ||
-              isPantheon === 'free') && (
+            {!isType1 || isPantheon === 'question' || isPantheon === 'free' ? (
               <TouchableOpacity onPress={onSelectImage}>
                 <ImageIcon style={{marginLeft: 16}} />
               </TouchableOpacity>
+            ) : (
+              <View
+                style={{
+                  marginLeft: 16,
+                  width: 24,
+                  height: 24,
+                  backgroundColor: '#FFFFFF',
+                }}
+              />
             )}
             <Pressable
               style={{
@@ -727,6 +734,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
         modalVisible={goBackWarning}
         setModalVisible={setGoBackWarning}
         content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        isWriting={true}
         isContentCenter={true}
         purpleButtonText="확인"
         purpleButtonFunc={() => {

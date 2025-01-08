@@ -16,6 +16,7 @@ interface Props {
   title?: any;
   content?: any;
   isContentCenter?: boolean;
+  isWriting?: boolean;
   purpleButtonText?: string;
   purpleButtonFunc?: any;
   purpleButtonText2?: string;
@@ -31,6 +32,7 @@ export const ModalBottom = ({
   title,
   content,
   isContentCenter = true,
+  isWriting = false,
   purpleButtonText,
   purpleButtonFunc,
   purpleButtonText2,
@@ -90,7 +92,7 @@ export const ModalBottom = ({
                           textAlign: isContentCenter ? 'center' : 'left',
                           fontSize: 14,
                           fontWeight: '400',
-                          color: '#89919A',
+                          color: '#3A424E',
                           lineHeight: 20,
                           marginLeft: isContentCenter ? 0 : 16,
                           //backgroundColor: 'red',
@@ -113,7 +115,13 @@ export const ModalBottom = ({
                 )}
                 {purpleButtonText && purpleButtonText !== 'none' && (
                   <TouchableOpacity
-                    style={[styles.button, styles.buttonClose]}
+                    style={[
+                      styles.button,
+                      styles.buttonClose,
+                      {
+                        width: isWriting ? '49%' : '100%',
+                      },
+                    ]}
                     onPress={() => purpleButtonFunc()}>
                     <Text style={styles.textStyle}>{purpleButtonText}</Text>
                   </TouchableOpacity>
@@ -166,24 +174,22 @@ const styles = StyleSheet.create({
   },
   buttonContianer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingRight: 32,
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: 28,
+    paddingHorizontal: 16,
+    //paddingRight: 32,
   },
   button: {
     borderRadius: 4,
     padding: 12,
     height: 44,
-    width: '100%',
-    marginTop: 28,
-    marginHorizontal: 16,
   },
   secondButton: {
     borderRadius: 4,
     padding: 12,
     height: 44,
-    marginTop: 28,
-    width: '45%',
-    marginLeft: 16,
+    width: '49%',
   },
   buttonClose: {
     backgroundColor: '#A055FF',
