@@ -18,6 +18,8 @@ interface Props {
   handleOptionModeIsNotMineComponent?: any;
   boardId?: number;
   isGrey?: boolean;
+  setIsRecomment?: any;
+  setIsRecommentState?: (value: boolean) => void;
 }
 function SpinningThreeDots({
   boardId,
@@ -26,10 +28,21 @@ function SpinningThreeDots({
   handleOptionModeIsMineComponent,
   handleOptionModeIsNotMineComponent,
   isGrey,
+  setIsRecomment,
+  setIsRecommentState,
 }: Props) {
   const [isOptionState, setIsOptionState] = useState<boolean>(false);
   const [toggle, setToggle] = useState<boolean>(false);
   const rotateAnimation = useRef(new Animated.Value(0)).current;
+
+  const handleClose = () => {
+    if (setIsRecomment) {
+      setIsRecomment(false);
+    }
+    if (setIsRecommentState) {
+      setIsRecommentState(false);
+    }
+  };
   const handleAnimation = () => {
     if (!isOptionState)
       Animated.timing(rotateAnimation, {
@@ -85,6 +98,7 @@ function SpinningThreeDots({
               onPress={() => {
                 handleAnimation();
                 setIsOptionState(!isOptionState);
+                handleClose();
               }}>
               <Animated.View style={animatedStyle}>
                 {isGrey ? <GreyDots /> : <Dots />}

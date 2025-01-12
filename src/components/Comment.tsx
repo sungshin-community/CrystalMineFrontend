@@ -40,6 +40,7 @@ interface Props {
   handleFocus: () => void;
   componentModalVisible?: boolean;
   setComponentModalVisible?: any;
+  onEmojiSelected?: () => void;
 }
 const Comment = ({
   navigation,
@@ -74,6 +75,15 @@ const Comment = ({
     setLocalLikeCount(data?.likeCount || 0);
     setLocalIsLiked(data?.isLiked || false);
   }, [data?.likeCount, data?.isLiked]);
+
+  useEffect(() => {
+    if (!dotsModalVisible) {
+      setIsRecommentState(false);
+      if (setIsRecomment) {
+        setIsRecomment(false);
+      }
+    }
+  }, [dotsModalVisible]);
 
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
@@ -140,7 +150,9 @@ const Comment = ({
         isContentCenter={false}
         purpleButtonText="삭제"
         purpleButtonFunc={() => {
-          handleCommentDelete(data.id);
+          if (handleCommentDelete) {
+            handleCommentDelete(data.id);
+          }
           setModalVisible(false);
           setComponentModalVisible(false);
           setDotsModalVisible(false);
@@ -197,7 +209,11 @@ const Comment = ({
                 }}>
                 <BigPostComment style={{marginRight: 8}} />
                 <Text
-                  style={{paddingVertical: 8, fontSize: 14, color: '#3A424E'}}>
+                  style={{
+                    paddingVertical: 8,
+                    fontSize: 14,
+                    color: '#3A424E',
+                  }}>
                   대댓글 달기
                 </Text>
               </View>
@@ -447,6 +463,8 @@ const Comment = ({
                   handleCommentReportComponent
                 }
                 isGrey={true}
+                setIsRecomment={setIsRecomment}
+                setIsRecommentState={setIsRecommentState}
               />
             )
           ) : data.isBlind ? (
@@ -457,6 +475,8 @@ const Comment = ({
               handleOptionModeIsMineComponent={handleCommentDeleteComponent}
               handleOptionModeIsNotMineComponent={handleCommentReportComponent}
               isGrey={true}
+              setIsRecomment={setIsRecomment}
+              setIsRecommentState={setIsRecommentState}
             />
           )}
         </View>
@@ -566,6 +586,7 @@ interface RecommentProps {
   handleCommentReport?: any;
   componentModalVisible?: boolean;
   setComponentModalVisible?: any;
+  onEmojiSelected?: () => void;
 }
 
 export const Recomment = ({

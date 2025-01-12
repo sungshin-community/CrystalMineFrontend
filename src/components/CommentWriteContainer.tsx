@@ -80,6 +80,8 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
   parentId,
   replyToComment,
   setShowSelectedEmoji,
+  dotsModalVisible,
+  setDotsModalVisible,
 }: Props) => {
   const [post, setPost] = useState<PostDto>();
   const [comments, setComments] = useState<CommentDto[]>();
@@ -258,6 +260,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
           onCommentComplete();
           setIsRecomment(false);
           setParentId(null);
+          setDotsModalVisible(false);
         });
       } else {
         addCommentFunc(
@@ -268,6 +271,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
         ).then(() => {
           refreshComments();
           onCommentComplete();
+          setDotsModalVisible(false);
         });
       }
       setNewComment('');
@@ -368,7 +372,9 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
           ]}>
           <TextInput
             ref={commentInputRef}
-            placeholder="댓글을 입력해 주세요."
+            placeholder={
+              isRecomment ? '대댓글을 입력해 주세요.' : '댓글을 입력해 주세요.'
+            }
             placeholderTextColor="#87919B"
             multiline={true}
             onChangeText={value => {
