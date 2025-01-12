@@ -58,6 +58,7 @@ import NewPost from '../../../resources/icon/NewPost';
 import BannerBasicImg from '../../../resources/images/BannerBasicImg.png';
 import {ViewToken} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import OnboardingImg from '../../../resources/images/OnboadingImg.png';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -110,7 +111,35 @@ const HomeFragment = ({navigation}: Props) => {
   const [newPosts, setNewPosts] = useState<any[]>([]); // 방금 올라온 글 데이터
   const [isLoadingNewPosts, setIsLoadingNewPosts] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(true); // 메인 온보딩
+
   const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
+
+  // 온보딩 표시 여부 (최초 접속 여부) 판단
+  useEffect(() => {
+    const checkFirstLaunch = async () => {
+      try {
+        const hasLaunched = await AsyncStorage.getItem('hasLaunched');
+        if (!hasLaunched) {
+          // 초기 접속이라면 온보딩 표시
+          setShowOnboarding(true);
+          await AsyncStorage.setItem('hasLaunched', 'true');
+        }
+      } catch (error) {
+        console.error('Error checking launch status', error);
+      }
+    };
+
+    checkFirstLaunch();
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: !showOnboarding, // 온보딩 중에는 헤더 숨김
+    });
+  }, [showOnboarding, navigation]);
+
   // 총학생회 배너 데이터
   const [bannerData, setBannerData] = useState<{
     imageUrl: string;
@@ -354,312 +383,212 @@ const HomeFragment = ({navigation}: Props) => {
 
   return (
     <>
-      <WaterMark />
-      {isError ? (
-        <Error status={500} code={'H001'} />
-      ) : (
+      {/* 온보딩 이미지 표시 */}
+      {showOnboarding && (
+        <TouchableOpacity
+          style={styles.onboardingContainer}
+          onPress={() => setShowOnboarding(false)}>
+          <Image
+            source={OnboardingImg}
+            style={styles.onboardingImage}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      )}
+      {!showOnboarding && (
         <>
-          <View
-            style={{
-              position: 'absolute',
-              alignItems: 'center',
-              justifyContent: 'center',
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            }}>
-            <ActivityIndicator
-              size="large"
-              color={'#A055FF'}
-              animating={isLoading}
-              style={{zIndex: 100}}
-            />
-          </View>
-          <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-            <View style={styles.portalContainer}>
-              <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={() =>
-                  Linking.openURL('https://portal.sungshin.ac.kr/portal')
-                }>
-                <SungshinPortal />
-                <Text style={styles.iconLabel}>성신 포탈</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={() =>
-                  Linking.openURL(
-                    'https://portal.sungshin.ac.kr/portal/ssu/menu/notice/ssuboard02.page',
-                  )
-                }>
-                <Notice />
-                <Text style={styles.iconLabel}>학사 공지</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={() =>
-                  Linking.openURL(
-                    'https://www.sungshin.ac.kr/main_kor/11000/subview.do',
-                  )
-                }>
-                <Calendar />
-                <Text style={styles.iconLabel}>학사 일정</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={toggleCafeteriaModal}>
-                <StudentCafeteria />
-                <Text style={styles.iconLabel}>학식</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={() =>
-                  Linking.openURL(
-                    'https://www.sungshin.ac.kr/main_kor/10963/subview.do',
-                  )
-                }>
-                <SchoolBus />
-                <Text style={styles.iconLabel}>셔틀버스</Text>
-              </TouchableOpacity>
-            </View>
-            {/* 배너 영역 */}
-            {bannerData && (
-              <View style={styles.bannerContainer}>
-                <Image
-                  source={
-                    bannerData &&
-                    bannerData.length > 0 &&
-                    bannerData[0].imageUrl
-                      ? {uri: bannerData[0].imageUrl}
-                      : BannerBasicImg // 기본 이미지 사용
-                  }
-                  style={styles.bannerImage}
-                  resizeMode="cover"
+          <WaterMark />
+          {isError ? (
+            <Error status={500} code={'H001'} />
+          ) : (
+            <>
+              <View
+                style={{
+                  position: 'absolute',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                }}>
+                <ActivityIndicator
+                  size="large"
+                  color={'#A055FF'}
+                  animating={isLoading}
+                  style={{zIndex: 100}}
                 />
-
-                {/* 그라데이션 레이어 */}
-                <LinearGradient
-                  colors={['rgba(74, 74, 74, 0)', '#4A4A4A']} // 위는 투명, 아래는 #4A4A4A
-                  style={styles.gradient}
-                />
-
-                {/* 총학생회 텍스트 */}
-                <Text style={styles.studenCouncilBox}>총학생회</Text>
-
-                {/* 배너 텍스트 영역 */}
-                <View style={styles.bannerTextContainer}>
-                  <Text style={styles.bannerTitle}>
-                    {bannerData[0]?.postTitle}
-                  </Text>
-                  <Text style={styles.bannerContent} numberOfLines={1}>
-                    {bannerData[0]?.postContent}
-                  </Text>
-                </View>
               </View>
-            )}
-            <View
-              style={{
-                padding: 24,
-              }}>
-              {/* 게시판 글 목록 */}
-              <View style={styles.rowContainer}>
-                {/* 지금 인기있는 글 영역 */}
-                <View style={styles.boardTitleContainer}>
-                  <HotPost />
-                  <Text style={[fontRegular, styles.boardTitle]}>
-                    지금 인기있는 글
-                  </Text>
-                </View>
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    {
-                      user?.isAuthenticated
-                        ? navigation.navigate('PostListScreen', {boardId: 2})
-                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                    }
-                  }}>
-                  <RightArrow />
-                </TouchableWithoutFeedback>
-              </View>
-              {!isInited ? (
-                skeletonComponent
-              ) : user?.isAuthenticated ? (
-                hotBoardContents?.hotPosts.length === 0 ? (
-                  <View
-                    style={{
-                      backgroundColor: '#F7F7F7',
-                      paddingVertical: 27,
-                      borderRadius: 20,
-                    }}>
-                    <Text
-                      style={[
-                        fontRegular,
-                        {
-                          textAlign: 'center',
-                          fontSize: 15,
-                          color: '#6E7882',
-                        },
-                      ]}>
-                      공감을 10개 이상 받은 게시글이 없습니다.
-                    </Text>
-                  </View>
-                ) : (
-                  <View>
-                    <FlatList
-                      data={hotBoardContents?.hotPosts}
-                      renderItem={renderHotPostItem}
-                      horizontal
-                      pagingEnabled
-                      keyExtractor={item => item.postId.toString()}
-                      showsHorizontalScrollIndicator={false}
-                      onViewableItemsChanged={
-                        handleViewableItemsChanged.current
-                      }
-                      viewabilityConfig={viewabilityConfig.current}
-                    />
-                    <View style={styles.paginationContainer}>
-                      {hotBoardContents?.hotPosts.map((_, index) => (
-                        <View
-                          key={index}
-                          style={[
-                            styles.paginationDot,
-                            index === currentIndex
-                              ? styles.activeDot
-                              : styles.inactiveDot,
-                          ]}
-                        />
-                      ))}
-                    </View>
-                  </View>
-                )
-              ) : (
-                <View
-                  style={{
-                    backgroundColor: '#F7F7F7',
-                    paddingVertical: 27,
-                    borderRadius: 20,
-                  }}>
-                  <Text
-                    style={[
-                      fontRegular,
-                      {
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      },
-                    ]}>
-                    정회원 인증 후 확인하실 수 있습니다.
-                  </Text>
-                </View>
-              )}
-              {/* 방금 올라온 글 목록 */}
-              <View style={styles.rowNewPostContainer}>
-                <View style={styles.boardTitleContainer}>
-                  <RecentPost />
-                  <Text style={[fontRegular, styles.boardTitle]}>
-                    방금 올라온 글
-                  </Text>
-                </View>
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    {
-                      user?.isAuthenticated
-                        ? navigation.navigate('PostListScreen', {boardId: 102})
-                        : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                    }
-                  }}>
-                  <RightArrow />
-                </TouchableWithoutFeedback>
-              </View>
-              {isLoadingNewPosts ? (
-                <ActivityIndicator size="large" color="#A055FF" />
-              ) : newPosts.length === 0 ? (
-                <View
-                  style={{
-                    backgroundColor: '#F7F7F7',
-                    paddingVertical: 27,
-                    borderRadius: 20,
-                  }}>
-                  <Text
-                    style={[
-                      fontRegular,
-                      {
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: '#6E7882',
-                      },
-                    ]}>
-                    방금 올라온 글이 없습니다.
-                  </Text>
-                </View>
-              ) : (
-                newPosts.map((item, index) => (
+              <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+                <View style={styles.portalContainer}>
                   <TouchableOpacity
-                    key={index}
+                    style={styles.iconContainer}
                     onPress={() =>
-                      navigation.navigate('PostScreen', {postId: item.postId})
+                      Linking.openURL('https://portal.sungshin.ac.kr/portal')
                     }>
-                    <View style={styles.newPostContainer}>
-                      <View style={styles.hotPostContainer}>
-                        <Text
-                          numberOfLines={1}
-                          ellipsizeMode="tail"
-                          style={[
-                            styles.newPostTitle,
-                            {
-                              width: Dimensions.get('window').width - 150,
-                              color: '#000',
-                            },
-                          ]}>
-                          {item.postContent.slice(0, 30)}
-                        </Text>
-                      </View>
-                      <Text style={styles.newPostTime}>
-                        {item.minute}분전 ·{' '}
-                        <Text style={styles.newPostBoard}>
-                          {item.boardName}
-                        </Text>
+                    <SungshinPortal />
+                    <Text style={styles.iconLabel}>성신 포탈</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://portal.sungshin.ac.kr/portal/ssu/menu/notice/ssuboard02.page',
+                      )
+                    }>
+                    <Notice />
+                    <Text style={styles.iconLabel}>학사 공지</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://www.sungshin.ac.kr/main_kor/11000/subview.do',
+                      )
+                    }>
+                    <Calendar />
+                    <Text style={styles.iconLabel}>학사 일정</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={toggleCafeteriaModal}>
+                    <StudentCafeteria />
+                    <Text style={styles.iconLabel}>학식</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.iconContainer}
+                    onPress={() =>
+                      Linking.openURL(
+                        'https://www.sungshin.ac.kr/main_kor/10963/subview.do',
+                      )
+                    }>
+                    <SchoolBus />
+                    <Text style={styles.iconLabel}>셔틀버스</Text>
+                  </TouchableOpacity>
+                </View>
+                {/* 배너 영역 */}
+                {bannerData && (
+                  <TouchableOpacity
+                    style={styles.bannerContainer}
+                    onPress={() =>
+                      navigation.navigate('PostScreen', {
+                        postId: bannerData[0]?.postId,
+                      })
+                    }>
+                    <Image
+                      source={
+                        bannerData &&
+                        bannerData.length > 0 &&
+                        bannerData[0].imageUrl
+                          ? {uri: bannerData[0].imageUrl}
+                          : BannerBasicImg // 기본 이미지 사용
+                      }
+                      style={styles.bannerImage}
+                      resizeMode="cover"
+                    />
+
+                    {/* 그라데이션 레이어 */}
+                    <LinearGradient
+                      colors={['rgba(74, 74, 74, 0)', '#4A4A4A']} // 위는 투명, 아래는 #4A4A4A
+                      style={styles.gradient}
+                    />
+
+                    {/* 총학생회 텍스트 */}
+                    <Text style={styles.studenCouncilBox}>총학생회</Text>
+
+                    {/* 배너 텍스트 영역 */}
+                    <View style={styles.bannerTextContainer}>
+                      <Text style={styles.bannerTitle}>
+                        {bannerData[0]?.postTitle}
                       </Text>
-                      <Image
-                        source={{uri: item.imageUrl}}
-                        style={styles.newPostImage}
-                      />
+                      <Text style={styles.bannerContent}>
+                        {bannerData[0]?.postContent}
+                      </Text>
                     </View>
                   </TouchableOpacity>
-                ))
-              )}
-              {/* 고정된 커뮤니티 */}
-              <View style={{marginVertical: 20}}>
-                <View style={styles.rowContainer}>
-                  <View style={styles.boardTitleContainer}>
-                    <PinPost />
-                    <Text style={[fontRegular, styles.boardTitle]}>
-                      고정한 커뮤니티
-                    </Text>
+                )}
+                <View
+                  style={{
+                    padding: 24,
+                  }}>
+                  {/* 게시판 글 목록 */}
+                  <View style={styles.rowContainer}>
+                    {/* 지금 인기있는 글 영역 */}
+                    <View style={styles.boardTitleContainer}>
+                      <HotPost />
+                      <Text style={[fontRegular, styles.boardTitle]}>
+                        지금 인기있는 글
+                      </Text>
+                    </View>
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        {
+                          user?.isAuthenticated
+                            ? navigation.navigate('PostListScreen', {
+                                boardId: 2,
+                              })
+                            : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                        }
+                      }}>
+                      <RightArrow />
+                    </TouchableWithoutFeedback>
                   </View>
-
-                  <TouchableWithoutFeedback
-                    onPress={() => {
-                      {
-                        user?.isAuthenticated
-                          ? navigation.navigate('BoardFragment')
-                          : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                      }
-                    }}>
-                    <RightArrow />
-                  </TouchableWithoutFeedback>
-                </View>
-                {/* 게시판 글 목록 */}
-                {!isInited ? (
-                  // true?
-                  skeletonComponent
-                ) : user?.isAuthenticated ? (
-                  pinBoardContents?.length === 0 ? (
+                  {!isInited ? (
+                    skeletonComponent
+                  ) : user?.isAuthenticated ? (
+                    hotBoardContents?.hotPosts.length === 0 ? (
+                      <View
+                        style={{
+                          backgroundColor: '#F7F7F7',
+                          paddingVertical: 27,
+                          borderRadius: 20,
+                        }}>
+                        <Text
+                          style={[
+                            fontRegular,
+                            {
+                              textAlign: 'center',
+                              fontSize: 15,
+                              color: '#6E7882',
+                            },
+                          ]}>
+                          공감을 10개 이상 받은 게시글이 없습니다.
+                        </Text>
+                      </View>
+                    ) : (
+                      <View>
+                        <FlatList
+                          data={hotBoardContents?.hotPosts}
+                          renderItem={renderHotPostItem}
+                          horizontal
+                          pagingEnabled
+                          keyExtractor={item => item.postId.toString()}
+                          showsHorizontalScrollIndicator={false}
+                          onViewableItemsChanged={
+                            handleViewableItemsChanged.current
+                          }
+                          viewabilityConfig={viewabilityConfig.current}
+                        />
+                        <View style={styles.paginationContainer}>
+                          {hotBoardContents?.hotPosts.map((_, index) => (
+                            <View
+                              key={index}
+                              style={[
+                                styles.paginationDot,
+                                index === currentIndex
+                                  ? styles.activeDot
+                                  : styles.inactiveDot,
+                              ]}
+                            />
+                          ))}
+                        </View>
+                      </View>
+                    )
+                  ) : (
                     <View
                       style={{
                         backgroundColor: '#F7F7F7',
@@ -675,147 +604,285 @@ const HomeFragment = ({navigation}: Props) => {
                             color: '#6E7882',
                           },
                         ]}>
-                        고정된 게시판이 없습니다.
+                        정회원 인증 후 확인하실 수 있습니다.
+                      </Text>
+                    </View>
+                  )}
+                  {/* 방금 올라온 글 목록 */}
+                  <View style={styles.rowNewPostContainer}>
+                    <View style={styles.boardTitleContainer}>
+                      <RecentPost />
+                      <Text style={[fontRegular, styles.boardTitle]}>
+                        방금 올라온 글
+                      </Text>
+                    </View>
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        {
+                          user?.isAuthenticated
+                            ? navigation.navigate('PostListScreen', {
+                                boardId: 102,
+                              })
+                            : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                        }
+                      }}>
+                      <RightArrow />
+                    </TouchableWithoutFeedback>
+                  </View>
+                  {isLoadingNewPosts ? (
+                    <ActivityIndicator size="large" color="#A055FF" />
+                  ) : newPosts.length === 0 ? (
+                    <View
+                      style={{
+                        backgroundColor: '#F7F7F7',
+                        paddingVertical: 27,
+                        borderRadius: 20,
+                      }}>
+                      <Text
+                        style={[
+                          fontRegular,
+                          {
+                            textAlign: 'center',
+                            fontSize: 15,
+                            color: '#6E7882',
+                          },
+                        ]}>
+                        방금 올라온 글이 없습니다.
                       </Text>
                     </View>
                   ) : (
-                    pinBoardContents?.map((item, index) => (
+                    newPosts.map((item, index) => (
                       <TouchableOpacity
                         key={index}
-                        onPress={() => {
-                          if (
-                            item.boardId === 5 ||
-                            item.boardId === 6 ||
-                            item.boardId === 7 ||
-                            item.boardId === 8 ||
-                            item.boardId === 9
-                          ) {
-                            navigation.navigate('WikiTab', {
-                              boardId: item.boardId,
-                            });
-                          } else
-                            navigation.navigate('PostListScreen', {
-                              boardId: item.boardId,
-                            });
-                        }}>
-                        <View style={styles.pinBoardContainer}>
-                          <View style={styles.postTitleSummaryContainer}>
-                            <Text
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                              style={[fontRegular, styles.postTitleSummary]}>
-                              {item.boardName.slice(0, numOfBoardTitle)}
-                            </Text>
-                          </View>
-                          <View style={styles.postSummaryContainer}>
+                        onPress={() =>
+                          navigation.navigate('PostScreen', {
+                            postId: item.postId,
+                          })
+                        }>
+                        <View style={styles.newPostContainer}>
+                          <View style={styles.hotPostContainer}>
                             <Text
                               numberOfLines={1}
                               ellipsizeMode="tail"
                               style={[
-                                fontRegular,
-                                styles.postSummary,
+                                styles.newPostTitle,
                                 {
-                                  color: item.recentPostContent
-                                    ? '#6E7882'
-                                    : '#CBD0D8',
+                                  width: Dimensions.get('window').width - 150,
+                                  color: '#000',
                                 },
                               ]}>
-                              {item.recentPostContent
-                                ? item.recentPostContent
-                                : '아직 작성된 글이 없습니다!'}
+                              {item.postContent.slice(0, 30)}
                             </Text>
                           </View>
-                          <View style={styles.postNewLabelContainer}>
-                            {item.todayNewPost ? <NewPost /> : <></>}
-                          </View>
+                          <Text style={styles.newPostTime}>
+                            {item.minute}분전 ·{' '}
+                            <Text style={styles.newPostBoard}>
+                              {item.boardName}
+                            </Text>
+                          </Text>
+                          <Image
+                            source={{uri: item.imageUrl}}
+                            style={styles.newPostImage}
+                          />
                         </View>
                       </TouchableOpacity>
                     ))
-                  )
-                ) : (
-                  <View
-                    style={{
-                      backgroundColor: '#F7F7F7',
-                      paddingVertical: 27,
-                      borderRadius: 20,
-                    }}>
-                    <Text
-                      style={[
-                        fontRegular,
-                        {
-                          textAlign: 'center',
-                          fontSize: 15,
-                          color: '#6E7882',
-                        },
-                      ]}>
-                      정회원 인증 후 확인하실 수 있습니다.
-                    </Text>
+                  )}
+                  {/* 고정된 커뮤니티 */}
+                  <View style={{marginVertical: 20}}>
+                    <View style={styles.rowContainer}>
+                      <View style={styles.boardTitleContainer}>
+                        <PinPost />
+                        <Text style={[fontRegular, styles.boardTitle]}>
+                          고정한 커뮤니티
+                        </Text>
+                      </View>
+
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          {
+                            user?.isAuthenticated
+                              ? navigation.navigate('BoardFragment')
+                              : Toast.show(
+                                  '접근 권한이 없습니다.',
+                                  Toast.SHORT,
+                                );
+                          }
+                        }}>
+                        <RightArrow />
+                      </TouchableWithoutFeedback>
+                    </View>
+                    {/* 게시판 글 목록 */}
+                    {!isInited ? (
+                      // true?
+                      skeletonComponent
+                    ) : user?.isAuthenticated ? (
+                      pinBoardContents?.length === 0 ? (
+                        <View
+                          style={{
+                            backgroundColor: '#F7F7F7',
+                            paddingVertical: 27,
+                            borderRadius: 20,
+                          }}>
+                          <Text
+                            style={[
+                              fontRegular,
+                              {
+                                textAlign: 'center',
+                                fontSize: 15,
+                                color: '#6E7882',
+                              },
+                            ]}>
+                            고정된 게시판이 없습니다.
+                          </Text>
+                        </View>
+                      ) : (
+                        pinBoardContents?.map((item, index) => (
+                          <TouchableOpacity
+                            key={index}
+                            onPress={() => {
+                              if (
+                                item.boardId === 5 ||
+                                item.boardId === 6 ||
+                                item.boardId === 7 ||
+                                item.boardId === 8 ||
+                                item.boardId === 9
+                              ) {
+                                navigation.navigate('WikiTab', {
+                                  boardId: item.boardId,
+                                });
+                              } else
+                                navigation.navigate('PostListScreen', {
+                                  boardId: item.boardId,
+                                });
+                            }}>
+                            <View style={styles.pinBoardContainer}>
+                              <View style={styles.postTitleSummaryContainer}>
+                                <Text
+                                  numberOfLines={1}
+                                  ellipsizeMode="tail"
+                                  style={[
+                                    fontRegular,
+                                    styles.postTitleSummary,
+                                  ]}>
+                                  {item.boardName.slice(0, numOfBoardTitle)}
+                                </Text>
+                              </View>
+                              <View style={styles.postSummaryContainer}>
+                                <Text
+                                  numberOfLines={1}
+                                  ellipsizeMode="tail"
+                                  style={[
+                                    fontRegular,
+                                    styles.postSummary,
+                                    {
+                                      color: item.recentPostContent
+                                        ? '#6E7882'
+                                        : '#CBD0D8',
+                                    },
+                                  ]}>
+                                  {item.recentPostContent
+                                    ? item.recentPostContent
+                                    : '아직 작성된 글이 없습니다!'}
+                                </Text>
+                              </View>
+                              <View style={styles.postNewLabelContainer}>
+                                {item.todayNewPost ? <NewPost /> : <></>}
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                        ))
+                      )
+                    ) : (
+                      <View
+                        style={{
+                          backgroundColor: '#F7F7F7',
+                          paddingVertical: 27,
+                          borderRadius: 20,
+                        }}>
+                        <Text
+                          style={[
+                            fontRegular,
+                            {
+                              textAlign: 'center',
+                              fontSize: 15,
+                              color: '#6E7882',
+                            },
+                          ]}>
+                          정회원 인증 후 확인하실 수 있습니다.
+                        </Text>
+                      </View>
+                    )}
                   </View>
-                )}
-              </View>
+                </View>
+                <AdMob />
+              </ScrollView>
+              <ModalBottom
+                modalVisible={blacklistblindModalVisible}
+                setModalVisible={setBlacklistblindModalVisible}
+                title={'서비스 이용 제한 안내'}
+                content={blacklistModalContent}
+                isContentCenter={false}
+                purpleButtonText="서비스 이용 방향 보기"
+                purpleButtonFunc={() => {
+                  setBlacklistblindModalVisible(false);
+                  navigation.navigate('InformationUse');
+                }}
+                whiteButtonText="확인 후 로그아웃"
+                whiteButtonFunc={async () => {
+                  await logout();
+                  navigation.reset({routes: [{name: 'SplashHome'}]});
+                  setBlacklistblindModalVisible(false);
+                }}
+                setDisableClose={true}
+              />
+              <ModalBottom
+                modalVisible={blindModalVisible}
+                setModalVisible={setBlindModalVisible}
+                title="블라인드 안내"
+                content={modalBody}
+                isContentCenter={false}
+                purpleButtonText="수정광산 이용 방향 보기"
+                purpleButtonFunc={() => {
+                  setBlindModalVisible(!blindModalVisible);
+                  navigation.navigate('DirectionAgreeScreen');
+                }}
+                whiteButtonText="확인"
+                whiteButtonFunc={() => {
+                  setBlindModalVisible(!blindModalVisible);
+                }}
+              />
+            </>
+          )}
+          <Modal
+            isVisible={isCafeteriaModalVisible}
+            onBackdropPress={toggleCafeteriaModal}
+            style={styles.modal}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  openUrl(
+                    'https://www.sungshin.ac.kr/main_kor/11095/subview.do',
+                  );
+                  toggleCafeteriaModal();
+                }}>
+                <Text style={styles.buttonText}>운캠</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  openUrl(
+                    'https://www.sungshin.ac.kr/main_kor/11076/subview.do',
+                  );
+                  toggleCafeteriaModal();
+                }}>
+                <Text style={styles.buttonText}>수캠</Text>
+              </TouchableOpacity>
             </View>
-            <AdMob />
-          </ScrollView>
-          <ModalBottom
-            modalVisible={blacklistblindModalVisible}
-            setModalVisible={setBlacklistblindModalVisible}
-            title={'서비스 이용 제한 안내'}
-            content={blacklistModalContent}
-            isContentCenter={false}
-            purpleButtonText="서비스 이용 방향 보기"
-            purpleButtonFunc={() => {
-              setBlacklistblindModalVisible(false);
-              navigation.navigate('InformationUse');
-            }}
-            whiteButtonText="확인 후 로그아웃"
-            whiteButtonFunc={async () => {
-              await logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-              setBlacklistblindModalVisible(false);
-            }}
-            setDisableClose={true}
-          />
-          <ModalBottom
-            modalVisible={blindModalVisible}
-            setModalVisible={setBlindModalVisible}
-            title="블라인드 안내"
-            content={modalBody}
-            isContentCenter={false}
-            purpleButtonText="수정광산 이용 방향 보기"
-            purpleButtonFunc={() => {
-              setBlindModalVisible(!blindModalVisible);
-              navigation.navigate('DirectionAgreeScreen');
-            }}
-            whiteButtonText="확인"
-            whiteButtonFunc={() => {
-              setBlindModalVisible(!blindModalVisible);
-            }}
-          />
+          </Modal>
         </>
       )}
-      <Modal
-        isVisible={isCafeteriaModalVisible}
-        onBackdropPress={toggleCafeteriaModal}
-        style={styles.modal}>
-        <View style={styles.modalContent}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              openUrl('https://www.sungshin.ac.kr/main_kor/11095/subview.do');
-              toggleCafeteriaModal();
-            }}>
-            <Text style={styles.buttonText}>운캠</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              openUrl('https://www.sungshin.ac.kr/main_kor/11076/subview.do');
-              toggleCafeteriaModal();
-            }}>
-            <Text style={styles.buttonText}>수캠</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </>
   );
 };
@@ -1093,6 +1160,19 @@ const styles = StyleSheet.create({
   },
   inactiveDot: {
     backgroundColor: '#E1E4EA',
+  },
+  onboardingContainer: {
+    flex: 1,
+    width: '100%',
+  },
+  onboardingImage: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  mainContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
