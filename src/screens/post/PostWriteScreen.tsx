@@ -82,10 +82,12 @@ interface PostWriteScreenProps {
 function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
   const formData = new FormData();
   const [boardId, setBoardId] = useState<number>(0);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(route.params?.initialTitle || '');
   const [point, setPoint] = useState<string>('');
   const [myPoint, setMyPoint] = useState<number>(0);
-  const [content, setContent] = useState<string>('');
+  const [content, setContent] = useState<string>(
+    route.params?.initialContent || '',
+  );
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
