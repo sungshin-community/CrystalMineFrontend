@@ -1985,7 +1985,7 @@ const App = () => {
                 component={ProfileModify}
                 options={{
                   headerTitle: () => (
-                    <Text style={styles.headerTitle}>기본프로필수정</Text>
+                    <Text style={styles.headerTitle}>기본 프로필 수정</Text>
                   ),
                   headerTitleAlign: 'left',
                 }}
@@ -3932,7 +3932,7 @@ const App = () => {
                 component={ProfileModify}
                 options={{
                   headerTitle: () => (
-                    <Text style={styles.headerTitle}>기본프로필수정</Text>
+                    <Text style={styles.headerTitle}>기본 프로필 수정</Text>
                   ),
                   headerTitleAlign: 'left',
                 }}
