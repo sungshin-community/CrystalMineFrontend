@@ -247,7 +247,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   {/* 프로필 아이콘 부분 */}
                   <View
                     style={{
-                      marginLeft: 19,
+                      marginLeft: 16,
                       marginTop: 0,
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -414,6 +414,7 @@ const MyPageFragment = ({navigation}: Props) => {
                     style={{
                       flexDirection: 'row',
                       marginTop: 20,
+                      marginBottom: 20,
                       marginHorizontal: 24,
                       paddingLeft: 18,
                       height: 70,
@@ -487,7 +488,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         color: '#A055FF',
                         fontFamily: 'SpoqaHanSansNeo-Bold',
                       }}>
-                      {user?.point}P
+                      {user?.point?.toLocaleString()}P{' '}
                     </Text>
                     <RightArrow />
                   </View>
@@ -503,6 +504,7 @@ const MyPageFragment = ({navigation}: Props) => {
                     fontSize: 15,
                     fontFamily: 'SpoqaHanSansNeo-Regular',
                     marginLeft: 'auto',
+                    marginTop: 11,
                   }}>
                   {user?.username}@sungshin.ac.kr
                 </Text>
@@ -733,7 +735,7 @@ const MyPageFragment = ({navigation}: Props) => {
               <View style={styles.menu}>
                 <Text style={styles.menuText}>앱 버전</Text>
                 <View style={styles.arrowContainer}>
-                  <Text style={styles.versionText}>1.4.0</Text>
+                  <Text style={styles.versionText}>1.5.0</Text>
                 </View>
               </View>
               <TouchableHighlight
