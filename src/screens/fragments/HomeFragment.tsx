@@ -59,6 +59,7 @@ import BannerBasicImg from '../../../resources/images/BannerBasicImg.png';
 import {ViewToken} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import OnboardingImg from '../../../resources/images/OnboadingImg.png';
+import {useFocusEffect} from '@react-navigation/native';
 
 type RootStackParamList = {
   PostListScreen: {boardId: number};
@@ -122,9 +123,13 @@ const HomeFragment = ({navigation}: Props) => {
       try {
         const hasLaunched = await AsyncStorage.getItem('hasLaunched');
         if (!hasLaunched) {
-          // 초기 접속이라면 온보딩 표시
+          // 최초 실행 시 온보딩 표시
           setShowOnboarding(true);
+          // 이후에는 온보딩을 표시하지 않도록 'hasLaunched' 값을 'true'로 설정
           await AsyncStorage.setItem('hasLaunched', 'true');
+        } else {
+          // 첫 실행 이후에는 온보딩을 표시하지 않음
+          setShowOnboarding(false);
         }
       } catch (error) {
         console.error('Error checking launch status', error);
@@ -199,101 +204,101 @@ const HomeFragment = ({navigation}: Props) => {
       )}
     </>
   );
-  useEffect(() => {
-    async function getContents() {
-      if (!isInited) {
-        setIsLoading(true);
-      }
-      // await AsyncStorage.removeItem('messagePermission');
-      const response = await getAuthentication();
-      if (response.status === 401) {
-        setTimeout(function () {
-          Toast.show(
-            '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-            Toast.SHORT,
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getContents() {
+        if (!isInited) {
+          setIsLoading(true);
+        }
+
+        const response = await getAuthentication();
+        if (response.status === 401) {
+          setTimeout(function () {
+            Toast.show(
+              '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+              Toast.SHORT,
+            );
+          }, 100);
+          logout();
+          navigation.reset({routes: [{name: 'SplashHome'}]});
+        } else if (getHundredsDigit(response.status) === 2) {
+          setUser(response.data.data);
+          const messagePermission = await AsyncStorage.getItem(
+            'messagePermission',
           );
-        }, 100);
-        logout();
-        navigation.reset({routes: [{name: 'SplashHome'}]});
-      } else if (getHundredsDigit(response.status) === 2) {
-        setUser(response.data.data);
-        const messagePermission = await AsyncStorage.getItem(
-          'messagePermission',
-        );
-        const enabled = await messaging().hasPermission();
-        if (messagePermission === null && enabled) {
-          await pushTokenLogic();
-          if (messagePermission === null) {
-            await topicTokenLogic();
+          const enabled = await messaging().hasPermission();
+          if (messagePermission === null && enabled) {
+            await pushTokenLogic();
+            if (messagePermission === null) {
+              await topicTokenLogic();
+            }
           }
-        }
 
-        if (!response.data.data?.blacklist) {
-          const notification = await getUnreadNotification();
-          if (notification.status === 401) {
-            setTimeout(function () {
-              Toast.show(
-                '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                Toast.SHORT,
-              );
-            }, 100);
-            logout();
-            navigation.reset({routes: [{name: 'SplashHome'}]});
-          } else if (getHundredsDigit(notification.status) === 2) {
-            console.log('notification.data.data', notification.data.data);
-            setNoti(notification.data.data);
+          if (!response.data.data?.blacklist) {
+            const notification = await getUnreadNotification();
+            if (notification.status === 401) {
+              setTimeout(function () {
+                Toast.show(
+                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                  Toast.SHORT,
+                );
+              }, 100);
+              logout();
+              navigation.reset({routes: [{name: 'SplashHome'}]});
+            } else if (getHundredsDigit(notification.status) === 2) {
+              console.log('notification.data.data', notification.data.data);
+              setNoti(notification.data.data);
+            } else {
+              setIsHomeAlertError(true);
+            }
+
+            if (response.data.data.isAuthenticated) {
+              const pinBoardData = await getPinBoardContents();
+              const hotBoardData = await getHotBoardContents();
+
+              if (pinBoardData.status === 401) {
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(pinBoardData.status) === 2) {
+                setPinBoardContents(pinBoardData.data.data);
+              } else {
+                setIsPinBoardError(true);
+              }
+              if (hotBoardData.status === 401) {
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(hotBoardData.status) === 2) {
+                setHotBoardContents(hotBoardData.data.data);
+              } else {
+                setIsHotBoardError(true);
+              }
+            }
           } else {
-            setIsHomeAlertError(true);
+            setBlacklistblindModalVisible(true);
           }
+        } else setIsError(true);
 
-          if (response.data.data.isAuthenticated) {
-            const pinBoardData = await getPinBoardContents();
-            const hotBoardData = await getHotBoardContents();
-
-            if (pinBoardData.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(pinBoardData.status) === 2) {
-              setPinBoardContents(pinBoardData.data.data);
-            } else {
-              setIsPinBoardError(true);
-            }
-            if (hotBoardData.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(hotBoardData.status) === 2) {
-              setHotBoardContents(hotBoardData.data.data);
-            } else {
-              setIsHotBoardError(true);
-            }
-          }
-        } else {
-          // 이용제한
-          setBlacklistblindModalVisible(true);
+        if (!isInited) {
+          setIsLoading(false);
+          setIsInited(true);
         }
-      } else setIsError(true);
-
-      if (!isInited) {
-        setIsLoading(false);
-        setIsInited(true);
       }
-    }
-    if (isFocused) {
+
       getContents();
-    }
-  }, [isFocused, modalBody, blindModalVisible]);
+    }, [isFocused, modalBody, blindModalVisible]),
+  );
   // console.log(pinBoardContents);
   useEffect(() => {
     const listener = AppState.addEventListener('change', status => {
@@ -310,17 +315,26 @@ const HomeFragment = ({navigation}: Props) => {
   }, []);
 
   // 방금 올라온 글 데이터 불러오기
-  useEffect(() => {
-    const fetchNewPosts = async () => {
-      setIsLoadingNewPosts(true);
-      const data = await getNewPosts();
-      setNewPosts(data);
-      setIsLoadingNewPosts(false);
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchNewPosts = async () => {
+        setIsLoadingNewPosts(true);
+        try {
+          const data = await getNewPosts();
+          setNewPosts(data);
+        } catch (error) {
+          console.error(
+            '방금 올라온 글 데이터를 불러오는데 실패했습니다.',
+            error,
+          );
+        } finally {
+          setIsLoadingNewPosts(false);
+        }
+      };
 
-    fetchNewPosts();
-  }, []);
-
+      fetchNewPosts();
+    }, []), // 의존성 배열을 빈 상태로 유지하여 화면이 포커스될 때마다 실행되도록 설정
+  );
   // 총학생회 배너 데이터 불러오기
   const fetchBannerData = async () => {
     try {
