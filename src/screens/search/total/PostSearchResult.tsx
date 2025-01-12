@@ -128,7 +128,7 @@ export default function PostSearchResult({searchWord}: Props) {
             style={{
               color: '#6E7882',
               fontSize: 15,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontFamily: 'Pretendard-Regular',
               textAlign: 'center',
               lineHeight: 22.5,
               marginTop: 20,

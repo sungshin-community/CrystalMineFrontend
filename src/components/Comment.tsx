@@ -40,6 +40,7 @@ interface Props {
   handleFocus: () => void;
   componentModalVisible?: boolean;
   setComponentModalVisible?: any;
+  onEmojiSelected?: () => void;
 }
 const Comment = ({
   navigation,
@@ -74,6 +75,15 @@ const Comment = ({
     setLocalLikeCount(data?.likeCount || 0);
     setLocalIsLiked(data?.isLiked || false);
   }, [data?.likeCount, data?.isLiked]);
+
+  useEffect(() => {
+    if (!dotsModalVisible) {
+      setIsRecommentState(false);
+      if (setIsRecomment) {
+        setIsRecomment(false);
+      }
+    }
+  }, [dotsModalVisible]);
 
   const blockedCheck = async (isAnonymous: boolean) => {
     let messageData = {
@@ -135,19 +145,23 @@ const Comment = ({
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        content={`작성한 댓글을 삭제하시겠습니까?`}
+        title={`작성한 댓글을 삭제하시겠습니까?`}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
         purpleButtonText="삭제"
         purpleButtonFunc={() => {
-          handleCommentDelete(data.id);
+          if (handleCommentDelete) {
+            handleCommentDelete(data.id);
+          }
           setModalVisible(false);
           setComponentModalVisible(false);
           setDotsModalVisible(false);
         }}
-        whiteButtonText="취소"
-        whiteButtonFunc={() => {
-          setModalVisible(false);
-          setComponentModalVisible(false);
-        }}
+        // whiteButtonText="취소"
+        // whiteButtonFunc={() => {
+        //   setModalVisible(false);
+        //   setComponentModalVisible(false);
+        // }}
         setDim={false}
       />
 
@@ -195,7 +209,11 @@ const Comment = ({
                 }}>
                 <BigPostComment style={{marginRight: 8}} />
                 <Text
-                  style={{paddingVertical: 8, fontSize: 14, color: '#3A424E'}}>
+                  style={{
+                    paddingVertical: 8,
+                    fontSize: 14,
+                    color: '#3A424E',
+                  }}>
                   대댓글 달기
                 </Text>
               </View>
@@ -386,7 +404,8 @@ const Comment = ({
             position: 'relative',
             overflow: 'visible',
             flexDirection: 'row',
-            marginVertical: 16,
+            marginTop: 16,
+            marginBottom: 10,
             justifyContent: 'space-between',
           }}>
           <View style={{flexDirection: 'row'}}>
@@ -444,6 +463,8 @@ const Comment = ({
                   handleCommentReportComponent
                 }
                 isGrey={true}
+                setIsRecomment={setIsRecomment}
+                setIsRecommentState={setIsRecommentState}
               />
             )
           ) : data.isBlind ? (
@@ -454,6 +475,8 @@ const Comment = ({
               handleOptionModeIsMineComponent={handleCommentDeleteComponent}
               handleOptionModeIsNotMineComponent={handleCommentReportComponent}
               isGrey={true}
+              setIsRecomment={setIsRecomment}
+              setIsRecommentState={setIsRecommentState}
             />
           )}
         </View>
@@ -470,7 +493,6 @@ const Comment = ({
               fontSize: 14,
               marginLeft: 34,
               zIndex: 98,
-              marginTop: 10,
             },
             fontRegular,
           ]}>
@@ -564,6 +586,7 @@ interface RecommentProps {
   handleCommentReport?: any;
   componentModalVisible?: boolean;
   setComponentModalVisible?: any;
+  onEmojiSelected?: () => void;
 }
 
 export const Recomment = ({
@@ -644,7 +667,9 @@ export const Recomment = ({
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        content={`작성한 댓글을 삭제하시겠습니까?`}
+        title={`작성한 댓글을 삭제하시겠습니까?`}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
         purpleButtonText="삭제"
         purpleButtonFunc={() => {
           handleCommentDelete(data.id);
@@ -656,8 +681,8 @@ export const Recomment = ({
             );
           }, 100);
         }}
-        whiteButtonText="취소"
-        whiteButtonFunc={() => setModalVisible(false)}
+        // whiteButtonText="취소"
+        // whiteButtonFunc={() => setModalVisible(false)}
         setDim={false}
       />
 
@@ -921,7 +946,6 @@ export const Recomment = ({
               {
                 color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
                 fontSize: 14,
-                marginTop: 10,
               },
               fontRegular,
             ]}>

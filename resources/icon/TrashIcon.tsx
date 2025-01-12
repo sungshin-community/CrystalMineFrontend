@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Svg, {Path} from 'react-native-svg';
+import Svg, {SvgProps, Path, G} from 'react-native-svg';
 
 const BlackTrashIcon = (props: any) => (
   <Svg
@@ -22,7 +22,7 @@ const BlackTrashIcon = (props: any) => (
   </Svg>
 );
 
-const TrashIcon = (props: any) => (
+const TrashIcon = props => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}

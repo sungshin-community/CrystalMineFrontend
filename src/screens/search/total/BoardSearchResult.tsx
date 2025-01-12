@@ -117,20 +117,30 @@ export default function BoardSearchResult({route, navigation}: Props) {
         </View>
       ),
       headerRight: (): React.ReactNode => (
-        <TouchableHighlight
-          style={{
-            width: 50,
-            borderRadius: 20,
-            alignItems: 'center',
-            height: 40,
-            justifyContent: 'center',
-          }}
-          underlayColor="#EEEEEE"
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Text style={{fontSize: 17}}>취소</Text>
-        </TouchableHighlight>
+        <View style={{marginLeft: 16}}>
+          <TouchableHighlight
+            style={{
+              width: 35,
+              borderRadius: 20,
+              alignItems: 'center',
+              height: 40,
+              justifyContent: 'center',
+            }}
+            underlayColor="#EEEEEE"
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Pretendard-Medium',
+                color: '#3a424e',
+                // backgroundColor: 'red',
+              }}>
+              취소
+            </Text>
+          </TouchableHighlight>
+        </View>
       ),
       headerBackVisible: false, // Back 버튼 숨김
     });
@@ -195,7 +205,7 @@ export default function BoardSearchResult({route, navigation}: Props) {
             style={{
               color: '#6E7882',
               fontSize: 15,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontFamily: 'Pretendard-Regular',
               textAlign: 'center',
               lineHeight: 22.5,
               marginTop: 20,
@@ -242,7 +252,7 @@ export default function BoardSearchResult({route, navigation}: Props) {
               <SortIcon />
             </TouchableOpacity>
           </View> */}
-          <View style={styles.horizontalLine} />
+          {/* <View style={styles.horizontalLine} /> */}
           <FlatList
             showsVerticalScrollIndicator={false}
             data={boardList}
@@ -285,7 +295,7 @@ export default function BoardSearchResult({route, navigation}: Props) {
                     //justifyContent: 'center',
                     marginLeft: 16,
                     //width: 44,
-                    backgroundColor: 'blue',
+                    //backgroundColor: 'blue',
                   }}>
                   {/* {!item.isPinned ? (
                     item.isOwner ? (
@@ -303,14 +313,14 @@ export default function BoardSearchResult({route, navigation}: Props) {
                     <PurplePin style={{marginLeft: 10}} />
                   )} */}
                 </Pressable>
-                <View style={{flex: 1, marginLeft: 5, marginRight: 15}}>
+                <View style={{flex: 1}}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text
                       style={{
                         fontSize: 14,
+                        fontFamily: 'Pretendard-Medium',
                         color: '#3A424E',
                         fontWeight: '500',
-                        marginRight: 8,
                       }}>
                       {item.name}
                     </Text>
@@ -323,6 +333,7 @@ export default function BoardSearchResult({route, navigation}: Props) {
                       fontSize: 12,
                       color: '#89919A',
                       fontWeight: '400',
+                      marginTop: 2,
                     }}>
                     {item.introduction}
                   </Text>
@@ -364,7 +375,6 @@ export default function BoardSearchResult({route, navigation}: Props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingLeft: 5,
   },
   horizontalLine: {
     height: 1,
@@ -373,14 +383,15 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#F6F6F6',
-    width: Dimensions.get('window').width - 100,
+    width: Dimensions.get('window').width - 75,
     alignItems: 'center',
     alignContent: 'center',
     height: 35,
     borderRadius: 8,
-    paddingLeft: 36,
+    paddingLeft: 40,
     paddingVertical: 8,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontFamily: 'Pretendard-Regular',
+    fontWeight: '500',
     fontSize: 16,
     color: '#222222',
   },

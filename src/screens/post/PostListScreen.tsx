@@ -801,10 +801,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                                 ? boardHotPost?.title
                                 : boardHotPost.content}
                             </Text>
-                            {boardHotPost?.isExist ? (
-                              <PurpleArrow
-                              />
-                            ) : null}
+                            {boardHotPost?.isExist ? <PurpleArrow /> : null}
                           </TouchableOpacity>
 
                           {/* <TouchableOpacity
@@ -861,7 +858,8 @@ const PostListScreen = ({navigation, route}: Props) => {
           </>
         )}
         {config?.componentToUse === 'floating_button' &&
-          ![93, 94, 95, 102].includes(route.params.boardId) && (
+          ![93, 94, 95, 102].includes(route.params.boardId) &&
+          route.params?.boardId !== 98 && (
             <FloatingWriteButton
               onPress={async () => {
                 await analytics().logEvent('custom_click', {
@@ -877,7 +875,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             />
           )}
         {!(isHotBoard || [93, 94, 95, 102].includes(route.params?.boardId)) ||
-          (route.params?.boardId === 98 && isAdBoard && (
+          (route.params?.boardId === 98 && isAdBoard === true && (
             <FloatingWriteButton
               onPress={() =>
                 navigation.navigate(
