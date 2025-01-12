@@ -415,7 +415,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '쪽지',
+          title: '대화',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 19,
