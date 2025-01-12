@@ -388,7 +388,8 @@ const Comment = ({
             position: 'relative',
             overflow: 'visible',
             flexDirection: 'row',
-            marginVertical: 16,
+            marginTop: 16,
+            marginBottom: 10,
             justifyContent: 'space-between',
           }}>
           <View style={{flexDirection: 'row'}}>
@@ -472,7 +473,6 @@ const Comment = ({
               fontSize: 14,
               marginLeft: 34,
               zIndex: 98,
-              marginTop: 10,
             },
             fontRegular,
           ]}>
@@ -925,7 +925,6 @@ export const Recomment = ({
               {
                 color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
                 fontSize: 14,
-                marginTop: 10,
               },
               fontRegular,
             ]}>
