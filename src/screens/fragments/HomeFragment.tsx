@@ -689,7 +689,7 @@ const HomeFragment = ({navigation}: Props) => {
                             </Text>
                           </View>
                           <Text style={styles.newPostTime}>
-                            {item.minute}분전 ·{' '}
+                            {item.minute}{' '}
                             <Text style={styles.newPostBoard}>
                               {item.boardName}
                             </Text>
