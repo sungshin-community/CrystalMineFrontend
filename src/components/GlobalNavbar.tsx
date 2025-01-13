@@ -139,6 +139,39 @@ function GlobalNavbar({navigation}: ScreenProps) {
     }
   };
 
+  const onMyIcon = async () => {
+    const response = await checkRole();
+    if (response.status === 401) {
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      const user = response.data.data;
+      if (user?.isAuthenticated && !user?.blacklist) {
+        navigation.navigate('MyPage');
+      } else {
+        setTimeout(function () {
+          Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+        }, 100);
+      }
+    } else {
+      logout();
+      navigation.reset({
+        routes: [
+          {
+            name: 'ErrorScreen',
+            params: {status: response.status, code: 'G001'},
+          },
+        ],
+      });
+    }
+  };
+
   const onMenuIcon = async () => {
     const response = await checkRole();
     if (response.status === 401) {
@@ -349,28 +382,39 @@ function GlobalNavbar({navigation}: ScreenProps) {
               </View>
             );
           },
-          headerStyle: {
-            height: 60,
-          },
+
           headerRight: () => (
-            <TouchableHighlight
+            <View
               style={{
-                marginRight: 16,
-                borderRadius: 20,
+                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              underlayColor="#EEEEEE"
-              onPress={onSearchPress}>
-              <View
+                marginRight: 16,
+              }}>
+              {/* SearchIcon 터치 영역 */}
+              <TouchableHighlight
                 style={{
-                  flexDirection: 'row',
+                  borderRadius: 20,
                   alignItems: 'center',
-                }}>
-                <SearchIcon style={{marginRight: 10}} />
+                  justifyContent: 'center',
+                  marginRight: 10,
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onSearchPress}>
+                <SearchIcon />
+              </TouchableHighlight>
+
+              {/* MyIcon 터치 영역 */}
+              <TouchableHighlight
+                style={{
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                underlayColor="#EEEEEE"
+                onPress={onMyIcon}>
                 <MyIcon />
-              </View>
-            </TouchableHighlight>
+              </TouchableHighlight>
+            </View>
           ),
         }}
       />
@@ -551,6 +595,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
         options={{
           title: '설정',
           headerTitleAlign: 'center',
+
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <View style={styles.iconContainer}>
