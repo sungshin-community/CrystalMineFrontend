@@ -917,10 +917,11 @@ const styles = StyleSheet.create({
   iconLabel: {
     fontFamily: 'Pretendard',
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '600',
     lineHeight: 14.32,
     textAlign: 'center',
     marginTop: 8,
+    color: '#3A424E',
   },
   rowContainer: {
     flex: 1,
@@ -946,6 +947,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     marginLeft: 8,
+    color: '#222222',
   },
   more: {
     fontSize: 13,
@@ -1094,7 +1096,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     position: 'relative',
-    marginTop: 20,
+    marginTop: 4,
   },
   bannerImage: {
     width: '100%',

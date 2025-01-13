@@ -291,7 +291,6 @@ function GlobalNavbar({navigation}: ScreenProps) {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-                underlayColor="#EEEEEE"
                 onPress={onSearchPress}>
                 <SearchIcon />
               </TouchableHighlight>
