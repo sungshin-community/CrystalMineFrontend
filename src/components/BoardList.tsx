@@ -248,12 +248,48 @@ export default function BoardList({
 }
 
 export function OfficialBoardList({
-  items,
+  items: initialItems,
   onUpdate,
   moveToBoard,
   isInited,
 }: Props) {
   const navigation = useNavigation();
+  const [items, setItems] = useState(initialItems);
+
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
+
+  const handlePinToggle = async (item: Board, index: number) => {
+    if (item.id === 1) return;
+
+    const updatedItems = [...items];
+    updatedItems[index] = {
+      ...item,
+      isPinned: !item.isPinned,
+    };
+    setItems(updatedItems);
+
+    const response = await toggleBoardPin(item.id);
+    if (response.status === 401) {
+      setItems(items);
+      setTimeout(function () {
+        Toast.show(
+          '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+          Toast.SHORT,
+        );
+      }, 100);
+      logout();
+      navigation.reset({routes: [{name: 'SplashHome'}]});
+    } else if (getHundredsDigit(response.status) === 2) {
+      onUpdate();
+    } else {
+      setItems(items);
+      setTimeout(function () {
+        Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
+      }, 100);
+    }
+  };
 
   return !isInited ? (
     boardSkeletonComponent
@@ -303,27 +339,7 @@ export function OfficialBoardList({
           </View>
         </View>
         <Pressable
-          onPress={async () => {
-            if (item.id === 1) return;
-            console.log(item.id);
-            const response = await toggleBoardPin(item.id);
-            if (response.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(response.status) === 2) {
-              onUpdate();
-            } else {
-              setTimeout(function () {
-                Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-              }, 100);
-            }
-          }}
+          onPress={() => handlePinToggle(item, index)}
           style={{
             height: 32,
             justifyContent: 'center',

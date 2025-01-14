@@ -5,12 +5,11 @@ import {
   RectangleChecked,
   RectangleUnchecked,
 } from '../../resources/icon/CheckBox';
-import {PostComment} from '../../resources/icon/PostComment';
 import PostImage from '../../resources/icon/PostImage';
-import PostLike from '../../resources/icon/PostLike';
-import PostUnlike from '../../resources/icon/PostUnlike';
 import {MyPostContentDto} from '../classes/board/MyPostDto';
 import {fontMedium, fontRegular} from '../common/font';
+import HeartIcon from '../../resources/icon/HeartIcon';
+import ChatIcon from '../../resources/icon/ChatIcon';
 
 interface Props {
   post: MyPostContentDto;
@@ -26,11 +25,11 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
   ];
   return (
     <TouchableOpacity
-      style={{paddingHorizontal: 14, backgroundColor: '#FFFFFF'}}
+      style={{paddingHorizontal: 16, backgroundColor: '#FFFFFF'}}
       onPress={() => moveToPost(post)}>
       <View
         style={{
-          marginTop: 10,
+          marginTop: 20,
           height: 23,
           //backgroundColor: '#F7F7F7',
           //backgroundColor: 'red',
@@ -39,11 +38,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
           borderRadius: 10,
         }}>
         {/* <SmallBoard style={{marginLeft: 11}} /> */}
-        <Text
-          style={[
-            {color: '#A055FF', marginLeft: 8, fontSize: 14, fontWeight: '500'},
-            fontRegular,
-          ]}>
+        <Text style={[{color: '#A055FF', fontSize: 14}, fontRegular]}>
           {post.boardName}
         </Text>
         {deleteMode && (
@@ -59,7 +54,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
           </View>
         )}
       </View>
-      <View style={{paddingHorizontal: 10}}>
+      <View>
         <View style={styles.nameContainer}>
           {/* <View style={{flexDirection: 'row'}}>
             <Image
@@ -81,7 +76,11 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
         {!adminBoard.includes(post.boardName) && (
           <View style={styles.iconContainer}>
             <View style={styles.icon}>
-              {post.isLiked ? <PostLike /> : <PostUnlike />}
+              {post.isLiked ? (
+                <HeartIcon fill="#FF6376" stroke="#FF6376" />
+              ) : (
+                <HeartIcon />
+              )}
               <Text
                 style={[
                   fontRegular,
@@ -92,7 +91,7 @@ export default function MyPostItem({post, moveToPost, deleteMode}: Props) {
               <Text style={[styles.textSmall, styles.iconCount]}>
                 {post.likeCount} 개
               </Text>
-              <PostComment />
+              <ChatIcon />
               <Text
                 style={[
                   fontRegular,
@@ -132,12 +131,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 4,
   },
   name: {
     paddingTop: 2,
     paddingLeft: 8,
-    fontFamily: 'SpoqaHanSansNeo-Medium',
+    fontFamily: 'Pretendard-Medium',
     fontSize: 15,
   },
   text: {
@@ -145,15 +144,18 @@ const styles = StyleSheet.create({
   },
   textSmall: {
     fontSize: 13,
-    fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontFamily: 'Pretendard-Regular',
   },
   titleText: {
     fontSize: 14,
     fontWeight: '700',
-    marginBottom: 5,
+    fontFamily: 'Pretendard-Bold',
+    marginBottom: 4,
   },
   timeStamp: {
     color: '#9DA4AB',
+    fontFamily: 'Pretendard-Regular',
+    fontSize: 13,
   },
   content: {
     fontSize: 14,
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingBottom: 20,
   },
   icon: {
     flexDirection: 'row',

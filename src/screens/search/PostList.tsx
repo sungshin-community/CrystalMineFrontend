@@ -12,26 +12,12 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MyPostItem from '../../components/MyPostItem';
-import {MyPostContentDto} from '../../classes/board/MyPostDto';
-import SpinningThreeDots from '../../components/SpinningThreeDots';
-import SearchIcon from '../../../resources/icon/SearchIcon';
-import {TrashIcon} from '../../../resources/icon/TrashIcon';
-import CancelButton from '../../../resources/icon/Cancel';
-import {ModalBottom} from '../../components/ModalBottom';
-import {
-  RectangleChecked,
-  RectangleUnchecked,
-} from '../../../resources/icon/CheckBox';
-import Toast from 'react-native-simple-toast';
-import SortIcon from '../../../resources/icon/SortIcon';
 import {searchPosts, searchPostsInBoard} from '../../common/SearchApi';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {PostContent} from '../../classes/Search';
 import SearchPostItem from '../../components/SearchPostItem';
 import {ContentPreviewDto} from '../../classes/BoardDetailDto';
 import WaterMark from '../../components/WaterMark';
-import {fontRegular} from '../../common/font';
 
 interface Props {
   searchWord: string;

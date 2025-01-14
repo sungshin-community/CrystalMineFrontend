@@ -151,7 +151,8 @@ function Post({
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
         title={`작성한 게시글을 삭제하시겠어요?`}
-        content={`- 삭제 후에는 되돌릴 수 없습니다.`}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
         purpleButtonText="삭제할게요."
         purpleButtonFunc={() => {
           if (handlePostDelete(data.postId)) {
@@ -180,7 +181,7 @@ function Post({
             setDeleteModalVisible(true);
             setComponentModalVisible(deleteModalVisible);
           }}>
-          <TrashIcon style={{marginRight: 12}} />
+          <TrashIcon style={{marginLeft: 16}} />
         </Pressable>
       )}
     </>

@@ -10,6 +10,8 @@ import {SmallOrangeFlag} from '../../resources/icon/SmallOrangeFlag';
 import {SmallPurpleFlag} from '../../resources/icon/SmallPurpleFlag';
 import {ContentPreviewDto} from '../classes/BoardDetailDto';
 import {fontMedium, fontRegular} from '../common/font';
+import HeartIcon from '../../resources/icon/HeartIcon';
+import ChatIcon from '../../resources/icon/ChatIcon';
 
 interface Props {
   post: ContentPreviewDto;
@@ -41,7 +43,7 @@ function SearchPostItem({post, boardId}: Props) {
           </Text>
         </View>
       )}
-      <View style={{paddingHorizontal: 10, paddingVertical: 17}}>
+      <View style={{paddingVertical: 20}}>
         {/* <View style={styles.nameContainer}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
@@ -64,7 +66,16 @@ function SearchPostItem({post, boardId}: Props) {
           </View>
         </View> */}
         {post.hasTitle ? (
-          <Text style={[fontMedium, {fontSize: 17, marginBottom: 5}]}>
+          <Text
+            style={[
+              fontMedium,
+              {
+                fontSize: 14,
+                fontWeight: '700',
+                fontFamily: 'Pretendard-Bold',
+                marginBottom: 4,
+              },
+            ]}>
             {post.title}
           </Text>
         ) : (
@@ -90,7 +101,11 @@ function SearchPostItem({post, boardId}: Props) {
             <View style={styles.bottomContainer}>
               <View style={styles.iconContainer}>
                 <View style={styles.icon}>
-                  {post.isLiked ? <PostLike /> : <PostUnlike />}
+                  {post.isLiked ? (
+                    <HeartIcon fill="#FF6376" stroke="#FF6376" />
+                  ) : (
+                    <HeartIcon />
+                  )}
                   <Text
                     style={[
                       fontRegular,
@@ -101,7 +116,7 @@ function SearchPostItem({post, boardId}: Props) {
                   <Text style={[styles.textSmall, styles.iconCount]}>
                     {post.likeCount} 개
                   </Text>
-                  <PostComment />
+                  <ChatIcon />
                   <Text
                     style={[
                       fontRegular,
@@ -135,7 +150,7 @@ function SearchPostItem({post, boardId}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 14,
+    paddingHorizontal: 16,
     borderBottomColor: '#F6F6F6',
     borderStyle: 'solid',
     borderBottomWidth: 4,
@@ -183,7 +198,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
     width: '100%',
   },
   icon: {
