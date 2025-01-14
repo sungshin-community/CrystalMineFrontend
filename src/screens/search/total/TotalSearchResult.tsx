@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     paddingVertical: 8,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'normal',
     color: '#222222',
   },
   icon: {

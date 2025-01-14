@@ -625,7 +625,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                   <PostWriteBCase
                     navigation={navigation}
                     route={route}
-                    contentType={boardInfo?.contentType || 'TYPE1'}
+                    contentType={boardInfo?.contentType}
                     hasTitle={boardDetail?.hasTitle}
                     onPress={async () => {
                       console.log('Writing box clicked');
@@ -831,13 +831,14 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </TouchableOpacity> */}
                         </View>
                       )}
-                    {route.params.boardId !== 98 &&
+                    {!isLoading &&
+                      route.params.boardId !== 98 &&
                       config?.componentToUse === 'writing_box' &&
                       ![93, 94, 95, 102].includes(route.params.boardId) && (
                         <PostWriteBCase
                           navigation={navigation}
                           route={route}
-                          contentType={boardInfo?.contentType || 'TYPE1'}
+                          contentType={boardInfo?.contentType}
                           hasTitle={boardDetail?.hasTitle}
                         />
                       )}
