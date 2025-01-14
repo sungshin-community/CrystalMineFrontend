@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     paddingVertical: 8,
     fontFamily: 'Pretendard-Regular',
+    fontWeight: 'normal',
     fontSize: 16,
     color: '#222222',
   },
