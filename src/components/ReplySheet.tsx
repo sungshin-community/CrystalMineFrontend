@@ -14,6 +14,7 @@ import {
   KeyboardEvent,
   KeyboardAvoidingView,
   Pressable,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import HeartIcon from '../../resources/icon/HeartIcon';
@@ -256,7 +257,9 @@ export default function ReplySheet({
 
   return (
     <Modal isVisible={visible} style={styles.modal}>
-      <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
         <Pressable style={styles.overlay} onPress={closeModal}>
           <TouchableWithoutFeedback onPress={() => {}} style={{flex: 1}}>
             <Animated.View

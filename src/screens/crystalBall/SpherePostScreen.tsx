@@ -447,8 +447,10 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
   return (
     <KeyboardAvoidingView
       style={{flex: 1}}
-      behavior="padding"
-      keyboardVerticalOffset={statusBarHeight + 30}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={
+        Platform.OS === 'ios' ? statusBarHeight + 30 : statusBarHeight + 78
+      }>
       <ScrollView
         ref={scrollViewRef}
         style={{

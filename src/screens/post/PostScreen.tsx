@@ -480,8 +480,10 @@ const PostScreen = ({navigation, route}: Props) => {
       ) : null}
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior="padding"
-        keyboardVerticalOffset={statusBarHeight + 30}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={
+          Platform.OS === 'ios' ? statusBarHeight + 30 : statusBarHeight + 78
+        }>
         <WaterMark />
         <View
           style={{
