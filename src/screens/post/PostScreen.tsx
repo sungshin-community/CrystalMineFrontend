@@ -15,6 +15,7 @@ import {
   TouchableHighlight,
   KeyboardEvent,
   Keyboard,
+  NativeModules,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Post from '../../components/Post';
@@ -82,6 +83,18 @@ const PostScreen = ({navigation, route}: Props) => {
   const [emojiVisible, setEmojiVisible] = useState<boolean>(true);
   const [showSelectedEmoji, setShowSelectedEmoji] = useState(false);
   const [selectedEmojiId, setSelectedEmojiId] = useState<number | null>(null);
+  const {StatusBarManager} = NativeModules;
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+
+  useEffect(() => {
+    Platform.OS == 'ios'
+      ? StatusBarManager.getHeight(
+          (statusBarFrameData: {height: React.SetStateAction<number>}) => {
+            setStatusBarHeight(statusBarFrameData.height);
+          },
+        )
+      : null;
+  }, []);
 
   useEffect(() => {
     console.log('isSubmitState', isSubmitState, 'isAnonymous', isAnonymous);
@@ -465,7 +478,12 @@ const PostScreen = ({navigation, route}: Props) => {
           }}
         />
       ) : null}
-      <KeyboardAvoidingView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={
+          Platform.OS === 'ios' ? statusBarHeight + 30 : statusBarHeight + 78
+        }>
         <WaterMark />
         <View
           style={{

@@ -20,14 +20,14 @@ export default function UpFirstButton({onPress}: UpFirstButtonProps) {
 const styles = StyleSheet.create({
   touchableOpacityStyle: {
     backgroundColor: '#ffffff',
-    padding: 15,
+    padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 9999,
     borderRadius: 30,
     position: 'absolute',
-    right: 21,
-    bottom: 145,
+    right: 20,
+    bottom: 78,
     shadowColor: '#4A4A4A',
     shadowOpacity: 0.2,
     shadowRadius: 4,

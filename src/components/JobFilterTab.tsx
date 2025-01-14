@@ -171,7 +171,10 @@ export default function JobFilterTab({
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
+        contentContainerStyle={[
+          styles.contentContainer,
+          {paddingRight: isQuestion ? 160 : 8},
+        ]}>
         {data.map((job, index) => (
           <TouchableOpacity
             key={index}
@@ -231,11 +234,11 @@ export default function JobFilterTab({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    paddingVertical: 12,
+    paddingTop: 16,
+    paddingBottom: 24,
   },
   contentContainer: {
     paddingLeft: 16,
-    paddingRight: 8,
   },
   chip: {
     flexDirection: 'row',
@@ -244,8 +247,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: '#E2E4E8',
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 3,
     marginRight: 8,
   },
   selectedChip: {
