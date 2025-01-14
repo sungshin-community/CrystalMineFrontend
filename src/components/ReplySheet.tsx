@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   Keyboard,
   KeyboardEvent,
+  KeyboardAvoidingView,
+  Pressable,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import HeartIcon from '../../resources/icon/HeartIcon';
@@ -44,6 +46,7 @@ export default function ReplySheet({
   const commentInputRef = useRef<SphereCommentInputRef>(null);
   const [parentId, setParentId] = useState<number | null>(null);
   const [isRecomment, setIsRecomment] = useState<boolean>(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const screenHeight = Dimensions.get('screen').height;
   const bottomSheetHeight = screenHeight * 0.8;
@@ -106,6 +109,26 @@ export default function ReplySheet({
       },
     }),
   ).current;
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const fetchCommentData = async () => {
     try {
@@ -232,281 +255,298 @@ export default function ReplySheet({
   };
 
   return (
-    <Modal
-      isVisible={visible}
-      style={styles.modal}
-      backdropOpacity={0.5}
-      onBackdropPress={closeModal}
-      useNativeDriver={true}>
-      <View style={styles.overlay}>
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.background} />
-        </TouchableWithoutFeedback>
-        <Animated.View
-          style={[
-            styles.bottomSheetContainer,
-            {transform: [{translateY: translateY}]},
-          ]}
-          {...panResponder.panHandlers}>
-          <View style={styles.homeIndicator} />
-          <View style={{flex: 1, paddingBottom: 45}}>
-            <FlatList
-              style={{width: '100%', flex: 1}}
-              keyboardShouldPersistTaps="handled"
-              ref={flatListRef}
-              data={comments}
-              renderItem={({item, index}) => (
-                <View>
-                  <View
-                    style={[
-                      {flexDirection: 'row', padding: 16},
-                      item.ptCommentId === focusCommentId && {
-                        backgroundColor: '#f6f6f6',
-                      },
-                    ]}>
-                    <Image
-                      source={{uri: item.profileImageUrl}}
-                      style={{
-                        borderRadius: 14,
-                        marginRight: 10,
-                        width: 28,
-                        height: 28,
-                      }}
-                      resizeMode="cover"
-                    />
-                    <View style={{flex: 1}}>
-                      <View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginBottom: 2,
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              marginRight: 6,
-                              fontWeight: '600',
-                              color: item.displayName.includes('글쓴이')
-                                ? '#A055FF'
-                                : '#3A424E',
-                            }}>
-                            {item.displayName}
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              color: '#B9BAC1',
-                              fontWeight: '500',
-                            }}>
-                            {item.createdAt}
-                          </Text>
-                        </View>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: '500',
-                            color: '#89919A',
-                          }}>
-                          {item.isBlind
-                            ? '비공개'
-                            : `${item.authorDepartment} · ${item.authorJob} · ${
-                                item.authorYear === 0
-                                  ? '신입'
-                                  : `${item.authorYear}년`
-                              }`}
-                        </Text>
-                      </View>
+    <Modal isVisible={visible} style={styles.modal}>
+      <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
+        <Pressable style={styles.overlay} onPress={closeModal}>
+          <TouchableWithoutFeedback onPress={() => {}} style={{flex: 1}}>
+            <Animated.View
+              style={[
+                styles.bottomSheetContainer,
+                {transform: [{translateY}]},
+              ]}>
+              <View
+                {...panResponder.panHandlers}
+                style={{width: '100%', top: 0}}>
+                <View style={styles.homeIndicator} />
+              </View>
 
-                      {item.emoticonUrl && (
+              <View style={{flex: 1, paddingBottom: 45}}>
+                <FlatList
+                  style={{width: '100%', flex: 1}}
+                  keyboardShouldPersistTaps="handled"
+                  ref={flatListRef}
+                  data={comments}
+                  renderItem={({item, index}) => (
+                    <View onStartShouldSetResponder={() => true}>
+                      <View
+                        style={[
+                          {flexDirection: 'row', padding: 16},
+                          item.ptCommentId === focusCommentId && {
+                            backgroundColor: '#f6f6f6',
+                          },
+                        ]}>
                         <Image
-                          source={{uri: item.emoticonUrl}}
+                          source={{uri: item.profileImageUrl}}
                           style={{
-                            marginTop: 10,
-                            width: 100,
-                            height: 100,
+                            borderRadius: 14,
+                            marginRight: 10,
+                            width: 28,
+                            height: 28,
                           }}
                           resizeMode="cover"
                         />
-                      )}
-
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: '400',
-                          color: '#222222',
-                          marginTop: 10,
-                        }}>
-                        {item.content}
-                      </Text>
-
-                      <View style={{flexDirection: 'row', marginTop: 12}}>
-                        <TouchableOpacity
-                          style={{flexDirection: 'row', alignItems: 'center'}}
-                          onPress={() =>
-                            handleCommentLike(item.isLiked, item.ptCommentId)
-                          }>
-                          <HeartIcon
-                            fill={item.isLiked ? '#FF6376' : 'white'}
-                            stroke={item.isLiked ? '#FF6376' : '#9DA4AB'}
-                          />
-                          <Text style={styles.footerText}>
-                            좋아요 {item.likeCount}개
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{flexDirection: 'row', alignItems: 'center'}}
-                          onPress={() =>
-                            handleCommentClick(item.ptCommentId, index)
-                          }>
-                          <ChatIcon />
-                          <Text style={styles.footerText}>
-                            댓글달기 {item.reComments.length}개
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                  {item.reComments && item.reComments.length > 0 && (
-                    <View style={{marginTop: 12}}>
-                      {item.reComments.map(
-                        (reComment: pantheonComment, idx: number) => (
-                          <View
-                            style={[
-                              {
-                                marginBottom: 20,
-                              },
-                              idx === item.reComments.length - 1 && {
-                                marginBottom: 12,
-                              },
-                            ]}>
+                        <View style={{flex: 1}}>
+                          <View>
                             <View
-                              style={{flexDirection: 'row', marginLeft: 48}}>
-                              <Image
-                                source={{uri: reComment.profileImageUrl}}
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginBottom: 2,
+                              }}>
+                              <Text
                                 style={{
-                                  borderRadius: 10,
-                                  marginRight: 10,
-                                  width: 24,
-                                  height: 24,
-                                }}
-                                resizeMode="cover"
+                                  fontSize: 14,
+                                  marginRight: 6,
+                                  fontWeight: '600',
+                                  color: item.displayName.includes('글쓴이')
+                                    ? '#A055FF'
+                                    : '#3A424E',
+                                }}>
+                                {item.displayName}
+                              </Text>
+                              <Text
+                                style={{
+                                  fontSize: 12,
+                                  color: '#B9BAC1',
+                                  fontWeight: '500',
+                                }}>
+                                {item.createdAt}
+                              </Text>
+                            </View>
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                fontWeight: '500',
+                                color: '#89919A',
+                              }}>
+                              {item.isBlind
+                                ? '비공개'
+                                : `${item.authorDepartment} · ${
+                                    item.authorJob
+                                  } · ${
+                                    item.authorYear === 0
+                                      ? '신입'
+                                      : `${item.authorYear}년`
+                                  }`}
+                            </Text>
+                          </View>
+
+                          {item.emoticonUrl && (
+                            <Image
+                              source={{uri: item.emoticonUrl}}
+                              style={{
+                                marginTop: 10,
+                                width: 100,
+                                height: 100,
+                              }}
+                              resizeMode="cover"
+                            />
+                          )}
+
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '400',
+                              color: '#222222',
+                              marginTop: 10,
+                            }}>
+                            {item.content}
+                          </Text>
+
+                          <View style={{flexDirection: 'row', marginTop: 12}}>
+                            <TouchableOpacity
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                              onPress={() =>
+                                handleCommentLike(
+                                  item.isLiked,
+                                  item.ptCommentId,
+                                )
+                              }>
+                              <HeartIcon
+                                fill={item.isLiked ? '#FF6376' : 'white'}
+                                stroke={item.isLiked ? '#FF6376' : '#9DA4AB'}
                               />
-                              <View style={{flex: 1}}>
-                                <View>
-                                  <View
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      marginBottom: 2,
-                                    }}>
-                                    <Text
-                                      style={{
-                                        fontSize: 14,
-                                        marginRight: 6,
-                                        fontWeight: '600',
-                                        color: reComment.displayName.includes(
-                                          '글쓴이',
-                                        )
-                                          ? '#A055FF'
-                                          : '#3A424E',
-                                      }}>
-                                      {reComment.displayName}
-                                    </Text>
-                                    <Text
-                                      style={{
-                                        fontSize: 12,
-                                        color: '#B9BAC1',
-                                        fontWeight: '500',
-                                      }}>
-                                      {reComment.createdAt}
-                                    </Text>
-                                  </View>
-                                  <Text
-                                    style={{
-                                      fontSize: 12,
-                                      fontWeight: '500',
-                                      color: '#89919A',
-                                    }}>
-                                    {reComment.isBlind
-                                      ? '비공개'
-                                      : `${reComment.authorDepartment} · ${
-                                          item.authorJob
-                                        } · ${
-                                          reComment.authorYear === 0
-                                            ? '신입'
-                                            : `${reComment.authorYear}년`
-                                        }`}
-                                  </Text>
-                                </View>
-
-                                {reComment.emoticonUrl && (
-                                  <Image
-                                    source={{uri: reComment.emoticonUrl}}
-                                    style={{
-                                      marginTop: 10,
-                                      width: 100,
-                                      height: 100,
-                                    }}
-                                    resizeMode="cover"
-                                  />
-                                )}
-
-                                <Text
-                                  style={{
-                                    fontSize: 14,
-                                    fontWeight: '400',
-                                    color: '#222222',
-                                    marginTop: 10,
-                                  }}>
-                                  {reComment.content}
-                                </Text>
-
+                              <Text style={styles.footerText}>
+                                좋아요 {item.likeCount}개
+                              </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                              onPress={() =>
+                                handleCommentClick(item.ptCommentId, index)
+                              }>
+                              <ChatIcon />
+                              <Text style={styles.footerText}>
+                                댓글달기 {item.reComments.length}개
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                      {item.reComments && item.reComments.length > 0 && (
+                        <View style={{marginTop: 12}}>
+                          {item.reComments.map(
+                            (reComment: pantheonComment, idx: number) => (
+                              <View
+                                style={[
+                                  {
+                                    marginBottom: 20,
+                                  },
+                                  idx === item.reComments.length - 1 && {
+                                    marginBottom: 12,
+                                  },
+                                ]}>
                                 <View
                                   style={{
                                     flexDirection: 'row',
-                                    marginTop: 12,
+                                    marginLeft: 48,
                                   }}>
-                                  <TouchableOpacity
+                                  <Image
+                                    source={{uri: reComment.profileImageUrl}}
                                     style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
+                                      borderRadius: 10,
+                                      marginRight: 10,
+                                      width: 24,
+                                      height: 24,
                                     }}
-                                    onPress={() =>
-                                      handleCommentLike(
-                                        reComment.isLiked,
-                                        reComment.ptCommentId,
-                                      )
-                                    }>
-                                    <HeartIcon
-                                      fill={
-                                        reComment.isLiked ? '#FF6376' : 'white'
-                                      }
-                                      stroke={
-                                        reComment.isLiked
-                                          ? '#FF6376'
-                                          : '#9DA4AB'
-                                      }
-                                    />
-                                    <Text style={styles.footerText}>
-                                      좋아요 {reComment.likeCount}개
+                                    resizeMode="cover"
+                                  />
+                                  <View style={{flex: 1}}>
+                                    <View>
+                                      <View
+                                        style={{
+                                          flexDirection: 'row',
+                                          alignItems: 'center',
+                                          marginBottom: 2,
+                                        }}>
+                                        <Text
+                                          style={{
+                                            fontSize: 14,
+                                            marginRight: 6,
+                                            fontWeight: '600',
+                                            color:
+                                              reComment.displayName.includes(
+                                                '글쓴이',
+                                              )
+                                                ? '#A055FF'
+                                                : '#3A424E',
+                                          }}>
+                                          {reComment.displayName}
+                                        </Text>
+                                        <Text
+                                          style={{
+                                            fontSize: 12,
+                                            color: '#B9BAC1',
+                                            fontWeight: '500',
+                                          }}>
+                                          {reComment.createdAt}
+                                        </Text>
+                                      </View>
+                                      <Text
+                                        style={{
+                                          fontSize: 12,
+                                          fontWeight: '500',
+                                          color: '#89919A',
+                                        }}>
+                                        {reComment.isBlind
+                                          ? '비공개'
+                                          : `${reComment.authorDepartment} · ${
+                                              item.authorJob
+                                            } · ${
+                                              reComment.authorYear === 0
+                                                ? '신입'
+                                                : `${reComment.authorYear}년`
+                                            }`}
+                                      </Text>
+                                    </View>
+
+                                    {reComment.emoticonUrl && (
+                                      <Image
+                                        source={{uri: reComment.emoticonUrl}}
+                                        style={{
+                                          marginTop: 10,
+                                          width: 100,
+                                          height: 100,
+                                        }}
+                                        resizeMode="cover"
+                                      />
+                                    )}
+
+                                    <Text
+                                      style={{
+                                        fontSize: 14,
+                                        fontWeight: '400',
+                                        color: '#222222',
+                                        marginTop: 10,
+                                      }}>
+                                      {reComment.content}
                                     </Text>
-                                  </TouchableOpacity>
+
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        marginTop: 12,
+                                      }}>
+                                      <TouchableOpacity
+                                        style={{
+                                          flexDirection: 'row',
+                                          alignItems: 'center',
+                                        }}
+                                        onPress={() =>
+                                          handleCommentLike(
+                                            reComment.isLiked,
+                                            reComment.ptCommentId,
+                                          )
+                                        }>
+                                        <HeartIcon
+                                          fill={
+                                            reComment.isLiked
+                                              ? '#FF6376'
+                                              : 'white'
+                                          }
+                                          stroke={
+                                            reComment.isLiked
+                                              ? '#FF6376'
+                                              : '#9DA4AB'
+                                          }
+                                        />
+                                        <Text style={styles.footerText}>
+                                          좋아요 {reComment.likeCount}개
+                                        </Text>
+                                      </TouchableOpacity>
+                                    </View>
+                                  </View>
                                 </View>
                               </View>
-                            </View>
-                          </View>
-                        ),
+                            ),
+                          )}
+                        </View>
                       )}
                     </View>
                   )}
-                </View>
-              )}
-            />
-          </View>
-        </Animated.View>
-      </View>
-      <SphereCommentInput ref={commentInputRef} onSubmit={postComment} />
+                />
+              </View>
+            </Animated.View>
+          </TouchableWithoutFeedback>
+        </Pressable>
+        <SphereCommentInput ref={commentInputRef} onSubmit={postComment} />
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -515,6 +555,7 @@ const styles = StyleSheet.create({
   modal: {
     justifyContent: 'flex-end',
     margin: 0,
+    flex: 1,
   },
   overlay: {
     flex: 1,
@@ -527,8 +568,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: '100%',
-    display: 'flex',
+    flex: 1,
     flexDirection: 'column',
   },
   homeIndicator: {

@@ -10,6 +10,7 @@ import {
   Animated,
   PanResponder,
   FlatList,
+  Platform,
 } from 'react-native';
 import Filter from '../../resources/icon/Filter';
 import CheckIcon from '../../resources/icon/CheckIcon';
@@ -204,11 +205,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSheetContainer: {
-    height: '70%',
     backgroundColor: 'white',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     alignItems: 'center',
+    paddingBottom: Platform.OS == 'ios' ? 30 : 16,
   },
   homeIndicator: {
     width: 40,

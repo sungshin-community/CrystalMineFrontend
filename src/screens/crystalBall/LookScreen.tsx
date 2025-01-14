@@ -166,7 +166,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
 
   return (
     <View style={styles.container}>
-      {isLoading && (
+      {isLoading && isRefreshing === false && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator
             size="large"
@@ -176,26 +176,27 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
           />
         </View>
       )}
-      <JobFilterTab
-        isQuestion={isQuestion}
-        onFilterChange={handleFilterChange}
-        onCheckboxChange={handleCheckbox}
-      />
       <FlatList
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            refreshing={isRefreshing}
+            refreshing={isRefreshing || isNextCursorLoading}
             onRefresh={handleRefresh}
             colors={['#A055FF']} // for android
             tintColor={'#A055FF'} // for ios
+          />
+        }
+        ListHeaderComponent={
+          <JobFilterTab
+            isQuestion={isQuestion}
+            onFilterChange={handleFilterChange}
+            onCheckboxChange={handleCheckbox}
           />
         }
         onEndReached={() => hasMoreData && fetchNextPage()}
         onEndReachedThreshold={0.8}
         data={postData}
         ref={flatListRef}
-        style={{marginTop: 12}}
         onScroll={handleScroll}
         renderItem={({item, index}) => (
           <View
@@ -235,7 +236,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexGrow: 1,
-    marginBottom: 45,
   },
   loadingContainer: {
     position: 'absolute',

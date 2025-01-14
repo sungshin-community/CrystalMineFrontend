@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
 import Hamburger from '../../resources/icon/Hamburger';
 import EmojiShop from '../../resources/icon/EmojiShop';
@@ -207,7 +208,10 @@ const EmojiPicker = ({
   const renderEmojis = () => {
     return (
       <ScrollView
-        contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 6}}>
+        contentContainerStyle={{
+          paddingHorizontal: Platform.OS == 'ios' ? 3 : 12,
+          paddingVertical: 6,
+        }}>
         {hamburgerClicked ? (
           <>
             {emoticons.map((emoticonSet, index) => (
