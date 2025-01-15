@@ -122,7 +122,7 @@ export default function BoardList({
                 fontSize: 12,
                 color: '#A055FF',
                 fontWeight: '500',
-                fontFamily: 'SpoqaHanSansNeo-Regular',
+                fontFamily: 'Prentendard-Medium',
               }}>
               999+
             </Text>
@@ -239,7 +239,7 @@ export default function BoardList({
         style={{
           fontSize: 14,
           color: '#6E7882',
-          fontFamily: 'SpoqaHanSansNeo-Regular',
+          fontFamily: 'Prentendard-Medium',
         }}>
         고정된 게시판이 없습니다
       </Text>
@@ -320,7 +320,7 @@ export function OfficialBoardList({
               style={{
                 fontSize: 14,
                 color: '#3A424E',
-                fontFamily: 'SpoqaHanSansNeo-Regular',
+                fontFamily: 'Pretendard-Medium',
                 marginRight: 8,
               }}>
               {item.name}
@@ -367,7 +367,7 @@ export function OfficialBoardList({
         style={{
           fontSize: 15,
           color: '#6E7882',
-          fontFamily: 'SpoqaHanSansNeo-Regular',
+          fontFamily: 'Prentendard-Medium',
         }}>
         생성된 공식 게시판이 없습니다
       </Text>
@@ -442,7 +442,7 @@ export function CustomBoardList({
                 style={{
                   fontSize: 14,
                   color: '#3A424E',
-                  fontFamily: 'SpoqaHanSansNeo-Regular',
+                  fontFamily: 'Prentendard-Medium',
                   marginRight: 8,
                 }}>
                 {item.name}
@@ -455,7 +455,7 @@ export function CustomBoardList({
               style={{
                 fontSize: 12,
                 color: '#89919A',
-                fontFamily: 'SpoqaHanSansNeo-Regular',
+                fontFamily: 'Prentendard-Medium',
               }}>
               {item.introduction}
             </Text>

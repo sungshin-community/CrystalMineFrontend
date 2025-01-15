@@ -311,7 +311,7 @@ export default function BoardFragment({navigation}: Props) {
                 paddingHorizontal: 16, */
               }}>
               <CustomBoardListContainer
-                boardCategory="일반 게시판"
+                boardCategory="전체 게시판"
                 defaultFolded={false}
                 component={
                   <CustomBoardList

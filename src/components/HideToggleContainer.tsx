@@ -93,11 +93,11 @@ export function BoardListContainer({
         );
         //console.log('getOfficialBoardList공식 게시판 명:', boardNames);
         const boardNamesString = boardNames.join(', ');
-        const truncatedBoardNamesString =
-          boardNamesString.length > 30
-            ? boardNamesString.slice(0, 30) + '...'
-            : boardNamesString;
-        setOfficialBoards(truncatedBoardNamesString);
+        // const truncatedBoardNamesString =
+        //   boardNamesString.length > 30
+        //     ? boardNamesString.slice(0, 30) + '...'
+        //     : boardNamesString;
+        setOfficialBoards(boardNamesString);
         console.log(officialBoards);
       } else {
         console.log('boardsData가 배열이 아님:', boardsData);
@@ -138,18 +138,20 @@ export function BoardListContainer({
         {isSpread ? (
           <></>
         ) : (
-          <Text
-            style={[
-              fontRegular,
-              {
-                fontSize: 12,
-                color: '#6E7882',
-                fontWeight: '500',
-                marginRight: 12,
-              },
-            ]}>
-            {officialBoards}
-          </Text>
+          <View style={{flex: 3, marginHorizontal: 12}}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  fontSize: 12,
+                  color: '#6E7882',
+                  fontWeight: '500',
+                },
+              ]}
+              numberOfLines={1}>
+              {officialBoards}
+            </Text>
+          </View>
         )}
         {isSpread ? (
           <View style={{marginRight: 16}}>
@@ -214,12 +216,12 @@ export function CustomBoardListContainer({
         );
         //console.log('getCustomBoardList 게시판 명:', boardNames);
         const boardNamesString = boardNames.join(', ');
-        const truncatedBoardNamesString =
-          boardNamesString.length > 30
-            ? boardNamesString.slice(0, 33) + '...'
-            : boardNamesString;
+        // const truncatedBoardNamesString =
+        //   boardNamesString.length > 33
+        //     ? boardNamesString.slice(0, 33) + '...'
+        //     : boardNamesString;
 
-        setMajorBoards(truncatedBoardNamesString);
+        setMajorBoards(boardNamesString);
       } else {
         console.log('boardsData가 배열이 아님:', boardsData);
       }
@@ -267,18 +269,20 @@ export function CustomBoardListContainer({
         {isSpread ? (
           <></>
         ) : (
-          <Text
-            style={[
-              fontRegular,
-              {
-                fontSize: 12,
-                color: '#6E7882',
-                fontWeight: '500',
-                marginRight: 12,
-              },
-            ]}>
-            {majorBoards}
-          </Text>
+          <View style={{flex: 3, marginHorizontal: 12}}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  fontSize: 12,
+                  color: '#6E7882',
+                  fontWeight: '500',
+                },
+              ]}
+              numberOfLines={1}>
+              {majorBoards}
+            </Text>
+          </View>
         )}
         {isSpread ? (
           <BigFoldButton style={{marginRight: 16}} />
@@ -341,11 +345,11 @@ export function OfficialBoardListContainer({
         );
         //console.log('getDepartmentBoardList 게시판 명:', boardNames);
         const boardNamesString = boardNames.join(', ');
-        const truncatedBoardNamesString =
-          boardNamesString.length > 30
-            ? boardNamesString.slice(0, 30) + '...'
-            : boardNamesString;
-        setMajorBoards(truncatedBoardNamesString);
+        // const truncatedBoardNamesString =
+        //   boardNamesString.length > 30
+        //     ? boardNamesString.slice(0, 30) + '...'
+        //     : boardNamesString;
+        setMajorBoards(boardNamesString);
       } else {
         console.log('boardsData가 배열이 아님:', boardsData);
       }
@@ -392,18 +396,20 @@ export function OfficialBoardListContainer({
         {isSpread ? (
           <></>
         ) : (
-          <Text
-            style={[
-              fontRegular,
-              {
-                fontSize: 12,
-                color: '#6E7882',
-                fontWeight: '500',
-                marginRight: 12,
-              },
-            ]}>
-            {majorBoards}
-          </Text>
+          <View style={{flex: 3, marginHorizontal: 12}}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  fontSize: 12,
+                  color: '#6E7882',
+                  fontWeight: '500',
+                },
+              ]}
+              numberOfLines={1}>
+              {majorBoards}
+            </Text>
+          </View>
         )}
         {isSpread ? (
           <BigFoldButton style={{marginRight: 16}} />
