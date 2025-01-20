@@ -113,6 +113,10 @@ const MyPageFragment = ({navigation}: Props) => {
   const handleProfileModifySujeonggu = () => {
     navigation.navigate('ProfileModifySujeonggu');
   };
+  // 숫자 포맷팅 함수 추가
+  const formatNumber = num => {
+    return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
   useEffect(() => {
     async function getUserInfo() {
       if (!isInited) {
@@ -488,8 +492,10 @@ const MyPageFragment = ({navigation}: Props) => {
                         color: '#A055FF',
                         fontFamily: 'SpoqaHanSansNeo-Bold',
                       }}>
-                      {user?.point?.toLocaleString()}P{' '}
+                      {formatNumber(user?.point)}P{' '}
+
                     </Text>
+
                     <RightArrow />
                   </View>
                 </View>
@@ -735,7 +741,8 @@ const MyPageFragment = ({navigation}: Props) => {
               <View style={styles.menu}>
                 <Text style={styles.menuText}>앱 버전</Text>
                 <View style={styles.arrowContainer}>
-                  <Text style={styles.versionText}>1.5.0</Text>
+                  <Text style={styles.versionText}>1.5.2</Text>
+
                 </View>
               </View>
               <TouchableHighlight

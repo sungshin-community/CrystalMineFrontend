@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
@@ -99,11 +100,9 @@ const MessageFragment = ({navigation}: Props) => {
     }
 
     return () => {
-
       if (messageClient.current && messageClient.current.active) {
         messageClient.current.deactivate();
       }
-
     };
   }, [isFocused, navigation]);
 
@@ -191,7 +190,7 @@ const MessageFragment = ({navigation}: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
-      <AdMob />
+      {Platform.OS === 'ios' ? <AdMob /> : null}
       {renderContent()}
     </SafeAreaView>
   );
