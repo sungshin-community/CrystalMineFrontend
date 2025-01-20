@@ -94,7 +94,10 @@ const ProfileModify: React.FC<Props> = ({navigation}: Props) => {
           Toast.show('프로필이 성공적으로 수정되었습니다.', Toast.SHORT);
         }, 100);
         navigation.pop();
-      } else if (result === 'NICKNAME_DUPLICATION') {
+      } else if (
+        result === 'NICKNAME_DUPLICATION' &&
+        nickname !== user?.nickname
+      ) {
         setIsDuplicate(true);
         setTimeout(() => {
           Toast.show('이미 사용중인 닉네임입니다.', Toast.SHORT);
@@ -189,9 +192,7 @@ const ProfileModify: React.FC<Props> = ({navigation}: Props) => {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>학번</Text>
           <View style={styles.studentIdBox}>
-            <Text style={styles.studentIdText}>
-              {user?.email?.substring(0, 2)}학번
-            </Text>
+            <Text style={styles.studentIdText}>{user?.yearOfEntrance}</Text>
           </View>
         </View>
 
