@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {fontBold, fontMedium, fontRegular} from '../common/font';
 import Toast from 'react-native-simple-toast';
@@ -86,48 +87,48 @@ export const ReportCheckModal = ({
       onRequestClose={() => {
         setModalVisible(false);
       }}>
-      <View style={confirmStyles.centeredView}>
-        <View style={confirmStyles.modalView}>
-          <View>
-            <Text style={[fontBold, confirmStyles.modalText]}>
-              해당 {modalType}을 신고하시겠어요?
-            </Text>
-          </View>
-          <View>
-            <Text
-              style={[
-                fontRegular,
-                {color: '#89919A', fontSize: 14, marginBottom: 7},
-              ]}>
-              {`- 신고 후에는 내용을 수정할 수 없습니다.`}
-            </Text>
-            <Text
-              style={[
-                fontRegular,
-                {color: '#89919A', fontSize: 14, marginBottom: 20},
-              ]}>
-              {`- 무분별한 신고를 방지하기 위해 신고 1회당 10포인트가\n   차감됩니다.`}
-            </Text>
-          </View>
-          <View style={confirmStyles.buttonContainer}>
-            <TouchableOpacity
-              style={[confirmStyles.button, confirmStyles.buttonClose]}
-              onPress={() => setModalVisible(false)}>
-              <Text style={[confirmStyles.textStyle, {color: '#6E7882'}]}>
-                아니요.
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[confirmStyles.button, confirmStyles.buttonConfirm]}
-              onPress={handleConfirm}>
-              <Text
-                style={[confirmStyles.textStyle, fontBold, {color: 'white'}]}>
-                확인했어요.
-              </Text>
-            </TouchableOpacity>
-          </View>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        <View style={confirmStyles.centeredView}>
+          <TouchableWithoutFeedback>
+            <View style={confirmStyles.modalView}>
+              <View>
+                <Text style={[fontBold, confirmStyles.modalText]}>
+                  해당 {modalType}을 신고하시겠어요?
+                </Text>
+              </View>
+              <View>
+                <Text style={[fontRegular, {color: '#89919A', fontSize: 14}]}>
+                  {`• 신고 후에는 내용을 수정할 수 없습니다.`}
+                </Text>
+                <Text style={[fontRegular, {color: '#89919A', fontSize: 14}]}>
+                  {`• 무분별한 신고를 방지하기 위해 신고 1회당 10포인트가\n   차감됩니다.`}
+                </Text>
+              </View>
+              <View style={confirmStyles.buttonContainer}>
+                {/* <TouchableOpacity
+                  style={[confirmStyles.button, confirmStyles.buttonClose]}
+                  onPress={() => setModalVisible(false)}>
+                  <Text style={[confirmStyles.textStyle, {color: '#6E7882'}]}>
+                    아니요.
+                  </Text>
+                </TouchableOpacity> */}
+                <TouchableOpacity
+                  style={[confirmStyles.button, confirmStyles.buttonConfirm]}
+                  onPress={handleConfirm}>
+                  <Text
+                    style={[
+                      confirmStyles.textStyle,
+                      fontBold,
+                      {color: 'white'},
+                    ]}>
+                    확인했어요.
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -140,17 +141,18 @@ const confirmStyles = StyleSheet.create({
   },
   modalView: {
     width: Dimensions.get('window').width,
+    height: 210,
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingVertical: 24,
-    paddingHorizontal: Dimensions.get('window').width * 0.05,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingTop: 20,
+    paddingHorizontal: 20,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    width: 350,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    marginTop: 28,
+    // width: Dimensions.get('window').width * 0.9,
   },
   button: {
     height: 44,
@@ -165,7 +167,7 @@ const confirmStyles = StyleSheet.create({
     borderColor: '#EFEFF3',
   },
   buttonConfirm: {
-    width: 169,
+    width: 'auto',
     backgroundColor: '#A055FF',
   },
   textStyle: {
@@ -177,5 +179,6 @@ const confirmStyles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'left',
     fontSize: 16,
+    fontWeight: '600',
   },
 });

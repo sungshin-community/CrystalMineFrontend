@@ -144,7 +144,8 @@ function AdPost({
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
         title={`작성한 게시글을 삭제하시겠어요?`}
-        content={`- 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
         purpleButtonText="삭제할게요."
         purpleButtonFunc={() => {
           if (handleAdPostDelete(data.postAdId)) {
@@ -284,21 +285,27 @@ function AdPost({
         <View style={styles.postHeader}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
+              style={{width: 36, height: 36, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
             <View style={{justifyContent: 'center'}}>
               <Text
                 style={[
                   fontMedium,
-                  {fontSize: 14, paddingLeft: 8, fontWeight: `500`},
+                  {
+                    fontSize: 14,
+                    paddingLeft: 12,
+                    fontWeight: '600',
+                    marginBottom: 2,
+                    color: '#222222',
+                  },
                 ]}>
                 {data?.displayName}
               </Text>
               <Text
                 style={[
                   fontRegular,
-                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 8},
+                  {color: '#89919a', fontSize: 12, paddingLeft: 12},
                 ]}>
                 {data?.createdAt}
               </Text>
@@ -330,7 +337,12 @@ function AdPost({
           <Text
             style={[
               fontRegular,
-              {fontSize: 14, color: '#222222', lineHeight: 22.5},
+              {
+                fontSize: 14,
+                color: '#222222',
+                fontWeight: '500',
+                lineHeight: 22.5,
+              },
             ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
@@ -351,10 +363,10 @@ function AdPost({
                   }>
                   <Image
                     style={{
-                      width: 120,
-                      height: 120,
+                      width: 140,
+                      height: 140,
                       borderRadius: 10,
-                      marginRight: 16,
+                      marginRight: 8,
                     }}
                     source={{uri: url}}
                   />
@@ -488,22 +500,19 @@ function AdPost({
 
 const styles = StyleSheet.create({
   postContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 18,
-    marginBottom: 6,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    marginBottom: 16,
   },
   postHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   postBody: {
-    marginTop: 15,
+    marginTop: 16,
   },
   postLike: {
-    marginLeft: 2,
-    fontSize: 14,
-    marginRight: 16,
-    color: '#9DA4AB',
+    marginTop: 16,
   },
   postComment: {
     fontSize: 14,

@@ -65,11 +65,11 @@ export default function SphereItem({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            marginBottom: 16,
           }}>
           <View
             style={{
               flexDirection: 'row',
+              marginBottom: 12,
             }}>
             <Image
               source={{uri: post.profileImage}}
@@ -153,13 +153,14 @@ export default function SphereItem({
           )}
         </View>
 
-        {typeof post.title === 'string' && (
+        {typeof post.title === 'string' && post.title !== '' && (
           <Text
             style={{
               color: '#222222',
               fontSize: 16,
               fontWeight: '600',
               marginBottom: 8,
+              marginTop: 4,
             }}
             numberOfLines={1}
             ellipsizeMode="tail">
@@ -172,6 +173,7 @@ export default function SphereItem({
             fontSize: 14,
             fontWeight: '400',
             color: '#222222',
+            lineHeight: 20,
           }}>
           {post.content.length > 100 ? (
             <>
@@ -221,13 +223,14 @@ export default function SphereItem({
               onPress={() => setReplyVisible(true)}>
               <ReplyIcon />
               <View style={styles.commentBox}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', flex: 1}}>
                   <Text
                     style={{
                       fontWeight: '600',
                       fontSize: 12,
                       color: '#3A424E',
                       marginRight: 8,
+                      flexShrink: 0,
                     }}>
                     {post.newCommentAuthor}
                   </Text>
@@ -236,6 +239,8 @@ export default function SphereItem({
                       fontWeight: '400',
                       fontSize: 12,
                       color: '#3A424E',
+                      flexShrink: 1,
+                      marginRight: 1,
                     }}
                     numberOfLines={1}
                     ellipsizeMode="tail">
@@ -284,7 +289,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     backgroundColor: '#F6F6F6',
-    marginLeft: 12,
+    marginLeft: 10,
     flex: 1,
     justifyContent: 'space-between',
   },

@@ -16,6 +16,7 @@ import {
   BigSpreadButton,
   GreyBigFoldButton,
   GreyBigSpreadButton,
+  BoardFoldButton,
 } from '../../resources/icon/Button';
 import {Checked, Unchecked} from '../../resources/icon/CheckBox';
 import PlusIcon from '../../resources/icon/PlusIcon';
@@ -92,11 +93,11 @@ export function BoardListContainer({
         );
         //console.log('getOfficialBoardList공식 게시판 명:', boardNames);
         const boardNamesString = boardNames.join(', ');
-        const truncatedBoardNamesString =
-          boardNamesString.length > 30
-            ? boardNamesString.slice(0, 30) + '...'
-            : boardNamesString;
-        setOfficialBoards(truncatedBoardNamesString);
+        // const truncatedBoardNamesString =
+        //   boardNamesString.length > 30
+        //     ? boardNamesString.slice(0, 30) + '...'
+        //     : boardNamesString;
+        setOfficialBoards(boardNamesString);
         console.log(officialBoards);
       } else {
         console.log('boardsData가 배열이 아님:', boardsData);
@@ -111,13 +112,12 @@ export function BoardListContainer({
       <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingLeft: 15,
+          paddingLeft: 16,
           // paddingVertical: 24,
-          height: 55,
           alignItems: 'center',
           backgroundColor: '#FFFFFF',
-          paddingTop: 10,
-          paddingBottom: 5,
+          paddingTop: 20,
+          paddingBottom: 20,
           borderBottomLeftRadius: !isSpread ? 16 : 0,
           borderBottomRightRadius: !isSpread ? 16 : 0,
         }}
@@ -126,11 +126,10 @@ export function BoardListContainer({
           style={[
             fontBold,
             {
-              fontSize: 17,
-              fontFamily: 'SpoqaHanSansNeo-Regular',
+              fontSize: 16,
               lineHeight: 20,
               flex: 1,
-              fontWeight: 'bold',
+              fontWeight: '600',
               color: '#222222',
             },
           ]}>
@@ -139,23 +138,27 @@ export function BoardListContainer({
         {isSpread ? (
           <></>
         ) : (
-          <Text
-            style={{
-              fontSize: 12,
-              color: '#6E7882',
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-              fontWeight: '500',
-              marginLeft: 10,
-            }}>
-            {officialBoards}
-          </Text>
+          <View style={{flex: 3, marginHorizontal: 12}}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  fontSize: 12,
+                  color: '#6E7882',
+                  fontWeight: '500',
+                },
+              ]}
+              numberOfLines={1}>
+              {officialBoards}
+            </Text>
+          </View>
         )}
         {isSpread ? (
-          <View style={{marginRight: 15}}>
+          <View style={{marginRight: 16}}>
             <BigFoldButton />
           </View>
         ) : (
-          <View style={{marginRight: 15}}>
+          <View style={{marginRight: 16}}>
             <BigSpreadButton />
           </View>
         )}
@@ -213,12 +216,12 @@ export function CustomBoardListContainer({
         );
         //console.log('getCustomBoardList 게시판 명:', boardNames);
         const boardNamesString = boardNames.join(', ');
-        const truncatedBoardNamesString =
-          boardNamesString.length > 30
-            ? boardNamesString.slice(0, 33) + '...'
-            : boardNamesString;
+        // const truncatedBoardNamesString =
+        //   boardNamesString.length > 33
+        //     ? boardNamesString.slice(0, 33) + '...'
+        //     : boardNamesString;
 
-        setMajorBoards(truncatedBoardNamesString);
+        setMajorBoards(boardNamesString);
       } else {
         console.log('boardsData가 배열이 아님:', boardsData);
       }
@@ -240,46 +243,51 @@ export function CustomBoardListContainer({
       <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingLeft: 15,
+          paddingLeft: 16,
           // paddingVertical: 24,
-          height: 55,
           alignItems: 'center',
           backgroundColor: '#ffffff',
-          paddingTop: 10,
-          paddingBottom: 5,
+          paddingTop: 20,
+          paddingBottom: 20,
           borderBottomLeftRadius: !isSpread ? 16 : 0,
           borderBottomRightRadius: !isSpread ? 16 : 0,
         }}
         onPress={toggleSpread}>
         <Text
-          style={{
-            fontSize: 17,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            lineHeight: 20,
-            flex: 1,
-            fontWeight: 'bold',
-            color: '#222222',
-          }}>
+          style={[
+            fontBold,
+            {
+              fontSize: 16,
+              lineHeight: 20,
+              flex: 1,
+              fontWeight: '600',
+              color: '#222222',
+            },
+          ]}>
           {boardCategory}
         </Text>
         {isSpread ? (
           <></>
         ) : (
-          <Text
-            style={{
-              fontSize: 12,
-              color: '#6E7882',
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-              fontWeight: '500',
-              marginLeft: 10,
-            }}>
-            {majorBoards}
-          </Text>
+          <View style={{flex: 3, marginHorizontal: 12}}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  fontSize: 12,
+                  color: '#6E7882',
+                  fontWeight: '500',
+                },
+              ]}
+              numberOfLines={1}>
+              {majorBoards}
+            </Text>
+          </View>
         )}
         {isSpread ? (
-          <BigFoldButton style={{marginRight: 15}} />
+          <BigFoldButton style={{marginRight: 16}} />
         ) : (
-          <BigSpreadButton style={{marginRight: 15}} />
+          <BigSpreadButton style={{marginRight: 16}} />
         )}
       </TouchableOpacity>
       {isSpread && (
@@ -337,11 +345,11 @@ export function OfficialBoardListContainer({
         );
         //console.log('getDepartmentBoardList 게시판 명:', boardNames);
         const boardNamesString = boardNames.join(', ');
-        const truncatedBoardNamesString =
-          boardNamesString.length > 30
-            ? boardNamesString.slice(0, 30) + '...'
-            : boardNamesString;
-        setMajorBoards(truncatedBoardNamesString);
+        // const truncatedBoardNamesString =
+        //   boardNamesString.length > 30
+        //     ? boardNamesString.slice(0, 30) + '...'
+        //     : boardNamesString;
+        setMajorBoards(boardNamesString);
       } else {
         console.log('boardsData가 배열이 아님:', boardsData);
       }
@@ -362,46 +370,51 @@ export function OfficialBoardListContainer({
       <TouchableOpacity
         style={{
           flexDirection: 'row',
-          paddingLeft: 15,
+          paddingLeft: 16,
           // paddingVertical: 24,
-          height: 55,
           alignItems: 'center',
-          backgroundColor: '#ffffff',
-          paddingTop: 10,
-          paddingBottom: 5,
+          backgroundColor: '#FFFFFF',
+          paddingTop: 20,
+          paddingBottom: 20,
           borderBottomLeftRadius: !isSpread ? 16 : 0,
           borderBottomRightRadius: !isSpread ? 16 : 0,
         }}
         onPress={() => setIsSpread(!isSpread)}>
         <Text
-          style={{
-            fontSize: 17,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-            lineHeight: 20,
-            flex: 1,
-            fontWeight: 'bold',
-            color: '#222222',
-          }}>
+          style={[
+            fontBold,
+            {
+              fontSize: 16,
+              lineHeight: 20,
+              flex: 1,
+              fontWeight: '600',
+              color: '#222222',
+            },
+          ]}>
           {boardCategory}
         </Text>
         {isSpread ? (
           <></>
         ) : (
-          <Text
-            style={{
-              fontSize: 12,
-              color: '#6E7882',
-              fontFamily: 'SpoqaHanSansNeo-Regular',
-              fontWeight: '500',
-              marginLeft: 10,
-            }}>
-            {majorBoards}
-          </Text>
+          <View style={{flex: 3, marginHorizontal: 12}}>
+            <Text
+              style={[
+                fontRegular,
+                {
+                  fontSize: 12,
+                  color: '#6E7882',
+                  fontWeight: '500',
+                },
+              ]}
+              numberOfLines={1}>
+              {majorBoards}
+            </Text>
+          </View>
         )}
         {isSpread ? (
-          <GreyBigFoldButton style={{marginRight: 15}} />
+          <BigFoldButton style={{marginRight: 16}} />
         ) : (
-          <GreyBigSpreadButton style={{marginRight: 15}} />
+          <BigSpreadButton style={{marginRight: 16}} />
         )}
       </TouchableOpacity>
       {isSpread && (

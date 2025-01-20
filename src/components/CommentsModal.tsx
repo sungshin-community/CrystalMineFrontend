@@ -66,7 +66,6 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
     parentId: number | null;
   }>({parentId: null});
   const [selectedEmojiId, setSelectedEmojiId] = useState<number | null>(null);
-
   const screenHeight = Dimensions.get('screen').height;
   const bottomSheetHeight = screenHeight * 0.8; // 초기 높이 80%
   const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
@@ -335,42 +334,49 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   };
   // 댓글, 대댓글 삭제
   const handleCommentDelete = async (commentId: number) => {
-    setComments(prevComments => {
-      return prevComments.map(comment => {
-        if (comment.id === commentId) {
-          return {...comment, isDeleted: true, content: '삭제된 댓글입니다.'};
-        }
-        return {
-          ...comment,
-          recomments: comment.recomments?.map(recomment => {
-            if (recomment.id === commentId) {
-              return {
-                ...recomment,
-                isDeleted: true,
-                content: '삭제된 댓글입니다.',
-              };
-            }
-            return recomment;
-          }),
-        };
-      });
-    });
-
-    setTimeout(function () {
-      Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.SHORT);
-    }, 100);
-
     try {
+      // UI 먼저 업데이트
+      setComments(prevComments =>
+        prevComments.map(comment => {
+          if (comment.id === commentId) {
+            return {...comment, isDeleted: true, content: '삭제된 댓글입니다.'};
+          }
+          // 대댓글 확인
+          if (comment.recomments) {
+            return {
+              ...comment,
+              recomments: comment.recomments.map(recomment =>
+                recomment.id === commentId
+                  ? {
+                      ...recomment,
+                      isDeleted: true,
+                      content: '삭제된 댓글입니다.',
+                    }
+                  : recomment,
+              ),
+            };
+          }
+          return comment;
+        }),
+      );
       const result = await deleteComment(commentId);
-      if (getHundredsDigit(result.status) !== 2) {
-        const commentData = await getComments(route.params.postId);
-        setComments(commentData);
-        Toast.show('댓글 삭제에 실패했습니다.', Toast.SHORT);
+
+      if (getHundredsDigit(result.status) === 2) {
+        Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.SHORT);
+        const updatedComments = await getComments(postId);
+        if (updatedComments) {
+          setComments(updatedComments);
+        }
+      } else {
+        // API 실패 시 원래 상태로 복구
+        const originalComments = await getComments(postId);
+        setComments(originalComments);
       }
     } catch (error) {
       console.error('Error deleting comment:', error);
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
+      // 에러 발생 시 원래 상태로 복구
+      const originalComments = await getComments(postId);
+      setComments(originalComments);
       Toast.show('댓글 삭제 중 오류가 발생했습니다.', Toast.SHORT);
     }
   };
@@ -426,10 +432,21 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   };
 
   useEffect(() => {
-    if (modalVisible) {
+    if (modalVisible && postId) {
+      const fetchComments = async () => {
+        try {
+          const commentsData = await getComments(postId);
+          if (commentsData) {
+            setComments(commentsData);
+          }
+        } catch (error) {
+          console.error('Error fetching comments:', error);
+        }
+      };
+      fetchComments();
       resetBottomSheet.start();
     }
-  }, [modalVisible]);
+  }, [modalVisible, postId, newCommentAdded]);
 
   return (
     <>
@@ -452,7 +469,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
             <View style={styles.homeIndicator} />
 
             {/* 메인 컨텐츠 영역 */}
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, paddingBottom: 40}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 style={{flex: 1}}
@@ -472,6 +489,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
                       handleFocus={focusCommentInput}
                       componentModalVisible={componentModalVisible}
                       setComponentModalVisible={setComponentModalVisible}
+                      onEmojiSelect={handleEmojiSelect}
                     />
                     {item.recomments &&
                       item.recomments.map((recomment, index) => (
@@ -484,6 +502,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
                           handleCommentReport={handleCommentReport}
                           componentModalVisible={componentModalVisible}
                           setComponentModalVisible={setComponentModalVisible}
+                          onEmojiSelect={handleEmojiSelect}
                         />
                       ))}
                   </View>
@@ -538,6 +557,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
+    // marginBottom: 50,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     height: '100%',

@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  TouchableHighlight,
+  Platform,
 } from 'react-native';
 import Hamburger from '../../resources/icon/Hamburger';
 import EmojiShop from '../../resources/icon/EmojiShop';
@@ -28,6 +30,7 @@ interface EmojiPickerProps {
   onEmojiSelect: (emoji: {imageUrl: string; id: number}) => void;
   isPayed: boolean;
   setIsPayed: (isPayed: boolean) => void;
+  navigation?: any;
 }
 
 interface Emoticon {
@@ -70,6 +73,7 @@ const EmojiPicker = ({
   onEmojiSelect,
   isPayed,
   setIsPayed,
+  navigation,
 }: EmojiPickerProps) => {
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
@@ -178,6 +182,7 @@ const EmojiPicker = ({
               Toast.show('이모티콘 구매 성공', Toast.SHORT);
             } else if (result?.status === 403) {
               Toast.show('포인트가 부족합니다.', Toast.SHORT);
+              navigation?.navigate('EmoticonShop');
             } else if (result?.status === 409) {
               Toast.show('이미 구매한 이모티콘입니다.', Toast.SHORT);
               setIsPayed(true);
@@ -203,7 +208,10 @@ const EmojiPicker = ({
   const renderEmojis = () => {
     return (
       <ScrollView
-        contentContainerStyle={{paddingHorizontal: 12, paddingVertical: 6}}>
+        contentContainerStyle={{
+          paddingHorizontal: Platform.OS == 'ios' ? 3 : 12,
+          paddingVertical: 6,
+        }}>
         {hamburgerClicked ? (
           <>
             {emoticons.map((emoticonSet, index) => (
@@ -273,6 +281,11 @@ const EmojiPicker = ({
     );
   };
 
+  const handleShopPress = () => {
+    onClose();
+    navigation?.navigate('EmoticonShop');
+  };
+
   return visible ? (
     <View style={styles.container}>
       {isPayed ? (
@@ -301,7 +314,11 @@ const EmojiPicker = ({
               )}
             </View>
             <View>
-              <EmojiShop />
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                onPress={handleShopPress}>
+                <EmojiShop />
+              </TouchableHighlight>
             </View>
           </View>
           {renderEmojis()}

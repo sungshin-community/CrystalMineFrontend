@@ -7,6 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
+  NativeModules,
 } from 'react-native';
 import SphereReplyItem from '../../components/SphereReplyItem';
 import SelectAnswer from '../../components/SelectAnswer';
@@ -81,6 +83,19 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     pantheonComment | undefined
   >(undefined);
   const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const {StatusBarManager} = NativeModules;
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+
+  useEffect(() => {
+    Platform.OS == 'ios'
+      ? StatusBarManager.getHeight(
+          (statusBarFrameData: {height: React.SetStateAction<number>}) => {
+            setStatusBarHeight(statusBarFrameData.height);
+          },
+        )
+      : null;
+  }, []);
 
   const handleFocus = () => {
     setFocusCommentId(null);
@@ -104,6 +119,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
       console.log('글 상세 조회 성공');
     } catch (error) {
       console.error('글 상세 조회 실패', error);
+    } finally {
+      setIsInitialLoading(false);
     }
   };
 
@@ -327,8 +344,113 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
     }
   };
 
+  const Skeleton = () => (
+    <View
+      style={{
+        paddingTop: 20,
+        paddingBottom: 25,
+        paddingHorizontal: 16,
+      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: 16,
+        }}>
+        <View style={{flexDirection: 'row'}}>
+          {/* 프로필 이미지 스켈레톤 */}
+          <View
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 18,
+              backgroundColor: '#E0E0E0',
+              marginRight: 12,
+            }}
+          />
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 2,
+              }}>
+              <View
+                style={{
+                  width: 40,
+                  height: 14,
+                  backgroundColor: '#E0E0E0',
+                  marginRight: 6,
+                  borderRadius: 4,
+                }}
+              />
+              <View
+                style={{
+                  width: 60,
+                  height: 12,
+                  backgroundColor: '#E0E0E0',
+                  borderRadius: 4,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                width: 100,
+                height: 12,
+                backgroundColor: '#E0E0E0',
+                borderRadius: 4,
+              }}
+            />
+          </View>
+        </View>
+      </View>
+      <View
+        style={{
+          width: '80%',
+          height: 16,
+          backgroundColor: '#E0E0E0',
+          borderRadius: 4,
+          marginBottom: 10,
+        }}
+      />
+      <View
+        style={{
+          width: '100%',
+          height: 14,
+          backgroundColor: '#E0E0E0',
+          borderRadius: 4,
+          marginBottom: 8,
+        }}
+      />
+      <View
+        style={{
+          width: '95%',
+          height: 14,
+          backgroundColor: '#E0E0E0',
+          borderRadius: 4,
+          marginBottom: 8,
+        }}
+      />
+      <View
+        style={{
+          width: '90%',
+          height: 14,
+          backgroundColor: '#E0E0E0',
+          borderRadius: 4,
+          marginBottom: 16,
+        }}
+      />
+    </View>
+  );
+
   return (
-    <KeyboardAvoidingView style={{flex: 1}}>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={
+        Platform.OS === 'ios' ? statusBarHeight + 30 : statusBarHeight + 78
+      }>
       <ScrollView
         ref={scrollViewRef}
         style={{
@@ -343,106 +465,110 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             borderTopWidth: 1,
             paddingHorizontal: 16,
           }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              marginBottom: 16,
-            }}>
+          {isInitialLoading ? (
+            <Skeleton />
+          ) : (
             <View
               style={{
                 flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: 16,
               }}>
-              <Image
-                source={{uri: postData?.profileImage}}
+              <View
                 style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 18,
-                  marginRight: 12,
-                }}
-                resizeMode="cover"
-              />
-              <View>
-                <View
+                  flexDirection: 'row',
+                }}>
+                <Image
+                  source={{uri: postData?.profileImage}}
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginBottom: 2,
-                  }}>
-                  <Text
+                    width: 36,
+                    height: 36,
+                    borderRadius: 18,
+                    marginRight: 12,
+                  }}
+                  resizeMode="cover"
+                />
+                <View>
+                  <View
                     style={{
-                      fontSize: 14,
-                      marginRight: 6,
-                      fontWeight: '600',
-                      color: '#3A424E',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginBottom: 2,
                     }}>
-                    {isReview ? postData?.nickname : postData?.displayName}
-                  </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        marginRight: 6,
+                        fontWeight: '600',
+                        color: '#3A424E',
+                      }}>
+                      {isReview ? postData?.nickname : postData?.displayName}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: '#B9BAC1',
+                        fontWeight: '400',
+                      }}>
+                      {postData?.createdAt}
+                    </Text>
+                  </View>
                   <Text
                     style={{
                       fontSize: 12,
-                      color: '#B9BAC1',
-                      fontWeight: '400',
-                    }}>
-                    {postData?.createdAt}
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: '500',
-                    color: '#89919A',
-                  }}>
-                  {postData?.isBlind
-                    ? '비공개'
-                    : `${postData?.department} · ${postData?.userJob} · ${
-                        postData?.userYear === 0
-                          ? '신입'
-                          : `${postData?.userYear}년`
-                      }`}
-                </Text>
-              </View>
-            </View>
-            {isQuestion && (
-              <View style={{flexDirection: 'row'}}>
-                <View style={styles.pointView}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: '#89919A',
                     }}>
-                    {postData?.point}P
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    {
-                      paddingVertical: 6,
-                      paddingHorizontal: 8,
-                      borderRadius: 4,
-                    },
-                    {
-                      backgroundColor: postData?.isSelected
-                        ? '#F3E9FF'
-                        : '#EFEFF3',
-                    },
-                  ]}>
-                  <Text
-                    style={[
-                      {fontSize: 12, fontWeight: '700'},
-                      {
-                        color: postData?.isSelected ? '#A055FF' : '#89919A',
-                      },
-                    ]}>
-                    {postData?.isSelected ? '채택완료' : '답변대기'}
+                    {postData?.isBlind
+                      ? '비공개'
+                      : `${postData?.department} · ${postData?.userJob} · ${
+                          postData?.userYear === 0
+                            ? '신입'
+                            : `${postData?.userYear}년`
+                        }`}
                   </Text>
                 </View>
               </View>
-            )}
-          </View>
+              {isQuestion && (
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.pointView}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '700',
+                        color: '#89919A',
+                      }}>
+                      {postData?.point}P
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      {
+                        paddingVertical: 6,
+                        paddingHorizontal: 8,
+                        borderRadius: 4,
+                      },
+                      {
+                        backgroundColor: postData?.isSelected
+                          ? '#F3E9FF'
+                          : '#EFEFF3',
+                      },
+                    ]}>
+                    <Text
+                      style={[
+                        {fontSize: 12, fontWeight: '700'},
+                        {
+                          color: postData?.isSelected ? '#A055FF' : '#89919A',
+                        },
+                      ]}>
+                      {postData?.isSelected ? '채택완료' : '답변대기'}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </View>
+          )}
 
           {isReview && postData && (
             <ReviewJobDetail
@@ -453,7 +579,7 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             />
           )}
 
-          {typeof postData?.title === 'string' && (
+          {typeof postData?.title === 'string' && postData?.title !== '' && (
             <Text
               style={{
                 color: '#222222',

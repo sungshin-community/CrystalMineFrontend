@@ -15,6 +15,8 @@ import ProfileImage from '../../resources/icon/ProfileImage';
 import EmptyHeart from '../../resources/icon/EmptyHeart';
 import EmptyComment from '../../resources/icon/EmptyComment';
 import PostLike from '../../resources/icon/PostLike';
+import HeartIcon from '../../resources/icon/HeartIcon';
+import ChatIcon from '../../resources/icon/ChatIcon';
 import PostUnlike from '../../resources/icon/PostUnlike';
 import {PostComment} from '../../resources/icon/PostComment';
 import ThreeDots from './ThreeDots';
@@ -44,6 +46,11 @@ import {logout} from '../common/authApi';
 import {getMessageContent, postChatRoom} from '../common/messageApi';
 import {MessageIcon, BlackMessageIcon} from '../../resources/icon/Message';
 import CustomToast from './CustomToast';
+import {FooterHeart} from '../../resources/icon/HeartIcon';
+import {FooterChat} from '../../resources/icon/ChatIcon';
+import {FooterScrap} from '../../resources/icon/Scrap';
+import {FooterReport} from '../../resources/icon/Report';
+import {FooterMessage} from '../../resources/icon/Message';
 interface Props {
   navigation: any;
   post: any;
@@ -144,7 +151,8 @@ function Post({
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
         title={`작성한 게시글을 삭제하시겠어요?`}
-        content={`- 삭제 후에는 되돌릴 수 없습니다.`}
+        content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        isContentCenter={false}
         purpleButtonText="삭제할게요."
         purpleButtonFunc={() => {
           if (handlePostDelete(data.postId)) {
@@ -173,7 +181,7 @@ function Post({
             setDeleteModalVisible(true);
             setComponentModalVisible(deleteModalVisible);
           }}>
-          <TrashIcon style={{marginRight: 12}} />
+          <TrashIcon style={{marginLeft: 16}} />
         </Pressable>
       )}
     </>
@@ -262,7 +270,7 @@ function Post({
             onPress={() => {
               Toast.show('이미 신고한 게시글입니다.', Toast.SHORT);
             }}>
-            <Report style={{marginRight: 14}} />
+            <FooterReport fill="#9DA4AB" />
           </Pressable>
         ) : (
           <Pressable
@@ -270,7 +278,7 @@ function Post({
               setReportModalVisible(true);
               setComponentModalVisible(reportModalVisible);
             }}>
-            <NoReport style={{marginRight: 14}} />
+            <FooterReport />
           </Pressable>
         )}
         <Pressable
@@ -289,21 +297,26 @@ function Post({
         <View style={styles.postHeader}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
+              style={{width: 36, height: 36, borderRadius: 12}}
               source={{uri: data?.profileImage}}
             />
-            <View style={{justifyContent: 'center'}}>
+            <View style={{flexDirection: 'column'}}>
               <Text
                 style={[
                   fontMedium,
-                  {fontSize: 14, paddingLeft: 8, fontWeight: `500`},
+                  {fontSize: 14, paddingLeft: 12, fontWeight: '600'},
                 ]}>
                 {data?.displayName}
               </Text>
               <Text
                 style={[
                   fontRegular,
-                  {color: '#9DA4AB', fontSize: 12, paddingLeft: 8},
+                  {
+                    color: '#9DA4AB',
+                    fontSize: 12,
+                    paddingLeft: 12,
+                    fontWeight: '500',
+                  },
                 ]}>
                 {data?.createdAt}
               </Text>
@@ -335,7 +348,12 @@ function Post({
           <Text
             style={[
               fontRegular,
-              {fontSize: 14, color: '#222222', lineHeight: 22.5},
+              {
+                fontSize: 14,
+                fontWeight: '500',
+                color: '#222222',
+                lineHeight: 22.5,
+              },
             ]}>
             <Autolink text={data ? (data.content ? data.content : '') : ''} />
           </Text>
@@ -359,7 +377,7 @@ function Post({
                       width: 120,
                       height: 120,
                       borderRadius: 10,
-                      marginRight: 16,
+                      marginRight: 8,
                     }}
                     source={{uri: url}}
                   />
@@ -390,26 +408,25 @@ function Post({
             <Pressable
               hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
               onPress={() => handlePostLike(data.postId)}>
-              {data?.isLiked ? <PostLike /> : <PostUnlike />}
+              {data?.isLiked ? (
+                <FooterHeart fill="#FF6376" stroke="#FF6376" />
+              ) : (
+                <FooterHeart fill="white" stroke="#9DA4AB" />
+              )}
             </Pressable>
-            <Text
-              style={[
-                fontRegular,
-                {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
-              ]}>
+            <Text style={[fontRegular, {color: '#9DA4AB', marginLeft: 6}]}>
               좋아요
             </Text>
             <Text style={[fontRegular, styles.postLike]}>
               {data?.likeCount}
             </Text>
-            <PostComment />
+            <FooterChat />
             <Text
               style={[
                 fontRegular,
                 {
                   color: '#9DA4AB',
-                  marginRight: 1,
-                  marginLeft: 5,
+                  marginLeft: 6,
                 },
               ]}>
               댓글
@@ -423,12 +440,12 @@ function Post({
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                //backgroundColor: 'skyblue',
+                marginRight: 16,
               }}>
               {data?.isReported ? (
                 <Pressable
                   onPress={() => showToast('이미 신고한 게시글입니다.')}>
-                  <Report style={{marginRight: 16}} />
+                  <FooterReport fill="#9DA4AB" style={{marginRight: 16}} />
                 </Pressable>
               ) : (
                 <Pressable
@@ -436,7 +453,7 @@ function Post({
                     setReportModalVisible(true);
                     setComponentModalVisible(reportModalVisible);
                   }}>
-                  <NoReport style={{marginRight: 16}} />
+                  <FooterReport style={{marginRight: 16}} />
                 </Pressable>
               )}
               <ReportModalBottom
@@ -455,9 +472,9 @@ function Post({
                 onPress={() => {
                   blockedCheck(data.isAnonymous);
                 }}>
-                <MessageIcon
+                <FooterMessage
                   style={{
-                    marginRight: 16,
+                    marginHorizontal: 16,
                   }}
                 />
               </Pressable>
@@ -473,9 +490,13 @@ function Post({
                 hitSlop={10}
                 onPress={() => handlePostScrap(data.postId)}>
                 {data?.isScraped ? (
-                  <Scrap style={{marginRight: 16}} />
+                  <FooterScrap
+                    style={{marginRight: 16}}
+                    fill="#A055FF"
+                    stroke="#A055FF"
+                  />
                 ) : (
-                  <NoScrap
+                  <FooterScrap
                     style={{
                       marginRight: 16,
                     }}
@@ -501,26 +522,26 @@ function Post({
 
 const styles = StyleSheet.create({
   postContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 18,
-    marginBottom: 6,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    marginBottom: 16,
   },
   postHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   postBody: {
-    marginTop: 15,
+    marginTop: 16,
   },
   postLike: {
-    marginLeft: 2,
+    marginLeft: 4,
     fontSize: 14,
     marginRight: 16,
     color: '#9DA4AB',
   },
   postComment: {
     fontSize: 14,
-    marginLeft: 2,
+    marginLeft: 4,
     width: 35,
     color: '#9DA4AB',
   },

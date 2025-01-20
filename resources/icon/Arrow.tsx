@@ -10,11 +10,11 @@ const RightArrow = (props: any) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}>
     <Path
-      d="M6 3.33334L10.5 7.83334L6 12.3333"
+      d="M6 3.33331L10.5 7.83331L6 12.3333"
       stroke="#6E7882"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );
@@ -30,9 +30,9 @@ export const LeftArrow = (props: any) => (
     <Path
       d="M1 1.33334L5.5 5.83334L1 10.3333"
       stroke="#6E7882"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );
@@ -48,16 +48,16 @@ export const UpArrow = (props: any) => (
     <Path
       d="M5.83398 13.9999L14.0007 5.83325L22.1673 13.9999"
       stroke="#A055FF"
-      stroke-width="2.33333"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.33333"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <Path
       d="M14.001 5.83325V22.1666"
       stroke="#A055FF"
-      stroke-width="2.33333"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.33333"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );

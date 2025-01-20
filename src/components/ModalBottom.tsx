@@ -16,6 +16,7 @@ interface Props {
   title?: any;
   content?: any;
   isContentCenter?: boolean;
+  isWriting?: boolean;
   purpleButtonText?: string;
   purpleButtonFunc?: any;
   purpleButtonText2?: string;
@@ -31,6 +32,7 @@ export const ModalBottom = ({
   title,
   content,
   isContentCenter = true,
+  isWriting = false,
   purpleButtonText,
   purpleButtonFunc,
   purpleButtonText2,
@@ -75,51 +77,63 @@ export const ModalBottom = ({
             <View style={styles.modalView}>
               <View style={{alignSelf: 'flex-start'}}>
                 {title && <Text style={[styles.title]}>{title}</Text>}
+
                 {content && (
-                  <Text
-                    style={[
-                      // fontRegular,
-                      {
-                        textAlign: isContentCenter ? 'center' : 'left',
-                        fontSize: 14,
-                        color: '#89919A',
-                      },
-                    ]}>
-                    {content}
-                  </Text>
+                  <View
+                    style={{
+                      width: Dimensions.get('window').width,
+                      // justifyContent: 'flex-start',
+                      // alignContent: 'flex-start',
+                    }}>
+                    <Text
+                      style={[
+                        fontRegular,
+                        {
+                          textAlign: isContentCenter ? 'center' : 'left',
+                          fontSize: 14,
+                          fontWeight: '400',
+                          color: '#3A424E',
+                          lineHeight: 20,
+                          marginLeft: isContentCenter ? 0 : 16,
+                          //backgroundColor: 'red',
+                        },
+                      ]}>
+                      {content}
+                    </Text>
+                  </View>
                 )}
               </View>
-              {purpleButtonText && purpleButtonText !== 'none' && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc()}>
-                  <Text style={styles.textStyle}>{purpleButtonText}</Text>
-                </TouchableOpacity>
-              )}
-              {purpleButtonText2 && (
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    {marginTop: content ? 20 : 0},
-                  ]}
-                  onPress={() => purpleButtonFunc2()}>
-                  <Text style={styles.textStyle}>{purpleButtonText2}</Text>
-                </TouchableOpacity>
-              )}
-              {whiteButtonText && whiteButtonText !== 'none' && (
-                <TouchableOpacity
-                  style={[styles.secondButton, styles.secondButtonClose]}
-                  onPress={() => whiteButtonFunc()}>
-                  <Text style={styles.secondButtonTextStyle}>
-                    {whiteButtonText}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              <View style={styles.buttonContianer}>
+                {whiteButtonText && whiteButtonText !== 'none' && (
+                  <TouchableOpacity
+                    style={[styles.secondButton, styles.secondButtonClose]}
+                    onPress={() => whiteButtonFunc()}>
+                    <Text style={styles.secondButtonTextStyle}>
+                      {whiteButtonText}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {purpleButtonText && purpleButtonText !== 'none' && (
+                  <TouchableOpacity
+                    style={[
+                      styles.button,
+                      styles.buttonClose,
+                      {
+                        width: isWriting ? '49%' : '100%',
+                      },
+                    ]}
+                    onPress={() => purpleButtonFunc()}>
+                    <Text style={styles.textStyle}>{purpleButtonText}</Text>
+                  </TouchableOpacity>
+                )}
+                {purpleButtonText2 && (
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => purpleButtonFunc2()}>
+                    <Text style={styles.textStyle}>{purpleButtonText2}</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
         </Modal>
@@ -141,13 +155,14 @@ const styles = StyleSheet.create({
   modalView: {
     width: Dimensions.get('window').width,
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingVertical: 24,
-    marginBottom: 20,
-    paddingHorizontal: Dimensions.get('window').width * 0.05,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingTop: 24,
+    paddingBottom: 45,
+    marginBottom: 24,
+    //paddingHorizontal: Dimensions.get('window').width * 0.05,
     //paddingHorizontal: 24,
-    // alignItems: 'center',
+    //alignItems: 'center',
     //shadowColor: '#000',
     /* shadowOffset: {
       width: 0,
@@ -156,6 +171,14 @@ const styles = StyleSheet.create({
     //shadowOpacity: 0.25,
     //shadowRadius: 4,
     //elevation: 5,
+  },
+  buttonContianer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: 28,
+    paddingHorizontal: 16,
+    //paddingRight: 32,
   },
   button: {
     borderRadius: 4,
@@ -166,30 +189,36 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 12,
     height: 44,
-    marginTop: 8,
+    width: '49%',
   },
   buttonClose: {
     backgroundColor: '#A055FF',
   },
   secondButtonClose: {
     backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#EFEFF3',
   },
   textStyle: {
     color: 'white',
     textAlign: 'center',
     fontSize: 14,
-    // fontFamily: 'SpoqaHanSansNeo-Regular',
     fontWeight: '700',
+    fontFamily: 'Pretendard-Bold',
   },
   secondButtonTextStyle: {
     color: '#6E7882',
     textAlign: 'center',
     fontSize: 14,
-    // fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontWeight: '400',
   },
   title: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 16,
     marginBottom: 10,
+    color: '#222222',
+    marginLeft: 16,
+    fontWeight: '600',
+    fontFamily: 'Pretendard-Bold',
   },
 });

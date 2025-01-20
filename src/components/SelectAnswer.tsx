@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   viewBox: {
     position: 'absolute',
     zIndex: 50,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'white',
     width: '100%',
     height: '100%',
     alignItems: 'center',

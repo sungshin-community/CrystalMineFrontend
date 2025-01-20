@@ -421,16 +421,27 @@ export default function BoardFragment({navigation}: Props) {
                 backgroundColor: '#F6F6F6',
                 height: 46,
                 borderRadius: 8,
-                margin: 16,
+                marginHorizontal: 16,
+                marginBottom: 40,
+                marginTop: 20,
               }}>
               <>
-                <PlusIcon style={{marginLeft: 18, marginRight: 12}} />
-                <Text
+                <PlusIcon
                   style={{
-                    color: '#89919A',
-                    fontSize: 14,
-                    fontFamily: 'SpoqaHanSansNeo-Regular',
-                  }}>
+                    marginLeft: 12,
+                    marginRight: 12,
+                    marginTop: 11,
+                    marginBottom: 11,
+                  }}
+                />
+                <Text
+                  style={[
+                    fontRegular,
+                    {
+                      color: '#89919A',
+                      fontSize: 14,
+                    },
+                  ]}>
                   새 게시판 만들기
                 </Text>
               </>
