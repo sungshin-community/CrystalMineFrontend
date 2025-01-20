@@ -32,7 +32,11 @@ import {
   getSocketToken,
 } from '../../common/messageApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {
+  Asset,
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import DeleteImageIcon from '../../components/ImageDelete';
@@ -44,7 +48,6 @@ import {OtherChat, MyChat, DateBox, formatDate} from '../../components/Chat';
 import TextEncodingPolyfill from 'text-encoding';
 import BigInt from 'big-integer';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
-
 Object.assign(global, {
   TextEncoder: TextEncodingPolyfill.TextEncoder,
   TextDecoder: TextEncodingPolyfill.TextDecoder,
@@ -267,73 +270,105 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   };
 
   const checkImagePermission = async () => {
-    request(PERMISSIONS.IOS.CAMERA).then(response => {
-      console.log(response, 'response');
-    });
-    check(
-      PERMISSIONS.IOS.PHOTO_LIBRARY ||
-        PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-    )
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            Toast.show('사진 사용 권한을 확인해주세요.');
-            break;
-          case RESULTS.DENIED:
-            if (Platform.OS === 'ios') {
-              request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result2 => {
-                if (result2 !== 'granted') {
-                  Toast.show('사진 사용 권한이 거부되었습니다.');
-                } else {
-                  setImagePermission(true);
-                }
-              });
-            } else {
-              request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(
-                result2 => {
-                  if (result2 !== 'granted') {
-                    Toast.show('사진 사용 권한이 거부되었습니다.');
-                  } else {
-                    setImagePermission(true);
-                  }
-                },
-              );
-            }
-            break;
-          case RESULTS.BLOCKED:
-            Toast.show('사진 사용 권한을 확인해주세요.');
-            break;
-          case RESULTS.GRANTED:
-            setImagePermission(true);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  const onSelectImage = () => {
-    checkImagePermission();
-    if (imagePermission) {
-      launchImageLibrary(
-        {
-          mediaType: 'photo',
-          maxWidth: 15000,
-          maxHeight: 15000,
-          selectionLimit: 1,
-        },
-        res => {
-          if (res.didCancel) {
-            return;
+    try {
+      if (Platform.OS === 'ios') {
+        const result = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+        return handlePermissionResult(result);
+      } else {
+        const androidVersion = Number(Platform.Version);
+        if (androidVersion >= 33) {
+          // Android 13 이상
+          const result = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
+          if (result === RESULTS.DENIED) {
+            const newResult = await request(
+              PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+            );
+            return handlePermissionResult(newResult);
           }
-          let tempImages: Asset[] = [...images, ...res.assets];
-          console.log('>>', res);
-          setImages(tempImages);
-        },
-      );
+          return handlePermissionResult(result);
+        } else {
+          // Android 13 미만
+          const result = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+          if (result === RESULTS.DENIED) {
+            const newResult = await request(
+              PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+            );
+            return handlePermissionResult(newResult);
+          }
+          return handlePermissionResult(result);
+        }
+      }
+    } catch (error) {
+      console.error('Permission check error:', error);
+      Toast.show('권한 확인 중 오류가 발생했습니다.');
+      return false;
     }
   };
 
+  const handlePermissionResult = async result => {
+    switch (result) {
+      case RESULTS.UNAVAILABLE:
+        Toast.show('이 기기에서는 사진 접근이 불가능합니다.');
+        return false;
+      case RESULTS.DENIED:
+        Toast.show('사진 접근 권한이 필요합니다.');
+        return false;
+      case RESULTS.LIMITED:
+        setImagePermission(true);
+        return true;
+      case RESULTS.GRANTED:
+        setImagePermission(true);
+        return true;
+      case RESULTS.BLOCKED:
+        Toast.show('설정에서 사진 접근 권한을 허용해주세요.');
+        return false;
+      default:
+        Toast.show('알 수 없는 권한 상태입니다.');
+        return false;
+    }
+  };
+
+  const onSelectImage = async () => {
+    try {
+      // 먼저 토스트 메시지로 함수가 실행되는지 확인
+      Toast.show('이미지 선택 시작');
+
+      // 안드로이드 13(API 33) 이상
+      if (Platform.OS === 'android' && Platform.Version >= 33) {
+        const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
+        Toast.show('권한 상태: ' + result);
+        if (result !== 'granted') {
+          Toast.show('사진 접근 권한이 필요합니다');
+          return;
+        }
+      }
+      // 안드로이드 13 미만
+      else if (Platform.OS === 'android') {
+        const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+        Toast.show('권한 상태: ' + result);
+        if (result !== 'granted') {
+          Toast.show('사진 접근 권한이 필요합니다');
+          return;
+        }
+      }
+
+      // 이미지 피커 실행
+      const options = {
+        mediaType: 'photo',
+        selectionLimit: 1,
+      };
+
+      Toast.show('이미지 피커 실행');
+      const result = await launchImageLibrary(options);
+
+      if (result.assets) {
+        setImages([...images, ...result.assets]);
+      }
+    } catch (error) {
+      Toast.show('에러 발생: ' + error.message);
+      console.error(error);
+    }
+  };
   const onPressButton = async () => {
     const checkPermission = async () => {
       const cameraPermission = await Camera.getCameraPermissionStatus();
@@ -540,12 +575,14 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                 paddingVertical: 5,
               }}>
               <View style={styles.Icon}>
-                <Pressable
-                  onPress={onSelectImage}
-                  style={{marginRight: 17, marginTop: -40}}
-                  hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('Plus pressed'); // 이 로그가 보이는지 확인
+                    onSelectImage();
+                  }}
+                  style={{marginRight: 17, marginTop: -40}}>
                   <Plus />
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
               <View style={styles.inputBox}>
