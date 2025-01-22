@@ -213,7 +213,8 @@ const ProfileModify: React.FC<Props> = ({navigation}: Props) => {
       <ModalBottom
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        title="소속 학과 선택"
+        isProfileModify={true}
+        title="소속 학과를 선택해주세요"
         content={
           <ScrollView style={styles.majorList}>
             {majorList.map((major, index) => (
@@ -315,7 +316,9 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   majorList: {
-    maxHeight: 300,
+    height: 250,
+    marginHorizontal: 16,
+    // marginBottom: 16,
   },
   textDescription: {
     fontSize: 15,

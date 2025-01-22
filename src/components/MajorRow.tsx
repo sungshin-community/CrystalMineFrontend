@@ -4,12 +4,11 @@ import {View} from 'react-native';
 import styled from 'styled-components';
 import Checked from '../../resources/icon/Checked';
 
-const TouchMajor = styled.Pressable`
-  margin: 12px;
-`;
+const TouchMajor = styled.Pressable``;
 
 const MajorOption = styled.Text`
-  font-size: 17px;
+  font-size: 14px;
+  font-family: 'Pretendard-Regular';
   direction: ltr;
 `;
 
@@ -34,7 +33,13 @@ export const MajorRow = (props: Props) => {
       key={major.id}
       value={major.name}
       onPress={() => selectMajor(major)}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          height: 40,
+          alignItems: 'center',
+        }}>
         <MajorOption style={style}>{major.name}</MajorOption>
         <View>{selected ? <Checked /> : null}</View>
       </View>
