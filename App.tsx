@@ -1980,6 +1980,7 @@ const App = () => {
                 component={MyActivity}
                 options={{title: '내 활동'}}
               />
+              {/* 
               <Stack.Screen
                 name="ProfileModify"
                 component={ProfileModify}
@@ -1989,9 +1990,38 @@ const App = () => {
                   ),
                   headerTitleAlign: 'left',
                 }}
+              /> */}
+              <Stack.Screen
+                name="ProfileModify"
+                component={ProfileModify}
+                options={({navigation}) => ({
+                  title: '기본 프로필 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
 
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}
                 options={{
@@ -2001,6 +2031,36 @@ const App = () => {
                   },
                   headerTitleAlign: 'left',
                 }}
+              /> */}
+
+              <Stack.Screen
+                name="ProfileModifySujeonggu"
+                component={ProfileModifySujeonggu}
+                options={({navigation}) => ({
+                  title: '수정구 프로필 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               {/* 마이페이지 - 문의하기 */}
               <Stack.Screen
@@ -3927,7 +3987,7 @@ const App = () => {
                 component={MyActivity}
                 options={{title: '내 활동'}}
               />
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="ProfileModify"
                 component={ProfileModify}
                 options={{
@@ -3936,9 +3996,38 @@ const App = () => {
                   ),
                   headerTitleAlign: 'left',
                 }}
+              /> */}
+              <Stack.Screen
+                name="ProfileModify"
+                component={ProfileModify}
+                options={({navigation}) => ({
+                  title: '기본 프로필 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
 
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="ProfileModifySujeonggu"
                 component={ProfileModifySujeonggu}
                 options={{
@@ -3948,7 +4037,38 @@ const App = () => {
                   },
                   headerTitleAlign: 'left',
                 }}
+              /> */}
+
+              <Stack.Screen
+                name="ProfileModifySujeonggu"
+                component={ProfileModifySujeonggu}
+                options={({navigation}) => ({
+                  title: '수정구 프로필 수정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
+
               {/* 마이페이지 - 문의하기 */}
               <Stack.Screen
                 name="QuestionList"

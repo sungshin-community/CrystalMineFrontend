@@ -106,7 +106,6 @@ export const ModalBottom = ({
                             color: '#3A424E',
                             lineHeight: 20,
                             marginLeft: isContentCenter ? 0 : 16,
-                            backgroundColor: 'green',
                           },
                         ]}>
                         {content}
