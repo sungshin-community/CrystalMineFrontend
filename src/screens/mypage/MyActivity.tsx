@@ -45,7 +45,7 @@ const MyActivity = () => {
 
   const transformData = (rawData: any): PostItem[] => {
     if (!Array.isArray(rawData)) {
-      // 수정구 데이터 구조 처리
+      // 수정구 데이터 구조 처리.
       if (rawData?.data?.content) {
         return rawData.data.content.map((item: any) => ({
           id: item.ptPostId?.toString() || '',
@@ -180,7 +180,9 @@ const MyActivity = () => {
         ))}
       </View>
       {loading ? (
-        <ActivityIndicator size="large" color="#A055FF" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#A055FF" />
+        </View>
       ) : (
         <FlatList
           data={posts}
@@ -199,6 +201,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabContainer: {
     flexDirection: 'row',
