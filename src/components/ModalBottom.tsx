@@ -17,6 +17,7 @@ interface Props {
   content?: any;
   isContentCenter?: boolean;
   isWriting?: boolean;
+  isProfileModify?: boolean;
   purpleButtonText?: string;
   purpleButtonFunc?: any;
   purpleButtonText2?: string;
@@ -33,6 +34,7 @@ export const ModalBottom = ({
   content,
   isContentCenter = true,
   isWriting = false,
+  isProfileModify,
   purpleButtonText,
   purpleButtonFunc,
   purpleButtonText2,
@@ -74,7 +76,13 @@ export const ModalBottom = ({
             />
           )}
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View
+              style={[
+                styles.modalView,
+                {
+                  height: isProfileModify ? 375 : 'auto',
+                },
+              ]}>
               <View style={{alignSelf: 'flex-start'}}>
                 {title && <Text style={[styles.title]}>{title}</Text>}
 
@@ -85,21 +93,25 @@ export const ModalBottom = ({
                       // justifyContent: 'flex-start',
                       // alignContent: 'flex-start',
                     }}>
-                    <Text
-                      style={[
-                        fontRegular,
-                        {
-                          textAlign: isContentCenter ? 'center' : 'left',
-                          fontSize: 14,
-                          fontWeight: '400',
-                          color: '#3A424E',
-                          lineHeight: 20,
-                          marginLeft: isContentCenter ? 0 : 16,
-                          //backgroundColor: 'red',
-                        },
-                      ]}>
-                      {content}
-                    </Text>
+                    {isProfileModify ? (
+                      <>{content}</>
+                    ) : (
+                      <Text
+                        style={[
+                          fontRegular,
+                          {
+                            textAlign: isContentCenter ? 'center' : 'left',
+                            fontSize: 14,
+                            fontWeight: '400',
+                            color: '#3A424E',
+                            lineHeight: 20,
+                            marginLeft: isContentCenter ? 0 : 16,
+                            backgroundColor: 'green',
+                          },
+                        ]}>
+                        {content}
+                      </Text>
+                    )}
                   </View>
                 )}
               </View>
@@ -176,7 +188,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
-    marginTop: 28,
+    // marginTop: 16,
     paddingHorizontal: 16,
     //paddingRight: 32,
   },

@@ -559,7 +559,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
 
           <View
             style={{
-              paddingLeft: 24,
               backgroundColor: '#fff',
               paddingBottom: isFocused
                 ? Platform.OS == 'ios'
@@ -580,7 +579,13 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                     console.log('Plus pressed'); // 이 로그가 보이는지 확인
                     onSelectImage();
                   }}
-                  style={{marginRight: 17, marginTop: -40}}>
+                  hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+                  style={
+                    {
+                      // marginRight: 17,
+                      // marginTop: -40,
+                    }
+                  }>
                   <Plus />
                 </TouchableOpacity>
               </View>
@@ -589,10 +594,10 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                 {photoPath || images.length > 0 ? (
                   <View
                     style={{
-                      width: 155,
-                      height: 150,
-                      marginTop: 5,
-                      marginBottom: -40,
+                      width: 100,
+                      height: 100,
+                      marginTop: 10,
+                      marginBottom: 10,
                     }}>
                     {photoPath ? (
                       <Image
@@ -611,8 +616,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                       }}
                       style={{
                         position: 'absolute',
-                        right: 47,
-                        top: -5,
+                        right: 0,
                       }}
                       hitSlop={20}>
                       <DeleteImageIcon />
@@ -638,30 +642,37 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                     />
                   </View>
                 )}
-
-                <View
-                  style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
-                  <Pressable
-                    onPress={() => onSubmitPress()}
-                    style={{
-                      paddingBottom: Platform.OS === 'ios' ? 3 : 5,
-                      bottom: 0,
-                    }}>
-                    {isLoading ? (
-                      <ActivityIndicator
-                        size="large"
-                        color={'#A055FF'}
-                        animating={isLoading}
-                        style={{zIndex: 100}}
-                      />
-                    ) : (
-                      <CommentSendIcon
-                        width={28}
-                        fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
-                      />
-                    )}
-                  </Pressable>
-                </View>
+              </View>
+              <View
+                style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
+                <Pressable
+                  onPress={() => onSubmitPress()}
+                  style={{
+                    paddingBottom: Platform.OS === 'ios' ? 3 : 0,
+                    bottom: 0,
+                  }}>
+                  {isLoading ? (
+                    <ActivityIndicator
+                      size="large"
+                      color={'#A055FF'}
+                      animating={isLoading}
+                      style={{zIndex: 100}}
+                    />
+                  ) : (
+                    <CommentSendIcon
+                      width={32}
+                      fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
+                      style={{
+                        position: 'relative',
+                        top: 0,
+                        right: 0,
+                        marginLeft: 9,
+                        marginRight: 16,
+                        marginBottom: 6,
+                      }}
+                    />
+                  )}
+                </Pressable>
               </View>
             </View>
           </View>
@@ -760,34 +771,36 @@ const styles = StyleSheet.create({
   },
   Icon: {
     flexDirection: 'row',
-    width: 50,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-end',
-    paddingBottom: 6,
-    marginLeft: 5,
+    // backgroundColor: 'red',
+    marginRight: 9,
+    marginLeft: 12,
+    paddingBottom: 8,
   },
   inputBox: {
     backgroundColor: '#F2F2F2',
-    width: Dimensions.get('window').width - 100,
-    borderRadius: 12,
-    paddingLeft: 14,
-    paddingRight: 5,
+    width: Dimensions.get('window').width - 110,
+    borderRadius: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   inputContainer: {
     flex: 1,
-    marginRight: 10,
   },
   input: {
-    fontSize: 13,
-    width: Dimensions.get('window').width - 200,
-    paddingVertical: 5,
-    paddingTop: Platform.OS == 'ios' ? 13 : 0,
-    minHeight: 44,
-    maxHeight: 230,
+    fontSize: 14,
+    fontFamily: 'Pretendard-Regular',
+    // width: Dimensions.get('window').width - 200,
+    // width: '100%',
+    // paddingBottom: 10,
+    // paddingTop: Platform.OS == 'ios' ? 13 : 10,
+    minHeight: 38,
+    maxHeight: 92,
     color: '#222222',
   },
   area: {
