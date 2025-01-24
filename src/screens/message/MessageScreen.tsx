@@ -331,12 +331,12 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const onSelectImage = async () => {
     try {
       // 먼저 토스트 메시지로 함수가 실행되는지 확인
-      Toast.show('이미지 선택 시작');
+      // Toast.show('이미지 선택 시작');
 
       // 안드로이드 13(API 33) 이상
       if (Platform.OS === 'android' && Platform.Version >= 33) {
         const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        Toast.show('권한 상태: ' + result);
+        // Toast.show('권한 상태: ' + result);
         if (result !== 'granted') {
           Toast.show('사진 접근 권한이 필요합니다');
           return;
@@ -358,7 +358,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
         selectionLimit: 1,
       };
 
-      Toast.show('이미지 피커 실행');
+      // Toast.show('이미지 피커 실행');
       const result = await launchImageLibrary(options);
 
       if (result.assets) {
@@ -378,7 +378,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
           Toast.show('카메라 사용 권한이 거부되었습니다.');
         }
       } else {
-        console.log('권한 확인 완료');
+        // console.log('권한 확인 완료');
       }
     };
     checkPermission();
