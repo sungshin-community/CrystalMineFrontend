@@ -1975,10 +1975,35 @@ const App = () => {
                   ),
                 })}
               />
+
               <Stack.Screen
                 name="MyActivity"
                 component={MyActivity}
-                options={{title: '내 활동'}}
+                options={({navigation}) => ({
+                  title: '내 활동',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               {/* 
               <Stack.Screen
@@ -3982,10 +4007,40 @@ const App = () => {
                   // ),
                 // })} */}
 
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="MyActivity"
                 component={MyActivity}
                 options={{title: '내 활동'}}
+              /> */}
+
+              <Stack.Screen
+                name="MyActivity"
+                component={MyActivity}
+                options={({navigation}) => ({
+                  title: '내 활동',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
               />
               {/* <Stack.Screen
                 name="ProfileModify"
