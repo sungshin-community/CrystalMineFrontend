@@ -662,10 +662,11 @@ const styles = StyleSheet.create({
   hotTagBox: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
   hotTag: {
-    width: 42,
-    height: 23,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -674,7 +675,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3E9FF',
     borderRadius: 4,
     fontWeight: 'bold',
-    marginBottom: 10,
     marginRight: 10,
   },
   yearJob: {
@@ -684,6 +684,7 @@ const styles = StyleSheet.create({
   contentTitle: {
     color: '#222',
     fontSize: 16,
+    marginTop: 10,
     marginBottom: 5,
     fontFamily: 'Pretendard-Bold',
   },

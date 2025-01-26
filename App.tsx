@@ -2102,27 +2102,33 @@ const App = () => {
                 name="SpherePostScreen"
                 component={SpherePostScreen}
                 options={({navigation}) => ({
-                  title: '수정구',
-                  headerTintColor: '#222222',
-                  headerTitleStyle: {
-                    fontSize: 20,
-                    fontWeight: '700',
-                  },
+                  title: '',
                   headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: '#222222',
+                          marginLeft: 3
+                        }}>
+                        수정구
+                      </Text>
+                    </View>
                   ),
                 })}
               />

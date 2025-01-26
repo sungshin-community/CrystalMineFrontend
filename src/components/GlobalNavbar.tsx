@@ -363,12 +363,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '수정구',
-          headerTintColor: '#222222',
-          headerTitleStyle: {
-            fontSize: 20,
-            fontWeight: '700',
-          },
+          title: '',
+
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <View style={styles.iconContainer}>
@@ -382,6 +378,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
               </View>
             );
           },
+          headerLeft: () => (
+            <Text
+              style={{
+                color: '#222222',
+                fontSize: 20,
+                fontWeight: '700',
+                marginLeft: 20,
+              }}>
+              수정구
+            </Text>
+          ),
 
           headerRight: () => (
             <View
