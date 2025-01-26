@@ -254,12 +254,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
           height: Platform.OS === 'android' ? 78 : 112,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          shadowColor: '#000000',
-          shadowOffset: {width: 0, height: -2},
-          shadowOpacity: 0.1,
-          shadowRadius: 3,
-          elevation: 5,
           paddingHorizontal: 21,
+    
         },
         tabBarIconStyle: {
           justifyContent: 'space-between',
@@ -363,12 +359,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
           },
         })}
         options={{
-          title: '수정구',
-          headerTintColor: '#222222',
-          headerTitleStyle: {
-            fontSize: 20,
-            fontWeight: '700',
-          },
+          title: '',
+
           tabBarIcon: ({size, color, focused}: Props) => {
             return (
               <View style={styles.iconContainer}>
@@ -382,6 +374,17 @@ function GlobalNavbar({navigation}: ScreenProps) {
               </View>
             );
           },
+          headerLeft: () => (
+            <Text
+              style={{
+                color: '#222222',
+                fontSize: 20,
+                fontWeight: '700',
+                marginLeft: 20,
+              }}>
+              수정구
+            </Text>
+          ),
 
           headerRight: () => (
             <View

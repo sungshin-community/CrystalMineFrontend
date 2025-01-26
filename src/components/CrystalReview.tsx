@@ -157,7 +157,7 @@ const CrystalReview = () => {
         <View style={styles.hotTagBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.hotTag}>
-              <Hot style={{marginTop: 5}} />
+              <Hot />
               HOT
             </Text>
             <Text style={styles.yearJob}>{item.category} </Text>
@@ -236,10 +236,17 @@ const CrystalReview = () => {
                       <View style={styles.hotTagBox}>
                         <View
                           style={{flexDirection: 'row', alignItems: 'center'}}>
-                          <Text style={styles.hotTag}>
-                            <Hot style={{marginTop: 5}} />
-                            HOT
-                          </Text>
+                          <View style={styles.hotTag}>
+                            <Hot />
+                            <Text
+                              style={{
+                                color: '#A055FF',
+                                fontWeight: '700',
+                                marginLeft: 2,
+                              }}>
+                              HOT
+                            </Text>
+                          </View>
                           <Text style={styles.yearJob}>{item.category} </Text>
                           <Text style={styles.yearJob}>·</Text>
                           <Text style={styles.yearJob}>{item.job} </Text>
@@ -352,13 +359,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   hotTag: {
-    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 6,
     paddingVertical: 4,
     textAlign: 'center',
-    color: '#A055FF',
     backgroundColor: '#F3E9FF',
     borderRadius: 4,
     fontWeight: 'bold',

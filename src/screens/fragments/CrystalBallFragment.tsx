@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     borderBottomWidth: 1,
-    borderBottomColor: '#ffffff',
+    borderBottomColor: '#EFEFF3',
   },
   tabButton: {
     flex: 1,
