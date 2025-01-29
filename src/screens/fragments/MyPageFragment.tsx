@@ -117,6 +117,8 @@ const MyPageFragment = ({navigation}: Props) => {
   const formatNumber = num => {
     return num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
+  const [isProfileExists, setIsProfileExists] = useState(true); // 프로필 존재 여부 상태 추가
+
   useEffect(() => {
     async function getUserInfo() {
       if (!isInited) {
@@ -138,6 +140,11 @@ const MyPageFragment = ({navigation}: Props) => {
         const pantheonResult = await getPantheonProfile();
         if (pantheonResult.code === 'READ_PANTHEON_PROFILE_SUCCESS') {
           setPantheonProfile(pantheonResult.data);
+          setIsProfileExists(true);
+        } else if (pantheonResult.code === 'PT_ACCOUNT_NOT_FOUND') {
+          // 프로필이 없는 경우
+          setIsProfileExists(false);
+          setPantheonProfile(null);
         }
       } else {
         setErrorStatus(userDto.status);
@@ -309,7 +316,9 @@ const MyPageFragment = ({navigation}: Props) => {
                     <View style={{width: 20}} />
                     {/* 수정구 프로필 */}
                     <View style={{position: 'relative'}}>
-                      <TouchableOpacity onPress={handleProfileModifySujeonggu}>
+                      <TouchableOpacity
+                        onPress={handleProfileModifySujeonggu}
+                        disabled={!isProfileExists}>
                         <ProfileIcon />
                       </TouchableOpacity>
                       <View
@@ -330,33 +339,41 @@ const MyPageFragment = ({navigation}: Props) => {
                         </Text>
                         <Text
                           style={{
-                            marginTop: 3,
-                            fontSize: 13,
-                            // fontFamily: 'SpoqaHanSansNeo-Regular',
-                            marginBottom: Platform.OS === 'ios' ? 5 : 0,
-                          }}>
-                          수정구 전용 프로필
-                        </Text>
-                        <Text
-                          style={{
-                            marginTop: 3,
+                            marginTop: 5,
                             fontSize: 13,
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
-                            color: '#89919A',
+                            color: isProfileExists ? '#000000' : '#FF0000',
+                            textAlign: 'center',
+                            width: '100%',
                           }}>
-                          {user?.department}/{pantheonProfile?.ptJob}
+                          {isProfileExists
+                            ? '수정구 전용 프로필'
+                            : '수정구탭에서\n 프로필을 \n만들어주세요!'}
                         </Text>
-                        <Text
-                          style={{
-                            marginTop: 3,
-                            fontSize: 13,
-                            marginBottom: Platform.OS === 'ios' ? 5 : 0,
-                            color: '#89919A',
-                          }}>
-                          {pantheonProfile?.experienceYears === 0
-                            ? '신입'
-                            : `${pantheonProfile?.experienceYears}년차`}
-                        </Text>
+                        {isProfileExists && pantheonProfile && (
+                          <>
+                            <Text
+                              style={{
+                                marginTop: 3,
+                                fontSize: 13,
+                                marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                                color: '#89919A',
+                              }}>
+                              {user?.department}/{pantheonProfile?.ptJob}
+                            </Text>
+                            <Text
+                              style={{
+                                marginTop: 3,
+                                fontSize: 13,
+                                marginBottom: Platform.OS === 'ios' ? 5 : 0,
+                                color: '#89919A',
+                              }}>
+                              {pantheonProfile?.experienceYears === 0
+                                ? '신입'
+                                : `${pantheonProfile?.experienceYears}년차`}
+                            </Text>
+                          </>
+                        )}
                       </View>
                     </View>
                   </View>
@@ -493,7 +510,6 @@ const MyPageFragment = ({navigation}: Props) => {
                         fontFamily: 'SpoqaHanSansNeo-Bold',
                       }}>
                       {formatNumber(user?.point)}P{' '}
-
                     </Text>
 
                     <RightArrow />
@@ -742,7 +758,6 @@ const MyPageFragment = ({navigation}: Props) => {
                 <Text style={styles.menuText}>앱 버전</Text>
                 <View style={styles.arrowContainer}>
                   <Text style={styles.versionText}>1.5.2</Text>
-
                 </View>
               </View>
               <TouchableHighlight
