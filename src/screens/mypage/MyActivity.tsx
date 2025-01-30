@@ -17,13 +17,14 @@ import {
 
 interface PostItem {
   id: string;
+  title: string;
   content: string;
   createdAt: string;
   likeCount: number;
   commentCount: number;
   boardName: string;
   boardId: string | null;
-  postId: string;
+  postId: number;
 }
 import client from '../../common/client';
 type Tab = '광산' | '수정구';
@@ -45,30 +46,64 @@ const MyActivity = () => {
 
   const transformData = (rawData: any): PostItem[] => {
     if (!Array.isArray(rawData)) {
-      // 수정구 데이터 구조 처리.
+      // 수정구 데이터 구조 처리
       if (rawData?.data?.content) {
-        return rawData.data.content.map((item: any) => ({
-          id: item.ptPostId?.toString() || '',
-          content: item.content || '내용 없음',
-          createdAt: item.createdAt || '시간 정보 없음',
-          likeCount: item.likeCount || 0,
-          commentCount: item.commentCount || 0,
-          boardName: '수정구',
-          boardId: null,
-          postId: item.ptPostId?.toString() || '',
-        }));
+        if (activeSubTab === '내가 쓴 댓글') {
+          // 수정구 댓글 데이터 처리
+          return rawData.data.content.map((item: any) => ({
+            id: item.ptCommentId?.toString() || '',
+            title: item.ptPostContent || '게시글 내용 없음', // 댓글이 달린 게시글의 내용
+            content: item.content || '댓글 내용 없음',
+            createdAt: item.createdAt || '시간 정보 없음',
+            likeCount: item.likeCount || 0,
+            commentCount: 0, // 댓글에는 댓글 수가 없으므로 0으로 설정
+            boardName: '수정구',
+            boardId: null,
+            postId: item.ptPostId?.toString() || '',
+            thumbnails: item.thumbnails ?? [],
+          }));
+        } else if (activeSubTab === '스크랩한 글') {
+          // 스크랩한 글 처리
+          return rawData.data.content.map((item: any) => ({
+            id: item.ptPostId?.toString() || '',
+            title: item.title || '제목 없음',
+            content: item.content || '내용 없음', // content 추가
+            createdAt: item.createdAt || '시간 정보 없음',
+            likeCount: item.likeCount || 0,
+            commentCount: item.ptCommentCount || 0,
+            boardName: '수정구',
+            boardId: null,
+            postId: item.ptPostId,
+          }));
+        } else {
+          // 기존 게시글 데이터 처리
+          return rawData.data.content.map((item: any) => ({
+            id: item.ptPostId?.toString() || '',
+            title: item.title || '제목 없음',
+            content: item.content || '내용 없음',
+            createdAt: item.createdAt || '시간 정보 없음',
+            likeCount: item.likeCount || 0,
+            commentCount: item.ptCommentCount || 0,
+            boardName: '수정구',
+            boardId: null,
+            postId: item.ptPostId,
+            thumbnails: item.thumbnails || [],
+          }));
+        }
       }
       return [];
     }
     return rawData.map((item: any, index: number) => ({
       id: item.id || index.toString(),
       content: item.content || '내용 없음',
+      title: item.title || '제목 없음',
       createdAt: item.createdAt || '시간 정보 없음',
       likeCount: item.likeCount || 0,
       commentCount: item.commentCount || 0,
       boardName: item.boardName || '게시판 이름 없음',
-      boardId: item.boardId || null,
+      boardId: `${item.boardType}_${item.boardContentType}`, // boardId를 문자열로 변환
       postId: item.postId || item.id,
+      thumbnails: item.thumbnails || [],
     }));
   };
 
@@ -80,6 +115,7 @@ const MyActivity = () => {
       if (activeTab === '광산') {
         if (activeSubTab === '내가 쓴 글') {
           data = await getMyPostList(0, 'createdAt');
+          console.log('원본 API 응답:', data);
         } else if (activeSubTab === '내가 쓴 댓글') {
           data = await getMyCommentList(0, 'createdAt');
         } else if (activeSubTab === '스크랩한 글') {
@@ -116,23 +152,51 @@ const MyActivity = () => {
       setLoading(false);
     }
   };
+  const getPostDetail = (postId: string) => {
+    return client.get(`/posts/${postId}`);
+  };
 
   const renderItem = ({item}: {item: PostItem}) => (
     <TouchableOpacity
       style={styles.postItem}
-      onPress={() =>
-        navigation.navigate('PostDetail', {
-          postId: item.postId,
-          boardId: item.boardId,
-        })
-      }>
+      onPress={() => {
+        try {
+          if (activeTab === '광산') {
+            if (!item.boardId) {
+              console.error('boardId is missing for 광산 post');
+              return;
+            }
+
+            const [boardType, boardContentType] = item.boardId.split('_');
+
+            navigation.navigate('PostScreen', {
+              postId: Number(item.postId),
+              boardType,
+              boardContentType,
+            });
+          } else {
+            // 수정구의 경우
+
+            navigation.navigate('SpherePostScreen', {
+              ptPostId: Number(item.postId),
+            });
+          }
+        } catch (error) {
+          console.error('Navigation error:', error);
+        }
+      }}>
       {/* 게시판 이름과 작성 시간 */}
       <View style={styles.postHeader}>
         <Text style={styles.boardName}>{item.boardName}</Text>
         <Text style={styles.postTime}>{item.createdAt}</Text>
       </View>
-      {/* 게시글 내용 */}
-      <Text style={styles.postContent}>{item.content}</Text>
+      <Text style={styles.postContent}>
+        {(activeTab === '광산' && activeSubTab === '내가 쓴 글') ||
+        (activeTab === '수정구' && activeSubTab === '스크랩한 글') ||
+        (activeTab === '광산' && activeSubTab === '내가 쓴 댓글')
+          ? item.content
+          : item.title}
+      </Text>
       <View style={styles.postFooter}>
         <View style={styles.postStats}>
           <Text>좋아요 {item.likeCount}개</Text>
@@ -182,6 +246,16 @@ const MyActivity = () => {
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#A055FF" />
+        </View>
+      ) : posts.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>
+            {activeSubTab === '내가 쓴 글'
+              ? '작성한 글이 없습니다.'
+              : activeSubTab === '내가 쓴 댓글'
+              ? '작성한 댓글이 없습니다.'
+              : '스크랩한 글이 없습니다.'}
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -284,6 +358,17 @@ const styles = StyleSheet.create({
   },
   commentCount: {
     marginLeft: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#888888',
+    textAlign: 'center',
   },
 });
 
