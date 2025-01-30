@@ -2209,7 +2209,7 @@ const App = () => {
                           fontSize: 20,
                           fontWeight: '700',
                           color: '#222222',
-                          marginLeft: 3
+                          marginLeft: 3,
                         }}>
                         수정구
                       </Text>
