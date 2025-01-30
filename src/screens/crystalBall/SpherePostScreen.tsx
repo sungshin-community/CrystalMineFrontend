@@ -106,42 +106,57 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
 
   const fetchDetailData = async () => {
     try {
-      let data: pantheonDetail | any = {};
+      let response: any = {};
+      console.log('API 호출 시작, ptPostId:', ptPostId);
+      console.log('isQuestion:', isQuestion);
+      console.log('isFree:', isFree);
+      console.log('isReview:', isReview);
+
       if (isQuestion) {
-        data = await getPantheonCuriousDetail(ptPostId);
+        response = await getPantheonCuriousDetail(ptPostId);
       } else if (isFree) {
-        data = await getPantheonFreeDetail(ptPostId);
+        response = await getPantheonFreeDetail(ptPostId);
       } else if (isReview) {
-        data = await getPantheonReviewDetail(ptPostId);
+        response = await getPantheonReviewDetail(ptPostId);
       }
-      setPostData(data);
-      console.log('글 상세 데이터: ', data);
-      console.log('글 상세 조회 성공');
+
+      // response 자체가 데이터이므로 바로 response를 사용
+      if (response) {
+        console.log('설정할 postData:', response);
+        setPostData(response);
+        console.log('글 상세 조회 성공');
+      } else {
+        console.log('데이터가 없음');
+      }
     } catch (error) {
-      console.error('글 상세 조회 실패', error);
+      console.error('글 상세 조회 실패:', error);
     } finally {
       setIsInitialLoading(false);
     }
   };
-
   const fetchCommentData = async () => {
     try {
-      let data = [];
+      let response = null;
       if (isQuestion) {
-        data = await getPantheonCuriousComment(ptPostId);
+        response = await getPantheonCuriousComment(ptPostId);
       } else if (isFree) {
-        data = await getPantheonFreeComment(ptPostId);
+        response = await getPantheonFreeComment(ptPostId);
       } else if (isReview) {
-        data = await getPantheonReviewComment(ptPostId);
+        response = await getPantheonReviewComment(ptPostId);
       }
-      const selectedData = data.find(
-        (comment: pantheonComment) => comment.isSelected === true,
-      );
-      setComments(data);
-      setSelectComment(selectedData || null);
-      console.log('댓글 조회 성공');
+
+      if (response) {
+        const selectedData = response.find(
+          (comment: pantheonComment) => comment.isSelected === true,
+        );
+        setComments(response);
+        setSelectComment(selectedData || null);
+        console.log('댓글 조회 성공');
+      } else {
+        console.log('댓글 데이터가 없습니다');
+      }
     } catch (error) {
-      console.error('댓글 조회 실패', error);
+      console.error('댓글 조회 실패:', error);
     }
   };
 
@@ -600,20 +615,20 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
             {postData?.content}
           </Text>
 
-          {postData?.thumbnails.length !== 0 && (
+          {postData?.thumbnails && postData.thumbnails.length > 0 && (
             <View style={{flexDirection: 'row', marginTop: 16}}>
               <ScrollView
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}>
-                {postData?.thumbnails.map((url: any, index: number) => (
+                {postData.thumbnails.map((url: any, index: number) => (
                   <TouchableOpacity
                     key={index}
-                    onPress={() =>
+                    onPress={() => {
                       navigation.navigate('ImageViewerScreen', {
-                        imageUrls: imgUrlCoverting(postData?.images),
+                        imageUrls: imgUrlCoverting(postData?.images || []),
                         index: index,
-                      })
-                    }>
+                      });
+                    }}>
                     <Image
                       style={{
                         width: 120,

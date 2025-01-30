@@ -25,6 +25,7 @@ interface PostItem {
   boardName: string;
   boardId: string | null;
   postId: number;
+  thumbnails?: string[];
 }
 import client from '../../common/client';
 type Tab = '광산' | '수정구';
@@ -46,44 +47,47 @@ const MyActivity = () => {
 
   const transformData = (rawData: any): PostItem[] => {
     if (!Array.isArray(rawData)) {
+      console.log('댓글 원본 데이터:', rawData.data.content); // 실제 데이터 구조 확인
+
       // 수정구 데이터 구조 처리
       if (rawData?.data?.content) {
         if (activeSubTab === '내가 쓴 댓글') {
           // 수정구 댓글 데이터 처리
           return rawData.data.content.map((item: any) => ({
             id: item.ptCommentId?.toString() || '',
-            title: item.ptPostContent || '게시글 내용 없음', // 댓글이 달린 게시글의 내용
+            title: item.ptPostContent || '게시글 내용 없음',
             content: item.content || '댓글 내용 없음',
             createdAt: item.createdAt || '시간 정보 없음',
-            likeCount: item.likeCount || 0,
-            commentCount: 0, // 댓글에는 댓글 수가 없으므로 0으로 설정
+            likeCount: item.likeCount || 0, // 원본 게시글의 좋아요 수
+            commentCount: item.ptCommentCount || 0, // 원본 게시글의 댓글 수
             boardName: '수정구',
             boardId: null,
             postId: item.ptPostId?.toString() || '',
-            thumbnails: item.thumbnails ?? [],
+            thumbnails: item.thumbnails || [],
           }));
         } else if (activeSubTab === '스크랩한 글') {
           // 스크랩한 글 처리
           return rawData.data.content.map((item: any) => ({
             id: item.ptPostId?.toString() || '',
             title: item.title || '제목 없음',
-            content: item.content || '내용 없음', // content 추가
+            content: item.content || '내용 없음',
             createdAt: item.createdAt || '시간 정보 없음',
-            likeCount: item.likeCount || 0,
-            commentCount: item.ptCommentCount || 0,
+            likeCount: item.likeCount || 0, // likeCount 필드 명확히
+            commentCount: item.ptCommentCount || 0, // ptCommentCount로 변경
             boardName: '수정구',
             boardId: null,
             postId: item.ptPostId,
+            thumbnails: item.thumbnails || [],
           }));
         } else {
-          // 기존 게시글 데이터 처리
+          // 일반 게시글 데이터 처리
           return rawData.data.content.map((item: any) => ({
             id: item.ptPostId?.toString() || '',
             title: item.title || '제목 없음',
             content: item.content || '내용 없음',
             createdAt: item.createdAt || '시간 정보 없음',
-            likeCount: item.likeCount || 0,
-            commentCount: item.ptCommentCount || 0,
+            likeCount: item.likeCount || 0, // likeCount 필드 명확히
+            commentCount: item.ptCommentCount || 0, // ptCommentCount로 변경
             boardName: '수정구',
             boardId: null,
             postId: item.ptPostId,
@@ -115,7 +119,6 @@ const MyActivity = () => {
       if (activeTab === '광산') {
         if (activeSubTab === '내가 쓴 글') {
           data = await getMyPostList(0, 'createdAt');
-          console.log('원본 API 응답:', data);
         } else if (activeSubTab === '내가 쓴 댓글') {
           data = await getMyCommentList(0, 'createdAt');
         } else if (activeSubTab === '스크랩한 글') {
@@ -125,86 +128,101 @@ const MyActivity = () => {
         let response;
         if (activeSubTab === '내가 쓴 글') {
           response = await client.get('/pantheon-common/my/pt-post');
-          data = response.data;
         } else if (activeSubTab === '내가 쓴 댓글') {
           response = await client.get('/pantheon-comments/my/pt-comment');
-          data = response.data;
         } else if (activeSubTab === '스크랩한 글') {
           response = await client.get('/pantheon-common/my/pt-scrap');
-          data = response.data;
         }
-        console.log('수정구 응답:', response?.data);
+        data = response?.data;
+        console.log('✅ API 응답 데이터 확인:', JSON.stringify(data, null, 2)); // API 응답 구조 확인
       }
 
       if (data) {
         const transformedData = transformData(data);
-        console.log('변환된 데이터:', {
-          activeTab,
-          activeSubTab,
-          dataLength: transformedData.length,
-          firstItem: transformedData[0],
-        });
+        console.log('✅ 변환된 데이터:', transformedData);
         setPosts(transformedData);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('❌ 데이터 가져오기 실패:', error);
     } finally {
       setLoading(false);
     }
   };
+
   const getPostDetail = (postId: string) => {
     return client.get(`/posts/${postId}`);
   };
 
-  const renderItem = ({item}: {item: PostItem}) => (
-    <TouchableOpacity
-      style={styles.postItem}
-      onPress={() => {
-        try {
-          if (activeTab === '광산') {
-            if (!item.boardId) {
-              console.error('boardId is missing for 광산 post');
-              return;
+  const renderItem = ({item}: {item: PostItem}) => {
+    // postData가 undefined일 경우 빈 객체로 처리
+    const postData = item || {};
+
+    console.log('postData:', postData); // postData 출력
+    if (!item) {
+      console.error('item이 존재하지 않습니다.');
+      return null; // item이 없을 경우 렌더링하지 않음
+    }
+
+    const thumbnails = (postData?.thumbnails ?? []) || [];
+
+    const thumbnailCount = thumbnails.length; // 이제 정상적으로 length를 참조할 수 있음
+
+    console.log('thumbnailCount:', thumbnailCount); // 이제 정상적으로 length를 출력할 수 있음
+
+    // thumbnails가 비어 있으면 길이가 0인 배열로 처리
+    if (thumbnails.length === 0) {
+      console.log('thumbnails가 비어 있습니다.');
+    }
+    return (
+      <TouchableOpacity
+        style={styles.postItem}
+        onPress={() => {
+          try {
+            if (activeTab === '광산') {
+              if (!item.boardId) {
+                console.error('boardId가 누락되었습니다');
+                return;
+              }
+
+              const [boardType, boardContentType] = item.boardId.split('_');
+
+              navigation.navigate('PostScreen', {
+                postId: Number(item.postId),
+                boardType,
+                boardContentType,
+              });
+            } else {
+              navigation.navigate('SpherePostScreen', {
+                ptPostId: Number(item.postId),
+                isQuestion: false, // 기본값 설정
+                isFree: true, // 기본값 설정
+                isReview: false, // 기본값 설정
+              });
             }
-
-            const [boardType, boardContentType] = item.boardId.split('_');
-
-            navigation.navigate('PostScreen', {
-              postId: Number(item.postId),
-              boardType,
-              boardContentType,
-            });
-          } else {
-            // 수정구의 경우
-
-            navigation.navigate('SpherePostScreen', {
-              ptPostId: Number(item.postId),
-            });
+          } catch (error) {
+            console.error('네비게이션 오류:', error);
           }
-        } catch (error) {
-          console.error('Navigation error:', error);
-        }
-      }}>
-      {/* 게시판 이름과 작성 시간 */}
-      <View style={styles.postHeader}>
-        <Text style={styles.boardName}>{item.boardName}</Text>
-        <Text style={styles.postTime}>{item.createdAt}</Text>
-      </View>
-      <Text style={styles.postContent}>
-        {(activeTab === '광산' && activeSubTab === '내가 쓴 글') ||
-        (activeTab === '수정구' && activeSubTab === '스크랩한 글') ||
-        (activeTab === '광산' && activeSubTab === '내가 쓴 댓글')
-          ? item.content
-          : item.title}
-      </Text>
-      <View style={styles.postFooter}>
-        <View style={styles.postStats}>
-          <Text>좋아요 {item.likeCount}개</Text>
-          <Text style={styles.commentCount}>댓글 {item.commentCount}개</Text>
+        }}>
+        <View style={styles.postHeader}>
+          <Text style={styles.boardName}>{item.boardName}</Text>
+          <Text style={styles.postTime}>{item.createdAt}</Text>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+        <Text style={styles.postContent}>
+          {(activeTab === '광산' && activeSubTab === '내가 쓴 글') ||
+          (activeTab === '수정구' && activeSubTab === '스크랩한 글') ||
+          (activeTab === '광산' && activeSubTab === '내가 쓴 댓글')
+            ? item.content
+            : item.title}
+        </Text>
+        <View style={styles.postFooter}>
+          <View style={styles.postStats}>
+            <Text>좋아요 {item.likeCount}개</Text>
+            <Text style={styles.commentCount}>댓글 {item.commentCount}개</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
