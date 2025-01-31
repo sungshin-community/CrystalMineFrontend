@@ -55,6 +55,7 @@ import BoardFragment from './src/screens/fragments/BoardFragment';
 import PostListScreen from './src/screens/post/PostListScreen';
 import MyPostList from './src/screens/board/MyPostList';
 import PostWriteScreen from './src/screens/post/PostWriteScreen';
+import AdWriteScreen from './src/screens/post/AdWriteScreen';
 // myPage
 import MyPageFragment from './src/screens/fragments/MyPageFragment';
 import DirectionAgreeMyPage from './src/screens/mypage/regularMemberAuth/DirectionAgreeMyPage';
@@ -868,7 +869,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerRight: () => (
                     <TouchableHighlight
@@ -924,7 +925,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -953,7 +954,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -982,7 +983,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1010,7 +1011,7 @@ const App = () => {
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: '700',
-                    fontFamily: 'Pretendard-bold',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerTitleAlign: 'left',
                   headerLeft: () => (
@@ -1043,7 +1044,21 @@ const App = () => {
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: '700',
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
+                  },
+                })}
+              />
+              <Stack.Screen
+                name="AdWriteScreen"
+                component={AdWriteScreen}
+                options={({navigation}) => ({
+                  title: '광고 게시글 작성',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#222222',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard-Bold',
                   },
                 })}
               />
@@ -1056,7 +1071,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1085,7 +1100,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1114,7 +1129,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1142,7 +1157,7 @@ const App = () => {
                   headerTitleAlign: 'left',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerTitleContainerStyle: {
                     left: 0, // 제목을 왼쪽으로 이동
@@ -1171,7 +1186,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1200,7 +1215,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1229,7 +1244,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1258,7 +1273,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1295,7 +1310,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1513,7 +1528,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1542,7 +1557,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1571,7 +1586,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1601,7 +1616,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1630,7 +1645,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1659,7 +1674,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerRight: () => (
                     <TouchableHighlight
@@ -1687,7 +1702,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1716,7 +1731,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1745,7 +1760,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1774,7 +1789,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1803,7 +1818,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1832,7 +1847,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1861,7 +1876,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1888,7 +1903,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1917,7 +1932,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1955,7 +1970,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -1985,7 +2000,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2025,7 +2040,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2067,7 +2082,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2097,7 +2112,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2126,7 +2141,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2155,7 +2170,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2264,7 +2279,7 @@ const App = () => {
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: '700',
-                    fontFamily: 'Pretendard',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -2941,7 +2956,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerRight: () => (
                     <TouchableHighlight
@@ -2998,7 +3013,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3027,7 +3042,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3056,7 +3071,7 @@ const App = () => {
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: '700',
-                    fontFamily: 'Pretendard-bold',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3092,6 +3107,20 @@ const App = () => {
                 })}
               />
               <Stack.Screen
+                name="AdWriteScreen"
+                component={AdWriteScreen}
+                options={({navigation}) => ({
+                  title: '광고 게시글 작성',
+                  headerTitleAlign: 'left',
+                  headerTintColor: '#222222',
+                  headerTitleStyle: {
+                    fontSize: 20,
+                    fontWeight: '700',
+                    fontFamily: 'Pretendard-Bold',
+                  },
+                })}
+              />
+              <Stack.Screen
                 name="MyPostList"
                 component={MyPostList}
                 options={({navigation}) => ({
@@ -3100,7 +3129,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3129,7 +3158,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3158,7 +3187,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3186,7 +3215,7 @@ const App = () => {
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                 })}
               />
@@ -3211,7 +3240,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3240,7 +3269,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3269,7 +3298,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3298,7 +3327,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3523,7 +3552,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3552,7 +3581,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3581,7 +3610,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3611,7 +3640,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3641,7 +3670,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3670,7 +3699,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3699,7 +3728,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerRight: () => (
                     <TouchableHighlight
@@ -3727,7 +3756,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3756,7 +3785,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3785,7 +3814,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3814,7 +3843,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3843,7 +3872,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3872,7 +3901,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3901,7 +3930,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3928,7 +3957,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -3957,7 +3986,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -4028,7 +4057,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -4067,7 +4096,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -4109,7 +4138,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -4140,7 +4169,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -4169,7 +4198,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
@@ -4198,7 +4227,7 @@ const App = () => {
                   headerTintColor: '#000000',
                   headerTitleStyle: {
                     fontSize: 19,
-                    fontFamily: 'SpoqaHanSansNeo-Medium',
+                    fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
                     <TouchableHighlight
