@@ -261,6 +261,10 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
           setIsRecomment(false);
           setParentId(null);
           setDotsModalVisible(false);
+          // 이모지 초기화
+          setSelectedEmoji(null);
+          setEmojiClicked(false);
+          setShowEmojiPicker(false);
         });
       } else {
         addCommentFunc(
@@ -278,6 +282,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
       setEmojiClicked(false);
       setShowEmojiPicker(false);
       setShowSelectedEmoji();
+      setSelectedEmoji(null);
     }
   }, [newComment, isRecomment, isAnonymous, selectedEmoji, parentId]);
 

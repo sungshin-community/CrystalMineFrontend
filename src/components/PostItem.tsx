@@ -179,7 +179,12 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
 
       {post.newCommentAuthor && (
         <View>
-          <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'row',
+            }}>
             <CommentArrow style={{marginRight: 10, marginTop: 20}} />
             <TouchableWithoutFeedback onPress={handleCommentContainerPress}>
               <View style={styles.commentContainer}>
@@ -266,8 +271,9 @@ const styles = StyleSheet.create({
     color: '#9DA4AB',
   },
   commentContainer: {
+    flex: 1,
+    position: 'relative',
     backgroundColor: '#F6F6F6',
-    width: 343,
     height: 38,
     borderRadius: 8,
     alignItems: 'center',
