@@ -173,7 +173,7 @@ const Comment = ({
           flexDirection: 'column',
           alignItems: 'center',
           width: 150,
-          zIndex: 150,
+          zIndex: 9999,
         }}>
         <Pressable
           onPress={() => {
@@ -205,7 +205,7 @@ const Comment = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                   backgroundColor: '#FFFFFF',
-                  zIndex: 999,
+                  zIndex: 9999,
                 }}>
                 <BigPostComment style={{marginRight: 8}} />
                 <Text
@@ -229,7 +229,7 @@ const Comment = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                   backgroundColor: '#FFFFFF',
-                  zIndex: 120,
+                  zIndex: 9999,
                 }}>
                 <BlackTrashIcon style={{marginRight: 8}} />
                 <Text style={{paddingVertical: 8, fontSize: 14}}>삭제하기</Text>
@@ -279,13 +279,13 @@ const Comment = ({
         <View
           style={{
             position: 'absolute',
-            top: -20,
+            top: -28,
             right: 10,
-            flexDirection: 'column',
-            alignItems: 'center',
+            // flexDirection: 'column',
+            // alignItems: 'center',
             width: 150,
-            height: 120,
-            zIndex: 150,
+            // height: 'auto',
+            // overflow: 'visible',
           }}>
           <Pressable
             onPress={() => {
@@ -306,6 +306,7 @@ const Comment = ({
                 elevation: 10,
                 width: 150,
                 height: '100%',
+                position: 'relative',
               }}>
               <TouchableOpacity onPress={() => handleRecomment(data.id)}>
                 <View
@@ -313,7 +314,8 @@ const Comment = ({
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: '#FFFFFF',
-                    zIndex: 999,
+                    zIndex: 9999,
+                    opacity: 1,
                   }}>
                   <BigPostComment style={{marginRight: 8}} />
                   <Text
@@ -332,7 +334,7 @@ const Comment = ({
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: '#FFFFFF',
-                    zIndex: 120,
+                    zIndex: 9999,
                   }}>
                   <BlackMessageIcon style={{marginRight: 8}} />
                   <Text style={{paddingVertical: 8, fontSize: 14}}>
@@ -354,7 +356,7 @@ const Comment = ({
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: '#FFFFFF',
-                    zIndex: 120,
+                    zIndex: 9999,
                   }}>
                   <BlackReport style={{marginRight: 8}} />
                   <Text style={{paddingVertical: 8, fontSize: 14}}>
@@ -387,178 +389,184 @@ const Comment = ({
 
   return (
     <>
-      <View
-        style={{
-          paddingHorizontal: 16,
-          overflow: 'visible',
-          borderBottomColor: '#efeff3',
-          borderBottomWidth: 1,
-          backgroundColor: isRecommentState
-            ? '#F3E7FF'
-            : data?.isOfReader
-            ? '#fff'
-            : '#FFF',
-        }}>
+      <View style={{position: 'relative', overflow: 'visible', zIndex: 1}}>
         <View
           style={{
-            position: 'relative',
+            paddingHorizontal: 16,
             overflow: 'visible',
-            flexDirection: 'row',
-            marginTop: 16,
-            marginBottom: 10,
-            justifyContent: 'space-between',
+            borderBottomColor: '#efeff3',
+            borderBottomWidth: 1,
+            backgroundColor: isRecommentState
+              ? '#F3E7FF'
+              : data?.isOfReader
+              ? '#fff'
+              : '#FFF',
+            position: 'relative',
+            zIndex: 1,
           }}>
-          <View style={{flexDirection: 'row'}}>
-            <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: data?.profileImage}}
-            />
-            <View style={{flexDirection: 'column'}}>
-              <Text
-                style={[
-                  fontMedium,
-                  {
-                    fontSize: 14,
-                    fontWeight: '600',
-                    fontFamily: 'Pretendard-SemiBold',
-                    paddingLeft: 10,
-                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                    paddingBottom: 2,
-                  },
-                ]}>
-                {data?.displayName}
-              </Text>
-              <Text
-                style={[
-                  fontRegular,
-                  {
-                    color: '#9DA4AB',
-                    fontSize: 12,
-                    fontWeight: '500',
-                    paddingLeft: 10,
-                  },
-                ]}>
-                {data?.createdAt}
-              </Text>
-            </View>
-            {data.isAnonymous ? (
-              <></>
-            ) : data.isOfBoardOwner ? (
-              data.boardType === 'PUBLIC' ? (
-                <SmallOrangeFlag style={{marginLeft: 5}} />
-              ) : (
-                <SmallPurpleFlag style={{marginLeft: 5}} />
-              )
-            ) : (
-              <></>
-            )}
-          </View>
-          {data.isDeleted ? (
-            data.isOfReader ? (
-              <></>
-            ) : (
-              <SpinningThreeDots
-                isMine={data.isOfReader}
-                handleOptionModeIsNotMineComponent={
-                  handleCommentReportComponent
-                }
-                isGrey={true}
-                setIsRecomment={setIsRecomment}
-                setIsRecommentState={setIsRecommentState}
+          <View
+            style={{
+              position: 'relative',
+              flexDirection: 'row',
+              marginTop: 16,
+              marginBottom: 10,
+              justifyContent: 'space-between',
+              zIndex: 1,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                style={{width: 24, height: 24, borderRadius: 12}}
+                source={{uri: data?.profileImage}}
               />
-            )
-          ) : data.isBlind ? (
-            <></>
-          ) : (
-            <SpinningThreeDots
-              isMine={data.isOfReader}
-              handleOptionModeIsMineComponent={handleCommentDeleteComponent}
-              handleOptionModeIsNotMineComponent={handleCommentReportComponent}
-              isGrey={true}
-              setIsRecomment={setIsRecomment}
-              setIsRecommentState={setIsRecommentState}
-            />
-          )}
-        </View>
-        {data?.emoticonUrl && data.isDeleted === false ? (
-          <Image
-            source={{uri: data?.emoticonUrl}}
-            style={{width: 100, height: 100, marginLeft: 34}}
-          />
-        ) : null}
-        <Text
-          style={[
-            {
-              color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
-              fontSize: 14,
-              marginLeft: 34,
-              zIndex: 98,
-            },
-            fontRegular,
-          ]}>
-          <Autolink text={data ? (data.content ? data.content : '') : ''} />
-        </Text>
-
-        {data.isDeleted || data.isBlind ? (
-          <></>
-        ) : (
-          <>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                marginLeft: 34,
-                justifyContent: 'flex-start',
-                zIndex: 99,
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
-                  {localIsLiked ? (
-                    <HeartIcon fill="#FF6376" stroke="#FF6376" />
-                  ) : (
-                    <HeartIcon fill="white" stroke="#9DA4AB" />
-                  )}
-                </Pressable>
+              <View style={{flexDirection: 'column'}}>
                 <Text
                   style={[
-                    fontRegular,
-                    {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                    fontMedium,
+                    {
+                      fontSize: 14,
+                      fontWeight: '600',
+                      fontFamily: 'Pretendard-SemiBold',
+                      paddingLeft: 10,
+                      color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                      paddingBottom: 2,
+                    },
                   ]}>
-                  좋아요
+                  {data?.displayName}
                 </Text>
-                <Text style={[fontRegular, styles.postLike]}>
-                  {localLikeCount}개
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Pressable
-                  hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
-                  onPress={() => handleRecomment(data.id)}>
-                  <ChatIcon />
-                </Pressable>
                 <Text
                   style={[
                     fontRegular,
                     {
                       color: '#9DA4AB',
-                      marginRight: 1,
-                      marginLeft: 5,
+                      fontSize: 12,
+                      fontWeight: '500',
+                      paddingLeft: 10,
                     },
                   ]}>
-                  대댓글
-                </Text>
-                <Text style={[fontRegular, styles.postLike]}>
-                  {data?.recomments.length}개
+                  {data?.createdAt}
                 </Text>
               </View>
+              {data.isAnonymous ? (
+                <></>
+              ) : data.isOfBoardOwner ? (
+                data.boardType === 'PUBLIC' ? (
+                  <SmallOrangeFlag style={{marginLeft: 5}} />
+                ) : (
+                  <SmallPurpleFlag style={{marginLeft: 5}} />
+                )
+              ) : (
+                <></>
+              )}
             </View>
-          </>
-        )}
-        <View style={{marginBottom: 15}} />
+            <View style={{position: 'relative', zIndex: 9999}}>
+              {data.isDeleted ? (
+                data.isOfReader ? (
+                  <></>
+                ) : (
+                  <SpinningThreeDots
+                    isMine={data.isOfReader}
+                    handleOptionModeIsNotMineComponent={
+                      handleCommentReportComponent
+                    }
+                    isGrey={true}
+                    setIsRecomment={setIsRecomment}
+                    setIsRecommentState={setIsRecommentState}
+                  />
+                )
+              ) : data.isBlind ? (
+                <></>
+              ) : (
+                <SpinningThreeDots
+                  isMine={data.isOfReader}
+                  handleOptionModeIsMineComponent={handleCommentDeleteComponent}
+                  handleOptionModeIsNotMineComponent={
+                    handleCommentReportComponent
+                  }
+                  isGrey={true}
+                  setIsRecomment={setIsRecomment}
+                  setIsRecommentState={setIsRecommentState}
+                />
+              )}
+            </View>
+          </View>
+          {data?.emoticonUrl && data.isDeleted === false ? (
+            <Image
+              source={{uri: data?.emoticonUrl}}
+              style={{width: 100, height: 100, marginLeft: 34, zIndex: 1}}
+            />
+          ) : null}
+          <Text
+            style={[
+              {
+                color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
+                fontSize: 14,
+                marginLeft: 34,
+              },
+              fontRegular,
+            ]}>
+            <Autolink text={data ? (data.content ? data.content : '') : ''} />
+          </Text>
+
+          {data.isDeleted || data.isBlind ? (
+            <></>
+          ) : (
+            <>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 10,
+                  marginLeft: 34,
+                  justifyContent: 'flex-start',
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
+                    {localIsLiked ? (
+                      <HeartIcon fill="#FF6376" stroke="#FF6376" />
+                    ) : (
+                      <HeartIcon fill="white" stroke="#9DA4AB" />
+                    )}
+                  </Pressable>
+                  <Text
+                    style={[
+                      fontRegular,
+                      {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                    ]}>
+                    좋아요
+                  </Text>
+                  <Text style={[fontRegular, styles.postLike]}>
+                    {localLikeCount}개
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <Pressable
+                    hitSlop={{top: 15, left: 10, bottom: 15, right: 30}}
+                    onPress={() => handleRecomment(data.id)}>
+                    <ChatIcon />
+                  </Pressable>
+                  <Text
+                    style={[
+                      fontRegular,
+                      {
+                        color: '#9DA4AB',
+                        marginRight: 1,
+                        marginLeft: 5,
+                      },
+                    ]}>
+                    대댓글
+                  </Text>
+                  <Text style={[fontRegular, styles.postLike]}>
+                    {data?.recomments.length}개
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
+          <View style={{marginBottom: 15}} />
+        </View>
       </View>
     </>
   );
@@ -777,7 +785,7 @@ export const Recomment = ({
         <View
           style={{
             position: 'absolute',
-            top: -20,
+            top: -28,
             right: 10,
             flexDirection: 'column',
             alignItems: 'center',
@@ -803,6 +811,7 @@ export const Recomment = ({
                 elevation: 10,
                 width: 150,
                 height: '100%',
+                zIndex: 999,
               }}>
               <TouchableOpacity onPress={() => blockedCheck(data.isAnonymous)}>
                 <View
@@ -848,142 +857,147 @@ export const Recomment = ({
   );
   return (
     <>
-      <View
-        style={{
-          paddingHorizontal: 16,
-          paddingLeft: 48,
-          backgroundColor: data.isOfReader ? '#fff' : '#FFF',
-          paddingBottom: 12,
-          borderBottomColor: '#F0F0F0',
-          borderBottomWidth: 1,
-          zIndex: 1,
-          overflow: 'visible',
-        }}>
+      <View style={{position: 'relative', overflow: 'visible', zIndex: 1}}>
         <View
           style={{
-            flexDirection: 'row',
-            marginVertical: 16,
-            justifyContent: 'space-between',
+            paddingHorizontal: 16,
+            paddingLeft: 48,
+            backgroundColor: data.isOfReader ? '#fff' : '#FFF',
+            paddingBottom: 12,
+            borderBottomColor: '#F0F0F0',
+            borderBottomWidth: 1,
+            zIndex: 1,
             overflow: 'visible',
           }}>
-          <View style={{flexDirection: 'row'}}>
-            {/* <Reply style={{marginRight: 8}} /> */}
-            <Image
-              style={{width: 24, height: 24, borderRadius: 12}}
-              source={{uri: data?.profileImage}}
-            />
-            <View style={{flexDirection: 'column'}}>
-              <Text
-                style={[
-                  fontMedium,
-                  {
-                    fontSize: 14,
-                    fontFamily: 'Pretendard-SemiBold',
-                    fontWeight: '600',
-                    paddingLeft: 10,
-                    color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                  },
-                ]}>
-                {data.displayName}
-              </Text>
-              <Text
-                style={[
-                  {
-                    color: '#9DA4AB',
-                    fontSize: 12,
-                    paddingLeft: 10,
-                    fontWeight: '500',
-                  },
-                  fontRegular,
-                ]}>
-                {data?.createdAt}
-              </Text>
-            </View>
-            {data.isAnonymous ? (
-              <></>
-            ) : data.isOfBoardOwner ? (
-              data.boardType === 'PUBLIC' ? (
-                <SmallOrangeFlag style={{marginLeft: 5}} />
+          <View
+            style={{
+              flexDirection: 'row',
+              marginVertical: 16,
+              justifyContent: 'space-between',
+              overflow: 'visible',
+              zIndex: 1,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              {/* <Reply style={{marginRight: 8}} /> */}
+              <Image
+                style={{width: 24, height: 24, borderRadius: 12}}
+                source={{uri: data?.profileImage}}
+              />
+              <View style={{flexDirection: 'column'}}>
+                <Text
+                  style={[
+                    fontMedium,
+                    {
+                      fontSize: 14,
+                      fontFamily: 'Pretendard-SemiBold',
+                      fontWeight: '600',
+                      paddingLeft: 10,
+                      color: data?.isOfPostAuthor ? '#A055FF' : '#000',
+                    },
+                  ]}>
+                  {data.displayName}
+                </Text>
+                <Text
+                  style={[
+                    {
+                      color: '#9DA4AB',
+                      fontSize: 12,
+                      paddingLeft: 10,
+                      fontWeight: '500',
+                    },
+                    fontRegular,
+                  ]}>
+                  {data?.createdAt}
+                </Text>
+              </View>
+              {data.isAnonymous ? (
+                <></>
+              ) : data.isOfBoardOwner ? (
+                data.boardType === 'PUBLIC' ? (
+                  <SmallOrangeFlag style={{marginLeft: 5}} />
+                ) : (
+                  <SmallPurpleFlag style={{marginLeft: 5}} />
+                )
               ) : (
-                <SmallPurpleFlag style={{marginLeft: 5}} />
+                <></>
+              )}
+            </View>
+            {data.isDeleted ? (
+              data.isOfReader ? (
+                <></>
+              ) : (
+                <SpinningThreeDots
+                  isMine={data.isOfReader}
+                  handleOptionModeIsNotMineComponent={
+                    handleCommentReportComponent
+                  }
+                  isGrey={true}
+                />
               )
-            ) : (
-              <></>
-            )}
-          </View>
-          {data.isDeleted ? (
-            data.isOfReader ? (
+            ) : data.isBlind ? (
               <></>
             ) : (
               <SpinningThreeDots
                 isMine={data.isOfReader}
+                handleOptionModeIsMineComponent={handleCommentDeleteComponent}
                 handleOptionModeIsNotMineComponent={
                   handleCommentReportComponent
                 }
                 isGrey={true}
               />
-            )
-          ) : data.isBlind ? (
-            <></>
-          ) : (
-            <SpinningThreeDots
-              isMine={data.isOfReader}
-              handleOptionModeIsMineComponent={handleCommentDeleteComponent}
-              handleOptionModeIsNotMineComponent={handleCommentReportComponent}
-              isGrey={true}
-            />
-          )}
-        </View>
-        <View style={{marginLeft: 34}}>
-          {data?.emoticonUrl && data.isDeleted === false ? (
-            <Image
-              source={{uri: data?.emoticonUrl}}
-              style={{width: 100, height: 100}}
-            />
-          ) : null}
-          <Text
-            style={[
-              {
-                color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
-                fontSize: 14,
-              },
-              fontRegular,
-            ]}>
-            <Autolink text={data ? (data.content ? data.content : '') : ''} />
-          </Text>
+            )}
+          </View>
+          <View style={{marginLeft: 34}}>
+            {data?.emoticonUrl && data.isDeleted === false ? (
+              <Image
+                source={{uri: data?.emoticonUrl}}
+                style={{width: 100, height: 100}}
+              />
+            ) : null}
+            <Text
+              style={[
+                {
+                  color: data.isDeleted || data.isBlind ? '#6E7882' : '#222222',
+                  fontSize: 14,
+                },
+                fontRegular,
+              ]}>
+              <Autolink text={data ? (data.content ? data.content : '') : ''} />
+            </Text>
 
-          {data.isDeleted || data.isBlind ? (
-            <></>
-          ) : (
-            <>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 10,
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
-                    {localIsLiked ? (
-                      <HeartIcon fill="#FF6376" stroke="#FF6376" />
-                    ) : (
-                      <HeartIcon fill="white" stroke="#9DA4AB" />
-                    )}
-                  </Pressable>
-                  <Text
-                    style={[
-                      fontRegular,
-                      {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
-                    ]}>
-                    좋아요
-                  </Text>
-                  <Text style={[fontRegular, styles.postLike]}>
-                    {localLikeCount}개
-                  </Text>
+            {data.isDeleted || data.isBlind ? (
+              <></>
+            ) : (
+              <>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 10,
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Pressable hitSlop={20} onPress={handleLocalCommentLike}>
+                      {localIsLiked ? (
+                        <HeartIcon fill="#FF6376" stroke="#FF6376" />
+                      ) : (
+                        <HeartIcon fill="white" stroke="#9DA4AB" />
+                      )}
+                    </Pressable>
+                    <Text
+                      style={[
+                        fontRegular,
+                        {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                      ]}>
+                      좋아요
+                    </Text>
+                    <Text style={[fontRegular, styles.postLike]}>
+                      {localLikeCount}개
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </>
-          )}
+              </>
+            )}
+          </View>
         </View>
       </View>
     </>
