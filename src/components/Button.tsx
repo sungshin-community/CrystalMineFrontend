@@ -22,8 +22,8 @@ interface ButtonProps {
 const style = StyleSheet.create({
   whiteText: {
     color: '#FFFFFF',
-    fontSize: 14,
-    fontFamily: 'Pretendard-Bold', 
+    fontSize: 17,
+    fontFamily: 'Pretendard-Bold',
   },
   purpleText: {
     color: '#A055FF',
@@ -38,8 +38,8 @@ const style = StyleSheet.create({
   purpleRoundButton: {
     backgroundColor: '#A055FF',
     width: Dimensions.get('window').width - 32,
-    height: 44,
-    borderRadius: 4,
+    height: 56,
+    borderRadius: 10,
   },
   whiteRoundButton: {
     backgroundColor: '#FFFFFF',
