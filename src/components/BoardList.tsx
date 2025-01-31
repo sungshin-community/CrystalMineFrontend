@@ -525,7 +525,7 @@ export function CustomBoardList({
             <View
               style={{
                 zIndex: 99,
-                width: 392,
+                width: '92%',
                 height: 44,
                 borderRadius: 8,
                 borderWidth: 1,
@@ -538,11 +538,10 @@ export function CustomBoardList({
               }}>
               <Text
                 style={[
-                  fontBold,
+                  fontRegular,
                   {
                     fontSize: 14,
                     color: '#6E7882',
-                    fontFamily: 'SpoqaHanSansNeo-Regular',
                     marginRight: 8,
                   },
                 ]}>
