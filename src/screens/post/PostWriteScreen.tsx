@@ -593,7 +593,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             </>
           )}
           {(!isType3 || isPantheon === 'question' || isPantheon === 'free') && (
-            <>
+            <View style={{marginTop: isType4 ? 16 : 0}}>
               <View style={[styles.inputTitle]}>
                 <Text
                   style={{
@@ -642,7 +642,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                   onInputFocusOut();
                 }}
               />
-            </>
+            </View>
           )}
           <View style={{marginVertical: 0}}>
             {images.length > 0 && (
