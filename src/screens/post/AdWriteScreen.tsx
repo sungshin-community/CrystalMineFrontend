@@ -333,6 +333,7 @@ function AdWriteScreen({navigation, route}: Props) {
               <Text
                 style={{
                   color: '#B9BAC1',
+                  marginTop: 16,
                 }}>
                 상호 명
               </Text>
@@ -357,7 +358,7 @@ function AdWriteScreen({navigation, route}: Props) {
                 style={{borderBottomWidth: 1, borderBottomColor: '#F6F6F6'}}
               />
             </View>
-            <View style={[styles.inputTitle]}>
+            <View style={[styles.inputTitle, {marginTop: 20}]}>
               <Text
                 style={{
                   color: '#B9BAC1',
@@ -390,6 +391,7 @@ function AdWriteScreen({navigation, route}: Props) {
               <Text
                 style={{
                   color: '#B9BAC1',
+                  marginTop: 20,
                 }}>
                 본문
               </Text>
@@ -446,7 +448,7 @@ function AdWriteScreen({navigation, route}: Props) {
                 marginTop: 'auto',
                 alignItems: 'center',
               }}>
-              <Pressable
+              {/* <Pressable
                 onPress={() => navigation.navigate('DirectionAgreeScreen')}
                 style={{
                   borderRadius: 25,
@@ -469,41 +471,48 @@ function AdWriteScreen({navigation, route}: Props) {
                   }}>
                   수정광산 이용 방향 전문 보기
                 </Text>
-              </Pressable>
+              </Pressable> */}
             </View>
           </ScrollView>
         </View>
       </KeyboardAvoidingView>
-      <SafeAreaView style={styles.bottomBar}>
-        {/* <Text style={styles.bottomBarText}>Bottom Fixed Bar</Text> */}
+      <SafeAreaView
+        style={[
+          styles.bottomBar,
+          {
+            position: 'relative', // absolute에서 relative로 변경
+          },
+        ]}>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
-            flex: 1,
+            height: 52,
           }}>
+          <TouchableOpacity onPress={onSelectImage}>
+            <ImageIcon style={{marginLeft: 16}} />
+          </TouchableOpacity>
+          {/* <PostVoteIcon style={{marginHorizontal: 20}} /> */}
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity onPress={onSelectImage}>
-              <ImageIcon style={{marginLeft: 20}} />
-            </TouchableOpacity>
-            {/* <PostVoteIcon style={{marginHorizontal: 20}} /> */}
-          </View>
+              marginLeft: 16,
+              width: 24,
+              height: 24,
+              backgroundColor: '#FFFFFF',
+            }}
+          />
           <Pressable
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              paddingRight: 20,
+              paddingRight: 16,
             }}
             onPress={() => {
               setIsAnonymous(current => !current);
             }}>
-            <Text style={{fontSize: 14, fontWeight: '500', marginRight: 4}}>
+            <Text style={{fontSize: 14, fontWeight: '500', marginRight: 6}}>
               익명
             </Text>
             {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
@@ -538,8 +547,7 @@ const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 12,
     fontWeight: '500',
-    paddingHorizontal: 24,
-    paddingTop: 10,
+    paddingHorizontal: 16,
   },
   container: {
     flex: 1,
@@ -549,7 +557,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     paddingVertical: 15,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     color: '#3A424E',
   },
   input: {
@@ -559,7 +567,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingTop: 14,
     fontWeight: '400',
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     textAlignVertical: 'top',
     color: '#3A424E',
     //backgroundColor: 'skyblue',
@@ -593,12 +601,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 52,
+    height: Platform.OS === 'ios' ? 86 : 52,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
     backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingBottom: Platform.OS === 'ios' ? 34 : 0,
   },
   bottomBarText: {
     color: 'white',

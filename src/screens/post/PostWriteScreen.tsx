@@ -562,7 +562,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             isPantheon === 'free' ||
             isPantheon === 'review') && (
             <>
-              <View style={[styles.inputTitle]}>
+              <View style={[styles.inputTitle, {paddingTop: 16}]}>
                 <Text
                   style={{
                     color: '#B9BAC1',
@@ -593,7 +593,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             </>
           )}
           {(!isType3 || isPantheon === 'question' || isPantheon === 'free') && (
-            <>
+            <View style={{marginTop: isType4 ? 16 : 0}}>
               <View style={[styles.inputTitle]}>
                 <Text
                   style={{
@@ -642,7 +642,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                   onInputFocusOut();
                 }}
               />
-            </>
+            </View>
           )}
           <View style={{marginVertical: 0}}>
             {images.length > 0 && (
@@ -690,7 +690,6 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
             styles.bottomBar,
             {
               position: 'relative', // absolute에서 relative로 변경
-              bottom: Platform.OS === 'ios' ? 0 : 0,
             },
           ]}>
           <View
@@ -761,7 +760,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingBottom: 10,
   },
   container: {
     flex: 1,
@@ -772,6 +771,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     paddingHorizontal: 16,
     color: '#3A424E',
+    marginBottom: 15,
   },
   input: {
     // minHeight: Dimensions.get('window').height - 400,
@@ -788,12 +788,17 @@ const styles = StyleSheet.create({
     color: '#d1d1d1',
   },
   bottomBar: {
-    height: 86,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    // height: Platform.OS === 'ios' ? 86 : 52,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
     backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
     alignItems: 'center',
+    // paddingBottom: Platform.OS === 'ios' ? 34 : 0,
   },
   bottomBarText: {
     color: 'white',

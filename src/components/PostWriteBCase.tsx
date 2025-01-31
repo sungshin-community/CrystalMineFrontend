@@ -264,14 +264,24 @@ const PostWriteBCase = ({
           </TouchableOpacity>
         </View>
         <View style={[styles.textContainer]}>
-          <View>
+          <View style={{marginTop: 10}}>
             {showTitle && (
-              <TextInput
-                style={styles.titleInput}
-                placeholder="제목을 입력해 주세요!"
-                value={titleInput}
-                onChangeText={setTitleInput}
-              />
+              <>
+                <TextInput
+                  style={styles.titleInput}
+                  placeholder="제목을 작성해 주세요!"
+                  value={titleInput}
+                  onChangeText={setTitleInput}
+                />
+                <View
+                  style={{
+                    width: '100%',
+                    height: 1,
+                    backgroundColor: '#EFEFF3',
+                    marginVertical: 8,
+                  }}
+                />
+              </>
             )}
             {showContent && (
               <TextInput
@@ -400,6 +410,14 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 30,
   },
+  titleInput: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  contentInput: {
+    fontSize: 14,
+    fontWeight: '400',
+  },
 
   floatingButtonStyle: {
     shadowColor: '#000',
@@ -464,6 +482,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    marginBottom: 16,
   },
   text: {
     fontSize: 14,
