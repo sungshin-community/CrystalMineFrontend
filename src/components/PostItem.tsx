@@ -81,12 +81,7 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
         </View>
       </View>
 
-      <View
-        style={{
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
           {post.hasTitle ? (
             <Text
@@ -101,17 +96,21 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
           ) : (
             <></>
           )}
-          <Text
-            numberOfLines={post.title ? 2 : 3}
-            ellipsizeMode="tail"
-            style={[styles.text, styles.content, fontRegular]}>
-            {post.content}
-          </Text>
+          <View style={{flex: 1}}>
+            <Text
+              numberOfLines={post.title ? 2 : 3}
+              ellipsizeMode="tail"
+              style={[styles.text, styles.content, fontRegular]}>
+              {post.content}
+            </Text>
+          </View>
         </View>
-        <Image
-          style={{width: 60, height: 60, borderRadius: 8}}
-          source={{uri: post.thumbnail}}
-        />
+        {post.imageCount > 1 && (
+          <Image
+            style={{width: 60, height: 60, borderRadius: 8}}
+            source={{uri: post.thumbnail}}
+          />
+        )}
         {post.imageCount > 1 && (
           <Text
             style={{
@@ -257,7 +256,8 @@ const styles = StyleSheet.create({
   },
   content: {
     fontSize: 14,
-    marginBottom: 16,
+    justifyContent: 'flex-start',
+    marginBottom: 12,
     lineHeight: 22.5,
     color: '#3a424e',
   },

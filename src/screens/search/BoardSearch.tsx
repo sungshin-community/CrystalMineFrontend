@@ -96,14 +96,20 @@ function BoardSearch({navigation, route}: Props) {
             autoCorrect={false}
             autoCapitalize="none"
             onSubmitEditing={e => {
-              const text = e.nativeEvent.text;
-              setSearchText(text); // 입력된 텍스트를 상태로 업데이트
-              search(text); // 검색 실행
+              const text = e.nativeEvent.text.trim();
+              if (text) {
+                setSearchText(text);
+                search(text);
+              }
             }}
             keyboardType="default"
             enablesReturnKeyAutomatically
-            value={searchText}
-            onChangeText={setSearchText}
+            defaultValue={searchText}
+            onChangeText={text => {
+              requestAnimationFrame(() => {
+                setSearchText(text);
+              });
+            }}
           />
           <View style={styles.icon}>
             <SearchIcon />
@@ -262,8 +268,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 40,
     paddingVertical: 8,
-    fontFamily: 'Pretendard-Regular',
-    fontWeight: 'normal',
     fontSize: 16,
     color: '#222222',
   },

@@ -93,7 +93,7 @@ function TotalSearch({navigation, route}: Props) {
             onSubmitEditing={e => search(e.nativeEvent.text)}
             keyboardType="default"
             enablesReturnKeyAutomatically
-            value={searchText}
+            defaultValue={searchText}
             onChangeText={setSearchText}
           />
           <View style={styles.icon}>

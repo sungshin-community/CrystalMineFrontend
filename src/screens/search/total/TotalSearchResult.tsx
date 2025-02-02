@@ -69,7 +69,7 @@ function TotalSearchResult({navigation, route}: Props) {
             returnKeyType="search"
             autoCorrect={false}
             autoCapitalize="none"
-            value={inputText}
+            defaultValue={inputText}
             onChangeText={setInputText}
             onSubmitEditing={e => handleSearch(e.nativeEvent.text)}
           />

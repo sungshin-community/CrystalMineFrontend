@@ -474,8 +474,8 @@ const PostListScreen = ({navigation, route}: Props) => {
   const handleBoardSearchComponent = (
     <TouchableHighlight
       style={{
-        width: 40,
-        height: 40,
+        width: 30,
+        height: 30,
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',

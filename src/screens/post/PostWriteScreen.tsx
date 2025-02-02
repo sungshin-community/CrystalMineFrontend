@@ -472,7 +472,8 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
       style={{flex: 1, backgroundColor: '#fff'}}>
       <View
         style={{
@@ -667,7 +668,14 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                 width: 'auto',
                 height: 'auto',
                 position: 'absolute',
-                bottom: 24,
+                bottom:
+                  Platform.OS === 'ios'
+                    ? isFocused
+                      ? 24
+                      : 76
+                    : isFocused
+                    ? 24
+                    : 24,
               }}>
               <Text
                 style={{
@@ -689,7 +697,14 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
           style={[
             styles.bottomBar,
             {
-              position: 'relative', // absolute에서 relative로 변경
+              position:
+                Platform.OS === 'ios'
+                  ? isFocused
+                    ? 'relative'
+                    : 'absolute'
+                  : 'relative',
+              bottom: Platform.OS === 'ios' ? (isFocused ? 0 : 34) : 0,
+              paddingBottom: Platform.OS === 'ios' ? 0 : 0,
             },
           ]}>
           <View
@@ -734,7 +749,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
       <ModalBottom
         modalVisible={goBackWarning}
         setModalVisible={setGoBackWarning}
-        content={`작성한 게시글이 삭제됩니다.\n뒤로 가시겠습니까?`}
+        content={`게시글을 삭제하시겠습니까?\n작성하던 게시글은 저장되지 않습니다.`}
         isWriting={true}
         isContentCenter={true}
         purpleButtonText="확인"
@@ -788,17 +803,16 @@ const styles = StyleSheet.create({
     color: '#d1d1d1',
   },
   bottomBar: {
-    position: 'absolute',
-    bottom: 0,
     left: 0,
     right: 0,
-    // height: Platform.OS === 'ios' ? 86 : 52,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
     backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // paddingBottom: Platform.OS === 'ios' ? 34 : 0,
+    ...(Platform.OS === 'ios' && {
+      height: 52,
+    }),
   },
   bottomBarText: {
     color: 'white',

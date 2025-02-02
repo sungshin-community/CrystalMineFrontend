@@ -71,7 +71,7 @@ function PostSearchResult({navigation, route}: Props) {
             }}
             keyboardType="default"
             enablesReturnKeyAutomatically
-            value={searchWord}
+            defaultValue={searchWord}
             onChangeText={setSearchWord}
             //defaultValue={route.params.searchWord}
           />
