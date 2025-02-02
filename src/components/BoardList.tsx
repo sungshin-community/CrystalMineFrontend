@@ -443,11 +443,13 @@ export function CustomBoardList({
                   fontSize: 14,
                   color: '#3A424E',
                   fontFamily: 'Prentendard-Medium',
+                  fontWeight: '500',
                   marginRight: 8,
+                  marginBottom: 4,
                 }}>
                 {item.name}
               </Text>
-              {item.todayNewPost && <NewIcon style={{marginTop: 2}} />}
+              {item.todayNewPost && <NewIcon />}
             </View>
             <Text
               numberOfLines={1}
@@ -455,6 +457,7 @@ export function CustomBoardList({
               style={{
                 fontSize: 12,
                 color: '#89919A',
+                fontWeight: '400',
                 fontFamily: 'Prentendard-Medium',
               }}>
               {item.introduction}

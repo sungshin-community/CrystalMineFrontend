@@ -93,7 +93,7 @@ function SpinningThreeDots({
             <Pressable
               style={{
                 paddingLeft: 10,
-                paddingBottom: 10,
+                // paddingBottom: 10,
               }}
               onPress={() => {
                 handleAnimation();

@@ -114,10 +114,21 @@ export const ModalBottom = ({
                   </View>
                 )}
               </View>
+              {isWriting && (
+                <View
+                  style={{
+                    height: 24,
+                  }}
+                />
+              )}
               <View style={styles.buttonContianer}>
                 {whiteButtonText && whiteButtonText !== 'none' && (
                   <TouchableOpacity
-                    style={[styles.secondButton, styles.secondButtonClose]}
+                    style={[
+                      styles.secondButton,
+                      styles.secondButtonClose,
+                      {marginRight: 4},
+                    ]}
                     onPress={() => whiteButtonFunc()}>
                     <Text style={styles.secondButtonTextStyle}>
                       {whiteButtonText}
@@ -131,6 +142,7 @@ export const ModalBottom = ({
                       styles.buttonClose,
                       {
                         width: isWriting ? '49%' : '100%',
+                        marginLeft: 4,
                       },
                     ]}
                     onPress={() => purpleButtonFunc()}>

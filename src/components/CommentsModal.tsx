@@ -14,6 +14,8 @@ import {
   Animated,
   PanResponder,
   TouchableWithoutFeedback,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import CommentWriteContainer from './CommentWriteContainer';
@@ -70,6 +72,8 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   const bottomSheetHeight = screenHeight * 0.8; // 초기 높이 80%
   const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
   const dragThreshold = 0; // 드래그 임계값
+  const [statusBarHeight, setStatusBarHeight] = useState(0);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const panY = useRef(new Animated.Value(screenHeight)).current;
   const lastPanY = useRef(screenHeight - bottomSheetHeight);
@@ -133,6 +137,26 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
       },
     }),
   ).current;
+  useEffect(() => {
+    const keyboardWillShow = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      e => {
+        setKeyboardHeight(e.endCoordinates.height);
+      },
+    );
+
+    const keyboardWillHide = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+      },
+    );
+
+    return () => {
+      keyboardWillShow.remove();
+      keyboardWillHide.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (modalVisible && postId) {
@@ -450,102 +474,123 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
 
   return (
     <>
-      <Modal
-        isVisible={modalVisible}
-        style={styles.modal}
-        backdropOpacity={0.5}
-        onBackdropPress={closeModal}
-        useNativeDriver={true}>
-        <View style={styles.overlay}>
-          <TouchableWithoutFeedback onPress={closeModal}>
-            <View style={styles.background} />
-          </TouchableWithoutFeedback>
-          <Animated.View
-            style={[
-              styles.modalContent,
-              {transform: [{translateY: translateY}]},
-            ]}
-            {...panResponder.panHandlers}>
-            <View style={styles.homeIndicator} />
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={
+          Platform.OS === 'ios' ? statusBarHeight + 30 : statusBarHeight + 78
+        }>
+        <Modal
+          isVisible={modalVisible}
+          style={styles.modal}
+          backdropOpacity={0.5}
+          onBackdropPress={closeModal}
+          useNativeDriver={true}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback onPress={closeModal}>
+              <View style={styles.background} />
+            </TouchableWithoutFeedback>
+            <Animated.View
+              style={[
+                styles.modalContent,
+                {transform: [{translateY: translateY}]},
+              ]}
+              {...panResponder.panHandlers}>
+              <View style={styles.homeIndicator} />
 
-            {/* 메인 컨텐츠 영역 */}
-            <View style={{flex: 1, paddingBottom: 40}}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                style={{flex: 1}}
-                ref={flatListRef}
-                data={comments}
-                renderItem={({item, index}) => (
-                  <View key={index}>
-                    <Comment
-                      navigation={navigation}
-                      comment={item}
-                      setParentId={id => handleReplyMode(id)}
-                      handleCommentLike={handleCommentLike}
-                      isRecomment={isRecomment}
-                      setIsRecomment={setIsRecomment}
-                      handleCommentDelete={handleCommentDelete}
-                      handleCommentReport={handleCommentReport}
-                      handleFocus={focusCommentInput}
-                      componentModalVisible={componentModalVisible}
-                      setComponentModalVisible={setComponentModalVisible}
-                      onEmojiSelect={handleEmojiSelect}
-                    />
-                    {item.recomments &&
-                      item.recomments.map((recomment, index) => (
-                        <Recomment
-                          key={index}
-                          navigation={navigation}
-                          recomment={recomment}
-                          handleCommentLike={handleCommentLike}
-                          handleCommentDelete={handleCommentDelete}
-                          handleCommentReport={handleCommentReport}
-                          componentModalVisible={componentModalVisible}
-                          setComponentModalVisible={setComponentModalVisible}
-                          onEmojiSelect={handleEmojiSelect}
-                        />
-                      ))}
-                  </View>
-                )}
-                ItemSeparatorComponent={() => <View style={{height: 1}} />}
-              />
-            </View>
-          </Animated.View>
-        </View>
-        {showSelectedEmoji && selectedEmoji && (
-          <View style={styles.selectedEmojiContainer}>
-            <Image source={selectedEmoji} style={styles.selectedEmoji} />
-            <View style={{position: 'absolute', top: 0, right: 0, margin: 16}}>
-              <TouchableOpacity onPress={() => setShowSelectedEmoji(false)}>
-                <CloseIcon />
-              </TouchableOpacity>
-            </View>
+              {/* 메인 컨텐츠 영역 */}
+              <View style={{flex: 1, paddingBottom: 40}}>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  style={{flex: 1}}
+                  ref={flatListRef}
+                  data={comments}
+                  renderItem={({item, index}) => (
+                    <View key={index}>
+                      <Comment
+                        navigation={navigation}
+                        comment={item}
+                        setParentId={id => handleReplyMode(id)}
+                        handleCommentLike={handleCommentLike}
+                        isRecomment={isRecomment}
+                        setIsRecomment={setIsRecomment}
+                        handleCommentDelete={handleCommentDelete}
+                        handleCommentReport={handleCommentReport}
+                        handleFocus={focusCommentInput}
+                        componentModalVisible={componentModalVisible}
+                        setComponentModalVisible={setComponentModalVisible}
+                        onEmojiSelect={handleEmojiSelect}
+                      />
+                      {item.recomments &&
+                        item.recomments.map((recomment, index) => (
+                          <Recomment
+                            key={index}
+                            navigation={navigation}
+                            recomment={recomment}
+                            handleCommentLike={handleCommentLike}
+                            handleCommentDelete={handleCommentDelete}
+                            handleCommentReport={handleCommentReport}
+                            componentModalVisible={componentModalVisible}
+                            setComponentModalVisible={setComponentModalVisible}
+                            onEmojiSelect={handleEmojiSelect}
+                          />
+                        ))}
+                    </View>
+                  )}
+                  ItemSeparatorComponent={() => <View style={{height: 1}} />}
+                />
+              </View>
+            </Animated.View>
           </View>
-        )}
-        <View style={styles.commentWriteWrapper}>
-          <CommentWriteContainer
-            navigation={navigation}
-            route={{params: {postId}}}
-            refreshComments={refreshComments}
-            addComment={addCommentFunc}
-            addRecomment={addRecommentFunc}
-            onCommentComplete={handleCommentComplete}
-            setShowSelectedEmoji={setShowSelectedEmoji}
-            onEmojiSelect={handleEmojiSelect}
-            isRecomment={isRecomment}
-            parentId={parentId}
-            setParentId={setParentId}
-            setIsRecomment={setIsRecomment}
-            replyToComment={replyToComment}
-            onCancelReply={() => {
-              setIsRecomment(false);
-              setParentId(null);
-              setReplyToComment({parentId: null});
-            }}
-            selectedEmojiId={selectedEmojiId} // 새로운 prop 전달
-          />
-        </View>
-      </Modal>
+          {showSelectedEmoji && selectedEmoji && (
+            <View style={styles.selectedEmojiContainer}>
+              <Image source={selectedEmoji} style={styles.selectedEmoji} />
+              <View
+                style={{position: 'absolute', top: 0, right: 0, margin: 16}}>
+                <TouchableOpacity onPress={() => setShowSelectedEmoji(false)}>
+                  <CloseIcon />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          <View
+            style={[
+              styles.commentWriteWrapper,
+              {
+                transform: [
+                  {
+                    translateY:
+                      statusBarHeight > 0
+                        ? -keyboardHeight + 20
+                        : -keyboardHeight,
+                  },
+                ],
+              },
+            ]}>
+            <CommentWriteContainer
+              navigation={navigation}
+              route={{params: {postId}}}
+              refreshComments={refreshComments}
+              addComment={addCommentFunc}
+              addRecomment={addRecommentFunc}
+              onCommentComplete={handleCommentComplete}
+              setShowSelectedEmoji={setShowSelectedEmoji}
+              onEmojiSelect={handleEmojiSelect}
+              isRecomment={isRecomment}
+              parentId={parentId}
+              setParentId={setParentId}
+              setIsRecomment={setIsRecomment}
+              replyToComment={replyToComment}
+              onCancelReply={() => {
+                setIsRecomment(false);
+                setParentId(null);
+                setReplyToComment({parentId: null});
+              }}
+              selectedEmojiId={selectedEmojiId}
+            />
+          </View>
+        </Modal>
+      </KeyboardAvoidingView>
     </>
   );
 };
@@ -599,9 +644,14 @@ const styles = StyleSheet.create({
     height: 80,
   },
   commentWriteWrapper: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
     backgroundColor: 'white',
+    zIndex: 999,
   },
 });
 

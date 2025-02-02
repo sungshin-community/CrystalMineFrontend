@@ -105,7 +105,7 @@ export default function BoardSearchResult({route, navigation}: Props) {
             onSubmitEditing={e => handleSearch(e.nativeEvent.text)}
             keyboardType="default"
             enablesReturnKeyAutomatically
-            value={searchText}
+            defaultValue={searchText}
             onChangeText={setSearchText}
           />
           <View style={styles.icon}>

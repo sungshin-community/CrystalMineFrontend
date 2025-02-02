@@ -394,8 +394,8 @@ const Comment = ({
           style={{
             paddingHorizontal: 16,
             overflow: 'visible',
-            borderBottomColor: '#efeff3',
-            borderBottomWidth: 1,
+            // borderBottomColor: '#efeff3',
+            // borderBottomWidth: 1,
             backgroundColor: isRecommentState
               ? '#F3E7FF'
               : data?.isOfReader
@@ -428,7 +428,7 @@ const Comment = ({
                       fontFamily: 'Pretendard-SemiBold',
                       paddingLeft: 10,
                       color: data?.isOfPostAuthor ? '#A055FF' : '#000',
-                      paddingBottom: 2,
+                      paddingBottom: 4,
                     },
                   ]}>
                   {data?.displayName}
@@ -864,8 +864,8 @@ export const Recomment = ({
             paddingLeft: 48,
             backgroundColor: data.isOfReader ? '#fff' : '#FFF',
             paddingBottom: 12,
-            borderBottomColor: '#F0F0F0',
-            borderBottomWidth: 1,
+            // borderBottomColor: '#F0F0F0',
+            // borderBottomWidth: 1,
             zIndex: 1,
             overflow: 'visible',
           }}>
@@ -892,6 +892,7 @@ export const Recomment = ({
                       fontFamily: 'Pretendard-SemiBold',
                       fontWeight: '600',
                       paddingLeft: 10,
+                      paddingBottom: 4,
                       color: data?.isOfPostAuthor ? '#A055FF' : '#000',
                     },
                   ]}>
