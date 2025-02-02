@@ -117,41 +117,41 @@ interface ReportIconProps {
 }
 
 export const FooterReport = ({fill = 'none'}: ReportIconProps) => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill={fill}>
+  <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={fill}>
     <Path
-      d="M6.15767 11.6791C6.15767 8.45115 8.7744 5.83442 12.0023 5.83442C15.2302 5.83442 17.8469 8.45115 17.8469 11.6791V15.8571H6.15767V11.6791Z"
       stroke="#9DA4AB"
-      stroke-width="1.64346"
+      strokeWidth={1.643}
+      d="M6.16 11.68a5.845 5.845 0 1 1 11.689 0v4.177H6.159V11.68Z"
     />
     <Path
-      d="M4.25142 17.3926C4.25142 16.7947 4.73611 16.31 5.33401 16.31H18.6674C19.2653 16.31 19.75 16.7947 19.75 17.3926V18.3456C19.75 18.9435 19.2653 19.4282 18.6674 19.4282H5.33401C4.73611 19.4282 4.25142 18.9435 4.25142 18.3456V17.3926Z"
       stroke="#9DA4AB"
-      stroke-width="1.64346"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
+      strokeWidth={1.643}
+      d="M4.253 17.393c0-.598.485-1.083 1.083-1.083h13.333c.598 0 1.083.485 1.083 1.083v.953c0 .598-.485 1.082-1.083 1.082H5.336a1.083 1.083 0 0 1-1.083-1.082v-.953Z"
     />
     <Rect
-      x="11.0469"
-      y="0.25"
-      width="1.90467"
-      height="2.85701"
-      rx="0.952337"
+      width={1.905}
+      height={2.857}
+      x={11.051}
+      y={0.25}
       fill="#9DA4AB"
+      rx={0.952}
     />
     <Rect
-      x="17.7109"
-      y="2.15234"
-      width="1.90467"
-      height="2.85701"
-      rx="0.952337"
-      transform="rotate(44.4105 17.7109 2.15234)"
+      width={1.905}
+      height={2.857}
+      x={17.715}
+      y={2.152}
       fill="#9DA4AB"
+      rx={0.952}
+      transform="rotate(44.41 17.715 2.152)"
     />
     <Rect
-      width="1.90467"
-      height="2.85701"
-      rx="0.952337"
-      transform="matrix(-0.714345 0.699794 0.699794 0.714345 6.28906 2.15332)"
+      width={1.905}
+      height={2.857}
       fill="#9DA4AB"
+      rx={0.952}
+      transform="scale(-1 1) rotate(44.41 -5.782 -6.627)"
     />
   </Svg>
 );

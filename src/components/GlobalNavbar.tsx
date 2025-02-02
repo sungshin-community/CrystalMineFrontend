@@ -247,378 +247,392 @@ function GlobalNavbar({navigation}: ScreenProps) {
   };
 
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        tabBarStyle: {
-          height: Platform.OS === 'android' ? 78 : 112,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          paddingHorizontal: 21,
-    
-        },
-        tabBarIconStyle: {
-          justifyContent: 'space-between',
-        },
-        tabBarShowLabel: false,
-        tabBarInactiveTintColor: '#E2E4E8',
-        tabBarActiveTintColor: '#A055FF',
-      }}>
-      <Tab.Screen
-        name="Home"
-        component={HomeFragment}
-        options={{
-          headerTitle: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: 48,
-                marginLeft: 16,
-              }}>
-              <SmallLogo />
+    <View style={{flex: 1, backgroundColor: 'white'}}>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          tabBarStyle: {
+            height: Platform.OS === 'android' ? 78 : 112,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            paddingHorizontal: 21,
+            shadowColor: '#000000',
+            shadowOffset: {width: 0, height: -2},
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+            elevation: 5,
+            borderTopWidth: 0,
+          },
+          tabBarIconStyle: {
+            justifyContent: 'space-between',
+          },
+          tabBarShowLabel: false,
+          tabBarInactiveTintColor: '#E2E4E8',
+          tabBarActiveTintColor: '#A055FF',
+        }}>
+        <Tab.Screen
+          name="Home"
+          component={HomeFragment}
+          options={{
+            headerShadowVisible: false,
+            headerTitle: () => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 48,
+                  marginLeft: 16,
+                }}>
+                <SmallLogo />
+                <Text
+                  style={
+                    (pretendard,
+                    {
+                      marginLeft: 8,
+                      fontSize: 20,
+                      fontWeight: '900',
+                      textAlign: 'left',
+                      color: '#A055FF',
+                    })
+                  }>
+                  수정광산
+                </Text>
+              </View>
+            ),
+            headerTitleAlign: 'left',
+            tabBarIcon: ({size, color, focused}: Props) => {
+              return (
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <HomeTabIcon size={size} color={color} focused={focused} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                    광산
+                  </Text>
+                </View>
+              );
+            },
+            headerRight: () => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginRight: 11,
+                }}>
+                <TouchableHighlight
+                  style={{
+                    borderRadius: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onPress={onSearchPress}>
+                  <SearchIcon />
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={{
+                    borderRadius: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginLeft: 10,
+                    marginRight: 13,
+                  }}
+                  underlayColor="#EEEEEE"
+                  onPress={onMenuIcon}>
+                  <MenuIcon />
+                </TouchableHighlight>
+              </View>
+            ),
+          }}
+        />
+
+        <Tab.Screen
+          name="CrystalBall"
+          component={CrystalBallFragment}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              e.preventDefault();
+              try {
+                const profileData = await getPantheonProfile();
+                if (!profileData.isNew) {
+                  navigation.navigate('CrystalBall');
+                } else {
+                  navigation.navigate('OnboardingScreen'); // 온보딩
+                }
+              } catch (error) {
+                console.error('판테온 프로필 조회 오류:', error);
+              }
+            },
+          })}
+          options={{
+            title: '',
+            headerShadowVisible: false,
+            tabBarIcon: ({size, color, focused}: Props) => {
+              return (
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <BoardTabIcon size={size} color={color} focused={focused} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                    수정구
+                  </Text>
+                </View>
+              );
+            },
+            headerLeft: () => (
               <Text
-                style={
-                  (pretendard,
-                  {
-                    marginLeft: 8,
-                    fontSize: 20,
-                    fontWeight: '900',
-                    textAlign: 'left',
-                    color: '#A055FF',
-                  })
-                }>
-                수정광산
+                style={{
+                  color: '#222222',
+                  fontSize: 20,
+                  fontWeight: '700',
+                  marginLeft: 20,
+                }}>
+                수정구
               </Text>
-            </View>
-          ),
-          headerTitleAlign: 'left',
-          tabBarIcon: ({size, color, focused}: Props) => {
-            return (
-              <View style={styles.iconContainer}>
-                <View style={styles.icon}>
-                  <HomeTabIcon size={size} color={color} focused={focused} />
-                </View>
-                <Text
-                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
-                  광산
-                </Text>
+            ),
+
+            headerRight: () => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginRight: 16,
+                }}>
+                {/* SearchIcon 터치 영역 */}
+                <TouchableHighlight
+                  style={{
+                    borderRadius: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 10,
+                  }}
+                  underlayColor="#EEEEEE"
+                  onPress={onSearchPress}>
+                  <SearchIcon />
+                </TouchableHighlight>
+
+                {/* MyIcon 터치 영역 */}
+                <TouchableHighlight
+                  style={{
+                    borderRadius: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  underlayColor="#EEEEEE"
+                  onPress={onMyIcon}>
+                  <MyIcon />
+                </TouchableHighlight>
               </View>
-            );
-          },
-          headerRight: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginRight: 11,
-              }}>
-              <TouchableHighlight
-                style={{
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                onPress={onSearchPress}>
-                <SearchIcon />
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={{
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: 10,
-                  marginRight: 13,
-                }}
-                underlayColor="#EEEEEE"
-                onPress={onMenuIcon}>
-                <MenuIcon />
-              </TouchableHighlight>
-            </View>
-          ),
-        }}
-      />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Message"
+          component={MessageFragment}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              e.preventDefault();
 
-      <Tab.Screen
-        name="CrystalBall"
-        component={CrystalBallFragment}
-        listeners={({navigation}) => ({
-          tabPress: async e => {
-            e.preventDefault();
-            try {
-              const profileData = await getPantheonProfile();
-              if (!profileData.isNew) {
-                navigation.navigate('CrystalBall');
-              } else {
-                navigation.navigate('OnboardingScreen'); // 온보딩
-              }
-            } catch (error) {
-              console.error('판테온 프로필 조회 오류:', error);
-            }
-          },
-        })}
-        options={{
-          title: '',
-
-          tabBarIcon: ({size, color, focused}: Props) => {
-            return (
-              <View style={styles.iconContainer}>
-                <View style={styles.icon}>
-                  <BoardTabIcon size={size} color={color} focused={focused} />
-                </View>
-                <Text
-                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
-                  수정구
-                </Text>
-              </View>
-            );
-          },
-          headerLeft: () => (
-            <Text
-              style={{
-                color: '#222222',
-                fontSize: 20,
-                fontWeight: '700',
-                marginLeft: 20,
-              }}>
-              수정구
-            </Text>
-          ),
-
-          headerRight: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginRight: 16,
-              }}>
-              {/* SearchIcon 터치 영역 */}
-              <TouchableHighlight
-                style={{
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 10,
-                }}
-                underlayColor="#EEEEEE"
-                onPress={onSearchPress}>
-                <SearchIcon />
-              </TouchableHighlight>
-
-              {/* MyIcon 터치 영역 */}
-              <TouchableHighlight
-                style={{
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                underlayColor="#EEEEEE"
-                onPress={onMyIcon}>
-                <MyIcon />
-              </TouchableHighlight>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Message"
-        component={MessageFragment}
-        listeners={({navigation}) => ({
-          tabPress: async e => {
-            e.preventDefault();
-
-            const response = await checkRole();
-            if (response.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(response.status) === 2) {
-              const user = response.data.data;
-              if (user?.isAuthenticated && !user?.blacklist)
-                navigation.navigate('Message');
-              else {
+              const response = await checkRole();
+              if (response.status === 401) {
                 setTimeout(function () {
-                  Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
                 }, 100);
-              }
-            } else {
-              logout();
-              navigation.reset({
-                routes: [
-                  {
-                    name: 'ErrorScreen',
-                    params: {status: response.status, code: 'G001'},
-                  },
-                ],
-              });
-            }
-          },
-        })}
-        options={{
-          title: '대화',
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontSize: 19,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-          },
-          tabBarIcon: ({size, color, focused}: Props) => {
-            return (
-              <View style={styles.iconContainer}>
-                <View style={styles.icon}>
-                  <MessageTabIcon size={size} color={color} focused={focused} />
-                </View>
-                <Text
-                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
-                  대화
-                </Text>
-              </View>
-            );
-          },
-          headerLeft: () => (
-            <TouchableHighlight
-              underlayColor="#EEEEEE"
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onPress={() => navigation.dispatch(CommonActions.goBack())}>
-              <BackButtonIcon />
-            </TouchableHighlight>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Alert"
-        component={AlertFragment}
-        listeners={({navigation}) => ({
-          tabPress: async e => {
-            e.preventDefault();
-            const response = await checkRole();
-            if (response.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(response.status) === 2) {
-              const user = response.data.data;
-              if (!user?.blacklist) {
-                navigation.navigate('Alert');
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(response.status) === 2) {
+                const user = response.data.data;
+                if (user?.isAuthenticated && !user?.blacklist)
+                  navigation.navigate('Message');
+                else {
+                  setTimeout(function () {
+                    Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                  }, 100);
+                }
               } else {
-                setTimeout(function () {
-                  Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                }, 100);
+                logout();
+                navigation.reset({
+                  routes: [
+                    {
+                      name: 'ErrorScreen',
+                      params: {status: response.status, code: 'G001'},
+                    },
+                  ],
+                });
               }
-            } else {
-              logout();
-              navigation.reset({
-                routes: [
-                  {
-                    name: 'ErrorScreen',
-                    params: {status: response.status, code: 'G001'},
-                  },
-                ],
-              });
-            }
-          },
-        })}
-        options={{
-          title: '알림',
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontSize: 19,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-          },
-          tabBarIcon: ({size, color, focused}: Props) => {
-            return (
-              <View style={styles.iconContainer}>
-                <View style={styles.icon}>
-                  <AlertTabIcon size={size} color={color} focused={focused} />
+            },
+          })}
+          options={{
+            title: '대화',
+            headerTitleAlign: 'center',
+            headerShadowVisible: false,
+            headerTitleStyle: {
+              fontSize: 19,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+            },
+            tabBarIcon: ({size, color, focused}: Props) => {
+              return (
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <MessageTabIcon
+                      size={size}
+                      color={color}
+                      focused={focused}
+                    />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                    대화
+                  </Text>
                 </View>
-                <Text
-                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
-                  알림
-                </Text>
-              </View>
-            );
-          },
-        }}
-      />
-      <Tab.Screen
-        name="MyPage"
-        component={MyPageFragment}
-        listeners={({navigation}) => ({
-          tabPress: async e => {
-            e.preventDefault();
-
-            const response = await checkRole();
-            if (response.status === 401) {
-              setTimeout(function () {
-                Toast.show(
-                  '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
-                  Toast.SHORT,
-                );
-              }, 100);
-              logout();
-              navigation.reset({routes: [{name: 'SplashHome'}]});
-            } else if (getHundredsDigit(response.status) === 2) {
-              const user = response.data.data;
-              if (!user?.blacklist) {
-                navigation.navigate('MyPage');
+              );
+            },
+            headerLeft: () => (
+              <TouchableHighlight
+                underlayColor="#EEEEEE"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => navigation.dispatch(CommonActions.goBack())}>
+                <BackButtonIcon />
+              </TouchableHighlight>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Alert"
+          component={AlertFragment}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              e.preventDefault();
+              const response = await checkRole();
+              if (response.status === 401) {
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(response.status) === 2) {
+                const user = response.data.data;
+                if (!user?.blacklist) {
+                  navigation.navigate('Alert');
+                } else {
+                  setTimeout(function () {
+                    Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                  }, 100);
+                }
               } else {
-                setTimeout(function () {
-                  Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                }, 100);
+                logout();
+                navigation.reset({
+                  routes: [
+                    {
+                      name: 'ErrorScreen',
+                      params: {status: response.status, code: 'G001'},
+                    },
+                  ],
+                });
               }
-            } else {
-              logout();
-              navigation.reset({
-                routes: [
-                  {
-                    name: 'ErrorScreen',
-                    params: {status: response.status, code: 'G001'},
-                  },
-                ],
-              });
-            }
-          },
-        })}
-        options={{
-          title: '설정',
-          headerTitleAlign: 'center',
-
-          tabBarIcon: ({size, color, focused}: Props) => {
-            return (
-              <View style={styles.iconContainer}>
-                <View style={styles.icon}>
-                  <MyPageGNB size={size} color={color} focused={focused} />
+            },
+          })}
+          options={{
+            title: '알림',
+            headerTitleAlign: 'center',
+            headerShadowVisible: false,
+            headerTitleStyle: {
+              fontSize: 19,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+            },
+            tabBarIcon: ({size, color, focused}: Props) => {
+              return (
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <AlertTabIcon size={size} color={color} focused={focused} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                    알림
+                  </Text>
                 </View>
-                <Text
-                  style={[styles.tabIconText, {color: getTextColor(color)}]}>
-                  MY
-                </Text>
-              </View>
-            );
-          },
-          headerTitleStyle: {
-            fontSize: 19,
-            fontFamily: 'SpoqaHanSansNeo-Regular',
-          },
-        }}
-      />
-    </Tab.Navigator>
+              );
+            },
+          }}
+        />
+        <Tab.Screen
+          name="MyPage"
+          component={MyPageFragment}
+          listeners={({navigation}) => ({
+            tabPress: async e => {
+              e.preventDefault();
+
+              const response = await checkRole();
+              if (response.status === 401) {
+                setTimeout(function () {
+                  Toast.show(
+                    '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
+                    Toast.SHORT,
+                  );
+                }, 100);
+                logout();
+                navigation.reset({routes: [{name: 'SplashHome'}]});
+              } else if (getHundredsDigit(response.status) === 2) {
+                const user = response.data.data;
+                if (!user?.blacklist) {
+                  navigation.navigate('MyPage');
+                } else {
+                  setTimeout(function () {
+                    Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+                  }, 100);
+                }
+              } else {
+                logout();
+                navigation.reset({
+                  routes: [
+                    {
+                      name: 'ErrorScreen',
+                      params: {status: response.status, code: 'G001'},
+                    },
+                  ],
+                });
+              }
+            },
+          })}
+          options={{
+            title: '설정',
+            headerTitleAlign: 'center',
+            headerShadowVisible: false,
+            tabBarIcon: ({size, color, focused}: Props) => {
+              return (
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <MyPageGNB size={size} color={color} focused={focused} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(color)}]}>
+                    MY
+                  </Text>
+                </View>
+              );
+            },
+            headerTitleStyle: {
+              fontSize: 19,
+              fontFamily: 'SpoqaHanSansNeo-Regular',
+            },
+          }}
+        />
+      </Tab.Navigator>
+    </View>
   );
 }
 

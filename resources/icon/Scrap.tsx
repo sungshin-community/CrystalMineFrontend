@@ -43,17 +43,17 @@ export const FooterScrap = ({
   stroke = '#9DA4AB',
 }: ScrapIconProps) => {
   return (
-    <Svg width="24" height="24" viewBox="0 0 24 24" fill={fill}>
-      <G clip-path="url(#clip0_1431_29478)">
+    <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill={fill}>
+      <G clipPath="url(#a)">
         <Path
-          d="M5.76 5.00047V5C5.76 4.30931 6.3191 3.75 7 3.75H17C17.6858 3.75 18.25 4.31421 18.25 5V19.8626L12.2954 17.3106L12 17.184L11.7046 17.3106L5.75071 19.8623L5.76 5.00047Z"
           stroke={stroke}
-          stroke-width="1.5"
+          strokeWidth={1.5}
+          d="M5.76 5c0-.69.56-1.25 1.24-1.25h10c.686 0 1.25.564 1.25 1.25v14.863l-5.955-2.552-.295-.127-.295.127-5.954 2.551L5.76 5Z"
         />
       </G>
       <Defs>
-        <ClipPath id="clip0_1431_29478">
-          <Rect width="24" height="24" fill={fill} />
+        <ClipPath id="a">
+          <Path fill={fill} d="M0 0h24v24H0z" />
         </ClipPath>
       </Defs>
     </Svg>
