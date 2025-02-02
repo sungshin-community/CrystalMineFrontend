@@ -323,7 +323,7 @@ export default function CrystalBallFragment({navigation}: Props) {
 const styles = StyleSheet.create({
   divider: {
     height: 1,
-    backgroundColor: '#EFEFF3',
+    backgroundColor: 'transparent',
     alignItems: 'center',
   },
   tabContainer: {

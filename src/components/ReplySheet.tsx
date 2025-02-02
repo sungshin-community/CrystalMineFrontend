@@ -273,7 +273,7 @@ export default function ReplySheet({
                 <View style={styles.homeIndicator} />
               </View>
 
-              <View style={{flex: 1, paddingBottom: 45}}>
+              <View style={{flex: 1, paddingBottom: 180}}>
                 <FlatList
                   style={{width: '100%', flex: 1}}
                   keyboardShouldPersistTaps="handled"
