@@ -1153,7 +1153,8 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   slideContainer: {
-    width: Dimensions.get('window').width - 50,
+    width: Dimensions.get('window').width - 60,
+    marginHorizontal: 5,
     backgroundColor: '#FAFAFA',
     borderRadius: 10,
     padding: 20,
