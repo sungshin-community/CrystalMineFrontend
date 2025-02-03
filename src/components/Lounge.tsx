@@ -84,7 +84,7 @@ const Lounge = () => {
       }}>
       <View style={styles.contentBox}>
         <View style={styles.hotTagBox}>
-          <Text style={styles.hotTag}>HOT</Text>
+          <Text style={styles.hotTag}>{item.tag}</Text>
           <Text style={styles.yearJob}>{item.userJob} </Text>
           <Text style={styles.yearJob}>·</Text>
           <Text style={styles.yearJob}>{item.userYear} </Text>
@@ -650,8 +650,9 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   contentBox: {
-    width: Dimensions.get('window').width - 32,
+    width: Dimensions.get('window').width - 42,
     borderRadius: 10,
+    marginHorizontal: 5,
     borderStyle: 'solid',
     borderColor: '#EFEFF3',
     borderWidth: 1,
