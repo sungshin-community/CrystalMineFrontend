@@ -489,7 +489,7 @@ const Lounge = () => {
           style={{
             marginBottom: 24,
           }}>
-          <View style={{marginBottom: 24}}>
+          <View>
             <View style={styles.boardContainer}>
               <View style={styles.boardTitleContainer}>
                 <Loudspeaker style={{marginTop: 2}} />
@@ -605,8 +605,9 @@ const Lounge = () => {
                   </View>
                   <Text style={styles.newPostTime}>
                     {item.createdAt}
-                    {'  '}
+                    {' · '}
                     <Text style={styles.newPostBoard}>{item.userJob}</Text>
+
                     <Text style={styles.newPostBoard}>{item.year}</Text>
                   </Text>
                   <Image
@@ -775,6 +776,7 @@ const styles = StyleSheet.create({
   nowBox: {
     width: 160,
     borderColor: '#EFEFF3',
+    marginRight: 8,
     borderRadius: 10,
     borderWidth: 1,
     marginTop: 16,
