@@ -84,7 +84,7 @@ const Lounge = () => {
       }}>
       <View style={styles.contentBox}>
         <View style={styles.hotTagBox}>
-          <Text style={styles.hotTag}>HOT</Text>
+          <Text style={styles.hotTag}>{item.tag}</Text>
           <Text style={styles.yearJob}>{item.userJob} </Text>
           <Text style={styles.yearJob}>·</Text>
           <Text style={styles.yearJob}>{item.userYear} </Text>
@@ -407,7 +407,7 @@ const Lounge = () => {
         {/* 오른쪽 하단에 인덱스 표시 */}
         <View style={styles.pagination}>
           <Text style={styles.paginationText}>
-            {currentArticleIndex + 1} / {articleData.length}
+            {currentArticleIndex + 1}/{articleData.length}
           </Text>
         </View>
       </View>
@@ -489,7 +489,7 @@ const Lounge = () => {
           style={{
             marginBottom: 24,
           }}>
-          <View style={{marginBottom: 24}}>
+          <View>
             <View style={styles.boardContainer}>
               <View style={styles.boardTitleContainer}>
                 <Loudspeaker style={{marginTop: 2}} />
@@ -605,8 +605,9 @@ const Lounge = () => {
                   </View>
                   <Text style={styles.newPostTime}>
                     {item.createdAt}
-                    {'  '}
+                    {' · '}
                     <Text style={styles.newPostBoard}>{item.userJob}</Text>
+
                     <Text style={styles.newPostBoard}>{item.year}</Text>
                   </Text>
                   <Image
@@ -650,8 +651,9 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   contentBox: {
-    width: Dimensions.get('window').width - 32,
+    width: Dimensions.get('window').width - 42,
     borderRadius: 10,
+    marginHorizontal: 5,
     borderStyle: 'solid',
     borderColor: '#EFEFF3',
     borderWidth: 1,
@@ -774,6 +776,7 @@ const styles = StyleSheet.create({
   nowBox: {
     width: 160,
     borderColor: '#EFEFF3',
+    marginRight: 8,
     borderRadius: 10,
     borderWidth: 1,
     marginTop: 16,
@@ -860,16 +863,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(48, 48, 48, 0.8)',
+    borderRadius: 40,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
 
   paginationText: {
     color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 12,
   },
 });
 

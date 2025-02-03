@@ -11,11 +11,14 @@ const OnboardingScreen = ({navigation}) => {
       description: (
         <Text style={styles.subheadingText}>
           궁금했던, 궁금한, 궁금할 모든 것. {'\n'}
-          <View style={styles.customUnderlineWrapper}>
+          <View
+            style={[
+              styles.customUnderlineWrapper,
+              {flexDirection: 'row', alignItems: 'baseline'},
+            ]}>
             <Text style={styles.highlightText}>수정구</Text>
-            <View style={styles.customUnderline} />
+            <Text style={styles.subheadingText}>에 물어봐!</Text>
           </View>
-          에 물어봐!
         </Text>
       ),
       image: require('../../../resources/images/CrystalOnboadingImg.png'),
@@ -168,7 +171,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#222222',
     fontWeight: '100',
-    lineHeight: 35,
     textAlign: 'center',
     marginTop: 10,
   },
@@ -196,19 +198,15 @@ const styles = StyleSheet.create({
   customUnderlineWrapper: {
     position: 'relative',
     display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'baseline',
   },
   highlightText: {
     fontSize: 20,
-    top: 15,
     color: '#A055FF',
     fontWeight: 'bold',
-    zIndex: 1,
   },
-  customUnderline: {
-    fontSize: 20,
-    backgroundColor: '#FFF176',
-    height: 10,
-  },
+
   bottomNavigation: {
     bottom: 30,
     flexDirection: 'row',
