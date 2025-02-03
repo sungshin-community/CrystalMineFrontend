@@ -407,7 +407,7 @@ const Lounge = () => {
         {/* 오른쪽 하단에 인덱스 표시 */}
         <View style={styles.pagination}>
           <Text style={styles.paginationText}>
-            {currentArticleIndex + 1} / {articleData.length}
+            {currentArticleIndex + 1}/{articleData.length}
           </Text>
         </View>
       </View>
@@ -860,16 +860,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(48, 48, 48, 0.8)',
+    borderRadius: 40,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
 
   paginationText: {
     color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 12,
   },
 });
 
