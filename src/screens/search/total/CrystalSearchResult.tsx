@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 16,
     marginHorizontal: 16,
+    marginBottom: 16,
   },
   button: {
     paddingHorizontal: 12,

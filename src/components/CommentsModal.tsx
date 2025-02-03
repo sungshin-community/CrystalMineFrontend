@@ -1,21 +1,18 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, {useRef, useEffect, useState, useCallback} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  FlatList,
-  ScrollView,
-  TextInput,
-  KeyboardEvent,
-  Keyboard,
+  TouchableWithoutFeedback,
   Dimensions,
-  Image,
-  TouchableOpacity,
   Animated,
   PanResponder,
-  TouchableWithoutFeedback,
-  Platform,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Keyboard,
   KeyboardAvoidingView,
+  Pressable,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import CommentWriteContainer from './CommentWriteContainer';
@@ -33,6 +30,7 @@ import Toast from 'react-native-simple-toast';
 import {logout} from '../common/authApi';
 import {getHundredsDigit} from '../common/util/statusUtil';
 import CloseIcon from '../../resources/icon/CloseIcon';
+
 interface CommentsModalProps {
   modalVisible: boolean;
   closeModal: () => void;
@@ -49,31 +47,28 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   postId,
 }) => {
   const [comments, setComments] = useState<CommentDto[]>([]);
+  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [focusCommentId, setFocusCommentId] = useState<number | null>(null);
   const flatListRef = useRef<FlatList>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [newComment, setNewComment] = useState<string>('');
-  const scrollViewRef = useRef<ScrollView>(null);
-  const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const commentInputRef = useRef<TextInput>(null);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [parentId, setParentId] = useState<number | null>(null); // null로 초기화
-  const [componentModalVisible, setComponentModalVisible] =
-    useState<boolean>(false);
-  const [newCommentAdded, setNewCommentAdded] = useState<boolean>(false);
-  const [isCommentAdded, setIsCommentAdded] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [parentId, setParentId] = useState<number | null>(null);
+  const [isRecomment, setIsRecomment] = useState<boolean>(false);
   const [showSelectedEmoji, setShowSelectedEmoji] = useState<boolean>(false);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+  const [selectedEmojiId, setSelectedEmojiId] = useState<number | null>(null);
+  const [componentModalVisible, setComponentModalVisible] =
+    useState<boolean>(false);
   const [replyToComment, setReplyToComment] = useState<{
     parentId: number | null;
   }>({parentId: null});
-  const [selectedEmojiId, setSelectedEmojiId] = useState<number | null>(null);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  // Bottom Sheet 설정
   const screenHeight = Dimensions.get('screen').height;
-  const bottomSheetHeight = screenHeight * 0.8; // 초기 높이 80%
-  const maxSheetHeight = screenHeight * 0.95; // 최대 높이 95%
-  const dragThreshold = 0; // 드래그 임계값
-  const [statusBarHeight, setStatusBarHeight] = useState(0);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const bottomSheetHeight = screenHeight * 0.8;
+  const maxSheetHeight = screenHeight * 0.95;
+  const dragThreshold = 0;
 
   const panY = useRef(new Animated.Value(screenHeight)).current;
   const lastPanY = useRef(screenHeight - bottomSheetHeight);
@@ -90,18 +85,13 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
     duration: 300,
   });
 
-  const closeBottomSheet = Animated.timing(panY, {
-    toValue: screenHeight,
-    duration: 300,
-    useNativeDriver: true,
-  });
-
   const expandBottomSheet = Animated.timing(panY, {
     toValue: screenHeight - maxSheetHeight,
     useNativeDriver: true,
     duration: 300,
   });
 
+  // Pan Responder 설정
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -137,125 +127,117 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
       },
     }),
   ).current;
+
+  // 키보드 이벤트 리스너
   useEffect(() => {
-    const keyboardWillShow = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-      e => {
-        setKeyboardHeight(e.endCoordinates.height);
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
       },
     );
-
-    const keyboardWillHide = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
       () => {
-        setKeyboardHeight(0);
+        setKeyboardVisible(false);
       },
     );
 
     return () => {
-      keyboardWillShow.remove();
-      keyboardWillHide.remove();
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
     };
   }, []);
 
-  useEffect(() => {
-    if (modalVisible && postId) {
-      console.log('Fetching comments for postId:', postId);
-      fetchComments(postId);
-    }
-  }, [modalVisible, postId, newCommentAdded]);
-
-  useEffect(() => {}, [comments]);
-  // 초기화
-  useEffect(() => {
-    async function init() {
-      setIsLoading(true);
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
-      setIsLoading(false);
-    }
-    init();
-  }, [componentModalVisible]);
-
-  // 댓글 작성 완료 핸들러
-  const handleCommentComplete = () => {
-    setIsCommentAdded(true);
-    refreshComments();
-  };
-
-  // 댓글 목록 갱신
-
-  const fetchComments = async (postId: number) => {
+  // 댓글 데이터 가져오기
+  const fetchComments = async () => {
     try {
+      setIsLoading(true);
       const commentsData = await getComments(postId);
       setComments(commentsData || []);
     } catch (error) {
       console.error('Error fetching comments:', error);
+    } finally {
+      setIsLoading(false);
+      setSelectedEmoji(null);
+      setSelectedEmojiId(null);
+      setShowSelectedEmoji(false);
     }
   };
 
-  const refreshComments = async () => {
-    const commentData = await getComments(route.params.postId);
-    setComments(commentData);
+  useEffect(() => {
+    if (modalVisible) {
+      fetchComments();
+      resetBottomSheet.start();
+    }
+  }, [modalVisible, postId]);
+
+  // 댓글 입력창 포커스
+  const handleFocus = () => {
+    commentInputRef.current?.focus();
+  };
+
+  // 댓글 클릭 처리
+  const handleCommentClick = (commentId: number, index: number) => {
+    setFocusCommentId(commentId);
+    handleFocus();
+    setParentId(commentId);
+    setIsRecomment(true);
+    setReplyToComment({parentId: commentId});
+
+    if (comments.length > index) {
+      flatListRef.current?.scrollToIndex({
+        index,
+        animated: true,
+      });
+    }
   };
 
   // 댓글 생성
   const addCommentFunc = useCallback(
     async (
       postId: number,
-      newComment: string,
+      content: string,
       isAnonymous: boolean,
       emoticonId: number,
     ) => {
       setIsLoading(true);
-      const response = await addComment(
-        postId,
-        newComment,
-        isAnonymous,
-        selectedEmojiId,
-      );
-      if (response.status === 401) {
-        setTimeout(function () {
+      try {
+        const response = await addComment(
+          postId,
+          content,
+          isAnonymous,
+          emoticonId,
+        );
+
+        if (response.status === 401) {
           Toast.show(
             '토큰 정보가 만료되어 로그인 화면으로 이동합니다',
             Toast.SHORT,
           );
-        }, 100);
-        logout();
-        navigation.reset({routes: [{name: 'SplashHome'}]});
-      } else if (getHundredsDigit(response.status) === 2) {
-        // 새 댓글을 바로 추가
-        const newCommentData = await getComments(postId);
-        setComments(newCommentData);
-        setNewComment('');
-        setNewCommentAdded(prev => !prev);
-        scrollViewRef.current?.scrollToEnd({animated: true});
-      } else {
-        setTimeout(function () {
+          logout();
+          navigation.reset({routes: [{name: 'SplashHome'}]});
+        } else if (getHundredsDigit(response.status) === 2) {
+          await fetchComments();
+        } else {
           Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
-        }, 100);
+        }
+      } catch (error) {
+        console.error('Error adding comment:', error);
+        Toast.show('댓글 작성 중 오류가 발생했습니다.', Toast.SHORT);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     },
-    [selectedEmojiId],
+    [],
   );
-
-  // 대댓글 모드 설정 함수 추가
-  const handleReplyMode = (commentId: number) => {
-    setParentId(commentId);
-    setIsRecomment(true);
-    setReplyToComment({
-      parentId: commentId,
-    });
-    focusCommentInput();
-  };
 
   // 대댓글 생성
   const addRecommentFunc = useCallback(
     async (
       postId: number,
       parentId: number,
-      newComment: string,
+      content: string,
       isAnonymous: boolean,
       emoticonId: number,
     ) => {
@@ -269,9 +251,9 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
         const response = await addRecomment(
           postId,
           parentId,
-          newComment,
+          content,
           isAnonymous,
-          selectedEmojiId,
+          emoticonId,
         );
 
         if (response.status === 401) {
@@ -282,339 +264,195 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
           logout();
           navigation.reset({routes: [{name: 'SplashHome'}]});
         } else if (getHundredsDigit(response.status) === 2) {
-          const newCommentData = await getComments(postId);
-          setComments(newCommentData);
-          setNewComment('');
+          await fetchComments();
           setIsRecomment(false);
           setReplyToComment({parentId: null});
-
-          // 부모 댓글로 스크롤
-          const index = newCommentData?.findIndex(c => c.id === parentId);
-          if (index !== -1) {
-            flatListRef.current?.scrollToIndex({
-              index,
-              animated: true,
-              viewPosition: 0.5,
-            });
-          }
         } else {
           Toast.show('알 수 없는 오류가 발생하였습니다.', Toast.SHORT);
         }
       } catch (error) {
         console.error('Error adding recomment:', error);
         Toast.show('댓글 작성 중 오류가 발생했습니다.', Toast.SHORT);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     },
     [selectedEmojiId],
   );
 
-  // 댓글창 포커스
-  const focusCommentInput = () => {
-    commentInputRef.current?.focus();
-  };
-  // 댓글, 대댓글 공감 함수 수정
+  // 댓글 좋아요
   const handleCommentLike = async (commentId: number) => {
-    // 먼저 UI 업데이트
-    setComments(prevComments =>
-      prevComments.map(comment => {
-        if (comment.id === commentId) {
-          // 메인 댓글인 경우
-          return {
-            ...comment,
-            isLiked: !comment.isLiked,
-            likeCount: comment.isLiked
-              ? comment.likeCount - 1
-              : comment.likeCount + 1,
-          };
-        } else if (comment.recomments?.length > 0) {
-          // 대댓글인 경우
-          return {
-            ...comment,
-            recomments: comment.recomments.map(recomment =>
-              recomment.id === commentId
-                ? {
-                    ...recomment,
-                    isLiked: !recomment.isLiked,
-                    likeCount: recomment.isLiked
-                      ? recomment.likeCount - 1
-                      : recomment.likeCount + 1,
-                  }
-                : recomment,
-            ),
-          };
-        }
-        return comment;
-      }),
-    );
-
-    // API 호출
-    const result = await setCommentLike(commentId);
-    if (!result) {
-      // API 호출이 실패한 경우 원래 상태로 되돌림
-      const commentData = await getComments(route.params.postId);
-      setComments(commentData);
+    try {
+      await setCommentLike(commentId);
+      await fetchComments();
+    } catch (error) {
+      console.error('Error handling comment like:', error);
     }
   };
-  // 댓글, 대댓글 삭제
+
+  // 댓글 삭제
   const handleCommentDelete = async (commentId: number) => {
     try {
-      // UI 먼저 업데이트
-      setComments(prevComments =>
-        prevComments.map(comment => {
-          if (comment.id === commentId) {
-            return {...comment, isDeleted: true, content: '삭제된 댓글입니다.'};
-          }
-          // 대댓글 확인
-          if (comment.recomments) {
-            return {
-              ...comment,
-              recomments: comment.recomments.map(recomment =>
-                recomment.id === commentId
-                  ? {
-                      ...recomment,
-                      isDeleted: true,
-                      content: '삭제된 댓글입니다.',
-                    }
-                  : recomment,
-              ),
-            };
-          }
-          return comment;
-        }),
-      );
       const result = await deleteComment(commentId);
-
       if (getHundredsDigit(result.status) === 2) {
-        Toast.show('작성하신 댓글이 성공적으로 삭제되었습니다.', Toast.SHORT);
-        const updatedComments = await getComments(postId);
-        if (updatedComments) {
-          setComments(updatedComments);
-        }
-      } else {
-        // API 실패 시 원래 상태로 복구
-        const originalComments = await getComments(postId);
-        setComments(originalComments);
+        Toast.show('댓글이 삭제되었습니다.', Toast.SHORT);
+        await fetchComments();
       }
     } catch (error) {
       console.error('Error deleting comment:', error);
-      // 에러 발생 시 원래 상태로 복구
-      const originalComments = await getComments(postId);
-      setComments(originalComments);
       Toast.show('댓글 삭제 중 오류가 발생했습니다.', Toast.SHORT);
     }
   };
-  // 댓글, 대댓글 신고
+
+  // 댓글 신고
   const handleCommentReport = async (
-    recommentId: number,
+    commentId: number,
     reasonId: number,
     detail?: string,
   ) => {
-    const result = await reportComment(recommentId, reasonId, detail);
-    const commentData = await getComments(route.params.postId);
-    console.log(result);
-    setComments(commentData);
-    return result;
-  };
-
-  const onKeyboardDidshow = (e: KeyboardEvent) => {
-    setKeyboardHeight(e.endCoordinates.height);
-  };
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener(
-      'keyboardDidShow',
-      onKeyboardDidshow,
-    );
-    return () => {
-      showSubscription.remove();
-    };
-  }, []);
-  const onInputFocus = () => {
-    setIsFocused(true);
-  };
-  const onInputFocusOut = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
-  };
-
-  useEffect(() => {
-    if (isCommentAdded) {
-      const fetchComments = async () => {
-        const commentData = await getComments(postId);
-        setComments(commentData);
-      };
-      fetchComments();
+    try {
+      const result = await reportComment(commentId, reasonId, detail);
+      await fetchComments();
+      return result;
+    } catch (error) {
+      console.error('Error reporting comment:', error);
+      return null;
     }
-  }, [postId]);
+  };
 
   const handleEmojiSelect = (emoji: {imageUrl: string; id: number}) => {
     setSelectedEmoji({uri: emoji.imageUrl});
     setSelectedEmojiId(emoji.id);
     setShowSelectedEmoji(true);
-    console.log('Selected emoji ID in CommentsModal:', emoji.id); // 디버깅용 로그 추가
   };
 
-  useEffect(() => {
-    if (modalVisible && postId) {
-      const fetchComments = async () => {
-        try {
-          const commentsData = await getComments(postId);
-          if (commentsData) {
-            setComments(commentsData);
-          }
-        } catch (error) {
-          console.error('Error fetching comments:', error);
-        }
-      };
-      fetchComments();
-      resetBottomSheet.start();
-    }
-  }, [modalVisible, postId, newCommentAdded]);
-
   return (
-    <>
+    <Modal isVisible={modalVisible} style={styles.modal}>
       <KeyboardAvoidingView
-        style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={
-          Platform.OS === 'ios' ? statusBarHeight + 30 : statusBarHeight + 78
-        }>
-        <Modal
-          isVisible={modalVisible}
-          style={styles.modal}
-          backdropOpacity={0.5}
-          onBackdropPress={closeModal}
-          useNativeDriver={true}>
-          <View style={styles.overlay}>
-            <TouchableWithoutFeedback onPress={closeModal}>
-              <View style={styles.background} />
-            </TouchableWithoutFeedback>
+        style={{flex: 1}}>
+        <Pressable style={styles.overlay} onPress={closeModal}>
+          <TouchableWithoutFeedback onPress={() => {}} style={{flex: 1}}>
             <Animated.View
               style={[
-                styles.modalContent,
-                {transform: [{translateY: translateY}]},
-              ]}
-              {...panResponder.panHandlers}>
-              <View style={styles.homeIndicator} />
+                styles.bottomSheetContainer,
+                {transform: [{translateY}]},
+              ]}>
+              <View {...panResponder.panHandlers} style={{width: '100%'}}>
+                <View style={styles.homeIndicator} />
+              </View>
 
-              {/* 메인 컨텐츠 영역 */}
-              <View style={{flex: 1, paddingBottom: 40}}>
+              <View
+                style={{
+                  flex: 1,
+                  marginBottom: Platform.OS === 'ios' ? 160 : 180,
+                }}>
                 <FlatList
-                  showsVerticalScrollIndicator={false}
-                  style={{flex: 1}}
+                  style={{width: '100%', flex: 1}}
+                  showsVerticalScrollIndicator={true}
+                  keyboardShouldPersistTaps="handled"
                   ref={flatListRef}
                   data={comments}
                   renderItem={({item, index}) => (
-                    <View key={index}>
-                      <Comment
-                        navigation={navigation}
-                        comment={item}
-                        setParentId={id => handleReplyMode(id)}
-                        handleCommentLike={handleCommentLike}
-                        isRecomment={isRecomment}
-                        setIsRecomment={setIsRecomment}
-                        handleCommentDelete={handleCommentDelete}
-                        handleCommentReport={handleCommentReport}
-                        handleFocus={focusCommentInput}
-                        componentModalVisible={componentModalVisible}
-                        setComponentModalVisible={setComponentModalVisible}
-                        onEmojiSelect={handleEmojiSelect}
-                      />
-                      {item.recomments &&
-                        item.recomments.map((recomment, index) => (
-                          <Recomment
-                            key={index}
-                            navigation={navigation}
-                            recomment={recomment}
-                            handleCommentLike={handleCommentLike}
-                            handleCommentDelete={handleCommentDelete}
-                            handleCommentReport={handleCommentReport}
-                            componentModalVisible={componentModalVisible}
-                            setComponentModalVisible={setComponentModalVisible}
-                            onEmojiSelect={handleEmojiSelect}
-                          />
-                        ))}
+                    <View onStartShouldSetResponder={() => true}>
+                      <View
+                        style={[
+                          styles.commentContainer,
+                          item.id === focusCommentId && styles.focusedComment,
+                        ]}>
+                        <Comment
+                          navigation={navigation}
+                          comment={item}
+                          setParentId={() => handleCommentClick(item.id, index)}
+                          handleCommentLike={handleCommentLike}
+                          isRecomment={isRecomment}
+                          setIsRecomment={setIsRecomment}
+                          handleCommentDelete={handleCommentDelete}
+                          handleCommentReport={handleCommentReport}
+                          handleFocus={handleFocus}
+                          componentModalVisible={componentModalVisible}
+                          setComponentModalVisible={setComponentModalVisible}
+                          onEmojiSelect={handleEmojiSelect}
+                        />
+                      </View>
+                      {item.recomments?.map((recomment, rIndex) => (
+                        <Recomment
+                          key={rIndex}
+                          navigation={navigation}
+                          recomment={recomment}
+                          handleCommentLike={handleCommentLike}
+                          handleCommentDelete={handleCommentDelete}
+                          handleCommentReport={handleCommentReport}
+                          componentModalVisible={componentModalVisible}
+                          setComponentModalVisible={setComponentModalVisible}
+                          onEmojiSelect={handleEmojiSelect}
+                          selectedEmoji={selectedEmoji}
+                          showSelectedEmoji={showSelectedEmoji}
+                        />
+                      ))}
                     </View>
                   )}
-                  ItemSeparatorComponent={() => <View style={{height: 1}} />}
                 />
               </View>
             </Animated.View>
+          </TouchableWithoutFeedback>
+        </Pressable>
+
+        {showSelectedEmoji && selectedEmoji && (
+          <View style={styles.selectedEmojiContainer}>
+            <Image source={selectedEmoji} style={styles.selectedEmoji} />
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setShowSelectedEmoji(false)}>
+              <CloseIcon />
+            </TouchableOpacity>
           </View>
-          {showSelectedEmoji && selectedEmoji && (
-            <View style={styles.selectedEmojiContainer}>
-              <Image source={selectedEmoji} style={styles.selectedEmoji} />
-              <View
-                style={{position: 'absolute', top: 0, right: 0, margin: 16}}>
-                <TouchableOpacity onPress={() => setShowSelectedEmoji(false)}>
-                  <CloseIcon />
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-          <View
-            style={[
-              styles.commentWriteWrapper,
-              {
-                transform: [
-                  {
-                    translateY:
-                      statusBarHeight > 0
-                        ? -keyboardHeight + 20
-                        : -keyboardHeight,
-                  },
-                ],
-              },
-            ]}>
-            <CommentWriteContainer
-              navigation={navigation}
-              route={{params: {postId}}}
-              refreshComments={refreshComments}
-              addComment={addCommentFunc}
-              addRecomment={addRecommentFunc}
-              onCommentComplete={handleCommentComplete}
-              setShowSelectedEmoji={setShowSelectedEmoji}
-              onEmojiSelect={handleEmojiSelect}
-              isRecomment={isRecomment}
-              parentId={parentId}
-              setParentId={setParentId}
-              setIsRecomment={setIsRecomment}
-              replyToComment={replyToComment}
-              onCancelReply={() => {
-                setIsRecomment(false);
-                setParentId(null);
-                setReplyToComment({parentId: null});
-              }}
-              selectedEmojiId={selectedEmojiId}
-            />
-          </View>
-        </Modal>
+        )}
+
+        <CommentWriteContainer
+          navigation={navigation}
+          route={{params: {postId}}}
+          refreshComments={fetchComments}
+          addComment={addCommentFunc}
+          addRecomment={addRecommentFunc}
+          selectedEmoji={selectedEmoji}
+          setShowSelectedEmoji={setShowSelectedEmoji}
+          onEmojiSelect={handleEmojiSelect}
+          isRecomment={isRecomment}
+          parentId={parentId}
+          setParentId={setParentId}
+          setIsRecomment={setIsRecomment}
+          replyToComment={replyToComment}
+          onCancelReply={() => {
+            setIsRecomment(false);
+            setParentId(null);
+            setReplyToComment({parentId: null});
+          }}
+          selectedEmojiId={selectedEmojiId}
+        />
       </KeyboardAvoidingView>
-    </>
+    </Modal>
   );
 };
+
+export default CommentsModal;
 
 const styles = StyleSheet.create({
   modal: {
     justifyContent: 'flex-end',
     margin: 0,
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    // marginBottom: 50,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    flex: 1,
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'transparent',
+    // backgroundColor: 'transparent',
   },
-  background: {
+  bottomSheetContainer: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     flex: 1,
+    flexDirection: 'column',
   },
   homeIndicator: {
     width: 40,
@@ -624,12 +462,17 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     alignSelf: 'center',
   },
-  modalText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    //marginBottom: 10,
+  commentContainer: {
+    // padding: 16,
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#EFEFF3',
+    // backgroundColor: 'blue',
+  },
+  focusedComment: {
+    // backgroundColor: '#f6f6f6',
   },
   selectedEmojiContainer: {
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
@@ -642,17 +485,30 @@ const styles = StyleSheet.create({
   selectedEmoji: {
     width: 80,
     height: 80,
+    resizeMode: 'contain',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    padding: 16,
   },
   commentWriteWrapper: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
-    borderTopWidth: 1,
-    borderTopColor: '#EFEFF3',
     backgroundColor: 'white',
+    // borderTopWidth: 1,
+    // borderTopColor: '#EFEFF3',
     zIndex: 999,
+    paddingBottom: 20,
+  },
+  footerText: {
+    marginLeft: 4,
+    fontWeight: '500',
+    fontSize: 13,
+    color: '#9DA4AB',
+    marginRight: 12,
   },
 });
-
-export default CommentsModal;
