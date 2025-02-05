@@ -397,7 +397,7 @@ const Comment = ({
             // borderBottomColor: '#efeff3',
             // borderBottomWidth: 1,
             backgroundColor: isRecommentState
-              ? '#F3E7FF'
+              ? '#f6f6f6'
               : data?.isOfReader
               ? '#fff'
               : '#FFF',
