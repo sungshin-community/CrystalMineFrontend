@@ -532,12 +532,7 @@ const HomeFragment = ({navigation}: Props) => {
                   {/* 게시판 글 목록 */}
                   <View style={styles.rowContainer}>
                     {/* 지금 인기있는 글 영역 */}
-                    <View style={styles.boardTitleContainer}>
-                      <HotPost />
-                      <Text style={[fontRegular, styles.boardTitle]}>
-                        지금 인기있는 글
-                      </Text>
-                    </View>
+
                     <TouchableWithoutFeedback
                       onPress={() => {
                         {
@@ -548,9 +543,19 @@ const HomeFragment = ({navigation}: Props) => {
                             : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                         }
                       }}>
-                      <RightArrow />
+                      <View style={styles.rowtitleContainer}>
+                        <View style={styles.boardTitleContainer}>
+                          <HotPost />
+                          <Text style={[fontRegular, styles.boardTitle]}>
+                            지금 인기있는 글
+                          </Text>
+                        </View>
+
+                        <RightArrow />
+                      </View>
                     </TouchableWithoutFeedback>
                   </View>
+
                   {!isInited ? (
                     skeletonComponent
                   ) : user?.isAuthenticated ? (
@@ -624,12 +629,6 @@ const HomeFragment = ({navigation}: Props) => {
                   )}
                   {/* 방금 올라온 글 목록 */}
                   <View style={styles.rowNewPostContainer}>
-                    <View style={styles.boardTitleContainer}>
-                      <RecentPost />
-                      <Text style={[fontRegular, styles.boardTitle]}>
-                        방금 올라온 글
-                      </Text>
-                    </View>
                     <TouchableWithoutFeedback
                       onPress={() => {
                         {
@@ -640,7 +639,16 @@ const HomeFragment = ({navigation}: Props) => {
                             : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                         }
                       }}>
-                      <RightArrow />
+                      <View style={styles.rowtitleContainer}>
+                        <View style={styles.boardTitleContainer}>
+                          <RecentPost />
+                          <Text style={[fontRegular, styles.boardTitle]}>
+                            방금 올라온 글
+                          </Text>
+                        </View>
+
+                        <RightArrow />
+                      </View>
                     </TouchableWithoutFeedback>
                   </View>
                   {isLoadingNewPosts ? (
@@ -706,13 +714,6 @@ const HomeFragment = ({navigation}: Props) => {
                   {/* 고정된 커뮤니티 */}
                   <View style={{marginVertical: 20}}>
                     <View style={styles.rowContainer}>
-                      <View style={styles.boardTitleContainer}>
-                        <PinPost />
-                        <Text style={[fontRegular, styles.boardTitle]}>
-                          고정한 커뮤니티
-                        </Text>
-                      </View>
-
                       <TouchableWithoutFeedback
                         onPress={() => {
                           {
@@ -724,7 +725,16 @@ const HomeFragment = ({navigation}: Props) => {
                                 );
                           }
                         }}>
-                        <RightArrow />
+                        <View style={styles.rowtitleContainer}>
+                          <View style={styles.boardTitleContainer}>
+                            <PinPost />
+                            <Text style={[fontRegular, styles.boardTitle]}>
+                              고정한 커뮤니티
+                            </Text>
+                          </View>
+
+                          <RightArrow />
+                        </View>
                       </TouchableWithoutFeedback>
                     </View>
                     {/* 게시판 글 목록 */}
@@ -929,6 +939,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 20,
+    alignItems: 'center',
+  },
+  rowtitleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   rowNewPostContainer: {
