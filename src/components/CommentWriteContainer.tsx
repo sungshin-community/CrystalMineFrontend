@@ -303,9 +303,9 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
       console.log('showEmojiPickers', emojiClicked);
       console.log('showEmojiPicker', showEmojiPicker);
 
-      if (commentInputRef.current) {
-        commentInputRef.current.focus();
-      }
+      // if (commentInputRef.current) {
+      //   commentInputRef.current.focus();
+      // }
       console.log('이모티콘 성공:', emoticons);
     } catch (error) {
       console.error('이모티콘 패치 실패', error);
@@ -401,6 +401,15 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
             onInputFocusOut();
             setIsRecomment(false);
           }} */
+            onPressIn={() => {
+              if (showEmojiPicker) {
+                setShowEmojiPicker(false);
+                setEmojiClicked(false);
+                setTimeout(() => {
+                  commentInputRef.current?.focus(); // 키보드 포커스
+                }, 100);
+              }
+            }}
           />
           <View style={{marginBottom: 10}}>
             <TouchableOpacity onPress={handleEmojiIconPress}>

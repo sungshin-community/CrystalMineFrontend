@@ -41,10 +41,12 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
 
   return (
     <View style={styles.container}>
+      {/* 인기 게시판 디자인 */}
       {boardId === 2 && (
         <View
           style={{
-            marginTop: 10,
+            // marginTop: 10,
+            marginBottom: 12,
             height: 28,
             backgroundColor: '#F7F7F7',
             flexDirection: 'row',
