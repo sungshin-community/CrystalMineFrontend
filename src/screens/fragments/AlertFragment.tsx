@@ -28,6 +28,7 @@ const AlertFragment = () => {
     const init = async () => {
       setIsLoading(true);
       const result = await getAlerts();
+      console.log('알림 데이터:', result);
       if (result) setAlerts(result);
       setIsLoading(false);
     };
@@ -48,6 +49,29 @@ const AlertFragment = () => {
       setCurrentPage(currentPage + 1);
     }
     setIsNextPageLoading(false);
+  };
+
+  const handlePress = () => {
+    console.log('알림 클릭 데이터:', {
+      type: data.type,
+      postId: data.postId,
+      ptPostId: data.ptPostId,
+      ptPostType: data.ptPostType,
+      title: data.title,
+    });
+
+    if (data.type === 'PT_COMMENT') {
+      navigation.navigate('ConstructionPost', {
+        postId: data.postId,
+        postType: data.ptPostType,
+        source: 'notification',
+      });
+      return;
+    }
+
+    navigation.navigate('Post', {
+      postId: data.postId,
+    });
   };
 
   return (

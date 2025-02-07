@@ -28,7 +28,6 @@ import {
   deleltePantheonCommentLike,
   postPantheonCommentLike,
   getPantheonReviewDetail,
-  getPantheonArticleDetail,
   getPantheonReviewComment,
   postPantheonReport,
   postPantheonCommentReport,
@@ -49,10 +48,11 @@ interface SpherePostScreenProps {
   route: {
     params: {
       ptPostId: number;
-      isQuestion: boolean;
-      isFree: boolean;
-      isReview: boolean;
-      isArticle: boolean;
+      postType?: string; // 알림에서 들어올 때
+      isQuestion?: boolean; // 일반 화면에서 들어올 때
+      isFree?: boolean;
+      isReview?: boolean;
+      source?: string;
     };
   };
 }
@@ -71,7 +71,21 @@ type RootStackParamList = {
 export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const navigation =
     useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
-  const {ptPostId, isQuestion, isFree, isReview, isArticle} = route.params;
+  const {
+    ptPostId,
+    postType,
+    isQuestion: isQuestionParam,
+    isFree: isFreeParam,
+    isReview: isReviewParam,
+  } = route.params;
+  // postType이 있으면 그걸 사용하고, 없으면 boolean flags 사용
+  const isQuestion = postType ? postType === 'QUESTION' : isQuestionParam;
+  const isFree = postType ? postType === 'FREE' : isFreeParam;
+  const isReview = postType ? postType === 'REVIEW' : isReviewParam;
+  console.log('==== SpherePostScreen Mounted ====');
+  console.log('Route Params:', route.params);
+  console.log('ptPostId:', ptPostId);
+  // console.log('postType:', postType);
   const [postData, setPostData] = useState<pantheonDetail | undefined>(
     undefined,
   );
@@ -120,8 +134,6 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
         response = await getPantheonFreeDetail(ptPostId);
       } else if (isReview) {
         response = await getPantheonReviewDetail(ptPostId);
-      } else if (isArticle) {
-        response = await getPantheonArticleDetail(ptPostId);
       }
 
       // response 자체가 데이터이므로 바로 response를 사용
@@ -524,18 +536,6 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       }}>
                       {isReview ? postData?.nickname : postData?.displayName}
                     </Text>
-                    {!isArticle && (
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: '#B9BAC1',
-                          fontWeight: '400',
-                        }}>
-                        {postData?.createdAt}
-                      </Text>
-                    )}
-                  </View>
-                  {isArticle ? (
                     <Text
                       style={{
                         fontSize: 12,
@@ -544,22 +544,21 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       }}>
                       {postData?.createdAt}
                     </Text>
-                  ) : (
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '500',
-                        color: '#89919A',
-                      }}>
-                      {postData?.isBlind
-                        ? '비공개'
-                        : `${postData?.department} · ${postData?.userJob} · ${
-                            postData?.userYear === 0
-                              ? '신입'
-                              : `${postData?.userYear}년`
-                          }`}
-                    </Text>
-                  )}
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '500',
+                      color: '#89919A',
+                    }}>
+                    {postData?.isBlind
+                      ? '비공개'
+                      : `${postData?.department} · ${postData?.userJob} · ${
+                          postData?.userYear === 0
+                            ? '신입'
+                            : `${postData?.userYear}년`
+                        }`}
+                  </Text>
                 </View>
               </View>
               {isQuestion && (
