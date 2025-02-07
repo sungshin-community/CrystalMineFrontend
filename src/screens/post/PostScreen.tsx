@@ -245,9 +245,9 @@ const PostScreen = ({navigation, route}: Props) => {
       setEmojiClicked(!emojiClicked);
       console.log('emojiClicked', emojiClicked);
 
-      if (commentInputRef.current) {
-        commentInputRef.current.focus();
-      }
+      // if (commentInputRef.current) {
+      //   commentInputRef.current.focus();
+      // }
       console.log('이모티콘 성공:', emoticons);
     } catch (error) {
       console.error('이모티콘 패치 실패', error);

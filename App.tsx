@@ -2313,7 +2313,7 @@ const App = () => {
                 name="BoardFragment"
                 component={BoardFragment}
                 options={({navigation}) => ({
-                  title: '모든 게시판',
+                  title: '',
                   headerTitleAlign: 'left',
                   headerTintColor: '#222222',
                   headerTitleStyle: {
@@ -2322,18 +2322,31 @@ const App = () => {
                     fontFamily: 'Pretendard-Bold',
                   },
                   headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 24,
-                        height: 24,
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
+                    <>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 24,
+                          height: 24,
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: Platform.OS === 'ios' ? '600' : '700',
+                          fontFamily:
+                            Platform.OS === 'ios'
+                              ? 'Pretendard-Regular'
+                              : 'Pretendard-Bold',
+                        }}>
+                        모든 게시판
+                      </Text>
+                    </>
                   ),
                   headerRight: () => (
                     <TouchableHighlight

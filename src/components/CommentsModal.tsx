@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#f6f6f6',
   },
   selectedEmojiContainer: {
-    position: 'absolute',
+    position: 'relative',
     left: 0,
     right: 0,
     top: 0,
