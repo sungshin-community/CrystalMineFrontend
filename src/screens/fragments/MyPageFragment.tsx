@@ -220,7 +220,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            // fontFamily: 'SpoqaHanSansNeo-Bold',
+                            fontFamily: 'SpoqaHanSansNeo-Bold',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           {user?.nickname}
@@ -287,7 +287,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            // fontFamily: 'SpoqaHanSansNeo-Bold',
+                            fontFamily: 'SpoqaHanSansNeo-Bold',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           {user?.nickname}
@@ -332,7 +332,7 @@ const MyPageFragment = ({navigation}: Props) => {
                         <Text
                           style={{
                             fontSize: 17,
-                            // fontFamily: 'SpoqaHanSansNeo-Bold',
+                            fontFamily: 'SpoqaHanSansNeo-Bold',
                             marginBottom: Platform.OS === 'ios' ? 5 : 0,
                           }}>
                           {user?.nickname}
