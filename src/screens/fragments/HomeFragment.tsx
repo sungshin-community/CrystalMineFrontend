@@ -117,6 +117,13 @@ const HomeFragment = ({navigation}: Props) => {
 
   const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
 
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const onViewRef = useRef(({viewableItems}) => {
+    if (viewableItems.length > 0) {
+      setCurrentBannerIndex(viewableItems[0].index);
+    }
+  });
+
   // 온보딩 표시 여부 (최초 접속 여부) 판단
   useEffect(() => {
     const checkFirstLaunch = async () => {
@@ -146,12 +153,7 @@ const HomeFragment = ({navigation}: Props) => {
   }, [showOnboarding, navigation]);
 
   // 총학생회 배너 데이터
-  const [bannerData, setBannerData] = useState<{
-    imageUrl: string;
-    postTitle: string;
-    postContent: string;
-  } | null>(null);
-
+  const [bannerData, setBannerData] = useState<any[]>([]);
   const [prevAdPostId, setPrevAdPostId] = useState<number | null>(null);
 
   // 학식 운캠/수캠 선택 토글
@@ -485,46 +487,80 @@ const HomeFragment = ({navigation}: Props) => {
                   </TouchableOpacity>
                 </View>
                 {/* 배너 영역 */}
-                {bannerData && (
-                  <TouchableOpacity
-                    style={styles.bannerContainer}
-                    onPress={() =>
-                      navigation.navigate('PostScreen', {
-                        postId: bannerData[0]?.postId,
-                      })
-                    }>
-                    <Image
-                      source={
-                        bannerData &&
-                        bannerData.length > 0 &&
-                        bannerData[0].imageUrl
-                          ? {uri: bannerData[0].imageUrl}
-                          : BannerBasicImg // 기본 이미지 사용
-                      }
-                      style={styles.bannerImage}
-                      resizeMode="cover"
+                <View style={{width: '100%'}}>
+                  {bannerData.length > 0 ? (
+                    <FlatList
+                      data={bannerData}
+                      horizontal
+                      pagingEnabled
+                      showsHorizontalScrollIndicator={false}
+                      keyExtractor={(item, index) => index.toString()}
+                      onViewableItemsChanged={onViewRef.current}
+                      viewabilityConfig={viewabilityConfig.current}
+                      renderItem={({item}) => (
+                        <TouchableOpacity
+                          style={styles.bannerContainer}
+                          onPress={() => {
+                            if (item.postId) {
+                              navigation.navigate('PostScreen', {
+                                postId: item.postId,
+                              });
+                            }
+                            {
+                              /*else if (item.postAdId) {
+                              navigation.navigate('AdScreen', {
+                                postAdId: item.postAdId,
+                              });
+                            } */
+                            }
+                          }}>
+                          {/* 배너 이미지 */}
+                          <Image
+                            source={
+                              item.imageUrl
+                                ? {uri: item.imageUrl}
+                                : BannerBasicImg
+                            }
+                            style={styles.bannerImage}
+                            resizeMode="cover"
+                          />
+
+                          {/* 그라데이션 레이어 */}
+                          <LinearGradient
+                            colors={['rgba(74, 74, 74, 0)', '#4A4A4A']}
+                            style={styles.gradient}
+                          />
+
+                          {/* 총학생회 텍스트 */}
+                          <Text style={styles.studenCouncilBox}>
+                            {item.postId ? '총학생회' : '광고'}
+                          </Text>
+
+                          {/* 배너 텍스트 영역 */}
+                          <View style={styles.bannerTextContainer}>
+                            <Text style={styles.bannerTitle}>
+                              {item.postTitle ?? '제목 없음'}
+                            </Text>
+                            <Text
+                              style={styles.bannerContent}
+                              numberOfLines={1}>
+                              {item.postContent ?? '내용이 없습니다.'}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
                     />
+                  ) : (
+                    <ActivityIndicator />
+                  )}
 
-                    {/* 그라데이션 레이어 */}
-                    <LinearGradient
-                      colors={['rgba(74, 74, 74, 0)', '#4A4A4A']} // 위는 투명, 아래는 #4A4A4A
-                      style={styles.gradient}
-                    />
-
-                    {/* 총학생회 텍스트 */}
-                    <Text style={styles.studenCouncilBox}>총학생회</Text>
-
-                    {/* 배너 텍스트 영역 */}
-                    <View style={styles.bannerTextContainer}>
-                      <Text style={styles.bannerTitle}>
-                        {bannerData[0]?.postTitle}
-                      </Text>
-                      <Text style={styles.bannerContent}>
-                        {bannerData[0]?.postContent}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
+                  {/* 오른쪽 하단에 인덱스 표시 */}
+                  <View style={styles.pagination}>
+                    <Text style={styles.paginationText}>
+                      {currentBannerIndex + 1}/{bannerData.length}
+                    </Text>
+                  </View>
+                </View>
                 <View
                   style={{
                     padding: 24,
@@ -1110,14 +1146,12 @@ const styles = StyleSheet.create({
   },
   // 배너
   bannerContainer: {
-    width: '100%',
-    height: 200,
+    width: Dimensions.get('window').width,
     position: 'relative',
-    marginTop: 4,
   },
   bannerImage: {
     width: '100%',
-    height: '100%',
+    height: 200,
   },
   gradient: {
     position: 'absolute',
@@ -1207,6 +1241,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  pagination: {
+    position: 'absolute',
+    bottom: 10,
+    right: 16,
+    backgroundColor: 'rgba(48, 48, 48, 0.8)',
+    borderRadius: 40,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+
+  paginationText: {
+    color: '#fff',
+    fontSize: 12,
   },
 });
 

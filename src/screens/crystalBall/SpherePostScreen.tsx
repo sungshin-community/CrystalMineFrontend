@@ -28,6 +28,7 @@ import {
   deleltePantheonCommentLike,
   postPantheonCommentLike,
   getPantheonReviewDetail,
+  getPantheonArticleDetail,
   getPantheonReviewComment,
   postPantheonReport,
   postPantheonCommentReport,
@@ -51,6 +52,7 @@ interface SpherePostScreenProps {
       isQuestion: boolean;
       isFree: boolean;
       isReview: boolean;
+      isArticle: boolean;
     };
   };
 }
@@ -69,7 +71,7 @@ type RootStackParamList = {
 export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const navigation =
     useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
-  const {ptPostId, isQuestion, isFree, isReview} = route.params;
+  const {ptPostId, isQuestion, isFree, isReview, isArticle} = route.params;
   const [postData, setPostData] = useState<pantheonDetail | undefined>(
     undefined,
   );
@@ -118,6 +120,8 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
         response = await getPantheonFreeDetail(ptPostId);
       } else if (isReview) {
         response = await getPantheonReviewDetail(ptPostId);
+      } else if (isArticle) {
+        response = await getPantheonArticleDetail(ptPostId);
       }
 
       // response 자체가 데이터이므로 바로 response를 사용
@@ -520,6 +524,18 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       }}>
                       {isReview ? postData?.nickname : postData?.displayName}
                     </Text>
+                    {!isArticle && (
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: '#B9BAC1',
+                          fontWeight: '400',
+                        }}>
+                        {postData?.createdAt}
+                      </Text>
+                    )}
+                  </View>
+                  {isArticle ? (
                     <Text
                       style={{
                         fontSize: 12,
@@ -528,21 +544,22 @@ export default function SpherePostScreen({route}: SpherePostScreenProps) {
                       }}>
                       {postData?.createdAt}
                     </Text>
-                  </View>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '500',
-                      color: '#89919A',
-                    }}>
-                    {postData?.isBlind
-                      ? '비공개'
-                      : `${postData?.department} · ${postData?.userJob} · ${
-                          postData?.userYear === 0
-                            ? '신입'
-                            : `${postData?.userYear}년`
-                        }`}
-                  </Text>
+                  ) : (
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '500',
+                        color: '#89919A',
+                      }}>
+                      {postData?.isBlind
+                        ? '비공개'
+                        : `${postData?.department} · ${postData?.userJob} · ${
+                            postData?.userYear === 0
+                              ? '신입'
+                              : `${postData?.userYear}년`
+                          }`}
+                    </Text>
+                  )}
                 </View>
               </View>
               {isQuestion && (

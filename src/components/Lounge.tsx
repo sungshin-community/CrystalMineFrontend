@@ -31,8 +31,6 @@ import {
   getArticle,
 } from '../common/CrystalApi';
 import LinearGradient from 'react-native-linear-gradient';
-import testImg from '../../resources/images/Happy.png';
-
 const Lounge = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState<Authentication | null>(null); // 사용자 정보 상태 추가
@@ -80,6 +78,7 @@ const Lounge = () => {
           isFree: false,
           isQuestion: false,
           isReview: true,
+          isArticle: false,
         });
       }}>
       <View style={styles.contentBox}>
@@ -370,7 +369,9 @@ const Lounge = () => {
             onViewableItemsChanged={onViewRef.current} // useRef로 전달
             viewabilityConfig={viewabilityArticleConfig}
             renderItem={({item}) => (
-              <View style={styles.bannerContainer}>
+              <TouchableOpacity
+                style={styles.bannerContainer}
+                onPress={() => navigation.navigate('SphereArticleListScreen')}>
                 {/* 배너 이미지 */}
                 <Image
                   source={
@@ -398,7 +399,7 @@ const Lounge = () => {
                     {item?.content ?? '내용이 없습니다.'}
                   </Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           />
         ) : (

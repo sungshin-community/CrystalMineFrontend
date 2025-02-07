@@ -117,6 +117,7 @@ import SearchIcon from './resources/icon/SearchIcon';
 import SpinningThreeDots from './src/components/SpinningThreeDots';
 import ProfileSetup from './src/screens/crystalBall/ProfileSetup';
 import SpherePostScreen from './src/screens/crystalBall/SpherePostScreen';
+import SphereArticleListScreen from './src/screens/crystalBall/SphereArticleListScreen';
 import OnboardingScreen from './src/screens/crystalBall/OnboardingScreen';
 import EmoticonDetailScreen from './src/screens/mypage/EmoticonDetail';
 import ProfileCompleteScreen from './src/screens/crystalBall/ProfileCompleteScreen';
@@ -2232,6 +2233,45 @@ const App = () => {
                   ),
                 })}
               />
+              <Stack.Screen
+                name="SphereArticleListScreen"
+                component={SphereArticleListScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: '#222222',
+                          marginLeft: 3,
+                        }}>
+                        수정 아티클
+                      </Text>
+                    </View>
+                  ),
+                })}
+              />
+
               <Stack.Screen
                 name="OnboardingScreen"
                 component={OnboardingScreen}
