@@ -12,6 +12,7 @@ import {
   FlatList,
   RefreshControl,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
 import FloatingWriteButton from '../../components/FloatingWriteButton';
 import PostItem from '../../components/PostItem';
@@ -57,6 +58,12 @@ import fetchAndActivate from '@react-native-firebase/remote-config';
 import getValue from '@react-native-firebase/remote-config';
 import analytics from '@react-native-firebase/analytics';
 
+import HomeTabIcon from '../../../resources/icon/HomeTabIcon';
+import BoardTabIcon from '../../../resources/icon/BoardTabIcon';
+import AlertTabIcon from '../../../resources/icon/AlertTabIcon';
+import MessageTabIcon from '../../../resources/icon/MessageTabIcon';
+import MyPageGNB from '../../../resources/icon/MypageTabIcon';
+
 type RootStackParamList = {
   PostScreen: {postId: number};
   PostWriteScreen: {boardId: number};
@@ -90,6 +97,10 @@ const PostListScreen = ({navigation, route}: Props) => {
     componentToUse: string;
   } | null>(null);
   const [midAd, setMidAd] = useState<any>(null);
+
+  const getTextColor = (focused: boolean) => {
+    return focused ? '#A055FF' : '#6E7882';
+  };
 
   useEffect(() => {
     const initializeFirebaseAnalytics = async () => {
@@ -624,7 +635,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                     hasTitle={boardDetail?.hasTitle}
                     onPress={async () => {
                       console.log('Writing box clicked');
-                      await analytics().logEvent('custom_click', {
+                      await analytics().logEvent('writing_box_click', {
                         component: 'writing_box',
                         boardId: route.params.boardId.toString(),
                       });
@@ -858,7 +869,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           route.params?.boardId !== 98 && (
             <FloatingWriteButton
               onPress={async () => {
-                await analytics().logEvent('custom_click', {
+                await analytics().logEvent('floating_button_click', {
                   component: 'floating_button',
                   boardId: route.params.boardId.toString(),
                 });
@@ -886,6 +897,86 @@ const PostListScreen = ({navigation, route}: Props) => {
               }
             />
           ))}
+      </View>
+      {/* 하단 네비게이션 */}
+      <View
+        style={{
+          height: Platform.OS === 'ios' ? 112 : 78,
+          paddingBottom: Platform.OS === 'ios' ? 34 : 0,
+        }}>
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate('Home')}>
+            <View style={styles.iconContainer}>
+              <View style={styles.iconNav}>
+                <HomeTabIcon size={24} color="#A055FF" focused={true} />
+              </View>
+              <Text style={[styles.tabIconText, {color: getTextColor(true)}]}>
+                광산
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate('CrystalBall')}>
+            <View style={styles.iconContainer}>
+              <View style={styles.iconNav}>
+                <BoardTabIcon size={24} color="#E2E4E8" focused={false} />
+              </View>
+              <Text style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                수정구
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate('Message')}>
+            <View style={styles.iconContainer}>
+              <View style={styles.iconNav}>
+                <MessageTabIcon size={24} color="#E2E4E8" focused={false} />
+              </View>
+              <Text style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                대화
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate('Alert')}>
+            <View style={styles.iconContainer}>
+              <View style={styles.iconNav}>
+                <AlertTabIcon size={24} color="#E2E4E8" focused={false} />
+              </View>
+              <Text style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                알림
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => navigation.navigate('MyPage')}>
+            <View style={styles.iconContainer}>
+              <View style={styles.iconNav}>
+                <MyPageGNB size={24} color="#E2E4E8" focused={false} />
+              </View>
+              <Text style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                MY
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            height: Platform.OS === 'ios' ? 34 : 0,
+            width: '100%',
+            backgroundColor: 'white',
+          }}
+        />
       </View>
     </>
   );
@@ -1014,5 +1105,36 @@ const styles = StyleSheet.create({
     //height: 52,
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 21,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFF3',
+  },
+  tabItem: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconNav: {
+    marginBottom: 15,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+  },
+  tabIconText: {
+    fontFamily: 'pretendard',
+    fontSize: 13,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 10,
   },
 });

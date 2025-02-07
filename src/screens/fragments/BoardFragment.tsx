@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {
+  StyleSheet,
   ScrollView,
   View,
   Text,
   ActivityIndicator,
   TouchableHighlight,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useIsFocused} from '@react-navigation/native';
@@ -37,6 +40,11 @@ import Error from '../../components/Error';
 import {logout} from '../../common/authApi';
 import Toast from 'react-native-simple-toast';
 import PlusIcon from '../../../resources/icon/PlusIcon';
+import HomeTabIcon from '../../../resources/icon/HomeTabIcon';
+import BoardTabIcon from '../../../resources/icon/BoardTabIcon';
+import AlertTabIcon from '../../../resources/icon/AlertTabIcon';
+import MessageTabIcon from '../../../resources/icon/MessageTabIcon';
+import MyPageGNB from '../../../resources/icon/MypageTabIcon';
 
 type RootStackParamList = {
   MyPostList: undefined;
@@ -61,6 +69,10 @@ export default function BoardFragment({navigation}: Props) {
   const [isInited, setIsInited] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [errorStatus, setErrorStatus] = useState<number>();
+
+  const getTextColor = (focused: boolean) => {
+    return focused ? '#A055FF' : '#6E7882';
+  };
 
   const getPinnedBoardList = async () => {
     let boardList: Board[] = [];
@@ -441,8 +453,126 @@ export default function BoardFragment({navigation}: Props) {
               </>
             </TouchableHighlight>
           </ScrollView>
+          {/* 하단 네비게이션 */}
+          <View
+            style={{
+              height: Platform.OS === 'ios' ? 112 : 78,
+              paddingBottom: Platform.OS === 'ios' ? 34 : 0,
+            }}>
+            <View style={styles.tabContainer}>
+              <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => navigation.navigate('Home')}>
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <HomeTabIcon size={24} color="#A055FF" focused={true} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(true)}]}>
+                    광산
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => navigation.navigate('CrystalBall')}>
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <BoardTabIcon size={24} color="#E2E4E8" focused={false} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                    수정구
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => navigation.navigate('Message')}>
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <MessageTabIcon size={24} color="#E2E4E8" focused={false} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                    대화
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => navigation.navigate('Alert')}>
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <AlertTabIcon size={24} color="#E2E4E8" focused={false} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                    알림
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => navigation.navigate('MyPage')}>
+                <View style={styles.iconContainer}>
+                  <View style={styles.icon}>
+                    <MyPageGNB size={24} color="#E2E4E8" focused={false} />
+                  </View>
+                  <Text
+                    style={[styles.tabIconText, {color: getTextColor(false)}]}>
+                    MY
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                height: Platform.OS === 'ios' ? 34 : 0,
+                width: '100%',
+                backgroundColor: 'white',
+              }}
+            />
+          </View>
         </>
       )}
     </>
   );
 }
+const styles = StyleSheet.create({
+  tabContainer: {
+    flexDirection: 'row',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 21,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFF3',
+  },
+  tabItem: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    marginBottom: 15,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    height: '100%',
+  },
+  tabIconText: {
+    fontFamily: 'pretendard',
+    fontSize: 13,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 10,
+  },
+});

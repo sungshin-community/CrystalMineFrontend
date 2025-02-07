@@ -11,6 +11,7 @@ import {
   Dimensions,
   FlatList,
   ScrollView,
+  Keyboard,
 } from 'react-native';
 import {fontMedium, fontRegular} from '../common/font';
 import Toast from 'react-native-simple-toast';
@@ -297,7 +298,7 @@ const CommentWriteContainer: React.FC<CommentWriteContainerProps> = ({
           setIsPayed(true);
         }
       }
-
+      Keyboard.dismiss();
       setShowEmojiPicker(prev => !prev);
       setEmojiClicked(prev => !prev);
       console.log('showEmojiPickers', emojiClicked);
