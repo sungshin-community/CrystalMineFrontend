@@ -48,9 +48,11 @@ interface SpherePostScreenProps {
   route: {
     params: {
       ptPostId: number;
-      isQuestion: boolean;
-      isFree: boolean;
-      isReview: boolean;
+      postType?: string; // 알림에서 들어올 때
+      isQuestion?: boolean; // 일반 화면에서 들어올 때
+      isFree?: boolean;
+      isReview?: boolean;
+      source?: string;
     };
   };
 }
@@ -69,7 +71,21 @@ type RootStackParamList = {
 export default function SpherePostScreen({route}: SpherePostScreenProps) {
   const navigation =
     useNavigation<NativeStackScreenProps<RootStackParamList>['navigation']>();
-  const {ptPostId, isQuestion, isFree, isReview} = route.params;
+  const {
+    ptPostId,
+    postType,
+    isQuestion: isQuestionParam,
+    isFree: isFreeParam,
+    isReview: isReviewParam,
+  } = route.params;
+  // postType이 있으면 그걸 사용하고, 없으면 boolean flags 사용
+  const isQuestion = postType ? postType === 'QUESTION' : isQuestionParam;
+  const isFree = postType ? postType === 'FREE' : isFreeParam;
+  const isReview = postType ? postType === 'REVIEW' : isReviewParam;
+  console.log('==== SpherePostScreen Mounted ====');
+  console.log('Route Params:', route.params);
+  console.log('ptPostId:', ptPostId);
+  // console.log('postType:', postType);
   const [postData, setPostData] = useState<pantheonDetail | undefined>(
     undefined,
   );

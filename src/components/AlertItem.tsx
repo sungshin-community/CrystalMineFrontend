@@ -92,7 +92,9 @@ const AlertItem = ({
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
                     블라인드 사유
                   </Text>
-                  <Text style={[fontRegular, {width: 143}]}>{data.blind?.reason}</Text>
+                  <Text style={[fontRegular, {width: 143}]}>
+                    {data.blind?.reason}
+                  </Text>
                 </View>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={[fontBold, {width: 93, marginRight: 7}]}>
@@ -108,9 +110,11 @@ const AlertItem = ({
                   </Text>
                   <Text
                     style={[
-                      fontRegular, {
-                      width: Dimensions.get('window').width - 183,
-                    }]}>
+                      fontRegular,
+                      {
+                        width: Dimensions.get('window').width - 183,
+                      },
+                    ]}>
                     {data.blind?.content}
                   </Text>
                 </View>
@@ -175,7 +179,10 @@ const AlertItem = ({
                   <Text
                     ellipsizeMode={'tail'}
                     numberOfLines={3}
-                    style={[fontRegular, {width: Dimensions.get('window').width - 178}]}>
+                    style={[
+                      fontRegular,
+                      {width: Dimensions.get('window').width - 178},
+                    ]}>
                     {data.deleteBlind?.content}
                   </Text>
                 </View>
@@ -211,10 +218,22 @@ const AlertItem = ({
             data.type === 'RECOMMENT'
           ) {
             navigation.navigate('PostScreen', {postId: data.postId});
+          } else if (data.type === 'PT_COMMENT') {
+            console.log('PT_COMMENT 클릭:', {
+              postId: Number(data.postId),
+              ptPostType: data.ptPostType,
+              source: 'notification',
+            });
+
+            navigation.navigate('SpherePostScreen', {
+              ptPostId: data.postId,
+              postType: data.ptPostType,
+              source: 'notification',
+            });
           }
         }}>
-        {(data.type === 'WELCOME') && <CheckMark />}
-        {(data.type ==='NOTICE') && <AlertNoticeIcon />}
+        {data.type === 'WELCOME' && <CheckMark />}
+        {data.type === 'NOTICE' && <AlertNoticeIcon />}
         {(data.type === 'BEFORE_EXPIRE' ||
           data.type === 'EXPIRE' ||
           data.type === 'NOT_AUTHENTICATED') && <AlertCheckIcon />}
@@ -228,6 +247,7 @@ const AlertItem = ({
         {data.type === 'COMMENT' && <AlertCommentIcon />}
         {data.type === 'RECOMMENT' && <AlertCommentIcon />}
         {data.type === 'HOT_POST' && <AlertHotPostIcon />}
+        {data.type === 'PT_COMMENT' && <AlertCommentIcon />}
         <View style={{marginLeft: 16}}>
           <Text
             ellipsizeMode={'tail'}
@@ -259,7 +279,11 @@ const AlertItem = ({
               ? data.blind?.content
               : data.deleteBlind?.content}
           </Text>
-          <Text style={[fontRegular, {color: '#A3A3A3', fontSize: 12, marginTop: 5}]}>
+          <Text
+            style={[
+              fontRegular,
+              {color: '#A3A3A3', fontSize: 12, marginTop: 5},
+            ]}>
             {data.createdAt}
           </Text>
         </View>

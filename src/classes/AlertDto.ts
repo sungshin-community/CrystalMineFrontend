@@ -16,6 +16,7 @@ export interface Alert {
   blind?: BlindDto;
   deleteBlind?: DeleteBlindDto;
   postId: number;
+  ptPostType?: string; 
 }
 
 export interface AlertData extends IObjectKeys {
