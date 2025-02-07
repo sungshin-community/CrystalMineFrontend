@@ -427,7 +427,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             {
               marginLeft: 0,
               fontSize: boardInfo && boardInfo.name.length <= 10 ? 19 : 17,
-              maxWidth: 180,
+              // maxWidth: 180,
             },
           ]}
           numberOfLines={1}
@@ -551,12 +551,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         whiteButtonFunc={() => setReportModalVisible(false)}
       />
       <View style={{flex: 1}}>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            borderBottomColor: '#EFEFF3',
-          }}
-        />
+        {/* 헤더 아래선 제거 */}
         <View
           style={{
             position: 'absolute',

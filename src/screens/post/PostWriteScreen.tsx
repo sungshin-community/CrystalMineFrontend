@@ -647,7 +647,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
           )}
           <View style={{marginVertical: 0}}>
             {images.length > 0 && (
-              <View style={{paddingHorizontal: 12}}>
+              <View style={{paddingHorizontal: 12, marginTop: 36}}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   {renderImages()}
                 </ScrollView>

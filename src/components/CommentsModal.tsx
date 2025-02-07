@@ -293,14 +293,37 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   // 댓글 삭제
   const handleCommentDelete = async (commentId: number) => {
     try {
+      setComments(prevComments =>
+        prevComments.map(comment => {
+          if (comment.id === commentId) {
+            return {...comment, isDeleted: true};
+          }
+
+          if (comment.recomments) {
+            return {
+              ...comment,
+              recomments: comment.recomments.map(recomment =>
+                recomment.id === commentId
+                  ? {...recomment, isDeleted: true}
+                  : recomment,
+              ),
+            };
+          }
+          return comment;
+        }),
+      );
+
       const result = await deleteComment(commentId);
       if (getHundredsDigit(result.status) === 2) {
         Toast.show('댓글이 삭제되었습니다.', Toast.SHORT);
+      } else {
         await fetchComments();
       }
     } catch (error) {
       console.error('Error deleting comment:', error);
       Toast.show('댓글 삭제 중 오류가 발생했습니다.', Toast.SHORT);
+      // 에러 시 원상복구
+      await fetchComments();
     }
   };
 

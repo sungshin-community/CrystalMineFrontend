@@ -285,6 +285,7 @@ const CrystalReview = () => {
                               isFree: false,
                               isQuestion: false,
                               isReview: true,
+                              isArticle: false,
                             });
                           }}>
                           <Text style={styles.contentTitle}>{item.title}</Text>

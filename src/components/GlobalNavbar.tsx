@@ -282,7 +282,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 48,
-                  marginLeft: 16,
+                  marginLeft: 4,
                 }}>
                 <SmallLogo />
                 <Text
@@ -327,7 +327,8 @@ function GlobalNavbar({navigation}: ScreenProps) {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
-                  onPress={onSearchPress}>
+                  onPress={onSearchPress}
+                  underlayColor="#EEEEEE">
                   <SearchIcon />
                 </TouchableHighlight>
                 <TouchableHighlight

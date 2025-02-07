@@ -297,13 +297,7 @@ export default function BoardFragment({navigation}: Props) {
             />
           </View>
           <ScrollView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-            {/* Header 아래 선 */}
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: '#EFEFF3',
-              }}
-            />
+            {/* Header 아래 선 제거 */}
             <View
               style={{
                 flex: 1,

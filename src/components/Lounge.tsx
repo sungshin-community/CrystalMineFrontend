@@ -31,8 +31,6 @@ import {
   getArticle,
 } from '../common/CrystalApi';
 import LinearGradient from 'react-native-linear-gradient';
-import testImg from '../../resources/images/Happy.png';
-
 const Lounge = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState<Authentication | null>(null); // 사용자 정보 상태 추가
@@ -80,6 +78,7 @@ const Lounge = () => {
           isFree: false,
           isQuestion: false,
           isReview: true,
+          isArticle: false,
         });
       }}>
       <View style={styles.contentBox}>
@@ -370,7 +369,9 @@ const Lounge = () => {
             onViewableItemsChanged={onViewRef.current} // useRef로 전달
             viewabilityConfig={viewabilityArticleConfig}
             renderItem={({item}) => (
-              <View style={styles.bannerContainer}>
+              <TouchableOpacity
+                style={styles.bannerContainer}
+                onPress={() => navigation.navigate('SphereArticleListScreen')}>
                 {/* 배너 이미지 */}
                 <Image
                   source={
@@ -398,7 +399,7 @@ const Lounge = () => {
                     {item?.content ?? '내용이 없습니다.'}
                   </Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           />
         ) : (
@@ -413,25 +414,29 @@ const Lounge = () => {
       </View>
 
       <View style={styles.rowContainer}>
-        <View style={styles.boardContainer}>
-          <View style={styles.boardTitleContainer}>
-            <SaengSaeng style={{marginTop: 2}} />
-            <Text style={[fontRegular, styles.boardTitle]}>생생 수정 후기</Text>
-          </View>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              if (user?.isAuthenticated) {
-                navigation.navigate('CrystalBall', {
-                  tabIndex: 3, // 수정후기로 이동
-                  activeTab: 'explore', // '살펴보기'
-                });
-              } else {
-                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-              }
-            }}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (user?.isAuthenticated) {
+              navigation.navigate('CrystalBall', {
+                tabIndex: 3, // 수정후기로 이동
+                activeTab: 'explore', // '살펴보기'
+              });
+            } else {
+              Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            }
+          }}>
+          <View style={styles.boardContainer}>
+            <View style={styles.boardTitleContainer}>
+              <SaengSaeng style={{marginTop: 2}} />
+              <Text style={[fontRegular, styles.boardTitle]}>
+                생생 수정 후기
+              </Text>
+            </View>
+
             <RightArrow />
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
+
         <Text style={[fontRegular, styles.boardText]}>
           찐 수정이들이 들려주는 이야기들을 살펴보세요!
         </Text>
@@ -490,22 +495,24 @@ const Lounge = () => {
             marginBottom: 24,
           }}>
           <View>
-            <View style={styles.boardContainer}>
-              <View style={styles.boardTitleContainer}>
-                <Loudspeaker style={{marginTop: 2}} />
-                <Text style={[fontRegular, styles.boardTitle]}>
-                  수정이들은 지금...
-                </Text>
-              </View>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  user?.isAuthenticated
-                    ? navigation.navigate('PostListScreen', {boardId: 4}) // 홍보 게시판으로 이동
-                    : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-                }}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                user?.isAuthenticated
+                  ? navigation.navigate('PostListScreen', {boardId: 4}) // 홍보 게시판으로 이동
+                  : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+              }}>
+              <View style={styles.boardContainer}>
+                <View style={styles.boardTitleContainer}>
+                  <Loudspeaker style={{marginTop: 2}} />
+                  <Text style={[fontRegular, styles.boardTitle]}>
+                    수정이들은 지금...
+                  </Text>
+                </View>
+
                 <RightArrow />
-              </TouchableWithoutFeedback>
-            </View>
+              </View>
+            </TouchableWithoutFeedback>
+
             <Text style={[fontRegular, styles.boardText]}>
               인원 모집 중인 교내 활동 및 동아리들을 살펴보세요!
             </Text>
@@ -528,27 +535,29 @@ const Lounge = () => {
             )}
           </View>
         </View>
-        <View style={styles.boardContainer}>
-          <View style={styles.boardTitleContainer}>
-            <CrystalBall style={{marginTop: 2}} />
-            <Text style={[fontRegular, styles.boardTitle]}>
-              수정구에 물어봐
-            </Text>
-          </View>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              if (user?.isAuthenticated) {
-                navigation.navigate('CrystalBall', {
-                  tabIndex: 2, // 궁금해요로 이동
-                  activeTab: 'explore', // '살펴보기'
-                });
-              } else {
-                Toast.show('접근 권한이 없습니다.', Toast.SHORT);
-              }
-            }}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (user?.isAuthenticated) {
+              navigation.navigate('CrystalBall', {
+                tabIndex: 2, // 궁금해요로 이동
+                activeTab: 'explore', // '살펴보기'
+              });
+            } else {
+              Toast.show('접근 권한이 없습니다.', Toast.SHORT);
+            }
+          }}>
+          <View style={styles.boardContainer}>
+            <View style={styles.boardTitleContainer}>
+              <CrystalBall style={{marginTop: 2}} />
+              <Text style={[fontRegular, styles.boardTitle]}>
+                수정구에 물어봐
+              </Text>
+            </View>
+
             <RightArrow />
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
+
         <Text style={[fontRegular, styles.boardText]}>
           답변을 기다리고 있는 질문들이에요.
         </Text>

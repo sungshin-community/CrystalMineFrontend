@@ -143,6 +143,7 @@ export const ModalBottom = ({
                       {
                         width: isWriting ? '49%' : '100%',
                         marginLeft: 4,
+                        marginTop: 28,
                       },
                     ]}
                     onPress={() => purpleButtonFunc()}>
