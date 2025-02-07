@@ -6,6 +6,7 @@ import {
   FlatList,
   Pressable,
   SafeAreaView,
+  Linking,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -54,6 +55,17 @@ const PointScreen: React.FC<PointScreenProps> = ({route, navigation}) => {
       console.error('포인트 내역 조회 실패:', error);
     }
   };
+
+  const handleChargePress = async () => {
+    const url =
+      'https://docs.google.com/forms/d/e/1FAIpQLSfCQaRLvflNEzbHObyjlSDAnp5YTTII8Y-wDJv-HY30VEk2Gg/viewform';
+    try {
+      await Linking.openURL(url);
+    } catch (error) {
+      console.error('링크를 여는데 실패했습니다:', error);
+    }
+  };
+
   const renderPointRecord = ({item}: {item: PointRecord}) => (
     <View style={styles.recordItem}>
       <View style={styles.leftContent}>
@@ -85,7 +97,7 @@ const PointScreen: React.FC<PointScreenProps> = ({route, navigation}) => {
             </Pressable>
             <Text style={styles.title}>포인트 내역</Text>
           </View>
-          <Pressable style={styles.submitButton}>
+          <Pressable style={styles.submitButton} onPress={handleChargePress}>
             <Text style={styles.submitButtonText}>충전하기</Text>
           </Pressable>
         </View>
