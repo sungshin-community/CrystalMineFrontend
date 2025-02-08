@@ -16,4 +16,22 @@ const RightArrow = (props: SvgProps) => (
     />
   </Svg>
 );
+
+export const UpArrow = (props: SvgProps) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={28}
+    height={28}
+    fill="none"
+    {...props}>
+    <Path
+      stroke="#A055FF"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2.333}
+      d="m5.834 14 8.167-8.167L22.167 14M14.001 5.833v16.334"
+    />
+  </Svg>
+);
+
 export default RightArrow;
