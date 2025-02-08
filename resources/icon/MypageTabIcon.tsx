@@ -1,18 +1,39 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
+import tinycolor from 'tinycolor2';
 
-const MyPageGNB = (props: any) => (
-  <Svg
-    width={23}
-    height={23}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}>
-    <Path
-      d="M11.181 11.635c3.003 0 5.435-2.474 5.435-5.527 0-3.054-2.432-5.527-5.435-5.527-3.002 0-5.434 2.473-5.434 5.527 0 3.053 2.432 5.527 5.434 5.527Zm0 2.763c-3.627 0-10.87 1.852-10.87 5.527v1.382c0 .76.612 1.381 1.36 1.381h19.021c.747 0 1.359-.621 1.359-1.381v-1.382c0-3.675-7.242-5.527-10.87-5.527Z"
-      fill={props.color}
-    />
-  </Svg>
-);
+const MyPageGNB = (props: any) => {
+  let fillColor = props.color;
+  let darkFillColor;
+
+  if (fillColor === '#DBDCE0') {
+    darkFillColor = '#DBDCE0';
+    fillColor = '#E2E4E8';
+  } else if (fillColor === '#A055FF') {
+    darkFillColor = '#A055FF';
+    fillColor = '#C39BFA';
+  } else {
+    darkFillColor = tinycolor(fillColor).darken(7).toString();
+  }
+
+  return (
+    <Svg
+      width="24"
+      height="23"
+      viewBox="0 0 24 23"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+      <Path
+        d="M12.4 0C13.9913 0 15.5174 0.632141 16.6427 1.75736C17.7679 2.88258 18.4 4.4087 18.4 6C18.4 7.5913 17.7679 9.11742 16.6427 10.2426C15.5174 11.3679 13.9913 12 12.4 12C10.8087 12 9.2826 11.3679 8.15738 10.2426C7.03217 9.11742 6.40002 7.5913 6.40002 6C6.40002 4.4087 7.03217 2.88258 8.15738 1.75736C9.2826 0.632141 10.8087 0 12.4 0Z"
+        fill={fillColor}
+      />
+      <Path
+        d="M12.4 14.375C18.7538 14.375 23.9 16.9481 23.9 20.125V23H0.900024V20.125C0.900024 16.9481 6.04627 14.375 12.4 14.375Z"
+        fill={darkFillColor}
+      />
+    </Svg>
+  );
+};
 
 export default MyPageGNB;

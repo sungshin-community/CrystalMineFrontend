@@ -7,8 +7,18 @@ const MessageTabIcon = (props: any) => {
     return tinycolor(color).darken(amount).toString();
   };
 
-  const fillColor = props.color;
-  const darkFillColor = darkenColor(fillColor, 5);
+  let fillColor = props.color;
+  let darkFillColor;
+
+  if (fillColor === '#DBDCE0') {
+    darkFillColor = '#DBDCE0';
+    fillColor = '#E2E4E8';
+  } else if (fillColor === '#A055FF') {
+    darkFillColor = '#A055FF';
+    fillColor = '#C39BFA';
+  } else {
+    darkFillColor = tinycolor(fillColor).darken(7).toString();
+  }
 
   return (
     <Svg
