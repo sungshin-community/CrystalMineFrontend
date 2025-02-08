@@ -563,7 +563,7 @@ const HomeFragment = ({navigation}: Props) => {
                 </View>
                 <View
                   style={{
-                    padding: 24,
+                    padding: 16,
                   }}>
                   {/* 게시판 글 목록 */}
                   <View style={styles.rowContainer}>
@@ -953,10 +953,11 @@ export default HomeFragment;
 const styles = StyleSheet.create({
   portalContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 20,
     alignItems: 'center',
-    marginVertical: 16,
-    paddingHorizontal: 15,
   },
   iconContainer: {
     alignItems: 'center',
@@ -974,7 +975,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 20,
+    marginVertical: 16,
     alignItems: 'center',
   },
   rowtitleContainer: {

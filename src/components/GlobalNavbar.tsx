@@ -319,7 +319,7 @@ function GlobalNavbar({navigation}: ScreenProps) {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  marginRight: 11,
+                  marginRight: 4,
                 }}>
                 <TouchableHighlight
                   style={{
