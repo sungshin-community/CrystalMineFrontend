@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
-  TextInput,
   Text,
   ScrollView,
   Pressable,
@@ -20,27 +19,10 @@ import {
   setDefaultProfileImage,
   getUser,
   uploadProfileImage,
+  updatePantheonProfile,
 } from '../../common/myPageApi';
 import Toast from 'react-native-simple-toast';
-import axios from 'axios';
 import ArrowDownIcon from '../../../resources/icon/ArrowDown';
-
-const customAxios = axios.create({
-  baseURL: 'http://15.165.252.35:8080/',
-});
-
-customAxios.interceptors.request.use(
-  async config => {
-    const token = await AsyncStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  },
-);
 
 type Props = NativeStackScreenProps<any>;
 
@@ -165,12 +147,7 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
       const experienceYears =
         selectedCareer === '신입' ? 0 : getYearsNumber(selectedYears);
 
-      console.log('Request payload:', {
-        experienceYears,
-        ptJob: selectedJob,
-      });
-
-      const response = await customAxios.patch('/pantheon/profile/my', {
+      const response = await updatePantheonProfile({
         experienceYears,
         ptJob: selectedJob,
       });
@@ -182,7 +159,7 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
         Toast.show('프로필 수정에 실패했습니다.', Toast.SHORT);
       }
     } catch (error: any) {
-      console.error('Error updating profile:', error);
+      console.error('프로필 업데이트 오류:', error);
       Toast.show('프로필 수정 중 오류가 발생했습니다.', Toast.SHORT);
     } finally {
       setIsSubmitting(false);
@@ -451,7 +428,6 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingRight: 20,
   },
-
   submitButton: {
     backgroundColor: '#A055FF',
     paddingVertical: 12,

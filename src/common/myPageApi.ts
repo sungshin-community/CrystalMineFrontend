@@ -286,3 +286,17 @@ export const getPantheonProfile = async () => {
     return error.response?.data;
   }
 };
+
+// 판테온 프로필 수정 함수 추가
+export const updatePantheonProfile = async (data: {
+  experienceYears: number;
+  ptJob: string;
+}) => {
+  try {
+    const response = await client.patch<Response<User>>('/pantheon/profile/my', data);
+    return response;
+  } catch (error) {
+    console.log('판테온 프로필 수정 실패:', error.response);
+    return error.response;
+  }
+};
