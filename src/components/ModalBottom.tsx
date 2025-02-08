@@ -26,6 +26,7 @@ interface Props {
   whiteButtonFunc?: any;
   setDim?: boolean;
   setDisableClose?: boolean;
+  isLogoutModal?: boolean;
 }
 export const ModalBottom = ({
   modalVisible,
@@ -43,6 +44,7 @@ export const ModalBottom = ({
   whiteButtonFunc,
   setDim = true,
   setDisableClose = false,
+  isLogoutModal = false,
 }: Props) => {
   return (
     <>
@@ -121,13 +123,27 @@ export const ModalBottom = ({
                   }}
                 />
               )}
-              <View style={styles.buttonContianer}>
+              <View
+                style={[
+                  styles.buttonContianer,
+                  isLogoutModal && {
+                    // 로그아웃 모달일 때만 적용되는 스타일
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 16,
+                    paddingHorizontal: 16,
+                  },
+                ]}>
                 {whiteButtonText && whiteButtonText !== 'none' && (
                   <TouchableOpacity
                     style={[
                       styles.secondButton,
                       styles.secondButtonClose,
-                      {marginRight: 4},
+                      isLogoutModal && {
+                        // 로그아웃 모달일 때만 적용되는 스타일
+                        width: '49%',
+                        marginRight: 0,
+                      },
                     ]}
                     onPress={() => whiteButtonFunc()}>
                     <Text style={styles.secondButtonTextStyle}>
@@ -140,11 +156,19 @@ export const ModalBottom = ({
                     style={[
                       styles.button,
                       styles.buttonClose,
-                      {
-                        width: isWriting ? '49%' : '100%',
-                        marginLeft: 4,
-                        marginTop: 28,
-                      },
+                      isLogoutModal
+                        ? {
+                            // 로그아웃 모달일 때의 스타일
+                            width: '49%',
+                            marginLeft: 0,
+                            marginTop: 0,
+                          }
+                        : {
+                            // 일반 모달일 때의 스타일
+                            width: isWriting ? '49%' : '100%',
+                            marginLeft: 4,
+                            marginTop: 28,
+                          },
                     ]}
                     onPress={() => purpleButtonFunc()}>
                     <Text style={styles.textStyle}>{purpleButtonText}</Text>
