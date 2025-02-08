@@ -60,7 +60,7 @@ const MessageFragment = ({navigation}: Props) => {
 
           console.log('Connecting to WebSocket...');
           let wsUrl = encodeURI(
-            'ws://15.165.252.35:8787/ws?roomId=0&accessToken=Bearer ' +
+            'ws://3.36.147.84:8787/ws?roomId=0&accessToken=Bearer ' +
               socketToken,
           );
 

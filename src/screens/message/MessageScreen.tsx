@@ -126,7 +126,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
 
         console.log('in connect22');
         let wsUrl = encodeURI(
-          'ws://15.165.252.35:8787/ws?roomId=' +
+          'ws://3.36.147.84:8787/ws?roomId=' +
             getRoomId +
             '&accessToken=Bearer ' +
             socketToken,
