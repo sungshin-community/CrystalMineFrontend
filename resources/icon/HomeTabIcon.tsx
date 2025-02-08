@@ -3,12 +3,17 @@ import Svg, {Path} from 'react-native-svg';
 import tinycolor from 'tinycolor2';
 
 const HomeTabIcon = (props: any) => {
-  const darkenColor = (color: string, amount: number) => {
-    return tinycolor(color).darken(amount).toString();
-  };
+  let fillColor = props.color;
+  let darkFillColor;
 
-  const fillColor = props.color;
-  const darkFillColor = darkenColor(fillColor, 7);
+  if (fillColor === '#DBDCE0') {
+    fillColor = '#DBDCE0';
+    darkFillColor = '#E2E4E8';
+  } else if (fillColor === '#A055FF') {
+    darkFillColor = '#C39BFA';
+  } else {
+    darkFillColor = tinycolor(fillColor).darken(7).toString();
+  }
 
   return (
     <Svg
