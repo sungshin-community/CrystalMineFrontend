@@ -41,7 +41,7 @@ export default function SphereItem({
     if (post.ptPostType === 'QUESTION') {
       setIsQuestionState(true);
     }
-    if (post.ptPostType === 'GENERAL') {
+    if (post.ptPostType === 'GENERAL' || post.ptPostType === 'ARTICLE') {
       setIsFreeState(true);
     }
     if (post.ptPostType === 'REVIEW') {

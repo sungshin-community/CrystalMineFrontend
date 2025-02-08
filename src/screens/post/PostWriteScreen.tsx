@@ -510,15 +510,12 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
           {isPantheon === 'question' && (
             <View>
               <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 10,
-                  paddingHorizontal: 24,
-                }}>
+                style={[
+                  styles.inputTitle,
+                  {paddingTop: 16, flexDirection: 'row', alignItems: 'center'},
+                ]}>
                 <Text
                   style={{
-                    fontSize: 12,
-                    fontWeight: '500',
                     color: '#B9BAC1',
                     marginRight: 8,
                   }}>
@@ -526,8 +523,6 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
-                    fontWeight: '500',
                     color: '#A055FF',
                   }}>
                   사용 가능 포인트 {myPoint}P

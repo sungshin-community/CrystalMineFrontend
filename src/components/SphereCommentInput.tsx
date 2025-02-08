@@ -126,12 +126,14 @@ const SphereCommentInput = forwardRef(
           <View
             style={{
               flexDirection: 'column',
-              paddingBottom: Platform.OS == 'ios' ? 20 : 0,
+              paddingBottom:
+                Platform.OS === 'ios' ? (emojiClicked ? 0 : 20) : 0,
             }}>
             <View
               style={{
                 flexDirection: 'row',
-                paddingVertical: 5,
+                paddingTop: 5,
+                paddingBottom: emojiClicked ? 0 : 5,
                 backgroundColor: 'white',
                 zIndex: 99999,
               }}>
@@ -231,11 +233,7 @@ const SphereCommentInput = forwardRef(
                       bottom: 0,
                     }}
                     onPress={handleSubmit}>
-                    {newComment || showSelectedEmoji ? (
-                      <PurplePostSend />
-                    ) : (
-                      <PostSend />
-                    )}
+                    {newComment ? <PurplePostSend /> : <PostSend />}
                   </Pressable>
                 </Text>
               </View>
