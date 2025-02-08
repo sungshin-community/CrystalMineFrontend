@@ -92,25 +92,28 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
 
       if (data.length === 0) {
         setHasMoreData(false);
-      } else {
-        const updatedData: pantheonList[] = [];
-        for (let i = 0; i < data.length; i++) {
-          const post = data[i];
-          if ((i + 1) % 5 === 0) {
-            const ad = await fetchMidAd();
-            updatedData.push(ad);
-          }
-          updatedData.push(post);
+        return;
+      }
+      const updatedData: pantheonList[] = [];
+      for (let i = 0; i < data.length; i++) {
+        const post = data[i];
+        if ((i + 1) % 5 === 0) {
+          const ad = await fetchMidAd();
+          updatedData.push(ad);
         }
+        updatedData.push(post);
+      }
 
-        setPostData(prevData => [
-          ...prevData,
-          ...updatedData.filter(
-            item =>
-              !prevData.some(prevItem => prevItem.ptPostId === item.ptPostId),
-          ),
-        ]);
-        setCursor(newCursor);
+      setPostData(prevData => [
+        ...prevData,
+        ...updatedData.filter(
+          item =>
+            !prevData.some(prevItem => prevItem.ptPostId === item.ptPostId),
+        ),
+      ]);
+
+      if (updatedData.length > 0) {
+        setCursor(updatedData[updatedData.length - 1].ptPostId);
       }
     } catch (error: any) {
       console.error('데이터 조회 실패:', error);
@@ -137,7 +140,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
 
   const fetchNextPage = async () => {
     if (hasMoreData) {
-      await fetchPostList(cursor + 1, true);
+      await fetchPostList(cursor, true);
     }
   };
 
@@ -194,7 +197,7 @@ export default function LookScreen({isQuestion, isFree}: LookScreenProps) {
           />
         }
         onEndReached={() => hasMoreData && fetchNextPage()}
-        onEndReachedThreshold={0.8}
+        onEndReachedThreshold={0.5}
         data={postData}
         ref={flatListRef}
         onScroll={handleScroll}
