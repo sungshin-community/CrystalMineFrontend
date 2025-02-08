@@ -247,11 +247,14 @@ const CrystalReview = () => {
                               HOT
                             </Text>
                           </View>
-                          <Text style={styles.yearJob}>{item.category} </Text>
-                          <Text style={styles.yearJob}>·</Text>
-                          <Text style={styles.yearJob}>{item.job} </Text>
-                          <Text style={styles.yearJob}>·</Text>
-                          <Text style={styles.yearJob}>{item.year} </Text>
+                          <Text
+                            style={{
+                              color: '#A055FF',
+                              fontWeight: '400',
+                              fontSize: 13,
+                            }}>
+                            {item.category} · {item.job} · {item.year}
+                          </Text>
                         </View>
                         <RightArrow />
                       </View>
@@ -276,7 +279,17 @@ const CrystalReview = () => {
                   <ActivityIndicator size="large" color="#A055FF" />
                 ) : (
                   reviewList.map((item, index) => (
-                    <View key={index} style={styles.postListContainer}>
+                    <View
+                      key={index}
+                      style={[
+                        styles.postListContainer,
+                        {
+                          borderBottomColor:
+                            index === reviewList.length - 1
+                              ? 'transparent'
+                              : '#F6F6F6',
+                        },
+                      ]}>
                       <View>
                         <TouchableOpacity
                           onPress={() => {
@@ -295,20 +308,15 @@ const CrystalReview = () => {
                             style={styles.contentText}>
                             {item.content}
                           </Text>
-                          <View style={styles.hotTagBox}>
-                            <View style={styles.yearJobBox}>
-                              <Text style={styles.yearJobContent}>
-                                {item.category}
-                              </Text>
-                              <Text style={styles.yearJobContent}>·</Text>
-                              <Text style={styles.yearJobContent}>
-                                {item.job}{' '}
-                              </Text>
-                              <Text style={styles.yearJobContent}>·</Text>
-                              <Text style={styles.yearJobContent}>
-                                {item.year}
-                              </Text>
-                            </View>
+                          <View style={{flexDirection: 'row', marginTop: 16}}>
+                            <Text
+                              style={{
+                                color: '#89919A',
+                                fontWeight: '500',
+                                fontSize: 13,
+                              }}>
+                              {item.category} · {item.job} · {item.year}
+                            </Text>
                           </View>
                         </TouchableOpacity>
                       </View>
@@ -345,13 +353,16 @@ const CrystalReview = () => {
 const styles = StyleSheet.create({
   contentBox: {
     width: Dimensions.get('window').width - 32,
+    height: 118,
     borderRadius: 10,
     borderStyle: 'solid',
     borderColor: '#EFEFF3',
     borderWidth: 1,
     backgroundColor: '#FFF',
-    padding: 16,
+    paddingHorizontal: 12,
+    paddingTop: 12,
     marginHorizontal: 16,
+    marginBottom: 4,
   },
   hotTagBox: {
     flexDirection: 'row',
@@ -369,7 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3E9FF',
     borderRadius: 4,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginRight: 8,
   },
   yearJob: {
     color: '#A055FF',
@@ -378,13 +389,13 @@ const styles = StyleSheet.create({
   contentTitle: {
     color: '#222',
     fontSize: 16,
-    fontFamily: 'Pretendard-Bold',
-    marginBottom: 4,
+    fontWeight: '600',
+    marginBottom: 8,
   },
   contentText: {
     color: '#6E7882',
-    fontSize: 14,
-    fontFamily: 'Pretendard-Regular',
+    fontSize: 12,
+    fontWeight: '400',
     width: Dimensions.get('window').width - 70,
   },
   boardText: {
@@ -419,22 +430,30 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     marginLeft: 'auto',
-    marginTop: 5,
+    marginVertical: 3,
   },
   scrapCount: {
+    marginTop: 3,
     fontSize: 12,
-    marginBottom: 3,
     color: '#6E7882',
   },
   postListContainer: {
     display: 'flex',
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 16,
-    borderBottomColor: '#F6F6F6',
+    paddingHorizontal: 16,
+    paddingVertical: 20,
     borderBottomWidth: 4,
     justifyContent: 'space-between',
+  },
+  loadingContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 100,
   },
 });
 

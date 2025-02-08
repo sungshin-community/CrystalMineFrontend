@@ -16,8 +16,9 @@ import {
 
 interface JobFilterTabProps {
   isQuestion?: boolean;
+  isReveiw?: boolean;
   onFilterChange?: (filterNames: string) => void;
-  onCheckboxChange: (boxChecked: boolean) => void;
+  onCheckboxChange?: (boxChecked: boolean) => void;
 }
 
 const data = [
@@ -91,6 +92,7 @@ export default function JobFilterTab({
   isQuestion = false,
   onFilterChange,
   onCheckboxChange,
+  isReveiw = false,
 }: JobFilterTabProps) {
   const [selected, setSelected] = useState<number[]>([1]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -142,7 +144,7 @@ export default function JobFilterTab({
     if (!checkboxChecked) {
       setSelected([]);
     }
-    onCheckboxChange(checkboxChecked);
+    onCheckboxChange && onCheckboxChange(value);
   };
 
   useEffect(() => {
@@ -170,7 +172,7 @@ export default function JobFilterTab({
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        style={styles.container}
+        style={[styles.container, {paddingBottom: isReveiw ? 16 : 24}]}
         contentContainerStyle={[
           styles.contentContainer,
           {paddingRight: isQuestion ? 160 : 8},
@@ -235,7 +237,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     paddingTop: 16,
-    paddingBottom: 24,
   },
   contentContainer: {
     paddingLeft: 16,
