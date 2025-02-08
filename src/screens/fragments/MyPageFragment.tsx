@@ -379,7 +379,7 @@ const MyPageFragment = ({navigation}: Props) => {
                       marginTop: 10,
                       backgroundColor: '#FFFFFF',
                       paddingLeft: 3,
-                      paddingRight: 43,
+                      paddingRight: 40,
                       paddingHorizontal: 20,
                     }}>
                     <TouchableOpacity
@@ -400,7 +400,15 @@ const MyPageFragment = ({navigation}: Props) => {
                         }}>
                         내 활동
                       </Text>
-                      <RightArrow />
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          flex: 1,
+                          justifyContent: 'flex-end',
+                          paddingRight: 11,
+                        }}>
+                        <RightArrow />
+                      </View>
                     </TouchableOpacity>
                   </View>
                 </View>
