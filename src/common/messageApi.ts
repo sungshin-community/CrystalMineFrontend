@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {AxiosResponse, AxiosInstance} from 'axios';
 
 const messageClient: AxiosInstance = axios.create({
-  baseURL: 'http://15.165.252.35:8787/',
+  baseURL: 'http://3.36.147.84:8787/',
 });
 
 //소켓토큰 아니고 로그인토큰 사용중... api 주소 달라서 분리함.
