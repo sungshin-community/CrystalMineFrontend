@@ -22,6 +22,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Description} from '../../components/Top';
 import Toast from 'react-native-simple-toast';
 import {PurpleRoundButton} from '../../components/Button';
+import ArrowDownIcon from '../../../resources/icon/ArrowDown';
 if (Platform.OS === 'android') {
   StatusBar.setBackgroundColor('white');
   StatusBar.setBarStyle('dark-content');
@@ -185,7 +186,7 @@ const ProfileModify: React.FC<Props> = ({navigation}: Props) => {
             <Text style={styles.departmentButtonText}>
               {getSelectedMajorName()}
             </Text>
-            <Text style={styles.arrowDown}>▼</Text>
+            <ArrowDownIcon />
           </Pressable>
         </View>
 
@@ -254,15 +255,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginBottom: 10,
     color: '#B9BAC1',
+    fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   input: {
-    height: 40,
+    height: 44,
     borderColor: '#D7DCE6',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     fontFamily: 'SpoqaHanSansNeo-Regular',
-    fontSize: 16,
+    fontSize: 14,
     color: '#222222',
   },
   focusedInput: {
@@ -299,7 +301,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 40,
+    height: 44,
     backgroundColor: '#FFFFFF',
     borderColor: '#D7DCE6',
     borderWidth: 1,
@@ -307,8 +309,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   departmentButtonText: {
-    color: '#000000',
-    fontSize: 16,
+    color: '#CECFD6',
+    fontSize: 14,
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   arrowDown: {
@@ -321,7 +323,7 @@ const styles = StyleSheet.create({
     // marginBottom: 16,
   },
   textDescription: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#87919B',
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
@@ -338,7 +340,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
   studentIdBox: {
-    height: 40,
+    height: 44,
     backgroundColor: '#FFFFFF',
     borderColor: '#D7DCE6',
     borderWidth: 1,
@@ -347,8 +349,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   studentIdText: {
-    fontSize: 16,
-    color: '#222222',
+    fontSize: 14,
+    color: '#CECFD6',
     fontFamily: 'SpoqaHanSansNeo-Regular',
   },
 });

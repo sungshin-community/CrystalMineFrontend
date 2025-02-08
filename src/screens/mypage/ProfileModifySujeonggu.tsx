@@ -23,7 +23,7 @@ import {
 } from '../../common/myPageApi';
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
-
+import ArrowDownIcon from '../../../resources/icon/ArrowDown';
 // Create new axios instance with baseURL
 const customAxios = axios.create({
   baseURL: 'http://15.165.252.35:8080/',
@@ -229,7 +229,7 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
             <Text style={styles.departmentButtonText}>
               {selectedJob || '직무 선택하기'}
             </Text>
-            <Text style={styles.arrowDown}>▼</Text>
+            <ArrowDownIcon />
           </Pressable>
         </View>
 
@@ -245,7 +245,7 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
                   : selectedCareer
                 : '경력 선택하기'}
             </Text>
-            <Text style={styles.arrowDown}>▼</Text>
+            <ArrowDownIcon />
           </Pressable>
         </View>
 
@@ -387,12 +387,12 @@ const styles = StyleSheet.create({
     color: '#B9BAC1',
   },
   input: {
-    height: 40,
+    height: 44,
     borderColor: '#D7DCE6',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    fontSize: 16,
+    fontSize: 14,
     color: '#222222',
   },
   icon: {
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 40,
+    height: 44,
     backgroundColor: '#FFFFFF',
     borderColor: '#D7DCE6',
     borderWidth: 1,
