@@ -24,12 +24,11 @@ import {
 import Toast from 'react-native-simple-toast';
 import axios from 'axios';
 import ArrowDownIcon from '../../../resources/icon/ArrowDown';
-// Create new axios instance with baseURL
+
 const customAxios = axios.create({
   baseURL: 'http://15.165.252.35:8080/',
 });
 
-// Add request interceptor to add auth token
 customAxios.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('accessToken');
@@ -88,7 +87,6 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
     async function fetchInitialData() {
       try {
         setIsLoading(true);
-        // 사용자 데이터와 학과 리스트를 병렬로 가져오기
         const [userDto, majorListData] = await Promise.all([
           getUser(),
           getMajorList(),
@@ -101,7 +99,6 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
           setUser(userData);
           setNickname(userData.nickname);
 
-          // 학과 ID 설정
           const majorId = majorListData.find(
             m => m.name === userData.department,
           )?.id;
@@ -226,7 +223,7 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
           <Pressable
             style={styles.departmentButton}
             onPress={() => setJobModalVisible(true)}>
-            <Text style={styles.departmentButtonText}>
+            <Text style={[styles.departmentButtonText, styles.selectableText]}>
               {selectedJob || '직무 선택하기'}
             </Text>
             <ArrowDownIcon />
@@ -238,7 +235,7 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
           <Pressable
             style={styles.departmentButton}
             onPress={() => setCareerModalVisible(true)}>
-            <Text style={styles.departmentButtonText}>
+            <Text style={[styles.departmentButtonText, styles.selectableText]}>
               {selectedCareer
                 ? selectedCareer === '경력'
                   ? `${selectedCareer} ${selectedYears}`
@@ -363,6 +360,9 @@ const ProfileModifySujeonggu: React.FC = ({navigation}: Props) => {
 };
 
 const styles = StyleSheet.create({
+  selectableText: {
+    color: '#000000',
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -411,8 +411,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   departmentButtonText: {
-    color: '#000000',
-    fontSize: 16,
+    color: '#CECFD6',
+    fontSize: 14,
   },
   arrowDown: {
     fontSize: 16,
@@ -451,6 +451,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingRight: 20,
   },
+
   submitButton: {
     backgroundColor: '#A055FF',
     paddingVertical: 12,
