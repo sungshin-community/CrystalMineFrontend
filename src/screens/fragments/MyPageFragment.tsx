@@ -930,6 +930,7 @@ const MyPageFragment = ({navigation}: Props) => {
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             content="로그아웃 하시겠습니까?"
+            isLogoutModal={true}
             purpleButtonText="확인"
             purpleButtonFunc={async () => {
               await logout();
