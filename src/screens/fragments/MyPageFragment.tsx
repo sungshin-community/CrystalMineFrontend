@@ -46,21 +46,22 @@ const styles = StyleSheet.create({
   menu: {
     height: 45,
     flexDirection: 'row',
-    paddingLeft: 33,
-    paddingRight: 25,
+    paddingLeft: 18,
+    paddingRight: 18,
     alignItems: 'center',
   },
   menuTitle: {
-    fontSize: 13,
-    // fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 12,
+    fontFamily: 'Pretendard',
     color: '#6E7882',
-    marginLeft: 32,
+    marginLeft: 18,
     marginBottom: 11,
   },
   menuText: {
-    fontSize: 15,
-    // fontFamily: 'SpoqaHanSansNeo-Regular',
+    fontSize: 16,
+    fontFamily: 'Pretendard-Medium',
     color: '#222222',
+    // marginLeft: 16,
   },
   arrowContainer: {
     flexDirection: 'row',
@@ -194,17 +195,9 @@ const MyPageFragment = ({navigation}: Props) => {
                   height: 370,
                   flexDirection: 'row',
                   backgroundColor: '#FFFFFF',
-                  paddingLeft: 30,
+                  paddingLeft: 18,
                   paddingTop: 20,
                 }}>
-                {/* {user?.profileImage ? (
-                  <Image
-                    style={{width: 80, height: 80, borderRadius: 10}}
-                    source={{uri: user?.profileImage}}
-                  />
-                ) : (
-                  <DefaultProfile />
-                )} */}
                 <View style={{height: 80}}>
                   <View
                     style={{
@@ -244,16 +237,6 @@ const MyPageFragment = ({navigation}: Props) => {
                         안녕하세요!
                       </Text>
                     </View>
-
-                    {/* <Text
-                      style={{
-                        marginBottom: 11,
-                        color: '#6E7882',
-                        fontSize: 15,
-                        fontFamily: 'SpoqaHanSansNeo-Regular',
-                      }}>
-                      {user?.username}@sungshin.ac.kr
-                    </Text> */}
                   </View>
                   {/* 프로필 아이콘 부분 */}
                   <View
@@ -271,11 +254,13 @@ const MyPageFragment = ({navigation}: Props) => {
                       marginTop: 0,
                       marginRight: 50,
                       alignItems: 'center',
+                      paddingHorizontal: 20,
                     }}>
                     <View style={{position: 'relative'}}>
                       <TouchableOpacity onPress={handleProfileModify}>
                         <ProfileIcon />
                       </TouchableOpacity>
+                      {/* <View style={{width: 40}} /> */}
                       <View
                         style={{
                           position: 'absolute',
@@ -378,12 +363,13 @@ const MyPageFragment = ({navigation}: Props) => {
                     </View>
                   </View>
                   {/* 내 활동 부분 */}
+
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: 12,
                       // fontFamily: 'SpoqaHanSansNeo-Regular',
                       color: '#6E7882',
-                      marginLeft: 0,
+                      // marginLeft: 0,
                       marginTop: 25,
                     }}>
                     통합 활동 정보
@@ -408,8 +394,8 @@ const MyPageFragment = ({navigation}: Props) => {
                       }}>
                       <Text
                         style={{
-                          fontSize: 15,
-                          // fontFamily: 'SpoqaHanSansNeo-Regular',
+                          fontSize: 16,
+                          fontFamily: 'Pretendard-Medium',
                           color: '#222222',
                         }}>
                         내 활동
@@ -478,14 +464,16 @@ const MyPageFragment = ({navigation}: Props) => {
 
             <View
               style={{
-                marginTop: 1,
+                // marginTop: 1,
                 backgroundColor: '#FFFFFF',
                 paddingBottom: 9,
                 paddingTop: 28,
                 borderBottomColor: '#EEEEEE',
-                borderBottomWidth: 0.5,
+                borderBottomWidth: 1,
               }}>
-              <Text style={styles.menuTitle}>계정정보</Text>
+              {/* <Text style={styles.menuTitle}>계정정보</Text> */}
+              <Text style={[styles.menuTitle, {marginLeft: 18}]}>계정정보</Text>
+
               <TouchableHighlight
                 underlayColor="#EEEEEE"
                 onPress={() => {
@@ -495,7 +483,7 @@ const MyPageFragment = ({navigation}: Props) => {
                   });
                 }}>
                 <View style={styles.menu}>
-                  <Text style={styles.menuText}>사용가능 포인트</Text>
+                  <Text style={styles.menuText}>내 포인트</Text>
                   <View
                     style={{
                       flexDirection: 'row',
