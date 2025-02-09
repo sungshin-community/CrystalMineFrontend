@@ -247,15 +247,17 @@ export default function SphereItem({
                     {post.newCommentContent}
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontWeight: '500',
-                    fontSize: 12,
-                    color: '#9DA4AB',
-                    textDecorationLine: 'underline',
-                  }}>
-                  댓글 {post.ptCommentCount - 1}개 +
-                </Text>
+                {post.ptCommentCount > 1 && (
+                  <Text
+                    style={{
+                      fontWeight: '500',
+                      fontSize: 12,
+                      color: '#9DA4AB',
+                      textDecorationLine: 'underline',
+                    }}>
+                    더보기
+                  </Text>
+                )}
               </View>
             </TouchableOpacity>
             <ReplySheet

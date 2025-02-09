@@ -903,6 +903,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         style={{
           height: Platform.OS === 'ios' ? 112 : 78,
           paddingBottom: Platform.OS === 'ios' ? 34 : 0,
+          backgroundColor: 'white',
         }}>
         <View style={styles.tabContainer}>
           <TouchableOpacity
@@ -1114,6 +1115,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: -2},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
   },
   tabItem: {
     flex: 1,
