@@ -586,7 +586,6 @@ const HomeFragment = ({navigation}: Props) => {
                             지금 인기있는 글
                           </Text>
                         </View>
-
                         <RightArrow />
                       </View>
                     </TouchableWithoutFeedback>
@@ -1205,7 +1204,7 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   slideContainer: {
-    width: Dimensions.get('window').width - 60,
+    width: Dimensions.get('window').width - 42,
     marginHorizontal: 5,
     backgroundColor: '#FAFAFA',
     borderRadius: 10,
