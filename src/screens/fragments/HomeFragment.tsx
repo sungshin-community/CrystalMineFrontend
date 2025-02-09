@@ -533,7 +533,7 @@ const HomeFragment = ({navigation}: Props) => {
 
                           {/* 총학생회 텍스트 */}
                           <Text style={styles.studenCouncilBox}>
-                            {item.postId ? '총학생회' : '광고'}
+                            {item.postId ? '수정광산' : '광고'}
                           </Text>
 
                           {/* 배너 텍스트 영역 */}
