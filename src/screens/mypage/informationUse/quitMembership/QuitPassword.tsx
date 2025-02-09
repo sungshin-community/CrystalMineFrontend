@@ -205,6 +205,7 @@ export default function QuitPassword({navigation}: Props) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         purpleButtonText="네"
+        isLogoutModal={true}
         purpleButtonFunc={async () => {
           setModalVisible(false);
           const response = await applyQuitMembership(password);

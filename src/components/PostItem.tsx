@@ -198,14 +198,32 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
                   }}>
                   {post.newCommentAuthor}
                 </Text>
-                <Text
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={{fontSize: 12, color: '#3A424E', fontWeight: '400'}}>
-                  {post.newCommentContent?.length > 25
-                    ? post.newCommentContent?.substring(0, 25) + '...'
-                    : post.newCommentContent}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{fontSize: 12, color: '#3A424E', fontWeight: '400'}}>
+                    {post.newCommentContent?.length > 25
+                      ? post.newCommentContent?.substring(0, 25) + '...'
+                      : post.newCommentContent}
+                  </Text>
+                  {post.commentCount > 1 && (
+                    <Text
+                      style={{
+                        fontWeight: '500',
+                        fontSize: 12,
+                        color: '#9DA4AB',
+                        textDecorationLine: 'underline',
+                      }}>
+                      더보기
+                    </Text>
+                  )}
+                </View>
               </View>
             </TouchableWithoutFeedback>
           </View>
