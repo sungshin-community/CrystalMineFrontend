@@ -84,7 +84,7 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
       </View>
 
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View>
+        <View style={{flex: 1, marginRight: post.imageCount > 1 ? 12 : 0}}>
           {post.hasTitle ? (
             <Text
               style={{
@@ -98,7 +98,8 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
           ) : (
             <></>
           )}
-          <View style={{flex: 1}}>
+
+          <View>
             <Text
               numberOfLines={post.title ? 2 : 3}
               ellipsizeMode="tail"
@@ -108,29 +109,29 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
           </View>
         </View>
         {post.imageCount > 1 && (
-          <Image
-            style={{width: 60, height: 60, borderRadius: 8}}
-            source={{uri: post.thumbnail}}
-          />
-        )}
-        {post.imageCount > 1 && (
-          <Text
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
-              color: 'white',
-              fontSize: 10,
-              paddingHorizontal: 6,
-              paddingVertical: 2,
-              marginHorizontal: 4,
-              marginVertical: 4,
-              borderRadius: 10,
-              overflow: 'hidden',
-            }}>
-            {`+${post.imageCount - 1}`}
-          </Text>
+          <View style={{width: 60}}>
+            <Image
+              style={{width: 60, height: 60, borderRadius: 8}}
+              source={{uri: post.thumbnail}}
+            />
+            <Text
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                color: 'white',
+                fontSize: 10,
+                paddingHorizontal: 6,
+                paddingVertical: 2,
+                marginHorizontal: 4,
+                marginVertical: 4,
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}>
+              {`+${post.imageCount - 1}`}
+            </Text>
+          </View>
         )}
       </View>
       <View style={styles.icon}>
@@ -155,14 +156,6 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
             <Text style={[styles.textSmall, styles.iconCount]}>
               {post.likeCount}
             </Text>
-            {/* {post.imageCount > 0 && (
-                <>
-                  <PostImage />
-                  <Text style={[styles.textSmall, styles.iconCount]}>
-                    {post.imageCount}
-                  </Text>
-                </>
-              )} */}
             <ChatIcon />
             <Text
               style={[
