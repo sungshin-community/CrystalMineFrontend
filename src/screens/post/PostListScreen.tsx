@@ -206,7 +206,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       // 102 별도 처리하지 않음.
       return;
     }
-    if (route.params.boardId !== 2 && route.params.boardId !== 98) {
+    if (route.params.boardId !== 284 && route.params.boardId !== 285) {
       const boardDetail = await getBoardDetail(route.params.boardId, 0, sortBy);
       if (!boardDetail.code) {
         setBoardDetail(boardDetail);
@@ -222,11 +222,11 @@ const PostListScreen = ({navigation, route}: Props) => {
         if (route.params.boardId === 102) {
           const currentPost = await getCurrentPost(0);
           setBoardDetail(currentPost);
-        } else if (route.params.boardId === 2) {
+        } else if (route.params.boardId === 284) {
           const hotBoardData = await getHotBoardPosts(0);
           setBoardDetail(hotBoardData);
-        } else if (route.params.boardId === 98) {
-          const adBoardData = await getAdBoardPost(98, 0);
+        } else if (route.params.boardId === 285) {
+          const adBoardData = await getAdBoardPost(285, 0);
           setBoardDetail(adBoardData);
         } else {
           setIsHotBoard(false);
@@ -279,6 +279,7 @@ const PostListScreen = ({navigation, route}: Props) => {
         const boardInfo = await getBoardInfo(route.params.boardId);
         setBoardInfo(boardInfo);
         if (boardInfo?.id) {
+          console.log('광고', boardInfo.id);
           await fetchAdminStatus(boardInfo.id);
         }
         await fetchMidAd(); // 광고 데이터 가져오기
@@ -308,11 +309,11 @@ const PostListScreen = ({navigation, route}: Props) => {
           if (route.params.boardId === 102) {
             const currentPost = await getCurrentPost(0);
             setBoardDetail(currentPost);
-          } else if (route.params.boardId === 2) {
+          } else if (route.params.boardId === 284) {
             const hotBoardData = await getHotBoardPosts(0);
             setBoardDetail(hotBoardData);
-          } else if (route.params.boardId === 98) {
-            const adBoardData = await getAdBoardPost(98, 0);
+          } else if (route.params.boardId === 285) {
+            const adBoardData = await getAdBoardPost(285, 0);
             setBoardDetail(adBoardData);
           } else {
             const boardDetail = await getBoardDetail(
@@ -338,12 +339,12 @@ const PostListScreen = ({navigation, route}: Props) => {
       const postList = await getCurrentPost(0);
       setCurrentPage(0);
       setBoardDetail(postList);
-    } else if (route.params.boardId === 2) {
+    } else if (route.params.boardId === 284) {
       const postList = await getHotBoardPosts(0);
       setCurrentPage(0);
       setBoardDetail(postList);
-    } else if (route.params.boardId === 98) {
-      const postList = await getAdBoardPost(98, 0);
+    } else if (route.params.boardId === 285) {
+      const postList = await getAdBoardPost(285, 0);
       setCurrentPage(0);
       setBoardDetail(postList);
     } else {
@@ -362,7 +363,7 @@ const PostListScreen = ({navigation, route}: Props) => {
       if (nextPagePosts.length > 0) {
         setCurrentPage(currentPage + 1);
       }
-    } else if (route.params.boardId === 2) {
+    } else if (route.params.boardId === 284) {
       let thisPagePostList: ContentPreviewDto[] = await getHotBoardPosts(
         currentPage + 1,
       );
@@ -403,7 +404,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 }, 100);
                 logout();
                 navigation.reset({routes: [{name: 'SplashHome'}]});
-              } else if (getHundredsDigit(response.status) === 2) {
+              } else if (getHundredsDigit(response.status) === 284) {
                 const boardInfo = await getBoardInfo(route.params.boardId);
                 setBoardInfo(boardInfo);
               } else {
@@ -622,7 +623,7 @@ const PostListScreen = ({navigation, route}: Props) => {
             </View>
           )}
 
-        {boardDetail.length === 0 && route.params.boardId !== 98 ? (
+        {boardDetail.length === 0 && route.params.boardId !== 285 ? (
           <>
             <View style={{backgroundColor: 'white'}}>
               {!isLoading &&
@@ -661,7 +662,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                   }}>
                   {isLoading
                     ? ''
-                    : route.params.boardId === 2
+                    : route.params.boardId === 284
                     ? '공감을 10개 이상 받은 게시글이 없습니다.'
                     : '아직 작성된 게시글이 없습니다.\n첫 글을 작성해주세요.'}
                 </Text>
@@ -697,7 +698,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                         postId: item.postId,
                       });
                     }}>
-                    {boardInfo?.id === 98 ? (
+                    {boardInfo?.id === 285 ? (
                       <PostAdItem
                         post={item}
                         boardId={boardInfo?.id}
@@ -763,7 +764,7 @@ const PostListScreen = ({navigation, route}: Props) => {
                 listHeaderCondition && (
                   <View>
                     {!isHotBoard &&
-                      ![93, 94, 95, 98].includes(route.params.boardId) && (
+                      ![93, 94, 95, 285].includes(route.params.boardId) && (
                         <View
                           style={{
                             flexDirection: 'row',
@@ -837,10 +838,13 @@ const PostListScreen = ({navigation, route}: Props) => {
                           </TouchableOpacity> */}
                         </View>
                       )}
+
                     {!isLoading &&
-                      route.params.boardId !== 98 &&
+                      route.params.boardId !== 285 &&
                       config?.componentToUse === 'writing_box' &&
-                      ![93, 94, 95, 102].includes(route.params.boardId) && (
+                      ![93, 94, 95, 102, 285, 284].includes(
+                        route.params.boardId,
+                      ) && (
                         <PostWriteBCase
                           navigation={navigation}
                           route={route}
@@ -865,8 +869,8 @@ const PostListScreen = ({navigation, route}: Props) => {
           </>
         )}
         {config?.componentToUse === 'floating_button' &&
-          ![93, 94, 95, 102].includes(route.params.boardId) &&
-          route.params?.boardId !== 98 && (
+          ![93, 94, 95, 102, 284].includes(route.params.boardId) &&
+          (route.params?.boardId !== 285 || route.params?.boardId !== 284) && (
             <FloatingWriteButton
               onPress={async () => {
                 await analytics().logEvent('floating_button_click', {
@@ -881,12 +885,14 @@ const PostListScreen = ({navigation, route}: Props) => {
               }}
             />
           )}
-        {!(isHotBoard || [93, 94, 95, 102].includes(route.params?.boardId)) ||
-          (route.params?.boardId === 98 && isAdBoard === true && (
+        {!(
+          isHotBoard || [93, 94, 95, 102, 284].includes(route.params?.boardId)
+        ) ||
+          (route.params?.boardId === 285 && isAdBoard === true && (
             <FloatingWriteButton
               onPress={() =>
                 navigation.navigate(
-                  route.params.boardId === 98
+                  route.params.boardId === 285
                     ? 'AdWriteScreen'
                     : 'PostWriteScreen',
                   {
