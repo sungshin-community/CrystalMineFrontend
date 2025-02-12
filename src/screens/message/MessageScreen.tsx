@@ -19,10 +19,10 @@ import CameraIcon from '../../../resources/icon/CameraIcon';
 import CommentSendIcon from '../../../resources/icon/CommentSendIcon';
 import Plus from '../../../resources/icon/Plus';
 import {fontRegular} from '../../common/font';
-import {LeftArrow} from '../../../resources/icon/Arrow';
+import RightArrow from '../../../resources/icon/Arrow';
 import Dots from '../../../resources/icon/Dots';
 import {ModalBottom} from '../../components/ModalBottom';
-import {Message} from '../../classes/MessageDto';
+import {Chat, Message} from '../../classes/MessageDto';
 import {CommonActions, useIsFocused} from '@react-navigation/native';
 import {
   deleteChatRoom,
@@ -513,7 +513,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
               </Text>
             </View>
             <View style={styles.arrowContainer}>
-              <LeftArrow style={styles.arrow} />
+              <RightArrow style={styles.arrow} />
             </View>
           </TouchableOpacity>
           <View style={{backgroundColor: '#FFFFFF'}}>
