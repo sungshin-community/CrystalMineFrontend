@@ -44,10 +44,9 @@ const SphereArticleListScreen = () => {
               onPress={() => {
                 navigation.navigate('SpherePostScreen', {
                   ptPostId: item.ptPostId,
-                  isFree: false,
+                  isFree: true,
                   isQuestion: false,
                   isReview: false,
-                  isArticle: true,
                 });
               }}>
               <View

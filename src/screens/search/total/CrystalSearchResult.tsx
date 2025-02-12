@@ -25,7 +25,12 @@ interface Props {
 }
 
 type RootStackParamList = {
-  PostScreen: {postId: number};
+  SpherePostScreen: {
+    ptPostId: number;
+    isFree: boolean;
+    isQuestion: boolean;
+    isReview: boolean;
+  };
 };
 
 type NavigateProps = NativeStackScreenProps<RootStackParamList>;
@@ -54,6 +59,7 @@ export default function CrystalSearchResult({searchWord}: Props) {
           setIsError404(true);
         } else {
           setMyPostList(response.data.content);
+          console.log('response.data.content:', response.data.content);
           setFilteredData(response.data.content || []);
           setIsError404(false);
         }
@@ -67,10 +73,11 @@ export default function CrystalSearchResult({searchWord}: Props) {
   }, [searchWord]);
 
   const moveToPtPost = (post: PtContentDto) => {
-    const isQuestion = post.ptPostType === 'QUESTION';
     navigation.navigate('SpherePostScreen', {
-      ptPostId: 1,
-      isQuestion: isQuestion,
+      ptPostId: post.ptPostId,
+      isQuestion: post.ptPostType === 'QUESTION',
+      isFree: post.ptPostType === 'GENERAL' || post.ptPostType === 'ARTICLE',
+      isReview: post.ptPostType === 'REVIEW',
     });
   };
 
@@ -275,8 +282,15 @@ export default function CrystalSearchResult({searchWord}: Props) {
                         {item.likeCount} 개
                       </Text>
                       <ChatIcon />
+                      <Text
+                        style={[
+                          fontRegular,
+                          {color: '#9DA4AB', marginRight: 1, marginLeft: 5},
+                        ]}>
+                        댓글
+                      </Text>
                       <Text style={[styles.textSmall, styles.iconCount]}>
-                        {item.commentCount} 개
+                        {item.ptCommentCount} 개
                       </Text>
                     </View>
                     <Text style={[styles.textSmall, styles.timeStamp]}>

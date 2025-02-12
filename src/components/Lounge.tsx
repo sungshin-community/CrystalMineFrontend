@@ -377,8 +377,8 @@ const Lounge = () => {
                   source={
                     item.thumbnail ? {uri: item.thumbnail} : BannerBasicImg
                   }
-                  style={styles.bannerImage}
-                  resizeMode="cover"
+                  style={{width: '100%', height: 200}}
+                  resizeMode="stretch"
                 />
 
                 {/* 그라데이션 레이어 */}
