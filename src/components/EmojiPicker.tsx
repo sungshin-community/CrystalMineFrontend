@@ -94,10 +94,6 @@ const EmojiPicker = ({
       } else {
         setIsEmoticonListEmpty(false);
         setEmoticons(response.data);
-
-        if (response.data.some(set => set.purchased)) {
-          setIsPayed(true);
-        }
       }
     } catch (e) {
       console.log('이모티콘 조회 실패', e);
@@ -107,7 +103,15 @@ const EmojiPicker = ({
   };
   useEffect(() => {
     fetchEmoticons();
-  }, []);
+
+    if (navigation) {
+      const unsubscribe = navigation.addListener('focus', () => {
+        fetchEmoticons();
+      });
+
+      return unsubscribe;
+    }
+  }, [navigation]);
   const handleEmojiSelect = useCallback(
     emoji => {
       setSelectedEmoji(emoji);
@@ -173,9 +177,7 @@ const EmojiPicker = ({
         <TouchableOpacity
           style={styles.purchaseButton}
           onPress={async () => {
-            const emoticonId = 4; // 이모티콘 없는 사람은 수정광산 기본 이모티콘을 사게 한다.
-            const result = await buyEmoticons(emoticonId);
-            console.log('result', result);
+            navigation?.navigate('EmoticonShop');
             if (result?.status === 200) {
               setIsPayed(true);
               console.log('이모티콘 구매 성공:', result);
