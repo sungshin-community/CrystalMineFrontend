@@ -73,13 +73,19 @@ const EmoticonDetailScreen = ({route, navigation}: EmoticonDetailProps) => {
 
     try {
       const result = await buyEmoticons(emoticonSet.id);
-      if (result?.status === 200) {
+      console.log('구매 응답:', result);
+
+      if (
+        result?.status === 'OK' ||
+        result?.code === 'READ_MEMBER_EMOTICON_SUCCESS'
+      ) {
+        // 즉시 로컬 상태 업데이트
+        setEmoticonSet(prevSet =>
+          prevSet ? {...prevSet, purchased: true} : null,
+        );
         Toast.show('이모티콘 구매 성공', Toast.SHORT);
-        fetchEmoticonDetail();
-        fetchPoints(); // 구매 후 포인트 갱신
-      } else if (result?.status === 403) {
-        Toast.show('포인트가 부족합니다.', Toast.SHORT);
-      } else if (result?.status === 409) {
+        fetchPoints();
+      } else if (result?.code === 'ALREADY_OWN_THIS_EMOTICON') {
         Toast.show('이미 구매한 이모티콘입니다.', Toast.SHORT);
       } else {
         Toast.show('오류가 발생했습니다. 다시 시도해주세요.', Toast.SHORT);

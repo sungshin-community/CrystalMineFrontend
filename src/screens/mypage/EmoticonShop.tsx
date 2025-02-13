@@ -31,16 +31,19 @@ const EmoticonShop = ({navigation}: Props) => {
 
   React.useEffect(() => {
     fetchEmoticons();
-  }, []);
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchEmoticons();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const fetchEmoticons = async () => {
     try {
       const response = await getEmoticons();
       if (response?.data?.content) {
         setEmoticonSets(response.data.content);
-        if (response.data.some(set => set.purchased)) {
-          setIsPayed(true);
-        }
       }
     } catch (error) {
       console.error('이모티콘 조회 실패:', error);
