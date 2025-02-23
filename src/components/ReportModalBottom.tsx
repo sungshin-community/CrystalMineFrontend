@@ -262,7 +262,7 @@ export const ReportItem = ({
   const numofETC = 10; // 기타 사유 id
   return (
     <>
-      {list.slice(0, list.length).map(item => (
+      {list.slice(0, list.length - 1).map(item => (
         <View
           style={{
             flexDirection: 'row',
