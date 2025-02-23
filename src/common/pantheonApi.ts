@@ -392,3 +392,12 @@ export const postPantheonCommentReport = async (
     console.log('판테온 댓글 신고 에러', error);
   }
 };
+
+export const postBlockPantheon = async (id: number) => {
+  try {
+    const response = await client.post(`/block/pantheon/${id}`);
+    console.log('판테온 사용자 및 게시글 차단');
+  } catch (error: any) {
+    console.log('판테온 사용자 및 게시글 차단 에러', error);
+  }
+};

@@ -51,6 +51,9 @@ import {FooterChat} from '../../resources/icon/ChatIcon';
 import {FooterScrap} from '../../resources/icon/Scrap';
 import {FooterReport} from '../../resources/icon/Report';
 import {FooterMessage} from '../../resources/icon/Message';
+import BlockIcon from '../../resources/icon/BlockIcon';
+import {postBlockMine} from '../common/boardApi';
+
 interface Props {
   navigation: any;
   post: any;
@@ -152,6 +155,8 @@ function Post({
         setModalVisible={setDeleteModalVisible}
         title={`작성한 게시글을 삭제하시겠어요?`}
         content={`• 삭제 후에는 되돌릴 수 없습니다.`}
+        setDim={false}
+        isDelete
         isContentCenter={false}
         purpleButtonText="삭제할게요."
         purpleButtonFunc={() => {
@@ -291,6 +296,20 @@ function Post({
     </>
   );
   console.log(post);
+
+  const handlePostBlock = async () => {
+    setBlockModalVisible(false);
+    try {
+      await postBlockMine(data.postId);
+      showToast('글쓴이가 차단되었습니다.');
+      navigation.pop();
+      navigation.navigate('PostListScreen', {boardId: data.boardId});
+    } catch (error) {
+      console.error('차단 실패:', error);
+      showToast('차단에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
   return (
     <>
       <View style={styles.postContainer}>
@@ -442,68 +461,90 @@ function Post({
                 alignItems: 'center',
                 marginRight: 16,
               }}>
-              {data?.isReported ? (
-                <Pressable
-                  onPress={() => showToast('이미 신고한 게시글입니다.')}>
-                  <FooterReport fill="#9DA4AB" style={{marginRight: 16}} />
-                </Pressable>
+              {data?.isAuthor ? (
+                handlePostDeleteComponent
               ) : (
-                <Pressable
-                  onPress={() => {
-                    setReportModalVisible(true);
-                    setComponentModalVisible(reportModalVisible);
-                  }}>
-                  <FooterReport style={{marginRight: 16}} />
-                </Pressable>
-              )}
-              <ReportModalBottom
-                modalVisible={reportModalVisible}
-                setModalVisible={setReportModalVisible}
-                title="해당 게시글을 신고하시겠어요?"
-                purpleButtonText="네, 신고할게요."
-                reportId={data?.postId}
-                reportFunc={handlePostReport}
-                whiteButtonText="아니요."
-                whiteButtonFunc={() => setReportModalVisible(false)}
-                setDim={false}
-                modalType="게시글"
-              />
-              <Pressable
-                onPress={() => {
-                  blockedCheck(data.isAnonymous);
-                }}>
-                <FooterMessage
-                  style={{
-                    marginHorizontal: 16,
-                  }}
-                />
-              </Pressable>
-              <MessageModalBottom
-                modalVisible={messageModalVisible}
-                setModalVisible={setMessageModalVisible}
-                purpleButtonText="확인"
-                purpleButtonFunc={handlePostMessage}
-                setDim={false}
-                anonymous={data?.isAnonymous}
-              />
-              <Pressable
-                hitSlop={10}
-                onPress={() => handlePostScrap(data.postId)}>
-                {data?.isScraped ? (
-                  <FooterScrap
+                <>
+                  <Pressable
                     style={{marginRight: 16}}
-                    fill="#A055FF"
-                    stroke="#A055FF"
+                    onPress={() => {
+                      setBlockModalVisible(true);
+                    }}>
+                    <BlockIcon />
+                  </Pressable>
+                  <ModalBottom
+                    modalVisible={blockModalVisible}
+                    setModalVisible={setBlockModalVisible}
+                    title="해당 게시글의 글쓴이를 차단하시겠어요?"
+                    content={` •  차단 이후, 해당 글쓴이의 게시글은 더이상 목록에서\n     노출되지 않습니다.`}
+                    purpleButtonText="차단할게요."
+                    setDim={false}
+                    isBlock
+                    purpleButtonFunc={handlePostBlock}
                   />
-                ) : (
-                  <FooterScrap
-                    style={{
-                      marginRight: 16,
-                    }}
+                  {data?.isReported ? (
+                    <Pressable
+                      onPress={() => showToast('이미 신고한 게시글입니다.')}>
+                      <FooterReport fill="#9DA4AB" style={{marginRight: 16}} />
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      onPress={() => {
+                        setReportModalVisible(true);
+                        setComponentModalVisible(reportModalVisible);
+                      }}>
+                      <FooterReport style={{marginRight: 16}} />
+                    </Pressable>
+                  )}
+                  <ReportModalBottom
+                    modalVisible={reportModalVisible}
+                    setModalVisible={setReportModalVisible}
+                    title="해당 게시글을 신고하시겠어요?"
+                    purpleButtonText="네, 신고할게요."
+                    reportId={data?.postId}
+                    reportFunc={handlePostReport}
+                    whiteButtonText="아니요."
+                    whiteButtonFunc={() => setReportModalVisible(false)}
+                    setDim={false}
+                    modalType="게시글"
                   />
-                )}
-              </Pressable>
-              {data?.isAuthor ? handlePostDeleteComponent : null}
+                  <Pressable
+                    onPress={() => {
+                      blockedCheck(data.isAnonymous);
+                    }}>
+                    <FooterMessage
+                      style={{
+                        marginHorizontal: 16,
+                      }}
+                    />
+                  </Pressable>
+                  <MessageModalBottom
+                    modalVisible={messageModalVisible}
+                    setModalVisible={setMessageModalVisible}
+                    purpleButtonText="확인"
+                    purpleButtonFunc={handlePostMessage}
+                    setDim={false}
+                    anonymous={data?.isAnonymous}
+                  />
+                  <Pressable
+                    hitSlop={10}
+                    onPress={() => handlePostScrap(data.postId)}>
+                    {data?.isScraped ? (
+                      <FooterScrap
+                        style={{marginRight: 16}}
+                        fill="#A055FF"
+                        stroke="#A055FF"
+                      />
+                    ) : (
+                      <FooterScrap
+                        style={{
+                          marginRight: 16,
+                        }}
+                      />
+                    )}
+                  </Pressable>
+                </>
+              )}
             </View>
             <CustomToast
               visible={toastVisible}

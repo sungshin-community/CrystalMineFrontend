@@ -27,6 +27,8 @@ interface Props {
   setDim?: boolean;
   setDisableClose?: boolean;
   isLogoutModal?: boolean;
+  isBlock?: boolean;
+  isDelete?: boolean;
 }
 export const ModalBottom = ({
   modalVisible,
@@ -45,6 +47,8 @@ export const ModalBottom = ({
   setDim = true,
   setDisableClose = false,
   isLogoutModal = false,
+  isBlock = false,
+  isDelete = false,
 }: Props) => {
   return (
     <>
@@ -109,6 +113,20 @@ export const ModalBottom = ({
                             lineHeight: 20,
                             marginLeft: isContentCenter ? 0 : 16,
                           },
+                          isBlock && {
+                            color: '#89919A',
+                            lineHeight: 24,
+                            paddingHorizontal: 17,
+                            textAlign: 'left',
+                            marginBottom: 28,
+                          },
+                          isDelete && {
+                            color: '#89919A',
+                            lineHeight: 24,
+                            paddingHorizontal: 5,
+                            textAlign: 'left',
+                            marginBottom: 28,
+                          },
                         ]}>
                         {content}
                       </Text>
@@ -167,7 +185,6 @@ export const ModalBottom = ({
                             // 일반 모달일 때의 스타일
                             width: isWriting ? '49%' : '100%',
                             marginLeft: 4,
-                            marginTop: 28,
                           },
                     ]}
                     onPress={() => purpleButtonFunc()}>

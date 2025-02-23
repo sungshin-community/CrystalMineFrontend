@@ -779,3 +779,12 @@ export const getWritePostInfo = async (id: number) => {
     console.log(error);
   }
 };
+
+export const postBlockMine = async (id: number) => {
+  try {
+    const response = await client.post(`/block/${id}`);
+    console.log('광산 사용자 및 게시글 차단');
+  } catch (error: any) {
+    console.log('광산 사용자 및 게시글 차단 에러', error);
+  }
+};
