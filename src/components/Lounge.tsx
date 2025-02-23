@@ -377,8 +377,8 @@ const Lounge = () => {
                   source={
                     item.thumbnail ? {uri: item.thumbnail} : BannerBasicImg
                   }
-                  style={{width: '100%', height: 200}}
-                  resizeMode="stretch"
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
                 />
 
                 {/* 그라데이션 레이어 */}
@@ -735,11 +735,9 @@ const styles = StyleSheet.create({
   inactiveDot: {
     backgroundColor: '#E1E4EA',
   },
-  bannerImage: {
-    width: '100%',
-  },
   bannerContainer: {
     width: Dimensions.get('window').width,
+    height: 200,
     position: 'relative',
   },
 
