@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {reissueToken} from './authApi';
 
 const client: AxiosInstance = axios.create({
-  baseURL: 'https://api.crystalmine.kr/',
+  baseURL: 'https://api-v2.crystalmine.kr/',
 });
 
 let isRefreshing = false;
