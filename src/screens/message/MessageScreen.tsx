@@ -168,13 +168,14 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
     navigation.setOptions({
       headerTitleAlign: 'center',
       headerTintColor: '#000000',
-      headerRight: () => (
+      /*headerRight: () => (
+       
         <TouchableOpacity
           onPress={() => setMenu(!menu)}
           style={{paddingRight: 13}}>
           <Dots />
         </TouchableOpacity>
-      ),
+      ), */
       headerTitle: () => <HeaderTitle />,
     });
   }, [chat]);
@@ -664,7 +665,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
                       fill={chatData.isBlocked ? '#D1d1d1' : '#A055FF'}
                       style={{
                         position: 'relative',
-                        top: 0,
+                        top: 3,
                         right: 0,
                         marginLeft: 9,
                         marginRight: 16,
@@ -783,8 +784,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     width: Dimensions.get('window').width - 110,
     borderRadius: 8,
-    paddingLeft: 12,
-    paddingRight: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -797,10 +796,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Regular',
     // width: Dimensions.get('window').width - 200,
     // width: '100%',
-    // paddingBottom: 10,
-    // paddingTop: Platform.OS == 'ios' ? 13 : 10,
-    minHeight: 38,
-    maxHeight: 92,
+    paddingHorizontal: 12,
+    paddingBottom: 10,
+    paddingTop: Platform.OS == 'ios' ? 13 : 10,
     color: '#222222',
   },
   area: {
