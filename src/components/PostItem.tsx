@@ -205,7 +205,7 @@ function PostItem({post, boardId, navigation, route, handlePostLike}: Props) {
                       ? post.newCommentContent?.substring(0, 25) + '...'
                       : post.newCommentContent}
                   </Text>
-                  {post.commentCount > 1 && (
+                  {post.commentCount >= 1 && (
                     <Text
                       style={{
                         fontWeight: '500',
