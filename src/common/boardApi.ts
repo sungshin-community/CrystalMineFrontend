@@ -163,8 +163,12 @@ export const checkIsAdminForAdBoardPost = async (boardId: number) => {
     console.log('여기는 checkIsAdminForAdBoardPost 함수', response.data);
     return response.data;
   } catch (e) {
-    console.log('여기는 checkIsAdminForAdBoardPost 함수', e.response.data);
-    return e.response.data;
+    console.log(
+      '여기는 checkIsAdminForAdBoardPost 함수 에러',
+      e.response?.data || e,
+    );
+    // 권한이 없는 경우 기본적으로 false 반환
+    return {success: false, data: false};
   }
 };
 

@@ -192,8 +192,10 @@ const PostListScreen = ({navigation, route}: Props) => {
     route.params?.boardId !== 9;
   const fetchAdminStatus = useCallback(async (boardId: number) => {
     try {
-      const response = await checkIsAdminForAdBoardPost(boardId);
+      const response = await checkIsAdminForAdBoardPost(285);
+      console.log('response', response);
       setIsAdBoard(response.data);
+      console.log('관리자 권한 확인123', response.data);
       console.log('관리자 권한 확인', isAdBoard);
     } catch (error) {
       console.error('관리자 권한 확인', error);
