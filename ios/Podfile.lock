@@ -165,9 +165,9 @@ PODS:
     - nanopb/encode (= 2.30909.1)
   - nanopb/decode (2.30909.1)
   - nanopb/encode (2.30909.1)
-  - Permission-AppTrackingTransparency (3.8.0):
+  - Permission-AppTrackingTransparency (3.10.1):
     - RNPermissions
-  - Permission-PhotoLibrary (3.8.0):
+  - Permission-PhotoLibrary (3.10.1):
     - RNPermissions
   - PromisesObjC (2.4.0)
   - RCT-Folly (2021.04.26.00):
@@ -369,17 +369,17 @@ PODS:
     - React-Core
   - react-native-cameraroll (4.1.2):
     - React-Core
-  - react-native-image-picker (4.7.3):
+  - react-native-image-picker (4.10.3):
     - React-Core
-  - react-native-pager-view (5.4.9):
+  - react-native-pager-view (5.4.25):
     - React-Core
-  - react-native-safe-area-context (3.3.2):
+  - react-native-safe-area-context (3.4.1):
     - React-Core
-  - react-native-simple-toast (1.1.3):
+  - react-native-simple-toast (1.1.4):
     - React-Core
     - Toast (~> 4.0.0)
-  - react-native-splash-screen (3.2.0):
-    - React
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - React-perflogger (0.65.3)
   - React-RCTActionSheet (0.65.3):
     - React-Core/RCTActionSheetHeaders (= 0.65.3)
@@ -476,13 +476,13 @@ PODS:
     - Google-Mobile-Ads-SDK (= 9.14.0)
     - GoogleUserMessagingPlatform (= 2.0.0)
     - React-Core
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.10.1):
     - React-Core
-  - RNScreens (3.7.2):
+  - RNScreens (3.10.2):
     - React-Core
     - React-RCTImage
-  - RNSVG (12.1.1):
-    - React
+  - RNSVG (12.5.1):
+    - React-Core
   - Toast (4.0.0)
   - VisionCamera (2.13.0):
     - React
@@ -705,8 +705,8 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
-  Permission-AppTrackingTransparency: 7a48e816f801d10f2402c5b4edbe620ad8a412d9
-  Permission-PhotoLibrary: 31787bbe77d0d3ae6a5267b8435e4a2e9ef78f1d
+  Permission-AppTrackingTransparency: 4cc82857ad23dfff007cf03757e56c5705259d56
+  Permission-PhotoLibrary: 03c52ed95dadfb0f2ba4c7663786cce0c4e0c978
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 0dd9e1eb86348ecab5ba76f910b56f4b5fef3c46
   RCTRequired: 655e18b89b599c17ee55d288359f96d5600c9004
@@ -721,11 +721,11 @@ SPEC CHECKSUMS:
   React-jsinspector: 94bbad998be4efbdac7d6d152677bdd134c1c980
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
-  react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
-  react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
-  react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
-  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
+  react-native-image-picker: 60f4246eb5bb7187fc15638a8c1f13abd3820695
+  react-native-pager-view: da490aa1f902c9a5aeecf0909cc975ad0e92e53e
+  react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
+  react-native-simple-toast: 8ee5d23f0b92b935ab7434cdb65159ce12dfb4b7
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: f8205b59ccf68dbe4184e71ac7b4db55ea0c8965
   React-RCTActionSheet: 67b50ddfccbc123dcc7574475e4fdc911cc601d7
   React-RCTAnimation: 3b998b2da94bc3f74c8d8e98b3181e20678a0ca7
@@ -748,13 +748,13 @@ SPEC CHECKSUMS:
   RNFBPerf: 9efcef95301ab1eaad86b072eca07790f4dfab55
   RNFBRemoteConfig: c6c5e360b34ca49251a8c4e2c3ae2e652e1ac5c7
   RNGoogleMobileAds: 6b2f80de78d8644f5220f9bd7df7953542b550c6
-  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
-  RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
-  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNPermissions: 4e3714e18afe7141d000beae3755e5b5fb2f5e05
+  RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   VisionCamera: 3732b73e28dc6ac047b7ac3ee4d0b54be95e1a9d
   Yoga: 8ae716bf8b654fac1c7be1ac81376041837acb2c
 
 PODFILE CHECKSUM: 0f6bc7e00703212848593c3ccece4a5fe4f0e331
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.12.0

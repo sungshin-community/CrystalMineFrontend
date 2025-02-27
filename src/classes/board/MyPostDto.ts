@@ -24,7 +24,7 @@ export class PtContentDto {
   createdAt: string = '';
   displayName: string = '';
   hasTitle: boolean = false;
-  isAnonymous: boolean = false;
+  isAnonymous: boolean = true;
   isLiked: boolean = false;
   likeCount: number = 0;
   profileImage: string = '';

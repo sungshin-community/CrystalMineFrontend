@@ -261,7 +261,16 @@ export const postPantheonLike = async (id: number) => {
     console.log('판테온 게시물 좋아요 에러', error);
   }
 };
-
+export const deletePantheonFree = async (id: number) => {
+  try {
+    const response = await client.delete(`/pantheon-general/${id}`);
+    console.log('판테온 자유 글 삭제 성공');
+    return response.data;
+  } catch (error: any) {
+    console.log('판테온 자유 글 삭제 에러', error);
+    return error.response;
+  }
+};
 export const deleltePantheonLike = async (id: number) => {
   try {
     await client.delete(`/pantheon-common/${id}/like`, {});

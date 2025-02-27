@@ -90,7 +90,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
   );
   const [images, setImages] = useState<Asset[]>([]);
   const [info, setInfo] = useState<PostWriteInfoDto>();
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [goBackWarning, setGoBackWarning] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -736,7 +736,7 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
               <Text style={{fontSize: 14, fontWeight: '500', marginRight: 6}}>
                 익명
               </Text>
-              {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
+              {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
             </Pressable>
           </View>
         </View>

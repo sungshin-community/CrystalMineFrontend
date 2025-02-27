@@ -345,7 +345,7 @@ const PostWriteBCase = ({
                     }}>
                     익명
                   </Text>
-                  {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
+                  {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
                 </Pressable>
                 <Pressable
                   onPress={() => {
