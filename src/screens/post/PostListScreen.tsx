@@ -683,12 +683,12 @@ const PostListScreen = ({navigation, route}: Props) => {
                     onPress={() => {
                       navigation.navigate('PostScreen', {
                         postId: item.postAdId,
-                        boardId: 98,
+                        boardId: 285,
                       });
                     }}>
                     <PostAdMid
                       post={item}
-                      boardId={98}
+                      boardId={285}
                       navigation={navigation}
                       route={route}
                     />

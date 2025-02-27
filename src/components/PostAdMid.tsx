@@ -44,7 +44,7 @@ function PostAdMid({post, boardId, navigation, route}: Props) {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <View>
+          <View style={{flex: 1, marginRight: post.imageCount > 1 ? 12 : 0}}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
@@ -62,28 +62,31 @@ function PostAdMid({post, boardId, navigation, route}: Props) {
               <Text style={[styles.adText]}>{post.storeName}</Text>
             </View>
           </View>
-          <Image
-            style={{width: 60, height: 60, borderRadius: 8}}
-            source={{uri: post.thumbnail}}
-          />
+
           {post.imageCount > 1 && (
-            <Text
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
-                fontSize: 10,
-                paddingHorizontal: 6,
-                paddingVertical: 2,
-                marginHorizontal: 4,
-                marginVertical: 4,
-                borderRadius: 10,
-                overflow: 'hidden',
-              }}>
-              {`+${post.imageCount - 1}`}
-            </Text>
+            <View style={{width: 60}}>
+              <Image
+                style={{width: 60, height: 60, borderRadius: 8}}
+                source={{uri: post.thumbnail}}
+              />
+              <Text
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                  color: 'white',
+                  fontSize: 10,
+                  paddingHorizontal: 6,
+                  paddingVertical: 2,
+                  marginHorizontal: 4,
+                  marginVertical: 4,
+                  borderRadius: 10,
+                  overflow: 'hidden',
+                }}>
+                {`+${post.imageCount - 1}`}
+              </Text>
+            </View>
           )}
         </View>
         <View style={styles.icon}></View>

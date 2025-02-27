@@ -40,7 +40,7 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
     <TouchableWithoutFeedback
       onPress={() => {
         console.log('Navigating to post:', {
-          postId: boardId === 98 ? post.postAdId : post.postId,
+          postId: boardId === 285 ? post.postAdId : post.postId,
           boardId: boardId,
         });
         if (!post.postId && !post.postAdId) {
@@ -48,8 +48,8 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
           return;
         }
         navigation.navigate('PostScreen', {
-          postId: boardId === 98 ? post.postAdId : post.postId,
-          boardId: boardId || 98,
+          postId: boardId === 285 ? post.postAdId : post.postId,
+          boardId: boardId || 285,
         });
       }}>
       <View style={styles.container}>
@@ -101,7 +101,7 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
                 ) : (
                   <SmallPurpleFlag style={{marginLeft: 5}} />
                 ))} */}
-              {boardId !== 98 && (
+              {boardId !== 285 && (
                 <Text style={[styles.textSmall, styles.timeStamp]}>
                   {post.createdAt}
                 </Text>
@@ -129,7 +129,7 @@ function PostAdItem({post, boardId, navigation, route}: Props) {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            {boardId !== 98 && (
+            {boardId !== 285 && (
               <Image
                 style={{width: 60, height: 60, borderRadius: 8}}
                 source={{uri: post.thumbnail}}
