@@ -165,7 +165,7 @@ const PostScreen = ({navigation, route}: Props) => {
       let result;
 
       // boardId 확인
-      if (route.params.boardId === 98) {
+      if (route.params.boardId === 285) {
         result = await getAdPosts(route.params.postId);
         console.log('광고글 조회', result);
       } else {
@@ -507,7 +507,7 @@ const PostScreen = ({navigation, route}: Props) => {
           contentContainerStyle={{flexGrow: 1}}
           style={{flex: 1, backgroundColor: '#FFFFFF'}}
           ref={scrollViewRef}>
-          {post?.boardId === 98 ? (
+          {post?.boardId === 285 ? (
             <AdPost
               navigation={navigation}
               post={post}
