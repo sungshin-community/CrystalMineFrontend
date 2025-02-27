@@ -669,7 +669,7 @@ const HomeFragment = ({navigation}: Props) => {
                         {
                           user?.isAuthenticated
                             ? navigation.navigate('PostListScreen', {
-                                boardId: 102,
+                                boardId: 284,
                               })
                             : Toast.show('접근 권한이 없습니다.', Toast.SHORT);
                         }
