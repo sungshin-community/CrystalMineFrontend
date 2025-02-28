@@ -89,6 +89,7 @@ type RootStackParamList = {
   DirectionAgreeScreen: undefined;
   AlertSetting: undefined;
   PointScreen: undefined;
+  ReplaceEmail: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -527,61 +528,13 @@ const MyPageFragment = ({navigation}: Props) => {
                   {user?.username}@sungshin.ac.kr
                 </Text>
               </View>
-            </View>
-            <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                paddingBottom: 10,
-                paddingTop: 27,
-                borderBottomColor: '#EEEEEE',
-                borderBottomWidth: 1,
-              }}>
-              <Text style={styles.menuTitle}>보안 및 인증</Text>
-
               <TouchableHighlight
                 underlayColor="#EEEEEE"
                 onPress={() => {
-                  if (user) {
-                    if (!user?.expireIn) {
-                      navigation.navigate('UncertifiedMember');
-                    } else if (user?.expireIn > 0) {
-                      navigation.navigate('CertifiedMember');
-                    } else {
-                      navigation.navigate('ExpiredMember');
-                    }
-                  }
+                  navigation.navigate('ReplaceEmail');
                 }}>
                 <View style={styles.menu}>
-                  <Text style={styles.menuText}>정회원 인증</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#6E7882',
-                        fontSize: 15,
-                        fontFamily: 'SpoqaHanSansNeo-Regular',
-                        marginRight: 9,
-                      }}>
-                      {user?.authenticatedDate}
-                    </Text>
-                    <RightArrow />
-                  </View>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() =>
-                  navigation.navigate('InputPassword', {
-                    username: user?.username,
-                  })
-                }>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>비밀번호 재설정</Text>
+                  <Text style={styles.menuText}>대체 이메일 관리</Text>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -592,8 +545,74 @@ const MyPageFragment = ({navigation}: Props) => {
                   </View>
                 </View>
               </TouchableHighlight>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: '#FFFFFF',
+              paddingBottom: 10,
+              paddingTop: 27,
+              borderBottomColor: '#EEEEEE',
+              borderBottomWidth: 1,
+            }}>
+            <Text style={styles.menuTitle}>보안 및 인증</Text>
 
-              {/* <View style={[styles.menu, {marginTop: 6}]}>
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                if (user) {
+                  if (!user?.expireIn) {
+                    navigation.navigate('UncertifiedMember');
+                  } else if (user?.expireIn > 0) {
+                    navigation.navigate('CertifiedMember');
+                  } else {
+                    navigation.navigate('ExpiredMember');
+                  }
+                }
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>정회원 인증</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#6E7882',
+                      fontSize: 15,
+                      fontFamily: 'SpoqaHanSansNeo-Regular',
+                      marginRight: 9,
+                    }}>
+                    {user?.authenticatedDate}
+                  </Text>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() =>
+                navigation.navigate('InputPassword', {
+                  username: user?.username,
+                })
+              }>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>비밀번호 재설정</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                  }}>
+                  <RightArrow />
+                </View>
+              </View>
+            </TouchableHighlight>
+
+            {/* <View style={[styles.menu, {marginTop: 6}]}>
               <Text style={styles.menuTitle}>앱 설정</Text>
             </View>
             <View style={styles.menu}>
@@ -628,39 +647,39 @@ const MyPageFragment = ({navigation}: Props) => {
                 />
               </View>
             </View> */}
-            </View>
-            <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                paddingBottom: 2,
-                paddingTop: 27,
+          </View>
+          <View
+            style={{
+              backgroundColor: '#FFFFFF',
+              paddingBottom: 2,
+              paddingTop: 27,
+            }}>
+            <Text style={styles.menuTitle}>앱설정</Text>
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={async () => {
+                const enabled = await messaging().hasPermission();
+                if (enabled) {
+                  navigation.navigate('AlertSetting');
+                } else {
+                  setAlertModalVisible(true);
+                }
               }}>
-              <Text style={styles.menuTitle}>앱설정</Text>
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={async () => {
-                  const enabled = await messaging().hasPermission();
-                  if (enabled) {
-                    navigation.navigate('AlertSetting');
-                  } else {
-                    setAlertModalVisible(true);
-                  }
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>알림 설정</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                    }}>
-                    <RightArrow />
-                  </View>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>알림 설정</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
-            </View>
-            {/* <View
+              </View>
+            </TouchableHighlight>
+          </View>
+          {/* <View
               style={{
                 backgroundColor: '#FFFFFF',
                 paddingBottom: 2,
@@ -738,129 +757,129 @@ const MyPageFragment = ({navigation}: Props) => {
               </TouchableHighlight>
             </View> */}
 
-            <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                paddingBottom: 1,
-                paddingTop: 20,
-                marginTop: 16,
-                borderBottomColor: '#F6F6F6',
-                borderBottomWidth: 1,
-              }}>
-              {/* 앱 버전 */}
-              <Text style={styles.menuTitle}>서비스</Text>
+          <View
+            style={{
+              backgroundColor: '#FFFFFF',
+              paddingBottom: 1,
+              paddingTop: 20,
+              marginTop: 16,
+              borderBottomColor: '#F6F6F6',
+              borderBottomWidth: 1,
+            }}>
+            {/* 앱 버전 */}
+            <Text style={styles.menuTitle}>서비스</Text>
 
+            <View style={styles.menu}>
+              <Text style={styles.menuText}>앱 버전</Text>
+              <View style={styles.arrowContainer}>
+                <Text style={styles.versionText}>2.0.0</Text>
+              </View>
+            </View>
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('QuestionList');
+              }}>
               <View style={styles.menu}>
-                <Text style={styles.menuText}>앱 버전</Text>
-                <View style={styles.arrowContainer}>
-                  <Text style={styles.versionText}>2.0.0</Text>
+                <Text style={styles.menuText}>문의하기</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                  }}>
+                  <RightArrow />
                 </View>
               </View>
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('QuestionList');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>문의하기</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      justifyContent: 'flex-end',
-                    }}>
-                    <RightArrow />
-                  </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('DirectionAgreeScreen');
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>수정광산 이용 방향</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('DirectionAgreeScreen');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>수정광산 이용 방향</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                    }}>
-                    <RightArrow />
-                  </View>
+              </View>
+            </TouchableHighlight>
+            {/* emoticon */}
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('EmoticonShop');
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>이모티콘샵</Text>
+                <View style={styles.arrowContainer}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
-              {/* emoticon */}
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('EmoticonShop');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>이모티콘샵</Text>
-                  <View style={styles.arrowContainer}>
-                    <RightArrow />
-                  </View>
+              </View>
+            </TouchableHighlight>
+            {/* 공지사항 */}
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('NoticeList');
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>공지사항</Text>
+                <View style={styles.arrowContainer}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
-              {/* 공지사항 */}
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('NoticeList');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>공지사항</Text>
-                  <View style={styles.arrowContainer}>
-                    <RightArrow />
-                  </View>
-                </View>
-              </TouchableHighlight>
+              </View>
+            </TouchableHighlight>
 
-              {/* 서비스 이용약관 */}
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('TermsOfService');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>서비스 이용약관</Text>
-                  <View style={styles.arrowContainer}>
-                    <RightArrow />
-                  </View>
+            {/* 서비스 이용약관 */}
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('TermsOfService');
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>서비스 이용약관</Text>
+                <View style={styles.arrowContainer}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
+              </View>
+            </TouchableHighlight>
 
-              {/* 오픈소스 라이센스 */}
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('OpenSourceLicense');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>오픈소스 라이센스</Text>
-                  <View style={styles.arrowContainer}>
-                    <RightArrow />
-                  </View>
+            {/* 오픈소스 라이센스 */}
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('OpenSourceLicense');
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>오픈소스 라이센스</Text>
+                <View style={styles.arrowContainer}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
+              </View>
+            </TouchableHighlight>
 
-              {/* 이용 제한 내역 */}
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => {
-                  navigation.navigate('UsageRestrictions');
-                }}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>이용 제한 내역</Text>
-                  <View style={styles.arrowContainer}>
-                    <RightArrow />
-                  </View>
+            {/* 이용 제한 내역 */}
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => {
+                navigation.navigate('UsageRestrictions');
+              }}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>이용 제한 내역</Text>
+                <View style={styles.arrowContainer}>
+                  <RightArrow />
                 </View>
-              </TouchableHighlight>
+              </View>
+            </TouchableHighlight>
 
-              {/* <TouchableHighlight
+            {/* <TouchableHighlight
                 underlayColor="#EEEEEE"
                 onPress={() => {
                   navigation.navigate('ListScreen');
@@ -878,45 +897,44 @@ const MyPageFragment = ({navigation}: Props) => {
                   </View>
                 </View>
               </TouchableHighlight> */}
-            </View>
+          </View>
 
-            <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                paddingBottom: 20,
-                paddingTop: 20,
-              }}>
-              <Text style={styles.menuTitle}>계정</Text>
+          <View
+            style={{
+              backgroundColor: '#FFFFFF',
+              paddingBottom: 20,
+              paddingTop: 20,
+            }}>
+            <Text style={styles.menuTitle}>계정</Text>
 
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => setModalVisible(true)}>
-                <View style={styles.menu}>
-                  <Text style={styles.menuText}>로그아웃</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                    }}></View>
-                </View>
-              </TouchableHighlight>
-              {/* 회원탈퇴 버튼 추가 */}
-              <TouchableHighlight
-                underlayColor="#EEEEEE"
-                onPress={() => navigation.navigate('QuitTermAgree')}>
-                <View style={styles.menu}>
-                  <Text style={[styles.menuText]}>회원탈퇴</Text>
-                  <View style={styles.arrowContainer}></View>
-                  <RightArrow />
-                </View>
-              </TouchableHighlight>
-            </View>
-            {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => setModalVisible(true)}>
+              <View style={styles.menu}>
+                <Text style={styles.menuText}>로그아웃</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}></View>
+              </View>
+            </TouchableHighlight>
+            {/* 회원탈퇴 버튼 추가 */}
+            <TouchableHighlight
+              underlayColor="#EEEEEE"
+              onPress={() => navigation.navigate('QuitTermAgree')}>
+              <View style={styles.menu}>
+                <Text style={[styles.menuText]}>회원탈퇴</Text>
+                <View style={styles.arrowContainer}></View>
+                <RightArrow />
+              </View>
+            </TouchableHighlight>
+          </View>
+          {/* <Text style={[fontRegular, {textAlign: 'center', color: '#D0D0D0', paddingVertical: 30}]}>
                 Salty Lab | sungshin.community@gmail.com
               </Text> */}
-          </View>
 
           {/* <View style={{paddingVertical: 24, alignItems: 'center'}}>
           <PurpleRoundButton
