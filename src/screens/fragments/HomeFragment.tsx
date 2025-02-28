@@ -340,14 +340,17 @@ const HomeFragment = ({navigation}: Props) => {
   // 총학생회 배너 데이터 불러오기
   const fetchBannerData = async () => {
     try {
-      // prevAdPostId를 getBanner 함수에 전달
       const bannerData = await getBanner(prevAdPostId);
       setBannerData(bannerData);
 
       if (bannerData && bannerData.length > 0) {
-        const latestAdPost = bannerData.find(item => item.postId);
-        if (latestAdPost) {
-          setPrevAdPostId(latestAdPost.postId);
+        // postId 또는 postAdId 둘 중 하나가 있는 최신 포스트 찾기
+        const latestPost = bannerData.find(
+          item => item.postId || item.postAdId,
+        );
+        if (latestPost) {
+          // postId가 있으면 그것을 사용, 없으면 postAdId 사용
+          setPrevAdPostId(latestPost.postId || latestPost.postAdId);
         }
       }
     } catch (error) {
@@ -505,13 +508,11 @@ const HomeFragment = ({navigation}: Props) => {
                               navigation.navigate('PostScreen', {
                                 postId: item.postId,
                               });
-                            }
-                            {
-                              /*else if (item.postAdId) {
-                              navigation.navigate('AdScreen', {
-                                postAdId: item.postAdId,
+                            } else if (item.postAdId) {
+                              navigation.navigate('PostScreen', {
+                                postId: item.postAdId,
+                                boardId: 285, //운영 광고 게시판 id
                               });
-                            } */
                             }
                           }}>
                           {/* 배너 이미지 */}
