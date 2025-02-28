@@ -32,7 +32,7 @@ export default function SphereAdItem({post}: SphereAdItemProps) {
         onPress={() => {
           navigation.navigate('PostScreen', {
             postId: post.postAdId,
-            boardId: 98,
+            boardId: 285,
           });
         }}>
         {typeof post.title === 'string' && (
