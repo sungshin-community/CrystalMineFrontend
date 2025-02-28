@@ -70,7 +70,7 @@ export default function BoardList({
             numberOfLines={1}
             ellipsizeMode="tail"
             style={{
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: '400',
               color: '#89919A',
               marginTop: 2,
@@ -117,7 +117,7 @@ export default function BoardList({
             ) : (
               <OrangePin style={{marginRight: 10}} />
             )}
-            <Text
+            {/* <Text
               style={{
                 fontSize: 12,
                 color: '#A055FF',
@@ -125,7 +125,7 @@ export default function BoardList({
                 fontFamily: 'Prentendard-Medium',
               }}>
               999+
-            </Text>
+            </Text> */}
           </Pressable>
         </View>
       </TouchableOpacity>
@@ -455,7 +455,7 @@ export function CustomBoardList({
               numberOfLines={1}
               ellipsizeMode="tail"
               style={{
-                fontSize: 12,
+                fontSize: 13,
                 color: '#89919A',
                 fontWeight: '400',
                 fontFamily: 'Prentendard-Medium',
@@ -489,7 +489,7 @@ export function CustomBoardList({
               )}
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   color: item.isPinned ? '#A055FF' : '#CECFD6',
                   fontWeight: '500',
                 }}>

@@ -340,14 +340,17 @@ const HomeFragment = ({navigation}: Props) => {
   // 총학생회 배너 데이터 불러오기
   const fetchBannerData = async () => {
     try {
-      // prevAdPostId를 getBanner 함수에 전달
       const bannerData = await getBanner(prevAdPostId);
       setBannerData(bannerData);
 
       if (bannerData && bannerData.length > 0) {
-        const latestAdPost = bannerData.find(item => item.postId);
-        if (latestAdPost) {
-          setPrevAdPostId(latestAdPost.postId);
+        // postId 또는 postAdId 둘 중 하나가 있는 최신 포스트 찾기
+        const latestPost = bannerData.find(
+          item => item.postId || item.postAdId,
+        );
+        if (latestPost) {
+          // postId가 있으면 그것을 사용, 없으면 postAdId 사용
+          setPrevAdPostId(latestPost.postId || latestPost.postAdId);
         }
       }
     } catch (error) {
@@ -505,13 +508,11 @@ const HomeFragment = ({navigation}: Props) => {
                               navigation.navigate('PostScreen', {
                                 postId: item.postId,
                               });
-                            }
-                            {
-                              /*else if (item.postAdId) {
-                              navigation.navigate('AdScreen', {
-                                postAdId: item.postAdId,
+                            } else if (item.postAdId) {
+                              navigation.navigate('PostScreen', {
+                                postId: item.postAdId,
+                                boardId: 285, //운영 광고 게시판 id
                               });
-                            } */
                             }
                           }}>
                           {/* 배너 이미지 */}
@@ -963,7 +964,7 @@ const styles = StyleSheet.create({
   },
   iconLabel: {
     fontFamily: 'Pretendard',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     lineHeight: 14.32,
     textAlign: 'center',
@@ -1003,7 +1004,7 @@ const styles = StyleSheet.create({
     color: '#222222',
   },
   more: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#A055FF',
     textDecorationLine: 'underline',
   },
@@ -1021,12 +1022,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   postTitleSummary: {
-    fontSize: 13,
+    fontSize: 14,
     marginRight: 16,
     maxWidth: 180,
   },
   postSummary: {
-    fontSize: 13,
+    fontSize: 14,
   },
   hotPostSummary: {
     fontSize: 14,
@@ -1036,7 +1037,7 @@ const styles = StyleSheet.create({
   },
   postNewLabel: {
     color: '#FF6060',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
     width: 10,
     marginLeft: 12,
@@ -1046,18 +1047,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   HOTpostLike: {
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: 4,
     marginRight: 10,
   },
   HOTpostComment: {
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: 4,
   },
   hotPostBoardName: {
     lineHeight: 14.32,
     color: '#6E7882',
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Pretendard',
     position: 'absolute',
     left: 20,
@@ -1088,14 +1089,15 @@ const styles = StyleSheet.create({
   },
   newPostTitle: {
     fontSize: 14,
+
     fontFamily: 'Pretendard',
   },
   newPostTime: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Pretendard',
   },
   newPostBoard: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Pretendard',
     color: '#89919A',
   },
@@ -1183,7 +1185,7 @@ const styles = StyleSheet.create({
   bannerContent: {
     fontFamily: 'Pretendard',
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400',
   },
   studenCouncilBox: {
@@ -1195,7 +1197,8 @@ const styles = StyleSheet.create({
     left: 16,
     borderRadius: 6,
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
+
     borderWidth: 1,
     borderColor: 'white',
     borderStyle: 'solid',
@@ -1254,7 +1257,7 @@ const styles = StyleSheet.create({
 
   paginationText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
   },
 });
 

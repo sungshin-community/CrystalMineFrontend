@@ -143,7 +143,7 @@ export function BoardListContainer({
               style={[
                 fontRegular,
                 {
-                  fontSize: 12,
+                  fontSize: 14,
                   color: '#6E7882',
                   fontWeight: '500',
                 },
@@ -274,9 +274,9 @@ export function CustomBoardListContainer({
               style={[
                 fontRegular,
                 {
-                  fontSize: 12,
                   color: '#6E7882',
                   fontWeight: '500',
+                  fontSize: 14,
                 },
               ]}
               numberOfLines={1}>
@@ -401,7 +401,7 @@ export function OfficialBoardListContainer({
               style={[
                 fontRegular,
                 {
-                  fontSize: 12,
+                  fontSize: 14,
                   color: '#6E7882',
                   fontWeight: '500',
                 },
