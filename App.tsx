@@ -1265,6 +1265,93 @@ const App = () => {
                   ),
                 })}
               />
+              {/* 마이페이지 대체이메일 관리 */}
+              <Stack.Screen
+                name="ReplaceEmail"
+                component={ReplaceEmail}
+                options={({navigation}) => ({
+                  title: '대체 이메일 관리',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'Pretendard-Bold',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+
+              <Stack.Screen
+                name="ReplaceEmailInput"
+                component={ReplaceEmailInput}
+                options={({navigation}) => ({
+                  title: '대체 이메일 관리',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'Pretendard-Bold',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ReplaceEmailCheck"
+                component={ReplaceEmailCheck}
+                options={({navigation}) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'Pretendard-Bold',
+                  },
+                  headerRight: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() => navigation.popToTop()}>
+                      <CloseButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
               <Stack.Screen
                 name="UncertifiedMember"
                 component={UncertifiedMember}
@@ -1307,6 +1394,35 @@ const App = () => {
                 component={AlertSettingScreen}
                 options={({navigation}) => ({
                   title: '푸시 알림 설정',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#000000',
+                  headerTitleStyle: {
+                    fontSize: 19,
+                    fontFamily: 'Pretendard-Bold',
+                  },
+                  headerLeft: () => (
+                    <TouchableHighlight
+                      underlayColor="#EEEEEE"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={() =>
+                        navigation.dispatch(CommonActions.goBack())
+                      }>
+                      <BackButtonIcon />
+                    </TouchableHighlight>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ReplaceEmail"
+                component={ReplaceEmail}
+                options={({navigation}) => ({
+                  title: '대체 이메일 관리',
                   headerTitleAlign: 'center',
                   headerTintColor: '#000000',
                   headerTitleStyle: {
@@ -3713,7 +3829,6 @@ const App = () => {
                   ),
                 })}
               />
-              {/* 마이페이지 대체이메일 관리 */}
               <Stack.Screen
                 name="ReplaceEmail"
                 component={ReplaceEmail}
