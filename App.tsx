@@ -1696,62 +1696,6 @@ const App = () => {
                 })}
               />
 
-              <Stack.Screen
-                name="ReplaceEmailInput"
-                component={ReplaceEmailInput}
-                options={({navigation}) => ({
-                  title: '대체 이메일 관리',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'Pretendard-Bold',
-                  },
-                  headerLeft: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() =>
-                        navigation.dispatch(CommonActions.goBack())
-                      }>
-                      <BackButtonIcon />
-                    </TouchableHighlight>
-                  ),
-                })}
-              />
-              <Stack.Screen
-                name="ReplaceEmailCheck"
-                component={ReplaceEmailCheck}
-                options={({navigation}) => ({
-                  title: '',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#000000',
-                  headerTitleStyle: {
-                    fontSize: 19,
-                    fontFamily: 'Pretendard-Bold',
-                  },
-                  headerRight: () => (
-                    <TouchableHighlight
-                      underlayColor="#EEEEEE"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={() => navigation.popToTop()}>
-                      <CloseButtonIcon />
-                    </TouchableHighlight>
-                  ),
-                })}
-              />
               {/* 마이페이지 - 이용안내 */}
               <Stack.Screen
                 name="ListScreen"
