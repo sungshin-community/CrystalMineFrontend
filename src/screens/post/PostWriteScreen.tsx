@@ -50,6 +50,8 @@ import {
 } from '../../common/pantheonApi';
 import ReviewPostWriteSelect from '../../components/ReviewPostWrteSelect';
 import ReviewJobDetail from '../../components/ReviewJobDetail';
+import analytics from '@react-native-firebase/analytics';
+
 const {StatusBarManager} = NativeModules;
 
 type RootStackParamList = {
@@ -274,7 +276,21 @@ function PostWriteScreen({navigation, route}: PostWriteScreenProps & Props) {
     navigation.setOptions({
       headerRight: (): React.ReactNode => (
         <Pressable
-          onPress={() => {
+          onPress={async () => {
+            try {
+              await analytics().logEvent('floating_button_done', {
+                boardId: route.params.boardId?.toString() || '',
+                isPantheon: isPantheon,
+                isSelecting: isSelecting,
+                hasTitle: info?.hasTitle || false,
+                isTitleFilled: !!title,
+                isContentFilled: !!content,
+              });
+              console.log('floating_button_done 클릭');
+            } catch (error) {
+              console.error('Error logging floating_button_done:', error);
+            }
+
             if (isSelecting) {
               // '다음' 버튼 동작
               if (job && category && size && year) {

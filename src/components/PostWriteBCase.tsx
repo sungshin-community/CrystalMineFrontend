@@ -27,6 +27,7 @@ import User from '../classes/User';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import DeleteImageIcon from './ImageDelete';
 import analytics from '@react-native-firebase/analytics';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 type RootStackParamList = {
   PostScreen: {postId: number};
@@ -163,7 +164,16 @@ const PostWriteBCase = ({
     }
   }, [isAnonymous, isSubmitState, images]);
 
-  const toPostWriteScreen = () => {
+  const toPostWriteScreen = async () => {
+    try {
+      await analytics().logEvent('writing_box_expand', {
+        boardId: route.params.boardId.toString(),
+        contentType: contentType,
+      });
+      console.log('writing_box_expand 이벤트 클릭');
+    } catch (error) {
+      console.error('Error logging writing_box_expand:', error);
+    }
     navigation.navigate('PostWriteScreen', {
       boardId: route.params.boardId,
       contentType: contentType,
@@ -347,8 +357,26 @@ const PostWriteBCase = ({
                   </Text>
                   {isAnonymous ? <RectangleChecked /> : <RectangleUnchecked />}
                 </Pressable>
+                'writing_box_done' 이벤트를 추가하기 위해 Pressable 컴포넌트의
+                onPress 함수를 수정하겠습니다. 다음과 같이 Firebase Analytics
+                이벤트 로깅을 추가할 수 있습니다: javascriptCopy
                 <Pressable
-                  onPress={() => {
+                  onPress={async () => {
+                    try {
+                      await analytics().logEvent('writing_box_done', {
+                        boardId: route.params.boardId.toString(),
+                        contentType: contentType,
+                        hasTitle: info?.hasTitle || false,
+                        isContentFilled: !!contentInput,
+                        isTitleFilled: !!titleInput,
+                      });
+                      console.log('writing_box_done 클릭');
+                    } catch (error) {
+                      console.error(
+                        'Error logging writing_box_done event:',
+                        error,
+                      );
+                    }
                     if (info?.hasTitle) {
                       if (titleInput && contentInput) setIsSubmitState(true);
                       else setIsSubmitState(false);
