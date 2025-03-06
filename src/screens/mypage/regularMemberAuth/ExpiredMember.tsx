@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   DirectionAgreeMyPage: {studentId: number};
+  ReplaceEmail: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -91,6 +92,12 @@ export default function ExpiredMember({navigation}: Props) {
       <View style={styles.buttonContainer}>
         <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
+            <WhiteRoundButton
+              text="대체 이메일 등록하기 (졸업생)"
+              onClick={() => {
+                navigation.navigate('ReplaceEmail');
+              }}
+            />
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="인증하기"

@@ -772,7 +772,7 @@ const MyPageFragment = ({navigation}: Props) => {
             <View style={styles.menu}>
               <Text style={styles.menuText}>앱 버전</Text>
               <View style={styles.arrowContainer}>
-                <Text style={styles.versionText}>2.0.2</Text>
+                <Text style={styles.versionText}>2.0.4</Text>
               </View>
             </View>
             <TouchableHighlight

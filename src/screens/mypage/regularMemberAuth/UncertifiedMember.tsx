@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
 type RootStackParamList = {
   DirectionAgreeMyPage: {studentId: number};
+  ReplaceEmail: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList>;
@@ -83,13 +84,20 @@ export default function UncertifiedMember({navigation}: Props) {
             정회원 인증 필요{'\n'}
           </Description>
           <Description style={styles.textDescription}>
-            {user?.email || 'auth@crystalmine.kr로 \n포탈 시스템 인증 내용을 보내주세요.'}
+            {user?.email ||
+              'auth@crystalmine.kr로 \n포탈 시스템 인증 내용을 보내주세요.'}
           </Description>
         </Animatable.Text>
       </Container>
       <View style={styles.buttonContainer}>
         <Animatable.View animation="fadeIn" delay={2100}>
           <ButtonCenter>
+            <WhiteRoundButton
+              text="대체 이메일 등록하기 (졸업생)"
+              onClick={() => {
+                navigation.navigate('ReplaceEmail');
+              }}
+            />
             <View style={{margin: 16}}>
               <PurpleRoundButton
                 text="인증하기"
