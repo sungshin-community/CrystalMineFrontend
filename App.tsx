@@ -1166,6 +1166,78 @@ const App = () => {
                   },
                 })}
               />
+              <Stack.Screen
+                name="SpherePostScreen"
+                component={SpherePostScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: '#222222',
+                          marginLeft: 3,
+                        }}>
+                        수정구
+                      </Text>
+                    </View>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="SphereArticleListScreen"
+                component={SphereArticleListScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: '#222222',
+                          marginLeft: 3,
+                        }}>
+                        수정 아티클
+                      </Text>
+                    </View>
+                  ),
+                })}
+              />
 
               <Stack.Screen
                 name="ImageViewerScreen"
@@ -2203,79 +2275,6 @@ const App = () => {
               }}
               initialRouteName="GlobalNavbar">
               <Stack.Screen
-                name="SpherePostScreen"
-                component={SpherePostScreen}
-                options={({navigation}) => ({
-                  title: '',
-                  headerLeft: () => (
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <TouchableHighlight
-                        underlayColor="#EEEEEE"
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 20,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                        onPress={() =>
-                          navigation.dispatch(CommonActions.goBack())
-                        }>
-                        <BackButtonIcon />
-                      </TouchableHighlight>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          fontWeight: '700',
-                          color: '#222222',
-                          marginLeft: 3,
-                        }}>
-                        수정구
-                      </Text>
-                    </View>
-                  ),
-                })}
-              />
-              <Stack.Screen
-                name="SphereArticleListScreen"
-                component={SphereArticleListScreen}
-                options={({navigation}) => ({
-                  title: '',
-                  headerLeft: () => (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <TouchableHighlight
-                        underlayColor="#EEEEEE"
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 20,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                        onPress={() =>
-                          navigation.dispatch(CommonActions.goBack())
-                        }>
-                        <BackButtonIcon />
-                      </TouchableHighlight>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          fontWeight: '700',
-                          color: '#222222',
-                          marginLeft: 3,
-                        }}>
-                        수정 아티클
-                      </Text>
-                    </View>
-                  ),
-                })}
-              />
-
-              <Stack.Screen
                 name="OnboardingScreen"
                 component={OnboardingScreen}
                 options={{
@@ -3273,6 +3272,79 @@ const App = () => {
                   headerTitleStyle: {
                     fontFamily: 'Pretendard-Bold',
                   },
+                })}
+              />
+
+              <Stack.Screen
+                name="SpherePostScreen"
+                component={SpherePostScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: '#222222',
+                          marginLeft: 3,
+                        }}>
+                        수정구
+                      </Text>
+                    </View>
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="SphereArticleListScreen"
+                component={SphereArticleListScreen}
+                options={({navigation}) => ({
+                  title: '',
+                  headerLeft: () => (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableHighlight
+                        underlayColor="#EEEEEE"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() =>
+                          navigation.dispatch(CommonActions.goBack())
+                        }>
+                        <BackButtonIcon />
+                      </TouchableHighlight>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: '#222222',
+                          marginLeft: 3,
+                        }}>
+                        수정 아티클
+                      </Text>
+                    </View>
+                  ),
                 })}
               />
 

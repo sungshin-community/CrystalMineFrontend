@@ -302,6 +302,7 @@ export default function SphereItem({
             fontWeight: '400',
             color: '#222222',
             marginTop: 8,
+            zIndex: -1,
           }}>
           {reply.content}
         </Text>
