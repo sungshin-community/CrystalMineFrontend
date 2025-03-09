@@ -357,9 +357,6 @@ const PostWriteBCase = ({
                   </Text>
                   {isAnonymous ? <RectangleUnchecked /> : <RectangleChecked />}
                 </Pressable>
-                'writing_box_done' 이벤트를 추가하기 위해 Pressable 컴포넌트의
-                onPress 함수를 수정하겠습니다. 다음과 같이 Firebase Analytics
-                이벤트 로깅을 추가할 수 있습니다: javascriptCopy
                 <Pressable
                   onPress={async () => {
                     try {
