@@ -38,7 +38,6 @@ import {
   ImageLibraryOptions,
 } from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
-import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import DeleteImageIcon from '../../components/ImageDelete';
 import {logout} from '../../common/authApi';
 import {getAuthentication} from '../../common/homeApi';
@@ -69,8 +68,6 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
   const [menu, setMenu] = useState<boolean>(false);
   const [showCamera, setShowCamera] = useState<boolean>(false);
   const [photoPath, setPhotoPath] = useState(null);
-  const devices = useCameraDevices();
-  const device = devices.back;
   const [images, setImages] = useState<Asset[]>([]);
   const [imagePermission, setImagePermission] = useState<boolean>(false);
   const camera = useRef(null);
@@ -370,6 +367,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       console.error(error);
     }
   };
+  /*
   const onPressButton = async () => {
     const checkPermission = async () => {
       const cameraPermission = await Camera.getCameraPermissionStatus();
@@ -390,7 +388,7 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
       qualityPrioritization: 'speed',
     });
     setPhotoPath(photo.path);
-  };
+  };*/
 
   const onCameraSendButton = () => {
     if (photoPath) {
@@ -449,48 +447,8 @@ const MessageScreen = ({navigation, route}: ScreenProps) => {
 
   return (
     <>
-      {device && showCamera ? (
-        <>
-          <Camera
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive={true}
-            ref={camera}
-            photo={true}
-          />
-          <View style={styles.area}>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => {
-                setShowCamera(false);
-              }}>
-              <Text style={styles.cancelButtonText}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.camButton} onPress={onPressButton}>
-              <Text />
-            </TouchableOpacity>
-          </View>
-          {photoPath && (
-            <>
-              <Image
-                source={{uri: `file://${photoPath}`}}
-                style={styles.previewImage}
-              />
-              <TouchableOpacity
-                style={[styles.whiteButton, {left: 30}]}
-                onPress={() => {
-                  setPhotoPath(null);
-                }}>
-                <Text style={styles.whiteButtonText}>다시 찍기</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.whiteButton, {right: 30}]}
-                onPress={onCameraSendButton}>
-                <Text style={styles.whiteButtonText}>전송</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </>
+      {showCamera ? (
+        <></>
       ) : chatData ? (
         <View style={styles.container}>
           <TouchableOpacity
@@ -884,3 +842,45 @@ const styles = StyleSheet.create({
 });
 
 export default MessageScreen;
+
+/*
+showCamera true 일 때 사용
+ <Camera
+            style={StyleSheet.absoluteFill}
+            device={device}
+            isActive={true}
+            ref={camera}
+            photo={true}
+          />
+          <View style={styles.area}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => {
+                setShowCamera(false);
+              }}>
+              <Text style={styles.cancelButtonText}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.camButton} onPress={onPressButton}>
+              <Text />
+            </TouchableOpacity>
+          </View>
+          {photoPath && (
+            <>
+              <Image
+                source={{uri: `file://${photoPath}`}}
+                style={styles.previewImage}
+              />
+              <TouchableOpacity
+                style={[styles.whiteButton, {left: 30}]}
+                onPress={() => {
+                  setPhotoPath(null);
+                }}>
+                <Text style={styles.whiteButtonText}>다시 찍기</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.whiteButton, {right: 30}]}
+                onPress={onCameraSendButton}>
+                <Text style={styles.whiteButtonText}>전송</Text>
+              </TouchableOpacity>
+            </>
+          )}*/
