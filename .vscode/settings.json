@@ -1,7 +1,6 @@
 {
-  "cSpell.words": [
-    "Dtos",
-    "ellipsize",
-    "Suryong"
-  ]
+  "cSpell.words": ["Dtos", "ellipsize", "Suryong"],
+  "search.exclude": {
+    "**/node_modules": false
+  }
 }
