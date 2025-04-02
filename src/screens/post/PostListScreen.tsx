@@ -630,7 +630,9 @@ const PostListScreen = ({navigation, route}: Props) => {
             <View style={{backgroundColor: 'white'}}>
               {!isLoading &&
                 config?.componentToUse === 'writing_box' &&
-                ![93, 94, 95, 284].includes(route.params.boardId) && (
+                ![93, 94, 95, 284, 286, 287, 288].includes(
+                  route.params.boardId,
+                ) && (
                   <PostWriteBCase
                     navigation={navigation}
                     route={route}
@@ -842,9 +844,8 @@ const PostListScreen = ({navigation, route}: Props) => {
                       )}
 
                     {!isLoading &&
-                      route.params.boardId !== 285 &&
                       config?.componentToUse === 'writing_box' &&
-                      ![93, 94, 95, 284, 285, 2].includes(
+                      ![93, 94, 95, 284, 285, 2, 286, 287, 288].includes(
                         route.params.boardId,
                       ) && (
                         <PostWriteBCase
@@ -871,7 +872,7 @@ const PostListScreen = ({navigation, route}: Props) => {
           </>
         )}
         {config?.componentToUse === 'floating_button' &&
-          ![93, 94, 95, 284, 2].includes(route.params.boardId) &&
+          ![93, 94, 95, 284, 2, 286, 287, 288].includes(route.params.boardId) &&
           (route.params?.boardId !== 285 || route.params?.boardId !== 284) && (
             <FloatingWriteButton
               onPress={async () => {
@@ -888,7 +889,8 @@ const PostListScreen = ({navigation, route}: Props) => {
             />
           )}
         {!(
-          isHotBoard || [93, 94, 95, 284, 2].includes(route.params?.boardId)
+          isHotBoard ||
+          ![93, 94, 95, 284, 2, 286, 287, 288].includes(route.params?.boardId)
         ) ||
           (route.params?.boardId === 285 && isAdBoard === true && (
             <FloatingWriteButton
